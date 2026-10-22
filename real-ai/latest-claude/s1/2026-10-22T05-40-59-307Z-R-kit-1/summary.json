@@ -1,0 +1,543 @@
+{
+  "journey": "R-kit-1",
+  "title": "Group R kit surfaces: stepper, timeline, calendar, goal and pick list",
+  "steps": 48,
+  "failed": 9,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T05-40-59-307Z-R-kit-1",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-342: clean ask",
+      "sentAt": 1792647665333,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 174
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-342: clean",
+      "firstReplyMs": 5566,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your guest counter, from 1 to 10.\n\nGuests coming\n−\n1\n+\nKeep\n5:41 AM",
+      "kit": [
+        "kit-surface",
+        "kit-stepper",
+        "kit-keep"
+      ],
+      "ms": 12650
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "note": "AT-342: increment the guest counter with the real Stepper control",
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 3,
+      "do": "expectText",
+      "note": "AT-342: counter shows the next number",
+      "text": "Guests coming\n−\n2\n+",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "note": "AT-342: messy typo ask",
+      "sentAt": 1792647678328,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 169
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "note": "AT-342: messy typo",
+      "firstReplyMs": 6074,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your guest counter, from 1 to 10.\n\nGuests coming\n−\n1\n+\nKeep\n5:41 AM",
+      "kit": [
+        "kit-surface",
+        "kit-stepper",
+        "kit-keep"
+      ],
+      "ms": 13141
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "note": "AT-342: increment the guest counter with the real Stepper control",
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 7,
+      "do": "expectText",
+      "note": "AT-342: counter shows the next number",
+      "text": "Guests coming\n−\n2\n+",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "note": "AT-342: Hinglish ask",
+      "sentAt": 1792647691754,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "AT-342: Hinglish",
+      "firstReplyMs": 4052,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Yeh raha aapka guests ka counter, 1 se 10 tak.\n\nGuests aa rahe hain\n−\n1\n+\nKeep\n5:41 AM",
+      "kit": [
+        "kit-surface",
+        "kit-stepper",
+        "kit-keep"
+      ],
+      "ms": 12134
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "note": "AT-342: increment the guest counter with the real Stepper control",
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 11,
+      "do": "expectText",
+      "note": "AT-342: counter shows the next number",
+      "text": "Guests aa rahe hain\n−\n2\n+",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "note": "AT-344: clean ask",
+      "sentAt": 1792647704147,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-344: clean",
+      "firstReplyMs": 5604,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your Goa trip comes to ₹21,300 in total, from Tue 10 Nov to Thu 12 Nov.\n\nTue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800\nKeep\n5:41 AM",
+      "kit": [
+        "kit-surface",
+        "kit-timeline",
+        "kit-keep"
+      ],
+      "ms": 13161
+    },
+    {
+      "i": 14,
+      "do": "expectText",
+      "note": "AT-344: clean result",
+      "text": "Tue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 15,
+      "do": "send",
+      "note": "AT-344: messy typo ask",
+      "sentAt": 1792647717504,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 16,
+      "do": "waitReply",
+      "note": "AT-344: messy typo",
+      "firstReplyMs": 3041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your Goa trip comes to ₹21,300 in total, from Tue 10 Nov to Thu 12 Nov.\n\nTue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800\nKeep\n5:42 AM",
+      "kit": [
+        "kit-surface",
+        "kit-timeline",
+        "kit-keep"
+      ],
+      "ms": 11122
+    },
+    {
+      "i": 17,
+      "do": "expectText",
+      "note": "AT-344: messy typo result",
+      "text": "Tue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "note": "AT-344: Hinglish ask",
+      "sentAt": 1792647728876,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 185
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "note": "AT-344: Hinglish",
+      "firstReplyMs": 7504,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Aapki Goa trip ka total ₹21,300 hai, Tue 10 Nov se Thu 12 Nov tak.\n\nTue 10 Nov\nFlight\n₹6,500\nTue 10 Nov se Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800\nKeep\n5:42 AM",
+      "kit": [
+        "kit-surface",
+        "kit-timeline",
+        "kit-keep"
+      ],
+      "ms": 15793
+    },
+    {
+      "i": 20,
+      "do": "expectText",
+      "note": "AT-344: Hinglish result",
+      "text": "Tue 10 Nov\nFlight\n₹6,500\nTue 10 Nov se Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "note": "AT-345: clean ask",
+      "sentAt": 1792647744942,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 173
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "note": "AT-345: clean",
+      "firstReplyMs": 5151,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "You're busy Mon 10:00 AM to 11:00 AM and Wed 3:00 PM to 4:00 PM, and free the rest of the week. I took the Wednesday slot as 3 PM, so tell me if you meant 3 AM.\n\nMon\n10:00\nTue\nWed\n15:00\nThu\nFri\nSat\nSun\n\nBusy\nFree\n\nKeep\n5:42 AM",
+      "kit": [
+        "kit-surface",
+        "kit-week-calendar",
+        "kit-keep"
+      ],
+      "ms": 13251
+    },
+    {
+      "i": 23,
+      "do": "send",
+      "note": "AT-345: messy typo ask",
+      "sentAt": 1792647758376,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 157
+    },
+    {
+      "i": 24,
+      "do": "waitReply",
+      "note": "AT-345: messy typo",
+      "firstReplyMs": 4061,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "You're busy Mon 10:00 AM to 11:00 AM and Wed 3:00 PM to 4:00 PM, and free the rest of the week. I took Wednesday as 3 PM, so tell me if you meant 3 AM.\n\nMon\n10:00\nTue\nWed\n15:00\nThu\nFri\nSat\nSun\n\nBusy\nFree\n\nKeep\n5:42 AM",
+      "kit": [
+        "kit-surface",
+        "kit-week-calendar",
+        "kit-keep"
+      ],
+      "ms": 12131
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "note": "AT-345: Hinglish ask",
+      "sentAt": 1792647770753,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 165
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "note": "AT-345: Hinglish",
+      "firstReplyMs": 3564,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Aap Mon 10:00 AM se 11:00 AM aur Wed 3:00 PM se 4:00 PM busy hain, baaki hafta free hai. Maine Wednesday ko 3 PM maana hai, agar 3 AM tha to bata dijiye.\n\nMon\n10:00\nTue\nWed\n15:00\nThu\nFri\nSat\nSun\n\nBusy\nFree\n\nKeep\n5:42 AM",
+      "kit": [
+        "kit-surface",
+        "kit-week-calendar",
+        "kit-keep"
+      ],
+      "ms": 11195
+    },
+    {
+      "i": 27,
+      "do": "send",
+      "note": "AT-348: clean ask",
+      "sentAt": 1792647782168,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 146
+    },
+    {
+      "i": 28,
+      "do": "waitReply",
+      "note": "AT-348: clean",
+      "firstReplyMs": 3564,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "You've saved ₹30,000 of your ₹1,00,000 goal, which is 30% of the way there.\n\n30,000 of 1,00,000\nSavings goal\nKeep\n5:43 AM",
+      "kit": [
+        "kit-surface",
+        "kit-goal-ring",
+        "kit-keep"
+      ],
+      "ms": 11138
+    },
+    {
+      "i": 29,
+      "do": "expectText",
+      "note": "AT-348: clean result",
+      "text": "30,000 of 1,00,000\nSavings goal",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 30,
+      "do": "send",
+      "note": "AT-348: messy typo ask",
+      "sentAt": 1792647793516,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 31,
+      "do": "waitReply",
+      "note": "AT-348: messy typo",
+      "firstReplyMs": 5567,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "You've saved ₹30,000 of your ₹1,00,000 goal, which is 30% of the way there.\n\n30,000 of 1,00,000\nSavings goal\nKeep\n5:43 AM",
+      "kit": [
+        "kit-surface",
+        "kit-goal-ring",
+        "kit-keep"
+      ],
+      "ms": 12657
+    },
+    {
+      "i": 32,
+      "do": "expectText",
+      "note": "AT-348: messy typo result",
+      "text": "30,000 of 1,00,000\nSavings goal",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 33,
+      "do": "send",
+      "note": "AT-348: Hinglish ask",
+      "sentAt": 1792647806389,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 181
+    },
+    {
+      "i": 34,
+      "do": "waitReply",
+      "note": "AT-348: Hinglish",
+      "firstReplyMs": 3567,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Aapne ₹30,000 save kiye hain ₹1,00,000 ke goal mein, yaani 30% poora ho gaya hai.\n\n30,000 of 1,00,000\nSavings goal\nKeep\n5:43 AM",
+      "kit": [
+        "kit-surface",
+        "kit-goal-ring",
+        "kit-keep"
+      ],
+      "ms": 10104
+    },
+    {
+      "i": 35,
+      "do": "expectText",
+      "note": "AT-348: Hinglish result",
+      "text": "30,000 of 1,00,000\nSavings goal",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 36,
+      "do": "send",
+      "note": "AT-349: clean ask",
+      "sentAt": 1792647816719,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 37,
+      "do": "waitReply",
+      "note": "AT-349: clean",
+      "firstReplyMs": 6590,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 laptops that fit price under ₹80,000\n3\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n5:43 AM",
+      "kit": [],
+      "kitMissing": "kit-list-pick",
+      "ms": 12671
+    },
+    {
+      "i": 38,
+      "do": "click",
+      "note": "AT-349: select the first laptop with the real radio control",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23076
+    },
+    {
+      "i": 39,
+      "do": "waitReply",
+      "note": "AT-349: selection acknowledgement is a new foo reply",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120045
+    },
+    {
+      "i": 40,
+      "do": "send",
+      "note": "AT-349: messy typo ask",
+      "sentAt": 1792647972700,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 41,
+      "do": "waitReply",
+      "note": "AT-349: messy typo",
+      "firstReplyMs": 6605,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for laptops under ₹80,000\n3\nKeep 3 laptops that fit under ₹80,000, best value\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n5:46 AM",
+      "kit": [],
+      "kitMissing": "kit-list-pick",
+      "ms": 12719
+    },
+    {
+      "i": 42,
+      "do": "click",
+      "note": "AT-349: select the first laptop with the real radio control",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23080
+    },
+    {
+      "i": 43,
+      "do": "waitReply",
+      "note": "AT-349: selection acknowledgement is a new foo reply",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120223
+    },
+    {
+      "i": 44,
+      "do": "send",
+      "note": "AT-349: Hinglish ask",
+      "sentAt": 1792648128913,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 45,
+      "do": "waitReply",
+      "note": "AT-349: Hinglish",
+      "firstReplyMs": 6601,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for laptops under ₹80,000\n1\nLook for laptops under ₹80,000\n2\nKeep 3 laptops that fit price under ₹80,000\n3\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n5:48 AM",
+      "kit": [],
+      "kitMissing": "kit-list-pick",
+      "ms": 12669
+    },
+    {
+      "i": 46,
+      "do": "click",
+      "note": "AT-349: select the first laptop with the real radio control",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23085
+    },
+    {
+      "i": 47,
+      "do": "waitReply",
+      "note": "AT-349: selection acknowledgement is a new foo reply",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120012
+    }
+  ]
+}

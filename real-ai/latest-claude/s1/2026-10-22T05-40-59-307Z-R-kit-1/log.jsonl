@@ -1,0 +1,70 @@
+{"t":"2026-10-22T05:40:59.307Z","journey":"R-kit-1","title":"Group R kit surfaces: stepper, timeline, calendar, goal and pick list","spec":"07 §11.5 Group R; AT-342, AT-344, AT-345, AT-348, AT-349","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T05:41:05.206Z","step":"launch","ok":true}
+{"t":"2026-10-22T05:41:05.384Z","i":0,"do":"send","note":"AT-342: clean ask","sentAt":1792647665333,"sent":true,"before":0,"ok":true,"ms":174}
+{"t":"2026-10-22T05:41:18.034Z","i":1,"do":"waitReply","note":"AT-342: clean","firstReplyMs":5566,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your guest counter, from 1 to 10.\n\nGuests coming\n−\n1\n+\nKeep\n5:41 AM","kit":["kit-surface","kit-stepper","kit-keep"],"ms":12650}
+{"t":"2026-10-22T05:41:18.106Z","shot":"01-at-342-clean.png"}
+{"t":"2026-10-22T05:41:18.182Z","i":2,"do":"click","note":"AT-342: increment the guest counter with the real Stepper control","ok":true,"ms":75}
+{"t":"2026-10-22T05:41:18.188Z","i":3,"do":"expectText","note":"AT-342: counter shows the next number","text":"Guests coming\n−\n2\n+","ok":true,"ms":5}
+{"t":"2026-10-22T05:41:18.357Z","i":4,"do":"send","note":"AT-342: messy typo ask","sentAt":1792647678328,"sent":true,"before":0,"ok":true,"ms":169}
+{"t":"2026-10-22T05:41:31.498Z","i":5,"do":"waitReply","note":"AT-342: messy typo","firstReplyMs":6074,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your guest counter, from 1 to 10.\n\nGuests coming\n−\n1\n+\nKeep\n5:41 AM","kit":["kit-surface","kit-stepper","kit-keep"],"ms":13141}
+{"t":"2026-10-22T05:41:31.568Z","shot":"02-at-342-messy-typo.png"}
+{"t":"2026-10-22T05:41:31.649Z","i":6,"do":"click","note":"AT-342: increment the guest counter with the real Stepper control","ok":true,"ms":81}
+{"t":"2026-10-22T05:41:31.653Z","i":7,"do":"expectText","note":"AT-342: counter shows the next number","text":"Guests coming\n−\n2\n+","ok":true,"ms":4}
+{"t":"2026-10-22T05:41:31.770Z","i":8,"do":"send","note":"AT-342: Hinglish ask","sentAt":1792647691754,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-22T05:41:43.904Z","i":9,"do":"waitReply","note":"AT-342: Hinglish","firstReplyMs":4052,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Yeh raha aapka guests ka counter, 1 se 10 tak.\n\nGuests aa rahe hain\n−\n1\n+\nKeep\n5:41 AM","kit":["kit-surface","kit-stepper","kit-keep"],"ms":12134}
+{"t":"2026-10-22T05:41:43.976Z","shot":"03-at-342-Hinglish.png"}
+{"t":"2026-10-22T05:41:44.049Z","i":10,"do":"click","note":"AT-342: increment the guest counter with the real Stepper control","ok":true,"ms":73}
+{"t":"2026-10-22T05:41:44.052Z","i":11,"do":"expectText","note":"AT-342: counter shows the next number","text":"Guests aa rahe hain\n−\n2\n+","ok":true,"ms":2}
+{"t":"2026-10-22T05:41:44.178Z","i":12,"do":"send","note":"AT-344: clean ask","sentAt":1792647704147,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-22T05:41:57.340Z","i":13,"do":"waitReply","note":"AT-344: clean","firstReplyMs":5604,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your Goa trip comes to ₹21,300 in total, from Tue 10 Nov to Thu 12 Nov.\n\nTue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800\nKeep\n5:41 AM","kit":["kit-surface","kit-timeline","kit-keep"],"ms":13161}
+{"t":"2026-10-22T05:41:57.414Z","shot":"04-at-344-clean.png"}
+{"t":"2026-10-22T05:41:57.417Z","i":14,"do":"expectText","note":"AT-344: clean result","text":"Tue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800","ok":true,"ms":3}
+{"t":"2026-10-22T05:41:57.543Z","i":15,"do":"send","note":"AT-344: messy typo ask","sentAt":1792647717504,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-22T05:42:08.665Z","i":16,"do":"waitReply","note":"AT-344: messy typo","firstReplyMs":3041,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your Goa trip comes to ₹21,300 in total, from Tue 10 Nov to Thu 12 Nov.\n\nTue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800\nKeep\n5:42 AM","kit":["kit-surface","kit-timeline","kit-keep"],"ms":11122}
+{"t":"2026-10-22T05:42:08.732Z","shot":"05-at-344-messy-typo.png"}
+{"t":"2026-10-22T05:42:08.734Z","i":17,"do":"expectText","note":"AT-344: messy typo result","text":"Tue 10 Nov\nFlight to Goa\n₹6,500\nTue 10 Nov to Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800","ok":true,"ms":2}
+{"t":"2026-10-22T05:42:08.919Z","i":18,"do":"send","note":"AT-344: Hinglish ask","sentAt":1792647728876,"sent":true,"before":0,"ok":true,"ms":185}
+{"t":"2026-10-22T05:42:24.712Z","i":19,"do":"waitReply","note":"AT-344: Hinglish","firstReplyMs":7504,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Aapki Goa trip ka total ₹21,300 hai, Tue 10 Nov se Thu 12 Nov tak.\n\nTue 10 Nov\nFlight\n₹6,500\nTue 10 Nov se Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800\nKeep\n5:42 AM","kit":["kit-surface","kit-timeline","kit-keep"],"ms":15793}
+{"t":"2026-10-22T05:42:24.784Z","shot":"06-at-344-Hinglish.png"}
+{"t":"2026-10-22T05:42:24.788Z","i":20,"do":"expectText","note":"AT-344: Hinglish result","text":"Tue 10 Nov\nFlight\n₹6,500\nTue 10 Nov se Thu 12 Nov\nHotel\n₹9,000\nThu 12 Nov\nReturn flight\n₹5,800","ok":true,"ms":4}
+{"t":"2026-10-22T05:42:24.961Z","i":21,"do":"send","note":"AT-345: clean ask","sentAt":1792647744942,"sent":true,"before":0,"ok":true,"ms":173}
+{"t":"2026-10-22T05:42:38.212Z","i":22,"do":"waitReply","note":"AT-345: clean","firstReplyMs":5151,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"You're busy Mon 10:00 AM to 11:00 AM and Wed 3:00 PM to 4:00 PM, and free the rest of the week. I took the Wednesday slot as 3 PM, so tell me if you meant 3 AM.\n\nMon\n10:00\nTue\nWed\n15:00\nThu\nFri\nSat\nSun\n\nBusy\nFree\n\nKeep\n5:42 AM","kit":["kit-surface","kit-week-calendar","kit-keep"],"ms":13251}
+{"t":"2026-10-22T05:42:38.277Z","shot":"07-at-345-clean.png"}
+{"t":"2026-10-22T05:42:38.435Z","i":23,"do":"send","note":"AT-345: messy typo ask","sentAt":1792647758376,"sent":true,"before":0,"ok":true,"ms":157}
+{"t":"2026-10-22T05:42:50.566Z","i":24,"do":"waitReply","note":"AT-345: messy typo","firstReplyMs":4061,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"You're busy Mon 10:00 AM to 11:00 AM and Wed 3:00 PM to 4:00 PM, and free the rest of the week. I took Wednesday as 3 PM, so tell me if you meant 3 AM.\n\nMon\n10:00\nTue\nWed\n15:00\nThu\nFri\nSat\nSun\n\nBusy\nFree\n\nKeep\n5:42 AM","kit":["kit-surface","kit-week-calendar","kit-keep"],"ms":12131}
+{"t":"2026-10-22T05:42:50.633Z","shot":"08-at-345-messy-typo.png"}
+{"t":"2026-10-22T05:42:50.798Z","i":25,"do":"send","note":"AT-345: Hinglish ask","sentAt":1792647770753,"sent":true,"before":0,"ok":true,"ms":165}
+{"t":"2026-10-22T05:43:01.993Z","i":26,"do":"waitReply","note":"AT-345: Hinglish","firstReplyMs":3564,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Aap Mon 10:00 AM se 11:00 AM aur Wed 3:00 PM se 4:00 PM busy hain, baaki hafta free hai. Maine Wednesday ko 3 PM maana hai, agar 3 AM tha to bata dijiye.\n\nMon\n10:00\nTue\nWed\n15:00\nThu\nFri\nSat\nSun\n\nBusy\nFree\n\nKeep\n5:42 AM","kit":["kit-surface","kit-week-calendar","kit-keep"],"ms":11195}
+{"t":"2026-10-22T05:43:02.056Z","shot":"09-at-345-Hinglish.png"}
+{"t":"2026-10-22T05:43:02.202Z","i":27,"do":"send","note":"AT-348: clean ask","sentAt":1792647782168,"sent":true,"before":0,"ok":true,"ms":146}
+{"t":"2026-10-22T05:43:13.340Z","i":28,"do":"waitReply","note":"AT-348: clean","firstReplyMs":3564,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"You've saved ₹30,000 of your ₹1,00,000 goal, which is 30% of the way there.\n\n30,000 of 1,00,000\nSavings goal\nKeep\n5:43 AM","kit":["kit-surface","kit-goal-ring","kit-keep"],"ms":11138}
+{"t":"2026-10-22T05:43:13.400Z","shot":"10-at-348-clean.png"}
+{"t":"2026-10-22T05:43:13.403Z","i":29,"do":"expectText","note":"AT-348: clean result","text":"30,000 of 1,00,000\nSavings goal","ok":true,"ms":3}
+{"t":"2026-10-22T05:43:13.550Z","i":30,"do":"send","note":"AT-348: messy typo ask","sentAt":1792647793516,"sent":true,"before":0,"ok":true,"ms":147}
+{"t":"2026-10-22T05:43:26.207Z","i":31,"do":"waitReply","note":"AT-348: messy typo","firstReplyMs":5567,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"You've saved ₹30,000 of your ₹1,00,000 goal, which is 30% of the way there.\n\n30,000 of 1,00,000\nSavings goal\nKeep\n5:43 AM","kit":["kit-surface","kit-goal-ring","kit-keep"],"ms":12657}
+{"t":"2026-10-22T05:43:26.275Z","shot":"11-at-348-messy-typo.png"}
+{"t":"2026-10-22T05:43:26.277Z","i":32,"do":"expectText","note":"AT-348: messy typo result","text":"30,000 of 1,00,000\nSavings goal","ok":true,"ms":2}
+{"t":"2026-10-22T05:43:26.458Z","i":33,"do":"send","note":"AT-348: Hinglish ask","sentAt":1792647806389,"sent":true,"before":0,"ok":true,"ms":181}
+{"t":"2026-10-22T05:43:36.562Z","i":34,"do":"waitReply","note":"AT-348: Hinglish","firstReplyMs":3567,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Aapne ₹30,000 save kiye hain ₹1,00,000 ke goal mein, yaani 30% poora ho gaya hai.\n\n30,000 of 1,00,000\nSavings goal\nKeep\n5:43 AM","kit":["kit-surface","kit-goal-ring","kit-keep"],"ms":10104}
+{"t":"2026-10-22T05:43:36.633Z","shot":"12-at-348-Hinglish.png"}
+{"t":"2026-10-22T05:43:36.636Z","i":35,"do":"expectText","note":"AT-348: Hinglish result","text":"30,000 of 1,00,000\nSavings goal","ok":true,"ms":2}
+{"t":"2026-10-22T05:43:36.753Z","i":36,"do":"send","note":"AT-349: clean ask","sentAt":1792647816719,"sent":true,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-22T05:43:49.424Z","i":37,"do":"waitReply","note":"AT-349: clean","firstReplyMs":6590,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 laptops that fit price under ₹80,000\n3\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n5:43 AM","kit":[],"kitMissing":"kit-list-pick","ms":12671}
+{"t":"2026-10-22T05:43:49.495Z","shot":"13-at-349-clean.png"}
+{"t":"2026-10-22T05:44:12.572Z","shot":"14-error-step38.png"}
+{"t":"2026-10-22T05:44:12.572Z","i":38,"do":"click","note":"AT-349: select the first laptop with the real radio control","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23076}
+{"t":"2026-10-22T05:46:12.617Z","i":39,"do":"waitReply","note":"AT-349: selection acknowledgement is a new foo reply","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120045}
+{"t":"2026-10-22T05:46:12.740Z","i":40,"do":"send","note":"AT-349: messy typo ask","sentAt":1792647972700,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-22T05:46:25.460Z","i":41,"do":"waitReply","note":"AT-349: messy typo","firstReplyMs":6605,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for laptops under ₹80,000\n3\nKeep 3 laptops that fit under ₹80,000, best value\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n5:46 AM","kit":[],"kitMissing":"kit-list-pick","ms":12719}
+{"t":"2026-10-22T05:46:25.525Z","shot":"15-at-349-messy-typo.png"}
+{"t":"2026-10-22T05:46:48.605Z","shot":"16-error-step42.png"}
+{"t":"2026-10-22T05:46:48.605Z","i":42,"do":"click","note":"AT-349: select the first laptop with the real radio control","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23080}
+{"t":"2026-10-22T05:48:48.828Z","i":43,"do":"waitReply","note":"AT-349: selection acknowledgement is a new foo reply","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120223}
+{"t":"2026-10-22T05:48:48.953Z","i":44,"do":"send","note":"AT-349: Hinglish ask","sentAt":1792648128913,"sent":true,"before":0,"ok":true,"ms":125}
+{"t":"2026-10-22T05:49:01.623Z","i":45,"do":"waitReply","note":"AT-349: Hinglish","firstReplyMs":6601,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking for laptops under ₹80,000\n1\nLook for laptops under ₹80,000\n2\nKeep 3 laptops that fit price under ₹80,000\n3\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n5:48 AM","kit":[],"kitMissing":"kit-list-pick","ms":12669}
+{"t":"2026-10-22T05:49:01.723Z","shot":"17-at-349-Hinglish.png"}
+{"t":"2026-10-22T05:49:24.808Z","shot":"18-error-step46.png"}
+{"t":"2026-10-22T05:49:24.808Z","i":46,"do":"click","note":"AT-349: select the first laptop with the real radio control","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23085}
+{"t":"2026-10-22T05:51:24.820Z","i":47,"do":"waitReply","note":"AT-349: selection acknowledgement is a new foo reply","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120012}
+{"t":"2026-10-22T05:51:24.989Z","step":"appLog","lines":49,"dropped":0}
+{"t":"2026-10-22T05:51:25.006Z","step":"aiTurns","turns":18}
