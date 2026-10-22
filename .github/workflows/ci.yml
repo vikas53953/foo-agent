@@ -35,6 +35,9 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Install scoped BDD tooling when present
+        if: hashFiles('test/bdd/package.json') != ''
+        run: pnpm --dir test/bdd install --frozen-lockfile
       - run: pnpm spec:verify
       - name: FID-02 / FID-06 / FID-19 guard (pull requests)
         if: github.event_name == 'pull_request'
@@ -89,6 +92,9 @@ jobs:
       # better-sqlite3 always compiles on install. pnpm's bundled node-gyp 11 cannot find Visual Studio 2026 (v18)
       # on the runner, so install without scripts and compile with the pinned node-gyp 12.4, which knows VS 2026.
       - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install scoped BDD tooling when present
+        if: hashFiles('test/bdd/package.json') != ''
+        run: pnpm --dir test/bdd install --frozen-lockfile
       - name: Download the Electron binary
         run: node node_modules/electron/install.js
       - name: Build better-sqlite3 for Node (unit tests)
@@ -160,6 +166,9 @@ jobs:
           cache: pnpm
       # Same native-module gotchas as the windows job.
       - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Install scoped BDD tooling when present
+        if: hashFiles('test/bdd/package.json') != ''
+        run: pnpm --dir test/bdd install --frozen-lockfile
       - name: Download the Electron binary
         run: node node_modules/electron/install.js
       - name: Build better-sqlite3 for Node (unit tests)
