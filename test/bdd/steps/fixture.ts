@@ -93,7 +93,7 @@ async function launchPretend(
     intake('Find my bills due this week', jobReply),
     {
       match: { purpose: 'step' },
-      reply: '<say></say>\n<act>{"kind":"step_done","idx":0}</act>',
+      reply: '<say></say>\n<act>{"decision":{"kind":"step_done","idx":0},"usedMemoryIds":[]}</act>',
       delayMs: 600_000,
       once: false,
     },
