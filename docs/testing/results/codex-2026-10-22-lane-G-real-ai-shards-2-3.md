@@ -4,6 +4,8 @@ Run [39725331473](https://github.com/vikas53953/foo-agent/actions/runs/397253314
 
 I inspected every current-run PNG and paired log.jsonl in both owned shards: 26 journey directories, 150 PNGs, and 26 logs. The screenshot controls acceptance; a green driver summary does not override a blank or mismatched screenshot. AT-027 accepts either a ❤️ or 👍 reaction.
 
+Correction on scope: the PASS labels below describe the observed screenshot subset of a journey. They do not grant full acceptance to every named AT. The companion per-AT TSV is the conservative status source: AT-005/313/314, AT-030/031, AT-036/108/310/311, AT-320/321, and the B09 kit/page ATs other than the directly visible AT-343 visual row remain partial where comparison, interaction, persistence, security, accessibility, or state coverage was not exercised.
+
 ## Shard 2
 
 | Journey | Evidence | Judgment |
