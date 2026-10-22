@@ -75,7 +75,7 @@ async function launchPretend(
       title: 'Bills',
       plan: [
         { phraseKey: 'read_email', slots: {}, route: 'api' },
-        { phraseKey: 'look_for', slots: { what: 'bills due this week' }, route: 'api' },
+        { phraseKey: 'look_for', slots: { what: 'Bills due this week' }, route: 'api' },
       ],
       estimate: { minutes: 1 },
       routeHint: ['api'],
