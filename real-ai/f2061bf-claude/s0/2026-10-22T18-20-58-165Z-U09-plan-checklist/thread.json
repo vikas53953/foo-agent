@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n6:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n6:21 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:21 PM\n6:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n6:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000 from the Smartprix list updated Thu 22 Oct 2026:\n\nMSI Modern 14: ₹43,219 Ryzen 5 7530U, 16GB memory, 512GB storage. Most power for the price.\nLenovo IdeaPad Slim 1: ₹37,990 Ryzen 5 5500U, 8GB memory, 512GB storage. Cheaper, but older and has less memory.\nDell 15 DC15250: ₹36,994 Intel Core 3 100U, 8GB memory, 512GB storage. Lowest price, lightest performance.\n\nThe Honor MagicBook X14 Pro (₹42,999 Core i5, 16GB) looks stronger but is listed as upcoming. These are list prices, so check the store before buying.\n\n6:22 PM"
+  }
+]

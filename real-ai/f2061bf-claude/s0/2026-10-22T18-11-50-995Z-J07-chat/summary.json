@@ -1,0 +1,80 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-11-50-995Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792692716499,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3079,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! What can I do for you this evening?\n\n6:11 PM",
+      "kit": [],
+      "ms": 10145
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792692726824,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 8126,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n6:12 PM",
+      "didntGetThat": true,
+      "kit": [],
+      "ms": 14244
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792692741215,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 6065,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your phone or laptop and a computer run by the VPN company. Everything you send goes through it scrambled, so nobody along the way can read it.\n\nThe VPN company's computer then visits websites for you. They see its address instead of yours, so your location stays hidden. Your internet provider or café Wi-Fi only sees scrambled data heading to the VPN.\n\nThe catch is that the VPN company can see your activity instead, so pick one you trust. It also won't protect you from bad links or fake websites.\n\n6:12 PM",
+      "kit": [],
+      "ms": 13632
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "journey": "B02-choice",
+  "title": "Choice card: options, Best fit, typed answer",
+  "steps": 8,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T18-12-35-224Z-B02-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792692760814,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 150
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 5586,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday running\n2\nTrails or muddy paths\nMore grip, tougher sole\n3\nTreadmill or gym\nLight and breathable\n4\nA bit of everything\nSomething else…\nSkip\n6:12 PM",
+      "kit": [],
+      "ms": 11677
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 4,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "text",
+      "soft": true,
+      "text": "Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday running\n2\nTrails or muddy paths\nMore grip, tougher sole\n3\nTreadmill or gym\nLight and breathable\n4\nA bit of everything\nSomething else…\nSkip\n6:12 PM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792692772704,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "firstReplyMs": 6552,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "What matters most in your trail shoes?\nStrong grip\nBEST FIT\nDeep lugs for mud and loose ground\nSoft cushioning\nEasier on knees over long runs\nWater resistant\nKeeps feet drier on wet trails\nLight weight\nFaster and less tiring\nSomething else…\nDone\nSkip\n6:12 PM",
+      "kit": [],
+      "ms": 12604
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
