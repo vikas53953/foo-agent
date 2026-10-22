@@ -139,6 +139,44 @@ function copyAiTurns(from, out) {
   }
 }
 
+// foo's tool calls (tool_calls, 0001_init.sql) for this journey: which tool, how it ended, the site's host name and how big the
+// answer was, so a stuck job shows what the AI kept doing (run 30, B03). No arguments, results or page text: public-safe.
+const CALL_COLS = ['started_at', 'finished_at', 'job_id', 'step_id', 'tool', 'gate', 'outcome', 'error_kind'];
+function copyToolCalls(from, out) {
+  const secret = process.env.ANTHROPIC_API_KEY || '';
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { calls: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  try {
+    const rows = db
+      .prepare(
+        `SELECT ${CALL_COLS.join(', ')}, args, length(result) AS result_chars FROM tool_calls WHERE started_at >= ? ORDER BY started_at`,
+      )
+      .all(from);
+    const safe = rows.map(({ args, ...r }) => {
+      let host = null;
+      try {
+        const url = JSON.parse(args)?.url;
+        if (typeof url === 'string') host = new URL(url).hostname.toLowerCase();
+      } catch {
+        host = null;
+      }
+      const kept = Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      );
+      // Named sites only: no addresses or local names, and never anything holding the run's key.
+      const named = host && /^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(host) && host.length <= 100 && !host.endsWith('.localhost');
+      const leak = secret && JSON.stringify(kept).includes(secret);
+      return leak ? {} : named ? { ...kept, host } : kept;
+    });
+    fs.writeFileSync(path.join(out, 'tool-calls.jsonl'), safe.map((r) => JSON.stringify(r)).join('\n') + (safe.length ? '\n' : ''));
+    return { calls: safe.length };
+  } finally {
+    db.close();
+  }
+}
+
 async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
@@ -589,6 +627,11 @@ async function main() {
     log({ step: 'aiTurns', ...copyAiTurns(journeyStart, out) });
   } catch (e) {
     log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
+  }
+  try {
+    log({ step: 'toolCalls', ...copyToolCalls(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'toolCalls', ok: false, error: String(e).slice(0, 300) });
   }
   const summary = {
     journey: journey.id,

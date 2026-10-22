@@ -22,7 +22,7 @@ import { createSubmitTool } from './submit'; // M9 T8
 import { readLiveTerms, type LiveRead } from './readLiveTerms'; // M9 T8
 import type { ApprovalDraft } from '../../../shared/types';
 import type { CaptureGuard } from './types';
-import { Watchdogs, isChallengePage } from './watchdogs';
+import { BLOCKED_STATUS, Watchdogs, isChallengePage } from './watchdogs';
 import { RecipeRecorder } from './recipes/recipe'; // M9 T8
 
 export interface BrowserToolsDeps {
@@ -69,8 +69,6 @@ export interface BrowserRuntime {
   /** 08-2 §8.3.11: what the job did on the page by role + name (saved as a recipe after DONE with proof) and the replay match. */
   recipes: RecipeRecorder;
 }
-
-const BLOCKED_STATUS = new Set([403, 429]);
 
 const err = (r: ActionRefusal): ToolOutcome =>
   r.detail ? { kind: 'error', errorKind: r.kind, result: { reason: r.detail } } : { kind: 'error', errorKind: r.kind };
