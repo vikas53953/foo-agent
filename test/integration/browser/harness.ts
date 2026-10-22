@@ -23,6 +23,8 @@ export type Route = (req: IncomingMessage, res: ServerResponse) => void;
 export interface BrowserHarness {
   tools: ToolRegistry;
   runtime: BrowserRuntime;
+  /** The tools' tech-log lines, `evt kind`. */
+  logs: string[];
   redactor: Redactor;
   settings: Settings;
   dataDir: string;
@@ -65,6 +67,7 @@ export async function browserHarness(o: { settleMaxMs?: number } = {}): Promise<
   writeFileSync(join(resourcesDir, 'handback-sites.json'), JSON.stringify(sites));
   const clock = new FakeClock();
   const redactor = new Redactor({ clock, log: () => undefined });
+  const logs: string[] = [];
   const settings = structuredClone(settingsDefaults);
   const { registry, runtime } = createBrowserTools({
     dataDir,
@@ -76,7 +79,7 @@ export async function browserHarness(o: { settleMaxMs?: number } = {}): Promise<
     registryHit: (t) => redactor.registry.forms().some((f) => t.includes(f.form)),
     settings: () => settings,
     now: () => Date.now(),
-    log: () => undefined,
+    log: (evt, kind) => logs.push(kind ? `${evt} ${kind}` : evt),
     headless: true,
     timing: { idleMs: 150, settleMaxMs: o.settleMaxMs ?? 5_000, actionableMs: 2_000 },
   });
@@ -84,6 +87,7 @@ export async function browserHarness(o: { settleMaxMs?: number } = {}): Promise<
   const h: BrowserHarness = {
     tools: registry,
     runtime,
+    logs,
     redactor,
     settings,
     dataDir,

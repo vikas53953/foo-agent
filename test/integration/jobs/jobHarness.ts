@@ -107,6 +107,15 @@ export async function realPause(ms: number): Promise<void> {
   while (performance.now() < end);
 }
 
+/**
+ * Lets engine work run, with the fake clock still, until `ready` holds (at most 10 s real). For a test that looks between
+ * clock steps: a fixed 80 ms spin was too short on a busy Windows runner.
+ */
+export async function untilStill(ready: () => boolean, what: string): Promise<void> {
+  for (const end = Date.now() + 10_000; !ready(); await new Promise((r) => setTimeout(r, 2)))
+    if (Date.now() > end) throw new Error(`never: ${what}`);
+}
+
 export function jobHarness(
   o: { script: FakeLineIn[]; tools?: FakeToolOptions; settings?: (s: Settings) => Settings } & Omit<
     Partial<HarnessOptions>,

@@ -152,6 +152,8 @@ export interface Invokes {
   'helper:list': { req: Record<string, never>; res: HelperRow[] };
   'settings:get': { req: Record<string, never>; res: PublicSettings };
   'settings:set': { req: { path: string; value: unknown }; res: { settings: PublicSettings; changeId: string | null } };
+  // CR-0043 (08-1 §4.4.2 step 4)
+  'settings:undo': { req: { changeId: string }; res: { settings: PublicSettings } };
   'ai:verify': { req: { providerId: ProviderId }; res: VerifyResult };
   /** M3 (08-1 §3.2): detection ladder; rows also stream on `ai:detectRow`. The J2 screen that shows them is the AI step (CR-0020). */
   'ai:detect': { req: Record<string, never>; res: DetectRow[] };
@@ -384,6 +386,7 @@ export const INVOKE_CHANNELS = [
   'helper:list',
   'settings:get',
   'settings:set',
+  'settings:undo',
   'ai:verify',
   'ai:detect',
   'ai:choose',

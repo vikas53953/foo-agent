@@ -31,6 +31,8 @@ describe('06-3 §11.2 take over a running job', { timeout: 60_000 }, () => {
     expect(h.halted).toEqual(['job_1']);
     expect(bannerOps(h.sent)[0]).toBe('open:take_over');
     expect(liveStates(h.sent)).toEqual(['taken_over']);
+    // CR-0030 pick 3: the checklist gets its "You took over" row (06-3 §11.2).
+    expect(h.ops).toContainEqual(expect.objectContaining({ op: 'update', table: 'cards', id: 'k_checklist' }));
     // The user sees their own typing (§8.3.6) and foo captures nothing (§8.3.3).
     expect(await masked()).toBe('none');
     expect(await h.run('browser.click', { ref: 'e1' })).toMatchObject({ kind: 'error', result: { reason: 'sign_in_in_front' } });
@@ -70,6 +72,8 @@ describe('05-3 §5.10.2 CAPTCHA lane: Take over on the Sign-in card', { timeout:
     expect(await h.takeOver.on(h.job.id)).toBe(true);
     expect(h.halted).toEqual([]);
     expect(cardStates(h.ops, cardId)).toEqual(['live']);
+    // UX-14-09 / CR-0030 pick 3: a sign-in card's take-over adds the same checklist row.
+    expect(h.ops).toContainEqual(expect.objectContaining({ op: 'update', table: 'cards', id: 'k_checklist' }));
     // The person solves it (the sandbox's control stands in for them); foo still clicks nothing.
     h.toggles.captcha.solved = true;
     await (await h.page()).reload();

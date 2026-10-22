@@ -61,6 +61,16 @@ export class SettingsStore {
     }
   }
 
+  /** CR-0036: the settings as a start would load them, written nowhere (a start that may not own the lock reads only). */
+  static peek(file: string): Settings {
+    if (!existsSync(file)) return firstRunDefaults();
+    try {
+      return repair(JSON.parse(readFileSync(file, 'utf8'))).settings;
+    } catch {
+      return repair({}).settings;
+    }
+  }
+
   get(): Settings {
     return this.current;
   }
