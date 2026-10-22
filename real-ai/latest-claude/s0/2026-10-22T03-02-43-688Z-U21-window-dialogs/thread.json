@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:56 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking hotel booking sites\nBEST FIT\n2\nLooking on the web\n3\nLooking on the web\n4\nAll of them\nSomething else…\nSkip\n2:56 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:56 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry review sites instead\nTry another way\nTake over\nStop\n2:57 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:59 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking hotel booking sites\nBEST FIT\n2\nLooking on the web\n3\nLooking on the web\n4\nAll of them\nSomething else…\nSkip\n2:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n2:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:02 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking hotel booking sites\nBEST FIT\n2\nLooking on the web\n3\nLooking on the web\n4\nAll of them\nSomething else…\nSkip\n3:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the top 3 news headlines in India today\n3:02 AM"
+  }
+]

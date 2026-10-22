@@ -1,0 +1,8 @@
+{"t":1792637950730,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792637952061,"lvl":"info","mod":"engine","evt":"job.steers_restored"}
+{"t":1792637966980,"lvl":"info","mod":"engine","evt":"job.steer_check","kind":"new"}
+{"t":1792637966986,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792637966986,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792637973452,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1792638163235,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1792638163236,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

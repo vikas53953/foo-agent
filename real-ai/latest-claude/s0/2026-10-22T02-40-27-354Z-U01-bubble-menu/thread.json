@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n2:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n2:36 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:36 AM\n2:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:36 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking hotel booking sites\nlive checklist\nChecked hotel booking sites\nH\nLooking for Goa hotels, Fri 30 Oct to Sun 1 Nov\nCompare price, rating and location\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nWait for you to pick one\nWatch live\nStop\n13 min\n2:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:36 AM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "waiting",
+    "text": "This page wants to check you’re a person. You do this bit, then hand it back.\nwww.booking.com\nTake over\nSkip\n2:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n2:39 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecking isro.gov.in, pib.gov.in, thehindu.com\nI\nP\nT\nWrite it\nWatch live\nStop\n10 min\n2:40 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n2:40 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nChecking hotel booking sites\nBEST FIT\n2\nLooking on the web\nSomething else…\nSkip\n2:40 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:40 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n2:42 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:42 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n2:43 AM"
+  }
+]

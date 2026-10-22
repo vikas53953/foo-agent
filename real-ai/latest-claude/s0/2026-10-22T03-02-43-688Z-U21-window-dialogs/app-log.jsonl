@@ -1,0 +1,6 @@
+{"t":1792638164608,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792638165990,"lvl":"info","mod":"engine","evt":"job.steers_restored"}
+{"t":1792638181394,"lvl":"info","mod":"engine","evt":"job.steer_check","kind":"new"}
+{"t":1792638181400,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792638181401,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792638189082,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":3102}

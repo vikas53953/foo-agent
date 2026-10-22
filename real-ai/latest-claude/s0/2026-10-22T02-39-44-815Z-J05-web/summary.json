@@ -1,0 +1,57 @@
+{
+  "journey": "J05-web",
+  "title": "First real task with the internet (news + sources)",
+  "steps": 6,
+  "failed": 3,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-22T02-39-44-815Z-J05-web",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792636790433,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 113
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 10637,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nCheck isro.gov.in, pib.gov.in, thehindu.com\nWrite it\nWatch live\nStop\nunder 1 min\n2:40 AM",
+      "kit": [],
+      "ms": 16739
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 4
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "expectText",
+      "ok": false,
+      "error": "locator.innerText: Timeout 10000ms exceeded.",
+      "ms": 10055
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
