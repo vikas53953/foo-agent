@@ -1,0 +1,126 @@
+{"t":"2026-10-22T05:29:13.736Z","journey":"R-jobs","title":"Group R jobs, sources, retry and live job updates","spec":"07 §11.5 Group R; AT-106, AT-114, AT-120, AT-364, AT-420, AT-432","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T05:29:19.596Z","step":"launch","ok":true}
+{"t":"2026-10-22T05:29:19.746Z","i":0,"do":"send","note":"AT-106: clean ask","sentAt":1792646959710,"sent":true,"before":0,"ok":true,"ms":143}
+{"t":"2026-10-22T05:29:43.134Z","i":1,"do":"waitReply","note":"AT-106: clean","firstReplyMs":17299,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Which Friday do you mean?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nTomorrow\nSomething else…\nSkip\n5:29 AM","kit":[],"endState":false,"ms":23387}
+{"t":"2026-10-22T05:29:43.205Z","shot":"01-at-106-clean.png"}
+{"t":"2026-10-22T05:29:53.265Z","shot":"02-error-step2.png"}
+{"t":"2026-10-22T05:29:53.265Z","i":2,"do":"expectText","note":"AT-106: clean result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10060}
+{"t":"2026-10-22T05:29:53.373Z","i":3,"do":"send","note":"AT-106: messy typo ask","sentAt":1792646993357,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-22T05:30:06.587Z","i":4,"do":"waitReply","note":"AT-106: messy typo","firstReplyMs":7084,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare price, timings, duration and stops\nAbout 4 minutes\nGo\nChange plan\n5:29 AM","kit":[],"endState":false,"ms":13214}
+{"t":"2026-10-22T05:30:06.659Z","shot":"03-at-106-messy-typo.png"}
+{"t":"2026-10-22T05:30:16.722Z","shot":"04-error-step5.png"}
+{"t":"2026-10-22T05:30:16.723Z","i":5,"do":"expectText","note":"AT-106: messy typo result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10064}
+{"t":"2026-10-22T05:30:16.836Z","i":6,"do":"send","note":"AT-106: Hinglish ask","sentAt":1792647016807,"sent":true,"before":0,"ok":true,"ms":113}
+{"t":"2026-10-22T05:30:33.579Z","i":7,"do":"waitReply","note":"AT-106: Hinglish","firstReplyMs":10670,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Aapka matlab kaun si Friday hai?\n1\nFri 30 Oct\nBEST FIT\nAgle hafte ki Friday\n2\nFri 23 Oct\nKal, yaani isi hafte\nSomething else…\nSkip\n5:30 AM","kit":[],"endState":false,"ms":16742}
+{"t":"2026-10-22T05:30:33.643Z","shot":"05-at-106-Hinglish.png"}
+{"t":"2026-10-22T05:30:43.704Z","shot":"06-error-step8.png"}
+{"t":"2026-10-22T05:30:43.704Z","i":8,"do":"expectText","note":"AT-106: Hinglish result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10061}
+{"t":"2026-10-22T05:30:43.822Z","i":9,"do":"send","note":"AT-114: clean ask","sentAt":1792647043794,"sent":true,"before":0,"ok":true,"ms":118}
+{"t":"2026-10-22T05:30:56.538Z","i":10,"do":"waitReply","note":"AT-114: clean","firstReplyMs":6625,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Checking a weather site\nlive checklist\nChecking a weather site\nA\nLook for Delhi weather today\nWatch live\nStop\nunder 1 min\n5:30 AM","kit":[],"endState":false,"ms":12716}
+{"t":"2026-10-22T05:30:56.615Z","shot":"07-at-114-clean.png"}
+{"t":"2026-10-22T05:31:06.708Z","shot":"08-error-step11.png"}
+{"t":"2026-10-22T05:31:06.709Z","i":11,"do":"expectText","note":"AT-114: clean result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10094}
+{"t":"2026-10-22T05:31:06.803Z","i":12,"do":"send","note":"AT-114: messy typo ask","sentAt":1792647066787,"sent":true,"before":0,"ok":true,"ms":94}
+{"t":"2026-10-22T05:31:19.004Z","i":13,"do":"waitReply","note":"AT-114: messy typo","firstReplyMs":6140,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n5:31 AM","kit":[],"endState":false,"ms":12201}
+{"t":"2026-10-22T05:31:19.166Z","shot":"09-at-114-messy-typo.png"}
+{"t":"2026-10-22T05:31:29.263Z","shot":"10-error-step14.png"}
+{"t":"2026-10-22T05:31:29.263Z","i":14,"do":"expectText","note":"AT-114: messy typo result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10097}
+{"t":"2026-10-22T05:31:29.436Z","i":15,"do":"send","note":"AT-114: Hinglish ask","sentAt":1792647089418,"sent":true,"before":0,"ok":true,"ms":173}
+{"t":"2026-10-22T05:31:43.191Z","i":16,"do":"waitReply","note":"AT-114: Hinglish","firstReplyMs":7619,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n5:31 AM","kit":[],"endState":false,"ms":13755}
+{"t":"2026-10-22T05:31:43.252Z","shot":"11-at-114-Hinglish.png"}
+{"t":"2026-10-22T05:31:53.329Z","shot":"12-error-step17.png"}
+{"t":"2026-10-22T05:31:53.330Z","i":17,"do":"expectText","note":"AT-114: Hinglish result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10078}
+{"t":"2026-10-22T05:31:53.434Z","i":18,"do":"send","note":"AT-120: clean flight ask before Stop","sentAt":1792647113410,"sent":true,"before":0,"ok":true,"ms":104}
+{"t":"2026-10-22T05:32:11.198Z","i":19,"do":"waitReply","note":"AT-120: clean plan","firstReplyMs":11680,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which Friday do you mean for Delhi to Mumbai flights?\n1\nFri 23 Oct\nBEST FIT\nTomorrow\n2\nFri 30 Oct\nThe Friday after tomorrow's\nSomething else…\nSkip\n5:32 AM","kit":[],"endState":true,"ms":17763}
+{"t":"2026-10-22T05:32:11.268Z","shot":"13-at-120-clean-plan.png"}
+{"t":"2026-10-22T05:32:11.355Z","i":20,"do":"send","note":"AT-120: clean Stop request","sentAt":1792647131338,"sent":true,"before":0,"ok":true,"ms":86}
+{"t":"2026-10-22T05:32:19.990Z","i":21,"do":"waitReply","note":"AT-120: clean stopped","firstReplyMs":2546,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, timings, airline and stops\nAbout 3 minutes\nGo\nChange plan\n5:32 AM\n---\nStop which one?\n1\nChecking flight booking sites\nBEST FIT\n2\nChecking a weather site\n3\nChecking flight booking sites\n4\nAll of them\nSomething else…\nSkip\n5:32 AM","kit":[],"endState":true,"ms":8635}
+{"t":"2026-10-22T05:32:20.048Z","shot":"14-at-120-clean-stopped.png"}
+{"t":"2026-10-22T05:32:43.110Z","shot":"15-error-step22.png"}
+{"t":"2026-10-22T05:32:43.110Z","i":22,"do":"click","note":"AT-120: clean Try again action","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-22T05:32:43.113Z","i":23,"do":"expectText","note":"AT-120: clean plan restarted","text":"My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, timings, airline and stops\nAbout 3 minutes\nGo\nChange plan\n5:32 AM","ok":false,"ms":2}
+{"t":"2026-10-22T05:32:43.203Z","i":24,"do":"send","note":"AT-120: messy typo flight ask before Stop","sentAt":1792647163200,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-22T05:33:01.976Z","i":25,"do":"waitReply","note":"AT-120: messy typo plan","firstReplyMs":12662,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nNext week's Friday\n2\nFri 23 Oct\nTomorrow\nSomething else…\nSkip\n5:32 AM","kit":[],"endState":false,"ms":18773}
+{"t":"2026-10-22T05:33:02.033Z","shot":"16-at-120-messy-typo-plan.png"}
+{"t":"2026-10-22T05:33:02.107Z","i":26,"do":"send","note":"AT-120: messy typo Stop request","sentAt":1792647182097,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-22T05:33:08.773Z","i":27,"do":"waitReply","note":"AT-120: messy typo stopped","firstReplyMs":532,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for Delhi to Mumbai flights on…\n1\nLook for Delhi to Mumbai flights on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare price, timings, airline and stops\nAbout 3 minutes\nGo\nChange plan\n5:33 AM\n---\nStop which one?\n1\nChecking flight booking sites\nBEST FIT\n2\nChecking a weather site\n3\nChecking flight booking sites\n4\nAll of them\nSomething else…\nSkip\n5:33 AM","kit":[],"endState":true,"ms":6665}
+{"t":"2026-10-22T05:33:08.828Z","shot":"17-at-120-messy-typo-stopped.png"}
+{"t":"2026-10-22T05:33:31.890Z","shot":"18-error-step28.png"}
+{"t":"2026-10-22T05:33:31.891Z","i":28,"do":"click","note":"AT-120: messy typo Try again action","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23063}
+{"t":"2026-10-22T05:33:31.893Z","i":29,"do":"expectText","note":"AT-120: messy typo plan restarted","text":"My plan · Looking for Delhi to Mumbai flights on…\n1\nLook for Delhi to Mumbai flights on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare price, timings, airline and stops\nAbout 3 minutes\nGo\nChange plan\n5:33 AM","ok":false,"ms":2}
+{"t":"2026-10-22T05:33:31.970Z","i":30,"do":"send","note":"AT-120: Hinglish flight ask before Stop","sentAt":1792647211964,"sent":true,"before":0,"ok":true,"ms":77}
+{"t":"2026-10-22T05:33:57.538Z","i":31,"do":"waitReply","note":"AT-120: Hinglish plan","firstReplyMs":19389,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, timings, duration and stops\nAbout 4 minutes\nGo\nChange plan\n5:33 AM","kit":[],"endState":false,"ms":25567}
+{"t":"2026-10-22T05:33:57.602Z","shot":"19-at-120-Hinglish-plan.png"}
+{"t":"2026-10-22T05:33:57.701Z","i":32,"do":"send","note":"AT-120: Hinglish Stop request","sentAt":1792647237666,"sent":true,"before":0,"ok":true,"ms":99}
+{"t":"2026-10-22T05:34:03.782Z","i":33,"do":"waitReply","note":"AT-120: Hinglish stopped","firstReplyMs":504,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Stop which one?\n1\nChecking flight booking sites\nBEST FIT\n2\nChecking a weather site\n3\nChecking flight booking sites\n4\nAll of them\nSomething else…\nSkip\n5:33 AM","kit":[],"endState":true,"ms":6081}
+{"t":"2026-10-22T05:34:03.843Z","shot":"20-at-120-Hinglish-stopped.png"}
+{"t":"2026-10-22T05:34:26.980Z","shot":"21-error-step34.png"}
+{"t":"2026-10-22T05:34:26.980Z","i":34,"do":"click","note":"AT-120: Hinglish Try again action","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23137}
+{"t":"2026-10-22T05:34:26.983Z","i":35,"do":"expectText","note":"AT-120: Hinglish plan restarted","text":"My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, timings, duration and stops\nAbout 4 minutes\nGo\nChange plan\n5:33 AM","ok":false,"ms":3}
+{"t":"2026-10-22T05:34:27.072Z","i":36,"do":"send","note":"AT-364: clean flight ask","sentAt":1792647267062,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-22T05:35:03.228Z","i":37,"do":"waitReply","note":"AT-364: clean flight job","firstReplyMs":30091,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking flight booking sites, Delhi…\n1\nCheck flight booking sites, Delhi to Mumbai\n2\nKeep 3 flights that fit lowest fare\n3\nCompare fare, departure time, duration and stops\nAbout 3 minutes\nGo\nChange plan\n5:34 AM","kit":[],"endState":false,"ms":36156}
+{"t":"2026-10-22T05:35:03.301Z","shot":"22-at-364-clean-flight-job.png"}
+{"t":"2026-10-22T05:35:03.383Z","i":38,"do":"send","note":"AT-364: clean unrelated arithmetic ask","sentAt":1792647303366,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-22T05:35:16.621Z","i":39,"do":"waitReply","note":"AT-364: clean arithmetic while working","firstReplyMs":7125,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"12 times 12 is 144.\n\n5:35 AM","kit":[],"endState":false,"ms":13238}
+{"t":"2026-10-22T05:35:16.691Z","shot":"23-at-364-clean-arithmetic-while-working.png"}
+{"t":"2026-10-22T05:35:16.693Z","i":40,"do":"expectText","note":"AT-364: clean arithmetic answer while job continues","text":"12 times 12 is 144.\n\n5:35 AM","ok":true,"ms":2}
+{"t":"2026-10-22T05:35:16.782Z","i":41,"do":"send","note":"AT-364: messy typo flight ask","sentAt":1792647316769,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-22T05:35:35.649Z","i":42,"do":"waitReply","note":"AT-364: messy typo flight job","firstReplyMs":6613,"newBubbles":2,"ok":false,"duplicates":0,"lastReply":"Which Friday do you mean for Delhi to Mumbai?\n1\nFri 23 Oct\nBEST FIT\nTomorrow\n2\nFri 30 Oct\nNext week\nSomething else…\nSkip\n5:35 AM\n---\nMy plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 cheapest flights by fare, timings\nAbout 3 minutes\nGo\nChange plan\n5:35 AM","kit":[],"endState":false,"ms":18866}
+{"t":"2026-10-22T05:35:35.708Z","shot":"24-at-364-messy-typo-flight-job.png"}
+{"t":"2026-10-22T05:35:35.783Z","i":43,"do":"send","note":"AT-364: messy typo unrelated arithmetic ask","sentAt":1792647335772,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-22T05:35:50.574Z","i":44,"do":"waitReply","note":"AT-364: messy typo arithmetic while working","firstReplyMs":8129,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"12 times 12 is 144.\n\n5:35 AM","kit":[],"endState":false,"ms":14790}
+{"t":"2026-10-22T05:35:50.661Z","shot":"25-at-364-messy-typo-arithmetic-while-working.png"}
+{"t":"2026-10-22T05:35:50.664Z","i":45,"do":"expectText","note":"AT-364: messy typo arithmetic answer while job continues","text":"12 times 12 is 144.\n\n5:35 AM","ok":true,"ms":2}
+{"t":"2026-10-22T05:35:50.748Z","i":46,"do":"send","note":"AT-364: Hinglish flight ask","sentAt":1792647350735,"sent":true,"before":0,"ok":true,"ms":84}
+{"t":"2026-10-22T05:36:11.570Z","i":47,"do":"waitReply","note":"AT-364: Hinglish flight job","firstReplyMs":14718,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking flight booking sites, Delhi…\n1\nCheck flight booking sites, Delhi to Mumbai\n2\nKeep 3 flights Delhi to Mumbai on Fri 30 Oct that fit lowest fare\n3\nCompare price, timings, duration and stops\nAbout 3 minutes\nGo\nChange plan\n5:36 AM","kit":[],"endState":false,"ms":20822}
+{"t":"2026-10-22T05:36:11.632Z","shot":"26-at-364-Hinglish-flight-job.png"}
+{"t":"2026-10-22T05:36:11.712Z","i":48,"do":"send","note":"AT-364: Hinglish unrelated arithmetic ask","sentAt":1792647371696,"sent":true,"before":0,"ok":true,"ms":80}
+{"t":"2026-10-22T05:36:25.885Z","i":49,"do":"waitReply","note":"AT-364: Hinglish arithmetic while working","firstReplyMs":7576,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"12 guna 12 hota hai 144.\n\n5:36 AM","kit":[],"endState":false,"ms":14173}
+{"t":"2026-10-22T05:36:25.958Z","shot":"27-at-364-Hinglish-arithmetic-while-working.png"}
+{"t":"2026-10-22T05:36:25.961Z","i":50,"do":"expectText","note":"AT-364: Hinglish arithmetic answer while job continues","text":"12 guna 12 hota hai 144.\n\n5:36 AM","ok":true,"ms":3}
+{"t":"2026-10-22T05:36:26.041Z","i":51,"do":"send","note":"AT-364: Hindi flight ask","sentAt":1792647386030,"sent":true,"before":0,"ok":true,"ms":80}
+{"t":"2026-10-22T05:36:45.403Z","i":52,"do":"waitReply","note":"AT-364: Hindi flight job","firstReplyMs":13294,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking Google Flights, MakeMyTrip,…\n1\nCheck Google Flights, MakeMyTrip, Ixigo\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare price, timing, airline and stops\nAbout 3 minutes\nGo\nChange plan\n5:36 AM","kit":[],"endState":false,"ms":19362}
+{"t":"2026-10-22T05:36:45.475Z","shot":"28-at-364-Hindi-flight-job.png"}
+{"t":"2026-10-22T05:36:45.552Z","i":53,"do":"send","note":"AT-364: Hindi unrelated arithmetic ask","sentAt":1792647405540,"sent":true,"before":0,"ok":true,"ms":77}
+{"t":"2026-10-22T05:37:01.291Z","i":54,"do":"waitReply","note":"AT-364: Hindi arithmetic while working","firstReplyMs":9660,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 cheapest flights by fare, times\nAbout 3 minutes\nGo\nChange plan\n5:36 AM","kit":[],"endState":false,"ms":15738}
+{"t":"2026-10-22T05:37:01.350Z","shot":"29-at-364-Hindi-arithmetic-while-working.png"}
+{"t":"2026-10-22T05:37:01.352Z","i":55,"do":"expectText","note":"AT-364: Hindi arithmetic answer while job continues","text":"12 guna 12 hota hai 144.\n\n5:36 AM","ok":true,"ms":2}
+{"t":"2026-10-22T05:37:01.435Z","i":56,"do":"send","note":"AT-364: Punjabi flight ask","sentAt":1792647421421,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-22T05:37:20.762Z","i":57,"do":"waitReply","note":"AT-364: Punjabi flight job","firstReplyMs":13235,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"ਕਿਹੜੇ ਸ਼ੁੱਕਰਵਾਰ ਦੀਆਂ ਉਡਾਣਾਂ ਦੇਖਾਂ?\n1\nFri 30 Oct\nBEST FIT\nਅਗਲੇ ਹਫ਼ਤੇ ਦਾ ਸ਼ੁੱਕਰਵਾਰ\n2\nFri 23 Oct\nਕੱਲ੍ਹ\nSomething else…\nSkip\n5:37 AM","kit":[],"endState":false,"ms":19327}
+{"t":"2026-10-22T05:37:20.835Z","shot":"30-at-364-Punjabi-flight-job.png"}
+{"t":"2026-10-22T05:37:20.908Z","i":58,"do":"send","note":"AT-364: Punjabi unrelated arithmetic ask","sentAt":1792647440904,"sent":true,"before":0,"ok":true,"ms":73}
+{"t":"2026-10-22T05:37:28.011Z","i":59,"do":"waitReply","note":"AT-364: Punjabi arithmetic while working","firstReplyMs":1009,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking for Delhi to Mumbai flights on…\n1\nLook for Delhi to Mumbai flights on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare the 3 cheapest flights by fare, timings\nAbout 3 minutes\nGo\nChange plan\n5:37 AM","kit":[],"endState":false,"ms":7103}
+{"t":"2026-10-22T05:37:28.088Z","shot":"31-at-364-Punjabi-arithmetic-while-working.png"}
+{"t":"2026-10-22T05:37:28.091Z","i":60,"do":"expectText","note":"AT-364: Punjabi arithmetic answer while job continues","text":"12 guna 12 hota hai 144.\n\n5:36 AM","ok":true,"ms":2}
+{"t":"2026-10-22T05:37:28.183Z","i":61,"do":"send","note":"AT-420, AT-432: clean flight ask","sentAt":1792647448172,"sent":true,"before":0,"ok":true,"ms":92}
+{"t":"2026-10-22T05:37:54.589Z","i":62,"do":"waitReply","note":"AT-420: clean initial job","firstReplyMs":20323,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for flights from Delhi to Mumbai next Friday\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 cheapest flights\nAbout 3 minutes\nGo\nChange plan\n5:37 AM","kit":[],"endState":false,"ms":26405}
+{"t":"2026-10-22T05:37:54.662Z","shot":"32-at-420-clean-initial-job.png"}
+{"t":"2026-10-22T05:37:54.743Z","i":63,"do":"send","note":"AT-420: clean first follow-up","sentAt":1792647474726,"sent":true,"before":0,"ok":true,"ms":81}
+{"t":"2026-10-22T05:38:17.068Z","i":64,"do":"waitReply","note":"AT-420: fresh reply acknowledges Vistara before the next back-to-back follow-up","firstReplyMs":16215,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n5:38 AM","kit":[],"endState":false,"ms":22325}
+{"t":"2026-10-22T05:38:17.128Z","shot":"33-at-420-clean-vistara-follow-up.png"}
+{"t":"2026-10-22T05:38:17.200Z","i":65,"do":"send","note":"AT-420, AT-432: clean second follow-up","sentAt":1792647497192,"sent":true,"before":0,"ok":true,"ms":72}
+{"t":"2026-10-22T05:38:23.788Z","i":66,"do":"waitReply","note":"AT-420, AT-432: fresh reply folds both back-to-back follow-ups into the job and the latest user bubble is ticked","firstReplyMs":507,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 flights by fare, timings and\nAbout 3 minutes\nGo\nChange plan\n5:38 AM","kit":[],"endState":false,"ms":6587}
+{"t":"2026-10-22T05:38:23.848Z","shot":"34-at-432-clean-morning-follow-up.png"}
+{"t":"2026-10-22T05:38:23.929Z","i":67,"do":"send","note":"AT-420, AT-432: messy typo flight ask","sentAt":1792647503914,"sent":true,"before":0,"ok":true,"ms":81}
+{"t":"2026-10-22T05:38:31.070Z","i":68,"do":"waitReply","note":"AT-420: messy typo initial job","firstReplyMs":1017,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n5:38 AM","kit":[],"endState":false,"ms":7141}
+{"t":"2026-10-22T05:38:31.131Z","shot":"35-at-420-messy-typo-initial-job.png"}
+{"t":"2026-10-22T05:38:31.211Z","i":69,"do":"send","note":"AT-420: messy typo first follow-up","sentAt":1792647511195,"sent":true,"before":0,"ok":true,"ms":80}
+{"t":"2026-10-22T05:38:51.603Z","i":70,"do":"waitReply","note":"AT-420: fresh reply acknowledges Vistara before the next back-to-back follow-up","firstReplyMs":7666,"newBubbles":3,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n5:38 AM\n---\nMy plan · Checking Airline and travel sites,…\n1\nCheck Airline and travel sites, including\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit cheapest morning fares\n4\nCompare price, departure time, duration and\nAbout 4 minutes\nGo\nChange plan\n5:38 AM\n---\nI’m stuck on the Checking a weather site job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n4 minutes\nWhat I’d do\ntry a weather site instead\nTry another way\nTake over\nStop\n5:38 AM","kit":[],"endState":false,"ms":20392}
+{"t":"2026-10-22T05:38:51.666Z","shot":"36-at-420-messy-typo-vistara-follow-up.png"}
+{"t":"2026-10-22T05:38:51.747Z","i":71,"do":"send","note":"AT-420, AT-432: messy typo second follow-up","sentAt":1792647531728,"sent":true,"before":0,"ok":true,"ms":81}
+{"t":"2026-10-22T05:39:16.559Z","i":72,"do":"waitReply","note":"AT-420, AT-432: fresh reply folds both back-to-back follow-ups into the job and the latest user bubble is ticked","firstReplyMs":18716,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking flight sites incl. Vistara\n1\nCheck flight sites incl. Vistara\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit cheapest, morning departures, Vistara\n4\nCompare price, departure time, duration and\nAbout 3 minutes\nGo\nChange plan\n5:39 AM","kit":[],"endState":false,"ms":24812}
+{"t":"2026-10-22T05:39:16.634Z","shot":"37-at-432-messy-typo-morning-follow-up.png"}
+{"t":"2026-10-22T05:39:16.718Z","i":73,"do":"send","note":"AT-420, AT-432: Hinglish flight ask","sentAt":1792647556703,"sent":true,"before":0,"ok":true,"ms":84}
+{"t":"2026-10-22T05:39:30.402Z","i":74,"do":"waitReply","note":"AT-420: Hinglish initial job","firstReplyMs":7591,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking Google Flights, MakeMyTrip,…\n1\nCheck Google Flights, MakeMyTrip, Vistara\n2\nLook for Delhi to Mumbai morning flights, next\n3\nKeep 3 flights that fit cheapest morning departures\n4\nCompare the 3 flights by price, time and airline\nAbout 3 minutes\nGo\nChange plan\n5:39 AM","kit":[],"endState":false,"ms":13684}
+{"t":"2026-10-22T05:39:30.476Z","shot":"38-at-420-Hinglish-initial-job.png"}
+{"t":"2026-10-22T05:39:30.549Z","i":75,"do":"send","note":"AT-420: Hinglish first follow-up","sentAt":1792647570538,"sent":true,"before":0,"ok":true,"ms":73}
+{"t":"2026-10-22T05:39:44.192Z","i":76,"do":"waitReply","note":"AT-420: fresh reply acknowledges Vistara before the next back-to-back follow-up","firstReplyMs":7587,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking Vistara and other airline sites\n1\nCheck Vistara and other airline sites\n2\nLook for morning flights Delhi to Mumbai on Fri\n3\nKeep 3 flights that fit cheapest, morning only, Vistara included\n4\nCompare the 3 flights\nAbout 3 minutes\nGo\nChange plan\n5:39 AM","kit":[],"endState":false,"ms":13643}
+{"t":"2026-10-22T05:39:44.259Z","shot":"39-at-420-Hinglish-vistara-follow-up.png"}
+{"t":"2026-10-22T05:39:44.340Z","i":77,"do":"send","note":"AT-420, AT-432: Hinglish second follow-up","sentAt":1792647584322,"sent":true,"before":0,"ok":true,"ms":80}
+{"t":"2026-10-22T05:39:57.500Z","i":78,"do":"waitReply","note":"AT-420, AT-432: fresh reply folds both back-to-back follow-ups into the job and the latest user bubble is ticked","firstReplyMs":7075,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Checking airline and flight sites,…\n1\nCheck airline and flight sites, including\n2\nLook for morning flights from Delhi to Mumbai\n3\nKeep 3 flights that fit cheapest, morning only\n4\nCompare the 3 flights by price, time and airline\nAbout 3 minutes\nGo\nChange plan\n5:39 AM","kit":[],"endState":false,"ms":13160}
+{"t":"2026-10-22T05:39:57.581Z","shot":"40-at-432-Hinglish-morning-follow-up.png"}
+{"t":"2026-10-22T05:39:57.609Z","step":"recheck","i":23,"do":"expectText","late":true}
+{"t":"2026-10-22T05:39:57.613Z","step":"recheck","i":29,"do":"expectText","late":true}
+{"t":"2026-10-22T05:39:57.616Z","step":"recheck","i":35,"do":"expectText","late":true}
+{"t":"2026-10-22T05:39:57.883Z","step":"appLog","lines":198,"dropped":0}
+{"t":"2026-10-22T05:39:57.896Z","step":"aiTurns","turns":82}
