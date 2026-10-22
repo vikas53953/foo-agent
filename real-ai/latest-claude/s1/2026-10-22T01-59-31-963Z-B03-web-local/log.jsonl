@@ -1,0 +1,15 @@
+{"t":"2026-10-22T01:59:31.964Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T01:59:37.514Z","step":"launch","ok":true}
+{"t":"2026-10-22T01:59:37.645Z","i":0,"do":"send","sentAt":1792634377603,"sent":true,"before":0,"ok":true,"ms":127}
+{"t":"2026-10-22T01:59:52.838Z","i":1,"do":"waitReply","firstReplyMs":9098,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking isro.gov.in, pib.gov.in, The…\nlive checklist\nChecking isro.gov.in, pib.gov.in, The Hindu\nI\nP\nT\nLook for ISRO news from Mon 19 Oct to Thu 22 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n1:59 AM","ms":15193}
+{"t":"2026-10-22T01:59:52.908Z","shot":"01-news.png"}
+{"t":"2026-10-22T01:59:52.911Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-22T02:02:22.910Z","i":3,"do":"wait","ok":true,"ms":149999}
+{"t":"2026-10-22T02:02:22.999Z","shot":"02-news-later.png"}
+{"t":"2026-10-22T02:02:23.001Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T02:02:23.003Z","i":5,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-22T02:02:23.006Z","i":6,"do":"expectText","text":"Your favourite food is South Indian, and I already have that noted.\n\n1:59 AM","ok":true,"ms":3}
+{"t":"2026-10-22T02:02:23.008Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-22T02:02:23.016Z","i":8,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-22T02:02:23.226Z","step":"appLog","lines":56,"dropped":0}
+{"t":"2026-10-22T02:02:23.239Z","step":"aiTurns","turns":27}

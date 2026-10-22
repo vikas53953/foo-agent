@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n1:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n1:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n1:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n1:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n1:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already have that noted.\n\n1:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n1:59 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking isro.gov.in, pib.gov.in, The…\nlive checklist\nChecking isro.gov.in, pib.gov.in, The Hindu\nI\nP\nT\nLook for ISRO news from Mon 19 Oct to Thu 22 Oct\nWrite it\nWatch live\nStop\n2 min\n1:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:59 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Checking isro.gov.in, pib.gov.in, The… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n2:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:02 AM"
+  }
+]

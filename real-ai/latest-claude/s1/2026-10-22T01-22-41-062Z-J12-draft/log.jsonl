@@ -1,9 +1,0 @@
-{"t":"2026-10-22T01:22:41.063Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-22T01:22:47.245Z","step":"launch","ok":true}
-{"t":"2026-10-22T01:22:47.438Z","i":0,"do":"send","sentAt":1792632167404,"sent":true,"before":0,"ok":true,"ms":185}
-{"t":"2026-10-22T01:23:10.623Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":17151,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your draft for someone@example.com. Nothing has been sent.\n\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting on Fri 23 Oct. Please start without me if needed. Thanks!\n\nWant me to change the tone or add the meeting time?\n\n1:23 AM","ms":23185}
-{"t":"2026-10-22T01:23:10.711Z","shot":"01-draft.png"}
-{"t":"2026-10-22T01:23:10.714Z","i":2,"do":"check","found":0,"ok":false,"ms":3}
-{"t":"2026-10-22T01:23:10.721Z","i":3,"do":"dump","ok":true,"ms":7}
-{"t":"2026-10-22T01:23:11.139Z","step":"appLog","lines":11,"dropped":0}
-{"t":"2026-10-22T01:23:11.152Z","step":"aiTurns","turns":2}
