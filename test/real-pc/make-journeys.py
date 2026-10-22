@@ -636,8 +636,8 @@ journey(
     ['C.9 Rich replies'],
     [
         send('Make me a simple page that tracks my daily water intake with a goal of 8 glasses'),
-        dict(reply('ai-page', 'an AI page / kit card opens with the tracker', None, 240000), expectTid='card-ai-page'),
-        check('card-ai-page', note='AI page card'),
+        dict(reply('ai-page', 'an AI page / kit card opens with the tracker', None, 240000), expectTid='ai-page'),
+        check('ai-page', note='AI page in the reply'),
         check('bubble-action-chip', note='action chips under the reply'),
         click('composer-suggestion-chip', last=True),
         wait(800, 'chip-fills', 'reply chip fills the composer'),

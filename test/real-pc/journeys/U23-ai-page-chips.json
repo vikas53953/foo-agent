@@ -18,13 +18,13 @@
       "timeoutMs": 240000,
       "shot": "ai-page",
       "expect": "an AI page / kit card opens with the tracker",
-      "expectTid": "card-ai-page"
+      "expectTid": "ai-page"
     },
     {
       "do": "check",
       "soft": true,
-      "tid": "card-ai-page",
-      "note": "AI page card"
+      "tid": "ai-page",
+      "note": "AI page in the reply"
     },
     {
       "do": "check",
