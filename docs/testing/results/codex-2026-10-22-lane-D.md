@@ -5,6 +5,23 @@ Fidelity-CR: none.
 
 Scope was focused source/listing discovery plus read-only review of the current-main real-AI screenshots, followed by bounded Lane D witness additions for Group C. No dependency, golden, spec, source, or workflow file was changed. The new browser witness remains unrun locally and requires the Windows CI gate before acceptance.
 
+## Post-change publication gates
+
+Commit under test: `edac9d3fecfa546474b9d6c3f334b78aed9276e2` (`test: cover Lane D Group C witnesses`), Fidelity-CR: none.
+
+| Gate                           | Result                          | Evidence                                                                                                                                           |
+| ------------------------------ | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `spec:verify`                  | PASS                            | `spec verified`                                                                                                                                    |
+| `check:copy`                   | PASS                            | `copy ok`                                                                                                                                          |
+| `lint`                         | exit 0 with 2 existing warnings | `Composer.tsx` missing `chatId` dependency; `MessageList.tsx` incompatible-library warning.                                                        |
+| `format:check`                 | unknown                         | No diagnostics and no exit code surfaced by the wrapper; no formatter process remained.                                                            |
+| `typecheck`                    | PASS                            | exit 0                                                                                                                                             |
+| `build`                        | PASS                            | exit 0; Vite emitted existing config, script-type and chunk-size warnings.                                                                         |
+| `trace:check`                  | **FAIL**                        | Three new AT titles are orphaned because shared `trace.csv` has no entries for AT-273, AT-284 or AT-285. Shared trace ownership remains with root. |
+| `fid:guard --base origin/main` | not run                         | Sequence stopped at `trace:check`.                                                                                                                 |
+
+Focused unit command: `corepack.cmd pnpm exec vitest run test/unit/lane-d-grouping.test.ts --maxWorkers=1` is intentionally red on AT-284's cross-calendar-day assertion; `test/unit/lane-d-scroll.test.ts` passes. Required Windows Playwright command remains `corepack.cmd pnpm exec playwright test test/e2e/lane-d-a11y.spec.ts test/e2e/lane-d-motion.spec.ts`.
+
 ## Current Lane D witnesses
 
 | Feature or check                                   | Test type                        | Result                                    | Build               | Evidence and note                                                                                                                                                                                                                                                                                                                                                                                                                                 |
