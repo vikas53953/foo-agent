@@ -1,0 +1,14 @@
+{"t":"2026-10-22T01:19:20.705Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-22T01:19:26.251Z","step":"launch","ok":true}
+{"t":"2026-10-22T01:19:26.393Z","i":0,"do":"send","sentAt":1792631966355,"sent":true,"before":0,"ok":true,"ms":139}
+{"t":"2026-10-22T01:19:40.061Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":6564,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! It's late, so I'll keep it light. Ask me anything, or tell me what you'd like sorted.\n\n1:19 AM","ms":13668}
+{"t":"2026-10-22T01:19:40.136Z","shot":"01-hi.png"}
+{"t":"2026-10-22T01:19:40.250Z","i":2,"do":"send","sentAt":1792631980218,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-22T01:19:50.400Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3541,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can read your email, calendar and sites, set up routines, and handle bookings and drafts with your OK. The app shows what works on this PC.\n\n1:19 AM","ms":10149}
+{"t":"2026-10-22T01:19:50.461Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-22T01:19:50.584Z","i":4,"do":"send","sentAt":1792631990548,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-22T01:20:02.201Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3035,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and another computer on the internet, and all your traffic goes through it.\n\nNormally, websites see your real address, and whoever runs your Wi-Fi can see which sites you visit. With a VPN, your device scrambles everything before it leaves. It travels to the VPN company's computer, which unscrambles it and passes it on. Websites see the VPN's address instead of yours, and the Wi-Fi owner sees only scrambled data.\n\nIt helps on public Wi-Fi and hides your location from sites. It doesn't make you anonymous, though, because the VPN company can still see your traffic, so pick one you trust.\n\n1:19 AM","ms":11617}
+{"t":"2026-10-22T01:20:02.263Z","shot":"03-vpn.png"}
+{"t":"2026-10-22T01:20:02.271Z","i":6,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-22T01:20:02.397Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-22T01:20:02.410Z","step":"aiTurns","turns":3}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n1:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email, calendar and sites, set up routines, and handle bookings and drafts with your OK. The app shows what works on this PC.\n\n1:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n1:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and all your traffic goes through it.\n\nNormally, websites see your real address, and whoever runs your Wi-Fi can see which sites you visit. With a VPN, your device scrambles everything before it leaves. It travels to the VPN company's computer, which unscrambles it and passes it on. Websites see the VPN's address instead of yours, and the Wi-Fi owner sees only scrambled data.\n\nIt helps on public Wi-Fi and hides your location from sites. It doesn't make you anonymous, though, because the VPN company can still see your traffic, so pick one you trust.\n\n1:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n1:20 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you run mostly? → Treadmill or gym\n1:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n1:20 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For treadmill and gym runs under ₹5,000, what matters most?\n1\nSoft cushioning\nBEST FIT\nEasy on knees and feet\n2\nLight and fast\nFeels quick, good for short runs\n3\nDurable for daily use\nLasts through heavy gym use\n4\nWide fit or support\nExtra room or arch support\nSomething else…\nSkip\n1:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:20 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n1:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n1:20 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n1:21 AM"
+  }
+]
