@@ -509,8 +509,16 @@ async function main() {
           // reopen without waiting, and pass only if a window shows. fooProcs counts foo.exe processes left (it includes
           // this driver, which runs under foo.exe too).
           // After a failed reopen the last app is already gone; then this case starts from a fresh launch.
+          // foo's own main pid, asked from inside the app: Playwright's pid can be a launcher whose child is the real
+          // main (seen in dev runs on CI), and killing it leaves foo running.
+          // Bounded: a hung (not dead) main must not hang the journey.
+          const mainPid = () =>
+            Promise.race([
+              app.evaluate(() => process.pid),
+              new Promise((_, no) => setTimeout(() => no(new Error('no answer')), 10_000)),
+            ]).catch(() => app.process().pid);
           try {
-            process.kill(app.process().pid, 'SIGKILL');
+            process.kill(await mainPid(), 'SIGKILL');
           } catch {
             await new Promise((r) => setTimeout(r, 10_000)); // let the last crash's helpers exit first
             rec.fooProcsBefore = fooProcs();
@@ -519,7 +527,7 @@ async function main() {
               (e) => String(e && e.message ? e.message : e).split('\n')[0],
             );
             if (err) throw new Error(`fresh launch 10 s after the last crash failed (${rec.fooProcsBefore} foo.exe left): ${err}`);
-            process.kill(app.process().pid, 'SIGKILL');
+            process.kill(await mainPid(), 'SIGKILL');
           }
           if (s.gapMs) await new Promise((r) => setTimeout(r, s.gapMs));
           rec.fooProcs = fooProcs();
