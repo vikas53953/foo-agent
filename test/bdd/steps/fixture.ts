@@ -145,6 +145,13 @@ async function launchReal(): Promise<{ app: ElectronApplication; page: Page }> {
       },
     }),
   );
+  // Electron derives its Windows userData directory from APPDATA. Keep that tree under the
+  // explicitly supplied provider profile so real-mode launch never depends on a runner-global path.
+  const windowsAppData = join(profile, 'AppData');
+  const appData = join(windowsAppData, 'Roaming');
+  const localAppData = join(windowsAppData, 'Local');
+  mkdirSync(appData, { recursive: true });
+  mkdirSync(localAppData, { recursive: true });
   const app = await launchFromRepo(dirs, {
     // launch() is the repository's Electron launcher; 0 keeps its isolated folders while enabling the real engine.
     FOO_TEST: '0',
@@ -153,7 +160,9 @@ async function launchReal(): Promise<{ app: ElectronApplication; page: Page }> {
     FOO_BDD_REAL_AI_HOME: profile,
     HOME: profile,
     USERPROFILE: profile,
-    // Keep the host APPDATA so the installed CLI shim remains discoverable; the provider's auth home is isolated above.
+    APPDATA: appData,
+    LOCALAPPDATA: localAppData,
+    // Keep the installed CLI shim discoverable while the provider's auth and Windows app data stay isolated above.
     PATH: [join(profile, 'bin'), process.env.PATH ?? ''].join(delimiter),
   });
   return { app, page: await app.firstWindow() };
