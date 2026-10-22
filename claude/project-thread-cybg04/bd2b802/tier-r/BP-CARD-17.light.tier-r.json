@@ -1,0 +1,108 @@
+{
+  "id": "BP-CARD-17",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0013",
+    "checks": [
+      "r1",
+      "r2",
+      "r3"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "Handed",
+        "to",
+        "Trips",
+        "Goa",
+        "trip",
+        "·",
+        "in",
+        "Trips",
+        "Working",
+        "Open",
+        "chat"
+      ],
+      "extra": [
+        "foo",
+        "asked",
+        "to",
+        "find",
+        "flights",
+        "to",
+        "Delhi",
+        "on",
+        "Fri",
+        "23",
+        "Oct"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-17",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 136
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 480,
+          "height": 42
+        },
+        "dPos": 0,
+        "dSize": 128.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-17",
+        "ref": "#FFFFFF",
+        "app": "#FFE5AD",
+        "deltaE": 18.77,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.059964726631393295,
+    "diffPixels": 884,
+    "total": 14742,
+    "sizeMismatch": {
+      "a": [
+        351,
+        136
+      ],
+      "b": [
+        480,
+        42
+      ]
+    },
+    "heatmap": "BP-CARD-17.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-17.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-17.light.png"
+}
