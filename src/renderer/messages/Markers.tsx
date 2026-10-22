@@ -14,10 +14,14 @@ import { Spinner } from '../ui/Spinner';
 import styles from './Bubble.module.css';
 import { requestRevealCard } from './reveal'; // M8 T7
 import { MemoryChip } from './MemoryChip';
+import { SettingLine, settingLineOf } from './SettingLine'; // CR-0043
 
 export function SystemLine({ m }: { m: MessageRow }) {
   // M6 T5: the memory chip (05-3 §5.17; G-M6-05 `data-state="memory"`).
   if (m.markerKind === 'memory_chip') return <MemoryChip m={m} />;
+  // CR-0043: the settings-by-chat line and its button.
+  const setting = settingLineOf(m);
+  if (setting) return <SettingLine m={m} line={setting} />;
   return (
     <div className={styles.marker} data-testid={TID.threadMarker} data-state={m.markerKind ?? 'system_line'} data-copy="ai">
       {m.text}

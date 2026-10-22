@@ -24,7 +24,7 @@ import type { SettingsStore } from '../settings/Settings';
 import { webAfterKeyRemoved, webAfterKeySaved, webProviderOfTarget, writeWeb } from '../settings/webKeySettings';
 import { publicSettings } from '../store/queries';
 import type { Db } from '../store/db';
-import { secretActivityLine, type SecretEvent } from './labels';
+import { savedLoginLine, secretActivityLine, type SecretEvent } from './labels';
 import type { RegisterFn, SecretVault } from './SecretVault';
 import { vaultRuntime } from './vaultRuntime';
 
@@ -114,6 +114,13 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
       fields: { label },
     },
   });
+  const savedLogin = (site: string): DbOp => {
+    const row = activity('secret_saved', site) as Extract<DbOp, { op: 'activity' }>;
+    return {
+      op: 'activity',
+      row: { ...row.row, kind: 'connected', event: 'saved_login', summary: savedLoginLine(site), fields: { site } },
+    };
+  };
   const moveCard = (card: CardRow, to: string, payload: SecretPayload): DbOp => ({
     op: 'transition',
     table: 'cards',
@@ -156,7 +163,10 @@ export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {
         return saved;
       }
       const { target, savedAt, label, replaced } = saved.value;
-      const ops: DbOp[] = [activity(replaced ? 'secret_replaced' : 'secret_saved', label)];
+      // 05-2 §5.8.6: a login saved after a sign-in is `saved_login` (kind `connected`, 06-3 §9.4 "Saved your login for {site}").
+      const ops: DbOp[] = [
+        kind === 'login' && box?.p.afterSignIn ? savedLogin(name) : activity(replaced ? 'secret_replaced' : 'secret_saved', label),
+      ];
       // Replace from a saved row keeps the card `saved` with the new date (05-2 §5.8.3 Replaced).
       if (box && ['asking', 'rejected', 'saved'].includes(box.card.state)) {
         const { removedAt: _gone, ...p } = box.p;

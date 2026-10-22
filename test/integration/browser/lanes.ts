@@ -50,6 +50,10 @@ export interface LaneHarness {
   vaultCalls: Record<string, unknown>[];
   /** Cards main would return for `cardById` (id → type), for a lanes object that lost its pauses (restart). */
   cards: Record<string, string>;
+  /** `suggestionState` answers by key (CR-0030 pick 4: `save_login:{site}`); a missing key was never offered. */
+  suggestions: Record<string, string>;
+  /** The job chat's kind `chatOpen` answers (CR-0030 pick 4: no offer in a group). */
+  chatKind: string;
   job: JobRow;
   run(tool: string, args?: Record<string, unknown>): Promise<ToolOutcome>;
   page(): Promise<Page>;
@@ -147,7 +151,16 @@ export async function laneHarness(): Promise<LaneHarness> {
       begun = lanes.begin(job, cardId, card);
       return cardId;
     },
-    query: async (q: string, id: string) => (q === 'cardById' && h.cards[id] ? { id, type: h.cards[id] } : null),
+    query: async (q: string, id: string) =>
+      q === 'cardById' && h.cards[id]
+        ? { id, type: h.cards[id] }
+        : q === 'suggestionState'
+          ? (h.suggestions[id] ?? null)
+          : q === 'chatOpen'
+            ? { kind: h.chatKind }
+            : null,
+    // CR-0030 pick 3: the checklist's "You took over" row (the real one reads the steps; here a marker op).
+    tookOverOps: async () => [{ op: 'update', table: 'cards', id: 'k_checklist', set: { payload: { tookOver: [1] } } }],
     halt: (id: string) => void halted.push(id),
     launch: (id: string) => void launched.push(id),
   } as unknown as RunnerCore;
@@ -203,6 +216,8 @@ export async function laneHarness(): Promise<LaneHarness> {
     login: null,
     vaultCalls,
     cards: {},
+    suggestions: {},
+    chatKind: 'helper',
     job,
     async run(tool: string, args: Record<string, unknown> = {}) {
       const def = registry[tool];

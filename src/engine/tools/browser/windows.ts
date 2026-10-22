@@ -36,6 +36,8 @@ export class WindowPool {
       this.holders.add(jobId);
       return Promise.resolve();
     }
+    // A job stopped before its wait began: its abort event has already fired and would never reach the waiter.
+    if (signal?.aborted) return Promise.reject(new Error('aborted'));
     return new Promise<void>((resolve, reject) => {
       const w: Waiter = { jobId, resolve };
       this.queue.push(w);

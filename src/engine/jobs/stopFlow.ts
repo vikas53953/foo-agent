@@ -33,6 +33,18 @@ export function stopReportText(rows: ActivityRow[], o: TimeOptions): string {
   return t('thread.stop.report.partial', { summary: done.map((r) => r.summary).join(', '), time: formatTime(last.at, o) });
 }
 
+/** CR-0030 pick 1: the J18 "Stop everything" result line in foo's chat, from the stopped jobs' activity rows only. */
+export function stopAllReportText(titles: string[], done: ActivityRow[]): string {
+  const lead =
+    titles.length === 1
+      ? t('thread.stop.all.lead_one', { titles: titles[0]! })
+      : t('thread.stop.all.lead', { count: titles.length, titles: titles.join(', ') });
+  if (!done.length) return `${lead} ${t('thread.stop.all.nothing')}`;
+  const paid = done.some((r) => r.kind === 'paid');
+  const already = t('thread.stop.all.already', { summaries: done.map((r) => r.summary).join(', ') });
+  return paid ? `${lead} ${already}` : `${lead} ${t('thread.stop.all.nothing_paid')} ${already}`;
+}
+
 /** An activity row with every column not given left NULL (08-1 §4.3.11). */
 export function activityRow(
   o: Pick<ActivityOpRow, 'kind' | 'event' | 'actor' | 'summary' | 'outcome'> & Partial<ActivityOpRow>,
@@ -135,14 +147,19 @@ export class StopFlow {
     return { jobId, done: doneRows(activity), nothingDone: doneRows(activity).length === 0 };
   }
 
-  /** 08-2 §5.7 step 6: every job not final; one combined report line in foo's chat is the jobs' own lines (routines untouched). */
+  /** 08-2 §5.7 step 6: every job not final, routines untouched; J18 / 06-3 §14 C-13: one combined report in foo's chat (CR-0030
+   * pick 1). A job in another chat keeps its own report line there; a job in foo's chat is covered by the combined line. */
   async stopAll(): Promise<StopReport[]> {
     const live = (await this.core.query<JobRow[]>('jobsByState', ['queued', 'working', 'needs_you', 'waiting'])) ?? [];
     for (const j of live) this.core.halt(j.id);
+    const fooChat = await this.core.query<string>('chats.foo');
     const out: StopReport[] = [];
+    const titles: string[] = [];
     for (const j of live) {
-      const r = await this.stopJob(j.id, 'stop_all');
-      if (r) out.push(r);
+      const r = await this.stopJob(j.id, 'stop_all', { report: j.chatId !== fooChat });
+      if (!r) continue;
+      out.push(r);
+      titles.push(j.title);
     }
     if (out.length)
       await this.core.tx([
@@ -156,6 +173,17 @@ export class StopFlow {
             outcome: 'done',
           }),
         },
+        ...(fooChat
+          ? [
+              this.core.textOp(
+                { chatId: fooChat, id: null, ownerId: null },
+                stopAllReportText(
+                  titles,
+                  out.flatMap((r) => r.done as ActivityRow[]),
+                ),
+              ),
+            ]
+          : []),
       ]);
     return out;
   }
