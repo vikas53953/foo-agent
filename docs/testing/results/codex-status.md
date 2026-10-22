@@ -1,6 +1,6 @@
-# Codex status — 23 October 2026, CI repair in progress
+# Codex status — 23 October 2026, CI verification green
 
-The latest full real-AI run is [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), started 23:37 IST with all inventory journeys selected. Tested workflow/app revision: **branch `f2061bf27660f870fde3d22bddc9b436002c50bd`**, not main. Its ancestry includes main `0d04a9f9105e42aef0b4a22238285a9007635c3e`, but ancestry does not make these current-main results. Results pending. The previous [39780713204](https://github.com/vikas53953/foo-agent/actions/runs/39780713204) failed in a shard; diagnosis is ongoing. Dispatch gaps are recorded, not treated as compliant cadence.
+The latest full real-AI run is [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), started 23:37 IST with all inventory journeys selected. Tested workflow/app revision: **branch `f2061bf27660f870fde3d22bddc9b436002c50bd`**, not main. Its ancestry includes main `0d04a9f9105e42aef0b4a22238285a9007635c3e`, but ancestry does not make these current-main results. Workflow completed successfully; journey and feature judgments remain pending. This does not establish feature acceptance. The previous [39780713204](https://github.com/vikas53953/foo-agent/actions/runs/39780713204) failed in a shard; diagnosis is ongoing. Dispatch gaps are recorded, not treated as compliant cadence.
 
 ## Current matrix
 
@@ -23,7 +23,7 @@ Every execution count below is linked to the run that produced it. Summary-clean
 | Combined inventory           | 62 executions:42 clean,20 failed;146failedsteps;467screenshots reviewed                     | [39740734054](https://github.com/vikas53953/foo-agent/actions/runs/39740734054) |
 | Previous all-journey run     | Failed; judgment pending                                                                    | [39780713204](https://github.com/vikas53953/foo-agent/actions/runs/39780713204) |
 
-Latest all-journey execution: [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), running; no pass counts claimed.
+Latest all-journey execution: [39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301), workflow completed successfully; no journey or feature pass counts claimed before judgment.
 
 ## Other categories
 
@@ -64,4 +64,10 @@ CI checkpoint: the [manual repair verification](https://github.com/vikas53953/fo
 
 ## Replacement verification — branch 0599a1c3
 
-[Full CI 39835224170](https://github.com/vikas53953/foo-agent/actions/runs/39835224170) and [PR checks 39835225559](https://github.com/vikas53953/foo-agent/actions/runs/39835225559) verify `0599a1c3a5381771bac92071d43ce5f241d2a373`. Pending, not green. The fixture pins localhost to its local IPv4 server without changing the Host header and names CDP/app/server teardown phases. The original CI timeout was not reproduced conclusively locally; this is a bounded fixture repair and diagnostic improvement, not a proven removal of every flake. Local repeated AT-078 and UX-14-09 tests passed; no assertions, retries, timeouts or thresholds were relaxed.
+[Full CI 39835224170](https://github.com/vikas53953/foo-agent/actions/runs/39835224170) and [latest PR checks 39835333884](https://github.com/vikas53953/foo-agent/actions/runs/39835333884) verify the repair source `0599a1c3a5381771bac92071d43ce5f241d2a373` (PR checks use its documentation-only successor `9424b20b`). **SUCCESS:** every required job passed, including all Windows shards, fast lane and Golden; no failed steps. No retries, skips, timeouts, assertions or acceptance thresholds were relaxed for this repair. The fixture pins localhost to its local IPv4 server without changing the Host header and names CDP/app/server teardown phases. The original CI timeout was not reproduced conclusively locally; this is a bounded fixture repair and diagnostic improvement, not a proven removal of every flake. Local repeated AT-078 and UX-14-09 tests passed; no assertions, retries, timeouts or thresholds were relaxed.
+
+[Branch f2061bf execution index](run39828661301/evidence-index.md), from [run 39828661301](https://github.com/vikas53953/foo-agent/actions/runs/39828661301): 62 journey executions, 1128 log steps, 228 raw failed records (44 soft / 184 hard), versus 149 failed steps in normalized summaries. These are different counters and must not be conflated. The 457 available PNGs are not all reviewed; no feature acceptance or current-main promotion is made.
+
+## Verified closeout
+
+[Full replacement CI](https://github.com/vikas53953/foo-agent/actions/runs/39835224170) completed successfully on `0599a1c3a5381771bac92071d43ce5f241d2a373`, including the final failure gate. Prior failed runs remain historical evidence. The local teardown delay was observed but not conclusively reproduced as the CI timeout; this green run verifies the candidate, not permanent elimination of every intermittent issue. No waivers or merges were made.
