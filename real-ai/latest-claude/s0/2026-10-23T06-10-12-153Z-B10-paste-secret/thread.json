@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n6:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and websites, catch you up on chats, set routines, and help with bookings and bills. Just tell me what you need.\n\n6:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n6:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it in scrambled form, so people on the same Wi-Fi or your internet provider can't read it.\n\nThe tunnel ends at a VPN company's computer, which then talks to websites for you. Websites see that computer's address instead of yours, so your location looks different too.\n\nIt hides your traffic from the network you're on, but the VPN company can still see it, so pick one you trust.\n\n6:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n6:09 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or uneven ground\n6:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n6:09 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What size do you wear in running shoes?\n1\nUK 6 or smaller\nBEST FIT\n2\nUK 7 to 8\n3\nUK 9 to 10\n4\nUK 11 or bigger\nSomething else…\nSkip\n6:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:10 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n20 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n6:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:10 AM"
+  }
+]

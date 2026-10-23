@@ -1,0 +1,16 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-08-13-027Z-J01-J02-first-run"}
+{"journey":"J07-chat","title":"Casual chat","steps":7,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-09-03-603Z-J07-chat"}
+{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","steps":8,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-09-41-124Z-B02-choice"}
+{"journey":"B10-paste-secret","title":"Paste bands and secret guard","steps":16,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-10-12-153Z-B10-paste-secret"}
+{"journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","steps":6,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-10-23-344Z-J10-hotel"}
+{"journey":"J05-web","title":"First real task with the internet (news + sources)","steps":6,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-13-42-330Z-J05-web"}
+{"journey":"J15-helper","title":"Create a helper","steps":4,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-14-07-889Z-J15-helper"}
+{"journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","steps":44,"failed":2,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-14-16-643Z-U01-bubble-menu"}
+{"journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","steps":37,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-18-05-344Z-U05-chat-list"}
+{"journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","steps":13,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-20-00-098Z-U09-plan-checklist"}
+{"journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","steps":18,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-23-57-056Z-U13-secret-box"}
+{"journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","steps":13,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-26-58-165Z-U17-settings-by-chat"}
+{"journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","steps":9,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-30-24-321Z-U21-window-dialogs"}
+{"journey":"U27-composer-no-dropped-letters","title":"Fast typing and a long paste reach foo letter for letter","steps":10,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-34-33-337Z-U27-composer-no-dropped-letters"}
+{"journey":"R-chat-rules","title":"Group R one-bubble plain VPN answers","steps":15,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-35-32-915Z-R-chat-rules"}
+{"journey":"R-kit-2","title":"Group R live stamp, calculator, keep and time picker","steps":63,"failed":16,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-37-02-336Z-R-kit-2"}

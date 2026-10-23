@@ -1,0 +1,390 @@
+{
+  "journey": "U01-bubble-menu",
+  "title": "Bubble menu: copy, react, reply, edit, try again, good and bad",
+  "steps": 44,
+  "failed": 2,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-14-16-643Z-U01-bubble-menu",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1032
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792736063273,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.3 Your bubble + status badge; C.3 foo / helper bubble: latest reply has text and the sent bubble has a non-failed status indicator",
+      "expect": "one short reply; my bubble shows a tick and a badge, never ⚠",
+      "before": 0,
+      "firstReplyMs": 12152,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Delhi has been rebuilt so many times over the centuries that historians count at least seven separate cities that once stood on its site.\n\n6:14 AM",
+      "replyTexts": [
+        "Delhi has been rebuilt so many times over the centuries that historians count at least seven separate cities that once stood on its site.\n\n6:14 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 18304
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "reaction picker with emoji options",
+      "ok": true,
+      "ms": 600
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "reaction chip under foo bubble",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 12,
+      "do": "check",
+      "note": "C.3 Reactions: reaction chip is present after choosing a picker option",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "clicking my reaction again removes it",
+      "ok": true,
+      "ms": 800
+    },
+    {
+      "i": 15,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "menu on my bubble: Reply, Copy, React, Edit, Select, Delete",
+      "ok": true,
+      "ms": 600
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 18,
+      "do": "wait",
+      "expect": "reply quote above the composer with a close X",
+      "ok": true,
+      "ms": 501
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "sentAt": 1792736086916,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 167
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "note": "C.3 Your bubble + status badge: quoted reply is in the newest user bubble and foo answers the requested city",
+      "expect": "my bubble shows the quoted message; foo answers about Amritsar",
+      "before": 0,
+      "firstReplyMs": 8685,
+      "newBubbles": 2,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Got it, I’ll fold that in.\n\n6:14 AM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:14 AM",
+      "replyTexts": [
+        "Got it, I’ll fold that in.\n\n6:14 AM",
+        "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:14 AM"
+      ],
+      "kit": [],
+      "endState": false,
+      "ms": 18339
+    },
+    {
+      "i": 21,
+      "do": "check",
+      "note": "C.3 Your bubble + status badge: edited user bubble remains visible",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 23,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 24,
+      "do": "wait",
+      "expect": "composer in edit mode with my text",
+      "ok": true,
+      "ms": 506
+    },
+    {
+      "i": 25,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 11
+    },
+    {
+      "i": 26,
+      "do": "key",
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 27,
+      "do": "wait",
+      "expect": "my bubble says edited; foo answers the edited question",
+      "ok": true,
+      "ms": 20002
+    },
+    {
+      "i": 28,
+      "do": "expectText",
+      "note": "edited label",
+      "soft": true,
+      "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n6:14 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 30,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 31,
+      "do": "wait",
+      "expect": "thumbs up feedback recorded quietly",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 32,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 33,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "expect": "feedback chips / field after thumbs down",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 35,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 36,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 37,
+      "do": "click",
+      "soft": true,
+      "before": 2,
+      "clicked": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 38,
+      "do": "waitReply",
+      "expect": "a fresh answer replaces or follows; no duplicate bubbles",
+      "before": 2,
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "replyTexts": [],
+      "kit": [],
+      "ms": 150036
+    },
+    {
+      "i": 39,
+      "do": "send",
+      "sentAt": 1792736278572,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 40,
+      "do": "check",
+      "note": "C.3 Reactions; AT-027: the latest user row has exactly one reaction and no later user, assistant, or card row",
+      "found": 0,
+      "ok": true,
+      "ms": 6,
+      "late": true
+    },
+    {
+      "i": 41,
+      "do": "wait",
+      "note": "AT-027: bounded quiet observation before the reaction-only terminal check",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 42,
+      "do": "expectText",
+      "note": "AT-027: scoped latest-user reaction is exactly 👍 or ❤️",
+      "text": "❤️",
+      "ok": true,
+      "ms": 4884
+    },
+    {
+      "i": 43,
+      "do": "dump",
+      "ok": true,
+      "ms": 19
+    }
+  ]
+}

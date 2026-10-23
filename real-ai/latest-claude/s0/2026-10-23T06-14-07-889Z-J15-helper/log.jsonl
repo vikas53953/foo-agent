@@ -1,0 +1,10 @@
+{"t":"2026-10-23T06:14:07.890Z","journey":"J15-helper","title":"Create a helper","spec":"07-1 J15; 06 helper","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T06:14:13.485Z","step":"launch","ok":true}
+{"t":"2026-10-23T06:14:13.568Z","shot":"01-sidebar.png"}
+{"t":"2026-10-23T06:14:13.568Z","i":0,"do":"shot","ok":true,"ms":79}
+{"t":"2026-10-23T06:14:13.571Z","i":1,"do":"check","note":"is New helper disabled?","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-10-23T06:14:13.606Z","i":2,"do":"clickIf","found":1,"before":1,"clicked":true,"ok":true,"ms":35}
+{"t":"2026-10-23T06:14:16.121Z","i":3,"do":"wait","expect":"helper create flow per walkthrough","ok":true,"ms":2515}
+{"t":"2026-10-23T06:14:16.209Z","shot":"02-new-helper.png"}
+{"t":"2026-10-23T06:14:16.499Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-23T06:14:16.510Z","step":"aiTurns","turns":1}
