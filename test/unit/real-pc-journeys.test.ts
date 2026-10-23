@@ -207,6 +207,31 @@ describe('real-PC journey contracts', () => {
     ).toBe(true);
   });
 
+  it('U09 finds a plan card at the top level of the assistant row', () => {
+    const u09 = journeys.find(({ name }) => name === 'U09-plan-checklist.json')?.value;
+    const planProof = u09?.steps?.find((step) => step.do === 'waitReply' && step.shot === 'plan');
+    const dom = new JSDOM(
+      `
+      <main data-testid="thread-log">
+        <div data-side="them" data-gap><div data-testid="card-plan"><button data-testid="card-plan-go">Old Go</button></div></div>
+        <div data-side="me" data-gap><div data-testid="bubble-me">latest request</div></div>
+        <div data-side="them" data-gap>
+          <div data-testid="card-plan">
+            <span>Budget laptop research</span>
+            <button data-testid="card-plan-go">Go</button>
+          </div>
+        </div>
+      </main>
+      `,
+      { runScripts: 'outside-only' },
+    );
+    for (const plan of dom.window.document.querySelectorAll('[data-testid="card-plan"]'))
+      Object.defineProperty(plan, 'innerText', { configurable: true, value: plan.textContent });
+    expect(planProof?.expectJs).toBeTruthy();
+    expect(dom.window.eval(planProof!.expectJs!)).toBe(true);
+    dom.window.close();
+  });
+
   it('B02 proves the answered card before the next asking card', () => {
     const b02 = journeys.find(({ name }) => name === 'B02-choice.json')?.value;
     const initialProof = b02?.steps?.find((step) => step.do === 'waitReply' && step.shot === 'choice');

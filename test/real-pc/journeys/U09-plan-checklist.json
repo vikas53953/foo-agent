@@ -19,7 +19,7 @@
       "shot": "plan",
       "expect": "a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan",
       "ref": "BP-CARD-11",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const p=b?.querySelector('[data-testid=\\\"card-plan\\\"]');return !!p&&!!p.querySelector('[data-testid=\\\"card-plan-go\\\"]')&&(p.innerText||'').trim().length>0;})()",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\\\"thread-log\\\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const p=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\\\"card-plan\\\"]')]).at(-1);return !!p&&!!p.querySelector('[data-testid=\\\"card-plan-go\\\"]')&&(p.innerText||'').trim().length>0;})()",
       "note": "C.4 Plan (C11): the assistant reply contains a named plan with a Go control"
     },
     {
