@@ -169,6 +169,47 @@ const hasTerminalAfterSend = (steps: Step[], sendIndex: number) => {
   return false;
 };
 
+class PredicateNode {
+  constructor(
+    private readonly attrs: Record<string, string | undefined>,
+    readonly innerText = '',
+    private readonly children: PredicateNode[] = [],
+  ) {}
+
+  getAttribute(name: string) {
+    return this.attrs[name] ?? null;
+  }
+
+  querySelectorAll(selector: string): PredicateNode[] {
+    const terminal = selector.trim().split(/\s+/u).at(-1) ?? selector;
+    const matches = (node: PredicateNode) =>
+      [...terminal.matchAll(/\[([\w-]+)(?:="([^"]*)")?\]/g)].every(([, name, expected]) => {
+        const actual = node.getAttribute(name!);
+        return actual !== null && (expected === undefined || actual === expected);
+      });
+    const found: PredicateNode[] = [];
+    const visit = (node: PredicateNode) => {
+      for (const child of node.children) {
+        if (matches(child)) found.push(child);
+        visit(child);
+      }
+    };
+    visit(this);
+    return found;
+  }
+
+  querySelector(selector: string) {
+    return this.querySelectorAll(selector)[0] ?? null;
+  }
+}
+
+class PredicateDocument extends PredicateNode {
+  querySelector(selector: string) {
+    const self = this.getAttribute('data-testid') === selector.match(/data-testid="([^"]+)"/)?.[1] ? this : null;
+    return self ?? super.querySelector(selector);
+  }
+}
+
 const referencedIds = (journey: Journey) => {
   const ids = new Set<string>();
   for (const step of journey.steps ?? []) {
@@ -185,6 +226,36 @@ const referencedIds = (journey: Journey) => {
 };
 
 describe('real-PC journey contracts', () => {
+  it('B02 proves the answered card before the next asking card', () => {
+    const b02 = journeys.find(({ name }) => name === 'B02-choice.json')?.value;
+    const proof = b02?.steps?.find((step) => step.do === 'waitReply' && step.shot === 'typed-2');
+    expect(proof?.expectJs).toBeTruthy();
+
+    const evaluate = (state: string, label: string, summaryText: string) => {
+      const previous = new PredicateNode(
+        { 'data-testid': 'card-choice', 'data-card-id': 'choice-1', 'data-card-state': state, 'aria-label': label },
+        summaryText,
+        [new PredicateNode({ 'data-copy': 'external' }, summaryText)],
+      );
+      const me = new PredicateNode({ 'data-side': 'me', 'data-gap': '' }, '2');
+      const next = new PredicateNode(
+        { 'data-testid': 'card-choice', 'data-card-id': 'choice-2', 'data-card-state': 'asking' },
+        '',
+        [new PredicateNode({ 'data-testid': 'card-choice-option' }), new PredicateNode({ 'data-testid': 'card-choice-option' })],
+      );
+      const doc = new PredicateDocument({ 'data-testid': 'thread-log' }, '', [
+        new PredicateNode({ 'data-side': 'them', 'data-gap': '' }, '', [previous]),
+        me,
+        new PredicateNode({ 'data-side': 'them', 'data-gap': '' }, '', [next]),
+      ]);
+      return new Function('document', `return ${proof!.expectJs!}`)(doc);
+    };
+
+    expect(evaluate('answered', 'You chose Trail shoes', 'Which trail shoe feature? → Trail shoes')).toBe(true);
+    expect(evaluate('asking', 'Question: Which trail shoe feature?', 'Which trail shoe feature?')).toBe(false);
+    expect(evaluate('answered', 'Question: Which trail shoe feature?', 'Which trail shoe feature?')).toBe(false);
+  });
+
   it('loads every journey and rejects unknown TIDs', () => {
     const known = new Set<string>(Object.values(TID));
     const invalid = journeys.flatMap(({ name, value }) =>

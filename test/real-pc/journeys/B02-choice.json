@@ -35,7 +35,7 @@
       "timeoutMs": 120000,
       "shot": "typed-2",
       "expect": "AT-035: card collapses as if option 2 was tapped",
-      "expectJs": "(()=>{const rows=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-side=\"me\"][data-gap]')];const me=rows.at(-1);const asking=[...document.querySelectorAll('[data-testid=\"card-choice\"][data-card-state=\"asking\"]')];return !!me&&/^\\s*2\\s*$/.test(me.innerText||'')&&asking.length===0;})()"
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me||!/^\\s*2\\s*$/.test(me.innerText||''))return false;const at=rows.indexOf(me);if(at<1)return false;const previous=rows.slice(0,at).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-choice\"]')]).at(-1);if(!previous||previous.getAttribute('data-card-state')!=='answered')return false;const summary=previous.querySelector('[data-copy=\"external\"]');const chosen=previous.getAttribute('aria-label')||'';if(!summary||!/^You chose .+\\.?$/i.test(chosen)||!/(?:→|->)\\s*\\S/.test(summary.innerText||''))return false;const next=rows.slice(at+1).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-choice\"]')]).at(-1);return !!next&&next.getAttribute('data-card-state')==='asking'&&next.querySelectorAll('[data-testid=\"card-choice-option\"]').length>=2;})()"
     },
     {
       "do": "dump",
