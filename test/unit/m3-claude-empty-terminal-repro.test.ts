@@ -1,3 +1,4 @@
+// Spec: 08-2 §6.3 (Claude CLI stream parsing and terminal-result precedence).
 import { describe, expect, it } from 'vitest';
 import { createClaudeParser } from '../../src/engine/ai/parsers';
 
@@ -42,6 +43,10 @@ const parse = (lines: string[]) => {
 const actOnly = '<act>{"decision":{"kind":"reply"},"usedMemoryIds":[]}</act>';
 
 describe('Claude provider terminal-result precedence reproduction', () => {
+  it('does not reuse another parser instance response', () => {
+    expect(parse([assistant('first response'), result('')]).text).toBe('first response');
+    expect(parse([result('')]).text).toBe('');
+  });
   it('falls back to assistant text for an empty successful result (instance 1)', () => {
     const parsed = parse([assistant('<say>Provider answer</say>'), result('')]);
     expect(parsed.text).toBe('<say>Provider answer</say>');
