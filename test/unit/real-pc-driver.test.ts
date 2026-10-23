@@ -6,6 +6,7 @@ import { TID } from '../../src/shared/testids';
 
 type DriverHelpers = {
   isLiveWindow: (pageOrUrl: string | { url: () => string }) => boolean;
+  canLatePromoteWaitReply: (result: { do: string; before?: number; newBubbles?: number; lastReply?: string }, observedCount: number) => boolean;
   waitForWindowAfterClick: (args: {
     app: { waitForEvent: (name: string, predicate: (page: { url: () => string }) => boolean) => Promise<unknown> };
     click: () => Promise<void>;
@@ -41,6 +42,21 @@ const r427 = JSON.parse(readFileSync(join(process.cwd(), 'test', 'real-pc', 'jou
 };
 
 describe('real-PC live-window driver', () => {
+  it('does not promote a stale bubble to a late waitReply pass', () => {
+    expect(
+      helpers.canLatePromoteWaitReply(
+        { do: 'waitReply', before: 1, newBubbles: 0, lastReply: '' },
+        1,
+      ),
+    ).toBe(false);
+    expect(
+      helpers.canLatePromoteWaitReply(
+        { do: 'waitReply', before: 1, newBubbles: 1, lastReply: 'fresh reply' },
+        2,
+      ),
+    ).toBe(true);
+  });
+
   it('matches the live path without exposing query-string values', () => {
     expect(helpers.isLiveWindow('app://foo/windows/live.html?job=private-job')).toBe(true);
     expect(helpers.isLiveWindow('app://foo/windows/live.html?token=placeholder')).toBe(true);
