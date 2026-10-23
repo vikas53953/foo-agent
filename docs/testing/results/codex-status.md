@@ -1,4 +1,4 @@
-# Codex status — 23 October 2026, 10:15 IST
+# Codex status — 23 October 2026, 11:37 IST
 
 ## FIX mode — latest Vikas instruction
 
@@ -8,7 +8,9 @@ The new all-190 journey requirement supersedes the earlier 62 code-only scope ex
 
 ## Active real-AI run
 
-[39897913189](https://github.com/vikas53953/foo-agent/actions/runs/39897913189) is running with all inventory journeys selected, after checking that no other real-AI run was active. Tested revision is **branch 819c781c192b39a0c7adb09f6a2deb5a3a06a0e7**, not main. Freshly fetched main remains `0d04a9f9105e42aef0b4a22238285a9007635c3e`; the lead merge-base matches it. This run exercises the repaired fixtures. No result is inferred while it runs.
+[39909344443](https://github.com/vikas53953/foo-agent/actions/runs/39909344443) runs all manifest journeys on branch **a4398b40b89c0b676ffe58c5794076538d99ca5c**, based on freshly fetched main **0d04a9f9105e42aef0b4a22238285a9007635c3e**. It includes driver, parser, B02, B05 and U09 repairs. This is branch evidence, not main acceptance, and the manifest still does not cover all 190 features.
+
+[Previous full run39897913189](https://github.com/vikas53953/foo-agent/actions/runs/39897913189) completed with shard0 failed; other shards completed. Its partial evidence is under review and cannot establish a comparable full clean count. Focused [parser39900827513](https://github.com/vikas53953/foo-agent/actions/runs/39900827513), [B0239901848029](https://github.com/vikas53953/foo-agent/actions/runs/39901848029), and [web39901998316](https://github.com/vikas53953/foo-agent/actions/runs/39901998316) workflows completed; independent screenshot/log judgment is underway. No feature acceptance inferred.
 
 ## Integration verification failures under investigation
 
@@ -69,3 +71,18 @@ Driver repair integrated from source commits 690b8075 and bae85bb2 as 0fe96d06 a
 | J05 / B14 web waits | Driver declared live checklist settled and closed the app mid-read. Treat live rows as working; red regression precedes fix. | [#138](https://github.com/vikas53953/foo-agent/pull/138) | [39901998316](https://github.com/vikas53953/foo-agent/actions/runs/39901998316), branch 1166b72f | No — newly dispatched; screenshot judgment pending |
 
 Source commits retained: B02 7c586cac / 2480a515 / 6c101d86; web-settle 99b1fcf6 (red) / 9b5f373b (fix). These repairs do not promote branch evidence to main acceptance.
+
+## 11:37 IST FIX checkpoint
+
+| Feature | Bug / repair                                                                                                                                                 | Fix PR                                                   | Real-AI run and actual SHA                                                                                                | Now passes              |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| B05     | Recovery-card test used clean relaunch; use existing crashRelaunch for unclean restart, retaining recovery assertions. Source593cf605.                       | [#138](https://github.com/vikas53953/foo-agent/pull/138) | [39909344443](https://github.com/vikas53953/foo-agent/actions/runs/39909344443), a4398b40b89c0b676ffe58c5794076538d99ca5c | No; pending screenshots |
+| U09     | Plan card is top-level, not inside text bubble. Scope plan proof after latest user turn; negative DOM case rejects stale plans. Source3df02472/roota4398b40. | [#138](https://github.com/vikas53953/foo-agent/pull/138) | [39909344443](https://github.com/vikas53953/foo-agent/actions/runs/39909344443), a4398b40b89c0b676ffe58c5794076538d99ca5c | No; pending screenshots |
+
+Focused journey regressions passed locally (8 tests). Full [CI39901057398](https://github.com/vikas53953/foo-agent/actions/runs/39901057398) is failed: Windows shard1 download SITE_TIMEOUT and shard3 AT-078 external-window-close timeout. Local focused passes do not clear these failures; deeper diagnosis continues without raising deadlines or waivers.
+
+[Packaged native receipt](native-windows-17a0d5cc/receipt.md) and inspected screenshots show startup and Settings on branch17a0d5cc. Notifications content is blank. Provider discovery reported no installed AI; no real-AI/native notification or tray acceptance. Native owner continues prerequisite diagnosis.
+
+Fresh build_matrix.py regenerated the existing classifications unchanged; see [matrix](../coverage-matrix.md) for linked source receipts. Historical real-AI classifications remain 4 proven,106 partial,5 fail,10 missing,3 notbuilt,62 legacy NA; legacy NA is not an exemption under all190 FIX mode. No comparable clean uplift is established this loop: prior full run is incomplete and focused screenshots await judgment. If the next loop still cannot establish uplift, stop repeating the same fix approach and document a revised diagnosis.
+
+Lane activity: parser/B02/web reviewers inspect completed focused runs; full-run reviewer audits incomplete prior run; CI executor investigates Windows failures; native owner diagnoses provider discovery. Needs Vikas: none blocking independent work. Drift: real run produced **yes**, linked39909344443; outside runbook **no**, repairs follow explicit FIX instruction; weakened/skipped/placeholder tests **no**. Required CI failures remain open.
