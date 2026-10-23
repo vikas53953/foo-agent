@@ -14,7 +14,7 @@ Ruler-v1: isolated main-based kit snapshot; correct main base verified; 22 focus
 PR138 split: docs/matrix retained; app fix isolated in [draft139](https://github.com/vikas53953/foo-agent/pull/139); paused source retained in [archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
 PRs ready: **none**; [qualification requirements](loop-amendment-2026-10-23.md) unmet.
 Needs Vikas: blank-search fallback may need a spec change; [daily decision note](codex-daily-2026-10-23.md). AT027 already resolved.
-Could not do: publish split or qualify PRs; local full test failed/overloaded (see [daily](codex-daily-2026-10-23.md)); [focused failures](focused-parser-review.md), [CI failures](https://github.com/vikas53953/foo-agent/actions/runs/39901057398) remain.
+Could not do: publish split or qualify PRs; [completed local gate](prepush-gate-2026-10-23.md) failed: symlink permission, missing zipinfo and browser failures; [focused failures](focused-parser-review.md), [CI failures](https://github.com/vikas53953/foo-agent/actions/runs/39901057398) remain.
 Paused: BDD, AI eval, soak/observer, mutation, new Group R and native except BLOCKED rows — [amendment](loop-amendment-2026-10-23.md).
 Execution: ruler workflow ref plus app-fix input ref records both SHAs; sequential runs, no stacking/merges — [workflow](https://github.com/vikas53953/foo-agent/blob/437e1da9d/.github/workflows/real-ai-e2e.yml).
 History: [previous checkpoint](history/codex-status-before-amendment-20261023.md); [daily](codex-daily-2026-10-23.md).
