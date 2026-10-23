@@ -9,11 +9,16 @@
       "text": "Switch to dark mode"
     },
     {
-      "do": "waitReply",
+      "do": "waitFor",
+      "css": "html[data-theme=\"dark\"]",
       "timeoutMs": 120000,
+      "note": "a setting answer is a line, not a bubble, so waitReply would never see it (real-AI run 62d419e R-dark-hi step 1)"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
       "shot": "dark",
-      "expect": "the theme turns dark and foo shows one line \"Changed: Theme → Dark. Undo\"",
-      "expectJs": "document.documentElement.dataset.theme === 'dark'"
+      "expect": "the theme is dark and foo shows one line \"Changed: Theme → Dark. Undo\""
     },
     {
       "do": "send",
