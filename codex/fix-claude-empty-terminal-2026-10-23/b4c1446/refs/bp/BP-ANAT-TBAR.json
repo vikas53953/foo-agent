@@ -1,0 +1,54 @@
+{
+  "id": "BP-ANAT-TBAR",
+  "family": "bp",
+  "selector": "#win .tbar",
+  "box": {
+    "x": 111.5,
+    "y": 1159.0625,
+    "width": 1278,
+    "height": 32
+  },
+  "files": {
+    "light": {
+      "png": "BP-ANAT-TBAR.light.png",
+      "sha256": "b6c8cb439cdbf1472641e4e4353b75c5a6ec7d49873a02f3fe7eff884b2d3c45"
+    },
+    "dark": {
+      "png": "BP-ANAT-TBAR.dark.png",
+      "sha256": "bf68a27ca5adaa593ba2f9f59f86bdd294444c39f6022357c049860f1dd307c7"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-ANAT-TBAR": {
+      "x": 0,
+      "y": 0,
+      "width": 1278,
+      "height": 32
+    }
+  },
+  "masks": [
+    {
+      "x": 1134,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": "window",
+  "milestone": "M1",
+  "spec": "03-shell-1 §3.2",
+  "size": {
+    "width": null,
+    "height": 32
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
