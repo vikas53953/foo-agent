@@ -10,7 +10,7 @@ Choice correction: spec allows 2–4; B02 lacks AT032 three-option precondition,
 R-approvals/R-jobs and R-kit/R-ai-pages: [queue](../fix-queue.tsv); unresolved triage is not a pass.
 Prior full39897913189: strict16/63 executions,59 unique; **branch, not counted** — [run](https://github.com/vikas53953/foo-agent/actions/runs/39897913189); failed first attempt retained.
 Pre-amendment full39909344443 was already started — [run](https://github.com/vikas53953/foo-agent/actions/runs/39909344443); no replacement full branch run.
-Ruler-v1: isolated main-based kit snapshot; correct main base verified; 22 focused checks passed, remaining gates incomplete, not ready — [source archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
+Ruler-v1: isolated main-based kit snapshot; commit89361d0da has unchanged main app and permitted kit-only diff; 22 focused checks passed; Linux full-gate preparation, not published — [source archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
 PR138 split: docs/matrix retained; app fix isolated in [draft139](https://github.com/vikas53953/foo-agent/pull/139); paused source retained in [archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
 PRs ready: **none**; [qualification requirements](loop-amendment-2026-10-23.md) unmet.
 Needs Vikas: blank-search fallback may need a spec change; [daily decision note](codex-daily-2026-10-23.md). AT027 already resolved.
