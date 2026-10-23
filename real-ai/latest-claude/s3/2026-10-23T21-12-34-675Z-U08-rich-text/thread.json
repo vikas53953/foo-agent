@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n9:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:11 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n9:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers are the Ganga, the Yamuna and the Godavari.\n\n9:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n9:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your hello world: print(\"Hello, world!\"). Save it as hello.py and run it with python hello.py.\n\n9:12 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Checking major Indian news sites job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry major Indian news sites instead\nTry another way\nTake over\nStop\n9:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n9:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nRajasthan: Jaipur\n9:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n9:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket booking site is IRCTC, and the main Indian Railways site is indianrailways.gov.in.\n\n9:13 PM"
+  }
+]
