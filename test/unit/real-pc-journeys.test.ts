@@ -3,6 +3,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { JSDOM } from 'jsdom';
 import { TID } from '../../src/shared/testids';
 
 type Step = {
@@ -169,47 +170,6 @@ const hasTerminalAfterSend = (steps: Step[], sendIndex: number) => {
   return false;
 };
 
-class PredicateNode {
-  constructor(
-    private readonly attrs: Record<string, string | undefined>,
-    readonly innerText = '',
-    private readonly children: PredicateNode[] = [],
-  ) {}
-
-  getAttribute(name: string) {
-    return this.attrs[name] ?? null;
-  }
-
-  querySelectorAll(selector: string): PredicateNode[] {
-    const terminal = selector.trim().split(/\s+/u).at(-1) ?? selector;
-    const matches = (node: PredicateNode) =>
-      [...terminal.matchAll(/\[([\w-]+)(?:="([^"]*)")?\]/g)].every(([, name, expected]) => {
-        const actual = node.getAttribute(name!);
-        return actual !== null && (expected === undefined || actual === expected);
-      });
-    const found: PredicateNode[] = [];
-    const visit = (node: PredicateNode) => {
-      for (const child of node.children) {
-        if (matches(child)) found.push(child);
-        visit(child);
-      }
-    };
-    visit(this);
-    return found;
-  }
-
-  querySelector(selector: string) {
-    return this.querySelectorAll(selector)[0] ?? null;
-  }
-}
-
-class PredicateDocument extends PredicateNode {
-  querySelector(selector: string) {
-    const self = this.getAttribute('data-testid') === selector.match(/data-testid="([^"]+)"/)?.[1] ? this : null;
-    return self ?? super.querySelector(selector);
-  }
-}
-
 const referencedIds = (journey: Journey) => {
   const ids = new Set<string>();
   for (const step of journey.steps ?? []) {
@@ -228,32 +188,61 @@ const referencedIds = (journey: Journey) => {
 describe('real-PC journey contracts', () => {
   it('B02 proves the answered card before the next asking card', () => {
     const b02 = journeys.find(({ name }) => name === 'B02-choice.json')?.value;
+    const initialProof = b02?.steps?.find((step) => step.do === 'waitReply' && step.shot === 'choice');
     const proof = b02?.steps?.find((step) => step.do === 'waitReply' && step.shot === 'typed-2');
+    expect(initialProof?.expectJs).toBeTruthy();
     expect(proof?.expectJs).toBeTruthy();
 
-    const evaluate = (state: string, label: string, summaryText: string) => {
-      const previous = new PredicateNode(
-        { 'data-testid': 'card-choice', 'data-card-id': 'choice-1', 'data-card-state': state, 'aria-label': label },
-        summaryText,
-        [new PredicateNode({ 'data-copy': 'external' }, summaryText)],
+    const evaluate = (state: string, summaryText: string, withNext = true) => {
+      const initial = new JSDOM(
+        `
+        <main data-testid="thread-log">
+          <div data-side="me" data-gap>initial request</div>
+          <div data-side="them" data-gap>
+            <div data-testid="card-choice" data-card-id="choice-1" data-card-state="asking">
+              <button data-testid="card-choice-option"><span data-copy="external">Road shoes</span></button>
+              <button data-testid="card-choice-option"><span data-copy="external">Trail shoes</span></button>
+            </div>
+          </div>
+        </main>
+      `,
+        { runScripts: 'outside-only' },
       );
-      const me = new PredicateNode({ 'data-side': 'me', 'data-gap': '' }, '2');
-      const next = new PredicateNode(
-        { 'data-testid': 'card-choice', 'data-card-id': 'choice-2', 'data-card-state': 'asking' },
-        '',
-        [new PredicateNode({ 'data-testid': 'card-choice-option' }), new PredicateNode({ 'data-testid': 'card-choice-option' })],
+      expect(initial.window.eval(initialProof!.expectJs!)).toBe(true);
+      const initialLog = initial.window.document.querySelector('[data-testid="thread-log"]')!;
+      const expectedId = initialLog.getAttribute('data-b02-choice-id');
+      const expectedLabel = initialLog.getAttribute('data-b02-choice-option-2');
+      expect(expectedId).toBe('choice-1');
+      expect(expectedLabel).toBe('Trail shoes');
+      initial.window.close();
+
+      const dom = new JSDOM(
+        `
+        <main data-testid="thread-log" data-b02-choice-id="${expectedId}" data-b02-choice-option-2="${expectedLabel}">
+          <div data-side="them" data-gap>
+            <div data-testid="card-choice" data-card-id="choice-1" data-card-state="${state}" aria-label="You chose Trail shoes">
+              <span data-copy="external">${summaryText}</span>
+            </div>
+          </div>
+          <div data-side="me" data-gap>2</div>
+          ${
+            withNext
+              ? '<div data-side="them" data-gap><div data-testid="card-choice" data-card-id="choice-2" data-card-state="asking"><button data-testid="card-choice-option">Road shoes</button><button data-testid="card-choice-option">Trail shoes</button></div></div>'
+              : ''
+          }
+        </main>
+      `,
+        { runScripts: 'outside-only' },
       );
-      const doc = new PredicateDocument({ 'data-testid': 'thread-log' }, '', [
-        new PredicateNode({ 'data-side': 'them', 'data-gap': '' }, '', [previous]),
-        me,
-        new PredicateNode({ 'data-side': 'them', 'data-gap': '' }, '', [next]),
-      ]);
-      return new Function('document', `return ${proof!.expectJs!}`)(doc);
+      const result = dom.window.eval(proof!.expectJs!);
+      dom.window.close();
+      return result;
     };
 
-    expect(evaluate('answered', 'You chose Trail shoes', 'Which trail shoe feature? → Trail shoes')).toBe(true);
-    expect(evaluate('asking', 'Question: Which trail shoe feature?', 'Which trail shoe feature?')).toBe(false);
-    expect(evaluate('answered', 'Question: Which trail shoe feature?', 'Which trail shoe feature?')).toBe(false);
+    expect(evaluate('answered', 'Which trail shoe feature? → Trail shoes')).toBe(true);
+    expect(evaluate('answered', 'Which trail shoe feature? → Road shoes')).toBe(false);
+    expect(evaluate('asking', 'Which trail shoe feature? → Trail shoes')).toBe(false);
+    expect(evaluate('answered', 'Which trail shoe feature? → Trail shoes', false)).toBe(true);
   });
 
   it('loads every journey and rejects unknown TIDs', () => {
