@@ -1,0 +1,157 @@
+{
+  "journey": "U07-composer",
+  "title": "Composer: multi-line, attach menu, emoji, Esc, draft kept after restart",
+  "steps": 21,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-21-49-505Z-U07-composer",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1036
+    },
+    {
+      "i": 1,
+      "do": "shot",
+      "expect": "composer: + attach, field \"Message foo, or hold Ctrl+Space to talk\", mic/send 36px",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "note": "C.3 Composer: composer surface is present",
+      "found": 1,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 4,
+      "do": "key",
+      "ok": true,
+      "ms": 15
+    },
+    {
+      "i": 5,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "composer grows upward for 3 lines",
+      "ok": true,
+      "ms": 402
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "attach menu: Files, Screenshot, Secret, Emoji",
+      "ok": true,
+      "ms": 502
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "emoji picker",
+      "ok": true,
+      "ms": 510
+    },
+    {
+      "i": 11,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 12,
+      "do": "expectText",
+      "note": "C.3 Composer: multiline composer text preserves all three lines",
+      "text": "line one\nline two\nline three",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 13,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "i": 14,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5487
+    },
+    {
+      "i": 15,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1041
+    },
+    {
+      "i": 16,
+      "do": "expectText",
+      "note": "C.3 Composer: draft text is restored in the composer after relaunch",
+      "text": "a draft I did not send",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "expect": "the unsent draft is back in the composer",
+      "ok": true,
+      "ms": 1009
+    },
+    {
+      "i": 18,
+      "do": "eval",
+      "note": "draft restored: evaluation is diagnostic only",
+      "value": "a draft I did not send",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 19,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "i": 20,
+      "do": "dump",
+      "ok": true,
+      "ms": 16
+    }
+  ]
+}

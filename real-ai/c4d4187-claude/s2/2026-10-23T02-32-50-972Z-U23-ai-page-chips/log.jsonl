@@ -1,0 +1,15 @@
+{"t":"2026-10-23T02:32:50.972Z","journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","spec":"10-2 §C.9 Rich replies (X-180)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:32:56.591Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:32:57.629Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1036}
+{"t":"2026-10-23T02:32:57.767Z","i":1,"do":"send","sentAt":1792722777733,"sent":true,"before":0,"ok":true,"ms":138}
+{"t":"2026-10-23T02:33:17.615Z","i":2,"do":"waitReply","note":"C.9 Rich replies: assistant reply includes an AI page card","expect":"an AI page / kit card opens with the tracker","firstReplyMs":5592,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Here's a simple water tracker with a goal of 8 glasses. Tap + after each glass and − to undo. It starts fresh each day, and it keeps your count on this device if the app allows it.\n\nKeep\n2:33 AM","kit":["kit-keep"],"endState":false,"ms":19848}
+{"t":"2026-10-23T02:33:17.678Z","shot":"01-ai-page.png"}
+{"t":"2026-10-23T02:33:17.680Z","i":3,"do":"check","note":"C.9 Rich replies: AI page card is present","found":0,"ok":false,"ms":1}
+{"t":"2026-10-23T02:33:17.682Z","i":4,"do":"check","note":"C.9 Rich replies: action chip is present under the AI page reply","found":0,"ok":false,"ms":1}
+{"t":"2026-10-23T02:33:17.760Z","i":5,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-23T02:33:18.561Z","i":6,"do":"wait","expect":"reply chip fills the composer","ok":true,"ms":801}
+{"t":"2026-10-23T02:33:18.630Z","shot":"02-chip-fills.png"}
+{"t":"2026-10-23T02:33:18.651Z","i":7,"do":"fill","soft":true,"ok":true,"ms":21}
+{"t":"2026-10-23T02:33:18.665Z","i":8,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-23T02:33:18.814Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-23T02:33:18.826Z","step":"aiTurns","turns":1}

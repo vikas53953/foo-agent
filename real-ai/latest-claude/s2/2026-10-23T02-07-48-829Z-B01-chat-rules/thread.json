@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n2:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:06 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n2:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:07 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n2:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n2:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n2:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as sending a message. Launched by NPCI in 2016, it lets you pay straight from your bank account using just your phone, with no card and no cash. Today it works everywhere, from big malls to roadside tea stalls.\n\nThree main reasons:\n\nIt's quick and simple. Scan a QR code or enter a phone number, type your PIN, and the money moves in seconds, any time of day, even on holidays.\nIt's mostly free. Paying friends and small shops usually costs nothing, so there is little reason to carry cash.\nIt works for everyone. One bank account links to many apps, and even small vendors can accept payments with a printed QR code instead of a card machine.\n\nCheap smartphones and affordable mobile data helped UPI spread fast, and strong backing from banks and the government built trust. Each payment needs your PIN, so you stay in control. Once people try it, counting notes starts to feel slow.\n\n2:08 AM"
+  }
+]
