@@ -1,0 +1,5 @@
+
+> foo@0.0.1 fid:guard <user-home>\Downloads\foo\foo-testing
+> tsx scripts/fid-guard.ts "--base" "origin/main"
+
+fid-guard: 42 changed files checked (FID-02, FID-06, FID-19)

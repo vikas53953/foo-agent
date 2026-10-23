@@ -1,0 +1,22 @@
+
+> foo@0.0.1 test <user-home>\Downloads\foo\foo-testing
+> vitest run "--maxWorkers=2" "--pool=threads"
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.5 <user-home>/Downloads/foo/foo-testing
+
+ ❯ test/unit/m3-adapters-cli.test.ts (24 tests | 3 failed | 2 skipped) 188880ms
+   ❯ claude-cli (13)
+     × failure envelopes: usage limit with reset time, signed out, overloaded, unknown flag, garbage 21110ms
+     × an outer abort signal cancels too 6863ms
+   ❯ codex-cli (8)
+     × usage limit "try again in 30 minutes" → AI_LIMIT with resetAt 20007ms
+ ❯ test/integration/browser/actions.test.ts (21 tests | 3 failed) 96976ms
+   ❯ 08-2 §8.3.5 actions (13)
+     × a pop-up is adopted into the job: the next action runs on it 2067ms
+     × a link that opens a pop-up is clicked once: the pop-up is the change, so there is no retry 233ms
+     × back and wait (≤ 15 s) 466ms
+ ELIFECYCLE  Test failed. See above for more details.

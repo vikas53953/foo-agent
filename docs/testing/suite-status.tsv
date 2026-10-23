@@ -1,0 +1,8 @@
+key	state	sha	link	note
+main_ci	green	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39710797031	Verified completed success on today's base at 09:08 IST; Linux, four Windows shards and golden all green.
+real_ai_main	judged	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39725331473	Current-main baseline:51 unique journeys/54 executions,45 summary-clean/9 summary-failed;291 screenshots reviewed. Workflow success is not acceptance; blocked and soft failures retained.
+judge_97	built, not merged		https://github.com/vikas53953/foo-agent/pull/97	promptfoo AI judge (32 asks), axe sweep, chaos reopen, Windows install/keychain checks.
+mutation_101	built, not merged		https://github.com/vikas53953/foo-agent/pull/101	Stryker on 4 files, 72%.
+bdd	partial	357cc6ff8faa7fa8ff9338375ae08b054d30d861	https://github.com/vikas53953/foo-agent/actions/runs/39741807324	Branch CI passed22/22pretend and2/2realBDD;all24screenshots reviewed. Real diagnostics setupcomplete/claude-cli/verified. Earlier failedruns retained; not currentmain proof.
+upgrade	partial	5c8c80e88704a75a4ea9102b2bcbadf260fec6b1	https://github.com/vikas53953/foo-agent/actions/runs/39733907955	Actual Windows installer checks38pass4blocked0fail; workflow blocked-gate failure. Upgrade11passes prove retained chat/memory/running-job presence, not job resume or completion. Tray/notification/routine gaps retained.
+usability	partial	4fd0d51c0516efb239123704dd1deb3af16dc219	https://github.com/vikas53953/foo-agent/actions/runs/39735003572	Independent review20PNGs:setup8 plus B07 viewer12. Viewer opened after job done_unverified; live/takeover/handback blocked. Human usability session not conducted.

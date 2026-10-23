@@ -1,0 +1,7 @@
+
+> foo@0.0.1 trace:check <user-home>\Downloads\foo\foo-testing
+> tsx scripts/trace-check.ts
+
+FID-18: trace.csv consistent with the test titles
+
+Lead gate outcome: 0; full suite timeout is incomplete, never pass.

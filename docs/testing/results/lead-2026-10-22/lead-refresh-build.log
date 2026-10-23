@@ -1,0 +1,75 @@
+
+> foo@0.0.1 build <user-home>\Downloads\foo\foo-testing
+> pnpm build:tokens && pnpm build:main && pnpm build:renderer && tsx scripts/copy-migrations.ts
+
+
+> foo@0.0.1 build:tokens <user-home>\Downloads\foo\foo-testing
+> tsx scripts/build-tokens.ts
+
+tokens built
+
+> foo@0.0.1 build:main <user-home>\Downloads\foo\foo-testing
+> tsc -p tsconfig.main.json
+
+
+> foo@0.0.1 build:renderer <user-home>\Downloads\foo\foo-testing
+> vite build
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vite.config.ts:3:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.3.4 building client environment for production...
+transforming...
+<script src="./theme-boot.js"> in "/index.html" can't be bundled without type="module" attribute
+<script src="../theme-boot.js"> in "/windows/live.html" can't be bundled without type="module" attribute
+<script src="../theme-boot.js"> in "/windows/signin-banner.html" can't be bundled without type="module" attribute
+✓ 625 modules transformed.
+rendering chunks...
+computing gzip size...
+out/renderer/windows/signin-banner.html           0.81 kB │ gzip:   0.44 kB
+out/renderer/windows/live.html                    1.02 kB │ gzip:   0.48 kB
+out/renderer/index.html                           1.29 kB │ gzip:   0.48 kB
+out/renderer/assets/KitBlock-DGEne205.css         0.11 kB │ gzip:   0.11 kB
+out/renderer/assets/PageView-D036SZOF.css         0.40 kB │ gzip:   0.24 kB
+out/renderer/assets/Tooltip-B4qpzto0.css          0.53 kB │ gzip:   0.32 kB
+out/renderer/assets/KitCard-CxRgt3i3.css          0.73 kB │ gzip:   0.34 kB
+out/renderer/assets/signin-banner-Hlo_qCeV.css    1.12 kB │ gzip:   0.43 kB
+out/renderer/assets/RowGroup-CrzMLiJo.css         1.25 kB │ gzip:   0.52 kB
+out/renderer/assets/FirstRunCards-ZM0dniCP.css    2.46 kB │ gzip:   0.79 kB
+out/renderer/assets/live-wjSgec8W.css             2.91 kB │ gzip:   0.95 kB
+out/renderer/assets/Card-pcEgb-v-.css             4.53 kB │ gzip:   1.44 kB
+out/renderer/assets/Memory-BJ-xoJl5.css           7.17 kB │ gzip:   1.94 kB
+out/renderer/assets/SettingsPage-D7luyT1v.css     7.42 kB │ gzip:   1.85 kB
+out/renderer/assets/TitleBar-A6h0TuWH.css         8.87 kB │ gzip:   2.24 kB
+out/renderer/assets/Button-DJA3SZeA.css          13.34 kB │ gzip:   4.00 kB
+out/renderer/assets/KitSurface-C5TeL7oh.css      14.56 kB │ gzip:   2.94 kB
+out/renderer/assets/index-DYsNP9y6.css          120.42 kB │ gzip:  21.47 kB
+out/renderer/assets/KitBlock-Doj0eF3j.js          0.60 kB │ gzip:   0.41 kB
+out/renderer/assets/AiPageCard-KjH6VyDr.js        0.66 kB │ gzip:   0.41 kB
+out/renderer/assets/PageBlock-EmAa9wUH.js         0.69 kB │ gzip:   0.46 kB
+out/renderer/assets/Card.module-BADyqiPN.js       1.22 kB │ gzip:   0.49 kB
+out/renderer/assets/KeptView-B2RzG7fI.js          1.23 kB │ gzip:   0.70 kB
+out/renderer/assets/RowGroup-DDrQwNqo.js          1.33 kB │ gzip:   0.70 kB
+out/renderer/assets/Tooltip-CWNVzAek.js           1.66 kB │ gzip:   0.93 kB
+out/renderer/assets/KitCard-wqa6Uyls.js           2.78 kB │ gzip:   1.22 kB
+out/renderer/assets/signin-banner-DNhpoDR2.js     3.27 kB │ gzip:   1.30 kB
+out/renderer/assets/PageView-CzsQwnlT.js          5.05 kB │ gzip:   2.23 kB
+out/renderer/assets/live-fpTKLqHu.js              7.65 kB │ gzip:   2.78 kB
+out/renderer/assets/FirstRunCards-DvQmh3gL.js     9.12 kB │ gzip:   3.29 kB
+out/renderer/assets/TitleBar-Z218_m2T.js         17.64 kB │ gzip:   6.55 kB
+out/renderer/assets/Memory-DXyMl6B1.js           24.11 kB │ gzip:   8.12 kB
+out/renderer/assets/SettingsPage-BzI0_tAy.js     29.98 kB │ gzip:   8.19 kB
+out/renderer/assets/store-DKChM3W-.js            36.19 kB │ gzip:  13.36 kB
+out/renderer/assets/KitSurface-CuU8zO6J.js       39.31 kB │ gzip:  13.65 kB
+out/renderer/assets/KeepButton-DL2OqQuj.js       99.76 kB │ gzip:  29.05 kB
+out/renderer/assets/index-BjM4xr8S.js           455.65 kB │ gzip: 138.93 kB
+out/renderer/assets/Button-bO0XhtCO.js          506.88 kB │ gzip: 149.86 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.01s
+
+Lead gate outcome: 0; full suite timeout is incomplete, never pass.

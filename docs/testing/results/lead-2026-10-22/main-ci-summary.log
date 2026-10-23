@@ -1,0 +1,22 @@
+Fast lane (ubuntu-latest)	Run pnpm test	2026-10-21T19:45:10.8916066Z ^[[2m Test Files ^[[22m ^[[1m^[[32m279 passed^[[39m^[[22m^[[2m | ^[[22m^[[33m1 skipped^[[39m^[[90m (280)^[[39m
+Fast lane (ubuntu-latest)	Run pnpm test	2026-10-21T19:45:10.8984913Z ^[[2m      Tests ^[[22m ^[[1m^[[32m6412 passed^[[39m^[[22m^[[2m | ^[[22m^[[33m3 skipped^[[39m^[[90m (6415)^[[39m
+Full suite (windows-latest, shard 4/4)	UNKNOWN STEP	2026-10-21T19:43:32.1978487Z ^[[2m Test Files ^[[22m ^[[1m^[[32m70 passed^[[39m^[[22m^[[90m (70)^[[39m
+Full suite (windows-latest, shard 4/4)	UNKNOWN STEP	2026-10-21T19:43:32.1980828Z ^[[2m      Tests ^[[22m ^[[1m^[[32m688 passed^[[39m^[[22m^[[90m (688)^[[39m
+Full suite (windows-latest, shard 4/4)	UNKNOWN STEP	2026-10-21T19:51:00.0552287Z   58 passed (7.2m)
+Full suite (windows-latest, shard 4/4)	UNKNOWN STEP	2026-10-21T19:51:00.3108849Z ##[notice]  58 passed (7.2m)
+Full suite (windows-latest, shard 3/4)	UNKNOWN STEP	2026-10-21T19:44:08.5910189Z ^[[2m Test Files ^[[22m ^[[1m^[[32m70 passed^[[39m^[[22m^[[90m (70)^[[39m
+Full suite (windows-latest, shard 3/4)	UNKNOWN STEP	2026-10-21T19:44:08.5915704Z ^[[2m      Tests ^[[22m ^[[1m^[[32m672 passed^[[39m^[[22m^[[90m (672)^[[39m
+Full suite (windows-latest, shard 3/4)	UNKNOWN STEP	2026-10-21T19:48:20.2454880Z   59 passed (3.8m)
+Full suite (windows-latest, shard 3/4)	UNKNOWN STEP	2026-10-21T19:48:20.4196496Z ##[notice]  59 passed (3.8m)
+Full suite (windows-latest, shard 2/4)	UNKNOWN STEP	2026-10-21T19:43:23.0434013Z ^[[2m Test Files ^[[22m ^[[1m^[[32m70 passed^[[39m^[[22m^[[90m (70)^[[39m
+Full suite (windows-latest, shard 2/4)	UNKNOWN STEP	2026-10-21T19:43:23.0468053Z ^[[2m      Tests ^[[22m ^[[1m^[[32m4023 passed^[[39m^[[22m^[[90m (4023)^[[39m
+Full suite (windows-latest, shard 2/4)	UNKNOWN STEP	2026-10-21T19:51:08.9388071Z   57 passed (7.5m)
+Full suite (windows-latest, shard 2/4)	UNKNOWN STEP	2026-10-21T19:51:09.1540858Z ##[notice]  57 passed (7.5m)
+Full suite (windows-latest, shard 1/4)	UNKNOWN STEP	2026-10-21T19:45:59.2261610Z ^[[2m Test Files ^[[22m ^[[1m^[[32m70 passed^[[39m^[[22m^[[90m (70)^[[39m
+Full suite (windows-latest, shard 1/4)	UNKNOWN STEP	2026-10-21T19:45:59.2265607Z ^[[2m      Tests ^[[22m ^[[1m^[[32m1030 passed^[[39m^[[22m^[[2m | ^[[22m^[[33m2 skipped^[[39m^[[90m (1032)^[[39m
+Full suite (windows-latest, shard 1/4)	UNKNOWN STEP	2026-10-21T19:50:53.6990974Z   64 passed (4.5m)
+Full suite (windows-latest, shard 1/4)	UNKNOWN STEP	2026-10-21T19:50:53.8757175Z ##[notice]  64 passed (4.5m)
+Golden lane (windows-latest)	Unit, article and fidelity tests (JSON for the report)	2026-10-21T19:49:16.3497217Z ^[[2m Test Files ^[[22m ^[[1m^[[32m280 passed^[[39m^[[22m^[[90m (280)^[[39m
+Golden lane (windows-latest)	Unit, article and fidelity tests (JSON for the report)	2026-10-21T19:49:16.3533912Z ^[[2m      Tests ^[[22m ^[[1m^[[32m6413 passed^[[39m^[[22m^[[2m | ^[[22m^[[33m2 skipped^[[39m^[[90m (6415)^[[39m
+Golden lane (windows-latest)	E2E with FID-14 and Tier B (JSON for the report)	2026-10-21T20:17:45.2040012Z   238 passed (25.2m)
+Golden lane (windows-latest)	E2E with FID-14 and Tier B (JSON for the report)	2026-10-21T20:17:45.8321463Z ##[notice]  238 passed (25.2m)

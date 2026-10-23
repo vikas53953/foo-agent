@@ -1,0 +1,2 @@
+date_ist	main_sha	main_run	proven	partial	fail	no_journey	prs_merged	prs_ready	delta	stuck_because
+2026-10-23	0d04a9f9105e42aef0b4a22238285a9007635c3e	https://github.com/vikas53953/foo-agent/actions/runs/39725331473	4	106	5	10			0	Current main matrix remains 4 proven; no verified merge or ready-PR receipt is recorded. The three focused runs are not three-pass acceptance. Matrix also records 62 legacy NA and 3 not-built rows outside no_journey.
