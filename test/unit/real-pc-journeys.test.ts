@@ -186,6 +186,27 @@ const referencedIds = (journey: Journey) => {
 };
 
 describe('real-PC journey contracts', () => {
+  it('B05 uses an unclean crash transition before its recovery-card proof', () => {
+    const b05 = journeys.find(({ name }) => name === 'B05-restart.json')?.value;
+    const steps = b05?.steps ?? [];
+    const goIndex = steps.findIndex((step) => step.do === 'clickIf' && step.tid === 'card-plan-go');
+    const restartIndex = steps.findIndex(
+      (step, index) => index > goIndex && (step.do === 'relaunch' || step.do === 'crashRelaunch'),
+    );
+    expect(goIndex).toBeGreaterThanOrEqual(0);
+    expect(restartIndex).toBeGreaterThan(goIndex);
+    expect(steps[restartIndex]?.do).toBe('crashRelaunch');
+    expect(
+      steps.slice(restartIndex + 1).some(
+        (step) =>
+          step.do === 'check' &&
+          step.css?.includes('card-error') &&
+          step.count === 1 &&
+          step.note?.includes('AT-118'),
+      ),
+    ).toBe(true);
+  });
+
   it('B02 proves the answered card before the next asking card', () => {
     const b02 = journeys.find(({ name }) => name === 'B02-choice.json')?.value;
     const initialProof = b02?.steps?.find((step) => step.do === 'waitReply' && step.shot === 'choice');

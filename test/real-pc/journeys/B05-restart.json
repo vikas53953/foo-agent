@@ -22,7 +22,7 @@
       "ms": 8000
     },
     {
-      "do": "relaunch"
+      "do": "crashRelaunch"
     },
     {
       "do": "wait",
