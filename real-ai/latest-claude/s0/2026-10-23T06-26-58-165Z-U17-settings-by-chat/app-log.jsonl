@@ -1,5 +1,0 @@
-{"t":1792736819112,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1792736824810,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1792736824811,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1792736829168,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
-{"t":1792736854925,"lvl":"info","mod":"engine","evt":"memory.provenance_rejected","kind":"VALIDATION"}

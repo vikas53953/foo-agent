@@ -1,0 +1,181 @@
+{
+  "journey": "R-dark",
+  "title": "Group R dark reply contrast",
+  "steps": 15,
+  "failed": 5,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T16-22-02-121Z-R-dark",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-429, AT-278: clean dark mode request",
+      "sentAt": 1792772527722,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-429: clean dark mode",
+      "before": 0,
+      "firstReplyMs": 30900,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I’ll remember: Prefers dark mode\nUndo",
+      "replyTexts": [
+        "I’ll remember: Prefers dark mode\nUndo"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 37000
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "note": "AT-429, AT-278: clean greeting in dark mode",
+      "sentAt": 1792772564917,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-429: clean dark greeting",
+      "before": 0,
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "replyTexts": [],
+      "kit": [],
+      "ms": 120008
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "AT-429, AT-278: clean last user bubble keeps the dark contrast colors",
+      "found": 6,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "note": "AT-429, AT-278: messy typo dark mode request",
+      "sentAt": 1792772685087,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "note": "AT-429: messy typo dark mode",
+      "before": 0,
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "replyTexts": [],
+      "kit": [],
+      "ms": 120113
+    },
+    {
+      "i": 7,
+      "do": "send",
+      "note": "AT-429, AT-278: messy typo greeting in dark mode",
+      "sentAt": 1792772805365,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "note": "AT-429: messy typo dark greeting",
+      "before": 0,
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "replyTexts": [],
+      "kit": [],
+      "ms": 120231
+    },
+    {
+      "i": 9,
+      "do": "check",
+      "note": "AT-429, AT-278: messy typo last user bubble keeps the dark contrast colors",
+      "found": 7,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "note": "AT-429, AT-278: Hinglish dark mode request",
+      "sentAt": 1792772925759,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "AT-429: Hinglish dark mode",
+      "before": 0,
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "replyTexts": [],
+      "kit": [],
+      "ms": 120021
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "note": "AT-429, AT-278: Hinglish greeting in dark mode",
+      "sentAt": 1792773045946,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-429: Hinglish dark greeting",
+      "before": 0,
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "replyTexts": [],
+      "kit": [],
+      "ms": 120199
+    },
+    {
+      "i": 14,
+      "do": "check",
+      "note": "AT-429, AT-278: Hinglish last user bubble keeps the dark contrast colors",
+      "found": 9,
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}
