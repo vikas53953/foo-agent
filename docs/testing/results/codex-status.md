@@ -1,12 +1,12 @@
-# Codex status — 23 October 2026, 07:37 IST
+# Codex status — 23 October 2026, 09:35 IST
 
 ## Active real-AI run
 
-[39887449456](https://github.com/vikas53953/foo-agent/actions/runs/39887449456) is running with all inventory journeys selected, after checking that no other real-AI run was active. Tested revision is **branch c4d41876055bf5608ee7e776ce332b95c7ce2b49**, not main. Freshly fetched main remains `0d04a9f9105e42aef0b4a22238285a9007635c3e`; the lead merge-base matches it. This run exercises the repaired fixtures. No result is inferred while it runs.
+[39897913189](https://github.com/vikas53953/foo-agent/actions/runs/39897913189) is running with all inventory journeys selected, after checking that no other real-AI run was active. Tested revision is **branch 819c781c192b39a0c7adb09f6a2deb5a3a06a0e7**, not main. Freshly fetched main remains `0d04a9f9105e42aef0b4a22238285a9007635c3e`; the lead merge-base matches it. This run exercises the repaired fixtures. No result is inferred while it runs.
 
-## Integration verification now running
+## Integration verification failures under investigation
 
-[Full CI 39888206392](https://github.com/vikas53953/foo-agent/actions/runs/39888206392) and [partitioned mutation 39888202460](https://github.com/vikas53953/foo-agent/actions/runs/39888202460) test branch **17a0d5ccad6e0631d40c70669b9a974fa7440a87**. These include the observer repair, preserved mutation target union, and explicit preload capture guard. Local Node TypeScript, lint, and preload preflight passed after correcting TS2532. The new integration is pending; older green runs below do not verify these new changes. No waivers or threshold changes.
+[Full CI 39888206392](https://github.com/vikas53953/foo-agent/actions/runs/39888206392) and [partitioned mutation 39888202460](https://github.com/vikas53953/foo-agent/actions/runs/39888202460) test branch **17a0d5ccad6e0631d40c70669b9a974fa7440a87**. These include the observer repair, preserved mutation target union, and explicit preload capture guard. Local Node TypeScript, lint, and preload preflight passed after correcting TS2532. Full CI failed in [Golden](https://github.com/vikas53953/foo-agent/actions/runs/39888206392/job/120201825513); all Windows shards passed. Mutation remains active but [shared-redaction](https://github.com/vikas53953/foo-agent/actions/runs/39888202460/job/120201308677), [engine-ai](https://github.com/vikas53953/foo-agent/actions/runs/39888202460/job/120201308872) and [renderer](https://github.com/vikas53953/foo-agent/actions/runs/39888202460/job/120201309013) failed. Separate agents are diagnosing these failures. A first full-log download hit a TLS handshake timeout; individual job retrieval is being retried. Integration is not accepted; older green runs below do not verify these new changes. No waivers or threshold changes.
 
 ## Verified CI and completed branch evidence
 
@@ -31,7 +31,7 @@ Needs Vikas: CR-0052 decision; external account prerequisites and real-person/na
 
 ## Drift check
 
-(a) Real-AI run or judged result with link: YES — [new full run](https://github.com/vikas53953/foo-agent/actions/runs/39887449456).
+(a) Real-AI run or judged result with link: YES — [new full run](https://github.com/vikas53953/foo-agent/actions/runs/39897913189).
 
 (b) Outside literal runbook: previously authorized CI/fixture repairs and two-hour continuation; no new product or acceptance-rule changes this loop. Later user decisions supersede the old spending caps.
 
@@ -40,3 +40,5 @@ Needs Vikas: CR-0052 decision; external account prerequisites and real-person/na
 [Previous checkpoint and historical run counts](history/codex-status-before-20261023-0114.md).
 
 This loop also evaluated a proposed AT-116a journey. A real job must remain WORKING without progress long enough to exercise its slow tooltip; no deterministic real-AI precondition is available yet. The feature remains a missing journey rather than adding a placeholder or treating an unmet precondition as a product failure.
+
+[Prior real-AI39887449456](https://github.com/vikas53953/foo-agent/actions/runs/39887449456) completed at workflow level on branch c4d41876055bf5608ee7e776ce332b95c7ce2b49. Reviewers judge s0/s1 and s2/s3 independently; no pass counts or feature acceptance inferred before review. Current loop fetched unchanged main and regenerated the matrix with unchanged classifications. No new Group R journey was added this loop; unresolved prerequisites remain listed above.
