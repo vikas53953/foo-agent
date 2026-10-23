@@ -40,6 +40,7 @@ U14-memory
 U15-routines
 U16-settings-all
 U17-settings-by-chat
+R-dark-hi
 U18-new-helper-group
 U19-screens
 U20-errors-honesty

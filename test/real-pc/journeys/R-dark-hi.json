@@ -1,0 +1,34 @@
+{
+  "id": "R-dark-hi",
+  "title": "Setting by chat, then hi: foo replies and does not change the setting again",
+  "spec": "08-2 §7.2 part 7; 08-4 §25.6 (CR-0043); 06 settings by chat; AT-094",
+  "covers": ["AT-094"],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Switch to dark mode"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "dark",
+      "expect": "the theme turns dark and foo shows one line \"Changed: Theme → Dark. Undo\"",
+      "expectJs": "document.documentElement.dataset.theme === 'dark'"
+    },
+    {
+      "do": "send",
+      "text": "hi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "hi-after-dark",
+      "expect": "foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me)return false;const after=[...document.querySelectorAll('[data-testid=\"bubble-foo\"],[data-testid=\"thread-marker\"][data-setting]')].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);return after.some((e)=>e.dataset.testid==='bubble-foo')&&!after.some((e)=>e.dataset.testid==='thread-marker')})()"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
