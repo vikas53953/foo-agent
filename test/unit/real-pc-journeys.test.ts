@@ -190,20 +190,14 @@ describe('real-PC journey contracts', () => {
     const b05 = journeys.find(({ name }) => name === 'B05-restart.json')?.value;
     const steps = b05?.steps ?? [];
     const goIndex = steps.findIndex((step) => step.do === 'clickIf' && step.tid === 'card-plan-go');
-    const restartIndex = steps.findIndex(
-      (step, index) => index > goIndex && (step.do === 'relaunch' || step.do === 'crashRelaunch'),
-    );
+    const restartIndex = steps.findIndex((step, index) => index > goIndex && (step.do === 'relaunch' || step.do === 'crashRelaunch'));
     expect(goIndex).toBeGreaterThanOrEqual(0);
     expect(restartIndex).toBeGreaterThan(goIndex);
     expect(steps[restartIndex]?.do).toBe('crashRelaunch');
     expect(
-      steps.slice(restartIndex + 1).some(
-        (step) =>
-          step.do === 'check' &&
-          step.css?.includes('card-error') &&
-          step.count === 1 &&
-          step.note?.includes('AT-118'),
-      ),
+      steps
+        .slice(restartIndex + 1)
+        .some((step) => step.do === 'check' && step.css?.includes('card-error') && step.count === 1 && step.note?.includes('AT-118')),
     ).toBe(true);
   });
 
@@ -229,6 +223,8 @@ describe('real-PC journey contracts', () => {
       Object.defineProperty(plan, 'innerText', { configurable: true, value: plan.textContent });
     expect(planProof?.expectJs).toBeTruthy();
     expect(dom.window.eval(planProof!.expectJs!)).toBe(true);
+    dom.window.document.querySelectorAll('[data-testid="card-plan"]')[1]!.remove();
+    expect(dom.window.eval(planProof!.expectJs!)).toBe(false);
     dom.window.close();
   });
 
