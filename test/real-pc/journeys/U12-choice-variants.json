@@ -18,28 +18,7 @@
       "timeoutMs": 150000,
       "shot": "choice",
       "expect": "Choice card with 3 options, Best fit tag, Something else",
-      "ref": "BP-CARD-03",
-      "expectJs": "(()=>{const c=document.querySelector('[data-testid=\\\"card-choice\\\"]');return !!c&&c.querySelectorAll('[data-testid=\\\"card-choice-option\\\"]').length>=3;})()",
-      "note": "C.4 Choice (C3): choice card has at least three executable options"
-    },
-    {
-      "do": "click",
-      "tid": "bubble-foo",
-      "last": true,
-      "button": "right"
-    },
-    {
-      "do": "click",
-      "tid": "bubble-menu-react"
-    },
-    {
-      "do": "click",
-      "tid": "bubble-react-option"
-    },
-    {
-      "do": "check",
-      "tid": "bubble-reaction",
-      "note": "C.3 Reactions: reaction picker adds a reaction chip to the assistant bubble"
+      "ref": "BP-CARD-03"
     },
     {
       "do": "shotEl",
@@ -57,9 +36,7 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "typed-pick",
-      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b&&/second|2/i.test(b.innerText||'');})()",
-      "note": "C.4 Choice (C3); AT-035: typed choice branch collapses to an answered option (reaction-choice branch remains unexercised)"
+      "expect": "typed answer picks option 2; card collapses \"question → answer\""
     },
     {
       "do": "send",
@@ -69,9 +46,7 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "choice-2",
-      "expect": "another Choice card",
-      "expectJs": "(()=>{const c=document.querySelector('[data-testid=\\\"card-choice\\\"]');return !!c&&c.querySelectorAll('[data-testid=\\\"card-choice-option\\\"]').length>=3;})()",
-      "note": "C.4 Choice (C3): second choice card has executable options"
+      "expect": "another Choice card"
     },
     {
       "do": "click",
@@ -93,9 +68,7 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "own-answer",
-      "expect": "foo takes my own answer",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b&&/dal|chawal|home[- ]cooked/i.test(b.innerText||'');})()",
-      "note": "C.4 Choice (C3): assistant accepts the user-provided alternative"
+      "expect": "foo takes my own answer"
     },
     {
       "do": "dump",

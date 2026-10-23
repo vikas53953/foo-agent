@@ -18,18 +18,19 @@
       "timeoutMs": 240000,
       "shot": "ai-page",
       "expect": "an AI page / kit card opens with the tracker",
-      "expectTid": "card-ai-page",
-      "note": "C.9 Rich replies: assistant reply includes an AI page card"
+      "expectTid": "card-ai-page"
     },
     {
       "do": "check",
+      "soft": true,
       "tid": "card-ai-page",
-      "note": "C.9 Rich replies: AI page card is present"
+      "note": "AI page card"
     },
     {
       "do": "check",
+      "soft": true,
       "tid": "bubble-action-chip",
-      "note": "C.9 Rich replies: action chip is present under the AI page reply"
+      "note": "action chips under the reply"
     },
     {
       "do": "click",

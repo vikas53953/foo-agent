@@ -1,5 +1,0 @@
-
-> foo@0.0.1 spec:verify <lane-c>
-> tsx scripts/spec-verify.ts
-
-spec verified

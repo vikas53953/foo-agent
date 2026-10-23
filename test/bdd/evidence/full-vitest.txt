@@ -1,6 +1,0 @@
-Lane B full Vitest evidence (sanitized)
-Base after refresh: 0665cf67d2ab6cf0515f6d3198df6dfc35357e82
-Bounded command: corepack.cmd pnpm exec vitest run --maxWorkers=2
-Result: INCOMPLETE; stopped after approximately 17 minutes when browser-heavy workers stalled under host contention. No local pass claim.
-Observed failures before stop included submit, ART-09, sitenotes, recipes, actions, ART-08a browser, and memory export suites; the run did not reach a final aggregate.
-Earlier command note: corepack.cmd pnpm test -- --maxWorkers=2 passed the separator literally, spawned 280 workers, and ended with 25 failed files, 254 passed, 35 failed tests, 6371 passed, and 9 skipped. This result is retained as a host-contention diagnostic only.

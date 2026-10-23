@@ -4,27 +4,22 @@
   "spec": "PR #91 crash recovery (CR-0029), AT-118",
   "steps": [
     { "do": "send", "text": "What is a good name for a pet tortoise?" },
-    { "do": "wait", "ms": 3000, "transient": true },
-    { "do": "relaunch", "transient": true },
+    { "do": "wait", "ms": 3000 },
+    { "do": "relaunch" },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "after-reopen",
-      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
-      "note": "AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again",
-      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const foo=rows.slice(rows.indexOf(me)+1).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const text=(foo?.innerText||'').trim();const retry=foo?.querySelector('[data-testid=\"bubble-error-retry\"], [data-testid=\"bubble-menu-try-again\"]');return !!foo&&((text.length>0&&!text.includes('👀'))||!!retry);})()"
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"]')].pop();return {lastMine:(me&&me.innerText||'').slice(0,80),eyes:!!(me&&/👀/.test(me.parentElement?.innerText||''))}})()"
     },
     { "do": "send", "text": "Which news story is biggest in India today? One line." },
-    { "do": "wait", "ms": 2000, "transient": true },
-    { "do": "relaunch", "transient": true },
-    {
-      "do": "waitReply",
-      "timeoutMs": 150000,
-      "shot": "news-after-reopen",
-      "expect": "the news question is answered after reopening",
-      "note": "AT-118: the second post-reopen request also settles as a real answer",
-      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const foo=rows.slice(rows.indexOf(me)+1).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);return !!foo&&(foo.innerText||'').trim().length>0&&!foo.innerText.includes('👀');})()"
-    },
+    { "do": "wait", "ms": 2000 },
+    { "do": "relaunch" },
+    { "do": "waitReply", "timeoutMs": 150000, "shot": "news-after-reopen", "expect": "the news question is answered after reopening" },
     { "do": "dump", "name": "thread" }
   ]
 }

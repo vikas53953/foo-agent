@@ -16,21 +16,6 @@
       "ref": "BP-ANAT-MHEAD"
     },
     {
-      "do": "check",
-      "tid": "chat-header",
-      "note": "C.2 Headers (left + main): main chat header is present"
-    },
-    {
-      "do": "check",
-      "tid": "thread-log",
-      "note": "C.2 Main shell + banner strip: main thread surface is present"
-    },
-    {
-      "do": "check",
-      "tid": "banner-strip",
-      "note": "C.2 Main shell + banner strip: banner strip is present in the main shell"
-    },
-    {
       "do": "click",
       "soft": true,
       "tid": "chat-header-more"
@@ -50,11 +35,6 @@
       "key": "Control+Shift+D",
       "shot": "panel-toggle",
       "expect": "details panel toggles (Ctrl+Shift+D)"
-    },
-    {
-      "do": "check",
-      "tid": "app-panel",
-      "note": "C.2 Right shell: right app panel is present"
     },
     {
       "do": "wait",

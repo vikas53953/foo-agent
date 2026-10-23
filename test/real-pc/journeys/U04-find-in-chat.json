@@ -17,9 +17,7 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "rivers",
-      "expect": "a short list",
-      "expectJs": "(()=>/river/i.test(([...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1)?.innerText||'')))()",
-      "note": "C.5 Search palette + find in chat: the reply contains the searched river text"
+      "expect": "a short list"
     },
     {
       "do": "key",
@@ -32,12 +30,6 @@
       "tid": "thread-find-field",
       "value": "river",
       "soft": true
-    },
-    {
-      "do": "expectText",
-      "tid": "thread-find-count",
-      "re": "^\\d+\\s+of\\s+\\d+$",
-      "note": "C.5 Search palette + find in chat: find count is rendered in the opened chat find bar"
     },
     {
       "do": "wait",

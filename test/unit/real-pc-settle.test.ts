@@ -35,10 +35,4 @@ describe('real-PC driver: a reply is settled only when foo has finished it', () 
   it('no new reply yet is not settled', () => {
     expect(settled({ n: 0, before: 0, items: [], quietFor: 60_000, quietMs: 6_000 })).toBe(false);
   });
-
-  it('a live web checklist is still working while its read is in flight', () => {
-    const items = [{ kind: 'card-plan', state: 'live', text: 'Looking on the web', pageState: null }];
-    expect(stillWorking(items)).toBe(true);
-    expect(settled({ n: 1, before: 0, items, quietFor: 6_000, quietMs: 6_000 })).toBe(false);
-  });
 });

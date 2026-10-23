@@ -331,9 +331,6 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-308,,,10-acceptance-2 §C.8; 04-2 §21.7,test/unit/p1-suggestions.test.ts,M9,live
 ,,AT-309,,,10-acceptance-2 §C.8; 04-2 §21.2; CR-0021 pick 11,test/e2e/p1-composer.spec.ts,M9,live
 ,,AT-325,,,10-acceptance-2 §C.8; 02 §F7.1,test/e2e/p1-composer.spec.ts,M9,live
-,,AT-273,,,10-acceptance-1 §J19; 04 §12.5,test/e2e/lane-d-a11y.spec.ts,M9,pending
-,,AT-284,,,10-acceptance-1 §X-151; 04 §1.3,test/unit/lane-d-grouping.test.ts,M9,pending
-,,AT-285,,,10-acceptance-1 §X-152; 04 §1.6; 03-2 §3.6.6,test/unit/lane-d-scroll.test.ts,M9,pending
 ,,AT-310,,,10-acceptance-2 §C.8; 05 checklist; CR-0021 pick 12,test/e2e/p1-cards.spec.ts,M9,live
 ,,AT-311,,,10-acceptance-2 §C.8; 05 Approval; CR-0021 pick 15,test/e2e/p1-cards.spec.ts,M9,live
 ,,AT-312,,,10-acceptance-2 §C.8; 02-2 §F15.9.3; CR-0021 picks 13-14,test/e2e/p1-cards.spec.ts,M9,live

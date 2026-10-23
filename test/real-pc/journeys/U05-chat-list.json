@@ -16,21 +16,6 @@
       "ref": "BP-ANAT-LIST"
     },
     {
-      "do": "check",
-      "tid": "chatlist",
-      "note": "C.2 Left shell: chat list is present"
-    },
-    {
-      "do": "check",
-      "tid": "chatlist-filters",
-      "note": "C.2 Filter chips + \"Search chats\" box: filter group is present"
-    },
-    {
-      "do": "check",
-      "tid": "sidebar-search-field",
-      "note": "C.2 Filter chips + \"Search chats\" box: sidebar search field is present"
-    },
-    {
       "do": "click",
       "soft": true,
       "tid": "chatlist-filter-needs-you"

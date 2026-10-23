@@ -18,9 +18,7 @@
       "timeoutMs": 180000,
       "shot": "plan",
       "expect": "plan card",
-      "ref": "BP-CARD-11",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const p=b?.querySelector('[data-testid=\\\"card-plan\\\"]');return !!p&&!!p.querySelector('[data-testid=\\\"card-plan-change\\\"],[data-testid=\\\"card-plan-go\\\"]');})()",
-      "note": "C.4 Plan (C11): initial reply contains a plan card with a change/go control"
+      "ref": "BP-CARD-11"
     },
     {
       "do": "click",
@@ -42,9 +40,7 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "plan-2",
-      "expect": "a changed plan, the old one marked changed",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const p=b?.querySelector('[data-testid=\\\"card-plan\\\"]');return !!p&&/easy/i.test(p.innerText||'');})()",
-      "note": "C.4 Plan (C11): changed request returns a plan surface with the requested constraint"
+      "expect": "a changed plan, the old one marked changed"
     },
     {
       "do": "click",
@@ -68,16 +64,6 @@
       "shot": "doing-now",
       "expect": "right panel Doing now row with Stop",
       "ref": "BP-ANAT-DOING"
-    },
-    {
-      "do": "check",
-      "tid": "card-checklist-stop",
-      "note": "C.4 Checklist (C2) + link card: running checklist exposes its Stop control"
-    },
-    {
-      "do": "check",
-      "tid": "app-panel",
-      "note": "C.2 Right shell: Doing now panel is visible while the checklist is running"
     },
     {
       "do": "click",

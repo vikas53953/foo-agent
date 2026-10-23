@@ -1,9 +1,0 @@
-
-> foo@0.0.1 fid:guard <lane-c>
-> tsx scripts/fid-guard.ts "--base" "origin/main"
-
-FID-06: added without a CR:
-  test/eval/deepeval_adapter.py: threshold: self.threshold = 1.0
-  test/eval/deepeval_adapter.py: threshold: self.success = self.score >= self.threshold
-  test/eval/deepeval_adapter.py: threshold: self.success = self.score >= self.threshold
- ELIFECYCLE  Command failed with exit code 1.

@@ -2,7 +2,7 @@
 // 127.0.0.1 / localhost, the app with the fake AI (08-3 §22.3), and a CDP connection to foo's own browser (FOO_TEST runs with
 // FOO_TEST_BROWSER_DEBUG=1 only) so the test can stand in for the person: type on the sign-in page, solve the puzzle, close
 // the window. The test never types through foo, and foo's AI never sees what the person types.
-import { chromium, expect, test, type Browser, type ElectronApplication, type Page } from '@playwright/test';
+import { chromium, expect, type Browser, type ElectronApplication, type Page } from '@playwright/test';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { TID } from '../../src/shared/testids';
@@ -64,8 +64,6 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
   const app = await launch(dirs, [], {
     FOO_FAKE_AI: file,
     FOO_TEST_ALLOW_HOSTS: '127.0.0.1,localhost',
-    // Keep the CAPTCHA Host header while routing this local fixture directly to its IPv4 listener.
-    FOO_TEST_BROWSER_HOST_RULES: 'MAP localhost 127.0.0.1',
     FOO_TEST_BROWSER_DEBUG: '1',
   });
   const page = await app.firstWindow();
@@ -131,15 +129,9 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
     },
     turns: () => fakeTurns(dirs),
     async close() {
-      await test.step('Disconnect the person-side CDP observer', async () => {
-        await cdp?.close().catch(() => undefined);
-      });
-      await test.step('Close the Foo application', async () => {
-        await app.close();
-      });
-      await test.step('Close the local sign-in sites', async () => {
-        await sites.close();
-      });
+      await cdp?.close().catch(() => undefined);
+      await app.close();
+      await sites.close();
     },
   };
   return run;

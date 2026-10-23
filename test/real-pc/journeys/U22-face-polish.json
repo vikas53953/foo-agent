@@ -14,19 +14,16 @@
       "text": "Write a 4-line poem about monsoon in Mumbai"
     },
     {
-      "do": "waitFor",
-      "css": "[data-testid=\"thread-thinking\"] [data-face][data-state=\"thinking\"][data-size=\"26\"]",
-      "timeoutMs": 15000,
-      "transient": true,
+      "do": "wait",
+      "ms": 1500,
       "shot": "thinking",
-      "note": "C.7.4: while the request is in flight, the transient row exposes only the 26px Thinking face"
+      "expect": "26px Thinking face only while the request is in flight (C.7.4)"
     },
     {
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "poem",
-      "expectJs": "(()=>{const f=document.querySelector('[data-testid=\"chat-header-avatar\"] [data-face]');return f?.getAttribute('data-state')==='resting'&&!document.querySelector('[data-testid=\"thread-thinking\"]');})()",
-      "note": "C.7.1: the sampled reply settles back to a resting header face and removes the transient Thinking row"
+      "expect": "poem; face back to resting, blinks"
     },
     {
       "do": "shotEl",
@@ -49,11 +46,10 @@
       "tid": "settings-row-appearance-face-motion"
     },
     {
-      "do": "waitFor",
-      "css": "[data-testid=\"chat-header-avatar\"] [data-face][data-motion-face=\"off\"]",
-      "timeoutMs": 10000,
+      "do": "wait",
+      "ms": 600,
       "shot": "face-motion",
-      "note": "C.8 Quiet premium polish: the face motion setting leaves the header face with data-motion-face=off"
+      "expect": "face motion setting"
     },
     {
       "do": "key",

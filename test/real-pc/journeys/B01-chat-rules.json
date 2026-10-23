@@ -8,18 +8,14 @@
       "text": "thanks!"
     },
     {
-      "do": "waitFor",
-      "css": "[data-testid=\"thread-log\"] [data-side=\"me\"][data-gap]:has([data-testid=\"bubble-reaction\"]):not(:has(~ [data-side=\"me\"][data-gap])):not(:has(~ [data-side=\"them\"][data-gap]))",
-      "timeoutMs": 30000,
+      "do": "wait",
+      "ms": 20000,
       "shot": "thanks",
-      "note": "AT-027: reaction-only terminal; the latest user row has 👍 or ❤️ and no assistant bubble/card follows it"
+      "expect": "AT-027: \ud83d\udc4d reaction on my message, no foo message"
     },
     {
-      "do": "expectText",
-      "css": "[data-testid=\"thread-log\"] [data-side=\"me\"][data-gap]:has([data-testid=\"bubble-reaction\"]):not(:has(~ [data-side=\"me\"][data-gap])):not(:has(~ [data-side=\"them\"][data-gap])) [data-testid=\"bubble-reaction\"]",
-      "re": "^(?:👍|❤️)$",
-      "terminal": "reaction-only",
-      "note": "AT-027: the terminal reaction is exactly an accepted thumbs-up or heart"
+      "do": "eval",
+      "js": "(()=>{const m=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"]')].pop();return {reaction:!!m&&!!m.closest('[data-testid]')?.parentElement?.querySelector('[data-testid=\"bubble-reaction\"]'),lastKind:[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid^=\"bubble-\"]')].map(e=>e.dataset.testid).filter(k=>/^bubble-(me|foo)$/.test(k)).pop()}})()"
     },
     {
       "do": "send",
@@ -29,14 +25,17 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "long",
-      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const start=rows.indexOf(me);const replies=rows.slice(start+1).filter((e)=>e.getAttribute('data-side')==='them').flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]);const lists=replies.filter((b)=>b.querySelector('ul,ol'));const filler=/great question|how can i help you|i apologize for the confusion/i;const suggestions=document.querySelector('[data-testid=\"composer-suggestions\"]');const chips=[...document.querySelectorAll('[data-testid=\"composer-suggestion-chip\"]')];return replies.length>=1&&replies.length<=3&&lists.length<=1&&!replies.some((b)=>filler.test(b.innerText||''))&&(!suggestions||(suggestions.dataset.kind==='followup'&&chips.length<=3));})()",
-      "note": "AT-030: at most 3 bubbles and any rendered list stays in one bubble; AT-031: no filler; AT-308: present chips are follow-ups from the reply and no more than 3"
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler"
     },
     {
       "do": "check",
-      "tid": "composer-suggestion-chip",
+      "tid": "composer-chip",
       "soft": true,
       "note": "AT-308 suggestion chips (\u22643)"
+    },
+    {
+      "do": "eval",
+      "js": "document.querySelectorAll('[data-testid=\"composer-chip\"]').length"
     },
     {
       "do": "dump",

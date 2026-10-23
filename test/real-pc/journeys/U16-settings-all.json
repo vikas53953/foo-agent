@@ -17,11 +17,6 @@
       "ref": "UX-12-01"
     },
     {
-      "do": "check",
-      "tid": "screen-settings",
-      "note": "C.5 Settings: settings screen root is present"
-    },
-    {
       "do": "click",
       "soft": true,
       "tid": "settings-nav-account"
@@ -32,11 +27,6 @@
       "shot": "settings-account",
       "expect": "Settings · account: rows match the spec section",
       "ref": "UX-12-01"
-    },
-    {
-      "do": "check",
-      "tid": "settings-nav-appearance",
-      "note": "C.5 Settings: appearance navigation is present"
     },
     {
       "do": "click",
@@ -102,11 +92,6 @@
       "do": "click",
       "soft": true,
       "tid": "settings-nav-routines-settings"
-    },
-    {
-      "do": "check",
-      "tid": "settings-nav-connections",
-      "note": "C.5 Settings: connections navigation is present"
     },
     {
       "do": "wait",

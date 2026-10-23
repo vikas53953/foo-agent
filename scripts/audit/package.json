@@ -1,8 +1,0 @@
-{
-  "name": "foo-lane-f-audit",
-  "private": true,
-  "description": "Scoped Lane F audit tooling dependencies; does not modify the app dependency graph.",
-  "devDependencies": {
-    "@stryker-mutator/core": "10.0.0"
-  }
-}

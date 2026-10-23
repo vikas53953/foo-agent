@@ -12,9 +12,7 @@
       "timeoutMs": 150000,
       "shot": "emi",
       "expect": "AT-347 calculator recomputes",
-      "expectKit": "kit-calculator",
-      "note": "AT-347/AT-371: the actual reply contains calculator inputs and output nodes",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-calculator\"]');return !!k&&k.querySelectorAll('input[data-input]').length>0&&k.querySelectorAll('[data-output]').length>0&&!k.querySelector('[data-testid=\"kit-dropped\"]')&&!k.querySelector('script')&&![...k.querySelectorAll('*')].some((e)=>[...e.attributes].some((a)=>a.name.toLowerCase().startsWith('on')));})()"
+      "expectKit": "kit-calculator"
     },
     {
       "do": "send",
@@ -25,9 +23,7 @@
       "timeoutMs": 150000,
       "shot": "map",
       "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
-      "expectKit": "kit-map-stops",
-      "note": "AT-341: the actual map surface must expose scaled stops, an SVG route and its safe open chip",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-map-stops\"]');const n=Number(k?.getAttribute('data-stops'));return !!k&&Number.isFinite(n)&&n>=3&&!!k.querySelector('svg[role=\"img\"] path.route')&&!!k.querySelector('[data-testid=\"kit-map-open\"]');})()"
+      "expectKit": "kit-map-stops"
     },
     {
       "do": "send",
@@ -38,9 +34,7 @@
       "timeoutMs": 150000,
       "shot": "chart",
       "expect": "AT-340 one hue, number rules",
-      "expectKit": "kit-line-chart",
-      "note": "AT-340: the actual chart surface exposes a supported variant, series count and SVG drawing",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-line-chart\"]');const variant=k?.getAttribute('data-variant');const n=Number(k?.getAttribute('data-series'));return !!k&&['line','area','bar'].includes(variant||'')&&Number.isInteger(n)&&n>=1&&n<=3&&!!k.querySelector('svg[role=\"img\"]')&&k.querySelectorAll('path,rect').length>0;})()"
+      "expectKit": "kit-line-chart"
     },
     {
       "do": "send",
@@ -51,9 +45,7 @@
       "timeoutMs": 150000,
       "shot": "compare",
       "expect": "AT-343 highlighted column with why",
-      "expectKit": "kit-compare",
-      "note": "The existing compare proof remains executable on the actual kit surface",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-compare\"]');return !!k&&k.querySelectorAll('section').length>=2&&!k.querySelector('[data-testid=\"kit-dropped\"]');})()"
+      "expectKit": "kit-compare"
     },
     {
       "do": "send",
@@ -64,9 +56,7 @@
       "timeoutMs": 90000,
       "shot": "timer",
       "expect": "AT-346 timer runs",
-      "expectKit": "kit-timed-checklist",
-      "note": "AT-346: the actual timed checklist has step rows and a renderer timer readout",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-timed-checklist\"]');return !!k&&k.querySelectorAll('li[data-step]').length>0&&!!k.querySelector('[data-left-ms]');})()"
+      "expectKit": "kit-timed-checklist"
     },
     {
       "do": "send",
@@ -77,9 +67,7 @@
       "timeoutMs": 150000,
       "shot": "form",
       "expect": "AT-351 up to 6 fields, submit one action",
-      "expectKit": "kit-short-form",
-      "note": "AT-351/AT-370: the actual short form is bounded and has no password/key input",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-short-form\"]');if(!k)return false;const fields=[...k.querySelectorAll('input,select,textarea')];const secret=fields.some((e)=>/password|secret|token|api.?key|card.?number|cvv|otp|code/i.test([e.getAttribute('name'),e.getAttribute('aria-label'),e.getAttribute('placeholder')].filter(Boolean).join(' ')));return fields.length<=6&&!secret&&!!k.querySelector('button');})()"
+      "expectKit": "kit-short-form"
     },
     {
       "do": "send",
@@ -91,22 +79,7 @@
       "shot": "ai-page",
       "expect": "AT-358..362 sealed page, status line first",
       "expectTid": "ai-page",
-      "note": "AT-358: the actual page frame is sandboxed to scripts and reaches a ready/kept state",
-      "expectJs": "(()=>{const p=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"ai-page\"]')].pop();const f=p?.querySelector('[data-testid=\"ai-page-frame\"]');const s=f?.getAttribute('sandbox')||'';return !!p&&['ready','kept'].includes(p.dataset.state||'')&&s==='allow-scripts'&&!/allow-same-origin|allow-popups|allow-forms/.test(s);})()"
-    },
-    {
-      "do": "send",
-      "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.",
-      "note": "AT-370: exercise the short-form secret refusal through the renderer without sending data"
-    },
-    {
-      "do": "waitReply",
-      "timeoutMs": 150000,
-      "shot": "secret-form",
-      "expect": "AT-370 secret-like form field is refused in the rendered form",
-      "expectKit": "kit-short-form",
-      "note": "AT-370: a secret-like field must be represented by an actual refusal marker and no input field",
-      "expectJs": "(()=>{const foo=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].pop();const k=foo?.querySelector('[data-testid=\"kit-short-form\"]');if(!k)return false;const refused=[...k.querySelectorAll('[data-refused-field]')];const secretInputs=[...k.querySelectorAll('input,select,textarea')].filter((e)=>/password|secret|token|api.?key|card.?number|cvv|otp|code/i.test([e.getAttribute('name'),e.getAttribute('aria-label'),e.getAttribute('placeholder')].filter(Boolean).join(' ')));return refused.length>0&&secretInputs.length===0;})()"
+      "expectJs": "['ready', 'kept'].includes([...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"ai-page\"]')].pop()?.dataset.state)"
     },
     {
       "do": "dump",

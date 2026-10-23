@@ -1,9 +1,0 @@
-Lane B static contract evidence
-Base after refresh: 0665cf67d2ab6cf0515f6d3198df6dfc35357e82
-Feature files: 22
-Scenarios: 22
-Given steps: 22
-When steps: 22
-Then steps: 22
-Unknown tags: 0
-Source ledger: lane-context/features.tsv

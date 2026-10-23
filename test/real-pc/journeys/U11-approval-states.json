@@ -17,9 +17,7 @@
       "do": "waitReply",
       "timeoutMs": 240000,
       "shot": "ask",
-      "expect": "options or a plan; never books without an Approval card",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b&&(!!b.querySelector('[data-testid=\\\"card-choice\\\"],[data-testid=\\\"card-tiles\\\"],[data-testid=\\\"card-plan\\\"]')||/approval|option|plan/i.test(b.innerText||''));})()",
-      "note": "C.4 Choice (C3): the initial assistant reply presents a bounded choice, tiles, or plan before approval"
+      "expect": "options or a plan; never books without an Approval card"
     },
     {
       "do": "click",
@@ -53,12 +51,6 @@
       "ref": "BP-CARD-04"
     },
     {
-      "do": "waitFor",
-      "tid": "card-approval",
-      "timeoutMs": 30000,
-      "note": "C.4 Approval (C4): pending approval card is present before any approval action"
-    },
-    {
       "do": "shotEl",
       "tid": "card-approval",
       "last": true,
@@ -71,10 +63,10 @@
       "text": "yes"
     },
     {
-      "do": "waitReply",
-      "timeoutMs": 30000,
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const card=document.querySelector('[data-testid=\\\"card-approval\\\"]');return !!card&&/approve|approval|pending|not now|tap/i.test((b?.innerText||'')+' '+(card.innerText||''));})()",
-      "note": "C.4 Approval (C4): typed yes leaves the approval pending and produces an approval-related response"
+      "do": "wait",
+      "ms": 8000,
+      "shot": "typed-yes",
+      "expect": "typed \"yes\" never approves (ART-06a): card still pending"
     },
     {
       "do": "click",

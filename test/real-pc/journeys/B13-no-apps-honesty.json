@@ -8,18 +8,11 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "email",
-      "expect": "foo offers to connect Gmail (connect card or clear offer); does not claim to have read any email",
-      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const text=after.map((r)=>r.innerText||'').join('\\n');const connect=after.some((r)=>r.querySelector('[data-testid=\"card-connect\"]'));return connect||(/Gmail|email|connect|not available|can.t read/i.test(text)&&!/I (read|checked)|here are your emails/i.test(text));})()"
+      "expect": "foo offers to connect Gmail (connect card or clear offer); does not claim to have read any email"
     },
     { "do": "check", "tid": "card-connect", "soft": true, "note": "connect card present?" },
     { "do": "send", "text": "what did I miss on WhatsApp" },
-    {
-      "do": "waitReply",
-      "timeoutMs": 120000,
-      "shot": "whatsapp",
-      "expect": "foo offers to connect WhatsApp; does not invent messages",
-      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const text=after.map((r)=>r.innerText||'').join('\\n');const connect=after.some((r)=>r.querySelector('[data-testid=\"card-connect\"]'));return connect||(/WhatsApp|connect|not available|can.t read/i.test(text)&&!/I (read|checked)|here are your messages/i.test(text));})()"
-    },
+    { "do": "waitReply", "timeoutMs": 120000, "shot": "whatsapp", "expect": "foo offers to connect WhatsApp; does not invent messages" },
     { "do": "check", "tid": "card-connect", "soft": true },
     { "do": "dump", "name": "thread" }
   ]

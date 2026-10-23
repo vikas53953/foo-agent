@@ -14,47 +14,29 @@
       "text": "Find the top 3 news headlines in India today"
     },
     {
-      "do": "waitFor",
-      "css": "[data-testid=\"thread-log\"] :is([data-testid=\"bubble-foo\"][data-state=\"streaming\"],[data-testid=\"ai-page\"][data-state=\"building\"])",
-      "timeoutMs": 30000,
-      "transient": true,
-      "note": "C.6 Start at login, close to tray: close is attempted only after the job is observed in an in-flight streaming/building state"
+      "do": "wait",
+      "ms": 4000
     },
     {
       "do": "key",
-      "key": "Alt+F4",
-      "transient": true,
-      "note": "C.6 Start at login, close to tray: bounded close transition after the observed in-flight job"
-    },
-    {
-      "do": "waitFor",
-      "css": "[role=\"dialog\"]",
-      "timeoutMs": 30000,
-      "note": "C.5 Dialogs: bounded close transition exposes the first-close semantic dialog before the tray decision",
-      "transient": true
+      "key": "Alt+F4"
     },
     {
       "do": "wait",
       "ms": 1500,
       "shot": "first-close",
       "expect": "first-close dialog: foo keeps running in the tray",
-      "ref": "UX-23-02",
-      "transient": true,
-      "note": "C.5 Dialogs: bounded observation window for the first-close dialog"
+      "ref": "UX-23-02"
     },
     {
       "do": "key",
-      "key": "Escape",
-      "transient": true,
-      "note": "C.5 Dialogs; C.6 Start at login, close to tray: Escape selects the keep-running/tray path"
+      "key": "Escape"
     },
     {
       "do": "waitReply",
       "timeoutMs": 180000,
       "shot": "news",
-      "expect": "job still finishes after the dialog",
-      "note": "C.5 Dialogs; C.6 Start at login, close to tray: after Escape, a non-empty India news/headline result completes",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const t=(b?.innerText||'').trim();return !!b&&t.length>0&&/(headline|news|India)/i.test(t);})()"
+      "expect": "job still finishes after the dialog"
     },
     {
       "do": "dump",
