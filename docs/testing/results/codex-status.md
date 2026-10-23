@@ -6,11 +6,11 @@ Fix queue: [ranked problems](../fix-queue.tsv); affected AT mapping per row; [un
 Top 5 queue rows: [Booking/site access; Gmail account; AI-page predicates; not-built features; four-option Choice](../fix-queue.tsv).
 Web stall: J05 budget-stuck; B14 web unfinished — [review](focused-web-review.md), app/kit1166b72.
 Parser: J07 single-run pass, R1 fail; qualification **no** — [review](focused-parser-review.md), [draft139](https://github.com/vikas53953/foo-agent/pull/139).
-Choice: B02 strict CLEAN but four options, acceptance **no** — [review](focused-b02-review.md), app/kit4ba14bd.
+Choice correction: spec allows 2–4; B02 lacks AT032 three-option precondition, acceptance **unproven** — [review](focused-b02-review.md), app/kit4ba14bd.
 R-approvals/R-jobs and R-kit/R-ai-pages: [queue](../fix-queue.tsv); unresolved triage is not a pass.
 Prior full39897913189: strict16/63 executions,59 unique; **branch, not counted** — [run](https://github.com/vikas53953/foo-agent/actions/runs/39897913189); failed first attempt retained.
 Pre-amendment full39909344443 was already started — [run](https://github.com/vikas53953/foo-agent/actions/runs/39909344443); no replacement full branch run.
-Ruler-v1: isolated main-based kit snapshot; base correction and gates incomplete, not ready — [source archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
+Ruler-v1: isolated main-based kit snapshot; correct main base verified; 22 focused checks passed, remaining gates incomplete, not ready — [source archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
 PR138 split: docs/matrix retained; app fix isolated in [draft139](https://github.com/vikas53953/foo-agent/pull/139); paused source retained in [archive](https://github.com/vikas53953/foo-agent/tree/archive/pre-amendment-2026-10-23).
 PRs ready: **none**; [qualification requirements](loop-amendment-2026-10-23.md) unmet.
 Needs Vikas: blank-search fallback may need a spec change; [daily decision note](codex-daily-2026-10-23.md). AT027 already resolved.

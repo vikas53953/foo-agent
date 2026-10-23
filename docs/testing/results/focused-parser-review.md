@@ -1,3 +1,5 @@
+> 23 October correction: the four-option observation below is preserved, but its product-failure classification is withdrawn. Spec05-cards-1 section5.3 permits2–4 options; AT032 applies only when foo has3. B02 did not establish that precondition. AT032 remains unproven; no new pass is claimed.
+
 # Real-AI focused review: run 39900827513
 
 - **Run:** [39900827513](https://github.com/vikas53953/foo-agent/actions/runs/39900827513)
