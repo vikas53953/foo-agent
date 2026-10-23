@@ -189,7 +189,10 @@ describe('Real-AI run cdf2f65 R-dark · the next turn sees the setting line', ()
     // The real Claude answered "hi" with the setting again, then "Dark mode abhi tak on nahi hua": the line never reached it.
     h = jobHarness({
       script: [
-        { match: { purpose: 'intake', promptIncludes: 'Changed: Theme → Dark.' }, reply: real({ kind: 'reply' }).replace('<say></say>', '<say>Hello!</say>') },
+        {
+          match: { purpose: 'intake', promptIncludes: 'Changed: Theme → Dark.' },
+          reply: real({ kind: 'reply' }).replace('<say></say>', '<say>Hello!</say>'),
+        },
         { match: { purpose: 'intake' }, reply: DARK },
         { match: { purpose: 'intake' }, reply: DARK },
       ],
