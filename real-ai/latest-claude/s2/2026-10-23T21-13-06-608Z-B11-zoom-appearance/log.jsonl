@@ -1,0 +1,21 @@
+{"t":"2026-10-23T21:13:06.608Z","journey":"B11-zoom-appearance","title":"Zoom keys, settings rows","spec":"AT-321, AT-320","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T21:13:12.188Z","step":"launch","ok":true}
+{"t":"2026-10-23T21:13:12.246Z","i":0,"do":"key","ok":true,"ms":53}
+{"t":"2026-10-23T21:13:13.258Z","i":1,"do":"wait","ok":true,"ms":1012}
+{"t":"2026-10-23T21:13:13.323Z","shot":"01-zoom-in.png"}
+{"t":"2026-10-23T21:13:13.348Z","i":2,"do":"key","ok":true,"ms":25}
+{"t":"2026-10-23T21:13:13.499Z","i":3,"do":"click","ok":true,"ms":150}
+{"t":"2026-10-23T21:13:15.504Z","i":4,"do":"wait","ok":true,"ms":2004}
+{"t":"2026-10-23T21:13:15.561Z","shot":"02-settings-account.png"}
+{"t":"2026-10-23T21:13:15.608Z","i":5,"do":"clickIf","found":1,"ok":true,"ms":46}
+{"t":"2026-10-23T21:13:17.111Z","i":6,"do":"wait","ok":true,"ms":1502}
+{"t":"2026-10-23T21:13:17.177Z","shot":"03-settings-appearance.png"}
+{"t":"2026-10-23T21:13:17.243Z","i":7,"do":"clickIf","found":1,"ok":true,"ms":66}
+{"t":"2026-10-23T21:13:18.745Z","i":8,"do":"wait","ok":true,"ms":1502}
+{"t":"2026-10-23T21:13:18.813Z","shot":"04-settings-connections.png"}
+{"t":"2026-10-23T21:13:18.853Z","i":9,"do":"clickIf","found":1,"ok":true,"ms":38}
+{"t":"2026-10-23T21:13:20.354Z","i":10,"do":"wait","ok":true,"ms":1501}
+{"t":"2026-10-23T21:13:20.415Z","shot":"05-settings-money.png"}
+{"t":"2026-10-23T21:13:20.457Z","i":11,"do":"key","ok":true,"ms":42}
+{"t":"2026-10-23T21:13:20.617Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-23T21:13:20.629Z","step":"aiTurns","turns":0}

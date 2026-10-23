@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:16 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city are you going to from New Delhi? → you changed the plan\n9:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n9:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:18 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city are you travelling to from New Delhi?\n1\nMumbai\nBEST FIT\n2\nJaipur\n3\nLucknow\n4\nChandigarh\nSomething else…\nSkip\n9:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:19 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking IRCTC\nBEST FIT\n2\nBooking table for 2, Sat 24 Oct, 8:00 PM\n3\nBoth\nSomething else…\nSkip\n9:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:20 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking IRCTC\nBEST FIT\n2\nBooking table for 2, Sat 24 Oct, 8:00 PM\n3\nBoth\nSomething else…\nSkip\n9:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:20 PM"
+  }
+]

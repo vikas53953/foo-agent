@@ -1,0 +1,84 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T21-01-45-963Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792789311573,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 146
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7104,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones that fit price under ₹20,000\n3\nCompare price, battery, camera, screen and\nAbout 3 minutes\nGo\nChange plan\n9:01 PM",
+      "kit": [],
+      "ms": 13157
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792789475089,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9672,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here is an easy-paced 3 day Jaipur plan for your parents, with the long sights early and rest in the afternoons.\n\nDay 1, old city: Arrive and rest. In the evening see Hawa Mahal from outside, walk through Johari Bazaar for sweets and jewellery, and have dinner nearby.\nDay 2, forts and palaces: Go to Amer Fort in the morning before the heat, and take a jeep up to skip the steep climb. Stop for photos at Jal Mahal. After a lunch break, visit City Palace and Jantar Mantar. Dinner at Chokhi Dhani is a good folk-style evening.\nDay 3, slow day: Visit Govind Dev Ji temple in the morning, then Albert Hall Museum and shopping at Bapu Bazaar for blockprint fabrics and juttis. Add Nahargarh Fort at sunset only if they feel up for it.\n\nKeep the hotel near the old city so the evenings stay short on travel, and book a car with a driver for all three days. Opening hours and entry fees change, so I would confirm them before you go.\n\nDo you want me to look up hotels near the old city next?\n\n9:04 PM",
+      "kit": [],
+      "ms": 19782
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}
