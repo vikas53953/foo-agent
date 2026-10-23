@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n4:09 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:09 AM\n4:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for Delhi to Mumbai flights on…\nlive checklist\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared the 3 flights by fare, time and duration\nStopped by you\n4:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n4:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n4:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "At ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/i7 chip. These matter more than anything else for programming.\n\nRAM: 16 GB is the minimum, since an editor, browser tabs and Docker eat memory fast. Pick one where RAM can be upgraded later.\nProcessor: Ryzen 5 or 7 (7000 series or newer) gives the best speed and battery for the money. A MacBook Air with an M-series chip is also worth a look if you find one in budget.\nScreen and keyboard: a 1080p matte or IPS screen and a comfortable keyboard. You'll stare at code for hours.\nGraphics card: skip it unless you'll train AI projects or build games. That money is better spent on RAM and build quality.\n\nWhat will you mostly build: web or app work, or AI and games? I can then look up current options and compare them for you.\n\n4:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n4:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n4:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n4:11 AM"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked isro.gov.in, pib.gov.in, The Hindu\nI\nP\nT\nLooked for ISRO news from Mon 19 Oct to Fri 23 Oct\nWrote it\nStopped by you\n4:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:05 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry pib.gov.in instead\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n4:08 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Draft email: 15 minutes late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n4:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n4:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n4:09 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:09 AM\n4:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for Delhi to Mumbai flights on…\nlive checklist\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared the 3 flights by fare, time and duration\nStopped by you\n4:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:10 AM"
+  }
+]

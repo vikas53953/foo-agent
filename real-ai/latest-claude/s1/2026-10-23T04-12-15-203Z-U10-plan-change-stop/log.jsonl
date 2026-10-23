@@ -1,0 +1,27 @@
+{"t":"2026-10-23T04:12:15.204Z","journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","spec":"05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T04:12:20.764Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:12:21.793Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1026}
+{"t":"2026-10-23T04:12:21.923Z","i":1,"do":"send","sentAt":1792728741881,"sent":true,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-23T04:12:36.637Z","i":2,"do":"waitReply","note":"C.4 Plan (C11): initial reply contains a plan card with a change/go control","expect":"plan card","firstReplyMs":8644,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for weekend trek options near Pune with\n3\nKeep 5 treks near Pune that fit easy to reach for a weekend, with\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n4:12 AM","kit":[],"endState":false,"ms":14714}
+{"t":"2026-10-23T04:12:36.704Z","shot":"01-plan.png"}
+{"t":"2026-10-23T04:12:36.800Z","i":3,"do":"click","soft":true,"ok":true,"ms":96}
+{"t":"2026-10-23T04:12:37.602Z","i":4,"do":"wait","expect":"composer prompts for the change","ok":true,"ms":801}
+{"t":"2026-10-23T04:12:37.668Z","shot":"02-change.png"}
+{"t":"2026-10-23T04:12:37.769Z","i":5,"do":"send","sentAt":1792728757748,"sent":true,"before":0,"ok":true,"ms":101}
+{"t":"2026-10-23T04:13:03.716Z","i":6,"do":"waitReply","note":"C.4 Plan (C11): changed request returns a plan surface with the requested constraint","expect":"a changed plan, the old one marked changed","firstReplyMs":19873,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for easy weekend treks near Pune with\n3\nKeep 5 treks near Pune that fit easy difficulty only, easy to reach for\n4\nCompare difficulty and cost\nAbout 3 minutes\nGo\nChange plan\n4:12 AM","kit":[],"endState":false,"ms":25947}
+{"t":"2026-10-23T04:13:03.780Z","shot":"03-plan-2.png"}
+{"t":"2026-10-23T04:13:03.852Z","i":7,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-23T04:13:11.853Z","i":8,"do":"wait","expect":"checklist running; Doing now shows the job; chat pill Working","ok":true,"ms":8001}
+{"t":"2026-10-23T04:13:11.932Z","shot":"04-running.png"}
+{"t":"2026-10-23T04:13:11.972Z","i":9,"do":"key","ok":true,"ms":40}
+{"t":"2026-10-23T04:13:12.773Z","i":10,"do":"wait","expect":"right panel Doing now row with Stop","ok":true,"ms":801}
+{"t":"2026-10-23T04:13:12.862Z","shot":"05-doing-now.png"}
+{"t":"2026-10-23T04:13:12.865Z","i":11,"do":"check","note":"C.4 Checklist (C2) + link card: running checklist exposes its Stop control","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T04:13:12.868Z","i":12,"do":"check","note":"C.2 Right shell: Doing now panel is visible while the checklist is running","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T04:13:12.942Z","i":13,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-23T04:13:17.959Z","i":14,"do":"wait","expect":"job stopped ⛔, checklist says stopped, no further steps","ok":true,"ms":5016}
+{"t":"2026-10-23T04:13:18.056Z","shot":"06-stopped.png"}
+{"t":"2026-10-23T04:13:18.072Z","i":15,"do":"key","ok":true,"ms":16}
+{"t":"2026-10-23T04:13:18.087Z","i":16,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-23T04:13:18.305Z","step":"appLog","lines":16,"dropped":0}
+{"t":"2026-10-23T04:13:18.317Z","step":"aiTurns","turns":5}

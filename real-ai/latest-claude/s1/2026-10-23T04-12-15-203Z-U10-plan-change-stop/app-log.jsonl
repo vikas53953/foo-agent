@@ -1,0 +1,16 @@
+{"t":1792728736182,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792728741889,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728741890,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728750324,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1792728757753,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728757753,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728770959,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1792728770961,"lvl":"info","mod":"engine","evt":"chat.reply_empty.no_say"}
+{"t":1792728770968,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728770969,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728777336,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1792728783875,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728783876,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728788588,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1792728790473,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792728790474,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}

@@ -1,0 +1,18 @@
+{"t":"2026-10-23T04:04:59.665Z","journey":"J17-memory","title":"Remember, view and forget","spec":"07-1 J17; 06 memory page; M6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T04:05:05.235Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:05:05.372Z","i":0,"do":"send","sentAt":1792728305334,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-23T04:05:15.533Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4100,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I’ll remember: Favourite food: South Indian\nUndo","kit":[],"endState":false,"ms":10161}
+{"t":"2026-10-23T04:05:15.597Z","shot":"01-remember.png"}
+{"t":"2026-10-23T04:05:15.675Z","i":2,"do":"click","ok":true,"ms":77}
+{"t":"2026-10-23T04:05:15.805Z","i":3,"do":"click","expect":"fact listed in plain words with source","ok":true,"ms":130}
+{"t":"2026-10-23T04:05:17.807Z","i":4,"do":"wait","expect":"fact listed in plain words with source","ok":true,"ms":2002}
+{"t":"2026-10-23T04:05:17.866Z","shot":"02-memory-page.png"}
+{"t":"2026-10-23T04:05:17.868Z","i":5,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T04:05:17.895Z","i":6,"do":"key","ok":true,"ms":26}
+{"t":"2026-10-23T04:05:18.009Z","i":7,"do":"send","sentAt":1792728317993,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-23T04:05:32.727Z","i":8,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8115,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your favourite food is South Indian, and I already have that saved from earlier today.\n\n4:05 AM","kit":[],"endState":true,"ms":14718}
+{"t":"2026-10-23T04:05:32.796Z","shot":"03-recall.png"}
+{"t":"2026-10-23T04:05:32.805Z","i":9,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-23T04:05:32.809Z","step":"recheck","i":1,"do":"waitReply","late":true}
+{"t":"2026-10-23T04:05:32.931Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-23T04:05:32.944Z","step":"aiTurns","turns":2}
