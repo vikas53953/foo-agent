@@ -1,4 +1,6 @@
 // Spec: 10-2 §E.1–§E.2 and 09-windows §9.8/§9.9. Regression coverage for strict soak heartbeat and fixture-work evidence.
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   HEARTBEAT_GRACE_MS,
@@ -7,6 +9,7 @@ import {
   findNewMatchingIntakeTurn,
   PRODUCER_PROCESS_OWNER,
   validateHeartbeat,
+  writeSoakReports,
   type SoakHeartbeat,
 } from './lane-e-soak-contract';
 
@@ -26,6 +29,19 @@ function heartbeat(overrides: Partial<SoakHeartbeat> = {}): SoakHeartbeat {
 }
 
 describe('Lane E soak contract', () => {
+  it('recreates a missing observer output directory before writing both reports', () => {
+    const root = mkdtempSync(join(process.env.TEMP ?? process.cwd(), 'foo-lane-e-soak-contract-'));
+    const outDir = join(root, 'observer-out');
+    try {
+      writeSoakReports(outDir, 'pretend', { result: 'blocked' }, '| Failure | blocked | output directory was recreated |');
+      expect(existsSync(outDir)).toBe(true);
+      expect(JSON.parse(readFileSync(join(outDir, 'lane-e-soak-pretend.json'), 'utf8'))).toEqual({ result: 'blocked' });
+      expect(readFileSync(join(outDir, 'lane-e-soak-pretend.md'), 'utf8')).toContain('output directory was recreated');
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it('requires distinct matched intake evidence for the first and second submissions', () => {
     const first = {
       turnId: 't-1',

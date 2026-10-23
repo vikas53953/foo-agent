@@ -1,5 +1,7 @@
 // Spec: 10-2 §E.1–§E.2 and 09-windows §9.8/§9.9. Shared Lane E soak acceptance rules.
 // Successful fixture work is explicitly done_unverified; process identity, heartbeat time, and response evidence are strict.
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 export const HEARTBEAT_GRACE_MS = 120 * 1000;
 export const JOB_COMPLETION_TIMEOUT_MS = 120 * 1000;
@@ -62,6 +64,14 @@ export function findNewMatchingIntakeTurn(
       turn.noMatch !== true &&
       turn.prompt.includes(prompt),
   );
+}
+
+/** Recreates a missing observer output directory before writing either report. */
+export function writeSoakReports(outDir: string, mode: string, report: unknown, summary: string): void {
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, `lane-e-soak-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(join(outDir, `lane-e-soak-${mode}.md`), `${summary}\n`, 'utf8');
 }
 
 function normalizePath(path: string): string {
