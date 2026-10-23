@@ -15547,17 +15547,17 @@
       "text": "Given Claude Code is not answering and the backup AI ChatGPT answers a plain reply, then that bubble's footer shows `ArrowSync` 12 + \"Answered with ChatGPT while Claude rests\" (`bubble.backup_mark.text`, test id `bubble-backup-mark`) and Narrator reads the bubble with the suffix \", answered with Cha",
       "built": "built",
       "cells": {
-        "e2e": {
-          "s": "missing",
-          "why": "test/e2e/lane-d-a11y.spec.ts is listed but still pending (not written or skipped)",
-          "link": "https://github.com/vikas53953/foo-agent/blob/main/test/e2e/lane-d-a11y.spec.ts"
-        },
         "unit": {
           "s": "missing",
           "why": "no test of this kind",
           "link": ""
         },
         "integration": {
+          "s": "missing",
+          "why": "no test of this kind",
+          "link": ""
+        },
+        "e2e": {
           "s": "missing",
           "why": "no test of this kind",
           "link": ""
@@ -15801,8 +15801,8 @@
       "cells": {
         "unit": {
           "s": "missing",
-          "why": "test/unit/lane-d-grouping.test.ts is listed but still pending (not written or skipped)",
-          "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/lane-d-grouping.test.ts"
+          "why": "no test of this kind",
+          "link": ""
         },
         "integration": {
           "s": "missing",
@@ -15885,8 +15885,8 @@
       "cells": {
         "unit": {
           "s": "missing",
-          "why": "test/unit/lane-d-scroll.test.ts is listed but still pending (not written or skipped)",
-          "link": "https://github.com/vikas53953/foo-agent/blob/main/test/unit/lane-d-scroll.test.ts"
+          "why": "no test of this kind",
+          "link": ""
         },
         "integration": {
           "s": "missing",
