@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n6:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for these basics:\n\nMemory: 16 GB at the least, and upgradable if possible.\nStorage: 512 GB fast SSD.\nProcessor: a recent Ryzen 5 or 7, or a Core i5 or Ultra 5 and above.\nScreen and keyboard: a bright full HD screen and a keyboard you like typing on matter more than a graphics card.\nBattery: 8 hours or more of real use.\n\nA dedicated graphics card is only worth the extra money for machine learning or game development. For web and app work, skip it and spend on a better screen and build.\n\nWhat will you mostly build: web and apps, or machine learning? I can then look up current options in your budget.\n\n6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n6:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n6:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n6:20 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n6:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n6:20 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:20 AM\n6:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks that fit easy difficulty only, doable in a\nCompared difficulty and cost\nStopped by you\n6:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:20 AM"
+  }
+]

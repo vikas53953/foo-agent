@@ -1,0 +1,25 @@
+{"t":"2026-10-23T06:24:37.444Z","journey":"R-dark","title":"Group R dark reply contrast","spec":"07 §11.5 Group R; AT-429, AT-278","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T06:24:43.084Z","step":"launch","ok":true}
+{"t":"2026-10-23T06:24:43.241Z","i":0,"do":"send","note":"AT-429, AT-278: clean dark mode request","sentAt":1792736683198,"sent":true,"before":0,"ok":true,"ms":154}
+{"t":"2026-10-23T06:26:43.726Z","i":1,"do":"waitReply","note":"AT-429: clean dark mode","before":0,"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","replyTexts":[],"kit":[],"ms":120484}
+{"t":"2026-10-23T06:26:43.793Z","shot":"01-at-429-clean-dark-mode.png"}
+{"t":"2026-10-23T06:26:43.900Z","i":2,"do":"send","note":"AT-429, AT-278: clean greeting in dark mode","sentAt":1792736803889,"sent":true,"before":0,"ok":true,"ms":106}
+{"t":"2026-10-23T06:28:44.088Z","i":3,"do":"waitReply","note":"AT-429: clean dark greeting","before":0,"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","replyTexts":[],"kit":[],"ms":120187}
+{"t":"2026-10-23T06:28:44.161Z","shot":"02-at-429-clean-dark-greeting.png"}
+{"t":"2026-10-23T06:28:44.163Z","i":4,"do":"check","note":"AT-429, AT-278: clean last user bubble keeps the dark contrast colors","found":7,"ok":true,"ms":2}
+{"t":"2026-10-23T06:28:44.290Z","i":5,"do":"send","note":"AT-429, AT-278: messy typo dark mode request","sentAt":1792736924258,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-23T06:30:44.676Z","i":6,"do":"waitReply","note":"AT-429: messy typo dark mode","before":0,"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","replyTexts":[],"kit":[],"ms":120385}
+{"t":"2026-10-23T06:30:44.738Z","shot":"03-at-429-messy-typo-dark-mode.png"}
+{"t":"2026-10-23T06:30:44.855Z","i":7,"do":"send","note":"AT-429, AT-278: messy typo greeting in dark mode","sentAt":1792737044827,"sent":true,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-23T06:32:44.964Z","i":8,"do":"waitReply","note":"AT-429: messy typo dark greeting","before":0,"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","replyTexts":[],"kit":[],"ms":120109}
+{"t":"2026-10-23T06:32:45.035Z","shot":"04-at-429-messy-typo-dark-greeting.png"}
+{"t":"2026-10-23T06:32:45.037Z","i":9,"do":"check","note":"AT-429, AT-278: messy typo last user bubble keeps the dark contrast colors","found":7,"ok":true,"ms":2}
+{"t":"2026-10-23T06:32:45.135Z","i":10,"do":"send","note":"AT-429, AT-278: Hinglish dark mode request","sentAt":1792737165127,"sent":true,"before":0,"ok":true,"ms":98}
+{"t":"2026-10-23T06:33:23.778Z","i":11,"do":"waitReply","note":"AT-429: Hinglish dark mode","before":0,"firstReplyMs":32509,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’ll remember: Prefers dark mode\nUndo","replyTexts":["I’ll remember: Prefers dark mode\nUndo"],"kit":[],"endState":true,"ms":38642}
+{"t":"2026-10-23T06:33:23.846Z","shot":"05-at-429-Hinglish-dark-mode.png"}
+{"t":"2026-10-23T06:33:23.951Z","i":12,"do":"send","note":"AT-429, AT-278: Hinglish greeting in dark mode","sentAt":1792737203928,"sent":true,"before":0,"ok":true,"ms":105}
+{"t":"2026-10-23T06:33:38.663Z","i":13,"do":"waitReply","note":"AT-429: Hinglish dark greeting","before":0,"firstReplyMs":7116,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Namaste! Aapne kai baar dark mode maanga hai, par mujhe abhi tak uska badlav hone ka koi saboot nahi mila. Kya main ab dark mode on kar doon?\n\n6:33 AM","replyTexts":["Namaste! Aapne kai baar dark mode maanga hai, par mujhe abhi tak uska badlav hone ka koi saboot nahi mila. Kya main ab dark mode on kar doon?\n\n6:33 AM"],"kit":[],"endState":true,"ms":14712}
+{"t":"2026-10-23T06:33:38.722Z","shot":"06-at-429-Hinglish-dark-greeting.png"}
+{"t":"2026-10-23T06:33:38.724Z","i":14,"do":"check","note":"AT-429, AT-278: Hinglish last user bubble keeps the dark contrast colors","found":7,"ok":true,"ms":1}
+{"t":"2026-10-23T06:33:38.881Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-23T06:33:38.897Z","step":"aiTurns","turns":11}

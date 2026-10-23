@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n6:17 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:17 AM\n6:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:17 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking airline and flight booking…\nlive checklist\nChecked airline and flight booking sites\nA\nF\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, timings, duration and stops\nStopped by you\n6:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:17 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n6:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for these basics:\n\nMemory: 16 GB at the least, and upgradable if possible.\nStorage: 512 GB fast SSD.\nProcessor: a recent Ryzen 5 or 7, or a Core i5 or Ultra 5 and above.\nScreen and keyboard: a bright full HD screen and a keyboard you like typing on matter more than a graphics card.\nBattery: 8 hours or more of real use.\n\nA dedicated graphics card is only worth the extra money for machine learning or game development. For web and app work, skip it and spend on a better screen and build.\n\nWhat will you mostly build: web and apps, or machine learning? I can then look up current options in your budget.\n\n6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n6:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n6:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:19 AM"
+  }
+]
