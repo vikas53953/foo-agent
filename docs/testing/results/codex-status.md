@@ -1,5 +1,11 @@
 # Codex status — 23 October 2026, 09:35 IST
 
+## FIX mode — latest Vikas instruction
+
+Driver regression repair takes priority over counting. Reported baseline 21/63 clean versus 29/63 and target at least 44 clean are user targets, not yet verified comparable run counts. The driver file has no diff between f2061bf and cdf2f655; causal commit attribution remains under investigation. An isolated driver executor is building a failing reproducer before any patch. Parallel read-only investigators classify choice-card failures first (B02/J10/U12), then unknown replies (J07/R1). Native Windows testing has one desktop owner; the installed default foo.exe was absent, so package provenance is being established before execution.
+
+The new all-190 journey requirement supersedes the earlier 62 code-only scope exception. Historical matrix classifications remain unchanged until concrete evidence exists. Every product bug requires a failing regression test, separate draft PR, focused real-AI rerun and screenshot judgment. Fix rows use: feature | bug | fix PR | real-AI run | now passes yes/no. No fix is yet claimed from this new mode. Two loops without a comparable clean-count increase require stopping the ineffective approach and recording why; the new baseline is pending verification.
+
 ## Active real-AI run
 
 [39897913189](https://github.com/vikas53953/foo-agent/actions/runs/39897913189) is running with all inventory journeys selected, after checking that no other real-AI run was active. Tested revision is **branch 819c781c192b39a0c7adb09f6a2deb5a3a06a0e7**, not main. Freshly fetched main remains `0d04a9f9105e42aef0b4a22238285a9007635c3e`; the lead merge-base matches it. This run exercises the repaired fixtures. No result is inferred while it runs.
