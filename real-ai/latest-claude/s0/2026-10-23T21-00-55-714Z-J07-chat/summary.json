@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T21-00-55-714Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792789261387,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3055,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Ask me anything, or tell me what you'd like done.\n\n9:01 PM",
+      "kit": [],
+      "ms": 11196
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792789272751,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 6635,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can read your email, calendar and apps, set up routines that check things for you, catch you up on chats, and remember what matters to you. Just tell me what you need.\n\n9:01 PM",
+      "kit": [],
+      "ms": 13260
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792789286158,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3571,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer on the internet, and your traffic travels through it instead of out in the open.\n\nWithout one, websites see your home or office address, and whoever runs the Wi-Fi can see which sites you visit. With one, your device scrambles everything before it leaves, sends it to the VPN company's computer, and that computer passes it on to the website. The site sees the VPN's address, not yours, and the Wi-Fi owner sees only scrambled data.\n\nIt helps on public Wi-Fi and hides your location from sites. It does not make you anonymous, because the VPN company can still see your traffic, so pick one you trust.\n\n9:01 PM",
+      "kit": [],
+      "ms": 11687
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

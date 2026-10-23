@@ -1,0 +1,256 @@
+{
+  "journey": "U05-chat-list",
+  "title": "Chat list: filters, row menu (pin, mute, mark unread), search chats",
+  "steps": 34,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T21-09-50-743Z-U05-chat-list",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1026
+    },
+    {
+      "i": 1,
+      "do": "shot",
+      "expect": "chat list with foo row (and any helpers); filter chips All · Needs you · Working · Done",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "filter selected; empty state if nothing needs me",
+      "ok": true,
+      "ms": 507
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "ok": true,
+      "ms": 507
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "ok": true,
+      "ms": 500
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "row menu: Pin, Mark unread, Mute, Profile, Find, Clear, Delete",
+      "ok": true,
+      "ms": 500
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23078
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "pin icon on the row",
+      "ok": true,
+      "ms": 500
+    },
+    {
+      "i": 13,
+      "do": "check",
+      "note": "pinned mark",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 15,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "mute choices 8 hours, 1 week, Always",
+      "ok": true,
+      "ms": 410
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 18,
+      "do": "check",
+      "note": "muted mark",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 19,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "expect": "unread dot/count on the row",
+      "ok": true,
+      "ms": 506
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 23,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23085
+    },
+    {
+      "i": 24,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 25,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 26,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23081
+    },
+    {
+      "i": 27,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "error": "locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]",
+      "ms": 79,
+      "late": true
+    },
+    {
+      "i": 28,
+      "do": "wait",
+      "expect": "list filtered to foo",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 29,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "error": "locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]",
+      "ms": 63,
+      "late": true
+    },
+    {
+      "i": 30,
+      "do": "wait",
+      "expect": "empty result message",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 31,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23079
+    },
+    {
+      "i": 32,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1040
+    },
+    {
+      "i": 33,
+      "do": "dump",
+      "ok": true,
+      "ms": 18
+    }
+  ]
+}

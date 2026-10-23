@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trails and parks under ₹5,000, what matters most?\n1\nGrip on uneven ground\nBEST FIT\nGood for mud, gravel and loose soil\n2\nSoft cushioning\nEasier on knees for longer runs\n3\nLight weight\nFeels quick and less tiring\n4\nLowest price\nBest value within the limit\nSomething else…\nSkip\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n9:02 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:02 PM\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels for 2 nights,…\nlive checklist\nLooking for Goa hotels for 2 nights, Sat 31 Oct to\nCompare price, rating and distance to the beach\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n7 min\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n9:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n9:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n9:06 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Goa hotels for 2 nights,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:06 PM"
+  }
+]
