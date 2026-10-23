@@ -1,2 +1,3 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-47-17-977Z-J01-J02-first-run"}
-{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","steps":8,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-48-08-933Z-B02-choice"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-48-56-330Z-J01-J02-first-run"}
+{"journey":"J05-web","title":"First real task with the internet (news + sources)","steps":6,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-49-47-237Z-J05-web"}
+{"journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","steps":9,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-53-53-408Z-B14-restart-mid-reply"}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:49 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:49 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n4:49 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked ISRO, PIB, The Hindu, Times of India\nI\nP\nT\nT\nWrote it\nStopped by you\n4:50 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:50 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n3 minutes\nWhat I’d do\nopen the page for you\n4:53 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:53 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:53 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:53 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n4:54 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Shelly is a classic, but a few more fit a slow, steady tortoise:\n\nTurbo, because the joke never gets old\nChai, slow and comforting\nDhimu, from dheere (slowly)\nGulab, after gulab jamun, round and sweet\n\nWant a few more in a certain style, like funny, Indian or regal?\n\n4:54 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n4:54 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nStill working, this one takes a while\nCompare top headlines across news sites\nWatch live\nStop\n2 min\n4:54 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:54 AM"
+  }
+]
