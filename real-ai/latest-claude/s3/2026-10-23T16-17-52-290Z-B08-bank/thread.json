@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't put a password box in a form here, so this demo has a username box only. Your app asks for passwords in a separate secret box when a step needs one.\n\nUsername\nSend to foo\nKeep\n\nWant a different demo, like a sign-up form with name and email?\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n4:10 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Calendar\n\nI need to see your calendar for “Veg table for 2, Sat 24 Oct, 8:00 PM”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n4:10 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n4:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Shelly is the classic, but Mochi, Pickle and Gandhi all suit a slow, steady tortoise. Since they live for decades, Methuselah (Meth for short) is a fun pick.\n\nYour Connaught Place table for tomorrow, Sat 24 Oct, 8:00 PM is still not booked. Want me to look for vegetarian options first?\n\n4:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n4:15 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nCompare top headlines from major Indian news\nWrite it\nWatch live\nStop\n3 min\n4:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n4:17 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Checking HDFC net banking\n1\nCheck HDFC net banking\n2\nSign in to HDFC net banking\n3\nLook for account balance\nAbout 3 minutes\nGo\nChange plan\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  }
+]

@@ -1,0 +1,17 @@
+{"t":"2026-10-23T16:14:48.397Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T16:14:53.992Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:14:54.152Z","i":0,"do":"send","sentAt":1792772094114,"sent":true,"before":0,"ok":true,"ms":157}
+{"t":"2026-10-23T16:14:57.157Z","i":1,"do":"wait","ok":true,"ms":3004}
+{"t":"2026-10-23T16:15:02.441Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:15:02.441Z","i":2,"do":"relaunch","ok":true,"ms":5284}
+{"t":"2026-10-23T16:15:13.031Z","i":3,"do":"waitReply","note":"AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","before":0,"firstReplyMs":3534,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is the classic, but Mochi, Pickle and Gandhi all suit a slow, steady tortoise. Since they live for decades, Methuselah (Meth for short) is a fun pick.\n\nYour Connaught Place table for tomorrow, Sat 24 Oct, 8:00 PM is still not booked. Want me to look for vegetarian options first?\n\n4:15 PM","replyTexts":["Shelly is the classic, but Mochi, Pickle and Gandhi all suit a slow, steady tortoise. Since they live for decades, Methuselah (Meth for short) is a fun pick.\n\nYour Connaught Place table for tomorrow, Sat 24 Oct, 8:00 PM is still not booked. Want me to look for vegetarian options first?\n\n4:15 PM"],"kit":[],"endState":true,"ms":10590}
+{"t":"2026-10-23T16:15:13.097Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-23T16:15:13.264Z","i":4,"do":"send","sentAt":1792772113197,"sent":true,"before":0,"ok":true,"ms":167}
+{"t":"2026-10-23T16:15:15.266Z","i":5,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-23T16:15:20.544Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:15:20.544Z","i":6,"do":"relaunch","ok":true,"ms":5277}
+{"t":"2026-10-23T16:17:50.595Z","i":7,"do":"waitReply","note":"AT-118: the second post-reopen request also settles as a real answer","expect":"the news question is answered after reopening","before":0,"firstReplyMs":5580,"newBubbles":1,"ok":false,"stillWorking":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nStill working, this one takes a while\nCompare top headlines from major Indian news\nWrite it\nWatch live\nStop\n2 min\n4:15 PM","replyTexts":["Looking on the web\nlive checklist\nLooking on the web\nStill working, this one takes a while\nCompare top headlines from major Indian news\nWrite it\nWatch live\nStop\n2 min\n4:15 PM"],"kit":[],"ms":150051}
+{"t":"2026-10-23T16:17:50.692Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-23T16:17:50.706Z","i":8,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-23T16:17:52.093Z","step":"appLog","lines":63,"dropped":0}
+{"t":"2026-10-23T16:17:52.105Z","step":"aiTurns","turns":26}

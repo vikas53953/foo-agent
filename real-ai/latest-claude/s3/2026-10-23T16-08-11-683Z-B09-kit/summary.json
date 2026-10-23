@@ -1,0 +1,264 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 17,
+  "failed": 2,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T16-08-11-683Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792771697567,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 214
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-347/AT-371: the actual reply contains calculator inputs and output nodes",
+      "expect": "AT-347 calculator recomputes",
+      "before": 0,
+      "firstReplyMs": 8625,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month for ₹50,00,000 (50 lakh) at 8.5% over 20 years. Change the amount, rate or years below to see the numbers move.\n\nLoan amount (₹)\nInterest rate per year (%)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n4:08 PM",
+      "replyTexts": [
+        "Your EMI comes to about ₹43,391 a month for ₹50,00,000 (50 lakh) at 8.5% over 20 years. Change the amount, rate or years below to see the numbers move.\n\nLoan amount (₹)\nInterest rate per year (%)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n4:08 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 17219
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792771715058,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-341: the actual map surface must expose scaled stops, an SVG route and its safe open chip",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "before": 0,
+      "firstReplyMs": 3559,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Here are 5 well-known places to visit in Jaipur, numbered in a rough route from the old city outwards.\n\n1\n2\n3\n4\n5\n1\nHawa Mahal\nPink sandstone palace with 953 small windows. Best in the morning light.\n2\nCity Palace\nRoyal residence with museums and courtyards, right next to Jantar Mantar.\n3\nJantar Mantar\n18th-century stone observatory, a UNESCO World Heritage Site.\n4\nNahargarh Fort\nHilltop fort with a great sunset view over the city.\n5\nAmber Fort\nGrand hill fort about 11 km out of the city. Go early to beat the crowds.\nOpen in Maps\nKeep\n\nWant me to plan these into a one-day route?\n\n4:08 PM",
+      "replyTexts": [
+        "Here are 5 well-known places to visit in Jaipur, numbered in a rough route from the old city outwards.\n\n1\n2\n3\n4\n5\n1\nHawa Mahal\nPink sandstone palace with 953 small windows. Best in the morning light.\n2\nCity Palace\nRoyal residence with museums and courtyards, right next to Jantar Mantar.\n3\nJantar Mantar\n18th-century stone observatory, a UNESCO World Heritage Site.\n4\nNahargarh Fort\nHilltop fort with a great sunset view over the city.\n5\nAmber Fort\nGrand hill fort about 11 km out of the city. Go early to beat the crowds.\nOpen in Maps\nKeep\n\nWant me to plan these into a one-day route?\n\n4:08 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "endState": false,
+      "ms": 12695
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792771727945,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "note": "AT-340: the actual chart surface exposes a supported variant, series count and SVG drawing",
+      "expect": "AT-340 one hue, number rules",
+      "before": 0,
+      "firstReplyMs": 6094,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's real GDP growth ran about 9.7%, 7.6%, 9.2%, 6.5% and 7.4% from FY 2021-22 to FY 2025-26. These are rounded figures from memory, the latest year is an early estimate, and I can't see live data, so check the official release before you quote them.\n\nIndia real GDP growth (per year)\n0%\n5%\n10%\nFY22\nFY23\nFY24\nFY25\nFY26\nKeep\n4:08 PM",
+      "replyTexts": [
+        "India's real GDP growth ran about 9.7%, 7.6%, 9.2%, 6.5% and 7.4% from FY 2021-22 to FY 2025-26. These are rounded figures from memory, the latest year is an early estimate, and I can't see live data, so check the official release before you quote them.\n\nIndia real GDP growth (per year)\n0%\n5%\n10%\nFY22\nFY23\nFY24\nFY25\nFY26\nKeep\n4:08 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 14703
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792771742821,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "The existing compare proof remains executable on the actual kit surface",
+      "expect": "AT-343 highlighted column with why",
+      "before": 0,
+      "firstReplyMs": 7602,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "On specs alone, the Galaxy S25 looks like the best value of the three. I can't see live prices, so check today's price before you decide. These figures are from memory, and the launch prices were close to each other.\n\niPhone 16\nScreen\n6.1 in OLED, 60 Hz\nChip\nApple A18\nCameras\n48 MP main + 12 MP ultra-wide\nBattery\nAbout 3,561 mAh\nUpdates\nLong iOS support, about 6 to 7 years\nPixel 9\nScreen\n6.3 in OLED, 120 Hz\nChip\nGoogle Tensor G4\nCameras\n50 MP main + 48 MP ultra-wide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years of Android updates\nBest pick\nGalaxy S25\nScreen\n6.2 in AMOLED, 120 Hz\nChip\nSnapdragon 8 Elite\nCameras\n50 MP main + 12 MP ultra-wide + 10 MP 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years of Android updates\n\nFastest chip, a zoom camera and a 120 Hz screen at a similar price. Check live prices first.\n\nKeep\n4:09 PM",
+      "replyTexts": [
+        "On specs alone, the Galaxy S25 looks like the best value of the three. I can't see live prices, so check today's price before you decide. These figures are from memory, and the launch prices were close to each other.\n\niPhone 16\nScreen\n6.1 in OLED, 60 Hz\nChip\nApple A18\nCameras\n48 MP main + 12 MP ultra-wide\nBattery\nAbout 3,561 mAh\nUpdates\nLong iOS support, about 6 to 7 years\nPixel 9\nScreen\n6.3 in OLED, 120 Hz\nChip\nGoogle Tensor G4\nCameras\n50 MP main + 48 MP ultra-wide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years of Android updates\nBest pick\nGalaxy S25\nScreen\n6.2 in AMOLED, 120 Hz\nChip\nSnapdragon 8 Elite\nCameras\n50 MP main + 12 MP ultra-wide + 10 MP 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years of Android updates\n\nFastest chip, a zoom camera and a 120 Hz screen at a similar price. Check live prices first.\n\nKeep\n4:09 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 18694
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792771761698,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "AT-346: the actual timed checklist has step rows and a renderer timer readout",
+      "expect": "AT-346 timer runs",
+      "before": 0,
+      "firstReplyMs": 2547,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is ready below. Tap start when the tea goes in.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n4:09 PM",
+      "replyTexts": [
+        "Your 2 minute tea timer is ready below. Tap start when the tea goes in.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n4:09 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 10167
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792771772038,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "AT-351/AT-370: the actual short form is bounded and has no password/key input",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "before": 0,
+      "firstReplyMs": 4075,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for the party plan. Fill in the date, guest count and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n4:09 PM",
+      "replyTexts": [
+        "Here's a short form for the party plan. Fill in the date, guest count and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n4:09 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 12160
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792771784371,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-358: the actual page frame is sandboxed to scripts and reaches a ready/kept state",
+      "expect": "AT-358..362 sealed page, status line first",
+      "before": 0,
+      "firstReplyMs": 6097,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add an amount, pick a category and see the monthly total, a category breakdown and what's left of your budget. It tries to save entries on this PC, but I can't promise they survive closing the app.\n\nKeep\n\nWant me to add a way to export the entries to a file?\n\n4:09 PM",
+      "replyTexts": [
+        "Your expense tracker is below. Add an amount, pick a category and see the monthly total, a category breakdown and what's left of your budget. It tries to save entries on this PC, but I can't promise they survive closing the app.\n\nKeep\n\nWant me to add a way to export the entries to a file?\n\n4:09 PM"
+      ],
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 23338
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "note": "AT-370: exercise the short-form secret refusal through the renderer without sending data",
+      "sentAt": 1792771807903,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "AT-370: a secret-like field must be represented by an actual refusal marker and no input field",
+      "expect": "AT-370 secret-like form field is refused in the rendered form",
+      "before": 0,
+      "firstReplyMs": 6631,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can't put a password box in a form here, so this demo has a username box only. Your app asks for passwords in a separate secret box when a step needs one.\n\nUsername\nSend to foo\nKeep\n\nWant a different demo, like a sign-up form with name and email?\n\n4:10 PM",
+      "replyTexts": [
+        "I can't put a password box in a form here, so this demo has a username box only. Your app asks for passwords in a separate secret box when a step needs one.\n\nUsername\nSend to foo\nKeep\n\nWant a different demo, like a sign-up form with name and email?\n\n4:10 PM"
+      ],
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "endState": false,
+      "ms": 14757
+    },
+    {
+      "i": 16,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

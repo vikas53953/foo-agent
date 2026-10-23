@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't draw tables here, so here is a list instead:\n\nMaharashtra: Mumbai\nKarnataka: Bengaluru\nTamil Nadu: Chennai\n4:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n4:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC, and the main Indian Railways site is indianrailways.gov.in.\n\n4:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n4:21 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best for Sat 24 Oct or Sun 25 Oct? → Lalbagh and Cubbon Park walk\n4:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n4:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Lalbagh and Cubbon Park walk it is. Both are green and close to each other, so you can do them in one outing, ideally early in the morning before it gets crowded. Want me to put it in your calendar for Sat 24 Oct or Sun 25 Oct?\n\n4:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n4:22 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What sounds good for dinner tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nBiryani\nHearty and filling\n3\nNorth Indian thali\nDal, sabzi, roti, rice\nSomething else…\nSkip\n4:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n4:22 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nDal chawal\nBEST FIT\nSimple, home-cooked comfort\n2\nPaneer butter masala with roti\nRich and filling\n3\nVeg biryani with raita\nOne pot, full meal\nSomething else…\nSkip\n4:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:22 PM"
+  }
+]
