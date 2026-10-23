@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Lalbagh and Cubbon Park stroll is a good pick for the weekend. The two parks are a short drive apart, so you could do both on the same morning. Want me to put it in your calendar for Sat 24 Oct or Sun 25 Oct?\n\n6:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n6:21 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner would you like tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nNorth Indian thali\nDal, paneer, roti, rice\n3\nBiryani night\nHyderabadi-style, with raita\nSomething else…\nSkip\n6:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n6:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal tonight it is, simple and comforting. Want a quick recipe, or a reminder to start cooking on Fri 23 Oct, 7:00 PM?\n\n6:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n6:22 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Pay electricity bill”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n6:22 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n6:23 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for pizza options at Domino's near you\n3\nKeep 3 pizzas that fit popular and good value\n4\nWait for you to pick one\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 6 minutes\nGo\nChange plan\n6:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:23 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n6:23 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n6:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:23 AM"
+  }
+]

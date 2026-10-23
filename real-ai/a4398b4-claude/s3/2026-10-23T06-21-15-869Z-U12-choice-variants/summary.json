@@ -1,0 +1,186 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 17,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-21-15-869Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1020
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792736482219,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): choice card has at least three executable options",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "before": 0,
+      "firstReplyMs": 6070,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Sat 24 or Sun 25 Oct?\n1\nNandi Hills sunrise drive\nBEST FIT\nEarly start, cool views, back by brunch\n2\nLalbagh and Cubbon Park stroll\nEasy, green, and a good filter coffee stop\n3\nIndiranagar cafe and brewery hop\nRelaxed food and drinks with friends\nSomething else…\nSkip\n6:21 AM",
+      "replyTexts": [
+        "Which weekend plan sounds best for Sat 24 or Sun 25 Oct?\n1\nNandi Hills sunrise drive\nBEST FIT\nEarly start, cool views, back by brunch\n2\nLalbagh and Cubbon Park stroll\nEasy, green, and a good filter coffee stop\n3\nIndiranagar cafe and brewery hop\nRelaxed food and drinks with friends\nSomething else…\nSkip\n6:21 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 12157
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "C.3 Reactions: reaction picker adds a reaction chip to the assistant bubble",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792736494914,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3); AT-035: typed choice branch collapses to an answered option (reaction-choice branch remains unexercised)",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "before": 0,
+      "firstReplyMs": 6552,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Lalbagh and Cubbon Park stroll is a good pick for the weekend. The two parks are a short drive apart, so you could do both on the same morning. Want me to put it in your calendar for Sat 24 Oct or Sun 25 Oct?\n\n6:21 AM",
+      "replyTexts": [
+        "Lalbagh and Cubbon Park stroll is a good pick for the weekend. The two parks are a short drive apart, so you could do both on the same morning. Want me to put it in your calendar for Sat 24 Oct or Sun 25 Oct?\n\n6:21 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 13623
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792736508687,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): second choice card has executable options",
+      "expect": "another Choice card",
+      "before": 0,
+      "firstReplyMs": 4063,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which dinner would you like tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nNorth Indian thali\nDal, paneer, roti, rice\n3\nBiryani night\nHyderabadi-style, with raita\nSomething else…\nSkip\n6:21 AM",
+      "replyTexts": [
+        "Which dinner would you like tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nNorth Indian thali\nDal, paneer, roti, rice\n3\nBiryani night\nHyderabadi-style, with raita\nSomething else…\nSkip\n6:21 AM"
+      ],
+      "kit": [],
+      "endState": false,
+      "ms": 10137
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 600
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "sentAt": 1792736519694,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): assistant accepts the user-provided alternative",
+      "expect": "foo takes my own answer",
+      "before": 0,
+      "firstReplyMs": 4562,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal tonight it is, simple and comforting. Want a quick recipe, or a reminder to start cooking on Fri 23 Oct, 7:00 PM?\n\n6:22 AM",
+      "replyTexts": [
+        "Dal chawal tonight it is, simple and comforting. Want a quick recipe, or a reminder to start cooking on Fri 23 Oct, 7:00 PM?\n\n6:22 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 11138
+    },
+    {
+      "i": 16,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

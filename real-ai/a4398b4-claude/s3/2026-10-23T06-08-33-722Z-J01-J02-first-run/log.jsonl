@@ -1,0 +1,26 @@
+{"t":"2026-10-23T06:08:33.723Z","journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","spec":"07-1 J1, J2; 06-1 §1–§2; AT-005, AT-313, AT-314","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T06:08:39.873Z","step":"launch","ok":true}
+{"t":"2026-10-23T06:08:40.282Z","i":0,"do":"wait","expect":"96px face wakes once, wordmark, no flicker","ok":true,"ms":407}
+{"t":"2026-10-23T06:08:40.334Z","shot":"01-splash.png"}
+{"t":"2026-10-23T06:08:40.337Z","i":1,"do":"waitFor","expect":"Welcome card: Hi, I'm foo, Let's go; header says step 1 of 2 (CR-0026 quick first run)","ok":true,"ms":3}
+{"t":"2026-10-23T06:08:40.379Z","shot":"02-welcome.png"}
+{"t":"2026-10-23T06:08:40.514Z","i":2,"do":"click","note":"Let's go starts Find your AI","before":1,"clicked":true,"ok":true,"ms":135}
+{"t":"2026-10-23T06:08:40.521Z","i":3,"do":"waitFor","expect":"Find your AI card, rows test live with shimmer","ok":true,"ms":7}
+{"t":"2026-10-23T06:08:40.573Z","shot":"03-finder-testing.png"}
+{"t":"2026-10-23T06:09:10.575Z","i":4,"do":"wait","expect":"the chosen AI shows works and is pre-selected; others show a clear reason, never \"slow to answer\"","ok":true,"ms":30002}
+{"t":"2026-10-23T06:09:10.633Z","shot":"04-finder-tested.png"}
+{"t":"2026-10-23T06:09:10.636Z","i":5,"do":"text","soft":true,"text":"Step 1 of 2 · foo finds your AI","ok":true,"ms":3}
+{"t":"2026-10-23T06:09:10.637Z","i":6,"do":"check","note":"did any AI pass the first test on its own?","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-23T06:09:10.638Z","i":7,"do":"click","note":"retest the chosen AI alone, only if no AI passed the first test","skipped":"setup-ai-use already showing","ok":true,"ms":1}
+{"t":"2026-10-23T06:09:10.641Z","i":8,"do":"waitFor","expect":"the chosen AI works; Use button shows","ok":true,"ms":2}
+{"t":"2026-10-23T06:09:10.695Z","shot":"05-after-claude-retest.png"}
+{"t":"2026-10-23T06:09:11.186Z","i":9,"do":"click","expect":"chat opens; next setup step (name and face) per J3","before":2,"clicked":true,"ok":true,"ms":491}
+{"t":"2026-10-23T06:09:11.273Z","shot":"06-after-use.png"}
+{"t":"2026-10-23T06:09:14.286Z","i":10,"do":"wait","expect":"step 2 of 2: name card, with Skip the rest in the header","ok":true,"ms":3013}
+{"t":"2026-10-23T06:09:14.333Z","shot":"07-step2.png"}
+{"t":"2026-10-23T06:09:14.404Z","i":11,"do":"clickIf","note":"take the defaults for name, face and vibe so later journeys start in a ready chat","found":1,"before":3,"clicked":true,"ok":true,"ms":71}
+{"t":"2026-10-23T06:09:24.406Z","i":12,"do":"wait","expect":"foo texts first with a warm welcome (J3/J4); composer unlocked","ok":true,"ms":10002}
+{"t":"2026-10-23T06:09:24.461Z","shot":"08-first-chat.png"}
+{"t":"2026-10-23T06:09:24.468Z","i":13,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-23T06:09:24.698Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-23T06:09:24.707Z","step":"aiTurns","turns":0}

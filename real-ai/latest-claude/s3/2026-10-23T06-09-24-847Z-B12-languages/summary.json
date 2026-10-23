@@ -1,0 +1,94 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-09-24-847Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792735770216,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "before": 0,
+      "firstReplyMs": 5041,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Sun 25 Oct) ke liye ye teen safe choices hain:\n\nChocolate truffle: sabko pasand aata hai, party ke liye best.\nRasmalai ya gulab jamun cake: desi swaad, agar mummy ko mithai pasand hai.\nFresh fruit ya pineapple cake: halka aur fresh, jab chocolate zyada na chahiye.\n\nParso ke liye kal tak order kar dena theek rahega, warna custom design ke slot bhar jaate hain. Mummy ko kaunsa flavour sabse zyada pasand hai, aur eggless chahiye?\n\n6:09 AM",
+      "replyTexts": [
+        "Mummy ke birthday (Sun 25 Oct) ke liye ye teen safe choices hain:\n\nChocolate truffle: sabko pasand aata hai, party ke liye best.\nRasmalai ya gulab jamun cake: desi swaad, agar mummy ko mithai pasand hai.\nFresh fruit ya pineapple cake: halka aur fresh, jab chocolate zyada na chahiye.\n\nParso ke liye kal tak order kar dena theek rahega, warna custom design ke slot bhar jaate hain. Mummy ko kaunsa flavour sabse zyada pasand hai, aur eggless chahiye?\n\n6:09 AM"
+      ],
+      "kit": [],
+      "endState": false,
+      "ms": 13655
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792735784401,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 447
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "before": 0,
+      "firstReplyMs": 8148,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਚਾਕਲੇਟ ਟਰਫਲ ਕੇਕ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਰਸਮਲਾਈ ਕੇਕ: ਜੇ ਮੰਮੀ ਨੂੰ ਦੇਸੀ ਮਿੱਠਾ ਪਸੰਦ ਹੈ।\nਫਰੈਸ਼ ਫਰੂਟ ਜਾਂ ਪਾਈਨਐਪਲ ਕੇਕ: ਜੇ ਕੁਝ ਹਲਕਾ ਚਾਹੀਦਾ ਹੈ।\n\nਜਨਮਦਿਨ Sun 25 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਨੂੰ ਚਾਕਲੇਟ ਪਸੰਦ ਹੈ ਜਾਂ ਕੁਝ ਹਲਕਾ?\n\n6:09 AM",
+      "replyTexts": [
+        "ਚਾਕਲੇਟ ਟਰਫਲ ਕੇਕ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਰਸਮਲਾਈ ਕੇਕ: ਜੇ ਮੰਮੀ ਨੂੰ ਦੇਸੀ ਮਿੱਠਾ ਪਸੰਦ ਹੈ।\nਫਰੈਸ਼ ਫਰੂਟ ਜਾਂ ਪਾਈਨਐਪਲ ਕੇਕ: ਜੇ ਕੁਝ ਹਲਕਾ ਚਾਹੀਦਾ ਹੈ।\n\nਜਨਮਦਿਨ Sun 25 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਨੂੰ ਚਾਕਲੇਟ ਪਸੰਦ ਹੈ ਜਾਂ ਕੁਝ ਹਲਕਾ?\n\n6:09 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 16750
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792735801284,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "before": 0,
+      "firstReplyMs": 4075,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so banks and offices should be open. The next big dates are Diwali on Sun 8 Nov and Guru Nanak Jayanti on Tue 24 Nov. Dates can shift, so check the official Maharashtra list if something important depends on it.\n\n6:10 AM",
+      "replyTexts": [
+        "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so banks and offices should be open. The next big dates are Diwali on Sun 8 Nov and Guru Nanak Jayanti on Tue 24 Nov. Dates can shift, so check the official Maharashtra list if something important depends on it.\n\n6:10 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 12185
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
