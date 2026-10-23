@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:47 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:47 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:47 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:47 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:47 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n4:48 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mainly use the running shoes for? → Gym and treadmill\n4:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:48 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n4:48 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What's your shoe size (UK)?\n1\nUK 6 or 7\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or 11\nSomething else…\nSkip\n4:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:48 AM"
+  }
+]
