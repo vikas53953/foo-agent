@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T20-06-51-647Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1039
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792786018352,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 144
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 8598,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which kind of weekend do you feel like in Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, hilltop views, back by brunch\n2\nCubbon Park and café brunch\nEasy walk, then a relaxed meal\n3\nIndiranagar brewery evening\nCraft beer, food and live music\nSomething else…\nSkip\n8:07 PM",
+      "kit": [],
+      "ms": 14680
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792786033336,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 154
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 6097,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Cubbon Park and a café brunch is a lovely pick. Go early on Sat 24 Oct, 8:00 AM, for a slow walk under the trees, then brunch near MG Road or Church Street once the crowds arrive. Want me to put it in your calendar?\n\n8:07 PM",
+      "kit": [],
+      "ms": 13177
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792786046734,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 5569,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, sabzi, roti and rice\n3\nBiryani night\nOne-pot, rich and filling\nSomething else…\nSkip\n8:07 PM",
+      "kit": [],
+      "ms": 11616
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 612
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792786059306,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 118
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 5584,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is, a good easy dinner for a Friday night. A squeeze of lemon and a spoon of ghee on top makes it feel special. Want a quick tadka dal recipe?\n\n8:07 PM",
+      "kit": [],
+      "ms": 12671
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{"t":"2026-10-23T20:05:27.211Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T20:05:32.786Z","step":"launch","ok":true}
+{"t":"2026-10-23T20:05:33.838Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1049}
+{"t":"2026-10-23T20:05:33.973Z","i":1,"do":"send","sentAt":1792785933935,"sent":true,"before":0,"ok":true,"ms":134}
+{"t":"2026-10-23T20:05:45.115Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":4034,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Ganga, the Godavari and the Yamuna are three major Indian rivers. Want a few more, or which one flows through your city?\n\n8:05 PM","kit":[],"ms":11141}
+{"t":"2026-10-23T20:05:45.191Z","shot":"01-rivers.png"}
+{"t":"2026-10-23T20:05:45.207Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":16}
+{"t":"2026-10-23T20:05:45.268Z","shot":"02-find-open.png"}
+{"t":"2026-10-23T20:05:45.281Z","i":4,"do":"fill","soft":true,"ok":true,"ms":13}
+{"t":"2026-10-23T20:05:46.083Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":801}
+{"t":"2026-10-23T20:05:46.142Z","shot":"03-find-results.png"}
+{"t":"2026-10-23T20:05:46.216Z","i":6,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-23T20:05:46.293Z","i":7,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-23T20:05:46.372Z","i":8,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-23T20:05:46.380Z","i":9,"do":"key","ok":true,"ms":7}
+{"t":"2026-10-23T20:05:47.182Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":802}
+{"t":"2026-10-23T20:05:47.251Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-23T20:05:47.255Z","i":11,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-23T20:05:47.266Z","i":12,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-23T20:05:47.404Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-23T20:05:47.417Z","step":"aiTurns","turns":1}

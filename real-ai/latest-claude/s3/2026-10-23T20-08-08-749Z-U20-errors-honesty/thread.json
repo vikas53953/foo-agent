@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Cubbon Park and a café brunch is a lovely pick. Go early on Sat 24 Oct, 8:00 AM, for a slow walk under the trees, then brunch near MG Road or Church Street once the crowds arrive. Want me to put it in your calendar?\n\n8:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n8:07 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, sabzi, roti and rice\n3\nBiryani night\nOne-pot, rich and filling\nSomething else…\nSkip\n8:07 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n8:07 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good easy dinner for a Friday night. A squeeze of lemon and a spoon of ghee on top makes it feel special. Want a quick tadka dal recipe?\n\n8:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n8:08 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which company do you pay your electricity bill to?\n1\nBESCOM\nBEST FIT\nBengaluru electricity supply\n2\nTata Power\n3\nAdani Electricity\n4\nAnother company\nTell me its name\nSomething else…\nSkip\n8:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n8:08 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for pizza options near you\n3\nKeep 3 pizzas that fit popular and good value\n4\nWait for you to pick one\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 5 minutes\nGo\nChange plan\n8:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n8:08 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n8:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:08 PM"
+  }
+]

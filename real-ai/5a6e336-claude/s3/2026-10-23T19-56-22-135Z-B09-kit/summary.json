@@ -1,0 +1,190 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T19-56-22-135Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792785387750,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 144
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 6592,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month. Over 20 years you would pay around ₹1,04,13,840 in total, of which about ₹54,13,840 is interest. Change the amount, rate or years below to see new figures.\n\nLoan amount (₹)\nInterest rate (% a year)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n7:56 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 15217
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792785403156,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 3557,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 well-known places to visit in Jaipur, numbered in the order that makes a easy day route.\n\nHawa Mahal: the pink \"palace of winds\", best in the morning light\nCity Palace: royal courtyards and museum, close to Hawa Mahal\nJantar Mantar: old stone sun clocks and star instruments\nAmer Fort: hilltop fort about 11 km out, go early to beat the crowds\nNahargarh Fort: sunset views over the whole city\n1\n2\n3\n4\n5\n1\nHawa Mahal\nBest in the morning light\n2\nCity Palace\nCourtyards and museum\n3\nJantar Mantar\nStone sun clocks and star instruments\n4\nAmer Fort\nHilltop fort, go early\n5\nNahargarh Fort\nSunset views over the city\nOpen in Maps\nKeep\n\nWant me to turn this into a one-day plan with timings?\n\n7:56 PM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "ms": 13191
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792785416554,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 7113,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's GDP growth over the last five full years swung from a sharp fall in FY 2020-21 to a strong rebound, then settled near 6.5% in FY 2024-25. Figures are approximate and may be revised, so check MoSPI for the latest. FY 2025-26 is left out because its numbers are still provisional.\n\nIndia real GDP growth (% a year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n7:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "ms": 15223
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792785431966,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 118
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 7594,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three, because for about the same launch price you get a 120Hz screen, a 3x zoom camera and the fastest chip. Prices below are India launch prices for the base version. Current shop prices differ, so check before you buy.\n\niPhone 16\nLaunch price\n₹79,900 (128 GB)\nChip\nApple A18\nScreen\n6.1 inch OLED, 60Hz\nCameras\n48 MP main + 12 MP wide\nBattery\nSmallest of the three\nUpdates\nAbout 6 years or more\nPixel 9\nLaunch price\n₹79,999 (128 GB)\nChip\nGoogle Tensor G4\nScreen\n6.3 inch OLED, 120Hz\nCameras\n50 MP main + 48 MP wide\nBattery\nLargest of the three\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999 (128 GB)\nChip\nSnapdragon 8 Elite\nScreen\n6.2 inch OLED, 120Hz\nCameras\n50 MP main + wide + 3x zoom\nBattery\nMiddle of the three\nUpdates\n7 years\n\nOnly one with a 3x zoom camera, the fastest chip and a 120Hz screen for nearly the same price.\n\nKeep\n\nIf battery life matters most, the Pixel 9 is the close second. Want me to look up today's prices for all three?\n\n7:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "ms": 17736
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792785449881,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 4552,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is ready below, so start it when the cup goes in.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n7:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "ms": 11640
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792785461739,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 168
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 3041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here is a short form for your birthday party plan: fill in the date, guest count and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "ms": 11127
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792785473095,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 164
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 6580,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add what you spent, pick a category, and it keeps the month's total and a split by category. Set a monthly budget to see how much is left.\n\nKeep\n\nEntries are saved on this device if your app allows it. Want a category added, say Groceries or Fuel?\n\n7:57 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 25874
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

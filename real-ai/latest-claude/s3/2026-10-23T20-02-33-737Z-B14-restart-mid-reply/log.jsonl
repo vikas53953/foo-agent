@@ -1,0 +1,19 @@
+{"t":"2026-10-23T20:02:33.737Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T20:02:39.272Z","step":"launch","ok":true}
+{"t":"2026-10-23T20:02:47.367Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8092}
+{"t":"2026-10-23T20:02:47.493Z","i":0,"do":"send","sentAt":1792785767451,"sent":true,"before":0,"ok":true,"ms":125}
+{"t":"2026-10-23T20:02:50.496Z","i":1,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-23T20:02:55.753Z","step":"launch","ok":true}
+{"t":"2026-10-23T20:02:55.753Z","i":2,"do":"relaunch","ok":true,"ms":5257}
+{"t":"2026-10-23T20:03:04.364Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":1039,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is my top pick, simple and sweet. A few more: Mango, Dosa, Pebble, Turbo (for the irony) or Gandalf, since tortoises live long and wise lives. Want names that suit a boy or a girl tortoise?\n\n8:02 PM","kit":[],"ms":8610}
+{"t":"2026-10-23T20:03:04.439Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-23T20:03:04.442Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n8:02 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-23T20:03:04.612Z","i":5,"do":"send","sentAt":1792785784543,"sent":true,"before":0,"ok":true,"ms":170}
+{"t":"2026-10-23T20:03:06.629Z","i":6,"do":"wait","ok":true,"ms":2017}
+{"t":"2026-10-23T20:03:11.927Z","step":"launch","ok":true}
+{"t":"2026-10-23T20:03:11.927Z","i":7,"do":"relaunch","ok":true,"ms":5297}
+{"t":"2026-10-23T20:03:22.188Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":4073,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCompare top headlines from news sites\nWatch live\nStop\nunder 1 min\n8:03 PM","kit":[],"ms":10260}
+{"t":"2026-10-23T20:03:22.360Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-23T20:03:22.379Z","i":9,"do":"dump","ok":true,"ms":19}
+{"t":"2026-10-23T20:03:22.810Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-23T20:03:22.824Z","step":"aiTurns","turns":3}

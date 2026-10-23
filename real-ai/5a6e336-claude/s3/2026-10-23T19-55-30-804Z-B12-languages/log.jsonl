@@ -1,0 +1,14 @@
+{"t":"2026-10-23T19:55:30.804Z","journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","spec":"07-1 J7; walkthrough ch. 08; AT-031","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T19:55:36.653Z","step":"launch","ok":true}
+{"t":"2026-10-23T19:55:36.793Z","i":0,"do":"send","sentAt":1792785336755,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-23T19:55:53.569Z","i":1,"do":"waitReply","expect":"walkthrough 08 step 4: answers in Hinglish","firstReplyMs":7109,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mummy ke birthday (Sun 25 Oct) ke liye ye 4 cake achhe rahenge:\n\nRasmalai cake: halka meetha, desi swaad, mummy log ko aksar pasand aata hai\nChocolate truffle: sabko pasand aane wala safe option\nPineapple ya butterscotch: classic aur halka\nPhoto cake: mummy ki pasandida photo ke saath, personal touch\n\nSun 25 Oct ke liye aaj raat ya kal subah tak order kar do, tab delivery slot mil jaata hai. Kitne log honge, aur eggless chahiye?\n\n7:55 PM","kit":[],"ms":16775}
+{"t":"2026-10-23T19:55:53.641Z","shot":"01-hinglish.png"}
+{"t":"2026-10-23T19:55:53.775Z","i":2,"do":"send","sentAt":1792785353755,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-23T19:56:08.985Z","i":3,"do":"waitReply","expect":"walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi","firstReplyMs":5582,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਲਈ ਰਸਮਲਾਈ ਕੇਕ ਸਭ ਤੋਂ ਵਧੀਆ ਰਹੇਗਾ: ਹਲਕਾ ਮਿੱਠਾ ਅਤੇ ਦੇਸੀ ਸੁਆਦ ਵਾਲਾ।\n\nਹੋਰ ਚੰਗੇ ਵਿਕਲਪ:\n\nਚਾਕਲੇਟ ਟਰਫ਼ਲ: ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਣ ਵਾਲਾ ਸੁਰੱਖਿਅਤ ਚੋਣ\nਪਾਈਨਐਪਲ ਜਾਂ ਬਟਰਸਕਾਚ: ਪੁਰਾਣਾ ਤੇ ਹਲਕਾ ਸੁਆਦ\nਫ਼ੋਟੋ ਕੇਕ: ਮੰਮੀ ਦੀ ਮਨਪਸੰਦ ਫ਼ੋਟੋ ਨਾਲ, ਆਪਣਾਪਣ ਵਾਲਾ\n\nਜਨਮ ਦਿਨ Sun 25 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਰਾਤ ਜਾਂ ਕੱਲ੍ਹ ਸਵੇਰ ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n7:55 PM","kit":[],"ms":15210}
+{"t":"2026-10-23T19:56:09.042Z","shot":"02-punjabi.png"}
+{"t":"2026-10-23T19:56:09.150Z","i":4,"do":"send","sentAt":1792785369128,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-23T19:56:21.798Z","i":5,"do":"waitReply","expect":"walkthrough 08 step 3: short 1–3 bubbles, no filler","firstReplyMs":5042,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"No, Mon 2 Nov looks like a normal working day in Mumbai. I don't know of any public or bank holiday on it. Diwali falls the next week, on Sun 8 Nov, and the holiday list isn't confirmed for this year, so check the official list if it matters for a bank visit.\n\n7:56 PM","kit":[],"ms":12647}
+{"t":"2026-10-23T19:56:21.857Z","shot":"03-holiday.png"}
+{"t":"2026-10-23T19:56:21.865Z","i":6,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-23T19:56:21.988Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-23T19:56:22.000Z","step":"aiTurns","turns":3}
