@@ -1,0 +1,14 @@
+{"t":"2026-10-23T19:54:04.110Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T19:54:09.133Z","step":"launch","ok":true}
+{"t":"2026-10-23T19:54:09.224Z","i":0,"do":"send","sentAt":1792785249196,"sent":true,"before":0,"ok":true,"ms":88}
+{"t":"2026-10-23T19:54:19.385Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3074,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! Good to see you. What can I do for you tonight?\n\n7:54 PM","kit":[],"ms":10160}
+{"t":"2026-10-23T19:54:19.434Z","shot":"01-hi.png"}
+{"t":"2026-10-23T19:54:19.502Z","i":2,"do":"send","sentAt":1792785259489,"sent":true,"before":0,"ok":true,"ms":67}
+{"t":"2026-10-23T19:54:29.665Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3060,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I'm foo, your personal helper: I can check things, keep an eye on them for you, and help with your email, calendar and messages.\n\n7:54 PM","kit":[],"ms":10163}
+{"t":"2026-10-23T19:54:29.715Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-23T19:54:29.789Z","i":4,"do":"send","sentAt":1792785269775,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-23T19:54:40.463Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2549,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through that tunnel scrambled, so your internet provider or a public Wi-Fi owner sees only gibberish.\n\nThe VPN computer then visits websites for you, so they see its address instead of yours. That hides where you are and keeps your activity private on shared networks.\n\nIt doesn't make you invisible, though. The VPN company can still see your traffic, so pick one you trust.\n\n7:54 PM","kit":[],"ms":10674}
+{"t":"2026-10-23T19:54:40.515Z","shot":"03-vpn.png"}
+{"t":"2026-10-23T19:54:40.523Z","i":6,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-23T19:54:40.616Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-23T19:54:40.625Z","step":"aiTurns","turns":3}

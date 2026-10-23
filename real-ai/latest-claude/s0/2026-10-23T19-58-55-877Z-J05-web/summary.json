@@ -1,0 +1,57 @@
+{
+  "journey": "J05-web",
+  "title": "First real task with the internet (news + sources)",
+  "steps": 6,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T19-58-55-877Z-J05-web",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792785540952,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 6590,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 17 to 23 Oct 2026\nCompare reports from different news sources\nWrite it\nWatch live\nStop\nunder 1 min\n7:59 PM",
+      "kit": [],
+      "ms": 12713
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 4
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "expectText",
+      "text": "I didn’t get that. Say it another way?\n\n7:55 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What can I do for you tonight?\n\n7:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n7:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can check things, keep an eye on them for you, and help with your email, calendar and messages.\n\n7:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through that tunnel scrambled, so your internet provider or a public Wi-Fi owner sees only gibberish.\n\nThe VPN computer then visits websites for you, so they see its address instead of yours. That hides where you are and keeps your activity private on shared networks.\n\nIt doesn't make you invisible, though. The VPN company can still see your traffic, so pick one you trust.\n\n7:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:54 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or mud\n7:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:54 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Trail shoes under ₹5,000, noted. What's your shoe size (UK/India)?\n1\nUK 7 or smaller\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or bigger\nSomething else…\nSkip\n7:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:55 PM"
+  }
+]
