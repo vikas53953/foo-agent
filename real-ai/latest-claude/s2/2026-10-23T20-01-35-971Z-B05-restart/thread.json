@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n7:55 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:55 PM\n7:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:55 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n7:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹20,000 from one HT Tech list:\n\nRedmi 15C 5G, ₹15,999: Dimensity 6300, 6000mAh, 33W charging, 50MP dual camera, 120Hz. Best all-rounder.\nLava Bold N4 Pro 5G, ₹15,999: 6GB RAM, 500K+ Antutu, 6000mAh but slower 18W charging, 50MP, clean Android 16.\nSamsung Galaxy M17e 5G, ₹16,998: IP54, 6 OS upgrades, 6000mAh, 50MP, 120Hz.\n\nOnePlus N6x (₹19,999 7000mAh) costs more for 4GB RAM. Camera quality isn't compared in depth; all three list a 50MP sensor.\n\n7:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n7:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3 day Jaipur plan for your parents, with mornings for sightseeing and afternoons for rest:\n\nDay 1, Forts and the Pink City: Amber Fort early, before the crowds. Take a jeep up to avoid the steep walk. Stop at Jal Mahal for photos, then see Hawa Mahal from the outside in the evening.\nDay 2, Royal Jaipur: City Palace and Jantar Mantar in the morning, then lunch and a rest at the hotel. Visit Johari Bazaar in the evening for jewellery, textiles and sweets. Dinner at Chokhi Dhani gives a taste of Rajasthani food and folk music.\nDay 3, Easy day: Albert Hall Museum and Birla Mandir in the morning. Go to Nahargarh Fort for sunset if they're comfortable with a short drive and some walking. Otherwise a slow chai at a rooftop café works well.\n\nCarry water and hats, because the days can still be warm. Ask your hotel to book one car with a driver for all three days, as it's easier than hailing autos.\n\nWant me to adjust it for their dates and how much walking they're comfortable with?\n\n7:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n7:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n8:01 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n8:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum, Janpath, New Delhi, is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays, so it is closed now and next opens Sat 24 Oct, 10:00 AM. Entry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an ID card. Tickets can be booked at https://www.zoonga.com/national-museum. This is from the museum's own site, which doesn't show when it was last updated.\n\n8:02 PM"
+  }
+]
