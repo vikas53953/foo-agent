@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, so nobody in between can see what you send.\n\nWithout one, your traffic goes through your internet provider, and websites see your real location. With one, your data is locked (encrypted) before it leaves your device and travels to the VPN company's computer. That computer then talks to the website for you. The website sees the VPN's location, not yours, and your internet provider only sees scrambled data going to the VPN.\n\nIt helps on public Wi-Fi and when you want to hide your location. It does not make you fully anonymous, because the VPN company can still see your activity, so pick one you trust.\n\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n4:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n4:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For treadmill and gym runs, what matters most in the shoes?\n1\nSoft cushioning\nBEST FIT\nEasy on knees and feet\n2\nLightweight\nFeels quick and airy\n3\nDurable and sturdy\nLasts through daily use\n4\nBest value\nCheapest good pair\nSomething else…\nSkip\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n4:07 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:07 AM\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels for 2 nights,…\nlive checklist\nLooking for Goa hotels for 2 nights, Sat 31 Oct to\nCompare price, area, rating and cancellation\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n3 min\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n4:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n4:11 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Goa hotels for 2 nights,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:11 AM"
+  }
+]

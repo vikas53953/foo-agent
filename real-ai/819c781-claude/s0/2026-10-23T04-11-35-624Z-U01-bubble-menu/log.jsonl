@@ -1,0 +1,63 @@
+{"t":"2026-10-23T04:11:35.624Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T04:11:40.899Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:11:48.994Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8090}
+{"t":"2026-10-23T04:11:50.027Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1033}
+{"t":"2026-10-23T04:11:50.137Z","i":1,"do":"send","sentAt":1792728710089,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-23T04:12:01.767Z","i":2,"do":"waitReply","note":"C.3 Your bubble + status badge; C.3 foo / helper bubble: latest reply has text and the sent bubble has a non-failed status indicator","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":4557,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Delhi has more than 1,000 years of history layered in its streets, and it has been the capital of several empires, including the Mughals and the British Raj.\n\n4:11 AM","kit":[],"endState":true,"ms":11629}
+{"t":"2026-10-23T04:12:01.829Z","shot":"01-fact.png"}
+{"t":"2026-10-23T04:12:01.902Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-23T04:12:01.972Z","i":4,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-23T04:12:02.574Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":601}
+{"t":"2026-10-23T04:12:02.627Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-23T04:12:02.687Z","i":6,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-23T04:12:02.766Z","i":7,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-23T04:12:02.885Z","i":8,"do":"click","soft":true,"ok":true,"ms":119}
+{"t":"2026-10-23T04:12:03.488Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":602}
+{"t":"2026-10-23T04:12:03.564Z","shot":"04-react-picker.png"}
+{"t":"2026-10-23T04:12:03.656Z","i":10,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-10-23T04:12:04.457Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":800}
+{"t":"2026-10-23T04:12:04.516Z","shot":"05-reacted.png"}
+{"t":"2026-10-23T04:12:04.518Z","i":12,"do":"check","note":"C.3 Reactions: reaction chip is present after choosing a picker option","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T04:12:04.584Z","i":13,"do":"click","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-23T04:12:05.386Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":802}
+{"t":"2026-10-23T04:12:05.437Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-23T04:12:05.498Z","i":15,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-10-23T04:12:06.104Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":606}
+{"t":"2026-10-23T04:12:06.158Z","shot":"07-my-menu.png"}
+{"t":"2026-10-23T04:12:06.221Z","i":17,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-23T04:12:06.721Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":500}
+{"t":"2026-10-23T04:12:06.814Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-23T04:12:06.914Z","i":19,"do":"send","sentAt":1792728726894,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-23T04:12:16.563Z","i":20,"do":"waitReply","note":"C.3 Your bubble + status badge: quoted reply is in the newest user bubble and foo answers the requested city","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":2561,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Amritsar's Golden Temple kitchen (langar) serves free meals to around 50,000 to 100,000 people every day, no matter who they are.\n\n4:12 AM","kit":[],"endState":true,"ms":9649}
+{"t":"2026-10-23T04:12:16.626Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-23T04:12:16.628Z","i":21,"do":"check","note":"C.3 Your bubble + status badge: edited user bubble remains visible","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T04:12:16.688Z","i":22,"do":"click","soft":true,"ok":true,"ms":59}
+{"t":"2026-10-23T04:12:16.769Z","i":23,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-23T04:12:17.272Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":503}
+{"t":"2026-10-23T04:12:17.344Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-23T04:12:17.357Z","i":25,"do":"fill","soft":true,"ok":true,"ms":13}
+{"t":"2026-10-23T04:12:17.366Z","i":26,"do":"key","ok":true,"ms":9}
+{"t":"2026-10-23T04:12:37.368Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20001}
+{"t":"2026-10-23T04:12:37.427Z","shot":"11-edited.png"}
+{"t":"2026-10-23T04:12:37.429Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n4:12 AM","ok":true,"ms":2}
+{"t":"2026-10-23T04:12:37.486Z","i":29,"do":"click","soft":true,"ok":true,"ms":56}
+{"t":"2026-10-23T04:12:37.565Z","i":30,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-23T04:12:38.373Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":808}
+{"t":"2026-10-23T04:12:38.425Z","shot":"12-good.png"}
+{"t":"2026-10-23T04:12:38.484Z","i":32,"do":"click","soft":true,"ok":true,"ms":59}
+{"t":"2026-10-23T04:12:38.548Z","i":33,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-23T04:12:39.350Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":801}
+{"t":"2026-10-23T04:12:39.410Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-23T04:12:39.412Z","i":35,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-23T04:12:39.484Z","i":36,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-23T04:12:39.547Z","i":37,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-23T04:15:09.984Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150436}
+{"t":"2026-10-23T04:15:10.036Z","shot":"14-try-again.png"}
+{"t":"2026-10-23T04:15:10.115Z","i":39,"do":"send","sentAt":1792728910101,"sent":true,"before":0,"ok":true,"ms":79}
+{"t":"2026-10-23T04:15:10.131Z","i":40,"do":"check","note":"C.3 Reactions; AT-027: the latest user row has exactly one reaction and no later user, assistant, or card row","found":0,"ok":false,"ms":16}
+{"t":"2026-10-23T04:15:11.632Z","i":41,"do":"wait","note":"AT-027: bounded quiet observation before the reaction-only terminal check","ok":true,"ms":1501}
+{"t":"2026-10-23T04:15:21.692Z","shot":"15-error-step42.png"}
+{"t":"2026-10-23T04:15:21.692Z","i":42,"do":"expectText","note":"AT-027: scoped latest-user reaction is exactly 👍 or ❤️","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10059}
+{"t":"2026-10-23T04:15:21.699Z","i":43,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-23T04:15:21.800Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-23T04:15:21.810Z","step":"aiTurns","turns":4}
