@@ -193,11 +193,13 @@ describe('real-PC journey contracts', () => {
     expect(initialProof?.expectJs).toBeTruthy();
     expect(proof?.expectJs).toBeTruthy();
 
-    const evaluate = (state: string, summaryText: string, withNext = true) => {
+    const evaluate = (state: string, summaryText: string, withNext = true, userText = '2', metaText = '9:01 AM') => {
       const initial = new JSDOM(
         `
         <main data-testid="thread-log">
-          <div data-side="me" data-gap>initial request</div>
+          <div data-side="me" data-gap>
+            <div data-testid="bubble-me"><div data-copy="user">initial request</div><div data-testid="bubble-meta">9:00 AM</div></div>
+          </div>
           <div data-side="them" data-gap>
             <div data-testid="card-choice" data-card-id="choice-1" data-card-state="asking">
               <button data-testid="card-choice-option"><span data-copy="external">Road shoes</span></button>
@@ -224,7 +226,9 @@ describe('real-PC journey contracts', () => {
               <span data-copy="external">${summaryText}</span>
             </div>
           </div>
-          <div data-side="me" data-gap>2</div>
+          <div data-side="me" data-gap>
+            <div data-testid="bubble-me"><div data-copy="user">${userText}</div><div data-testid="bubble-meta">${metaText}</div></div>
+          </div>
           ${
             withNext
               ? '<div data-side="them" data-gap><div data-testid="card-choice" data-card-id="choice-2" data-card-state="asking"><button data-testid="card-choice-option">Road shoes</button><button data-testid="card-choice-option">Trail shoes</button></div></div>'
@@ -243,6 +247,7 @@ describe('real-PC journey contracts', () => {
     expect(evaluate('answered', 'Which trail shoe feature? → Road shoes')).toBe(false);
     expect(evaluate('asking', 'Which trail shoe feature? → Trail shoes')).toBe(false);
     expect(evaluate('answered', 'Which trail shoe feature? → Trail shoes', false)).toBe(true);
+    expect(evaluate('answered', 'Which trail shoe feature? → Trail shoes', true, '1', '2')).toBe(false);
   });
 
   it('loads every journey and rejects unknown TIDs', () => {
