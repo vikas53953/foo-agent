@@ -1,0 +1,78 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T19-08-57-027Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792782542585,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 220
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 5067,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Sun 25 Oct) ke liye ye teen cakes safe aur pasand aane wale hain:\n\nButterscotch ya pineapple: classic hai aur lagbhag sabko pasand aata hai.\nChocolate truffle: agar mummy ko chocolate pasand hai.\nRasmalai ya gulab jamun cake: agar kuch desi aur khaas chahiye.\n\nCake parso ke liye hai, isliye order kal (Sat 24 Oct) tak kar do. Photo ya naam wala cake chahiye to ek din pehle chahiye hota hai.\n\nMummy ko kaunsa flavour sabse zyada pasand hai?\n\n7:09 PM",
+      "kit": [],
+      "ms": 14113
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792782556958,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 8165,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ko kaunsa cake flavour sabse zyada pasand hai?\n1\nButterscotch ya pineapple\nBEST FIT\nClassic, sabko pasand aata hai\n2\nChocolate truffle\n3\nRasmalai ya gulab jamun cake\nDesi aur khaas\n4\nKuch aur\nSomething else…\nSkip\n7:09 PM",
+      "kit": [],
+      "ms": 14276
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792782571407,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 7596,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਲਈ ਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ ਕੇਕ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਚਾਕਲੇਟ ਟਰੱਫ਼ਲ: ਜੇ ਮੰਮੀ ਨੂੰ ਚਾਕਲੇਟ ਪਸੰਦ ਹੈ।\nਰਸਮਲਾਈ ਕੇਕ: ਜੇ ਕੁਝ ਦੇਸੀ ਤੇ ਖ਼ਾਸ ਚਾਹੀਦਾ ਹੈ।\n\nਜਨਮ ਦਿਨ Sun 25 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਆਰਡਰ ਕੱਲ੍ਹ Sat 24 Oct ਤੱਕ ਕਰ ਦਿਓ। ਨਾਮ ਜਾਂ ਫ਼ੋਟੋ ਵਾਲਾ ਕੇਕ ਹੋਵੇ ਤਾਂ ਅੱਜ ਹੀ ਕਰਨਾ ਠੀਕ ਰਹੇਗਾ।\n\n7:09 PM",
+      "kit": [],
+      "ms": 16733
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

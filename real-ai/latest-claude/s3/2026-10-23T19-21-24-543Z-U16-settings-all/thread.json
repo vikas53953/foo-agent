@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't draw tables here, so here are three states and capitals as a list:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nKarnataka: Bengaluru\n7:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n7:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways booking site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry.\n\n7:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n7:20 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What kind of weekend do you feel like in Bengaluru? → Cubbon Park and cafes\n7:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n7:20 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Cubbon Park weekend plan sounds best?\n1\nMorning walk, then brunch\nBEST FIT\nStroll through the park, then a cafe nearby\n2\nPark picnic with a book\nSlow afternoon on the lawns, coffee to go\n3\nCafe hop on Church Street\nPark for an hour, then two or three cafes\nSomething else…\nSkip\n7:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n7:21 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner option sounds best tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight South Indian classic\n2\nPaneer butter masala with naan\nRich North Indian comfort\n3\nVegetable biryani with raita\nOne-pot and filling\nSomething else…\nSkip\n7:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n7:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a warm and easy dinner for a Friday night. Want a quick tadka tip to make it extra good?\n\n7:21 PM"
+  }
+]

@@ -1,0 +1,113 @@
+{
+  "journey": "U08-rich-text",
+  "title": "foo bubbles: code block copy, table, links, list, sources",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T19-19-12-410Z-U08-rich-text",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1032
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792783159056,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "code block in mono with a Copy button",
+      "firstReplyMs": 4051,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here is a tiny hello world in Python:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with python hello.py.\n\n7:19 PM",
+      "kit": [],
+      "ms": 11151
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792783170486,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "table renders (or label: value lines), not raw pipes",
+      "firstReplyMs": 4045,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can't draw tables here, so here are three states and capitals as a list:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nKarnataka: Bengaluru\n7:19 PM",
+      "kit": [],
+      "ms": 10647
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792783181309,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 138
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "a clickable link; right-click shows open/copy",
+      "firstReplyMs": 4050,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Indian Railways booking site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry.\n\n7:19 PM",
+      "kit": [],
+      "ms": 11651
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23086
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "link menu: Open, Copy",
+      "ok": true,
+      "ms": 501
+    },
+    {
+      "i": 10,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}
