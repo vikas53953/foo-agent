@@ -1,0 +1,15 @@
+{"t":"2026-10-23T02:18:48.472Z","journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","spec":"07 J-crash recovery (CR-0029, X-187); single-instance lock","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:18:54.001Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:18:55.059Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1051}
+{"t":"2026-10-23T02:18:55.062Z","i":1,"do":"check","note":"crash recovery: composer is present before relaunch","found":1,"ok":true,"ms":3}
+{"t":"2026-10-23T02:19:00.333Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:19:00.337Z","i":2,"do":"crashRelaunch","expect":"kill only the main foo.exe, reopen straight away: a foo window shows (not a silent quit)","fooProcs":1,"ok":true,"ms":5275}
+{"t":"2026-10-23T02:19:00.413Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-23T02:19:00.416Z","i":3,"do":"check","note":"crash recovery; single instance: exactly one composer is visible after the first relaunch (bounded visible-window check)","found":1,"ok":true,"ms":3}
+{"t":"2026-10-23T02:19:07.159Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:19:07.163Z","i":4,"do":"crashRelaunch","expect":"same, reopening 1.5 s after the crash","fooProcs":1,"ok":true,"ms":6747}
+{"t":"2026-10-23T02:19:07.223Z","shot":"02-after-reopen-1500ms.png"}
+{"t":"2026-10-23T02:19:07.226Z","i":5,"do":"check","note":"crash recovery; single instance: exactly one composer is visible after the second relaunch (lock semantics remain unexercised)","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T02:19:07.238Z","i":6,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-23T02:19:07.377Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-23T02:19:07.389Z","step":"aiTurns","turns":0}

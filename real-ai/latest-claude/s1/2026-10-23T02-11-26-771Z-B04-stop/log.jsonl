@@ -1,0 +1,17 @@
+{"t":"2026-10-23T02:11:26.771Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:11:32.281Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:11:40.367Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8083}
+{"t":"2026-10-23T02:11:40.502Z","i":0,"do":"send","sentAt":1792721500443,"sent":true,"before":0,"ok":true,"ms":135}
+{"t":"2026-10-23T02:12:03.295Z","i":1,"do":"waitReply","note":"AT-077/AT-107: the stop fixture first renders a real plan or reply","firstReplyMs":16710,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 flights by fare, time and airline\nAbout 4 minutes\nGo\nChange plan\n2:11 AM","kit":[],"endState":true,"ms":22793}
+{"t":"2026-10-23T02:12:03.359Z","shot":"01-flight-plan.png"}
+{"t":"2026-10-23T02:12:03.399Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":40}
+{"t":"2026-10-23T02:12:43.401Z","i":3,"do":"wait","ok":true,"ms":40002}
+{"t":"2026-10-23T02:12:43.479Z","shot":"02-flight-working.png"}
+{"t":"2026-10-23T02:12:43.662Z","i":4,"do":"send","sentAt":1792721563573,"sent":true,"before":0,"ok":true,"ms":182}
+{"t":"2026-10-23T02:12:49.845Z","i":5,"do":"waitReply","note":"AT-077/AT-107: stop is accepted only with a rendered stop report and stopped badge","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","firstReplyMs":538,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Stopped. Nothing was booked, paid or sent.\n\n2:12 AM","kit":[],"endState":false,"ms":6183}
+{"t":"2026-10-23T02:12:49.913Z","shot":"03-after-stop.png"}
+{"t":"2026-10-23T02:12:49.917Z","i":6,"do":"check","note":"AT-080: stop leaves no pending approval card exposed","found":0,"ok":true,"ms":3}
+{"t":"2026-10-23T02:12:49.920Z","i":7,"do":"check","note":"AT-107: the working job's checklist is rendered stopped after the user stop","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T02:12:49.930Z","i":8,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-23T02:12:50.223Z","step":"appLog","lines":23,"dropped":0}
+{"t":"2026-10-23T02:12:50.240Z","step":"aiTurns","turns":10}

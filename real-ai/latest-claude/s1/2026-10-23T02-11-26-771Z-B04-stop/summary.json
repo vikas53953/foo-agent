@@ -1,0 +1,90 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 9,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-11-26-771Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792721500443,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-077/AT-107: the stop fixture first renders a real plan or reply",
+      "firstReplyMs": 16710,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Checking flight booking sites\n1\nCheck flight booking sites\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 flights by fare, time and airline\nAbout 4 minutes\nGo\nChange plan\n2:11 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 22793
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40002
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792721563573,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 182
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "note": "AT-077/AT-107: stop is accepted only with a rendered stop report and stopped badge",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": 538,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Stopped. Nothing was booked, paid or sent.\n\n2:12 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 6183
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "AT-080: stop leaves no pending approval card exposed",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "note": "AT-107: the working job's checklist is rendered stopped after the user stop",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

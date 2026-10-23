@@ -1,0 +1,23 @@
+{"t":"2026-10-23T02:16:16.467Z","journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","spec":"06 C-24/C-25/C-26 dialogs, 10-2 §C.4 New helper / New group dialogs","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:16:22.034Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:16:23.083Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1046}
+{"t":"2026-10-23T02:16:23.090Z","i":1,"do":"key","expect":"New helper dialog: templates, name field","ok":true,"ms":6}
+{"t":"2026-10-23T02:16:23.161Z","shot":"01-new-helper.png"}
+{"t":"2026-10-23T02:16:53.237Z","shot":"02-error-step2.png"}
+{"t":"2026-10-23T02:16:53.237Z","i":2,"do":"waitFor","note":"C.4 New helper / New group dialogs (06, not cards): Control+N opens a semantic dialog","ok":false,"error":"locator.waitFor: Timeout 30000ms exceeded.","ms":30076}
+{"t":"2026-10-23T02:16:53.243Z","i":3,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-23T02:16:53.323Z","i":4,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-23T02:16:54.125Z","i":5,"do":"wait","expect":"same dialog from the button","ok":true,"ms":802}
+{"t":"2026-10-23T02:16:54.192Z","shot":"03-new-helper-2.png"}
+{"t":"2026-10-23T02:17:24.267Z","shot":"04-error-step6.png"}
+{"t":"2026-10-23T02:17:24.267Z","i":6,"do":"waitFor","note":"C.4 New helper / New group dialogs (06, not cards): sidebar New helper opens a semantic dialog","ok":false,"error":"locator.waitFor: Timeout 30000ms exceeded.","ms":30075}
+{"t":"2026-10-23T02:17:24.272Z","i":7,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-23T02:17:24.277Z","i":8,"do":"key","expect":"New group dialog: pick 2–6 members","ok":true,"ms":5}
+{"t":"2026-10-23T02:17:24.346Z","shot":"05-new-group.png"}
+{"t":"2026-10-23T02:17:54.408Z","shot":"06-error-step9.png"}
+{"t":"2026-10-23T02:17:54.409Z","i":9,"do":"waitFor","note":"C.4 New helper / New group dialogs (06, not cards): Control+Shift+N opens a semantic dialog","ok":false,"error":"locator.waitFor: Timeout 30000ms exceeded.","ms":30063}
+{"t":"2026-10-23T02:17:54.411Z","i":10,"do":"check","note":"C.5 Helper profile / group: sidebar remains available after dialog trigger (profile creation route is not exercised)","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T02:17:54.414Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-23T02:17:54.425Z","i":12,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-23T02:17:54.569Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-23T02:17:54.582Z","step":"aiTurns","turns":0}
