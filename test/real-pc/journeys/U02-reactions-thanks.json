@@ -17,23 +17,33 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "math",
-      "expect": "answer 144"
+      "expect": "answer 144",
+      "expectJs": "(()=>/144/.test(([...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1)?.innerText||'')))()",
+      "note": "C.3 Reactions: the arithmetic reply is present before the thanks reaction branch"
     },
     {
       "do": "send",
       "text": "thanks!"
     },
     {
-      "do": "wait",
-      "ms": 15000,
-      "shot": "thanks",
-      "expect": "foo adds a 👍 reaction on my thanks and posts no message (AT-027)"
+      "do": "check",
+      "css": "[data-testid=\"thread-log\"] [role=\"listitem\"]:has(> [data-side=\"me\"][data-gap]):has([data-testid=\"bubble-reaction\"]):not(:has(~ [role=\"listitem\"] [data-side=\"me\"])):not(:has(~ [role=\"listitem\"] [data-side=\"them\"])):not(:has(~ [role=\"listitem\"] [data-testid^=\"card-\"]))",
+      "count": 1,
+      "note": "C.3 Reactions; AT-027: the latest user row has exactly one reaction and no later user, assistant, or card row"
     },
     {
-      "do": "check",
-      "soft": true,
-      "tid": "bubble-reaction",
-      "note": "foo reacted to my thanks"
+      "do": "wait",
+      "ms": 1500,
+      "transient": true,
+      "note": "AT-027: bounded quiet observation before the reaction-only terminal check"
+    },
+    {
+      "do": "expectText",
+      "re": "^(?:👍|❤️)$",
+      "terminal": "reaction-only",
+      "note": "AT-027: scoped latest-user reaction is exactly 👍 or ❤️",
+      "last": false,
+      "css": "[data-testid=\"thread-log\"] [role=\"listitem\"]:has(> [data-side=\"me\"][data-gap]):has([data-testid=\"bubble-reaction\"]):not(:has(~ [role=\"listitem\"] [data-side=\"me\"])):not(:has(~ [role=\"listitem\"] [data-side=\"them\"])):not(:has(~ [role=\"listitem\"] [data-testid^=\"card-\"])) [data-testid=\"bubble-reaction\"]"
     },
     {
       "do": "click",

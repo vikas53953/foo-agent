@@ -11,9 +11,8 @@
     },
     {
       "do": "check",
-      "soft": true,
       "tid": "composer-field",
-      "note": "foo is open"
+      "note": "crash recovery: composer is present before relaunch"
     },
     {
       "do": "crashRelaunch",
@@ -21,10 +20,22 @@
       "expect": "kill only the main foo.exe, reopen straight away: a foo window shows (not a silent quit)"
     },
     {
+      "do": "check",
+      "tid": "composer-field",
+      "count": 1,
+      "note": "crash recovery; single instance: exactly one composer is visible after the first relaunch (bounded visible-window check)"
+    },
+    {
       "do": "crashRelaunch",
       "gapMs": 1500,
       "shot": "after-reopen-1500ms",
       "expect": "same, reopening 1.5 s after the crash"
+    },
+    {
+      "do": "check",
+      "tid": "composer-field",
+      "count": 1,
+      "note": "crash recovery; single instance: exactly one composer is visible after the second relaunch (lock semantics remain unexercised)"
     },
     {
       "do": "dump",

@@ -21,6 +21,11 @@
       "expect": "sidebar ⋮ menu: New helper, New group, Memory, Routines, Ideas, Activity, Settings, Shortcuts, Quit"
     },
     {
+      "do": "check",
+      "tid": "screen-activity",
+      "note": "C.5 Helper profile / group: activity screen root is rendered"
+    },
+    {
       "do": "click",
       "soft": true,
       "tid": "sidebar-menu-activity"
@@ -40,6 +45,11 @@
       "do": "click",
       "soft": true,
       "tid": "sidebar-more"
+    },
+    {
+      "do": "check",
+      "tid": "screen-ideas",
+      "note": "C.5 Helper profile / group: ideas screen root is rendered"
     },
     {
       "do": "click",
@@ -63,6 +73,11 @@
       "tid": "sidebar-more"
     },
     {
+      "do": "check",
+      "tid": "screen-foo-profile",
+      "note": "C.5 Helper profile / group: executable profile route check is present; this run reaches foo profile, so helper/group-specific state remains unexercised"
+    },
+    {
       "do": "click",
       "soft": true,
       "tid": "sidebar-menu-shortcuts"
@@ -76,6 +91,11 @@
     {
       "do": "key",
       "key": "Escape"
+    },
+    {
+      "do": "check",
+      "tid": "chat-header",
+      "note": "C.2 Main shell + banner strip: chat header is rendered on the returned chat"
     },
     {
       "do": "click",

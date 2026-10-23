@@ -1,0 +1,98 @@
+{
+  "id": "R-dark",
+  "title": "Group R dark reply contrast",
+  "spec": "07 §11.5 Group R; AT-429, AT-278",
+  "covers": ["AT-429", "AT-278"],
+  "steps": [
+    {
+      "do": "send",
+      "text": "Switch to dark mode",
+      "note": "AT-429, AT-278: clean dark mode request"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-429: clean dark mode",
+      "shot": "at-429-clean-dark-mode"
+    },
+    {
+      "do": "send",
+      "text": "hi",
+      "note": "AT-429, AT-278: clean greeting in dark mode"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!b)return false;const s=getComputedStyle(b);return s.backgroundColor==='rgb(44, 53, 154)'&&s.color==='rgb(255, 255, 255)'})()",
+      "note": "AT-429: clean dark greeting",
+      "shot": "at-429-clean-dark-greeting"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-me",
+      "last": true,
+      "note": "AT-429, AT-278: clean last user bubble keeps the dark contrast colors"
+    },
+    {
+      "do": "send",
+      "text": "Switch to drak mode",
+      "note": "AT-429, AT-278: messy typo dark mode request"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-429: messy typo dark mode",
+      "shot": "at-429-messy-typo-dark-mode"
+    },
+    {
+      "do": "send",
+      "text": "hii",
+      "note": "AT-429, AT-278: messy typo greeting in dark mode"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!b)return false;const s=getComputedStyle(b);return s.backgroundColor==='rgb(44, 53, 154)'&&s.color==='rgb(255, 255, 255)'})()",
+      "note": "AT-429: messy typo dark greeting",
+      "shot": "at-429-messy-typo-dark-greeting"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-me",
+      "last": true,
+      "note": "AT-429, AT-278: messy typo last user bubble keeps the dark contrast colors"
+    },
+    {
+      "do": "send",
+      "text": "dark mode on karo",
+      "note": "AT-429, AT-278: Hinglish dark mode request"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectTid": "bubble-foo",
+      "note": "AT-429: Hinglish dark mode",
+      "shot": "at-429-Hinglish-dark-mode"
+    },
+    {
+      "do": "send",
+      "text": "namaste foo",
+      "note": "AT-429, AT-278: Hinglish greeting in dark mode"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!b)return false;const s=getComputedStyle(b);return s.backgroundColor==='rgb(44, 53, 154)'&&s.color==='rgb(255, 255, 255)'})()",
+      "note": "AT-429: Hinglish dark greeting",
+      "shot": "at-429-Hinglish-dark-greeting"
+    },
+    {
+      "do": "check",
+      "tid": "bubble-me",
+      "last": true,
+      "note": "AT-429, AT-278: Hinglish last user bubble keeps the dark contrast colors"
+    }
+  ]
+}

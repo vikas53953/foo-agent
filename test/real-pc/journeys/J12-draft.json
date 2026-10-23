@@ -11,7 +11,8 @@
       "do": "waitReply",
       "timeoutMs": 180000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "draft"
+      "shot": "draft",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const text=after.map((r)=>r.innerText||'').join('\\n');const draft=after.some((r)=>r.querySelector('[data-testid=\"card-draft\"]'));return draft||(/draft|email|Gmail|someone@example.com|connect/i.test(text)&&!/sent successfully|email sent/i.test(text));})()"
     },
     {
       "do": "check",

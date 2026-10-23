@@ -10,7 +10,8 @@
     {
       "do": "waitReply",
       "timeoutMs": 150000,
-      "shot": "choice"
+      "shot": "choice",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const c=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-choice\"]')]).at(-1);if(!c||c.getAttribute('data-card-state')!=='asking')return false;const options=[...c.querySelectorAll('[data-testid=\"card-choice-option\"]')];const second=options[1]?.querySelector('[data-copy=\"external\"]');const id=c.getAttribute('data-card-id');const label=(second?.innerText||second?.textContent||'').trim();if(options.length<2||!id||!label)return false;log.setAttribute('data-b02-choice-id',id);log.setAttribute('data-b02-choice-option-2',label);return true;})()"
     },
     {
       "do": "check",
@@ -33,7 +34,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "typed-2",
-      "expect": "AT-035: card collapses as if option 2 was tapped"
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);const user=me?.querySelector('[data-copy=\"user\"]');if(!me||!user||!/^\\s*2\\s*$/.test(user.innerText||user.textContent||''))return false;const expectedId=log.getAttribute('data-b02-choice-id');const expectedLabel=(log.getAttribute('data-b02-choice-option-2')||'').trim();if(!expectedId||!expectedLabel)return false;const at=rows.indexOf(me);if(at<1)return false;const previous=rows.slice(0,at).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-choice\"]')]).at(-1);if(!previous||previous.getAttribute('data-card-id')!==expectedId||previous.getAttribute('data-card-state')!=='answered')return false;const summary=previous.querySelector('[data-copy=\"external\"]');const chosen=(summary?.innerText||summary?.textContent||'').match(/(?:→|->)\\s*(.+)$/u)?.[1]?.trim()||'';return !!summary&&chosen.replace(/\\s+/gu,' ')===expectedLabel.replace(/\\s+/gu,' ');})()"
     },
     {
       "do": "dump",

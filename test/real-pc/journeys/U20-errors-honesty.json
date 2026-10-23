@@ -17,7 +17,9 @@
       "do": "waitReply",
       "timeoutMs": 180000,
       "shot": "pay-bill",
-      "expect": "asks which bill / needs connection; never claims it paid"
+      "expect": "asks which bill / needs connection; never claims it paid",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const t=b?.innerText||'';return !!b&&/(connect|bill|cannot|can\\x27t|need)/i.test(t)&&!/(paid successfully|payment successful|paid it)/i.test(t);})()",
+      "note": "C.4 Error (C16) / stuck / recovery: bill request remains honest and does not claim payment"
     },
     {
       "do": "send",
@@ -27,7 +29,9 @@
       "do": "waitReply",
       "timeoutMs": 180000,
       "shot": "order",
-      "expect": "honest about needing approval / not able; never fake success"
+      "expect": "honest about needing approval / not able; never fake success",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);const t=b?.innerText||'';return !!b&&/(approval|cannot|can\\x27t|need|order)/i.test(t)&&!/(booked|ordered successfully|sent successfully)/i.test(t);})()",
+      "note": "C.4 Error (C16) / stuck / recovery: order request remains honest and does not claim a booking"
     },
     {
       "do": "send",
@@ -38,7 +42,14 @@
       "timeoutMs": 150000,
       "shot": "gmail",
       "expect": "Connect card for Gmail (C10), not a made-up inbox",
-      "ref": "BP-CARD-10"
+      "ref": "BP-CARD-10",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b?.querySelector('[data-testid=\\\"card-connect\\\"]');})()",
+      "note": "C.4 Connect (C10) + WhatsApp QR: Gmail exposes a Connect card rather than inbox contents; WhatsApp QR branch remains unexercised"
+    },
+    {
+      "do": "check",
+      "tid": "card-connect-not-now",
+      "note": "C.4 Connect (C10) + WhatsApp QR: Connect card exposes an explicit Not now control"
     },
     {
       "do": "click",
