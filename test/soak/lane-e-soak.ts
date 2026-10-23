@@ -4,11 +4,17 @@
 // never a silent skip. routine_runs is diagnostic only because the routine milestone is not an acceptance dependency.
 // Process metrics are emitted by the live producer from process.pid/process.execPath in the Electron main context; Playwright's
 // ElectronApplication.process() PID/path are retained as launcher metadata. This observer never launches or samples --exe.
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { join, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { FULL_SOAK_HOURS, resolveSoakDuration } from './lane-e-duration';
-import { PRODUCER_PROCESS_OWNER, validateHeartbeat, type PinnedProcessIdentity, type SoakHeartbeat } from './lane-e-soak-contract';
+import {
+  PRODUCER_PROCESS_OWNER,
+  validateHeartbeat,
+  writeSoakReports,
+  type PinnedProcessIdentity,
+  type SoakHeartbeat,
+} from './lane-e-soak-contract';
 
 const SAMPLE_MS = 30 * 1000;
 type ProcessSample = {
@@ -159,7 +165,6 @@ const report = {
   failure: failure ?? (!workloadComplete ? 'heartbeat did not prove the expected done_unverified workload' : null),
   samples,
 };
-writeFileSync(join(outDir, `lane-e-soak-${mode}.json`), JSON.stringify(report, null, 2), 'utf8');
 const summary = [
   '| Check | Result | Detail |',
   '|---|---|---|',
@@ -172,7 +177,7 @@ const summary = [
   `| Freeze/response sample | ${report.freezes === 0 ? 'pass' : 'fail'} | nonRespondingSamples=${report.freezes} |`,
   `| Failure detail | ${report.failure ? 'fail' : 'pass'} | ${(report.failure ?? 'none').replaceAll('|', '/')} |`,
 ];
-writeFileSync(join(outDir, `lane-e-soak-${mode}.md`), `${summary.join('\n')}\n`, 'utf8');
+writeSoakReports(outDir, mode, report, summary.join('\n'));
 console.log(JSON.stringify(report));
 if (result === 'fail') process.exit(1);
 if (result === 'blocked') process.exit(2);
