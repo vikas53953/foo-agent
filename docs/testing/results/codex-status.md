@@ -4,6 +4,10 @@
 
 [39887449456](https://github.com/vikas53953/foo-agent/actions/runs/39887449456) is running with all inventory journeys selected, after checking that no other real-AI run was active. Tested revision is **branch c4d41876055bf5608ee7e776ce332b95c7ce2b49**, not main. Freshly fetched main remains `0d04a9f9105e42aef0b4a22238285a9007635c3e`; the lead merge-base matches it. This run exercises the repaired fixtures. No result is inferred while it runs.
 
+## Integration verification now running
+
+[Full CI 39888206392](https://github.com/vikas53953/foo-agent/actions/runs/39888206392) and [partitioned mutation 39888202460](https://github.com/vikas53953/foo-agent/actions/runs/39888202460) test branch **17a0d5ccad6e0631d40c70669b9a974fa7440a87**. These include the observer repair, preserved mutation target union, and explicit preload capture guard. Local Node TypeScript, lint, and preload preflight passed after correcting TS2532. The new integration is pending; older green runs below do not verify these new changes. No waivers or threshold changes.
+
 ## Verified CI and completed branch evidence
 
 [Full CI 39835224170](https://github.com/vikas53953/foo-agent/actions/runs/39835224170) passed every required job on source `0599a1c3`, including all Windows shards and Golden, with no failed steps. [PR checks 39841738459](https://github.com/vikas53953/foo-agent/actions/runs/39841738459) passed on documentation successor `cdf2f655`. No checks were weakened and no waivers were added. The old [failed Windows run](https://github.com/vikas53953/foo-agent/actions/runs/39829318930) is preserved; its unfinished Golden job was superseded, not counted as a pass. A future intermittent failure must be investigated, not erased by this green run.
