@@ -1,0 +1,16 @@
+{"t":"2026-10-23T16:33:00.299Z","journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","spec":"10-2 §C.9 Rich replies (X-180)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T16:33:05.498Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:33:13.566Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":0,"ms":8065}
+{"t":"2026-10-23T16:33:14.591Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1025}
+{"t":"2026-10-23T16:33:14.679Z","i":1,"do":"send","sentAt":1792773194652,"sent":true,"before":0,"ok":true,"ms":88}
+{"t":"2026-10-23T16:33:34.927Z","i":2,"do":"waitReply","note":"C.9 Rich replies: assistant reply includes an AI page card","expect":"an AI page / kit card opens with the tracker","before":0,"firstReplyMs":5080,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Here's your water tracker with a goal of 8 glasses. Tap a glass or use + and − to count, and it saves for each day on this page.\n\nKeep\n4:33 PM","replyTexts":["Here's your water tracker with a goal of 8 glasses. Tap a glass or use + and − to count, and it saves for each day on this page.\n\nKeep\n4:33 PM"],"kit":["kit-keep"],"endState":false,"ms":20248}
+{"t":"2026-10-23T16:33:34.980Z","shot":"01-ai-page.png"}
+{"t":"2026-10-23T16:33:34.982Z","i":3,"do":"check","note":"C.9 Rich replies: AI page card is present","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T16:33:34.983Z","i":4,"do":"check","note":"C.9 Rich replies: action chip is present under the AI page reply","found":0,"ok":false,"ms":1}
+{"t":"2026-10-23T16:33:35.043Z","i":5,"do":"click","soft":true,"before":1,"clicked":true,"ok":true,"ms":60}
+{"t":"2026-10-23T16:33:35.843Z","i":6,"do":"wait","expect":"reply chip fills the composer","ok":true,"ms":800}
+{"t":"2026-10-23T16:33:35.900Z","shot":"02-chip-fills.png"}
+{"t":"2026-10-23T16:33:35.915Z","i":7,"do":"fill","soft":true,"ok":true,"ms":15}
+{"t":"2026-10-23T16:33:35.926Z","i":8,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-23T16:33:36.040Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-23T16:33:36.049Z","step":"aiTurns","turns":1}

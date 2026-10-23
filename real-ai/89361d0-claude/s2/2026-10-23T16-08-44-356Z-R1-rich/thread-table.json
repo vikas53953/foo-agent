@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n4:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message: instant, free for most everyday use, and it works with almost every bank.\n\nBefore UPI, you needed cash, a card machine or a separate wallet app for each shop. Now one bank-linked app does it all, and the money moves straight from your account to theirs in seconds. That works for a ₹10 cup of chai as well as a rent payment.\n\nThe top three reasons:\n\nSimple and quick: Scan a code or pick a contact, enter your PIN, and it's done. No card swipe, no change to count, no waiting.\nWorks everywhere, costs almost nothing: Street vendors, big stores, bills and friends all accept it. Small shops don't need any costly machine, just a printed code. Most people pay no fee.\nSafer and easier to track: You carry less cash, and every payment shows up in your bank record. That helps with budgeting, splitting bills and settling disputes.\n\nBecause everyone from a vegetable seller to a large retailer accepts it, using UPI keeps feeling more natural than not using it. Each new user also makes it more useful for the next.\n\n4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n4:08 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:09 PM\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 2 min\nDetails\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "My top 3 under ₹20,000 from the HT Tech list:\n\nRedmi 15C 5G, ₹15,999: 6000mAh battery, 33W charging, 17.53cm screen up to 120Hz, 50MP dual camera, 4GB+128GB.\nLava Bold N4 Pro 5G, ₹15,999: 6GB+128GB, 6000mAh battery, 18W charging, 50MP camera, IP64, clean Android 16.\nSamsung Galaxy M17e 5G, ₹16,998: 6000mAh battery, 120Hz screen, 50MP dual camera, IP54, 6 OS upgrades.\n\nThe page gives screen size only for the Redmi. Prices are as listed on Amazon today.\n\n4:11 PM"
+  }
+]

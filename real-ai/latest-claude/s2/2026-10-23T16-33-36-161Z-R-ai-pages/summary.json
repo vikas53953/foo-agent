@@ -1,0 +1,867 @@
+{
+  "journey": "R-ai-pages",
+  "title": "Group R plain answers and capabilities surface",
+  "steps": 74,
+  "failed": 10,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T16-33-36-161Z-R-ai-pages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "note": "AT-366: clean ask",
+      "sentAt": 1792773221445,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-366: clean",
+      "before": 0,
+      "firstReplyMs": 2539,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The capital of Australia is Canberra. Many people guess Sydney, but Canberra has been the capital since 1913.\n\n4:33 PM",
+      "replyTexts": [
+        "The capital of Australia is Canberra. Many people guess Sydney, but Canberra has been the capital since 1913.\n\n4:33 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10111
+    },
+    {
+      "i": 2,
+      "do": "expectText",
+      "note": "AT-366: clean result",
+      "text": "The capital of Australia is Canberra. Many people guess Sydney, but Canberra has been the capital since 1913.\n\n4:33 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "note": "AT-366: messy typo ask",
+      "sentAt": 1792773231692,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "note": "AT-366: messy typo",
+      "before": 0,
+      "firstReplyMs": 2532,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The capital of Australia is Canberra. It has been the capital since 1913, and many people guess Sydney.\n\n4:33 PM",
+      "replyTexts": [
+        "The capital of Australia is Canberra. It has been the capital since 1913, and many people guess Sydney.\n\n4:33 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10140
+    },
+    {
+      "i": 5,
+      "do": "expectText",
+      "note": "AT-366: messy typo result",
+      "text": "The capital of Australia is Canberra. It has been the capital since 1913, and many people guess Sydney.\n\n4:33 PM",
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "note": "AT-366: Hinglish ask",
+      "sentAt": 1792773241959,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "AT-366: Hinglish",
+      "before": 0,
+      "firstReplyMs": 3015,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ऑस्ट्रेलिया की राजधानी कैनबरा है। यह 1913 से राजधानी है, और कई लोग सिडनी समझ लेते हैं।\n\n4:34 PM",
+      "replyTexts": [
+        "ऑस्ट्रेलिया की राजधानी कैनबरा है। यह 1913 से राजधानी है, और कई लोग सिडनी समझ लेते हैं।\n\n4:34 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10601
+    },
+    {
+      "i": 8,
+      "do": "expectText",
+      "note": "AT-366: Hinglish result",
+      "text": "ऑस्ट्रेलिया की राजधानी कैनबरा है। यह 1913 से राजधानी है, और कई लोग सिडनी समझ लेते हैं।\n\n4:34 PM",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "note": "AT-366: Hindi ask",
+      "sentAt": 1792773252703,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 10,
+      "do": "waitReply",
+      "note": "AT-366: Hindi",
+      "before": 0,
+      "firstReplyMs": 7087,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Australia ki capital Canberra hai. Yeh 1913 se capital hai, aur kai log Sydney samajh lete hain.\n\n4:34 PM",
+      "replyTexts": [
+        "Australia ki capital Canberra hai. Yeh 1913 se capital hai, aur kai log Sydney samajh lete hain.\n\n4:34 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 14160
+    },
+    {
+      "i": 11,
+      "do": "expectText",
+      "note": "AT-366: Hindi result",
+      "text": "Australia ki capital Canberra hai. Yeh 1913 se capital hai, aur kai log Sydney samajh lete hain.\n\n4:34 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "note": "AT-366: Punjabi ask",
+      "sentAt": 1792773266996,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "note": "AT-366: Punjabi",
+      "before": 0,
+      "firstReplyMs": 3032,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਆਸਟ੍ਰੇਲੀਆ ਦੀ ਰਾਜਧਾਨੀ ਕੈਨਬਰਾ ਹੈ। ਇਹ 1913 ਤੋਂ ਰਾਜਧਾਨੀ ਹੈ, ਅਤੇ ਕਈ ਲੋਕ ਸਿਡਨੀ ਸਮਝ ਲੈਂਦੇ ਹਨ।\n\n4:34 PM",
+      "replyTexts": [
+        "ਆਸਟ੍ਰੇਲੀਆ ਦੀ ਰਾਜਧਾਨੀ ਕੈਨਬਰਾ ਹੈ। ਇਹ 1913 ਤੋਂ ਰਾਜਧਾਨੀ ਹੈ, ਅਤੇ ਕਈ ਲੋਕ ਸਿਡਨੀ ਸਮਝ ਲੈਂਦੇ ਹਨ।\n\n4:34 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10635
+    },
+    {
+      "i": 14,
+      "do": "expectText",
+      "note": "AT-366: Punjabi result",
+      "text": "ਆਸਟ੍ਰੇਲੀਆ ਦੀ ਰਾਜਧਾਨੀ ਕੈਨਬਰਾ ਹੈ। ਇਹ 1913 ਤੋਂ ਰਾਜਧਾਨੀ ਹੈ, ਅਤੇ ਕਈ ਲੋਕ ਸਿਡਨੀ ਸਮਝ ਲੈਂਦੇ ਹਨ।\n\n4:34 PM",
+      "ok": true,
+      "ms": 1,
+      "late": true
+    },
+    {
+      "i": 15,
+      "do": "send",
+      "note": "AT-367: clean ask",
+      "sentAt": 1792773277753,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 16,
+      "do": "waitReply",
+      "note": "AT-367: clean",
+      "before": 0,
+      "firstReplyMs": 2530,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Try Atomic Habits by James Clear. It's practical and easy to read, and it shows how tiny daily changes add up, which suits your water tracker too.\n\nIf you want something more about the science of why habits stick, The Power of Habit by Charles Duhigg is a good second pick.\n\n4:34 PM",
+      "replyTexts": [
+        "Try Atomic Habits by James Clear. It's practical and easy to read, and it shows how tiny daily changes add up, which suits your water tracker too.\n\nIf you want something more about the science of why habits stick, The Power of Habit by Charles Duhigg is a good second pick.\n\n4:34 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10136
+    },
+    {
+      "i": 17,
+      "do": "expectText",
+      "note": "AT-367: clean result",
+      "text": "Try Atomic Habits by James Clear. It's practical and easy to read, and it shows how tiny daily changes add up, which suits your water tracker too.\n\nIf you want something more about the science of why habits stick, The Power of Habit by Charles Duhigg is a good second pick.\n\n4:34 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "note": "AT-367: messy typo ask",
+      "sentAt": 1792773288018,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "note": "AT-367: messy typo",
+      "before": 0,
+      "firstReplyMs": 2529,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Try Atomic Habits by James Clear. It's practical and easy to read, and it shows how tiny daily changes add up. For the science of why habits stick, The Power of Habit by Charles Duhigg is a good second pick.\n\n4:34 PM",
+      "replyTexts": [
+        "Try Atomic Habits by James Clear. It's practical and easy to read, and it shows how tiny daily changes add up. For the science of why habits stick, The Power of Habit by Charles Duhigg is a good second pick.\n\n4:34 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10143
+    },
+    {
+      "i": 20,
+      "do": "expectText",
+      "note": "AT-367: messy typo result",
+      "text": "Try Atomic Habits by James Clear. It's practical and easy to read, and it shows how tiny daily changes add up. For the science of why habits stick, The Power of Habit by Charles Duhigg is a good second pick.\n\n4:34 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "note": "AT-367: Hinglish ask",
+      "sentAt": 1792773298297,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "note": "AT-367: Hinglish",
+      "before": 0,
+      "firstReplyMs": 3056,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Habits par sabse achchi book Atomic Habits hai, James Clear ki. Yeh simple hai aur batati hai ki chhote roz ke badlav kaise bade ban jaate hain. Agar aap yeh samajhna chahte ho ki habits kyun tikti hain, toh The Power of Habit (Charles Duhigg) padho.\n\n4:35 PM",
+      "replyTexts": [
+        "Habits par sabse achchi book Atomic Habits hai, James Clear ki. Yeh simple hai aur batati hai ki chhote roz ke badlav kaise bade ban jaate hain. Agar aap yeh samajhna chahte ho ki habits kyun tikti hain, toh The Power of Habit (Charles Duhigg) padho.\n\n4:35 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 11690
+    },
+    {
+      "i": 23,
+      "do": "expectText",
+      "note": "AT-367: Hinglish result",
+      "text": "Habits par sabse achchi book Atomic Habits hai, James Clear ki. Yeh simple hai aur batati hai ki chhote roz ke badlav kaise bade ban jaate hain. Agar aap yeh samajhna chahte ho ki habits kyun tikti hain, toh The Power of Habit (Charles Duhigg) padho.\n\n4:35 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 24,
+      "do": "send",
+      "note": "AT-424: clean ask",
+      "sentAt": 1792773310129,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 25,
+      "do": "waitReply",
+      "note": "AT-424: clean",
+      "before": 0,
+      "firstReplyMs": 2540,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "2 to the power 10 is bigger: it is 1,024, while 10 to the power 3 is 1,000.\n\n4:35 PM",
+      "replyTexts": [
+        "2 to the power 10 is bigger: it is 1,024, while 10 to the power 3 is 1,000.\n\n4:35 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 9134
+    },
+    {
+      "i": 26,
+      "do": "expectText",
+      "note": "AT-424: clean result",
+      "text": "2 to the power 10 is bigger: it is 1,024, while 10 to the power 3 is 1,000.\n\n4:35 PM",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 27,
+      "do": "send",
+      "note": "AT-424: messy typo ask",
+      "sentAt": 1792773319410,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 28,
+      "do": "waitReply",
+      "note": "AT-424: messy typo",
+      "before": 0,
+      "firstReplyMs": 2537,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "2 to the power 10 is bigger: it is 1,024, while 10 to the power 3 is 1,000.\n\n4:35 PM",
+      "replyTexts": [
+        "2 to the power 10 is bigger: it is 1,024, while 10 to the power 3 is 1,000.\n\n4:35 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 9615
+    },
+    {
+      "i": 29,
+      "do": "expectText",
+      "note": "AT-424: messy typo result",
+      "text": "2 to the power 10 is bigger: it is 1,024, while 10 to the power 3 is 1,000.\n\n4:35 PM",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 30,
+      "do": "send",
+      "note": "AT-424: Hinglish ask",
+      "sentAt": 1792773329153,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 31,
+      "do": "waitReply",
+      "note": "AT-424: Hinglish",
+      "before": 0,
+      "firstReplyMs": 3046,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "2 ki power 10 bada hai: yeh 1,024 hai, jabki 10 ki power 3 sirf 1,000 hai.\n\n4:35 PM",
+      "replyTexts": [
+        "2 ki power 10 bada hai: yeh 1,024 hai, jabki 10 ki power 3 sirf 1,000 hai.\n\n4:35 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 10697
+    },
+    {
+      "i": 32,
+      "do": "expectText",
+      "note": "AT-424: Hinglish result",
+      "text": "2 ki power 10 bada hai: yeh 1,024 hai, jabki 10 ki power 3 sirf 1,000 hai.\n\n4:35 PM",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 33,
+      "do": "send",
+      "note": "AT-424: Hindi ask",
+      "sentAt": 1792773339989,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 34,
+      "do": "waitReply",
+      "note": "AT-424: Hindi",
+      "before": 0,
+      "firstReplyMs": 7077,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "2 की घात 10 बड़ा है: यह 1,024 है, जबकि 10 की घात 3 सिर्फ़ 1,000 है।\n\n4:35 PM",
+      "replyTexts": [
+        "2 की घात 10 बड़ा है: यह 1,024 है, जबकि 10 की घात 3 सिर्फ़ 1,000 है।\n\n4:35 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 14151
+    },
+    {
+      "i": 35,
+      "do": "expectText",
+      "note": "AT-424: Hindi result",
+      "text": "2 की घात 10 बड़ा है: यह 1,024 है, जबकि 10 की घात 3 सिर्फ़ 1,000 है।\n\n4:35 PM",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 36,
+      "do": "send",
+      "note": "AT-424: Punjabi ask",
+      "sentAt": 1792773354284,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 37,
+      "do": "waitReply",
+      "note": "AT-424: Punjabi",
+      "before": 0,
+      "firstReplyMs": 3055,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਦੋਵਾਂ ਵਿੱਚੋਂ 2 ਦੀ ਘਾਤ 10 ਵੱਡਾ ਹੈ: ਇਹ 1,024 ਹੈ, ਜਦਕਿ 10 ਦੀ ਘਾਤ 3 ਸਿਰਫ਼ 1,000 ਹੈ।\n\n4:35 PM",
+      "replyTexts": [
+        "ਦੋਵਾਂ ਵਿੱਚੋਂ 2 ਦੀ ਘਾਤ 10 ਵੱਡਾ ਹੈ: ਇਹ 1,024 ਹੈ, ਜਦਕਿ 10 ਦੀ ਘਾਤ 3 ਸਿਰਫ਼ 1,000 ਹੈ।\n\n4:35 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 9636
+    },
+    {
+      "i": 38,
+      "do": "expectText",
+      "note": "AT-424: Punjabi result",
+      "text": "ਦੋਵਾਂ ਵਿੱਚੋਂ 2 ਦੀ ਘਾਤ 10 ਵੱਡਾ ਹੈ: ਇਹ 1,024 ਹੈ, ਜਦਕਿ 10 ਦੀ ਘਾਤ 3 ਸਿਰਫ਼ 1,000 ਹੈ।\n\n4:35 PM",
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 39,
+      "do": "send",
+      "note": "AT-425: clean capabilities ask",
+      "sentAt": 1792773364050,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 40,
+      "do": "waitReply",
+      "note": "AT-425: clean capabilities",
+      "before": 0,
+      "firstReplyMs": 2016,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:36 PM",
+      "replyTexts": [
+        "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:36 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 9068
+    },
+    {
+      "i": 41,
+      "do": "click",
+      "note": "AT-425: clean Try it action fills composer",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 42,
+      "do": "expectText",
+      "note": "AT-425: clean composer field has the capability prompt and without sending",
+      "text": "Anything important in my email?",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 43,
+      "do": "send",
+      "note": "AT-425: messy typo capabilities ask",
+      "sentAt": 1792773373332,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 44,
+      "do": "waitReply",
+      "note": "AT-425: messy typo capabilities",
+      "before": 0,
+      "firstReplyMs": 3039,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:36 PM",
+      "replyTexts": [
+        "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:36 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 10118
+    },
+    {
+      "i": 45,
+      "do": "click",
+      "note": "AT-425: messy typo Try it action fills composer",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 46,
+      "do": "expectText",
+      "note": "AT-425: messy typo composer field has the capability prompt and without sending",
+      "text": "Anything important in my email?",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 47,
+      "do": "send",
+      "note": "AT-425: Hinglish capabilities ask",
+      "sentAt": 1792773383662,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 48,
+      "do": "waitReply",
+      "note": "AT-425: Hinglish capabilities",
+      "before": 0,
+      "firstReplyMs": 7577,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Main sawaalon ke jawab de sakta hoon, aapki email aur apps padh sakta hoon, baar-baar hone wali checks laga sakta hoon, aur aapke baare mein baatein yaad rakh sakta hoon. Is PC par kya-kya chalta hai, woh app dikha deta hai.\n\n4:36 PM",
+      "replyTexts": [
+        "Main sawaalon ke jawab de sakta hoon, aapki email aur apps padh sakta hoon, baar-baar hone wali checks laga sakta hoon, aur aapke baare mein baatein yaad rakh sakta hoon. Is PC par kya-kya chalta hai, woh app dikha deta hai.\n\n4:36 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 14688
+    },
+    {
+      "i": 49,
+      "do": "click",
+      "note": "AT-425: Hinglish Try it action fills composer",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 50,
+      "do": "expectText",
+      "note": "AT-425: Hinglish composer field has the capability prompt and without sending",
+      "text": "Anything important in my email?",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 51,
+      "do": "send",
+      "note": "AT-425: Hindi capabilities ask",
+      "sentAt": 1792773398571,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 52,
+      "do": "waitReply",
+      "note": "AT-425: Hindi capabilities",
+      "before": 0,
+      "firstReplyMs": 3076,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "मैं सवालों के जवाब दे सकता हूँ, आपकी ईमेल और ऐप्स पढ़ सकता हूँ, बार-बार होने वाली जाँच लगा सकता हूँ, और आपके बारे में बातें याद रख सकता हूँ। इस PC पर क्या-क्या चलता है, वह ऐप दिखा देता है।\n\n4:36 PM",
+      "replyTexts": [
+        "मैं सवालों के जवाब दे सकता हूँ, आपकी ईमेल और ऐप्स पढ़ सकता हूँ, बार-बार होने वाली जाँच लगा सकता हूँ, और आपके बारे में बातें याद रख सकता हूँ। इस PC पर क्या-क्या चलता है, वह ऐप दिखा देता है।\n\n4:36 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 10184
+    },
+    {
+      "i": 53,
+      "do": "click",
+      "note": "AT-425: Hindi Try it action fills composer",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 54,
+      "do": "expectText",
+      "note": "AT-425: Hindi composer field has the capability prompt and without sending",
+      "text": "Anything important in my email?",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 55,
+      "do": "send",
+      "note": "AT-425: Punjabi capabilities ask",
+      "sentAt": 1792773408980,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 56,
+      "do": "waitReply",
+      "note": "AT-425: Punjabi capabilities",
+      "before": 0,
+      "firstReplyMs": 4552,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "ਮੈਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦੇ ਸਕਦਾ ਹਾਂ, ਤੁਹਾਡੀ ਈਮੇਲ ਅਤੇ ਐਪਾਂ ਪੜ੍ਹ ਸਕਦਾ ਹਾਂ, ਵਾਰ-ਵਾਰ ਹੋਣ ਵਾਲੀਆਂ ਜਾਂਚਾਂ ਲਗਾ ਸਕਦਾ ਹਾਂ, ਅਤੇ ਤੁਹਾਡੇ ਬਾਰੇ ਗੱਲਾਂ ਯਾਦ ਰੱਖ ਸਕਦਾ ਹਾਂ। ਇਸ PC ਉੱਤੇ ਕੀ-ਕੀ ਚੱਲਦਾ ਹੈ, ਉਹ ਐਪ ਦਿਖਾ ਦਿੰਦੀ ਹੈ।\n\n4:36 PM",
+      "replyTexts": [
+        "ਮੈਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦੇ ਸਕਦਾ ਹਾਂ, ਤੁਹਾਡੀ ਈਮੇਲ ਅਤੇ ਐਪਾਂ ਪੜ੍ਹ ਸਕਦਾ ਹਾਂ, ਵਾਰ-ਵਾਰ ਹੋਣ ਵਾਲੀਆਂ ਜਾਂਚਾਂ ਲਗਾ ਸਕਦਾ ਹਾਂ, ਅਤੇ ਤੁਹਾਡੇ ਬਾਰੇ ਗੱਲਾਂ ਯਾਦ ਰੱਖ ਸਕਦਾ ਹਾਂ। ਇਸ PC ਉੱਤੇ ਕੀ-ਕੀ ਚੱਲਦਾ ਹੈ, ਉਹ ਐਪ ਦਿਖਾ ਦਿੰਦੀ ਹੈ।\n\n4:36 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 11131
+    },
+    {
+      "i": 57,
+      "do": "click",
+      "note": "AT-425: Punjabi Try it action fills composer",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 58,
+      "do": "expectText",
+      "note": "AT-425: Punjabi composer field has the capability prompt and without sending",
+      "text": "Anything important in my email?",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 59,
+      "do": "send",
+      "note": "AT-426: clean ask",
+      "sentAt": 1792773420337,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 60,
+      "do": "waitReply",
+      "note": "AT-426: clean",
+      "before": 0,
+      "firstReplyMs": 4059,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:37 PM",
+      "replyTexts": [
+        "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:37 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 10628
+    },
+    {
+      "i": 61,
+      "do": "expectText",
+      "note": "AT-426: clean result",
+      "text": "Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 62,
+      "do": "send",
+      "note": "AT-426: messy typo ask",
+      "sentAt": 1792773431089,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 63,
+      "do": "waitReply",
+      "note": "AT-426: messy typo",
+      "before": 0,
+      "firstReplyMs": 3568,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:37 PM",
+      "replyTexts": [
+        "I can answer questions, read your email and apps, set up repeating checks, and remember things about you. The app shows what works on this PC.\n\n4:37 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 10147
+    },
+    {
+      "i": 64,
+      "do": "expectText",
+      "note": "AT-426: messy typo result",
+      "text": "Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 65,
+      "do": "send",
+      "note": "AT-426: Hinglish ask",
+      "sentAt": 1792773441360,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 66,
+      "do": "waitReply",
+      "note": "AT-426: Hinglish",
+      "before": 0,
+      "firstReplyMs": 3053,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Main sawaalon ke jawab de sakta hoon, aapki email aur apps padh sakta hoon, baar-baar hone wali checks laga sakta hoon, aur aapke baare mein baatein yaad rakh sakta hoon. Is PC par kya-kya chalta hai, woh app dikha deta hai.\n\n4:37 PM",
+      "replyTexts": [
+        "Main sawaalon ke jawab de sakta hoon, aapki email aur apps padh sakta hoon, baar-baar hone wali checks laga sakta hoon, aur aapke baare mein baatein yaad rakh sakta hoon. Is PC par kya-kya chalta hai, woh app dikha deta hai.\n\n4:37 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 10114
+    },
+    {
+      "i": 67,
+      "do": "expectText",
+      "note": "AT-426: Hinglish result",
+      "text": "Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 68,
+      "do": "send",
+      "note": "AT-426: Hindi ask",
+      "sentAt": 1792773451606,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 69,
+      "do": "waitReply",
+      "note": "AT-426: Hindi",
+      "before": 0,
+      "firstReplyMs": 3071,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "मैं सवालों के जवाब दे सकता हूँ, आपकी ईमेल और ऐप्स पढ़ सकता हूँ, बार-बार होने वाली जाँच लगा सकता हूँ, और आपके बारे में बातें याद रख सकता हूँ। इस PC पर क्या-क्या चलता है, वह ऐप दिखा देता है।\n\n4:37 PM",
+      "replyTexts": [
+        "मैं सवालों के जवाब दे सकता हूँ, आपकी ईमेल और ऐप्स पढ़ सकता हूँ, बार-बार होने वाली जाँच लगा सकता हूँ, और आपके बारे में बातें याद रख सकता हूँ। इस PC पर क्या-क्या चलता है, वह ऐप दिखा देता है।\n\n4:37 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 10238
+    },
+    {
+      "i": 70,
+      "do": "expectText",
+      "note": "AT-426: Hindi result",
+      "text": "Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 71,
+      "do": "send",
+      "note": "AT-426: Punjabi ask",
+      "sentAt": 1792773461965,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 72,
+      "do": "waitReply",
+      "note": "AT-426: Punjabi",
+      "before": 0,
+      "firstReplyMs": 4550,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "ਮੈਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦੇ ਸਕਦਾ ਹਾਂ, ਤੁਹਾਡੀ ਈਮੇਲ ਅਤੇ ਐਪਾਂ ਪੜ੍ਹ ਸਕਦਾ ਹਾਂ, ਵਾਰ-ਵਾਰ ਹੋਣ ਵਾਲੀਆਂ ਜਾਂਚਾਂ ਲਗਾ ਸਕਦਾ ਹਾਂ, ਅਤੇ ਤੁਹਾਡੇ ਬਾਰੇ ਗੱਲਾਂ ਯਾਦ ਰੱਖ ਸਕਦਾ ਹਾਂ। ਇਸ PC ਉੱਤੇ ਕੀ-ਕੀ ਚੱਲਦਾ ਹੈ, ਉਹ ਐਪ ਦਿਖਾ ਦਿੰਦੀ ਹੈ।\n\n4:37 PM",
+      "replyTexts": [
+        "ਮੈਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਦੇ ਸਕਦਾ ਹਾਂ, ਤੁਹਾਡੀ ਈਮੇਲ ਅਤੇ ਐਪਾਂ ਪੜ੍ਹ ਸਕਦਾ ਹਾਂ, ਵਾਰ-ਵਾਰ ਹੋਣ ਵਾਲੀਆਂ ਜਾਂਚਾਂ ਲਗਾ ਸਕਦਾ ਹਾਂ, ਅਤੇ ਤੁਹਾਡੇ ਬਾਰੇ ਗੱਲਾਂ ਯਾਦ ਰੱਖ ਸਕਦਾ ਹਾਂ। ਇਸ PC ਉੱਤੇ ਕੀ-ਕੀ ਚੱਲਦਾ ਹੈ, ਉਹ ਐਪ ਦਿਖਾ ਦਿੰਦੀ ਹੈ।\n\n4:37 PM"
+      ],
+      "kit": [],
+      "kitMissing": "kit-capabilities",
+      "ms": 11677
+    },
+    {
+      "i": 73,
+      "do": "expectText",
+      "note": "AT-426: Punjabi result",
+      "text": "Catch up on email\nConnect Gmail to start\nTry it ›\nWatch a price\nTell me when it drops\nTry it ›\nCompare options\nPlans, flights, products\nTry it ›\nRemind me\nBills, renewals, a morning brief\nTry it ›\n\nI never send, book or pay until you tap Approve.",
+      "ok": true,
+      "ms": 2
+    }
+  ]
+}

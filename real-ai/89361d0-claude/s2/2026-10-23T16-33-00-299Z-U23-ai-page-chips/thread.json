@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for Italian restaurants in…\nBEST FIT\n2\nBooking table for 2, Sat 24 Oct, 8:00 PM\n3\nLooking for vegetarian restaurant in…\n4\nAll of them\nSomething else…\nSkip\n4:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n4:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n4:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:30 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for Italian restaurants in…\nBEST FIT\n2\nBooking table for 2, Sat 24 Oct, 8:00 PM\n3\nLooking for vegetarian restaurant in…\n4\nAll of them\nSomething else…\nSkip\n4:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:33 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for Italian restaurants in…\nBEST FIT\n2\nBooking table for 2, Sat 24 Oct, 8:00 PM\n3\nLooking for vegetarian restaurant in…\n4\nAll of them\nSomething else…\nSkip\n4:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n4:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your water tracker with a goal of 8 glasses. Tap a glass or use + and − to count, and it saves for each day on this page.\n\nKeep\n4:33 PM"
+  }
+]

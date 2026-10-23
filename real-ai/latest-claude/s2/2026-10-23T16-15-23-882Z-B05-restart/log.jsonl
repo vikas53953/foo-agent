@@ -1,0 +1,19 @@
+{"t":"2026-10-23T16:15:23.882Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T16:15:29.063Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:15:29.160Z","i":0,"do":"send","sentAt":1792772129135,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-10-23T16:16:29.163Z","i":1,"do":"waitReply","before":0,"firstReplyMs":9104,"newBubbles":1,"ok":false,"stillWorking":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooked on the web\nLooked for National Museum Delhi opening hours and\nComparing official site against a second listing\nWatch live\nStop\nunder 1 min\n4:15 PM","replyTexts":["Looking on the web\nlive checklist\nLooked on the web\nLooked for National Museum Delhi opening hours and\nComparing official site against a second listing\nWatch live\nStop\nunder 1 min\n4:15 PM"],"kit":[],"ms":60003}
+{"t":"2026-10-23T16:16:29.218Z","shot":"01-museum-start.png"}
+{"t":"2026-10-23T16:16:29.220Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-23T16:16:37.225Z","i":3,"do":"wait","ok":true,"ms":8005}
+{"t":"2026-10-23T16:16:42.314Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:16:42.318Z","i":4,"do":"crashRelaunch","fooProcs":5,"ok":true,"ms":5093}
+{"t":"2026-10-23T16:16:50.327Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8009}
+{"t":"2026-10-23T16:16:50.390Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-23T16:16:50.393Z","i":6,"do":"check","note":"AT-118: reopen renders the asking recovery card","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T16:16:50.395Z","i":7,"do":"expectText","note":"AT-118: recovery copy is present on the actual card","text":"I closed unexpectedly at 4:16 PM.\nLooking on the web was at step 3 of 3. Nothing was paid.\nPick up where I left off\nStop it\n4:16 PM","ok":true,"ms":2}
+{"t":"2026-10-23T16:16:50.396Z","i":8,"do":"check","note":"AT-118: the recovery card exposes its resume action","found":1,"ok":true,"ms":1}
+{"t":"2026-10-23T16:19:20.393Z","i":9,"do":"wait","ok":true,"ms":149996}
+{"t":"2026-10-23T16:19:20.451Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-23T16:19:20.462Z","i":10,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-23T16:19:20.562Z","step":"appLog","lines":29,"dropped":0}
+{"t":"2026-10-23T16:19:20.572Z","step":"aiTurns","turns":13}

@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n4:12 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:12 PM\n4:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:12 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Italian restaurants in…\nlive checklist\nLooked for Italian restaurants in Bandra, Mumbai\nChecking restaurant booking sites\nR\nKeep 3 Italian places with a table for 2 that fit free on Sat 24 Oct, 8:00 PM\nWatch live\nStop\n9 min\n4:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:12 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I lost track of the job. What should I do next?\n1\nStart a new job\nBEST FIT\nTell me what you need\n2\nContinue the last job\nRemind me what it was\nSomething else…\nSkip\n4:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n4:15 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for National Museum Delhi opening hours and\nCompared official site against a second listing\nStopped by you\n4:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:15 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 4:16 PM.\nLooking on the web was at step 3 of 3. Nothing was paid.\nPick up where I left off\nStop it\n4:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n4:19 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nLooking for Italian restaurants in…\nBEST FIT\n2\nLooking on the web\nSomething else…\nSkip\n4:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n4:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🙏\n\n4:22 PM"
+  }
+]
