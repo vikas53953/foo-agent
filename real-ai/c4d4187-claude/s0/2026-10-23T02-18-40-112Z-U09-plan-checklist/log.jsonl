@@ -1,0 +1,23 @@
+{"t":"2026-10-23T02:18:40.113Z","journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","spec":"05-3 §5.24 Plan, §5.5 Checklist, §5.18 Proof, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:18:46.198Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:18:47.248Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1046}
+{"t":"2026-10-23T02:18:47.399Z","i":1,"do":"send","sentAt":1792721927357,"sent":true,"before":0,"ok":true,"ms":151}
+{"t":"2026-10-23T02:18:58.012Z","i":2,"do":"waitReply","note":"C.4 Plan (C11): the assistant reply contains a named plan with a Go control","expect":"a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan","firstReplyMs":4543,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for budget laptops under ₹50,000 in India\n3\nKeep 3 laptops that fit best value under ₹50,000\n4\nCompare price, processor, RAM, storage, screen\nAbout 4 minutes\nGo\nChange plan\n2:18 AM","kit":[],"endState":false,"ms":10612}
+{"t":"2026-10-23T02:18:58.090Z","shot":"01-plan.png"}
+{"t":"2026-10-23T02:18:58.176Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-23T02:18:58.251Z","i":4,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-23T02:19:03.253Z","i":5,"do":"wait","expect":"checklist appears with the current step spinning","ok":true,"ms":5001}
+{"t":"2026-10-23T02:19:03.324Z","shot":"03-checklist.png"}
+{"t":"2026-10-23T02:19:26.400Z","shot":"04-error-step6.png"}
+{"t":"2026-10-23T02:19:26.401Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23077}
+{"t":"2026-10-23T02:19:27.402Z","i":7,"do":"wait","expect":"details expanded","ok":true,"ms":1001}
+{"t":"2026-10-23T02:19:27.461Z","shot":"05-checklist-details.png"}
+{"t":"2026-10-23T02:19:45.450Z","i":8,"do":"waitFor","note":"C.4 Checklist (C2) + link card: details control remains present after opening checklist","ok":true,"ms":17989}
+{"t":"2026-10-23T02:22:15.452Z","i":9,"do":"wait","expect":"job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer","ok":true,"ms":150001}
+{"t":"2026-10-23T02:22:15.525Z","shot":"06-done.png"}
+{"t":"2026-10-23T02:22:15.527Z","i":10,"do":"check","note":"C.4 Proof chip + receipt footer (C12): receipt footer is present","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T02:22:15.529Z","i":11,"do":"check","note":"C.4 Checklist (C2) + link card: checklist sources surface is present","found":0,"ok":false,"ms":1}
+{"t":"2026-10-23T02:22:15.545Z","i":12,"do":"dump","ok":true,"ms":16}
+{"t":"2026-10-23T02:22:15.550Z","step":"recheck","i":6,"do":"click","late":true}
+{"t":"2026-10-23T02:22:15.749Z","step":"appLog","lines":19,"dropped":0}
+{"t":"2026-10-23T02:22:15.762Z","step":"aiTurns","turns":9}

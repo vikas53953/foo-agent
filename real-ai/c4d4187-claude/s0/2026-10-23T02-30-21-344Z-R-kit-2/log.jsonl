@@ -1,0 +1,92 @@
+{"t":"2026-10-23T02:30:21.345Z","journey":"R-kit-2","title":"Group R live stamp, calculator, keep and time picker","spec":"07 §11.5 Group R; AT-350, AT-352, AT-355, AT-368, AT-369","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:30:26.886Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:30:27.021Z","i":0,"do":"send","note":"AT-350: clean ask","sentAt":1792722626982,"sent":true,"before":0,"ok":true,"ms":131}
+{"t":"2026-10-23T02:30:41.242Z","i":1,"do":"waitReply","note":"AT-350: clean","firstReplyMs":8127,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Connect Calendar\n\nI need to see your calendar for “Pick a call time for Sat 24 Oct”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n2:30 AM","kit":[],"kitMissing":"kit-time-pick","ms":14221}
+{"t":"2026-10-23T02:30:41.331Z","shot":"01-at-350-clean.png"}
+{"t":"2026-10-23T02:31:04.407Z","shot":"02-error-step2.png"}
+{"t":"2026-10-23T02:31:04.407Z","i":2,"do":"click","note":"AT-350: click the latest real time slot control","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23075}
+{"t":"2026-10-23T02:33:04.538Z","i":3,"do":"waitReply","note":"AT-350: foo confirms the selected slot","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120131}
+{"t":"2026-10-23T02:33:04.625Z","i":4,"do":"send","note":"AT-350: messy typo ask","sentAt":1792722784618,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-23T02:33:20.330Z","i":5,"do":"waitReply","note":"AT-350: messy typo","firstReplyMs":9629,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Which time works for your call tomorrow, Sat 24 Oct?\n1\nSat 24 Oct, 2:00 PM\nBEST FIT\nEarly afternoon\n2\nSat 24 Oct, 3:00 PM\nMiddle of the window\n3\nSat 24 Oct, 4:00 PM\nLeaves time before 5:00 PM\n4\nSat 24 Oct, 4:30 PM\nLatest comfortable start\nSomething else…\nSkip\n2:33 AM","kit":[],"kitMissing":"kit-time-pick","ms":15705}
+{"t":"2026-10-23T02:33:20.390Z","shot":"03-at-350-messy-typo.png"}
+{"t":"2026-10-23T02:33:43.467Z","shot":"04-error-step6.png"}
+{"t":"2026-10-23T02:33:43.467Z","i":6,"do":"click","note":"AT-350: click the latest real time slot control","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23077}
+{"t":"2026-10-23T02:35:43.673Z","i":7,"do":"waitReply","note":"AT-350: foo confirms the selected slot","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120206}
+{"t":"2026-10-23T02:35:43.770Z","i":8,"do":"send","note":"AT-350: Hinglish ask","sentAt":1792722943740,"sent":true,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-23T02:35:57.922Z","i":9,"do":"waitReply","note":"AT-350: Hinglish","firstReplyMs":8094,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Kal Sat 24 Oct ko call ke liye kaun sa time theek rahega?\n1\nSat 24 Oct, 2:30 PM\nBEST FIT\n2\nSat 24 Oct, 3:30 PM\n3\nSat 24 Oct, 4:30 PM\n4\nPehle mera calendar dekho\nKhaali slot dekh kar batata hoon\nSomething else…\nSkip\n2:35 AM","kit":[],"kitMissing":"kit-time-pick","ms":14151}
+{"t":"2026-10-23T02:35:57.981Z","shot":"05-at-350-Hinglish.png"}
+{"t":"2026-10-23T02:36:21.059Z","shot":"06-error-step10.png"}
+{"t":"2026-10-23T02:36:21.060Z","i":10,"do":"click","note":"AT-350: click the latest real time slot control","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23078}
+{"t":"2026-10-23T02:38:21.076Z","i":11,"do":"waitReply","note":"AT-350: foo confirms the selected slot","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120016}
+{"t":"2026-10-23T02:38:21.178Z","i":12,"do":"send","note":"AT-352: clean ask","sentAt":1792723101147,"sent":true,"before":0,"ok":true,"ms":101}
+{"t":"2026-10-23T02:38:37.461Z","i":13,"do":"waitReply","note":"AT-352: clean","firstReplyMs":10138,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Checking BSE India Sensex page\nlive checklist\nChecking BSE India Sensex page\nB\nLook for current Sensex value and day change\nWatch live\nStop\nunder 1 min\n2:38 AM","kit":[],"kitMissing":"kit-live-stamp","ms":16283}
+{"t":"2026-10-23T02:38:37.532Z","shot":"07-at-352-clean.png"}
+{"t":"2026-10-23T02:38:47.595Z","shot":"08-error-step14.png"}
+{"t":"2026-10-23T02:38:47.595Z","i":14,"do":"expectText","note":"AT-352: clean result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10063}
+{"t":"2026-10-23T02:38:47.597Z","i":15,"do":"check","note":"AT-352: refresh control is visible","found":0,"ok":false,"ms":1}
+{"t":"2026-10-23T02:38:47.689Z","i":16,"do":"send","note":"AT-352: messy typo ask","sentAt":1792723127669,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-23T02:39:06.300Z","i":17,"do":"waitReply","note":"AT-352: messy typo","firstReplyMs":12572,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can't make a self-updating card, but I'll show the Sensex here and re-read it whenever you say \"refresh\".\n\n2:38 AM","kit":[],"kitMissing":"kit-live-stamp","ms":18611}
+{"t":"2026-10-23T02:39:06.361Z","shot":"09-at-352-messy-typo.png"}
+{"t":"2026-10-23T02:39:16.421Z","shot":"10-error-step18.png"}
+{"t":"2026-10-23T02:39:16.421Z","i":18,"do":"expectText","note":"AT-352: messy typo result","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10060}
+{"t":"2026-10-23T02:39:16.423Z","i":19,"do":"check","note":"AT-352: refresh control is visible","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T02:39:16.513Z","i":20,"do":"send","note":"AT-352: Hinglish ask","sentAt":1792723156496,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-23T02:39:34.221Z","i":21,"do":"waitReply","note":"AT-352: Hinglish","firstReplyMs":9606,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Sensex abhi 73,249.39 hai, din mein 460.30 points (-0.62%) neeche. Page par time nahi tha, isliye yeh pichhla close bhi ho sakta hai. Card ke Refresh se main dobara padh lunga.\n\nBSE Sensex\n\n73,249.39\n\n-460.30 points (-0.62%)\n\nData as of 2:39 AM\nRefresh\nKeep\n2:39 AM","kit":["kit-surface","kit-live-stamp","kit-live-refresh","kit-keep"],"ms":17707}
+{"t":"2026-10-23T02:39:34.278Z","shot":"11-at-352-Hinglish.png"}
+{"t":"2026-10-23T02:39:34.281Z","i":22,"do":"expectText","note":"AT-352: Hinglish result","text":"Data as of 2:39 AM\nRefresh","ok":false,"ms":3}
+{"t":"2026-10-23T02:39:34.283Z","i":23,"do":"check","note":"AT-352: refresh control is visible","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T02:39:34.369Z","i":24,"do":"send","note":"AT-368: clean live card ask","sentAt":1792723174348,"sent":true,"before":0,"ok":true,"ms":86}
+{"t":"2026-10-23T02:39:50.665Z","i":25,"do":"waitReply","note":"AT-368: clean live card","firstReplyMs":8171,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Sensex was 73,249.39 when I last read it (Fri 23 Oct, 2:39 AM), down 460.30 points (-0.62%). The page showed no time stamp, so this may be the last close rather than a live figure. Tap Refresh on the card to read it again.\n\nBSE Sensex\n\n73,249.39\n\n-460.30 points (-0.62%)\n\nData as of 2:39 AM\nRefresh\nKeep\n2:39 AM","kit":["kit-surface","kit-live-stamp","kit-live-refresh","kit-keep"],"ms":16296}
+{"t":"2026-10-23T02:39:50.732Z","shot":"12-at-368-clean-live-card.png"}
+{"t":"2026-10-23T02:39:50.816Z","i":26,"do":"click","note":"AT-368: clean refresh action","ok":true,"ms":84}
+{"t":"2026-10-23T02:41:51.078Z","i":27,"do":"waitReply","note":"AT-368: refresh returns a new live stamp reply","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"kitMissing":"kit-live-stamp","ms":120262}
+{"t":"2026-10-23T02:41:51.183Z","i":28,"do":"send","note":"AT-368: messy typo live card ask","sentAt":1792723311149,"sent":true,"before":0,"ok":true,"ms":105}
+{"t":"2026-10-23T02:42:04.880Z","i":29,"do":"waitReply","note":"AT-368: messy typo live card","firstReplyMs":5602,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Sensex was 73,249.39 when I last read it (Fri 23 Oct, 2:40 AM), down 460.30 points (-0.62%). The page showed no time stamp, so this may be the last close rather than a live figure. Tap Refresh on the card to read it again.\n\nBSE Sensex\n\n73,249.39\n\n-460.30 points (-0.62%)\n\nData as of 2:40 AM\nRefresh\nKeep\n2:41 AM","kit":["kit-surface","kit-live-stamp","kit-live-refresh","kit-keep"],"ms":13697}
+{"t":"2026-10-23T02:42:04.966Z","shot":"13-at-368-messy-typo-live-card.png"}
+{"t":"2026-10-23T02:42:05.050Z","i":30,"do":"click","note":"AT-368: messy typo refresh action","ok":true,"ms":84}
+{"t":"2026-10-23T02:42:19.226Z","i":31,"do":"waitReply","note":"AT-368: refresh returns a new live stamp reply","firstReplyMs":8099,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Refresh the Sensex card\nlive checklist\nChecking bseindia.com\nB\nRead your BSE Sensex figure\nWatch live\nStop\nunder 1 min\n2:42 AM","kit":[],"kitMissing":"kit-live-stamp","ms":14176}
+{"t":"2026-10-23T02:42:19.380Z","i":32,"do":"send","note":"AT-368: Hinglish live card ask","sentAt":1792723339339,"sent":true,"before":0,"ok":true,"ms":154}
+{"t":"2026-10-23T02:42:33.514Z","i":33,"do":"waitReply","note":"AT-368: Hinglish live card","firstReplyMs":8090,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n2:42 AM","kit":[],"kitMissing":"kit-live-stamp","ms":14134}
+{"t":"2026-10-23T02:42:33.578Z","shot":"14-at-368-Hinglish-live-card.png"}
+{"t":"2026-10-23T02:42:35.512Z","i":34,"do":"click","note":"AT-368: Hinglish refresh action","ok":true,"ms":1934}
+{"t":"2026-10-23T02:42:51.187Z","i":35,"do":"waitReply","note":"AT-368: refresh returns a new live stamp reply","firstReplyMs":9615,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"BSE Sensex reads 73,249.39, down 460.30 (-0.62%), as shown on bseindia.com. The page showed no timestamp for this figure.\n\n2:42 AM","kit":[],"kitMissing":"kit-live-stamp","ms":15675}
+{"t":"2026-10-23T02:42:51.267Z","i":36,"do":"send","note":"AT-355: clean ask","sentAt":1792723371241,"sent":true,"before":0,"ok":true,"ms":80}
+{"t":"2026-10-23T02:43:06.955Z","i":37,"do":"waitReply","note":"AT-355: clean","firstReplyMs":7609,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your EMI comes to about ₹15,900 a month, so you'd repay about ₹5,72,400 (5.72 lakh) in total, of which about ₹72,400 is interest. Change the amount, rate or years in the calculator below to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n2:42 AM","kit":["kit-surface","kit-calculator","kit-keep"],"ms":15688}
+{"t":"2026-10-23T02:43:07.013Z","shot":"15-at-355-clean.png"}
+{"t":"2026-10-23T02:43:07.016Z","i":38,"do":"expectText","note":"AT-355: clean result","text":"Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395","ok":true,"ms":3}
+{"t":"2026-10-23T02:43:07.106Z","i":39,"do":"send","note":"AT-355: messy typo ask","sentAt":1792723387086,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-23T02:43:20.817Z","i":40,"do":"waitReply","note":"AT-355: messy typo","firstReplyMs":5586,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your EMI comes to about ₹15,899 a month, so you'd repay about ₹5,72,375 (5.72 lakh) in total, of which about ₹72,375 is interest. Change the amount, rate or years in the calculator to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n2:43 AM","kit":["kit-surface","kit-calculator","kit-keep"],"ms":13711}
+{"t":"2026-10-23T02:43:20.887Z","shot":"16-at-355-messy-typo.png"}
+{"t":"2026-10-23T02:43:20.891Z","i":41,"do":"expectText","note":"AT-355: messy typo result","text":"Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395","ok":true,"ms":3}
+{"t":"2026-10-23T02:43:20.985Z","i":42,"do":"send","note":"AT-355: Hinglish ask","sentAt":1792723400961,"sent":true,"before":0,"ok":true,"ms":94}
+{"t":"2026-10-23T02:43:39.210Z","i":43,"do":"waitReply","note":"AT-355: Hinglish","firstReplyMs":8615,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"5 lakh ke loan par 9% par 3 saal ki EMI lagbhag ₹15,900 mahina banti hai. Kul chukana lagbhag ₹5,72,400 (5.72 lakh) hoga, jismein lagbhag ₹72,400 byaaj hai. Neeche rakam, byaaj ya saal badal kar dekh sakte hain.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n2:43 AM","kit":["kit-surface","kit-calculator","kit-keep"],"ms":18224}
+{"t":"2026-10-23T02:43:39.279Z","shot":"17-at-355-Hinglish.png"}
+{"t":"2026-10-23T02:43:39.281Z","i":44,"do":"expectText","note":"AT-355: Hinglish result","text":"Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395","ok":true,"ms":2}
+{"t":"2026-10-23T02:43:39.378Z","i":45,"do":"send","note":"AT-369: clean ask","sentAt":1792723419351,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-23T02:43:55.080Z","i":46,"do":"waitReply","note":"AT-369: clean","firstReplyMs":7086,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your EMI is about ₹15,900 a month. You'd repay about ₹5,72,400 (5.72 lakh) in total, of which about ₹72,400 is interest. Change the amount, rate or years in the calculator to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n2:43 AM","kit":["kit-surface","kit-calculator","kit-keep"],"ms":15702}
+{"t":"2026-10-23T02:43:55.146Z","shot":"18-at-369-clean.png"}
+{"t":"2026-10-23T02:43:55.153Z","i":47,"do":"expectText","note":"AT-369: clean result","text":"Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395","ok":true,"ms":6}
+{"t":"2026-10-23T02:43:55.256Z","i":48,"do":"click","note":"AT-369: keep the calculator surface","ok":true,"ms":102}
+{"t":"2026-10-23T02:43:56.757Z","i":49,"do":"wait","ok":true,"ms":1501}
+{"t":"2026-10-23T02:43:56.759Z","i":50,"do":"check","note":"AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T02:43:56.899Z","i":51,"do":"send","note":"AT-369: messy typo ask","sentAt":1792723436842,"sent":true,"before":0,"ok":true,"ms":139}
+{"t":"2026-10-23T02:44:10.598Z","i":52,"do":"waitReply","note":"AT-369: messy typo","firstReplyMs":5064,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your EMI is about ₹15,900 a month. You'd repay about ₹5,72,400 (5.72 lakh) in total, of which about ₹72,400 is interest. Change the amount, rate or years in the calculator to see it update.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n2:44 AM","kit":["kit-surface","kit-calculator","kit-keep"],"ms":13699}
+{"t":"2026-10-23T02:44:10.684Z","shot":"19-at-369-messy-typo.png"}
+{"t":"2026-10-23T02:44:10.687Z","i":53,"do":"expectText","note":"AT-369: messy typo result","text":"Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395","ok":true,"ms":3}
+{"t":"2026-10-23T02:44:25.794Z","shot":"20-error-step54.png"}
+{"t":"2026-10-23T02:44:25.794Z","i":54,"do":"click","note":"AT-369: keep the calculator surface","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":15107}
+{"t":"2026-10-23T02:44:27.294Z","i":55,"do":"wait","ok":true,"ms":1500}
+{"t":"2026-10-23T02:44:27.297Z","i":56,"do":"check","note":"AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T02:44:27.425Z","i":57,"do":"send","note":"AT-369: Hinglish ask","sentAt":1792723467373,"sent":true,"before":0,"ok":true,"ms":128}
+{"t":"2026-10-23T02:44:41.659Z","i":58,"do":"waitReply","note":"AT-369: Hinglish","firstReplyMs":5053,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"5 lakh ke loan par 9% par 3 saal ki EMI lagbhag ₹15,900 mahina banti hai. Kul chukana lagbhag ₹5,72,400 (5.72 lakh) hoga, jismein lagbhag ₹72,400 byaaj hai. Neeche rakam, byaaj ya saal badal kar dekh sakte hain.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n2:44 AM\n---\nI’ll remember: Often writes in romanised Hindi mixed with Engl… · I guessed\nUndo","kit":["kit-surface","kit-calculator","kit-keep"],"ms":14233}
+{"t":"2026-10-23T02:44:41.732Z","shot":"21-at-369-Hinglish.png"}
+{"t":"2026-10-23T02:44:41.735Z","i":59,"do":"expectText","note":"AT-369: Hinglish result","text":"Loan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395","ok":true,"ms":3}
+{"t":"2026-10-23T02:44:41.815Z","i":60,"do":"click","note":"AT-369: keep the calculator surface","ok":true,"ms":80}
+{"t":"2026-10-23T02:44:43.317Z","i":61,"do":"wait","ok":true,"ms":1501}
+{"t":"2026-10-23T02:44:43.319Z","i":62,"do":"check","note":"AT-369: supported presence check for a kept surface (fresh-row identity remains unavailable)","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T02:44:43.326Z","step":"recheck","i":3,"do":"waitReply","late":true}
+{"t":"2026-10-23T02:44:43.329Z","step":"recheck","i":7,"do":"waitReply","late":true}
+{"t":"2026-10-23T02:44:43.333Z","step":"recheck","i":11,"do":"waitReply","late":true}
+{"t":"2026-10-23T02:44:43.341Z","step":"recheck","i":54,"do":"click","late":true}
+{"t":"2026-10-23T02:44:43.539Z","step":"appLog","lines":87,"dropped":0}
+{"t":"2026-10-23T02:44:43.552Z","step":"aiTurns","turns":38}

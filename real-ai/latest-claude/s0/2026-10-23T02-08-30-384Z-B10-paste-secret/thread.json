@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n2:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and websites, catch you up on chats, set routines and remind you, and help draft and send messages once you say so.\n\n2:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n2:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and all your traffic goes through it.\n\nNormally, websites see your real address, and your internet provider or a public Wi-Fi owner can see where you connect. With a VPN, your device scrambles your data and sends it to the VPN company's computer. That computer unscrambles it and passes it to the website. The website sees the VPN's address, not yours.\n\nIt's handy on public Wi-Fi and for hiding your location. It doesn't make you anonymous, though, because the VPN company can still see your traffic, so pick one you trust.\n\n2:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n2:08 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n2:08 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which section should I look in for your running shoes?\n1\nMen's\nBEST FIT\n2\nWomen's\n3\nUnisex or either\nSomething else…\nSkip\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n20 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n2:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:08 AM"
+  }
+]

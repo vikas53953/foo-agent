@@ -1,0 +1,113 @@
+{
+  "journey": "U09-plan-checklist",
+  "title": "Plan card: pending, Change plan, Go, checklist steps, details, done with proof",
+  "steps": 13,
+  "failed": 2,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-18-40-112Z-U09-plan-checklist",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792721927357,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 151
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.4 Plan (C11): the assistant reply contains a named plan with a Go control",
+      "expect": "a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan",
+      "firstReplyMs": 4543,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for budget laptops under ₹50,000 in India\n3\nKeep 3 laptops that fit best value under ₹50,000\n4\nCompare price, processor, RAM, storage, screen\nAbout 4 minutes\nGo\nChange plan\n2:18 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 10612
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "checklist appears with the current step spinning",
+      "ok": true,
+      "ms": 5001
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23077,
+      "late": true
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "details expanded",
+      "ok": true,
+      "ms": 1001
+    },
+    {
+      "i": 8,
+      "do": "waitFor",
+      "note": "C.4 Checklist (C2) + link card: details control remains present after opening checklist",
+      "ok": true,
+      "ms": 17989
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer",
+      "ok": true,
+      "ms": 150001
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "note": "C.4 Proof chip + receipt footer (C12): receipt footer is present",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "check",
+      "note": "C.4 Checklist (C2) + link card: checklist sources surface is present",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 16
+    }
+  ]
+}

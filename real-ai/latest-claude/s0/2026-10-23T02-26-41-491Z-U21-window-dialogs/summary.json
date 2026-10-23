@@ -1,0 +1,84 @@
+{
+  "journey": "U21-window-dialogs",
+  "title": "Close to tray dialog, quit with a running job",
+  "steps": 9,
+  "failed": 3,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-26-41-491Z-U21-window-dialogs",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1043
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792722408209,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "note": "C.6 Start at login, close to tray: close is attempted only after the job is observed in an in-flight streaming/building state",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 30000ms exceeded.",
+      "ms": 30073
+    },
+    {
+      "i": 3,
+      "do": "key",
+      "note": "C.6 Start at login, close to tray: bounded close transition after the observed in-flight job",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 4,
+      "do": "waitFor",
+      "note": "C.5 Dialogs: bounded close transition exposes the first-close semantic dialog before the tray decision",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 30000ms exceeded.",
+      "ms": 30071
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "note": "C.5 Dialogs: bounded observation window for the first-close dialog",
+      "expect": "first-close dialog: foo keeps running in the tray",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 6,
+      "do": "key",
+      "note": "C.5 Dialogs; C.6 Start at login, close to tray: Escape selects the keep-running/tray path",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "C.5 Dialogs; C.6 Start at login, close to tray: after Escape, a non-empty India news/headline result completes",
+      "expect": "job still finishes after the dialog",
+      "firstReplyMs": 506,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for top 3 India news headlines for Fri 23\nKeep 3 headlines that fit most widely covered today\nWatch live\nStop\nunder 1 min\n2:26 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 6047
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

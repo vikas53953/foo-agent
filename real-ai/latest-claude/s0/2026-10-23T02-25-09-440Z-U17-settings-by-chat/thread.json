@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 monuments in its old and new parts, and it's said to have more historic sites than almost any other capital in the world.\n\n2:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n2:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Golden Temple's community kitchen, the langar, serves free vegetarian meals to around 50,000 to 100,000 people every day, and it never closes.\n\n2:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Correction on Ludhiana: that fact was about the Golden Temple, which is in Amritsar, not Ludhiana. Here's a proper one: Ludhiana is nicknamed the \"Manchester of India\" for its huge hosiery and woollen industry.\n\n2:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n2:18 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:18 AM\n2:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:18 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n2:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000 from Smartprix (updated Fri 23 Oct 2026):\n\nMSI Modern 14 C7M-062IN: ₹43,219 Ryzen 5 7530U, 16GB RAM, 512GB SSD, 14-inch. Best pick, as the only one with 16GB.\nAcer Aspire Lite 15 AL15-41: ₹43,800 Ryzen 5 5625U, 8GB, 512GB SSD, 15-inch. Cheapest Ryzen 5.\nMSI Modern 14 C7M-284IN: ₹45,990 Ryzen 5 7530U, 8GB, 512GB SSD, 14-inch. Newer, but 8GB.\n\nScreen sizes come from the AI names; the page gave no panel details.\n\n2:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n2:25 AM"
+  }
+]
