@@ -1,0 +1,97 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-13-01-465Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792735987091,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "before": 0,
+      "firstReplyMs": 8594,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 budget phones under ₹20,000 that fit best value for price\n3\nCompare price, battery, camera, screen and\nAbout 3 minutes\nGo\nChange plan\n6:13 AM",
+      "replyTexts": [
+        "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 budget phones under ₹20,000 that fit best value for price\n3\nCompare price, battery, camera, screen and\nAbout 3 minutes\nGo\nChange plan\n6:13 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 14668
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150007
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792736152078,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "before": 0,
+      "firstReplyMs": 10700,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a relaxed 3-day Jaipur plan with a slow pace, early starts and a rest after lunch each day.\n\nDay 1: Forts and palaces\n\nMorning: Amer Fort. Take the jeep up so the steep climb doesn't tire them, and stop at Jal Mahal for photos on the way.\nAfternoon: City Palace and Jantar Mantar after a long lunch break.\nEvening: Hawa Mahal glows at sunset. A rooftop café across the road gives the best view without any walking.\n\nDay 2: Temples, markets and culture\n\nMorning: Govind Dev Ji Temple, then Birla Mandir.\nAfternoon: Albert Hall Museum, then Johari Bazaar for jewellery and Bapu Bazaar for juttis and textiles.\nEvening: Dinner and a folk show at Chokhi Dhani.\n\nDay 3: Easy sights and a calm finish\n\nMorning: Panna Meena ka Kund, Patrika Gate and the Anokhi Museum of Hand Printing.\nAfternoon: Lunch, last-minute shopping, then leave.\nOptional: Nahargarh Fort at sunset if they feel up for it.\n\nLate October and November are pleasantly cool for Jaipur, so mornings are the best time for forts. When are they travelling, and do they need a lot of seating or lift access?\n\n6:16 AM",
+      "replyTexts": [
+        "Here's a relaxed 3-day Jaipur plan with a slow pace, early starts and a rest after lunch each day.\n\nDay 1: Forts and palaces\n\nMorning: Amer Fort. Take the jeep up so the steep climb doesn't tire them, and stop at Jal Mahal for photos on the way.\nAfternoon: City Palace and Jantar Mantar after a long lunch break.\nEvening: Hawa Mahal glows at sunset. A rooftop café across the road gives the best view without any walking.\n\nDay 2: Temples, markets and culture\n\nMorning: Govind Dev Ji Temple, then Birla Mandir.\nAfternoon: Albert Hall Museum, then Johari Bazaar for jewellery and Bapu Bazaar for juttis and textiles.\nEvening: Dinner and a folk show at Chokhi Dhani.\n\nDay 3: Easy sights and a calm finish\n\nMorning: Panna Meena ka Kund, Patrika Gate and the Anokhi Museum of Hand Printing.\nAfternoon: Lunch, last-minute shopping, then leave.\nOptional: Nahargarh Fort at sunset if they feel up for it.\n\nLate October and November are pleasantly cool for Jaipur, so mornings are the best time for forts. When are they travelling, and do they need a lot of seating or lift access?\n\n6:16 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 20855
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

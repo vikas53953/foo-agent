@@ -1,0 +1,91 @@
+{
+  "journey": "U15-routines",
+  "title": "Routine: create by chat, routines screen, pause, run once",
+  "steps": 9,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-35-02-030Z-U15-routines",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1029
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792737316751,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.4 Routine (C13): assistant response contains an actual created routine card for the requested schedule (plan cards do not count)",
+      "expect": "Routine card: created, next run time with weekday and date",
+      "before": 0,
+      "firstReplyMs": 26485,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n6:35 AM",
+      "replyTexts": [
+        "I didn’t get that. Say it another way?\n\n6:35 AM"
+      ],
+      "didntGetThat": true,
+      "kit": [],
+      "ms": 32592
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Routines screen with the new routine row",
+      "ok": true,
+      "ms": 1203
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "C.5 Routines screen: routines page root is present",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23062
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

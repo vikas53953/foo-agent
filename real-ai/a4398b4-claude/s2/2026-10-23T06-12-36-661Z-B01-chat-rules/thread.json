@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:11 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:11 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:12 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n6:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You open any bank or payment app, scan a code or type a phone number, enter your PIN, and the money moves in seconds. There are no cards to carry, no cash to count and no change to hunt for.\n\nIt also works almost everywhere. Chai stalls, vegetable sellers, auto drivers and big stores all show the same kind of QR code, so you pay the same way whether it's ₹20 or ₹20,000. Shopkeepers like it too, since the money lands straight in their bank account and they don't need a costly card machine.\n\nAnother big push is that it's free for most everyday payments. Because banks and apps all work together, you aren't locked into one app, and you can switch whenever you like. Add easy sign-up with just a bank account and a mobile number, plus cashback offers in the early days, and many people tried it once and never went back. Today, even small towns and villages use it daily, which has made cash feel slow by comparison.\n\nThree main reasons:\n\nFast and simple: pay in seconds with a QR code or phone number.\nFree and accepted everywhere: from street vendors to large shops, with no card machine needed.\nWorks across banks and apps: one bank account, your choice of app.\n6:12 AM"
+  }
+]

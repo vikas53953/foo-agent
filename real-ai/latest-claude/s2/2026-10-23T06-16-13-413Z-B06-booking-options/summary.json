@@ -1,0 +1,100 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "steps": 10,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T06-16-13-413Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792736179050,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "note": "AT-036: the booking question first produces an actual reply or plan",
+      "before": 0,
+      "firstReplyMs": 8128,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for well-rated Italian restaurants in\n3\nCheck restaurant booking pages for Sat 24 Oct\n4\nKeep 3 Italian places with a table free that fit best rated with a table for 2 at 8:00 PM\n5\nWait for you to pick one\nAbout 4 minutes\nGo\nChange plan\n6:16 AM",
+      "replyTexts": [
+        "My plan · Looking on the web\n1\nLook on the web\n2\nLook for well-rated Italian restaurants in\n3\nCheck restaurant booking pages for Sat 24 Oct\n4\nKeep 3 Italian places with a table free that fit best rated with a table for 2 at 8:00 PM\n5\nWait for you to pick one\nAbout 4 minutes\nGo\nChange plan\n6:16 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 14186
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "note": "AT-036/AT-311: option and no-approval checks below are evaluated on the rendered cards",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180005
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "AT-036/AT-311: no booking Approval is present before the user chooses and says book",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-036: preserve the existing choice-card observation",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "AT-036: actual asking choice options are rendered before any booking action",
+      "found": 3,
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "note": "AT-108: the live job row exposes the NEEDS YOU state while a choice is waiting",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 8,
+      "do": "check",
+      "note": "AT-310: a rendered job checklist, when present, has actual step rows",
+      "found": 5,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

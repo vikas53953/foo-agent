@@ -1,0 +1,19 @@
+{"t":"2026-10-23T06:19:33.792Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T06:19:39.379Z","step":"launch","ok":true}
+{"t":"2026-10-23T06:19:39.506Z","i":0,"do":"send","sentAt":1792736379470,"sent":true,"before":0,"ok":true,"ms":124}
+{"t":"2026-10-23T06:20:00.041Z","i":1,"do":"waitReply","before":0,"firstReplyMs":14183,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n6:19 AM","replyTexts":["Got it, I’ll fold that in.\n\n6:19 AM"],"kit":[],"endState":false,"ms":20535}
+{"t":"2026-10-23T06:20:00.131Z","shot":"01-museum-start.png"}
+{"t":"2026-10-23T06:20:00.140Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":9}
+{"t":"2026-10-23T06:20:08.144Z","i":3,"do":"wait","ok":true,"ms":8003}
+{"t":"2026-10-23T06:20:13.506Z","step":"launch","ok":true}
+{"t":"2026-10-23T06:20:13.509Z","i":4,"do":"crashRelaunch","fooProcs":4,"ok":true,"ms":5364}
+{"t":"2026-10-23T06:20:21.520Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8011}
+{"t":"2026-10-23T06:20:21.587Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-23T06:20:21.589Z","i":6,"do":"check","note":"AT-118: reopen renders the asking recovery card","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T06:20:21.592Z","i":7,"do":"expectText","note":"AT-118: recovery copy is present on the actual card","text":"I closed unexpectedly at 6:20 AM.\nLooking on the web was at step 1 of 5. Nothing was paid.\nPick up where I left off\nStop it\n6:20 AM","ok":true,"ms":3}
+{"t":"2026-10-23T06:20:21.594Z","i":8,"do":"check","note":"AT-118: the recovery card exposes its resume action","found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T06:22:51.600Z","i":9,"do":"wait","ok":true,"ms":150006}
+{"t":"2026-10-23T06:22:51.669Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-23T06:22:51.685Z","i":10,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-23T06:22:51.835Z","step":"appLog","lines":11,"dropped":0}
+{"t":"2026-10-23T06:22:51.850Z","step":"aiTurns","turns":3}
