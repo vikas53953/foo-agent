@@ -435,8 +435,10 @@ export class ChatLane {
     // M6 T5: J17 "don't remember this" is read before the turn, with no AI.
     await this.d.memory?.beforeTurn(chat, message);
     const history = (await this.query<EngineMessage[]>('messagesBefore', chatId, message.seq, CONVERSATION * 2)) ?? [];
+    // 08-2 §7.2 part 7: a setting line (CR-0043) is foo's answer, so the next turn sees it; real-AI run cdf2f65 R-dark
+    // answered "hi" with the setting again when it could not.
     const conversation = history
-      .filter((m) => m.kind !== 'marker' && (m.status === 'complete' || m.status === 'sent'))
+      .filter((m) => (m.kind !== 'marker' || m.why?.settingLine) && (m.status === 'complete' || m.status === 'sent'))
       .slice(-CONVERSATION);
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
