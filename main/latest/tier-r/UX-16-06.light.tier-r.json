@@ -419,7 +419,7 @@
         "Undo",
         "11:01",
         "in",
-        "73:53",
+        "73:52",
         "Will",
         "send",
         "to",
@@ -570,7 +570,7 @@
       ],
       "extra": [
         "in",
-        "73:53",
+        "73:52",
         "Will",
         "send",
         "to",
@@ -657,8 +657,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.1068603515625,
-    "diffPixels": 109425,
+    "ratio": 0.1068681640625,
+    "diffPixels": 109433,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.light.diff.png"

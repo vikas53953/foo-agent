@@ -155,6 +155,7 @@
         "or",
         "sent.",
         "Done",
+        "1",
         "M",
         "Money",
         "9:41",
@@ -554,8 +555,8 @@
     "total": 30966
   },
   "r5": {
-    "ratio": 0.0965986328125,
-    "diffPixels": 98917,
+    "ratio": 0.096759765625,
+    "diffPixels": 99082,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-09.dark.diff.png"
