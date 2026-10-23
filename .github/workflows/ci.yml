@@ -148,7 +148,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        area: [shared, engine, main, renderer]
+        area: [shared-redaction, shared-state, engine-ai, engine-jobs, engine-web, main, renderer]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -169,6 +169,8 @@ jobs:
           New-Item -ItemType Directory -Force reports/mutation | Out-Null
           git rev-parse HEAD | Set-Content reports/mutation/tested-sha.txt
           pnpm exec tsx scripts/audit/mutation-preflight.ts 2>&1 | Tee-Object reports/mutation/preflight.txt
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          pnpm exec tsx scripts/audit/preload-allowlist-preflight.ts 2>&1 | Tee-Object reports/mutation/preload-preflight.txt
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $configPath = 'stryker.lane-f-' + $env:MUTATION_AREA + '-ci.json'
           $config = Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json

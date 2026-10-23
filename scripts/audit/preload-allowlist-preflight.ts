@@ -12,7 +12,7 @@ const LIVE_ONLY_EVENTS = ['live:frame', 'live:state'];
 function setOf(file: string, name: string): string[] {
   const source = readFileSync(path.join(repoRoot, file), 'utf8');
   const match = source.match(new RegExp(`const ${name} = new Set\\(\\[([\\s\\S]*?)\\]\\)`));
-  if (!match) throw new Error(`${file} is missing the ${name} allow-list declaration`);
+  if (!match || match[1] === undefined) throw new Error(`${file} is missing the ${name} allow-list declaration`);
   return [...match[1].matchAll(/'([^']+)'/g)].map((entry) => entry[1]!).sort();
 }
 
