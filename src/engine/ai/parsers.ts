@@ -171,13 +171,9 @@ export function createClaudeParser(): StreamParser {
     result() {
       const accumulatedText = sawDeltas ? deltaText : assistantText;
       const text =
-        finalText === '' &&
-        stop === 'end' &&
-        errorText === undefined &&
-        violation === undefined &&
-        !j.incompatible
+        finalText === '' && stop === 'end' && errorText === undefined && violation === undefined && !j.incompatible
           ? accumulatedText
-          : finalText ?? accumulatedText;
+          : (finalText ?? accumulatedText);
       const r: ParsedTurn = {
         text,
         usage,
