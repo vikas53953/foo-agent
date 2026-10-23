@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T21-04-46-012Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792789499214,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9075,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 aim for 16 GB of memory, a 512 GB fast drive and a recent Ryzen 5/7 or Intel Core i5/i7 chip.\n\nMemory: 16 GB is the minimum for running code, a browser and an editor together. Pick a laptop where it can be upgraded later.\nScreen and keyboard: Look for a sharp 14 to 15 inch screen and a keyboard you like typing on for hours.\nBattery and weight: A thin laptop with a long battery suits classes or travel. A heavier one with a strong graphics chip only matters for games, video or AI training.\n\nDo you mostly write web or app code, or will you also need a graphics chip for AI or games?\n\n9:05 PM",
+      "kit": [],
+      "ms": 17665
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

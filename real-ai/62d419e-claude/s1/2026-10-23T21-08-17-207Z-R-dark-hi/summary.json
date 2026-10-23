@@ -1,0 +1,59 @@
+{
+  "journey": "R-dark-hi",
+  "title": "Setting by chat, then hi: foo replies and does not change the setting again",
+  "steps": 5,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T21-08-17-207Z-R-dark-hi",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792789702352,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "the theme turns dark and foo shows one line \"Changed: Theme → Dark. Undo\"",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120253,
+      "late": true
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792789822767,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)",
+      "firstReplyMs": 3037,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Want to pick up the laptop search or the easy treks near Pune?\n\n9:10 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 10140
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{"t":"2026-10-23T21:00:22.122Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T21:00:27.116Z","step":"launch","ok":true}
+{"t":"2026-10-23T21:00:27.197Z","i":0,"do":"send","sentAt":1792789227177,"sent":true,"before":0,"ok":true,"ms":79}
+{"t":"2026-10-23T21:00:39.860Z","i":1,"do":"waitReply","firstReplyMs":6581,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCheck isro.gov.in, The Hindu, Times of India\nCompare reports from different sources\nWatch live\nStop\nunder 1 min\n9:00 PM","kit":[],"ms":12662}
+{"t":"2026-10-23T21:00:39.945Z","shot":"01-news.png"}
+{"t":"2026-10-23T21:00:39.947Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-23T21:03:09.952Z","i":3,"do":"wait","ok":true,"ms":150005}
+{"t":"2026-10-23T21:03:10.001Z","shot":"02-news-later.png"}
+{"t":"2026-10-23T21:03:10.003Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T21:03:10.005Z","i":5,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-23T21:03:10.007Z","i":6,"do":"expectText","text":"Your favourite food is South Indian, and it's already saved. Want me to look for South Indian places near you?\n\n9:00 PM","ok":true,"ms":2}
+{"t":"2026-10-23T21:03:10.009Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T21:03:10.015Z","i":8,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-23T21:03:10.174Z","step":"appLog","lines":66,"dropped":0}
+{"t":"2026-10-23T21:03:10.183Z","step":"aiTurns","turns":32}
