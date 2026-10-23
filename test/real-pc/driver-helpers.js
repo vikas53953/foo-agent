@@ -35,4 +35,46 @@ function waitForPageClose(page, timeoutMs = 30_000) {
   return page.waitForEvent('close', { timeout: timeoutMs });
 }
 
-module.exports = { LIVE_WINDOW_PATH, isLiveWindow, waitForWindowAfterClick, waitForPageClose };
+// A waitReply end-state check is allowed to recover a genuinely late answer,
+// but a global expectTid/expectJs selector is not evidence by itself: it may
+// match the answer from the preceding turn. Require the current DOM snapshot
+// to contain a reply after the wait's recorded baseline, and preserve explicit
+// reply/kit failures.
+function canLatePromoteWaitReply(result, observed, hasLaterCausalAction = false) {
+  if (result?.do !== 'waitReply') return true;
+  if (hasLaterCausalAction) return false;
+  if (result.didntGetThat || result.kitMissing || result.kitDropped || result.stillWorking || result.blocked) return false;
+  const before = Number(result.before);
+  const newBubbles = Number(result.newBubbles);
+  const observedCount = typeof observed === 'number' ? observed : observed?.n;
+  if (!Number.isFinite(before) || !Number.isFinite(newBubbles) || newBubbles <= 0 || !Number.isFinite(observedCount)) return false;
+  if (observedCount !== before + newBubbles) return false;
+  const expectedTexts = Array.isArray(result.replyTexts) ? result.replyTexts : null;
+  const observedTexts = typeof observed === 'object' && Array.isArray(observed.texts) ? observed.texts.slice(before) : null;
+  return !!expectedTexts && !!observedTexts && JSON.stringify(expectedTexts) === JSON.stringify(observedTexts);
+}
+
+function previousReplyBaseline({
+  explicitBefore,
+  previousSend,
+  previousAction,
+  previousSendIndex = -1,
+  previousActionIndex = -1,
+  currentCount,
+}) {
+  if (Number.isFinite(explicitBefore)) return explicitBefore;
+  if (previousAction?.clicked && previousActionIndex > previousSendIndex && Number.isFinite(previousAction.before))
+    return previousAction.before;
+  if (previousSend && Number.isFinite(previousSend.before)) return previousSend.before;
+  if (previousAction?.clicked && Number.isFinite(previousAction.before)) return previousAction.before;
+  return currentCount;
+}
+
+module.exports = {
+  LIVE_WINDOW_PATH,
+  isLiveWindow,
+  waitForWindowAfterClick,
+  waitForPageClose,
+  canLatePromoteWaitReply,
+  previousReplyBaseline,
+};

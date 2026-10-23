@@ -6,7 +6,19 @@ import { TID } from '../../src/shared/testids';
 
 type DriverHelpers = {
   isLiveWindow: (pageOrUrl: string | { url: () => string }) => boolean;
-  canLatePromoteWaitReply: (result: { do: string; before?: number; newBubbles?: number; lastReply?: string }, observedCount: number) => boolean;
+  canLatePromoteWaitReply: (
+    result: { do: string; before?: number; newBubbles?: number; lastReply?: string; replyTexts?: string[] },
+    observed: number | { n: number; texts: string[] },
+    hasLaterCausalAction?: boolean,
+  ) => boolean;
+  previousReplyBaseline: (args: {
+    explicitBefore?: number;
+    previousSend: { before?: number } | null;
+    previousAction: { clicked?: boolean; before?: number } | null;
+    previousSendIndex?: number;
+    previousActionIndex?: number;
+    currentCount: number;
+  }) => number;
   waitForWindowAfterClick: (args: {
     app: { waitForEvent: (name: string, predicate: (page: { url: () => string }) => boolean) => Promise<unknown> };
     click: () => Promise<void>;
@@ -43,18 +55,56 @@ const r427 = JSON.parse(readFileSync(join(process.cwd(), 'test', 'real-pc', 'jou
 
 describe('real-PC live-window driver', () => {
   it('does not promote a stale bubble to a late waitReply pass', () => {
+    expect(helpers.canLatePromoteWaitReply({ do: 'waitReply', before: 1, newBubbles: 0, lastReply: '' }, { n: 1, texts: [] })).toBe(false);
     expect(
       helpers.canLatePromoteWaitReply(
-        { do: 'waitReply', before: 1, newBubbles: 0, lastReply: '' },
-        1,
+        { do: 'waitReply', before: 1, newBubbles: 1, lastReply: 'fresh reply', replyTexts: ['fresh reply'] },
+        { n: 2, texts: ['old reply', 'fresh reply'] },
+      ),
+    ).toBe(true);
+    expect(
+      helpers.canLatePromoteWaitReply(
+        { do: 'waitReply', before: 1, newBubbles: 1, lastReply: 'fresh reply', replyTexts: ['fresh reply'] },
+        { n: 3, texts: ['old reply', 'fresh reply', 'later turn'] },
       ),
     ).toBe(false);
     expect(
       helpers.canLatePromoteWaitReply(
-        { do: 'waitReply', before: 1, newBubbles: 1, lastReply: 'fresh reply' },
-        2,
+        { do: 'waitReply', before: 1, newBubbles: 1, lastReply: 'fresh reply', replyTexts: ['fresh reply'] },
+        { n: 2, texts: ['old reply', 'fresh reply'] },
+        true,
       ),
-    ).toBe(true);
+    ).toBe(false);
+  });
+
+  it('uses the pre-click reply count when a click starts a reply', () => {
+    expect(
+      helpers.previousReplyBaseline({
+        previousSend: { before: 0 },
+        previousAction: { clicked: true, before: 1 },
+        previousSendIndex: 1,
+        previousActionIndex: 2,
+        currentCount: 2,
+      }),
+    ).toBe(1);
+    expect(
+      helpers.previousReplyBaseline({
+        previousSend: { before: 0 },
+        previousAction: null,
+        previousSendIndex: 3,
+        previousActionIndex: 1,
+        currentCount: 2,
+      }),
+    ).toBe(0);
+    expect(
+      helpers.previousReplyBaseline({
+        previousSend: { before: 0 },
+        previousAction: { clicked: true, before: 1 },
+        previousSendIndex: 3,
+        previousActionIndex: 1,
+        currentCount: 2,
+      }),
+    ).toBe(0);
   });
 
   it('matches the live path without exposing query-string values', () => {

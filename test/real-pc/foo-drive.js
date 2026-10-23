@@ -13,7 +13,13 @@
 const fs = require('fs');
 const path = require('path');
 const { stillWorking, settled } = require('./settle');
-const { isLiveWindow, waitForPageClose, waitForWindowAfterClick } = require('./driver-helpers');
+const {
+  canLatePromoteWaitReply,
+  isLiveWindow,
+  previousReplyBaseline,
+  waitForPageClose,
+  waitForWindowAfterClick,
+} = require('./driver-helpers');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -362,7 +368,10 @@ async function main() {
             break;
           }
           await loc.scrollIntoViewIfNeeded({ timeout: 5_000 }).catch(() => {});
+          const baseline = await afterMe();
           await loc.click({ timeout: s.timeoutMs ?? 15_000, button: s.button ?? 'left' });
+          rec.before = baseline.n;
+          rec.clicked = true;
           break;
         }
         case 'hover':
@@ -393,6 +402,7 @@ async function main() {
           const loc = target.locator(sel(s)).last();
           rec.found = await loc.count();
           if (rec.found && !(s.tid && REFUSED_TIDS.has(s.tid))) {
+            const baseline = await afterMe();
             if (s.captureWindow) {
               livePage = await waitForWindowAfterClick({
                 app,
@@ -405,12 +415,16 @@ async function main() {
               setActivePage(livePage);
               await snapshotLiveDiagnostics(livePage);
               rec.window = 'live';
+              rec.before = baseline.n;
+              rec.clicked = true;
             } else {
               const close = s.awaitClose && livePage ? waitForPageClose(livePage, s.timeoutMs ?? 30_000) : null;
               // Keep a rejected close wait handled if the initiating click
               // fails, while awaiting the original promise on success.
               if (close) void close.catch(() => {});
               await loc.click({ timeout: s.timeoutMs ?? 10_000 });
+              rec.before = baseline.n;
+              rec.clicked = true;
               if (close) {
                 await close;
                 livePage = null;
@@ -516,8 +530,19 @@ async function main() {
           const start = Date.now();
           // The baseline comes from the latest send, unless a waitReply has already used it.
           const lastSend = results.findLastIndex((r) => r.do === 'send');
-          const prevSend = lastSend > results.findLastIndex((r) => r.do === 'waitReply') ? results[lastSend] : null;
-          const before = s.before ?? prevSend?.before ?? (await afterMe()).n;
+          const lastWait = results.findLastIndex((r) => r.do === 'waitReply');
+          const prevSend = lastSend > lastWait ? results[lastSend] : null;
+          const lastAction = results.findLastIndex((r) => (r.do === 'click' || r.do === 'clickIf') && r.clicked);
+          const prevAction = lastAction > lastWait ? results[lastAction] : null;
+          const before = previousReplyBaseline({
+            explicitBefore: s.before,
+            previousSend: prevSend,
+            previousAction: prevAction,
+            previousSendIndex: lastSend,
+            previousActionIndex: lastAction,
+            currentCount: (await afterMe()).n,
+          });
+          rec.before = before;
           const quiet = s.quietMs ?? 6_000;
           let cur = await afterMe();
           let lastChange = Date.now();
@@ -545,6 +570,7 @@ async function main() {
           const texts = cur.texts.slice(before);
           rec.duplicates = texts.filter((x, k) => x && texts.indexOf(x) !== k).length;
           rec.lastReply = texts.join('\n---\n').slice(0, 2000);
+          rec.replyTexts = texts;
           // A reply is not the outcome: "I didn't get that" fails unless the journey expects it, and a step that names an end
           // state (a card on screen, the theme changed) needs that state too.
           if (DIDNT_GET.test(rec.lastReply) && !s.allowDidntGet) {
@@ -689,6 +715,13 @@ async function main() {
     if (r.ok !== false || r.didntGetThat || r.refused || r.blocked) continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
+    if (r.do === 'waitReply') {
+      const observed = await afterMe().catch(() => ({ n: 0, texts: [] }));
+      const hasLaterCausalAction = results.some(
+        (next) => next.i > r.i && ((next.do === 'send' && next.sent) || ((next.do === 'click' || next.do === 'clickIf') && next.clicked)),
+      );
+      if (!canLatePromoteWaitReply(r, observed, hasLaterCausalAction)) continue;
+    }
     const now = await endState(named).catch(() => false);
     if (now) {
       r.ok = true;
