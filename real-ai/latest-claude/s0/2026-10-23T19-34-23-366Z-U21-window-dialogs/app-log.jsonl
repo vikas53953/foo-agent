@@ -1,5 +1,0 @@
-{"t":1792784064455,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1792784066035,"lvl":"info","mod":"engine","evt":"job.steers_restored"}
-{"t":1792784073516,"lvl":"info","mod":"engine","evt":"job.steer_check","kind":"new"}
-{"t":1792784073523,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1792784073524,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
