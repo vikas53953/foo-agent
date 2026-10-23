@@ -183,3 +183,23 @@ describe('CR-0043 review · Undo writes back only a chat change of an allow-list
     expect(x.settings().money.aiCapPaise).toBe(capNow);
   });
 });
+
+describe('Real-AI run cdf2f65 R-dark · the next turn sees the setting line', () => {
+  it('"hi" after "Switch to dark mode" gets a reply, not a second "Changed: Theme → Dark."', async () => {
+    // The real Claude answered "hi" with the setting again, then "Dark mode abhi tak on nahi hua": the line never reached it.
+    h = jobHarness({
+      script: [
+        { match: { purpose: 'intake', promptIncludes: 'Changed: Theme → Dark.' }, reply: real({ kind: 'reply' }).replace('<say></say>', '<say>Hello!</say>') },
+        { match: { purpose: 'intake' }, reply: DARK },
+        { match: { purpose: 'intake' }, reply: DARK },
+      ],
+      settings: verified(),
+    });
+    h.userSays('Switch to dark mode');
+    await h.settle();
+    h.userSays('hi');
+    await h.settle();
+    expect(lines(h).map((l) => l.text)).toEqual(['Changed: Theme → Dark.']);
+    expect(fooTexts(h)).toEqual(['Hello!']);
+  });
+});
