@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n2:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fill in the form below and I'll plan from there. Mummy's birthday is on Sun 25 Oct, so you can use that date if it's for her.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n2:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n2:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add items with an amount and category, and it keeps a running total, a budget bar and a split by category. Entries stay only while this page is open unless saving is allowed here.\n\nKeep\n\nWant me to add a monthly chart, or a way to copy your entries out?\n\n2:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.\n2:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't make a form with a password box, even for a demo, because passwords are never typed into the chat. When a real step needs one, the app opens a private secret box for it. I can make a form with just a username and a \"Remember me\" tick, or a sign-in page that is only a picture and doesn't work.\n\n2:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n2:10 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:11 AM\n2:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:11 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 24 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants near Connaught\nKeep 3 restaurants that fit best rated, pure vegetarian, table free\nWait for you to pick one\nShow you before booking for 2, Sat 24 Oct, 8:00 PM\nBook table for 2, Sat 24 Oct, 8:00 PM\nWatch live\nStop\n3 min\n2:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:11 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n2:13 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:13 AM"
+  }
+]

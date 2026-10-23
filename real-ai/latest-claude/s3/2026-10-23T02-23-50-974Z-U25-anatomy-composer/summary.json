@@ -1,0 +1,282 @@
+{
+  "journey": "U25-anatomy-composer",
+  "title": "Shell anatomy at every width, composer states, honest flights reply",
+  "steps": 37,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-23-50-974Z-U25-anatomy-composer",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1051
+    },
+    {
+      "i": 1,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 808
+    },
+    {
+      "i": 2,
+      "do": "shot",
+      "expect": "window at 1280x800",
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "BP-ANAT-*: executable surface presence check at the baseline viewport",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 6,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 7,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 8,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 9,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "note": "BP-APP-*: executable surface presence check at the baseline viewport",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 12,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 13,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 14,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 15,
+      "do": "check",
+      "note": "BP-COMP-*: executable surface presence check at the baseline viewport",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 16,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "i": 17,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 18,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 19,
+      "do": "check",
+      "note": "BP-COMP-*: multiline composer field is present for the actual typing surface",
+      "found": 1,
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 20,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 21,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "expect": "attach menu",
+      "ok": true,
+      "ms": 501
+    },
+    {
+      "i": 24,
+      "do": "key",
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 25,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 807
+    },
+    {
+      "i": 26,
+      "do": "shot",
+      "expect": "window at 1000x760",
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 27,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 806
+    },
+    {
+      "i": 28,
+      "do": "shot",
+      "expect": "window at 760x700",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 29,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 805
+    },
+    {
+      "i": 30,
+      "do": "shot",
+      "expect": "window at 520x640",
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 31,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 803
+    },
+    {
+      "i": 32,
+      "do": "shot",
+      "expect": "window at 1280x800",
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 33,
+      "do": "send",
+      "sentAt": 1792722244407,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 34,
+      "do": "waitReply",
+      "note": "BP-MSG-04; AT-157: sampled flight reply states the bounded find/compare scope",
+      "expect": "AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later",
+      "firstReplyMs": 533,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n2:24 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 6096
+    },
+    {
+      "i": 35,
+      "do": "expectText",
+      "note": "AT-157: hard text check confirms the sampled flight reply mentions compare",
+      "text": "Cubbon Park and café brunch is a lovely pick. Which day suits you, Sat 24 Oct or Sun 25 Oct? I can add it to your calendar.\n\n2:19 AM",
+      "ok": true,
+      "ms": 3,
+      "late": true
+    },
+    {
+      "i": 36,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

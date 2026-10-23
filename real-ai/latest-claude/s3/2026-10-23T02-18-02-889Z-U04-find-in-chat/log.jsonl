@@ -1,0 +1,22 @@
+{"t":"2026-10-23T02:18:02.889Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T02:18:08.671Z","step":"launch","ok":true}
+{"t":"2026-10-23T02:18:09.738Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1063}
+{"t":"2026-10-23T02:18:09.893Z","i":1,"do":"send","sentAt":1792721889848,"sent":true,"before":0,"ok":true,"ms":154}
+{"t":"2026-10-23T02:18:20.115Z","i":2,"do":"waitReply","note":"C.5 Search palette + find in chat: the reply contains the searched river text","expect":"a short list","firstReplyMs":2570,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Three big ones: the Ganga, the Yamuna and the Godavari.\n\n2:18 AM","kit":[],"endState":false,"ms":10222}
+{"t":"2026-10-23T02:18:20.185Z","shot":"01-rivers.png"}
+{"t":"2026-10-23T02:18:20.204Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":19}
+{"t":"2026-10-23T02:18:20.264Z","shot":"02-find-open.png"}
+{"t":"2026-10-23T02:18:20.278Z","i":4,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-23T02:18:20.283Z","i":5,"do":"expectText","note":"C.5 Search palette + find in chat: find count is rendered in the opened chat find bar","text":"1 of 1","ok":true,"ms":5}
+{"t":"2026-10-23T02:18:21.093Z","i":6,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":809}
+{"t":"2026-10-23T02:18:21.153Z","shot":"03-find-results.png"}
+{"t":"2026-10-23T02:18:21.230Z","i":7,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-23T02:18:21.321Z","i":8,"do":"click","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-23T02:18:21.411Z","i":9,"do":"click","soft":true,"ok":true,"ms":90}
+{"t":"2026-10-23T02:18:21.416Z","i":10,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-23T02:18:22.222Z","i":11,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":806}
+{"t":"2026-10-23T02:18:22.284Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-23T02:18:22.289Z","i":12,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-23T02:18:22.303Z","i":13,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-23T02:18:22.468Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-23T02:18:22.480Z","step":"aiTurns","turns":1}

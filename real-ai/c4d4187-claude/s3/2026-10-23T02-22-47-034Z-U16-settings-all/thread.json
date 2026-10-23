@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n2:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I don't use tables, so here are three as a list:\n\nMaharashtra: Mumbai\nTamil Nadu: Chennai\nPunjab: Chandigarh\n2:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n2:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC, and the main Indian Railways site is indianrailways.gov.in.\n\n2:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n2:19 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best for Sat 24 Oct or Sun 25 Oct? → Cubbon Park and café brunch\n2:19 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n2:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Cubbon Park and café brunch is a lovely pick. Which day suits you, Sat 24 Oct or Sun 25 Oct? I can add it to your calendar.\n\n2:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n2:20 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight South Indian classic\n2\nButter chicken with naan\nRich North Indian comfort\n3\nVeg biryani with raita\nOne-pot, hearty and easy\nSomething else…\nSkip\n2:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n2:20 AM"
+  }
+]

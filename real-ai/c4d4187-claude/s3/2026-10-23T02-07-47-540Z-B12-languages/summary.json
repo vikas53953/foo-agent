@@ -1,0 +1,82 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-07-47-540Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792721273278,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 213
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 6099,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Mummy ka birthday Sun 25 Oct ko hai, to cake kal Sat 24 Oct tak order kar do, taaki time par pahunch jaye. Ye options safe rahenge:\n\nButterscotch ya pineapple: sabko pasand aate hain, aur ghar ke dinner ke liye perfect hain.\nChocolate truffle: agar mummy ko meetha pasand hai, to ye hamesha hit rehta hai.\nFruit ya mango cake: halka rehta hai, agar kam meetha chahiye.\nEggless: agar ghar mein sab egg nahi khate, to order se pehle ye zaroor confirm kar lena.\n\nMummy ko kaunsa flavour pasand hai, aur cake kitne logon ke liye chahiye? Bata do, to main aas-paas ke options dekh leta hoon.\n\n2:07 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 16760
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792721290326,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 143
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 6554,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਲਈ ਬਟਰਸਕੌਚ ਜਾਂ ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੇਫ਼ ਰਹੇਗਾ, ਕਿਉਂਕਿ ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਹਨ।\n\nਬਟਰਸਕੌਚ: ਘਰ ਦੇ ਡਿਨਰ ਲਈ ਵਧੀਆ, ਸਭ ਦੀ ਪਸੰਦ।\nਚਾਕਲੇਟ ਟਰਫਲ: ਜੇ ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਪਸੰਦ ਹੈ।\nਫਰੂਟ ਜਾਂ ਮੈਂਗੋ: ਹਲਕਾ ਅਤੇ ਘੱਟ ਮਿੱਠਾ।\n\nਕੇਕ Sat 24 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ, ਤਾਂ ਜੋ Sun 25 Oct ਨੂੰ ਸਮੇਂ ਸਿਰ ਪਹੁੰਚ ਜਾਵੇ। ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਜਾਂ ਹਲਕਾ?\n\n2:08 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 15212
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792721305741,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 6581,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public or bank holiday in Mumbai as far as I know. The nearby holidays are around Diwali, which falls on about Sun 8 Nov. I can't check a live holiday list from here, so confirm with the official Maharashtra list if it matters for a bank or office visit.\n\n2:08 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 14170
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

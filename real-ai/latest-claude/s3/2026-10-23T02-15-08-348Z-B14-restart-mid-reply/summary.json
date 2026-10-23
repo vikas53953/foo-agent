@@ -1,0 +1,86 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 9,
+  "failed": 1,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T02-15-08-348Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792721722301,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3008
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5461
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "note": "AT-118: after reopen the reply settles, or the cut-off bubble exposes Try again",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 509,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Try Shelly, Turbo (a funny name for a slow one) or Biscuit. Tortoises also suit old-fashioned names like Gulab or Mr. Pickle.\n\n2:15 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 7617
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792721738627,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 182
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "ok": true,
+      "ms": 2001
+    },
+    {
+      "i": 6,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5459
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "note": "AT-118: the second post-reopen request also settles as a real answer",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 5066,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for biggest India news story today\nWatch live\nStop\nunder 1 min\n2:15 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 11377
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 22
+    }
+  ]
+}
