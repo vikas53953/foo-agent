@@ -23,3 +23,11 @@ No push, ruler publication or ready-PR qualification is justified while the full
 Ruler89361d0daf2746a9cca9a120d96648ea2098365f was tested in an isolated Ubuntu checkout. All non-test gates exited0. Fulltest exited1:21failed/269passed/1skipped files;99failed/6519passed/3skipped tests. Root inspected the retained test-log summary. This differs from the Windows source/test inventory and is not an acceptance comparison.
 
 Missing prerequisites included zipinfo, usable Electron postinstall and required Chromium path. Timezone/DST and a redactor performance failure also need diagnosis. Raw logs: isolated /tmp/foo-linux-gate-ruler89361d0d-20261023/gates. Package setup is proceeding using the existing WSL root user for ordinary development dependencies; no Windows security settings, credentials or thresholds are changed. Full rerun follows corrected prerequisites and focused checks, not a blind retry.
+
+## Corrected Linux ruler gate — 21:31 IST
+
+Exact ruler89361d0daf2746a9cca9a120d96648ea2098365f passed all nine prepush commands: spec:verify, check:copy, lint, format:check, typecheck, test, build, trace:check and fid:guard. Full suite: 6632 passed and 3 existing skipped tests; 290 passed and 1 skipped files. No skip was added. Root verified clean checkout and gate exit codes. TZ=Asia/Kolkata matches India fixture expectations; maxWorkers=2 bounds host load without changing test selection or timeouts.
+
+Raw local receipts: /tmp/foo-linux-gate-ruler89361d0d-20261023/full-gate-max2-TZ-IST.log and gates-max2/ in Ubuntu WSL. Prerequisite repairs installed zip/unzip, supplied Chromium at the expected path and completed Electron postinstall. Repair of pre-existing interrupted dpkg also completed pending Vim configuration/upgrades. No Windows security setting changed. Earlier failures remain above.
+
+These local receipts authorized publication of [draft PR140](https://github.com/vikas53953/foo-agent/pull/140), not feature acceptance. The sole authorized [ruler validation39983437733](https://github.com/vikas53953/foo-agent/actions/runs/39983437733) and [CI39983410751](https://github.com/vikas53953/foo-agent/actions/runs/39983410751) remain pending. Existing draft rules skip Windows CI; those checks are not green or waived. Separate lead documentation checkout gates are underway before publishing PR138 updates.
