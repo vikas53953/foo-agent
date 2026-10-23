@@ -17,3 +17,9 @@ Observed failures:
 Raw receipts remain in the parent lead-amendment-gates directory: test.log (interrupted original), test-resource-bounded.log (completed failed suite), and individual gate logs. An existing Linux runtime is being assessed without installations or Windows permission changes. Focused browser diagnosis runs separately; no green retry erases these failures.
 
 No push, ruler publication or ready-PR qualification is justified while the full test gate fails.
+
+## First isolated Linux ruler gate
+
+Ruler89361d0daf2746a9cca9a120d96648ea2098365f was tested in an isolated Ubuntu checkout. All non-test gates exited0. Fulltest exited1:21failed/269passed/1skipped files;99failed/6519passed/3skipped tests. Root inspected the retained test-log summary. This differs from the Windows source/test inventory and is not an acceptance comparison.
+
+Missing prerequisites included zipinfo, usable Electron postinstall and required Chromium path. Timezone/DST and a redactor performance failure also need diagnosis. Raw logs: isolated /tmp/foo-linux-gate-ruler89361d0d-20261023/gates. Package setup is proceeding using the existing WSL root user for ordinary development dependencies; no Windows security settings, credentials or thresholds are changed. Full rerun follows corrected prerequisites and focused checks, not a blind retry.
