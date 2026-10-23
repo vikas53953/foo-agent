@@ -1,0 +1,77 @@
+{
+  "journey": "B03-web-local",
+  "title": "Web without keys: news read locally, sources",
+  "steps": 9,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T19-09-09-135Z-B03-web-local",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792782554759,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 7102,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Fri 16 Oct to Fri 23 Oct\nCompare reports from different news sources\nWrite it\nWatch live\nStop\nunder 1 min\n7:09 PM",
+      "kit": [],
+      "ms": 13237
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150003
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 6,
+      "do": "expectText",
+      "text": "Your favourite food is South Indian, and I've already got that saved.\n\n7:09 PM",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

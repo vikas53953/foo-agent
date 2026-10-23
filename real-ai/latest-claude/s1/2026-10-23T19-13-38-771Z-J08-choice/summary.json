@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T19-13-38-771Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792782832511,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9609,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/i7 chip. That mix handles an editor, browser tabs and Docker without slowing down.\n\nRAM: 16 GB is the floor, and 8 GB will feel tight. Pick one that can be upgraded later.\nScreen and keyboard: Full HD or better, and type on the keyboard in a shop if you can.\nWeight and battery: Under 1.8 kg and 8+ hours is comfortable if you carry it daily.\nGraphics card: Skip it unless you do machine learning or games, since it adds cost and weight.\n\nIf you're open to Apple, an M-series MacBook Air sometimes comes close to this budget, especially on sale. Do you mostly code web and apps, or ML and games? That decides whether a graphics card is worth paying for.\n\n7:14 PM",
+      "kit": [],
+      "ms": 18730
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 23
+    }
+  ]
+}
