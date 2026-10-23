@@ -1,0 +1,62 @@
+[
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a16718-660b-7408-8b5e-d10235ebe9c3",
+    "status": "complete",
+    "text": "The Sensex is at 73,383.48, up 134.09 (+0.18%), as of Fri 23 Oct, 9:51 AM IST. Tap Refresh on the card for a fresh reading.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"Card\",\"child\":\"col\"},{\"id\":\"col\",\"component\":\"Column\",\"children\":[\"t1\",\"t2\",\"t3\",\"stamp\"]},{\"id\":\"t1\",\"component\":\"Text\",\"text\":\"BSE Sensex\",\"variant\":\"caption\"},{\"id\":\"t2\",\"component\":\"Text\",\"text\":\"73,383.48  (+134.09, +0.18%)\",\"variant\":\"title\"},{\"id\":\"t3\",\"component\":\"Text\",\"text\":\"Previous close 73,249.39. Today's range 73,359.10 to 73,766.51.\",\"variant\":\"body\"},{\"id\":\"stamp\",\"component\":\"LiveStamp\",\"asOf\":1792729260000,\"refreshable\":true}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a16718-a6bb-7ca3-a7c2-f6b16a1bb28f",
+    "status": "complete",
+    "text": "The Sensex is at 73,383.48, up 134.09 (+0.18%), as of Fri 23 Oct, 9:51 AM IST (4:21 AM UTC). Tap Refresh on the card for a fresh reading.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"Card\",\"child\":\"col\"},{\"id\":\"col\",\"component\":\"Column\",\"children\":[\"t1\",\"t2\",\"t3\",\"stamp\"]},{\"id\":\"t1\",\"component\":\"Text\",\"text\":\"BSE Sensex\",\"variant\":\"caption\"},{\"id\":\"t2\",\"component\":\"Text\",\"text\":\"73,383.48  (+134.09, +0.18%)\",\"variant\":\"title\"},{\"id\":\"t3\",\"component\":\"Text\",\"text\":\"Previous close 73,249.39. Today's range 73,359.10 to 73,766.51.\",\"variant\":\"body\"},{\"id\":\"stamp\",\"component\":\"LiveStamp\",\"asOf\":1792729260000,\"refreshable\":true}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671a-b416-76ca-bf7b-084d7cb8ba72",
+    "status": "complete",
+    "text": "The Sensex card is below, still at the last reading I have: 73,383.48 (+134.09, +0.18%) as of Fri 23 Oct, 9:51 AM IST. Tap Refresh and I'll try for a newer one, since my last try didn't get through.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"Card\",\"child\":\"col\"},{\"id\":\"col\",\"component\":\"Column\",\"children\":[\"t1\",\"t2\",\"t3\",\"stamp\"]},{\"id\":\"t1\",\"component\":\"Text\",\"text\":\"BSE Sensex\",\"variant\":\"caption\"},{\"id\":\"t2\",\"component\":\"Text\",\"text\":\"73,383.48  (+134.09, +0.18%)\",\"variant\":\"title\"},{\"id\":\"t3\",\"component\":\"Text\",\"text\":\"Previous close 73,249.39. Today's range 73,359.10 to 73,766.51.\",\"variant\":\"body\"},{\"id\":\"stamp\",\"component\":\"LiveStamp\",\"asOf\":1792729260000,\"refreshable\":true}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671c-bd55-7f9d-ae9f-64927c4a77c4",
+    "status": "complete",
+    "text": "Sensex ka card neeche hai, abhi ka sabse naya reading: 73,383.48 (+134.09, +0.18%), Fri 23 Oct, 9:51 AM IST (4:21 AM UTC). Refresh dabaoge to main naya reading laane ki koshish karunga, pichli do koshishein poori nahi huin.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"Card\",\"child\":\"col\"},{\"id\":\"col\",\"component\":\"Column\",\"children\":[\"t1\",\"t2\",\"t3\",\"stamp\"]},{\"id\":\"t1\",\"component\":\"Text\",\"text\":\"BSE Sensex\",\"variant\":\"caption\"},{\"id\":\"t2\",\"component\":\"Text\",\"text\":\"73,383.48  (+134.09, +0.18%)\",\"variant\":\"title\"},{\"id\":\"t3\",\"component\":\"Text\",\"text\":\"Previous close 73,249.39. Today's range 73,359.10 to 73,766.51.\",\"variant\":\"body\"},{\"id\":\"stamp\",\"component\":\"LiveStamp\",\"asOf\":1792729260000,\"refreshable\":true}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671e-e0fd-7f04-83f0-4ed67861805b",
+    "status": "complete",
+    "text": "Your EMI comes to about ₹15,899 a month on ₹5,00,000 (5 lakh) at 9% for 3 years. That is roughly ₹5,72,378 paid back in total, with ₹72,378 as interest. Change the amount, rate or years in the calculator below to see new figures.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"emi1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"emi1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":500000},{\"name\":\"rate\",\"label\":\"Interest rate per year (%)\",\"value\":9},{\"name\":\"years\",\"label\":\"Loan period (years)\",\"value\":3}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"round(pmt(rate/1200, years*12, loan))\",\"unit\":\"rupees\"},{\"label\":\"Total payment\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12)\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12-loan)\",\"unit\":\"rupees\"}]}}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671f-24e1-7b12-b90e-43f39e3d7bcd",
+    "status": "complete",
+    "text": "Your EMI is about ₹15,900 a month on ₹5,00,000 (5 lakh) at 9% for 3 years. That is roughly ₹5,72,400 paid back in total, with about ₹72,400 as interest. My earlier figure was a rupee off, so go by the calculator below, and change the amount, rate or years to see new numbers.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"emi1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"emi1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":500000},{\"name\":\"rate\",\"label\":\"Interest rate per year (%)\",\"value\":9},{\"name\":\"years\",\"label\":\"Loan period (years)\",\"value\":3}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"round(pmt(rate/1200, years*12, loan))\",\"unit\":\"rupees\"},{\"label\":\"Total payment\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12)\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12-loan)\",\"unit\":\"rupees\"}]}}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671f-62fe-70d3-bbb1-52a5787b76e4",
+    "status": "complete",
+    "text": "Aapki EMI lagbhag ₹15,900 mahina hai, ₹5,00,000 (5 lakh) par 9% se 3 saal ke liye. Kul bhugtan lagbhag ₹5,72,400 hoga, jisme byaaj lagbhag ₹72,400 hai. Neeche calculator mein rakam, byaaj dar ya saal badal kar naye figures dekh sakte hain.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"emi1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"emi1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":500000},{\"name\":\"rate\",\"label\":\"Interest rate per year (%)\",\"value\":9},{\"name\":\"years\",\"label\":\"Loan period (years)\",\"value\":3}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"round(pmt(rate/1200, years*12, loan))\",\"unit\":\"rupees\"},{\"label\":\"Total payment\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12)\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12-loan)\",\"unit\":\"rupees\"}]}}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671f-a1f3-7fd5-8795-1490e00f00d4",
+    "status": "complete",
+    "text": "Your EMI is about ₹15,900 a month on ₹5,00,000 (5 lakh) at 9% for 3 years. You would pay back roughly ₹5,72,400 in total, with about ₹72,400 as interest. Change the amount, rate or years in the calculator below to see new figures.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"emi1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"emi1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":500000},{\"name\":\"rate\",\"label\":\"Interest rate per year (%)\",\"value\":9},{\"name\":\"years\",\"label\":\"Loan period (years)\",\"value\":3}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"round(pmt(rate/1200, years*12, loan))\",\"unit\":\"rupees\"},{\"label\":\"Total payment\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12)\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12-loan)\",\"unit\":\"rupees\"}]}}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a1671f-de59-7809-9663-f90169b8ba98",
+    "status": "complete",
+    "text": "Your EMI is about ₹15,900 a month on ₹5,00,000 (5 lakh) at 9% for 3 years. You would pay back roughly ₹5,72,400 in total, with about ₹72,400 as interest. Change the amount, rate or years in the calculator below to see new figures.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"emi1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"emi1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":500000},{\"name\":\"rate\",\"label\":\"Interest rate per year (%)\",\"value\":9},{\"name\":\"years\",\"label\":\"Loan period (years)\",\"value\":3}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"round(pmt(rate/1200, years*12, loan))\",\"unit\":\"rupees\"},{\"label\":\"Total payment\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12)\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12-loan)\",\"unit\":\"rupees\"}]}}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1670b-a326-7077-9d72-fadfef2d8c0a",
+    "messageId": "m_01a16720-634e-7e5d-a478-eadee6e15462",
+    "status": "complete",
+    "text": "Aapki EMI lagbhag ₹15,900 mahina hai, ₹5,00,000 (5 lakh) par 9% se 3 saal ke liye. Kul bhugtan lagbhag ₹5,72,400 hoga, jisme byaaj lagbhag ₹72,400 hai. Neeche calculator mein rakam, byaaj dar ya saal badal kar naye figures dekh sakte hain.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"emi1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"emi1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":500000},{\"name\":\"rate\",\"label\":\"Interest rate per year (%)\",\"value\":9},{\"name\":\"years\",\"label\":\"Loan period (years)\",\"value\":3}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"round(pmt(rate/1200, years*12, loan))\",\"unit\":\"rupees\"},{\"label\":\"Total payment\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12)\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"round(pmt(rate/1200, years*12, loan)*years*12-loan)\",\"unit\":\"rupees\"}]}}]}}\n```"
+  }
+]

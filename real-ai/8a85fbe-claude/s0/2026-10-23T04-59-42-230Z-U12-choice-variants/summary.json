@@ -1,0 +1,186 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 17,
+  "failed": 3,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-59-42-230Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1048
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792731588953,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 145
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): choice card has at least three executable options",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "before": 0,
+      "firstReplyMs": 5565,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which kind of weekend are you in the mood for in Bengaluru?\n1\nNandi Hills sunrise trip\nBEST FIT\nEarly start, outdoors, easy day trip\n2\nCubbon Park walk and brunch\nRelaxed, in the city, low cost\n3\nFood crawl in Indiranagar\nCafes, street food and a bit of shopping\nSomething else…\nSkip\n4:59 AM",
+      "replyTexts": [
+        "Which kind of weekend are you in the mood for in Bengaluru?\n1\nNandi Hills sunrise trip\nBEST FIT\nEarly start, outdoors, easy day trip\n2\nCubbon Park walk and brunch\nRelaxed, in the city, low cost\n3\nFood crawl in Indiranagar\nCafes, street food and a bit of shopping\nSomething else…\nSkip\n4:59 AM"
+      ],
+      "kit": [],
+      "endState": false,
+      "ms": 11636
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 142
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 6,
+      "do": "check",
+      "note": "C.3 Reactions: reaction picker adds a reaction chip to the assistant bubble",
+      "found": 1,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792731601265,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3); AT-035: typed choice branch collapses to an answered option (reaction-choice branch remains unexercised)",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "before": 0,
+      "firstReplyMs": 6083,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan in Bengaluru sounds best?\n1\nCubbon Park walk and brunch\nBEST FIT\nEasy, green and relaxed\n2\nLalbagh and VV Puram food street\nGarden stroll, then street food\n3\nNandi Hills sunrise drive\nEarly start, cool views\nSomething else…\nSkip\n5:00 AM",
+      "replyTexts": [
+        "Which weekend plan in Bengaluru sounds best?\n1\nCubbon Park walk and brunch\nBEST FIT\nEasy, green and relaxed\n2\nLalbagh and VV Puram food street\nGarden stroll, then street food\n3\nNandi Hills sunrise drive\nEarly start, cool views\nSomething else…\nSkip\n5:00 AM"
+      ],
+      "kit": [],
+      "endState": false,
+      "ms": 12168
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792731613633,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): second choice card has executable options",
+      "expect": "another Choice card",
+      "before": 0,
+      "firstReplyMs": 6081,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight, South Indian\n2\nPaneer butter masala with rotis\nRich North Indian comfort\n3\nVeg fried rice and manchurian\nQuick Indo-Chinese\nSomething else…\nSkip\n5:00 AM",
+      "replyTexts": [
+        "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight, South Indian\n2\nPaneer butter masala with rotis\nRich North Indian comfort\n3\nVeg fried rice and manchurian\nQuick Indo-Chinese\nSomething else…\nSkip\n5:00 AM"
+      ],
+      "kit": [],
+      "endState": false,
+      "ms": 12194
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 600
+    },
+    {
+      "i": 14,
+      "do": "send",
+      "sentAt": 1792731626745,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 15,
+      "do": "waitReply",
+      "note": "C.4 Choice (C3): assistant accepts the user-provided alternative",
+      "expect": "foo takes my own answer",
+      "before": 0,
+      "firstReplyMs": 5048,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is, simple and comforting. Want a quick recipe for it?\n\n5:00 AM",
+      "replyTexts": [
+        "Dal chawal it is, simple and comforting. Want a quick recipe for it?\n\n5:00 AM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 12149
+    },
+    {
+      "i": 16,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

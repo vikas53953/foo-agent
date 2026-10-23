@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email, calendar and WhatsApp, check websites, set up routines, and remember things about you. Pick one below to start.\n\n4:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n4:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and all your traffic goes through it.\n\nNormally, websites see your own internet address, and your internet provider can see which sites you visit. With a VPN, your data is locked (encrypted) before it leaves your phone or PC. It travels to the VPN company's computer, which unlocks it and sends it on to the website. The website sees the VPN's address, not yours.\n\nWhy people use it:\n\nSafer on public Wi-Fi, like cafés or airports\nMore privacy from your internet provider\nChoosing a location, so a site thinks you are in another city or country\n\nIt does not make you fully anonymous. The VPN company can still see your traffic, so pick one you trust.\n\n4:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n4:37 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:38 AM\n4:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:38 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 2 min\nDetails\n4:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n4:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3-day Jaipur plan, with one or two main sights a day so your parents aren't rushed.\n\nDay 1, Forts and old city: Amer Fort early in the morning (take a jeep up to avoid the steep climb), a photo stop at Jal Mahal, lunch, then Hawa Mahal and an evening walk in Johari Bazaar.\nDay 2, Palaces: City Palace and Jantar Mantar in the morning, a long lunch and rest, then Albert Hall Museum at sunset. Dinner at Chokhi Dhani for Rajasthani food and folk music.\nDay 3, Temples and views: Govind Devji Temple in the morning, Panna Meena Kund stepwell, then Nahargarh Fort for the sunset view. Leave the last evening free for shopping, like jootis, block-print fabric and jewellery.\n\nMornings and evenings are best, since afternoons can be hot and tiring. Do your parents find long walks or stairs difficult? I can then adjust the plan.\n\n4:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹20,000 all from one HT list (prices as listed on Amazon.in):\n\nRedmi 15C 5G, ₹15,999: 6000mAh, 33W charging, 120Hz 17.53cm screen, Dimensity 6300, 50MP.\nLava Bold N4 Pro 5G, ₹15,999: 6GB RAM, 6000mAh, 18W charging, IP64, clean Android 16, 50MP.\nSamsung Galaxy M17e 5G, ₹16,998: 6000mAh, 120Hz, IP54, 6 OS upgrades, 50MP dual.\n\nStretch pick: OnePlus N6x, ₹19,999 7000mAh. The page gave no screen size for Lava or Samsung, and I only read this one list, not full reviews.\n\n4:41 AM"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your EMI is about ₹15,900 a month on ₹5,00,000 (5 lakh) at 9% for 3 years. You would pay back roughly ₹5,72,400 in total, with about ₹72,400 as interest. Change the amount, rate or years in the calculator below to see new figures.\n\nLoan amount (₹)\nInterest rate per year (%)\nLoan period (years)\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n4:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make an EMI calclator for a 5 lakh loan at 9% for 3 years\n4:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your EMI is about ₹15,900 a month on ₹5,00,000 (5 lakh) at 9% for 3 years. You would pay back roughly ₹5,72,400 in total, with about ₹72,400 as interest. Change the amount, rate or years in the calculator below to see new figures.\n\nLoan amount (₹)\nInterest rate per year (%)\nLoan period (years)\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n4:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "5 lakh ka loan 9 percent par 3 saal ke liye EMI calculator banao\n4:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Aapki EMI lagbhag ₹15,900 mahina hai, ₹5,00,000 (5 lakh) par 9% se 3 saal ke liye. Kul bhugtan lagbhag ₹5,72,400 hoga, jisme byaaj lagbhag ₹72,400 hai. Neeche calculator mein rakam, byaaj dar ya saal badal kar naye figures dekh sakte hain.\n\nLoan amount (₹)\nInterest rate per year (%)\nLoan period (years)\nMonthly EMI\n₹15,900\nTotal payment\n₹5,72,395\nTotal interest\n₹72,395\nKeep\n4:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n4:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Happy to find running shoes under ₹5,000. What will you mostly use them for?\n\n4:59 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mainly use the running shoes for? → Gym or treadmill\n4:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n4:59 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "How should the shoes feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasier on knees and joints\n2\nLight and responsive\nSpringy, good for faster runs\n3\nFirm and stable\nGood for gym lifting too\n4\nNo preference\nSomething else…\nSkip\n4:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:59 AM"
+  }
+]

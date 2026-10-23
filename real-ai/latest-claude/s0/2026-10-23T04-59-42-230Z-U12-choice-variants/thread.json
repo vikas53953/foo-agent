@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mainly use the running shoes for? → Gym or treadmill\n4:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n4:59 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "How should the shoes feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasier on knees and joints\n2\nLight and responsive\nSpringy, good for faster runs\n3\nFirm and stable\nGood for gym lifting too\n4\nNo preference\nSomething else…\nSkip\n4:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n4:59 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which kind of weekend are you in the mood for in Bengaluru? → Cubbon Park walk and brunch\n4:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n5:00 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which weekend plan in Bengaluru sounds best?\n1\nCubbon Park walk and brunch\nBEST FIT\nEasy, green and relaxed\n2\nLalbagh and VV Puram food street\nGarden stroll, then street food\n3\nNandi Hills sunrise drive\nEarly start, cool views\nSomething else…\nSkip\n5:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n5:00 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight, South Indian\n2\nPaneer butter masala with rotis\nRich North Indian comfort\n3\nVeg fried rice and manchurian\nQuick Indo-Chinese\nSomething else…\nSkip\n5:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n5:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, simple and comforting. Want a quick recipe for it?\n\n5:00 AM"
+  }
+]
