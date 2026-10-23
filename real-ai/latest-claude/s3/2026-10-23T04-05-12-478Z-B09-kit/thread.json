@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's GDP growth over the last 5 full financial years ran from a fall of 5.8% in FY 2020-21 to a high of 9.7% in FY 2021-22, then eased to about 6.5% in FY 2024-25. These are rounded figures from memory, and the government revises them, so check the latest official release if you need exact numbers.\n\nIndia's real GDP growth by financial year\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n\nThe FY21 dip came from the Covid lockdowns, and FY22 was mostly a bounce back from that low base.\n\n4:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n4:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 is the best value of the three: the fastest chip, a smooth 120 Hz screen and 7 years of updates at about the same launch price. These are launch details from memory, and shop prices change often, so check current offers before you buy.\n\niPhone 16\nIndia launch price\nAbout ₹79,900 (128 GB)\nScreen\n6.1 inch, 60 Hz\nChip\nApple A18\nMemory\n8 GB\nBattery\nLasts a full day, fast to charge with a cable\nUpdates\nAbout 6 years or more\nPixel 9\nIndia launch price\nAbout ₹79,999 (128 GB)\nScreen\n6.3 inch, 120 Hz\nChip\nGoogle Tensor G4\nMemory\n12 GB\nBattery\nLasts a full day\nUpdates\n7 years\nBest pick\nGalaxy S25\nIndia launch price\nAbout ₹80,999 (128 GB)\nScreen\n6.2 inch, 120 Hz\nChip\nSnapdragon 8 Elite\nMemory\n12 GB\nBattery\nLasts a full day\nUpdates\n7 years\n\nFastest chip and 120 Hz screen with 7 years of updates, and it is often discounted.\n\nKeep\n\nIf photos matter most to you, the Pixel 9 is a close second. If you already use an iPhone and your other Apple devices, the iPhone 16 fits best.\n\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n4:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is ready below. Start it when the tea goes on.\n\nTea\n2:00 left\nStart timer\nKeep\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n4:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a short form for your party plan. Fill it in and send it, and I will use it to plan the rest.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n4:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is ready below. Add each spend with an amount and category, and it keeps a running total for the month. Entries last only while this page is open.\n\nKeep\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.\n4:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't add a password box to a form in chat, even for a demo, because the app asks for passwords in its own secret box when a step needs one. I can make a form with a username and a harmless field like display name or email instead.\n\n4:07 AM"
+  }
+]

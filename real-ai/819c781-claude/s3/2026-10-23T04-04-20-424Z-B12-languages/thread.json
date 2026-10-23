@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:03 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:03 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday (Sun 25 Oct) ke liye ye cakes safe aur pasand aane wale hain:\n\nButterscotch ya pineapple: classic hai aur lagbhag sabko pasand aata hai.\nRasmalai ya gulab jamun cake: agar mummy ko desi mithai pasand hai.\nChocolate truffle: agar unhe chocolate pasand hai.\nEggless fruit ya mango cake: halka aur fresh, agar ghar mein koi vrat ya parhez rakhta hai.\n\nParso ke liye aaj ya kal hi order kar lena theek rahega, kyunki custom cake mein ek din lag sakta hai. Mummy ko kaunsa flavour pasand hai, aur cake eggless chahiye?\n\n4:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਬਟਰਸਕੌਚ ਹੈ, ਇਹ ਲਗਭਗ ਹਰ ਕਿਸੇ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਰਸਮਲਾਈ ਕੇਕ: ਜੇ ਮੰਮੀ ਨੂੰ ਦੇਸੀ ਮਠਿਆਈ ਪਸੰਦ ਹੈ।\nਚਾਕਲੇਟ ਟਰਫਲ: ਜੇ ਉਨ੍ਹਾਂ ਨੂੰ ਚਾਕਲੇਟ ਪਸੰਦ ਹੈ।\nਮੈਂਗੋ ਜਾਂ ਫਰੂਟ ਕੇਕ (ਐੱਗਲੈੱਸ): ਹਲਕਾ ਅਤੇ ਤਾਜ਼ਾ, ਜੇ ਮਿੱਠਾ ਘੱਟ ਚਾਹੀਦਾ ਹੈ।\n\nਜਨਮ ਦਿਨ Sun 25 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਚੰਗਾ ਰਹੇਗਾ। ਕੀ ਕੇਕ ਐੱਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n4:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov looks like a normal working day in Mumbai. I don't know of any public or bank holiday that day, though I can't check a live list from here.\n\nThe nearby holidays I know of are Diwali around Sun 8 Nov and Balipratipada around Tue 10 Nov. Dates can shift by a day with the moon, so confirm with the official Maharashtra holiday list if it matters.\n\n4:05 AM"
+  }
+]

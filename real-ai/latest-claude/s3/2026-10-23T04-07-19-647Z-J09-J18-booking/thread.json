@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n4:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a short form for your party plan. Fill it in and send it, and I will use it to plan the rest.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n4:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is ready below. Add each spend with an amount and category, and it keeps a running total for the month. Entries last only while this page is open.\n\nKeep\n4:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form for a demo login with username and password. Do not ask me to send anything.\n4:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't add a password box to a form in chat, even for a demo, because the app asks for passwords in its own secret box when a step needs one. I can make a form with a username and a harmless field like display name or email instead.\n\n4:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n4:07 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:07 AM\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 24 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants near Connaught\nKeep 3 restaurants that fit pure vegetarian, good ratings, table\nWait for you to pick one\nShow you before table booking for 2, Sat 24 Oct, 8:00 PM\nShow you before doing anything\nBook table for 2, Sat 24 Oct, 8:00 PM\nWatch live\nStop\n3 min\n4:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:07 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:10 AM"
+  }
+]

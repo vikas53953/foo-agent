@@ -1,6 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-36-17-286Z-J01-J02-first-run"}
-{"journey":"J07-chat","title":"Casual chat","steps":7,"failed":0,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-37-08-339Z-J07-chat"}
-{"journey":"R1-rich","title":"Rich replies: table, steps, numbers","steps":9,"failed":2,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-37-52-673Z-R1-rich"}
-{"journey":"R-kit-2","title":"Group R live stamp, calculator, keep and time picker","steps":63,"failed":17,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-41-10-523Z-R-kit-2"}
-{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","steps":8,"failed":1,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-59-08-992Z-B02-choice"}
-{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","steps":17,"failed":3,"blocked":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T04-59-42-230Z-U12-choice-variants"}
