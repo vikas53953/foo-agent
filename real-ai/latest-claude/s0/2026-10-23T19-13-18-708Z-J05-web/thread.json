@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:09 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n7:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:09 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in your gym running shoes?\nSoft cushioning\nBEST FIT\nComfort for longer treadmill runs\nLightweight and breathable\nStays cool and feels light\nDurable and stable\nGood for mixed gym workouts too\nBest price\nLowest cost under ₹5,000\nSomething else…\nDone\nSkip\n7:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:10 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:10 PM\n7:10 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:10 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels for Fri 30 Oct…\nlive checklist\nLooking for Goa hotels for Fri 30 Oct to Sun 1 Nov\nCompare price, area and guest ratings\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nWait for you to pick one\nWatch live\nStop\n3 min\n7:10 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:10 PM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "waiting",
+    "text": "This page wants to check you’re a person. You do this bit, then hand it back.\nwww.booking.com\nTake over\nSkip\n7:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n7:13 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 19 to 23 Oct with source\nWrite it\nWatch live\nStop\nunder 1 min\n7:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 PM"
+  }
+]

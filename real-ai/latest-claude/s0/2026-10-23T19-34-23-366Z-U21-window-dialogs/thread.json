@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for Goa hotels for Fri 30 Oct…\nBEST FIT\n2\nLooking on the web\n3\nBoth\nSomething else…\nSkip\n7:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:26 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for Goa hotels for Fri 30 Oct…\nBEST FIT\n2\nLooking on the web\n3\nBoth\nSomething else…\nSkip\n7:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n7:26 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:26 PM\n7:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:26 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n7:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000 from Smartprix's list:\n\nMSI Modern 14 C7M-062IN: ₹43,219 Ryzen 5 7530U, 16GB RAM, 512GB SSD. Best pick, as the only one with 16GB.\nAcer Aspire Lite 15 AL15-41: ₹42,990 Ryzen 5 5625U, 8GB, 512GB. Cheapest, but an older chip.\nMSI Modern 14 C7M-284IN: ₹45,990 Ryzen 5 7530U, 8GB, 512GB.\n\nThis is one site's list, and its date looks odd (Sat 24 Oct 2026), so check prices in store before buying.\n\n7:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:29 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for Goa hotels for Fri 30 Oct…\nBEST FIT\n2\nLooking on the web\n3\nBoth\nSomething else…\nSkip\n7:29 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:29 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n7:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the top 3 news headlines in India today\n7:34 PM"
+  }
+]

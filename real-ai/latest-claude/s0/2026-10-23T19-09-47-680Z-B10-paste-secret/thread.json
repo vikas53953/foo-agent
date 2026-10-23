@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n7:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and WhatsApp, look things up online, set routines, and remember things about you. The list below shows what works on this PC right now.\n\n7:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through that tunnel scrambled, so nobody in between can read it.\n\nHere is how it goes:\n\nYour device scrambles your traffic before it leaves.\nThe scrambled traffic travels to the VPN company's computer.\nThat computer unscrambles it and sends it to the website for you.\nThe website sees the VPN's address instead of yours.\n\nThis helps on public Wi-Fi, because strangers on the same network can't read what you send. It also hides your location from websites. It does not make you fully anonymous, since the VPN company can still see your traffic, so pick one you trust.\n\n7:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:09 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n7:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:09 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in your gym running shoes?\nSoft cushioning\nBEST FIT\nComfort for longer treadmill runs\nLightweight and breathable\nStays cool and feels light\nDurable and stable\nGood for mixed gym workouts too\nBest price\nLowest cost under ₹5,000\nSomething else…\nDone\nSkip\n7:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n20 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 PM"
+  }
+]
