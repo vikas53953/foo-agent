@@ -1,0 +1,307 @@
+{
+  "journey": "U05-chat-list",
+  "title": "Chat list: filters, row menu (pin, mute, mark unread), search chats",
+  "steps": 37,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T16-20-21-772Z-U05-chat-list",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1033
+    },
+    {
+      "i": 1,
+      "do": "shot",
+      "expect": "chat list with foo row (and any helpers); filter chips All · Needs you · Working · Done",
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "note": "C.2 Left shell: chat list is present",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "C.2 Filter chips + \"Search chats\" box: filter group is present",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "C.2 Filter chips + \"Search chats\" box: sidebar search field is present",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "filter selected; empty state if nothing needs me",
+      "ok": true,
+      "ms": 509
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "ok": true,
+      "ms": 508
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "ok": true,
+      "ms": 508
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "row menu: Pin, Mark unread, Mute, Profile, Find, Clear, Delete",
+      "ok": true,
+      "ms": 499
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23079
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "pin icon on the row",
+      "ok": true,
+      "ms": 502
+    },
+    {
+      "i": 16,
+      "do": "check",
+      "note": "pinned mark",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 18,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 19,
+      "do": "wait",
+      "expect": "mute choices 8 hours, 1 week, Always",
+      "ok": true,
+      "ms": 413
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 21,
+      "do": "check",
+      "note": "muted mark",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 23,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 24,
+      "do": "wait",
+      "expect": "unread dot/count on the row",
+      "ok": true,
+      "ms": 507
+    },
+    {
+      "i": 25,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 26,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23077
+    },
+    {
+      "i": 27,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 28,
+      "do": "click",
+      "soft": true,
+      "before": 1,
+      "clicked": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23070
+    },
+    {
+      "i": 30,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "error": "locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]",
+      "ms": 61,
+      "late": true
+    },
+    {
+      "i": 31,
+      "do": "wait",
+      "expect": "list filtered to foo",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 32,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "error": "locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]",
+      "ms": 63,
+      "late": true
+    },
+    {
+      "i": 33,
+      "do": "wait",
+      "expect": "empty result message",
+      "ok": true,
+      "ms": 600
+    },
+    {
+      "i": 34,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 35,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1040
+    },
+    {
+      "i": 36,
+      "do": "dump",
+      "ok": true,
+      "ms": 16
+    }
+  ]
+}

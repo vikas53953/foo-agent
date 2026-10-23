@@ -1,0 +1,89 @@
+{
+  "journey": "B02-choice",
+  "title": "Choice card: options, Best fit, typed answer",
+  "steps": 8,
+  "failed": 0,
+  "blocked": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-23T16-07-55-972Z-B02-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792771681570,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 144
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "before": 0,
+      "firstReplyMs": 7113,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Where will you run most? This decides which shoes suit you.\n1\nRoads and pavements\nBEST FIT\nMost common choice\n2\nTrails or mud\n3\nTreadmill or gym\n4\nA bit of everything\nSomething else…\nSkip\n4:08 PM",
+      "replyTexts": [
+        "Where will you run most? This decides which shoes suit you.\n1\nRoads and pavements\nBEST FIT\nMost common choice\n2\nTrails or mud\n3\nTreadmill or gym\n4\nA bit of everything\nSomething else…\nSkip\n4:08 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 13205
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 4,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "text",
+      "soft": true,
+      "text": "Where will you run most? This decides which shoes suit you.\n1\nRoads and pavements\nBEST FIT\nMost common choice\n2\nTrails or mud\n3\nTreadmill or gym\n4\nA bit of everything\nSomething else…\nSkip\n4:08 PM",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1792771694975,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 134
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "before": 0,
+      "firstReplyMs": 10702,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "What shoe size do you wear (UK)?\n1\nUK 7 or smaller\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or bigger\nSomething else…\nSkip\n4:08 PM",
+      "replyTexts": [
+        "What shoe size do you wear (UK)?\n1\nUK 7 or smaller\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or bigger\nSomething else…\nSkip\n4:08 PM"
+      ],
+      "kit": [],
+      "endState": true,
+      "ms": 16814
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{"t":"2026-10-23T16:30:47.712Z","journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","spec":"09 §9.2 close to tray, 06 dialogs, 10-2 §C.5 Dialogs / §C.6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T16:30:53.273Z","step":"launch","ok":true}
+{"t":"2026-10-23T16:31:01.373Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8097}
+{"t":"2026-10-23T16:31:02.414Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1041}
+{"t":"2026-10-23T16:31:02.537Z","i":1,"do":"send","sentAt":1792773062501,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-10-23T16:31:32.612Z","shot":"01-error-step2.png"}
+{"t":"2026-10-23T16:31:32.613Z","i":2,"do":"waitFor","note":"C.6 Start at login, close to tray: close is attempted only after the job is observed in an in-flight streaming/building state","ok":false,"error":"locator.waitFor: Timeout 30000ms exceeded.","ms":30075}
+{"t":"2026-10-23T16:31:32.617Z","i":3,"do":"key","note":"C.6 Start at login, close to tray: bounded close transition after the observed in-flight job","ok":true,"ms":4}
+{"t":"2026-10-23T16:32:02.707Z","shot":"02-error-step4.png"}
+{"t":"2026-10-23T16:32:02.707Z","i":4,"do":"waitFor","note":"C.5 Dialogs: bounded close transition exposes the first-close semantic dialog before the tray decision","ok":false,"error":"locator.waitFor: Timeout 30000ms exceeded.","ms":30090}
+{"t":"2026-10-23T16:32:04.208Z","i":5,"do":"wait","note":"C.5 Dialogs: bounded observation window for the first-close dialog","expect":"first-close dialog: foo keeps running in the tray","ok":true,"ms":1501}
+{"t":"2026-10-23T16:32:04.295Z","shot":"03-first-close.png"}
+{"t":"2026-10-23T16:32:04.298Z","i":6,"do":"key","note":"C.5 Dialogs; C.6 Start at login, close to tray: Escape selects the keep-running/tray path","ok":true,"ms":3}
+{"t":"2026-10-23T16:35:04.407Z","i":7,"do":"waitReply","note":"C.5 Dialogs; C.6 Start at login, close to tray: after Escape, a non-empty India news/headline result completes","expect":"job still finishes after the dialog","before":0,"firstReplyMs":513,"newBubbles":2,"ok":false,"stillWorking":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nKeep 3 news headlines in India that fit most covered across major outlets today\nWrite it\nWatch live\nStop\n3 min\n4:31 PM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:33 PM","replyTexts":["Looking on the web\nlive checklist\nLooking on the web\nKeep 3 news headlines in India that fit most covered across major outlets today\nWrite it\nWatch live\nStop\n3 min\n4:31 PM","I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:33 PM"],"kit":[],"ms":180109}
+{"t":"2026-10-23T16:35:04.474Z","shot":"04-news.png"}
+{"t":"2026-10-23T16:35:04.483Z","i":8,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-23T16:35:04.703Z","step":"appLog","lines":56,"dropped":0}
+{"t":"2026-10-23T16:35:04.716Z","step":"aiTurns","turns":27}

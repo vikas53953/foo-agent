@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your phone or laptop and the internet, so nobody in between can see what you do.\n\nNormally, your internet provider or the Wi-Fi owner can see which sites you visit. With a VPN, your data is locked before it leaves your device and goes to the VPN company's computer. That computer unlocks it and talks to the website for you.\n\nPrivacy: The Wi-Fi at a café or your provider sees only scrambled data.\nLocation: Websites see the VPN's location, not yours.\nCatch: The VPN company can see your activity instead, so pick one you trust.\n4:07 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n4:08 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you run most? This decides which shoes suit you. → Trails or mud\n4:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n4:08 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What shoe size do you wear (UK)?\n1\nUK 7 or smaller\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or bigger\nSomething else…\nSkip\n4:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:08 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n4:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n4:08 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:09 PM\n4:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:08 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for Goa hotels for Fri 30 Oct to Sun 1 Nov\nCompare price, rating and location\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nWait for you to pick one\nWatch live\nStop\n2 min\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:11 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:11 PM"
+  }
+]
