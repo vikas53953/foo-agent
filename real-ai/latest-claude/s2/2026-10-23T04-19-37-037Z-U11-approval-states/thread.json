@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n4:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🙏 (Namaste!) That's how you say hello in Hindi. Want a few more phrases, like \"how are you\" or \"thank you\"?\n\n4:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n4:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n4:19 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which city should I look in for the table? → Another city\n4:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:20 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for the table? → you changed the plan\n4:22 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n4:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n4:25 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I look for the table in?\n1\nDelhi\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nType the name in your reply\nSomething else…\nSkip\n4:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:25 AM"
+  }
+]

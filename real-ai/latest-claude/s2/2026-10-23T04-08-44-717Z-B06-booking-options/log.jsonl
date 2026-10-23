@@ -1,0 +1,16 @@
+{"t":"2026-10-23T04:08:44.718Z","journey":"B06-booking-options","title":"Restaurant options without booking","spec":"AT-036, J9, AT-108, AT-310, AT-311","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T04:08:50.232Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:08:50.383Z","i":0,"do":"send","sentAt":1792728530345,"sent":true,"before":0,"ok":true,"ms":145}
+{"t":"2026-10-23T04:09:18.336Z","i":1,"do":"waitReply","note":"AT-036: the booking question first produces an actual reply or plan","firstReplyMs":21806,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for well-rated Italian…\n1\nLook for well-rated Italian restaurants in\n2\nCheck restaurant booking sites\n3\nLook for a table for 2 on Sat 24 Oct, 8:00 PM\n4\nKeep 3 Italian places with a table free that fit best rated first\nAbout 4 minutes\nGo\nChange plan\n4:09 AM","kit":[],"endState":true,"ms":27953}
+{"t":"2026-10-23T04:09:18.409Z","shot":"01-italian.png"}
+{"t":"2026-10-23T04:09:18.462Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":53}
+{"t":"2026-10-23T04:12:18.464Z","i":3,"do":"wait","note":"AT-036/AT-311: option and no-approval checks below are evaluated on the rendered cards","expect":"options shown; no booking Approval card until I say book","ok":true,"ms":180002}
+{"t":"2026-10-23T04:12:18.529Z","shot":"02-italian-later.png"}
+{"t":"2026-10-23T04:12:18.531Z","i":4,"do":"check","note":"AT-036/AT-311: no booking Approval is present before the user chooses and says book","found":0,"ok":true,"ms":2}
+{"t":"2026-10-23T04:12:18.533Z","i":5,"do":"check","note":"AT-036: preserve the existing choice-card observation","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-23T04:12:18.535Z","i":6,"do":"check","note":"AT-036: actual asking choice options are rendered before any booking action","found":2,"ok":true,"ms":2}
+{"t":"2026-10-23T04:12:18.536Z","i":7,"do":"check","note":"AT-108: the live job row exposes the NEEDS YOU state while a choice is waiting","found":0,"ok":false,"ms":1}
+{"t":"2026-10-23T04:12:18.538Z","i":8,"do":"check","note":"AT-310: a rendered job checklist, when present, has actual step rows","found":4,"ok":true,"ms":1}
+{"t":"2026-10-23T04:12:18.547Z","i":9,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-23T04:12:18.678Z","step":"appLog","lines":12,"dropped":0}
+{"t":"2026-10-23T04:12:18.691Z","step":"aiTurns","turns":5}

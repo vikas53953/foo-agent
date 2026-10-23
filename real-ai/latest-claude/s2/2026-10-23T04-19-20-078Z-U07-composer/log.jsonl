@@ -1,0 +1,31 @@
+{"t":"2026-10-23T04:19:20.078Z","journey":"U07-composer","title":"Composer: multi-line, attach menu, emoji, Esc, draft kept after restart","spec":"04 §13–§16, 10-2 §C.3 Composer","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T04:19:25.768Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:19:26.810Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1038}
+{"t":"2026-10-23T04:19:26.881Z","shot":"01-composer.png"}
+{"t":"2026-10-23T04:19:26.881Z","i":1,"do":"shot","expect":"composer: + attach, field \"Message foo, or hold Ctrl+Space to talk\", mic/send 36px","ok":true,"ms":71}
+{"t":"2026-10-23T04:19:26.884Z","i":2,"do":"check","note":"C.3 Composer: composer surface is present","found":1,"ok":true,"ms":3}
+{"t":"2026-10-23T04:19:26.992Z","i":3,"do":"click","soft":true,"ok":true,"ms":108}
+{"t":"2026-10-23T04:19:27.008Z","i":4,"do":"key","ok":true,"ms":15}
+{"t":"2026-10-23T04:19:27.041Z","i":5,"do":"fill","soft":true,"ok":true,"ms":33}
+{"t":"2026-10-23T04:19:27.443Z","i":6,"do":"wait","expect":"composer grows upward for 3 lines","ok":true,"ms":402}
+{"t":"2026-10-23T04:19:27.525Z","shot":"02-multiline.png"}
+{"t":"2026-10-23T04:19:27.610Z","i":7,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-23T04:19:28.111Z","i":8,"do":"wait","expect":"attach menu: Files, Screenshot, Secret, Emoji","ok":true,"ms":500}
+{"t":"2026-10-23T04:19:28.174Z","shot":"03-attach-menu.png"}
+{"t":"2026-10-23T04:19:28.275Z","i":9,"do":"click","soft":true,"ok":true,"ms":101}
+{"t":"2026-10-23T04:19:28.777Z","i":10,"do":"wait","expect":"emoji picker","ok":true,"ms":501}
+{"t":"2026-10-23T04:19:28.861Z","shot":"04-emoji.png"}
+{"t":"2026-10-23T04:19:28.864Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-23T04:19:28.869Z","i":12,"do":"expectText","note":"C.3 Composer: multiline composer text preserves all three lines","text":"line one\nline two\nline three","ok":true,"ms":4}
+{"t":"2026-10-23T04:19:28.902Z","i":13,"do":"fill","soft":true,"ok":true,"ms":32}
+{"t":"2026-10-23T04:19:34.569Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:19:34.570Z","i":14,"do":"relaunch","ok":true,"ms":5668}
+{"t":"2026-10-23T04:19:35.602Z","i":15,"do":"openChat","soft":true,"ok":true,"ms":1032}
+{"t":"2026-10-23T04:19:35.606Z","i":16,"do":"expectText","note":"C.3 Composer: draft text is restored in the composer after relaunch","text":"a draft I did not send","ok":true,"ms":4}
+{"t":"2026-10-23T04:19:36.606Z","i":17,"do":"wait","expect":"the unsent draft is back in the composer","ok":true,"ms":1000}
+{"t":"2026-10-23T04:19:36.675Z","shot":"05-draft-restored.png"}
+{"t":"2026-10-23T04:19:36.681Z","i":18,"do":"eval","note":"draft restored: evaluation is diagnostic only","value":"a draft I did not send","ok":true,"ms":5}
+{"t":"2026-10-23T04:19:36.711Z","i":19,"do":"fill","soft":true,"ok":true,"ms":30}
+{"t":"2026-10-23T04:19:36.725Z","i":20,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-23T04:19:36.874Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-23T04:19:36.886Z","step":"aiTurns","turns":0}

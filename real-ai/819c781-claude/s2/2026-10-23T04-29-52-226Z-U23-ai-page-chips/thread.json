@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n4:19 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which city should I look in for the table? → Another city\n4:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:20 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city should I look in for the table? → you changed the plan\n4:22 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n4:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n4:25 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I look for the table in?\n1\nDelhi\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nType the name in your reply\nSomething else…\nSkip\n4:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n4:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n4:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n4:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a simple tracker with a goal of 8 glasses. Tap a glass to fill it, or use + and − below. It starts fresh each day and remembers your count on this device.\n\nKeep\n4:30 AM"
+  }
+]

@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:04 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:04 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n4:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n4:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as sending a message. You link your bank account to an app, pick a contact or scan a code, and the money moves in seconds. There is no card machine, no cash to count and no waiting for a transfer to clear.\n\nThree reasons stand out:\n\nIt's fast, any time. Money goes straight from one bank account to another, day or night, including holidays and weekends.\nIt costs little or nothing. Most everyday payments between people, and at many shops, are free. That helps small sellers and customers alike.\nIt works everywhere. One QR code at a tea stall, a vegetable cart or a mall accepts payment from any UPI app. Shopkeepers need no special equipment, just a phone.\n\nSafety and habit help too. Each payment needs your own PIN, so it feels secure, and most people already carry a smartphone. Once friends, family and the shop around the corner all use UPI, everyone else follows quickly. Cash starts to feel slow and awkward by comparison, even for very small amounts like ₹20 for chai.\n\n4:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n4:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n4:05 AM"
+  }
+]

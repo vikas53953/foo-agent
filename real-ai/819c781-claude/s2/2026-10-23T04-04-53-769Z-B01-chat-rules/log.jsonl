@@ -1,0 +1,13 @@
+{"t":"2026-10-23T04:04:53.769Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T04:04:59.220Z","step":"launch","ok":true}
+{"t":"2026-10-23T04:04:59.348Z","i":0,"do":"send","sentAt":1792728299314,"sent":true,"before":0,"ok":true,"ms":125}
+{"t":"2026-10-23T04:05:03.847Z","i":1,"do":"waitFor","note":"AT-027: reaction-only terminal; the latest user row has 👍 or ❤️ and no assistant bubble/card follows it","ok":true,"ms":4498}
+{"t":"2026-10-23T04:05:03.922Z","shot":"01-thanks.png"}
+{"t":"2026-10-23T04:05:03.926Z","i":2,"do":"expectText","note":"AT-027: the terminal reaction is exactly an accepted thumbs-up or heart","text":"❤️","ok":true,"ms":4}
+{"t":"2026-10-23T04:05:04.035Z","i":3,"do":"send","sentAt":1792728304013,"sent":true,"before":0,"ok":true,"ms":109}
+{"t":"2026-10-23T04:05:22.276Z","i":4,"do":"waitReply","note":"AT-030: at most 3 bubbles and any rendered list stays in one bubble; AT-031: no filler; AT-308: present chips are follow-ups from the reply and no more than 3","firstReplyMs":8634,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying as easy as sending a message. You link your bank account to an app, pick a contact or scan a code, and the money moves in seconds. There is no card machine, no cash to count and no waiting for a transfer to clear.\n\nThree reasons stand out:\n\nIt's fast, any time. Money goes straight from one bank account to another, day or night, including holidays and weekends.\nIt costs little or nothing. Most everyday payments between people, and at many shops, are free. That helps small sellers and customers alike.\nIt works everywhere. One QR code at a tea stall, a vegetable cart or a mall accepts payment from any UPI app. Shopkeepers need no special equipment, just a phone.\n\nSafety and habit help too. Each payment needs your own PIN, so it feels secure, and most people already carry a smartphone. Once friends, family and the shop around the corner all use UPI, everyone else follows quickly. Cash starts to feel slow and awkward by comparison, even for very small amounts like ₹20 for chai.\n\n4:05 AM","kit":[],"endState":true,"ms":18241}
+{"t":"2026-10-23T04:05:22.348Z","shot":"02-long.png"}
+{"t":"2026-10-23T04:05:22.350Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":3,"ok":true,"ms":2}
+{"t":"2026-10-23T04:05:22.359Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-23T04:05:22.501Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-23T04:05:22.514Z","step":"aiTurns","turns":2}
