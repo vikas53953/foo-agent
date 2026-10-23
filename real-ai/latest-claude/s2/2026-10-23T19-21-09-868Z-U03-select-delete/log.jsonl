@@ -1,0 +1,25 @@
+{"t":"2026-10-23T19:21:09.868Z","journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","spec":"04 §9, 03-2 selection header, 10-2 §C.3","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-23T19:21:15.378Z","step":"launch","ok":true}
+{"t":"2026-10-23T19:21:16.412Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1031}
+{"t":"2026-10-23T19:21:16.529Z","i":1,"do":"send","sentAt":1792783276496,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-23T19:21:26.162Z","i":2,"do":"waitReply","expect":"short reply","firstReplyMs":2542,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"नमस्ते! आप कैसे हैं?\n\n7:21 PM","kit":[],"ms":9632}
+{"t":"2026-10-23T19:21:26.238Z","shot":"01-hello.png"}
+{"t":"2026-10-23T19:21:26.326Z","i":3,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-23T19:21:26.413Z","i":4,"do":"click","soft":true,"ok":true,"ms":86}
+{"t":"2026-10-23T19:21:27.020Z","i":5,"do":"wait","expect":"selection header with count, Copy, Delete, Cancel; check circles on bubbles","ok":true,"ms":606}
+{"t":"2026-10-23T19:21:27.080Z","shot":"02-select-mode.png"}
+{"t":"2026-10-23T19:21:27.151Z","i":6,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-23T19:21:27.553Z","i":7,"do":"wait","expect":"count 2","ok":true,"ms":402}
+{"t":"2026-10-23T19:21:27.609Z","shot":"03-two-selected.png"}
+{"t":"2026-10-23T19:21:27.613Z","i":8,"do":"expectText","note":"count shows 2","soft":true,"text":"2 selected","ok":true,"ms":3}
+{"t":"2026-10-23T19:21:27.682Z","i":9,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-23T19:21:27.771Z","i":10,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-23T19:21:27.838Z","i":11,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-10-23T19:21:27.920Z","i":12,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-23T19:21:28.534Z","i":13,"do":"wait","expect":"confirm dialog; Esc keeps the message","ok":true,"ms":614}
+{"t":"2026-10-23T19:21:28.601Z","shot":"04-delete-dialog.png"}
+{"t":"2026-10-23T19:21:28.606Z","i":14,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-23T19:21:28.608Z","i":15,"do":"check","note":"message kept after Esc","soft":true,"found":4,"ok":true,"ms":2}
+{"t":"2026-10-23T19:21:28.619Z","i":16,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-23T19:21:28.754Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-23T19:21:28.765Z","step":"aiTurns","turns":1}
