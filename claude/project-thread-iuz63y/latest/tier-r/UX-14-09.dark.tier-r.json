@@ -75,7 +75,6 @@
         "10:04",
         "✓",
         "✓",
-        "⏳",
         "train",
         "24",
         "Step",
@@ -378,7 +377,6 @@
         "your",
         "AI",
         "9:41",
-        "🛠",
         "foo",
         "read:",
         "17",
@@ -453,8 +451,13 @@
         "replies",
         "show",
         "here.",
-        "Home:",
-        "localhost"
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
+        "localhost.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -505,8 +508,8 @@
     "total": 2184
   },
   "r5": {
-    "ratio": 0.092279296875,
-    "diffPixels": 94494,
+    "ratio": 0.09228125,
+    "diffPixels": 94496,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-09.dark.diff.png"
