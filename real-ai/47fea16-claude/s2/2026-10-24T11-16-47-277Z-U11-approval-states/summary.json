@@ -1,0 +1,135 @@
+{
+  "journey": "U11-approval-states",
+  "title": "Approval card: pending, Not now (declined), Change (never Approve)",
+  "steps": 16,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T11-16-47-277Z-U11-approval-states",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1026
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792840613597,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "options or a plan; never books without an Approval card",
+      "firstReplyMs": 7599,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which Saturday should I book the table for?\n1\nTonight, Sat 24 Oct, 8:00 PM\nBEST FIT\nToday is Saturday\n2\nNext week, Sat 31 Oct, 8:00 PM\nSomething else…\nSkip\n11:17 AM",
+      "kit": [],
+      "ms": 13712
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23059,
+      "late": true
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "restaurant options as a Choice/tiles card",
+      "ok": true,
+      "ms": 120001
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "Approval card PENDING: accent top edge, lock, impact line, Book table / Change / Not now",
+      "ok": true,
+      "ms": 90000
+    },
+    {
+      "i": 8,
+      "do": "shotEl",
+      "soft": true,
+      "ok": false,
+      "error": "locator.screenshot: Timeout 10000ms exceeded.",
+      "ms": 10061
+    },
+    {
+      "i": 9,
+      "do": "send",
+      "sentAt": 1792840893849,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "typed \"yes\" never approves (ART-06a): card still pending",
+      "ok": true,
+      "ms": 8001
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23063
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "card DECLINED; nothing booked",
+      "ok": true,
+      "ms": 3006
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23078
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "Ask me again shows a fresh pending card or note",
+      "ok": true,
+      "ms": 2008
+    },
+    {
+      "i": 15,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

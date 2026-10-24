@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T11-03-38-206Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792839823388,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20000
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792839843530,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 3028,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are moving to UPI because it makes paying someone as easy as sending a message. You open any payment app, scan a code or type a phone number, enter your PIN, and the money moves from bank to bank in seconds. There is no card to carry, no cash to count and no change to hunt for.\n\nIt also works almost everywhere. A tea stall, a vegetable seller and a big mall all show the same kind of QR code, so you don't need a different app or a machine for each shop. Shopkeepers like it too, since the money lands straight in their bank account.\n\nHere are the three main reasons:\n\nFree and instant: For most everyday payments between people and at shops, there is no fee, and the money arrives right away, even on a Sunday or a holiday.\nSimple to use: One app and one PIN replace cash, cards and bank visits. It works on basic smartphones, and many apps support Indian languages.\nAccepted everywhere: From street sellers to online shops and bill payments, nearly everyone takes UPI, so you rarely need cash.\n\nOn top of this, banks and the government pushed it hard, and friends and family showed each other how it works. Once a few people around you use it, it is hard to go back.\n\n11:04 AM",
+      "kit": [],
+      "ms": 13693
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}
