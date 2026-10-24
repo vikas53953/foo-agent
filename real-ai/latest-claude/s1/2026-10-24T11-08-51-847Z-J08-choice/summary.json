@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T11-08-51-847Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792840137459,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 8104,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming at ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. That runs editors, browsers, Docker and several projects at once without slowing down.\n\nRAM: 16 GB is the floor. Pick a laptop where you can add more later.\nScreen and keyboard: a Full HD IPS screen, 14 to 15.6 inches, and a keyboard you like typing on. You will use these the most.\nBattery and weight: 8+ hours and under 1.8 kg if you carry it daily.\nGraphics card: only needed for machine learning or game development. For web, apps and general coding, skip it and spend on RAM and screen quality.\n\nI have not looked at live prices, so I can't name specific laptops yet. Tell me what you mostly code, and I can search for current options in your budget.\n\n11:09 AM",
+      "kit": [],
+      "ms": 16705
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n11:07 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Draft email: running 15 minutes late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n11:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n11:07 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:08 AM\n11:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking flight booking sites\nlive checklist\nChecked flight booking sites\nF\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared price, departure time, duration and\nStopped by you\n11:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n11:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n11:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming at ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. That runs editors, browsers, Docker and several projects at once without slowing down.\n\nRAM: 16 GB is the floor. Pick a laptop where you can add more later.\nScreen and keyboard: a Full HD IPS screen, 14 to 15.6 inches, and a keyboard you like typing on. You will use these the most.\nBattery and weight: 8+ hours and under 1.8 kg if you carry it daily.\nGraphics card: only needed for machine learning or game development. For web, apps and general coding, skip it and spend on RAM and screen quality.\n\nI have not looked at live prices, so I can't name specific laptops yet. Tell me what you mostly code, and I can search for current options in your budget.\n\n11:09 AM"
+  }
+]

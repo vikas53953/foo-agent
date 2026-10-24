@@ -1,0 +1,15 @@
+{"t":"2026-10-24T11:04:35.135Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T11:04:40.594Z","step":"launch","ok":true}
+{"t":"2026-10-24T11:04:40.729Z","i":0,"do":"send","sentAt":1792839880688,"sent":true,"before":0,"ok":true,"ms":132}
+{"t":"2026-10-24T11:04:53.933Z","i":1,"do":"waitReply","firstReplyMs":7083,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Sat 17 Oct to Sat 24 Oct\nCheck it went through\nWatch live\nStop\nunder 1 min\n11:04 AM","kit":[],"ms":13204}
+{"t":"2026-10-24T11:04:53.999Z","shot":"01-news.png"}
+{"t":"2026-10-24T11:04:54.002Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-24T11:07:24.004Z","i":3,"do":"wait","ok":true,"ms":150002}
+{"t":"2026-10-24T11:07:24.082Z","shot":"02-news-later.png"}
+{"t":"2026-10-24T11:07:24.085Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-24T11:07:24.088Z","i":5,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-24T11:07:24.092Z","i":6,"do":"expectText","text":"The search went through. Here is what ISRO news from Sat 17 Oct to Sat 24 Oct looks like, from headlines only (I have not opened the pages):\n\nNVS-03 launch: ISRO plans to launch the navigation satellite on Fri 30 Oct on a GSLV Mk II from Satish Dhawan. Indian Express and shattered.io both mention it, but I did not see a launch time.\nSPADEX: The docking mission has completed its final chapter, per Indian Defence News (about a day ago).\nWeek in images: Indian Space Hub has a photo roundup for 19 to 23 Oct.\nLaunch plans: Economic Times says ISRO plans 12 launches this year.\n\nThe cyclone forecast stories are from Sept, so they fall outside your dates. I can open any of these for the full story.\n\n11:06 AM","ok":true,"ms":4}
+{"t":"2026-10-24T11:07:24.095Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":3}
+{"t":"2026-10-24T11:07:24.105Z","i":8,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T11:07:24.329Z","step":"appLog","lines":51,"dropped":0}
+{"t":"2026-10-24T11:07:24.344Z","step":"aiTurns","turns":25}
