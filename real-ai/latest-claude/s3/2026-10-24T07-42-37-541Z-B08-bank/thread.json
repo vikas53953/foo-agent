@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, number of guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n7:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below: add an expense with a date, category and amount, and it updates your total, category split and what's left of your budget. Entries stay only while this page is open, so they reset when you close it.\n\nKeep\n\nWant me to add a monthly chart or a split by who paid?\n\n7:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n7:37 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Calendar\n\nI need to see your calendar for “Veg table for 2, Connaught Place”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n7:41 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Turbo is a fun one, since tortoises are the opposite of fast. Here are a few more:\n\nGulab, after gulab jamun, round and sweet\nPickle, for a small green one\nMr. Slow, a classic\n\nIf you tell me whether yours is a boy or a girl, or what colour the shell is, I can narrow it down.\n\nYour Connaught Place dinner for 2 on tomorrow, Sun 25 Oct, 8:00 PM is still open. Want me to look up vegetarian restaurants near there first?\n\n7:42 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n7:42 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nComparing top headlines across news sites\nWatch live\nStop\n1 min\n7:42 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:42 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n7:42 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:43 AM\n7:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:43 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Checking HDFC NetBanking\nDidn’t finish\nWaiting for you to sign in ›\nCheck HDFC NetBanking\n7:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:43 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n7:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:43 AM"
+  }
+]

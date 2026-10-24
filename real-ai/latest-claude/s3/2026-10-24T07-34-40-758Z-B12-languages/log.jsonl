@@ -1,0 +1,14 @@
+{"t":"2026-10-24T07:34:40.758Z","journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","spec":"07-1 J7; walkthrough ch. 08; AT-031","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:34:46.207Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:34:46.343Z","i":0,"do":"send","sentAt":1792827286309,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-24T07:35:00.062Z","i":1,"do":"waitReply","expect":"walkthrough 08 step 4: answers in Hinglish","firstReplyMs":4086,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mummy ke birthday (Mon 26 Oct) ke liye in cakes se shuru karo:\n\nChocolate truffle: sabko pasand aata hai, kabhi galat nahi jaata.\nButterscotch ya pineapple: halka aur classic, bade logon ko aksar zyada pasand.\nRasmalai ya gulab jamun cake: agar mummy ko meetha desi pasand hai.\nPhoto cake: unki pasandida photo ke saath, personal lagta hai.\n\nParso ke liye kal subah tak order kar do, taaki fresh aur time par mil jaye. Agar mummy egg nahi khatin, toh eggless bol dena.\n\n7:34 AM","kit":[],"ms":13718}
+{"t":"2026-10-24T07:35:00.132Z","shot":"01-hinglish.png"}
+{"t":"2026-10-24T07:35:00.247Z","i":2,"do":"send","sentAt":1792827300230,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-24T07:35:19.505Z","i":3,"do":"waitReply","expect":"walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi","firstReplyMs":10135,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਲਗਭਗ ਹਰ ਕੋਈ ਇਸਨੂੰ ਪਸੰਦ ਕਰਦਾ ਹੈ। ਜੇ ਮੰਮੀ ਨੂੰ ਹਲਕਾ ਪਸੰਦ ਹੈ ਤਾਂ ਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ ਲਓ, ਤੇ ਜੇ ਦੇਸੀ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ।\n\nਜੇ ਮੰਮੀ ਆਂਡਾ ਨਹੀਂ ਖਾਂਦੇ, ਤਾਂ ਆਰਡਰ ਕਰਦੇ ਵੇਲੇ ਐੱਗਲੈੱਸ ਜ਼ਰੂਰ ਕਹੋ। ਜਨਮ ਦਿਨ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ Sun 25 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ।\n\nਕੀ ਮੈਂ ਤੁਹਾਡੇ ਨੇੜੇ ਦੀਆਂ ਕੇਕ ਦੁਕਾਨਾਂ ਵੇਖ ਲਵਾਂ?\n\n7:35 AM","kit":[],"ms":19258}
+{"t":"2026-10-24T07:35:19.564Z","shot":"02-punjabi.png"}
+{"t":"2026-10-24T07:35:19.664Z","i":4,"do":"send","sentAt":1792827319647,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-24T07:35:33.367Z","i":5,"do":"waitReply","expect":"walkthrough 08 step 3: short 1–3 bubbles, no filler","firstReplyMs":6605,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so offices and banks should be open. The Diwali holidays come the week after, around Sun 8 Nov to Wed 11 Nov. I can't check the official Maharashtra list from here, so confirm with your bank or office if it matters.\n\n7:35 AM","kit":[],"ms":13703}
+{"t":"2026-10-24T07:35:33.428Z","shot":"03-holiday.png"}
+{"t":"2026-10-24T07:35:33.438Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T07:35:33.557Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-24T07:35:33.569Z","step":"aiTurns","turns":3}

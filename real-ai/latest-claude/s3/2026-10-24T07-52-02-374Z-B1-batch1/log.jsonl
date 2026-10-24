@@ -1,0 +1,51 @@
+{"t":"2026-10-24T07:52:02.375Z","journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","spec":"CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:52:07.844Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:52:07.850Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":3}
+{"t":"2026-10-24T07:52:07.917Z","shot":"01-welcome.png"}
+{"t":"2026-10-24T07:52:08.066Z","i":1,"do":"click","ok":true,"ms":149}
+{"t":"2026-10-24T07:52:08.082Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":16}
+{"t":"2026-10-24T07:52:08.210Z","shot":"02-finder.png"}
+{"t":"2026-10-24T07:52:28.211Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20000}
+{"t":"2026-10-24T07:52:28.280Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-24T07:52:28.393Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":113}
+{"t":"2026-10-24T07:52:28.396Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-24T07:52:28.467Z","shot":"04-secret-box.png"}
+{"t":"2026-10-24T07:52:28.478Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":11}
+{"t":"2026-10-24T07:52:28.585Z","i":7,"do":"click","ok":true,"ms":107}
+{"t":"2026-10-24T07:52:58.590Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","ok":true,"ms":30005}
+{"t":"2026-10-24T07:52:58.656Z","shot":"05-key-tested.png"}
+{"t":"2026-10-24T07:52:58.695Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":39}
+{"t":"2026-10-24T07:52:58.799Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":103}
+{"t":"2026-10-24T07:52:58.804Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":4}
+{"t":"2026-10-24T07:52:58.808Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-24T07:52:58.922Z","shot":"06-step2.png"}
+{"t":"2026-10-24T07:52:58.924Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n7:52 AM","ok":true,"ms":2}
+{"t":"2026-10-24T07:52:59.057Z","i":14,"do":"click","ok":true,"ms":132}
+{"t":"2026-10-24T07:53:09.058Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","ok":true,"ms":10001}
+{"t":"2026-10-24T07:53:09.123Z","shot":"07-first-chat.png"}
+{"t":"2026-10-24T07:53:09.125Z","i":16,"do":"check","note":"batch 1 has no helpers: no New helper button","found":0,"ok":true,"ms":1}
+{"t":"2026-10-24T07:53:09.127Z","i":17,"do":"check","note":"batch 1 has no voice: the round button is Send, not the mic","found":1,"ok":true,"ms":1}
+{"t":"2026-10-24T07:53:09.222Z","i":18,"do":"send","sentAt":1792828389212,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-10-24T07:53:18.860Z","i":19,"do":"waitReply","expect":"a short warm reply in Hinglish, streamed","firstReplyMs":2026,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Main bilkul theek hoon, shukriya! Aap kaise hain? Aaj main aapki kaise madad kar sakta hoon?\n\n7:53 AM","kit":[],"ms":9638}
+{"t":"2026-10-24T07:53:18.920Z","shot":"08-hinglish.png"}
+{"t":"2026-10-24T07:53:19.007Z","i":20,"do":"send","sentAt":1792828398995,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-24T07:53:31.194Z","i":21,"do":"waitReply","expect":"a joke, in the user's mix of Hindi and English","firstReplyMs":3042,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Ek aadmi ne apne dost se kaha, \"Yaar, meri biwi mujhe Superman samajhti hai.\"\n\nDost bola, \"Wow, kitna accha hai!\"\n\nAadmi bola, \"Haan, har kaam ke liye bulati hai: 'Yeh karo, woh karo, udhar jao, idhar aao!'\"\n\n7:53 AM","kit":[],"ms":12186}
+{"t":"2026-10-24T07:53:31.264Z","shot":"09-joke.png"}
+{"t":"2026-10-24T07:53:31.367Z","i":22,"do":"send","sentAt":1792828411343,"sent":true,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-24T07:53:42.531Z","i":23,"do":"waitReply","expect":"the batch-1 line: tasks come in a later batch; no checklist, no plan card","firstReplyMs":2034,"newBubbles":2,"ok":false,"duplicates":0,"lastReply":"Aapko aaj raat Delhi mein kisi cafe par 2 logon ke liye table book karni hai. Kaunsa area prefer karenge aur kitne baje?\n\n7:53 AM\n---\nKaunsa area prefer karenge?\n1\nConnaught Place\nBEST FIT\n2\nHauz Khas Village\n3\nKhan Market\n4\nKoi aur area batao\nSomething else…\nSkip\n7:53 AM","kit":[],"endState":false,"ms":11164}
+{"t":"2026-10-24T07:53:42.588Z","shot":"10-job-off.png"}
+{"t":"2026-10-24T07:53:42.680Z","i":24,"do":"send","sentAt":1792828422661,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-24T07:53:51.297Z","i":25,"do":"waitReply","expect":"the batch-1 memory line, or a plain reply; never a memory chip","firstReplyMs":2534,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t remember things in this test version of foo yet. That comes in a later batch, so tell me again when it matters.\n\n7:53 AM","kit":[],"endState":true,"ms":8617}
+{"t":"2026-10-24T07:53:51.356Z","shot":"11-memory-off.png"}
+{"t":"2026-10-24T07:53:51.466Z","i":26,"do":"send","sentAt":1792828431434,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-24T07:53:54.282Z","i":27,"do":"waitFor","note":"settings by chat is on in batch 1","ok":true,"ms":2815}
+{"t":"2026-10-24T07:53:59.283Z","i":28,"do":"wait","expect":"dark theme; one line Changed: Theme → Dark. Undo","ok":true,"ms":5001}
+{"t":"2026-10-24T07:53:59.344Z","shot":"12-dark.png"}
+{"t":"2026-10-24T07:53:59.416Z","i":29,"do":"click","ok":true,"ms":72}
+{"t":"2026-10-24T07:54:00.217Z","i":30,"do":"wait","expect":"Settings, Keyboard shortcuts and Quit only","ok":true,"ms":801}
+{"t":"2026-10-24T07:54:00.282Z","shot":"13-more-menu.png"}
+{"t":"2026-10-24T07:54:00.284Z","i":31,"do":"check","found":0,"ok":true,"ms":2}
+{"t":"2026-10-24T07:54:00.288Z","i":32,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-24T07:54:00.296Z","i":33,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-24T07:54:00.426Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-24T07:54:00.438Z","step":"aiTurns","turns":5}

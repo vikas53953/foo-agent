@@ -1,0 +1,18 @@
+{"t":"2026-10-24T07:41:51.635Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:41:57.202Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:41:57.351Z","i":0,"do":"send","sentAt":1792827717299,"sent":true,"before":0,"ok":true,"ms":146}
+{"t":"2026-10-24T07:42:00.364Z","i":1,"do":"wait","ok":true,"ms":3013}
+{"t":"2026-10-24T07:42:05.676Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:42:05.677Z","i":2,"do":"relaunch","ok":true,"ms":5313}
+{"t":"2026-10-24T07:42:17.811Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":4561,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Turbo is a fun one, since tortoises are the opposite of fast. Here are a few more:\n\nGulab, after gulab jamun, round and sweet\nPickle, for a small green one\nMr. Slow, a classic\n\nIf you tell me whether yours is a boy or a girl, or what colour the shell is, I can narrow it down.\n\nYour Connaught Place dinner for 2 on tomorrow, Sun 25 Oct, 8:00 PM is still open. Want me to look up vegetarian restaurants near there first?\n\n7:42 AM","kit":[],"ms":12134}
+{"t":"2026-10-24T07:42:17.880Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-24T07:42:17.882Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n7:41 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-24T07:42:18.029Z","i":5,"do":"send","sentAt":1792827737973,"sent":true,"before":0,"ok":true,"ms":147}
+{"t":"2026-10-24T07:42:20.035Z","i":6,"do":"wait","ok":true,"ms":2006}
+{"t":"2026-10-24T07:42:25.301Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:42:25.302Z","i":7,"do":"relaunch","ok":true,"ms":5266}
+{"t":"2026-10-24T07:42:36.667Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":5068,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCompare top headlines across news sites\nWatch live\nStop\nunder 1 min\n7:42 AM","kit":[],"ms":11365}
+{"t":"2026-10-24T07:42:36.822Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-24T07:42:36.839Z","i":9,"do":"dump","ok":true,"ms":17}
+{"t":"2026-10-24T07:42:37.360Z","step":"appLog","lines":23,"dropped":0}
+{"t":"2026-10-24T07:42:37.376Z","step":"aiTurns","turns":3}

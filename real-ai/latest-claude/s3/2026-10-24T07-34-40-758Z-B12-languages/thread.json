@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:33 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n7:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:33 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday (Mon 26 Oct) ke liye in cakes se shuru karo:\n\nChocolate truffle: sabko pasand aata hai, kabhi galat nahi jaata.\nButterscotch ya pineapple: halka aur classic, bade logon ko aksar zyada pasand.\nRasmalai ya gulab jamun cake: agar mummy ko meetha desi pasand hai.\nPhoto cake: unki pasandida photo ke saath, personal lagta hai.\n\nParso ke liye kal subah tak order kar do, taaki fresh aur time par mil jaye. Agar mummy egg nahi khatin, toh eggless bol dena.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਲਗਭਗ ਹਰ ਕੋਈ ਇਸਨੂੰ ਪਸੰਦ ਕਰਦਾ ਹੈ। ਜੇ ਮੰਮੀ ਨੂੰ ਹਲਕਾ ਪਸੰਦ ਹੈ ਤਾਂ ਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ ਲਓ, ਤੇ ਜੇ ਦੇਸੀ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ।\n\nਜੇ ਮੰਮੀ ਆਂਡਾ ਨਹੀਂ ਖਾਂਦੇ, ਤਾਂ ਆਰਡਰ ਕਰਦੇ ਵੇਲੇ ਐੱਗਲੈੱਸ ਜ਼ਰੂਰ ਕਹੋ। ਜਨਮ ਦਿਨ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ Sun 25 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ।\n\nਕੀ ਮੈਂ ਤੁਹਾਡੇ ਨੇੜੇ ਦੀਆਂ ਕੇਕ ਦੁਕਾਨਾਂ ਵੇਖ ਲਵਾਂ?\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so offices and banks should be open. The Diwali holidays come the week after, around Sun 8 Nov to Wed 11 Nov. I can't check the official Maharashtra list from here, so confirm with your bank or office if it matters.\n\n7:35 AM"
+  }
+]

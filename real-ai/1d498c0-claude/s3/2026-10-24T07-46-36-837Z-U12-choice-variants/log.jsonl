@@ -1,0 +1,23 @@
+{"t":"2026-10-24T07:46:36.837Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:46:42.411Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:46:50.502Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8088}
+{"t":"2026-10-24T07:46:51.528Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1025}
+{"t":"2026-10-24T07:46:51.639Z","i":1,"do":"send","sentAt":1792828011606,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-24T07:47:07.817Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":10113,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best for Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, back by lunch\n2\nLalbagh and Cubbon Park walk\nEasy, green, good for a slow morning\n3\nCafe and food crawl\nIndiranagar or Church Street, relaxed pace\nSomething else…\nSkip\n7:47 AM","kit":[],"ms":16178}
+{"t":"2026-10-24T07:47:07.880Z","shot":"01-choice.png"}
+{"t":"2026-10-24T07:47:08.010Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":130}
+{"t":"2026-10-24T07:47:08.140Z","i":4,"do":"send","sentAt":1792828028107,"sent":true,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-24T07:47:22.371Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":7129,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Lalbagh and Cubbon Park is a lovely pick. Start at Lalbagh while it's cool and quiet, then walk or take a short ride over to Cubbon Park for a shady stroll and a filter coffee.\n\nWant me to put it on your calendar for tomorrow, Sun 25 Oct, 8:00 AM?\n\n7:47 AM","kit":[],"ms":14231}
+{"t":"2026-10-24T07:47:22.443Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-24T07:47:22.534Z","i":6,"do":"send","sentAt":1792828042518,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-24T07:47:36.724Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":8098,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds best tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nNorth Indian thali\nDal, paneer, rotis, sweet\n3\nBiryani night\nHyderabadi or Donne style\n4\nChinese or Thai\nNoodles, curry, soup\nSomething else…\nSkip\n7:47 AM","kit":[],"ms":14190}
+{"t":"2026-10-24T07:47:36.786Z","shot":"04-choice-2.png"}
+{"t":"2026-10-24T07:47:36.871Z","i":8,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-24T07:47:37.482Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":611}
+{"t":"2026-10-24T07:47:37.547Z","shot":"05-something-else.png"}
+{"t":"2026-10-24T07:47:37.637Z","i":10,"do":"send","sentAt":1792828057624,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-24T07:47:54.818Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":11134,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n7:47 AM\n---\nWhat should I do with dal chawal in your WhatsApp?\n1\nFind chats about dinner\nBEST FIT\nRead only, nothing sent\n2\nFind a recipe someone shared\nRead only, nothing sent\n3\nNothing, drop this job\nStop reading WhatsApp\nSomething else…\nSkip\n7:47 AM","kit":[],"ms":17181}
+{"t":"2026-10-24T07:47:54.874Z","shot":"06-own-answer.png"}
+{"t":"2026-10-24T07:47:54.887Z","i":12,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-24T07:47:55.017Z","step":"appLog","lines":16,"dropped":0}
+{"t":"2026-10-24T07:47:55.029Z","step":"aiTurns","turns":8}
