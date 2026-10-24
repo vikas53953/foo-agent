@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for vegetarian restaurants in…\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 vegetarian restaurants that fit open at 8:00 PM with a table for 2, best\n3\nWait for you to pick one\n4\nShow you before booking the table for 2, Sat 24 Oct\n5\nBook table for 2, Sat 24 Oct, 8:00 PM\nAbout 5 minutes\nGo\nChange plan\n12:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n1:00 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n1:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n1:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n1:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n1:01 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n1:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n1:01 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n1:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n1:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Grey clouds roll in over the Arabian Sea,\nMarine Drive shines as the rain runs free.\nChai steams up at every street-side stall,\nMumbai sways to the monsoon's call.\n\n1:01 PM"
+  }
+]

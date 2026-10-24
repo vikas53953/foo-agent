@@ -1,0 +1,16 @@
+{"t":"2026-10-24T12:49:00.041Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T12:49:05.653Z","step":"launch","ok":true}
+{"t":"2026-10-24T12:49:05.800Z","i":0,"do":"send","sentAt":1792846145751,"sent":true,"before":0,"ok":true,"ms":144}
+{"t":"2026-10-24T12:49:19.139Z","i":1,"do":"waitReply","firstReplyMs":7093,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for National Museum Delhi opening hours and\nWatch live\nStop\nunder 1 min\n12:49 PM","kit":[],"ms":13339}
+{"t":"2026-10-24T12:49:19.305Z","shot":"01-museum-start.png"}
+{"t":"2026-10-24T12:49:19.311Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":6}
+{"t":"2026-10-24T12:49:27.313Z","i":3,"do":"wait","ok":true,"ms":8002}
+{"t":"2026-10-24T12:49:32.708Z","step":"launch","ok":true}
+{"t":"2026-10-24T12:49:32.708Z","i":4,"do":"relaunch","ok":true,"ms":5395}
+{"t":"2026-10-24T12:49:40.720Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8012}
+{"t":"2026-10-24T12:49:40.784Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-24T12:52:10.787Z","i":6,"do":"wait","ok":true,"ms":150003}
+{"t":"2026-10-24T12:52:10.853Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-24T12:52:10.866Z","i":7,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-24T12:52:11.066Z","step":"appLog","lines":26,"dropped":0}
+{"t":"2026-10-24T12:52:11.080Z","step":"aiTurns","turns":9}

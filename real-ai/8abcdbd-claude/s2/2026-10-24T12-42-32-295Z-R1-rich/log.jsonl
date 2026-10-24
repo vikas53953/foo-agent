@@ -1,0 +1,16 @@
+{"t":"2026-10-24T12:42:32.296Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T12:42:37.800Z","step":"launch","ok":true}
+{"t":"2026-10-24T12:42:37.937Z","i":0,"do":"send","sentAt":1792845757900,"sent":true,"before":0,"ok":true,"ms":134}
+{"t":"2026-10-24T12:42:52.138Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8086,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones that fit under ₹20,000, best value\n3\nCompare price, display, camera, battery\nAbout 3 minutes\nGo\nChange plan\n12:42 PM","kit":[],"ms":14201}
+{"t":"2026-10-24T12:42:52.215Z","shot":"01-table.png"}
+{"t":"2026-10-24T12:42:52.248Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":33}
+{"t":"2026-10-24T12:45:22.251Z","i":3,"do":"wait","ok":true,"ms":150003}
+{"t":"2026-10-24T12:45:22.318Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-24T12:45:22.321Z","i":4,"do":"check","found":1,"ok":true,"ms":3}
+{"t":"2026-10-24T12:45:22.331Z","i":5,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T12:45:22.430Z","i":6,"do":"send","sentAt":1792845922397,"sent":true,"before":0,"ok":true,"ms":99}
+{"t":"2026-10-24T12:45:40.692Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8126,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's a relaxed 3-day Jaipur plan with early starts and long afternoon rests, which suits parents.\n\nDay 1, arrive and ease in: Check in and rest. In the evening, see Hawa Mahal from outside and stroll Johari Bazaar, then have dinner at a good Rajasthani thali place.\nDay 2, forts and palaces: Go to Amber Fort early, before the crowds and the heat. Take a jeep up if the climb is too much. After lunch and a rest, visit City Palace and Jantar Mantar, which are close together.\nDay 3, lakes, shopping and home: Stop at Jal Mahal for photos, then visit Albert Hall Museum. Buy block-print fabrics and jewellery at Bapu Bazaar before you leave. Birla Mandir at sunset is a calm option if you have the time.\n\nLate October to March is the best season, so you're in a good window. A hired cab for all three days saves a lot of walking, and most monuments have a ticket for Indian citizens at a low rate, with senior discounts at some.\n\nWhich city are they travelling from, and on which dates? Then I can look at trains and stays.\n\n12:45 PM","kit":[],"ms":18261}
+{"t":"2026-10-24T12:45:40.761Z","shot":"03-trip.png"}
+{"t":"2026-10-24T12:45:40.769Z","i":8,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-24T12:45:40.954Z","step":"appLog","lines":18,"dropped":0}
+{"t":"2026-10-24T12:45:40.966Z","step":"aiTurns","turns":8}
