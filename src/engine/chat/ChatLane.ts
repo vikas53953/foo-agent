@@ -700,8 +700,10 @@ export class ChatLane {
       this.catchUpConnected.has(messageId) &&
       !this.connectDeclined.has(messageId) &&
       !(this.d.appsToConnect?.(['gmail']) ?? []).length
-    )
+    ) {
+      this.catchUpConnected.delete(messageId);
       act = readEmailJob();
+    }
     const kind = act?.kind ?? 'reply';
     let retryEmpty = false;
     const released = gate.released().trimEnd();
