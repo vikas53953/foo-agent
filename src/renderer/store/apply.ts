@@ -107,6 +107,7 @@ export function applyBootstrap(b: Bootstrap): void {
     if (b.openChatId) loadMessagesReducer(s.messages, b.openChatId, b.firstMessages, FIRST_PAGE);
     s.live.loaded = true;
     s.live.loadFailed = false;
+    s.live.features = b.features ?? null;
     s.live.now = clockNow();
   });
   if (b.openChatId) openFromEvent({ kind: 'chat', chatId: b.openChatId });

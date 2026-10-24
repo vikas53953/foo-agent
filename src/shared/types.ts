@@ -2,6 +2,7 @@
 // AiStatus, SpendSummary); 08-1 §3.4 (row derivations); 03-shell-1 §3.4.5–§3.4.8 (the chat-list derivations main adds).
 // Types only, no runtime. Sources: 08-0 §A–§G, 08-5, 08-1 §3–§4. Shapes grow per milestone; M1 holds what the shell reads.
 import type { Settings } from './settings';
+import type { FeatureId } from './features';
 
 export type { PlatformInfo, ThemeName } from './ipc';
 export type { Settings } from './settings';
@@ -854,6 +855,8 @@ export interface Bootstrap {
   spend: SpendSummary;
   connections: ConnectionRow[];
   safeMode: boolean;
+  /** CR-0054: the features this build switched on, in menu order; absent = every feature. */
+  features?: FeatureId[];
 }
 
 /** 08-1 §3.2 `chat:open` reply. */
