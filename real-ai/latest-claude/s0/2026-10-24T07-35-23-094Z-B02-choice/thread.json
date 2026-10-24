@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good morning. What can I do for you today?\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can answer questions, check things in your apps and sites, and set up routines for you.\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through it scrambled, so your internet provider or public Wi-Fi can't read it.\n\nThe websites you visit see the VPN's address instead of yours, so your location and identity are harder to trace. The catch: you now trust the VPN company with what you used to show your provider.\n\nIt helps on public Wi-Fi and for privacy from your provider. It doesn't make you anonymous or protect you from scams and bad downloads.\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:35 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n7:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:35 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in the shoes?\n1\nSoft cushioning\nBEST FIT\nEasier on knees and feet\n2\nLight and fast\nQuick, springy feel\n3\nLasts long\nDurable for daily use\n4\nWide or roomy fit\nMore space for your toes\nSomething else…\nSkip\n7:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:35 AM"
+  }
+]

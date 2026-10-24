@@ -1,0 +1,11 @@
+{"t":"2026-10-24T07:39:27.336Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:39:32.873Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:39:33.003Z","i":0,"do":"send","sentAt":1792827572968,"sent":true,"before":0,"ok":true,"ms":127}
+{"t":"2026-10-24T07:39:45.991Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":6865,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Sat 17 Oct to Sat 24 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n7:39 AM","kit":[],"ms":12988}
+{"t":"2026-10-24T07:39:46.068Z","shot":"01-news.png"}
+{"t":"2026-10-24T07:39:46.070Z","i":2,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-24T07:39:46.072Z","i":3,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-24T07:39:46.075Z","i":4,"do":"expectText","text":"A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through it scrambled, so your internet provider or public Wi-Fi can't read it.\n\nThe websites you visit see the VPN's address instead of yours, so your location and identity are harder to trace. The catch: you now trust the VPN company with what you used to show your provider.\n\nIt helps on public Wi-Fi and for privacy from your provider. It doesn't make you anonymous or protect you from scams and bad downloads.\n\n7:35 AM","ok":true,"ms":3}
+{"t":"2026-10-24T07:39:46.090Z","i":5,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-24T07:39:46.313Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-24T07:39:46.326Z","step":"aiTurns","turns":2}

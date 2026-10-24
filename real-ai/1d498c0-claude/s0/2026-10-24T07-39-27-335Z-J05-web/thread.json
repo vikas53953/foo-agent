@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through it scrambled, so your internet provider or public Wi-Fi can't read it.\n\nThe websites you visit see the VPN's address instead of yours, so your location and identity are harder to trace. The catch: you now trust the VPN company with what you used to show your provider.\n\nIt helps on public Wi-Fi and for privacy from your provider. It doesn't make you anonymous or protect you from scams and bad downloads.\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:35 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Treadmill or gym\n7:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:35 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in the shoes?\n1\nSoft cushioning\nBEST FIT\nEasier on knees and feet\n2\nLight and fast\nQuick, springy feel\n3\nLasts long\nDurable for daily use\n4\nWide or roomy fit\nMore space for your toes\nSomething else…\nSkip\n7:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:35 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:36 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which nights should I search for your Goa hotel?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\n2 nights, check out Sun\n2\nSat 31 Oct to Mon 2 Nov\n2 nights, check out Mon\n3\nDifferent dates\nTell me which\nSomething else…\nSkip\n7:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n7:39 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Sat 17 Oct to Sat 24 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n7:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:39 AM"
+  }
+]

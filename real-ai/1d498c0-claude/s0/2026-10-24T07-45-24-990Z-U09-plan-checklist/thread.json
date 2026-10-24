@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n7:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n7:40 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n7:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n7:45 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:45 AM\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000 from the Smartprix list updated Sat 24 Oct 2026:\n\nMSI Modern 14 C7M-062IN, ₹43,219: Ryzen 5 7530U, 16GB memory, 512GB SSD. Best overall, as it's the only one with 16GB.\nAcer Aspire Lite 15 AL15-41, ₹42,990: Ryzen 5 5625U, 8GB, 512GB SSD. Cheapest, but an older chip.\nAsus Vivobook 15 X1504VA, ₹49,990: Core i3 (13th Gen), 12GB, 512GB SSD. More memory, but weaker processor and close to the limit.\n\nPrices are list prices, not checked in shops.\n\n7:46 AM"
+  }
+]
