@@ -1,0 +1,274 @@
+From f7e85765bf507eb45bd0085dc1d117a41615fdd2 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 22 Oct 2026 01:42:53 +0000
+Subject: [PATCH 1/3] A setting changed by chat is not also saved as a memory
+ (CR-0051)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Real-AI run 30 (main 04f01dd, Claude CLI), U17: "Switch to dark mode"
+changed the theme with "Changed: Theme → Dark. Undo", and the post-turn
+review also saved "Prefers dark mode"; Undo of the theme left the fact.
+The words were an instruction to foo that the setting line records, so a
+message whose intake kind was `setting` is now left out of the review
+(08-3 §12.4 Input, X-209). Later messages are reviewed as before.
+
+Fidelity-CR: CR-0051
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01SpTENvw4MG6dxxgmAXJYFG
+---
+ docs/cr/CR-0051-setting-not-memory.md         |  36 +++++++
+ docs/decisions/real-pc.tsv                    |   1 +
+ spec/SPEC-MANIFEST.json                       |   4 +-
+ .../constitution/08-functions-and-engine-3.md |   2 +-
+ spec/constitution/DECISIONS.md                |   1 +
+ src/engine/Engine.ts                          |   1 +
+ src/engine/chat/ChatLane.ts                   |   6 +-
+ test/integration/setting-not-memory.test.ts   | 101 ++++++++++++++++++
+ 8 files changed, 148 insertions(+), 4 deletions(-)
+ create mode 100644 docs/cr/CR-0051-setting-not-memory.md
+ create mode 100644 test/integration/setting-not-memory.test.ts
+
+diff --git a/docs/cr/CR-0051-setting-not-memory.md b/docs/cr/CR-0051-setting-not-memory.md
+new file mode 100644
+index 00000000..bc8b36b2
+--- /dev/null
++++ b/docs/cr/CR-0051-setting-not-memory.md
+@@ -0,0 +1,36 @@
++# CR-0051: A setting changed by chat is not also saved as a memory
++
++- **Asked by:** Vikas, 2026-10-21 07:14Z (project chat): "keep on doing the end-to-end testing until you see that everything is
++  working … Do not wait for any go or approval from me". The real-AI run 30 on main 04f01dd (Claude CLI, journey U17) found
++  it. The coordinator passed it on 2026-10-22 at 01:14Z and said go at 01:34Z.
++- **Why:** "Switch to dark mode" changed the theme and showed "Changed: Theme → Dark. Undo" (CR-0043). About 20 s later the
++  post-turn review (08-3 §12.4) read the same message and saved "Prefers dark mode". The run's app log shows
++  `memory.saved_said`.
++  - The words were an instruction to foo, not a fact about the user, and the setting line already records them.
++  - Undo of the theme took the setting back but left the fact, so foo "remembered" a preference the user had undone.
++- **Spec sections:** 08-3 §12.4 Input; DECISIONS X-209.
++- **Status:** Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-209 (his messages 2026-10-18 14:56Z and 14:59Z,
++  and 2026-10-21 07:14Z), after the independent review in §(d).
++- **Change:** the sections above, as listed in §(b).
++- **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` runs in the same commit.
++
++## (a) Trace rows
++
++None. The tests are in `test/integration/setting-not-memory.test.ts` ("CR-0051 · …").
++
++## (b) Spec before → after
++
++| #   | What the run saw                          | Spec before                                   | Spec after                                                         |
++| --- | ----------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------ |
++| 1   | "Switch to dark mode" also saved a memory | §12.4 Input: every new message since the last | the same, leaving out a user message whose intake kind was setting |
++
++## (c) Proof
++
++- `test/integration/setting-not-memory.test.ts` fails on main and passes with the change.
++  - Run 30 U17: the theme changes and no fact or chip is saved. The review never reads the message.
++  - A later "I'm vegetarian" in the same chat is still reviewed and saved.
++- The change is one line in the chat lane (`memory.skipReview`), reusing the J17 "don't remember this" skip.
++
++## (d) Review
++
++Pending.
+diff --git a/docs/decisions/real-pc.tsv b/docs/decisions/real-pc.tsv
+index 8970f5d0..e89e6f72 100644
+--- a/docs/decisions/real-pc.tsv
++++ b/docs/decisions/real-pc.tsv
+@@ -23,3 +23,4 @@ ts	phase	decision	why	evidence	result
+ 2026-10-22T00:10:00Z	review	CR-0048 independent Fable review (high tier): PASS; considers applied (check only while the sign-in card is waiting, not live or taken over; job-branch test asserts the check ran; header)	Vikas approve-on-my-behalf rule (2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z)	review in PR	approved on Vikas's behalf
+ 2026-10-21T20:50:00Z	root-cause	Run 16 "page to track my monthly expenses" cut off: the real-PC driver called the reply settled after 6 s with no new words while the AI page was still building (bubble streaming), then closed foo mid-reply; the restart cut-off (04 §19.4) was correct. Driver fix only, no CR	evidence branch real-ai/0665cf6-claude/s3 B09-kit log.jsonl step 13 + thread.json (state streaming, "Building your page…"), J09 launch 60 ms later	test/unit/real-pc-settle.test.ts from the run-16 dump (fails without settle.js, passes now)	PR #126
+ 2026-10-21T21:00:00Z	review	PR #126 independent Fable review: PASS WITH FIXES, 3 optional findings applied. One reviewer: test tooling only, not foo's AI output handling. Approved on Vikas's behalf	Vikas approve-on-my-behalf rule (2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z)	review in PR #126	approved on Vikas's behalf
++2026-10-22T01:45:00Z	root-cause	CR-0051: run 30 (04f01dd) U17 "Switch to dark mode" also saved memory "Prefers dark mode" = the post-turn review read the setting message like any other; Undo of the theme left the fact. Fix: a message whose intake kind was setting is left out of the review (08-3 §12.4).	test/integration/setting-not-memory.test.ts red on main	fixed (pending review)
+diff --git a/spec/SPEC-MANIFEST.json b/spec/SPEC-MANIFEST.json
+index 14ad97f0..781e9d55 100644
+--- a/spec/SPEC-MANIFEST.json
++++ b/spec/SPEC-MANIFEST.json
+@@ -25,7 +25,7 @@
+     "constitution/08-5-shared-types.md": "e63778baddf583d74adcb0b92d6b9287aad1653548d43f4a86081d225b2087b4",
+     "constitution/08-functions-and-engine-1.md": "9b76bb6efc13d6439753f981a9ae49bf254284f8032bfe4e402cde9b6f552797",
+     "constitution/08-functions-and-engine-2.md": "5b8863beb7aa16ac30c359ca3ba69d33eac403382a24e8f9c527f7d4f542e7a7",
+-    "constitution/08-functions-and-engine-3.md": "bf72eacc82f100498bff647693ff92d80e474ba4bed69c3e3d4496a3a5333e11",
++    "constitution/08-functions-and-engine-3.md": "85fc6217d4e91f1bfa14e3e729cda4209a5de6d92b5346e1aa81a7ce9e1adcef",
+     "constitution/08-functions-and-engine-4.md": "e5022c1cfecc04c3f543f7bfa5ec4b776ac57f764caa29775e3f38bbf7ae8bfe",
+     "constitution/09-windows.md": "fcd5793534097a7bb37084f216b4de176862c6821c58870a84083695f4089550",
+     "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
+@@ -34,7 +34,7 @@
+     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
+     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
+     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
+-    "constitution/DECISIONS.md": "448bb3e9528224eec08c98f4bb54f2f1de1a703d71f255a1641d953956214ff9",
++    "constitution/DECISIONS.md": "6feb3a2c1324cdd5468ea14ec72d61503071ef67e4ed36a2d045659c9990bf13",
+     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
+     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
+     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
+diff --git a/spec/constitution/08-functions-and-engine-3.md b/spec/constitution/08-functions-and-engine-3.md
+index 6308a97e..a94952c5 100644
+--- a/spec/constitution/08-functions-and-engine-3.md
++++ b/spec/constitution/08-functions-and-engine-3.md
+@@ -42,7 +42,7 @@ Writes: atomic (temp + replace), through main (`file.write`). A file watcher (`f
+ 
+ ### 12.4 Post-turn review (Hermes background review, HRM §3.1, HRM-SRC `agent/background_review.py`)
+ Trigger: after a chat-lane reply or a job finishing, when the chat has ≥ 1 new user message since the last review, debounced to 20 s of quiet in that chat, at most once per chat per 2 minutes, background lane, only if `privacy.learnFromChats`. Skipped when the spend cap is reached.
+-Input: the new messages since the last review (redacted), the current facts in the same scopes (≤ 4,000 chars), tombstone hashes. Output `<act>`:
++Input: the new messages since the last review (redacted), leaving out a user message whose intake kind was `setting` (CR-0051, X-209: an instruction to foo that its setting line records, 08-4 §25.6, not a fact about the user), the current facts in the same scopes (≤ 4,000 chars), tombstone hashes. Output `<act>`:
+ ```ts
+ interface MemoryReviewAct { ops: (
+   | { op: "add"; scope: MemoryScope /* 08-0 §B.2: global | chat | helper */; text: string /* ≤ 120 chars, third person-free plain sentence */;
+diff --git a/spec/constitution/DECISIONS.md b/spec/constitution/DECISIONS.md
+index 2b25ec07..add8c0c2 100644
+--- a/spec/constitution/DECISIONS.md
++++ b/spec/constitution/DECISIONS.md
+@@ -189,3 +189,4 @@ These settle every conflict the chapter writers found, and record the owner's an
+ | X-202 | **Not now on a Connect card from intake runs the job without the app** (CR-0044; found by the real-AI run on 2026-10-21, main 0665cf6, Claude CLI: "Pay my electricity bill now" got Connect Gmail, and Not now only changed the card in the window, so the message stayed Needs you with no job). 08-2 §5.3.3 as amended: Not now sends `card:answer { skip: true }`, the card becomes `skipped`, and the message goes back to intake once with no Connect card, so its job runs without the app; the card's line names the job and says Not now works (05-3 §5.11). The tech log gets the decided intake kind and each steer's effect. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number given by the coordinator 2026-10-21 20:43Z. |
+ | X-203 | **A message that is not about a waiting job leaves its card alone; a message sent while a job turns stuck is not lost** (CR-0045; found by the real-AI run 21 on 2026-10-21, main a087f3c, Claude CLI. U23: a table booking waited on "Which city should I look in…?", and "Make me a simple page that tracks my daily water intake" withdrew that card, so the job asked again right under the tracker ask. U01: "Give me one fun fact about Delhi", sent 0.4 s after the watchdog halted a web job for its Stuck card, was steered into the halted job and never answered). 08-4 §26.5 items 2a and 2b as amended: a job halted for its Stuck card takes no steer while the "What's wrong" turn runs; and before a steer withdraws a NEEDS_YOU job's open Choice, tiles, approval, payment or draft card, one `classify` turn with the new `steer_check.md` (§24.13a) asks whether the message is about the job ("new" → intake, the card stays; "job" or a failed turn → the steer as before). Claude CLI replays: 20 of 20 right. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number given by the coordinator 2026-10-21 21:49Z. |
+ | X-206 | **A job waiting on a sign-in card does not hold the next, unrelated ask** (CR-0048; found by the real-AI run 23 on 2026-10-21, main 0056624, Claude CLI, J12: an ISRO web job waited on a "check you're a person" card for www.thehindu.com, and "Draft an email to someone@example.com…" got no reply in 180 s, because 08-4 §26.5 item 2 queues every steer behind a sign-in in progress). 08-4 §26.5 item 2b as amended: the CR-0045 steer check also runs when the only live job waits on its sign-in card that is still `waiting` for the user's tap (a `live` or taken-over sign-in keeps item 2); "new" → the intake turn, the card stays; "job" → the steer waits for the sign-in as before. Claude CLI replays: 6 of 6 right. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number given by the coordinator 2026-10-21 23:41Z. |
++| X-209 | **A setting changed by chat is not also saved as a memory** (CR-0051; found by the real-AI run 30 on 2026-10-22, main 04f01dd, Claude CLI, U17: "Switch to dark mode" changed the theme with "Changed: Theme → Dark. Undo", and the post-turn review also saved "Prefers dark mode"; Undo of the theme left the fact behind). 08-3 §12.4 Input as amended: a user message whose intake kind was `setting` is left out of the review, because the setting line (08-4 §25.6) records it and Undo takes it back; later messages in the chat are reviewed as before. Approved on Vikas's behalf after an independent review (his approve-on-my-behalf rule, 2026-10-18 14:56Z, 14:59Z; 2026-10-21 07:14Z); number confirmed with the coordinator 2026-10-22 01:36Z. |
+diff --git a/src/engine/Engine.ts b/src/engine/Engine.ts
+index f733514a..fdaa662b 100644
+--- a/src/engine/Engine.ts
++++ b/src/engine/Engine.ts
+@@ -396,6 +396,7 @@ export class Engine {
+         decide: (chat, helper, m, act) => this.memoryIntake.decide(chat, helper, m, act),
+         used: (chatId, anchorId, facts) => this.memoryChips.used(chatId, anchorId, facts),
+         answered: (chatId) => this.memoryReview.after(chatId),
++        skipReview: (messageId) => this.memoryReview.skip(messageId),
+         onCardAnswered: (a) => this.memoryIntake.onCardAnswered(a),
+       },
+       // C1 T2 (04 §13.7): Gmail counts as connected only in status `connected`; WhatsApp while the bridge is open.
+diff --git a/src/engine/chat/ChatLane.ts b/src/engine/chat/ChatLane.ts
+index b4cbda9b..d44eff67 100644
+--- a/src/engine/chat/ChatLane.ts
++++ b/src/engine/chat/ChatLane.ts
+@@ -150,6 +150,8 @@ export interface LaneMemory {
+   used(chatId: string, anchorId: string, facts: EngineFact[]): Promise<void>;
+   /** 08-3 §12.4 trigger: a chat-lane turn answered in `chatId`. */
+   answered(chatId: string): void;
++  /** CR-0051: the review never reads this message (its intake kind was `setting`). */
++  skipReview(messageId: string): void;
+   /** A typed answer to a `memory_confirm` card; true = taken. */
+   onCardAnswered(a: { cardId: string; answer: CardAnswer; choice?: string; resolvedBy: 'typed' }): Promise<boolean>;
+ }
+@@ -718,7 +720,9 @@ export class ChatLane {
+       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+       await this.d.memory.decide(chat, helper, message, memoryKind);
+     } else if (settingKind) {
+-      // CR-0043 (08-4 §25.6): text already released stands; the setting line follows it.
++      // CR-0043 (08-4 §25.6): text already released stands; the setting line follows it. CR-0051 (08-3 §12.4): the words were
++      // an instruction to foo, recorded by the setting line, so the post-turn review never reads them.
++      this.d.memory?.skipReview(messageId);
+       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+       await this.settingLine(chatId, messageId, settingKind);
+     } else if (act && act.kind === 'react') {
+diff --git a/test/integration/setting-not-memory.test.ts b/test/integration/setting-not-memory.test.ts
+new file mode 100644
+index 00000000..578d5263
+--- /dev/null
++++ b/test/integration/setting-not-memory.test.ts
+@@ -0,0 +1,101 @@
++// Spec: CR-0051 (X-209), 08-3 §12.4 as amended (the review leaves out a message whose intake kind was `setting`), 08-4 §25.6
++// (CR-0043 settings by chat). Real-AI run 30 (main 04f01dd, Claude CLI), U17: "Switch to dark mode" changed the theme with
++// "Changed: Theme → Dark. Undo", and the post-turn review also saved "Prefers dark mode"; Undo of the theme left that fact.
++// The words were an instruction to foo that the Settings line already records, not a fact about the user.
++import { afterEach, describe, expect, it } from 'vitest';
++import { sendMessage } from '../../src/main/store/composerQueries';
++import type { Settings } from '../../src/shared/settings';
++import { makeHarness, verified, type FakeLineIn, type Harness } from '../unit/m3-engine-helpers';
++
++let h: Harness | null = null;
++afterEach(() => {
++  h?.close();
++  h = null;
++});
++
++const realSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
++const act = (decision: Record<string, unknown>, used: string[] = []) =>
++  `<say></say><act>${JSON.stringify({ decision, usedMemoryIds: used })}</act>`;
++const replyAct = (say: string, used: string[] = []) =>
++  `<say>${say}</say><act>${JSON.stringify({ decision: { kind: 'reply' }, usedMemoryIds: used })}</act>`;
++const intakeOn = (includes: string, reply: string): FakeLineIn => ({ match: { purpose: 'intake', promptIncludes: includes }, reply });
++
++function rig(script: FakeLineIn[], settings: (s: Settings) => Settings = (s) => s): Harness {
++  const v = verified();
++  return makeHarness({ script, settings: (s) => settings(v(s)), tools: {} });
++}
++
++/** A user message with a fixed id (the fake AI script names it as evidence), handed to the engine as main does. */
++function say(x: Harness, id: string, text: string): string {
++  x.clock.advance(1_000);
++  const r = sendMessage(
++    x.db,
++    { chatId: x.chatId, clientId: `k_${id}`, text },
++    { now: x.clock.now(), newId: () => id, waiting: false, attachment: () => undefined },
++  );
++  if (!r.ok) throw new Error(r.reason);
++  x.send('user.message', { messageId: id, chatId: x.chatId });
++  return id;
++}
++
++/** 08-3 §12.4: 20 s of quiet, then the review turn and its writes. */
++async function review(x: Harness): Promise<void> {
++  for (let i = 0; i < 5; i++) await realSleep(1);
++  x.clock.advance(20_000);
++  for (let i = 0; i < 20; i++) {
++    await realSleep(2);
++    await x.engine.memoryReview.idle();
++  }
++}
++
++const chips = (x: Harness) =>
++  x
++    .messages()
++    .filter((m) => m.marker_kind === 'memory_chip')
++    .map(
++      (m) =>
++        ({ text: m.text, ...(JSON.parse(String(m.why)) as { memoryChip: Record<string, unknown> }).memoryChip }) as Record<string, unknown>,
++    );
++const facts = (x: Harness) => x.db.prepare('SELECT * FROM memory_index ORDER BY learned_at').all() as Record<string, unknown>[];
++
++const DARK = act({ kind: 'setting', path: 'appearance.theme', value: 'dark' });
++const add = (o: Record<string, unknown>) => ({ op: 'add', scope: 'global', category: 'style', kind: 'preference', private: false, ...o });
++const reviewLine = (ops: unknown[]): FakeLineIn => ({
++  match: { purpose: 'memory_review' },
++  reply: `<act>${JSON.stringify({ ops })}</act>`,
++});
++
++describe('CR-0051 · a setting changed by chat is not also saved as a memory', () => {
++  it('run 30 U17: "Switch to dark mode" changes the theme and saves no "Prefers dark mode"', async () => {
++    h = rig([
++      intakeOn('dark mode', DARK),
++      reviewLine([add({ text: 'Prefers dark mode', provenance: 'said', evidenceMessageIds: ['m_d1'] })]),
++    ]);
++    const x = h;
++    say(x, 'm_d1', 'Switch to dark mode');
++    await x.idle();
++    await review(x);
++    expect(x.settings().appearance.theme).toBe('dark');
++    expect(facts(x)).toEqual([]);
++    expect(chips(x)).toEqual([]);
++    expect(x.turnsJsonl().some((t) => t.purpose === 'memory_review' && String(t.prompt).includes('dark mode'))).toBe(false);
++  });
++
++  it('a later message in the same chat is still reviewed', async () => {
++    h = rig([
++      intakeOn('dark mode', DARK),
++      intakeOn('vegetarian', replyAct('Noted.')),
++      reviewLine([add({ text: 'Vegetarian', provenance: 'said', evidenceMessageIds: ['m_v1'], category: 'food', kind: 'fact' })]),
++    ]);
++    const x = h;
++    say(x, 'm_d1', 'Switch to dark mode');
++    await x.idle();
++    say(x, 'm_v1', "I'm vegetarian");
++    await x.idle();
++    await review(x);
++    const turn = x.turnsJsonl().find((t) => t.purpose === 'memory_review')!;
++    expect(String(turn.prompt)).toContain("I'm vegetarian");
++    expect(String(turn.prompt)).not.toContain('Switch to dark mode');
++    expect(facts(x).map((f) => f.text)).toEqual(['Vegetarian']);
++  });
++});
+-- 
+2.43.0
+

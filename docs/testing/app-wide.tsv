@@ -1,0 +1,10 @@
+check	kind	status	evidence	what exists	what is missing
+Prompt-injection red team	AI app	partial	https://github.com/vikas53953/foo-agent/blob/main/test/articles/ART-injection.test.ts	A web page tells the AI to send name, phone and card; a pretend AI that obeys the page still cannot (main).	Injection through email, chat paste, files and AI pages; a red-team set run against real Claude.
+Wire-up audit	AI-built app	missing		Spec screen coverage guard in PR #101 checks every spec screen has a built screen and a test.	A sweep that clicks every button and checks it does something real, and finds fake or hard-coded data.
+Hallucination check	AI-built app	partial	https://github.com/vikas53953/foo-agent/blob/main/.github/workflows/ci.yml	Typecheck and build catch made-up APIs and imports on every PR.	Unused code and dependency check (e.g. knip), made-up settings or config keys.
+Security scan	AI-built app	partial	https://github.com/vikas53953/foo-agent/blob/main/test/canary/scan.ts	Canary secret scan of data folders, logs and AI requests (ART-08a).	Static code scan, dependency audit, secret scan of the repo history.
+Repeat runs (pass^3)	AI app	partial	https://github.com/vikas53953/foo-agent/pull/102	Nightly 3x real-AI run of the top 10 journeys built in PR #102, not merged.	Merge and the first nightly results.
+Cost and token budget	AI app	partial	https://github.com/vikas53953/foo-agent/pull/102	Spend-cap tests AT-083 and AT-143 on main; monthly cap and alert in PR #102.	A check that each journey stays under its expected cost.
+Privacy and network	AI app	partial	https://github.com/vikas53953/foo-agent/tree/main/test/integration/web	Network capture tests AT-137..141 on main (pretend AI).	The same capture on a real-AI run and on Windows.
+Long-run soak	both	missing		Nothing.	foo open 8+ hours with routines and jobs; memory, handles and freezes measured.
+Chaos and fuzz	both	partial	https://github.com/vikas53953/foo-agent/pull/97	Fast-check property tests on main (FID-17); kill-and-reopen chaos and text fuzz in PR #97, not merged.	Random kills during real-AI jobs; corrupt database and disk-full cases.

@@ -1,0 +1,31 @@
+From 22add1af303b8173a06fe3dafffd68c9ba8381d2 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Thu, 22 Oct 2026 01:57:44 +0000
+Subject: [PATCH 3/3] =?UTF-8?q?CR-0051:=20log=20the=20verifier's=20check?=
+ =?UTF-8?q?=20in=20=C2=A7(d)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fidelity-CR: CR-0051
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01SpTENvw4MG6dxxgmAXJYFG
+---
+ docs/cr/CR-0051-setting-not-memory.md | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/docs/cr/CR-0051-setting-not-memory.md b/docs/cr/CR-0051-setting-not-memory.md
+index d87480b4..6242d504 100644
+--- a/docs/cr/CR-0051-setting-not-memory.md
++++ b/docs/cr/CR-0051-setting-not-memory.md
+@@ -45,3 +45,6 @@ Fable, high tier, 2026-10-22: **PASS WITH FIXES**. It ran the tests on main's `s
+ - Considers: a mixed message ("switch to dark mode, my eyes hurt at night") loses its second fact. This is intentional:
+   the spec sentence leaves out the whole message by intake kind, and the user can still say it again or add it on the
+   Memory page. The `unsaved` set grows per session only, as it already does for J17.
++- Verified (same reviewer): CONFIRMED. A turn that ends without a reply (cut off, error, Stop, spend cap) calls no `after`,
++  so a review it cancelled waits for the next reply or finished job in that chat. Nothing is lost, because the next review
++  still reads those messages.
+-- 
+2.43.0
+
