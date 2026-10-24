@@ -124,7 +124,8 @@ describe('m3 filler (§7.6 step 2)', () => {
 describe('CR-0053 tables stay tables (AT-444)', () => {
   // Real-AI run 62d419e R1: "Make a table comparing 3 budget phones" came back as "label: value" lines, never a table.
   it('AT-444 a table in a reply reaches the bubble as a table', () => {
-    const say = 'Fares:\n| Train | Fare | Leaves |\n| :-- | --: | --- |\n| Rajdhani | ₹2,450 | 4:00 PM |\n| Duronto | ₹1,980 | 11:00 PM |\nPick one.';
+    const say =
+      'Fares:\n| Train | Fare | Leaves |\n| :-- | --: | --- |\n| Rajdhani | ₹2,450 | 4:00 PM |\n| Duronto | ₹1,980 | 11:00 PM |\nPick one.';
     expect(filterSay(say).text).toBe(say);
   });
 });

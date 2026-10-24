@@ -49,7 +49,7 @@ Every surface MUST pass all ten. The rows below list only what is **specific** t
 | Surface | States to verify | Keyboard | Narrator says | Specifics |
 |---|---|---|---|---|
 | Your bubble + status badge | sending, sent, read tick (`--tick-read`), badge values exactly 08-0 §F (`seen` 👀, `working` 🛠 incl. slow tooltip "Taking longer than usual", `waiting` ⏳, `done` ✅, `done_unverified` ✅ "Done · Not checked live", `failed` ❌, `stopped` ⛔; never ⚠), queued offline = Clock tick and no badge (R-01, X-61), reply-quote, edited, voice, attachment | Shift+F10 / menu key opens message menu (Reply, Copy, React) | "You, Fri 16 Oct 9:02 AM: {text}. Status: waiting for you" | badge cross-fade `--m-normal`; RM: no fade > 83ms; HC: badge has text tooltip and is announced |
-| foo / helper bubble | typing line, streaming (words fade 150ms, no cursor), one bubble per reply (CR-0024), list in one bubble, markdown (H1/H2 at 20px max, code block mono), table as "label: value", memory chip, proof chip, "Why am I getting this?" footer, voice-preferred reply, "answered with ChatGPT while Claude rests" label | arrow through messages; Enter on a link opens it | "foo, 9:03 AM: {text}" and once streaming ends, not word by word | 225 %: no line over 72 characters at 100 %; dark: `--bubble-foo` dark value; offline: older messages readable |
+| foo / helper bubble | typing line, streaming (words fade 150ms, no cursor), one bubble per reply (CR-0024), list in one bubble, markdown (H1/H2 at 20px max, code block mono), table as a table (CR-0053), memory chip, proof chip, "Why am I getting this?" footer, voice-preferred reply, "answered with ChatGPT while Claude rests" label | arrow through messages; Enter on a link opens it | "foo, 9:03 AM: {text}" and once streaming ends, not word by word | 225 %: no line over 72 characters at 100 %; dark: `--bubble-foo` dark value; offline: older messages readable |
 | Voice-note bubble | recording bar ("Release to send · Esc to cancel"), < 0.5 s discarded ("Hold to record"), 5:00 max, sent, transcript collapsed/expanded, transcript failed, low-confidence "I heard…", foo voice reply with speed chip and word highlight, never autoplay | hold Ctrl+Space to record, Esc cancels; Space play/pause on focused bubble | "Voice note, 0:14, transcript: {text}" | RM: waveform static; HC: waveform drawn with system colour |
 | Reactions | add, remove, foo's 👍 on user's bubble, 1️⃣–4️⃣ answering a Choice card, 👍 on an Approval card (does nothing, Article 6) | reaction picker reachable from message menu | "Reacted thumbs up" | — |
 | System lines | handoff marker, date divider, "Opened in Trips", "Not saving this one" chip, held-items line in brief | not focusable unless it has a link | read as plain text, centred lines read once | HC: grey text becomes CanvasText |
@@ -253,6 +253,12 @@ AT-436 to AT-439 are reserved for this patch.
 | AT-441 | Small slips mended | a real AI's kit reply with an unknown key, a `null`, a number written as text or text as a plain number, or an over-long label draws with no "Couldn't show part of this"; an unknown component, a missing key, a value outside its list, too few items, a bad input name, `composer.fill` or a web image is still dropped (AT-354) |
 | AT-442 | The prompt teaches the limits | each catalog line names its text lengths, item counts and the Calculator input-name pattern, the kit section says to use only the keys shown and to leave an unused optional key out |
 | AT-443 | Wrong or missing closing brackets (CR-0050, X-208) | the recorded run-30 EMI Calculator, Jaipur map and GDP chart replies, whose closing brackets are swapped or left out, draw with no "Couldn't show part of this"; a line that starts a new message ends an open one before it; valid replies read the same; a reply cut inside a text value, or a piece the catalog refuses, is still dropped; while streaming an open message is still held back |
+
+**Tables in replies (CR-0053, X-210; 04 §13.2, 08-2 §7.6, 08-4 §24.3).**
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-444 | A table stays a table | a reply holding a markdown table reaches the bubble with the table unchanged (no "label: value" lines), chat mode or stream mode; `rules.md` lets the AI use a table when asked for one or when comparing three or more things on the same points |
 
 ---
 

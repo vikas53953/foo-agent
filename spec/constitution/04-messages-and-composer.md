@@ -563,7 +563,7 @@ Test ids: `bubble-table`, "Show all {n} rows" `bubble-table-expand`.
 - More than 20 rows: first 10 rows + a `--btn-h-sm` 32 footer button "Show all {n} rows" `--t-caption-strong` `--accent`.
 - When the table is wider than the box: a 24px fade at the right edge (`--bg-raised` to transparent) shows there is more; Shift+wheel and ←/→ (when the table is focused) scroll it. The table box is focusable (`tabindex="0"`, focus ring) with Narrator name "Table, {rows} rows, {columns} columns".
 - Right-click on a table adds "Copy table" (copies tab-separated text, so it pastes into Excel).
-- In chat mode (§12.3) the engine turns tables into "label: value" lines (J7); tables only appear in rich bubbles.
+- Tables show in any foo bubble, chat mode or stream mode (§12.3); the engine passes them through unchanged (CR-0053, X-210).
 
 ### 13.3 Images in answers
 

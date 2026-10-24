@@ -169,10 +169,11 @@ describe('m3 PromptBuilder budget (§24.15)', () => {
 
   it('trims in order: untrusted, conversation (keeps 6), turn facts, notes, pinned to 2,000', () => {
     const { pb, logs } = setup();
+    // CR-0053 made part 2 longer, so the messages are a little shorter to keep the pinned trim at its 2,000 floor.
     const b = pb.buildIntake(
       input({
         attachmentText: [{ fileId: 'f', page: 1, text: big(30_000) }],
-        conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_400))),
+        conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_350))),
         turnFacts: Array.from({ length: 8 }, (_, i) => fact(`t${i}`, big(300))),
         helper: { name: 'Trips', jobText: 'travel', goodResult: 'seat', notes: Array.from({ length: 10 }, () => big(150)).join('\n') },
         pinned: Array.from({ length: 12 }, (_, i) => fact(`p${i}`, big(300))),
