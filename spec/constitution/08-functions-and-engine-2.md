@@ -378,7 +378,7 @@ If `<act>` is missing or invalid: one repair turn (`purpose:'repair'`, same sess
 ### 7.6 Output filters (every `<say>`, every step slot, every card text from the AI)
 1. **Banned words** (Art. 2 list + "agent", "tool call", "API key"→"key"): case-insensitive whole-word scan. Hit → replace with the mapped plain word (`API`→"connection", `token`→"key", `OAuth`→"sign in", `server`→"service", `cron`→"routine", `prompt`→"message", `model`→"AI", `CLI`/`terminal`/`command`→"helper app") when a mapping exists; if any unmapped banned word remains, one `rewrite` turn on the cheap model with `rewrite.md` (08-4 §24.9). Still failing → the sentence containing it is dropped. Hindi and Punjabi script forms and the `agent` / `tool call` mappings: 08-4 §25.8.
 2. **Filler** (J7 step 5): sentences matching "Great question", "How can I help you", "I apologize for the confusion", "As an AI", "I hope this helps" are removed.
-3. **Chunking**: the engine never splits a reply; the renderer's rule (04 §12.3) and the bubble delay formula are 08-4 §25.9. The engine only turns tables into "label: value" lines.
+3. **Chunking**: the engine never splits a reply; the renderer's rule (04 §12.3) and the bubble delay formula are 08-4 §25.9. The engine leaves tables as they are; the renderer draws them (04 §13.2, CR-0053).
 4. **Redactor** (§11.4) on the final text.
 
 ---

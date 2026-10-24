@@ -202,7 +202,7 @@ Every entry in §7.3 has: **Summary** (one paragraph), **Touches** (surface keys
 
 ### J7 · Casual chat, including voice notes in and out
 
-**Summary.** Plain talk is not a job. Noise replies ("thanks!") get a 👍 reaction and no message. Otherwise "typing…", then 1–3 short bubbles 0.8–2.5 s apart; lists stay whole; tables become "label: value" lines. foo mirrors the user's style without copying their emojis and never uses filler. Voice in: hold Ctrl+Space or the mic button, release to send, local transcript within 3 s. Voice out: default "When I send voice", voice bubble plus text, never auto-plays. Mic blocked, no mic, short or long recordings, low-confidence transcripts, memory chips and files have fixed branches.
+**Summary.** Plain talk is not a job. Noise replies ("thanks!") get a 👍 reaction and no message. Otherwise "typing…", then 1–3 short bubbles 0.8–2.5 s apart; lists stay whole; tables stay tables (CR-0053). foo mirrors the user's style without copying their emojis and never uses filler. Voice in: hold Ctrl+Space or the mic button, release to send, local transcript within 3 s. Voice out: default "When I send voice", voice bubble plus text, never auto-plays. Mic blocked, no mic, short or long recordings, low-confidence transcripts, memory chips and files have fixed branches.
 
 **Touches.** 03: SH·Header (typing line) · 04: MS·Me, MS·Foo, MS·Voice, MS·React, MS·Composer (recording bar) · 05: CD·Memory, CD·Paste, CD·Error · 06: SC·Settings (Chat and voice) · 08: EN·Voice, EN·Memory, EN·AI · 09: WN·Keys, WN·Toasts.
 
