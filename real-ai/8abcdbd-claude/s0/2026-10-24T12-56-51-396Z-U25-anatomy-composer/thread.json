@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n12:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n12:56 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which electricity company is the bill from?\n1\nBSES (Delhi)\nBEST FIT\n2\nPSPCL (Punjab)\n3\nTata Power\n4\nAnother company\nTell me the name\nSomething else…\nSkip\n12:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n12:56 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to dominos.co.in\n2\nLook for Domino's menu and offers near you\n3\nWait for you to pick one\n4\nFill in your details on dominos.co.in\n5\nShow you before your pizza order and total\n…and 2 more · Show\nAbout 6 minutes\nGo\nChange plan\n12:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n12:56 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n12:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n12:57 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n12:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:57 PM"
+  }
+]

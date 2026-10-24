@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n12:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n12:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n12:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! What can I do for you today?\n\n12:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n12:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can look things up, read your email and calendar, draft and send messages, and set up checks that repeat. Tap whatever fits on your screen, or just tell me what you need.\n\n12:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n12:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet, so nobody in between can see what you send.\n\nNormally, your traffic goes from your phone or laptop to a website through your internet provider, and they can see where it goes. With a VPN, your traffic is locked (encrypted) first and sent to the VPN company's computer. That computer then talks to the website for you.\n\nWhat this means for you:\n\nOn public Wi-Fi: strangers on the same network can't read your data.\nYour location: websites see the VPN's place, not yours.\nYour internet provider: they see you're using a VPN, but not which sites you visit.\n\nA VPN doesn't make you fully anonymous. The VPN company can still see your traffic, so pick one you trust.\n\n12:41 PM"
+  }
+]

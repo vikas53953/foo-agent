@@ -1,0 +1,14 @@
+{"t":"2026-10-24T12:41:08.089Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T12:41:13.256Z","step":"launch","ok":true}
+{"t":"2026-10-24T12:41:13.349Z","i":0,"do":"send","sentAt":1792845673318,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-24T12:41:24.554Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3585,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! What can I do for you today?\n\n12:41 PM","kit":[],"ms":11205}
+{"t":"2026-10-24T12:41:24.607Z","shot":"01-hi.png"}
+{"t":"2026-10-24T12:41:24.674Z","i":2,"do":"send","sentAt":1792845684663,"sent":true,"before":0,"ok":true,"ms":67}
+{"t":"2026-10-24T12:41:34.866Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3088,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I'm foo, your personal helper: I can look things up, read your email and calendar, draft and send messages, and set up checks that repeat. Tap whatever fits on your screen, or just tell me what you need.\n\n12:41 PM","kit":[],"ms":10192}
+{"t":"2026-10-24T12:41:34.918Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-24T12:41:35.002Z","i":4,"do":"send","sentAt":1792845694977,"sent":true,"before":0,"ok":true,"ms":84}
+{"t":"2026-10-24T12:41:46.709Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2543,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and the internet, so nobody in between can see what you send.\n\nNormally, your traffic goes from your phone or laptop to a website through your internet provider, and they can see where it goes. With a VPN, your traffic is locked (encrypted) first and sent to the VPN company's computer. That computer then talks to the website for you.\n\nWhat this means for you:\n\nOn public Wi-Fi: strangers on the same network can't read your data.\nYour location: websites see the VPN's place, not yours.\nYour internet provider: they see you're using a VPN, but not which sites you visit.\n\nA VPN doesn't make you fully anonymous. The VPN company can still see your traffic, so pick one you trust.\n\n12:41 PM","kit":[],"ms":11707}
+{"t":"2026-10-24T12:41:46.766Z","shot":"03-vpn.png"}
+{"t":"2026-10-24T12:41:46.774Z","i":6,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-24T12:41:46.863Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-24T12:41:46.873Z","step":"aiTurns","turns":3}

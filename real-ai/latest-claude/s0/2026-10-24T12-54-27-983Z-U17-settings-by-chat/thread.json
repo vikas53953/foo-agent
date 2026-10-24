@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n12:50 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:51 PM\n12:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:51 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n12:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000: the MSI Modern 14 at about ₹43,219 with all three picks having 16GB RAM and a 512GB SSD.\n\nLaptop\tPrice\tProcessor\tRAM / SSD\tDisplay\nMSI Modern 14 C7M\tabout ₹43,219\tRyzen 5 7530U\t16GB / 512GB\t14\" FHD IPS\nAcer Aspire 14 AI\tabout ₹43,999\tSnapdragon X\t16GB / 512GB\t14\" WUXGA 120Hz\nLenovo ThinkBook 16 Gen 7\tabout ₹46,990\tRyzen 5 7535HS\t16GB DDR5 / 512GB\t16\" 16:10 FHD+\nMSI: the cheapest and light at about 1.4kg, but the battery is smaller and stock can be patchy.\nAcer: about 15 hours of battery and the best screen, but some apps may not run on Windows on Arm.\nLenovo: the fastest chip, and the RAM and SSD can be upgraded, but it weighs about 1.7kg and the screen is dim.\n\nThese prices and specs come from one review site (SahiGadget, Oct 2026) that did not test the laptops itself. Prices change often, so check them on Amazon or Flipkart before buying.\n\nWant me to look for current prices on any of these?\n\n12:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:54 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Sat 24 Oct\nReplace\nRemove\n12:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n12:54 PM"
+  }
+]
