@@ -1,0 +1,22 @@
+{"t":"2026-10-24T05:36:39.431Z","journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","spec":"07-1 J9, J18; 06 live; M9","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T05:36:44.977Z","step":"launch","ok":true}
+{"t":"2026-10-24T05:36:45.147Z","i":0,"do":"send","sentAt":1792820205105,"sent":true,"before":0,"ok":true,"ms":166}
+{"t":"2026-10-24T05:36:58.317Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7097,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Booking table for 2, Sun 25 Oct, 8:00 PM\n1\nLook for vegetarian restaurants near Connaught\n2\nKeep 3 vegetarian restaurants that fit good ratings, free at 8:00 PM\n3\nWait for you to pick one\n4\nShow you before the booking details\n5\nShow you before doing anything\n6\nBook table for 2, Sun 25 Oct, 8:00 PM\nAbout 5 minutes\nGo\nChange plan\n5:36 AM","kit":[],"ms":13170}
+{"t":"2026-10-24T05:36:58.401Z","shot":"01-booking-start.png"}
+{"t":"2026-10-24T05:36:58.445Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":44}
+{"t":"2026-10-24T05:37:58.456Z","i":3,"do":"wait","ok":true,"ms":60010}
+{"t":"2026-10-24T05:37:58.538Z","shot":"02-booking-working.png"}
+{"t":"2026-10-24T05:37:58.544Z","i":4,"do":"check","found":1,"ok":true,"ms":5}
+{"t":"2026-10-24T05:37:58.618Z","i":5,"do":"clickIf","found":1,"ok":true,"ms":74}
+{"t":"2026-10-24T05:38:02.618Z","i":6,"do":"wait","expect":"live view of the browser, Stop and Take over visible","ok":true,"ms":4000}
+{"t":"2026-10-24T05:38:02.724Z","shot":"03-watch-live.png"}
+{"t":"2026-10-24T05:38:22.737Z","i":7,"do":"wait","ok":true,"ms":20013}
+{"t":"2026-10-24T05:38:22.808Z","shot":"04-live-later.png"}
+{"t":"2026-10-24T05:38:22.811Z","i":8,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-24T05:40:52.814Z","i":9,"do":"wait","expect":"choice card of options, then Approve card; driver never taps Approve","ok":true,"ms":150002}
+{"t":"2026-10-24T05:40:52.892Z","shot":"05-booking-later.png"}
+{"t":"2026-10-24T05:40:52.895Z","i":10,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-24T05:40:52.896Z","i":11,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-24T05:40:52.912Z","i":12,"do":"dump","ok":true,"ms":16}
+{"t":"2026-10-24T05:40:53.179Z","step":"appLog","lines":56,"dropped":0}
+{"t":"2026-10-24T05:40:53.192Z","step":"aiTurns","turns":27}

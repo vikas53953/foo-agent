@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "withdrawn",
+    "text": "No longer needed. The job was stopped.\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:41 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:41 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n5:41 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:42 AM\n5:42 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:42 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n5:42 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:42 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n5:42 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:42 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n5:43 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Check your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n5:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n5:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group should I catch you up on? Tell me its name and I'll read what you missed.\n\n5:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n5:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers are the Ganga, the Yamuna and the Godavari.\n\n5:43 AM"
+  }
+]

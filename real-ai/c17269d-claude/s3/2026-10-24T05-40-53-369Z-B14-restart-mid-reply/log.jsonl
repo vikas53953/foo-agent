@@ -1,0 +1,19 @@
+{"t":"2026-10-24T05:40:53.369Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T05:40:58.981Z","step":"launch","ok":true}
+{"t":"2026-10-24T05:41:07.091Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8106}
+{"t":"2026-10-24T05:41:07.207Z","i":0,"do":"send","sentAt":1792820467163,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-24T05:41:10.217Z","i":1,"do":"wait","ok":true,"ms":3009}
+{"t":"2026-10-24T05:41:15.507Z","step":"launch","ok":true}
+{"t":"2026-10-24T05:41:15.507Z","i":2,"do":"relaunch","ok":true,"ms":5290}
+{"t":"2026-10-24T05:41:23.069Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":1012,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Try Shelly, Mochi or Turbo (a fun joke for a slow mover). Other good ones are Pebble, Biscuit and Gandalf, for a wise old tortoise.\n\n5:41 AM","kit":[],"ms":7561}
+{"t":"2026-10-24T05:41:23.139Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-24T05:41:23.141Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n5:41 AM","eyes":false},"ok":true,"ms":1}
+{"t":"2026-10-24T05:41:23.314Z","i":5,"do":"send","sentAt":1792820483250,"sent":true,"before":0,"ok":true,"ms":173}
+{"t":"2026-10-24T05:41:25.328Z","i":6,"do":"wait","ok":true,"ms":2013}
+{"t":"2026-10-24T05:41:30.607Z","step":"launch","ok":true}
+{"t":"2026-10-24T05:41:30.608Z","i":7,"do":"relaunch","ok":true,"ms":5280}
+{"t":"2026-10-24T05:41:44.263Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":4051,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nWrite it\nWatch live\nStop\nunder 1 min\n5:41 AM\n---\nWhat should I look up on the web?\n1\nPrices or deals\nBEST FIT\nCompare costs for something\n2\nA place or business\nHours, address, reviews\n3\nNews or facts\nFind and sum up a topic\n4\nSomething else\nTell me in your own words\nSomething else…\nSkip\n5:41 AM","kit":[],"ms":13655}
+{"t":"2026-10-24T05:41:44.323Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-24T05:41:44.333Z","i":9,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T05:41:44.460Z","step":"appLog","lines":17,"dropped":0}
+{"t":"2026-10-24T05:41:44.473Z","step":"aiTurns","turns":3}

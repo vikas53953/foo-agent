@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:36 AM\n5:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:36 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Booking table for 2, Sun 25 Oct, 8:00 PM\nlive checklist\n2 steps done · Show\nYou picked\nShowed you before the booking details\nYou said yes\nBooked table for 2, Sun 25 Oct, 8:00 PM\nStopped by you\n5:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:36 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Sun 25 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n5:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n5:41 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Try Shelly, Mochi or Turbo (a fun joke for a slow mover). Other good ones are Pebble, Biscuit and Gandalf, for a wise old tortoise.\n\n5:41 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n5:41 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nWrite it\nWatch live\nStop\nunder 1 min\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What should I look up on the web?\n1\nPrices or deals\nBEST FIT\nCompare costs for something\n2\nA place or business\nHours, address, reviews\n3\nNews or facts\nFind and sum up a topic\n4\nSomething else\nTell me in your own words\nSomething else…\nSkip\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n5:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's economy grew about 6.5% to 9.7% a year over the last five years, peaking at 9.7% in FY 2021-22 and easing to 6.5% in FY 2024-25. These are real GDP growth figures from what I know, not a live check, and FY 2025-26 is an early government estimate that may be revised.\n\nIndia real GDP growth (% a year)\n0%\n5%\n10%\nFY22\nFY23\nFY24\nFY25\nFY26 (est.)\nKeep\n5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n5:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 looks like the best value: it has the fastest chip, 256 GB of storage and a smooth 120 Hz screen at about the same launch price as the other two. These are launch prices and specs from what I know, not a live check. Current prices in shops and online will differ.\n\niPhone 16\nIndia launch price\n₹79,900 (128 GB)\nChip\nApple A18\nScreen\n6.1 inch OLED, 60 Hz\nMain cameras\n48 MP + 12 MP\nBattery\nAbout 3,600 mAh\nUpdates\nAround 6 years or more\nPixel 9\nIndia launch price\n₹79,999 (256 GB)\nChip\nGoogle Tensor G4\nScreen\n6.3 inch OLED, 120 Hz\nMain cameras\n50 MP + 48 MP\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nIndia launch price\n₹80,999 (256 GB)\nChip\nSnapdragon 8 Elite\nScreen\n6.2 inch OLED, 120 Hz\nMain cameras\n50 MP + 10 MP + 12 MP\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest chip, 256 GB and 120 Hz for about the same price.\n\nKeep\n\nIf battery life or camera matters most, the Pixel 9 is a close second.\n\n5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n5:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the tea is in the water.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n5:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n5:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n5:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an item, pick a category and amount, and the total and category bars update as you go. Set a monthly budget to see what's left. Entries stay only while this page is open.\n\nKeep\n5:36 AM"
+  }
+]
