@@ -1,4 +1,4 @@
-// M3 output filters (08-2 §7.6 steps 1, 2, 3, 4; 08-4 §25.8 script forms; §25.9 tables; AT-031 filler; Redactor R10).
+// M3 output filters (08-2 §7.6 steps 1, 2, 3, 4; 08-4 §25.8 script forms; CR-0053 tables kept (AT-444); AT-031 filler; Redactor R10).
 import { describe, expect, it } from 'vitest';
 import { BANNED } from '../../scripts/check-copy';
 import {
@@ -9,7 +9,6 @@ import {
   mapBannedWords,
   removeFiller,
   splitSentences,
-  tablesToLines,
 } from '../../src/engine/prompt/filters';
 import { Redactor } from '../../src/engine/redact/Redactor';
 import { FakeClock } from '../../src/shared/clock';
@@ -122,16 +121,11 @@ describe('m3 filler (§7.6 step 2)', () => {
   });
 });
 
-describe('m3 tables (§25.9)', () => {
-  it('two columns → label: value', () => {
-    expect(tablesToLines('Fares:\n| Train | Fare |\n|---|---|\n| Rajdhani | ₹2,450 |\n| Duronto | ₹1,980 |\nPick one.')).toBe(
-      'Fares:\nRajdhani: ₹2,450\nDuronto: ₹1,980\nPick one.',
-    );
-  });
-  it('more columns → header value pairs', () => {
-    expect(tablesToLines('| Train | Fare | Leaves |\n| :-- | --: | --- |\n| Rajdhani | ₹2,450 | 4:00 PM |')).toBe(
-      'Rajdhani: Fare ₹2,450, Leaves 4:00 PM',
-    );
+describe('CR-0053 tables stay tables (AT-444)', () => {
+  // Real-AI run 62d419e R1: "Make a table comparing 3 budget phones" came back as "label: value" lines, never a table.
+  it('AT-444 a table in a reply reaches the bubble as a table', () => {
+    const say = 'Fares:\n| Train | Fare | Leaves |\n| :-- | --: | --- |\n| Rajdhani | ₹2,450 | 4:00 PM |\n| Duronto | ₹1,980 | 11:00 PM |\nPick one.';
+    expect(filterSay(say).text).toBe(say);
   });
 });
 
