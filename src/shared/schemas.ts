@@ -246,7 +246,7 @@ export const StepDecisionSchema = z.discriminatedUnion('kind', [
   z
     .object({
       kind: z.literal('done'),
-      result: z.string().max(600),
+      result: z.string().max(4_000), // CR-0055: room for a table (CR-0053)
       proof: ProofSchema.optional(),
       unverified: z.boolean().optional(),
     })

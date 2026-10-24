@@ -372,7 +372,7 @@ type StepDecision =
   | { kind: 'replan'; steps: PlanStep[] /* the remaining steps only, 1–12 */ }
   | { kind: 'ask'; card: ChoiceCardSpec }
   | { kind: 'request_approval'; draft: ApprovalDraft; submitRef?: string /* the commit control, browser jobs */ }   // F-058
-  | { kind: 'done'; result: string /* ≤ 600 */; proof?: Proof; unverified?: boolean }
+  | { kind: 'done'; result: string /* ≤ 4,000 (CR-0055) */; proof?: Proof; unverified?: boolean }
   | { kind: 'fail'; reason: string /* ≤ 200 */; alternative?: FixAction };   // FixAction per 08-0 §B.3 / 08-3 §21
 ```
 `browser.fillCard` and `browser.submit` are never valid in `call.tool` from the AI (`USE_SUBMIT`); `gmail.send` and `whatsapp.send` are never valid either (the user's Send tap sends, 08-0 §G.7).

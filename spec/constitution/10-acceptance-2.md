@@ -260,6 +260,12 @@ AT-436 to AT-439 are reserved for this patch.
 |---|---|---|
 | AT-444 | A table stays a table | a reply holding a markdown table reaches the bubble with the table unchanged (no "label: value" lines), chat mode or stream mode; `rules.md` lets the AI use a table when asked for one or when comparing three or more things on the same points |
 
+**Job answers with tables (CR-0055, X-212; 08-4 §25.3).**
+
+| ID | Verify | Pass |
+|---|---|---|
+| AT-445 | A job's answer can hold a table | a step's `done` with a `result` holding a three-row comparison table (over 600 characters) passes the step check; a `result` over 4,000 characters still fails it |
+
 ---
 
 ## §D Article compliance tests
