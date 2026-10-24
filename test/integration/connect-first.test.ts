@@ -313,6 +313,24 @@ describe('CR-0056 · an email catch-up while Google is not connected offers Conn
     expect(w.h.cards('connect')).toHaveLength(1);
   });
 
+  it('once Google connects and intake says catch_up again, the message reads the email as a job', async () => {
+    const READ_ONE = [
+      tool('gmail.search', { query: 'in:inbox', max: 1 }, { delayMs: 100, once: true }),
+      tool('gmail.read', { messageId: 'm_bill_power' }, { delayMs: 100, once: true }),
+      step({ kind: 'done', result: RESULT, proof: { kind: 'emails_read', count: 1, messageIds: ['m_bill_power'] } }, { delayMs: 100 }),
+    ];
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP, once: false }, ...READ_ONE]);
+    w.h.userSays('check my email');
+    await w.h.settle();
+    await w.signIn(['gmail']);
+    await w.h.settle();
+    const jobs = w.h.jobs();
+    expect(jobs.map((j) => j.state)).toEqual(['done']);
+    expect(w.h.toolCalls().map((c) => c.tool)).toEqual(['gmail.search', 'gmail.read']);
+    expect(fooTexts(w.h)).not.toContain(t('thread.not_built.catch_up'));
+    expect(w.h.cards('connect')).toHaveLength(1);
+  });
+
   it('Not now: the message goes back to intake once and gets the not-built line, no second card', async () => {
     const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP, once: false }]);
     w.h.userSays('check my email');

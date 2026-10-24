@@ -259,7 +259,7 @@ AT-436 to AT-439 are reserved for this patch.
 | ID | Verify | Pass |
 |---|---|---|
 | AT-444 | A table stays a table | a reply holding a markdown table reaches the bubble with the table unchanged (no "label: value" lines), chat mode or stream mode; `rules.md` lets the AI use a table when asked for one or when comparing three or more things on the same points |
-| AT-446 | An email catch-up offers Connect Gmail | with Google not connected and `connections` on, an intake `catch_up` with source `gmail` posts the Connect card for Gmail (`one_app`, line naming "Read your email") and no not-built line; once Google connects the message goes back to intake; Not now gets `thread.not_built.catch_up`; a WhatsApp catch-up, Google already connected, or `connections` off keep the not-built line (CR-0056) |
+| AT-446 | An email catch-up offers Connect Gmail | with Google not connected and `connections` on, an intake `catch_up` with source `gmail` posts the Connect card for Gmail (`one_app`, line naming "Read your email") and no not-built line; once Google connects the message goes back to intake, and the same catch-up again runs as a one-step `read_email` job; Not now sends it to one more intake turn without the card, where a catch-up gets `thread.not_built.catch_up`; a WhatsApp catch-up, Google already connected, or `connections` off keep the not-built line (CR-0056) |
 
 **Job answers with tables (CR-0055, X-212; 08-4 §25.3).**
 

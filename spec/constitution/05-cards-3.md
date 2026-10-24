@@ -96,7 +96,7 @@ The `--signin-w` / `--signin-h` sizes of §5.26 no longer size any window (Edge 
 
 **Purpose.** Ask once, in plain words, to connect an app, saying what foo will and won't do with it `[JRN C10, J4]`.
 
-**Trigger.** Interview step (J4 Cards D, E), a job that needs an app that isn't connected ("Connect Gmail and I can tell you the amount too"), an expired connection, or a new permission (send). A job whose intake `needsApps` names a Google app while Google is not connected gets this card before it starts (08-2 §5.3.3, CR-0040, X-198).
+**Trigger.** Interview step (J4 Cards D, E), a job that needs an app that isn't connected ("Connect Gmail and I can tell you the amount too"), an expired connection, or a new permission (send). A job whose intake `needsApps` names a Google app while Google is not connected gets this card before it starts (08-2 §5.3.3, CR-0040, X-198), and so does an intake email catch-up while catch-ups are not built (08-4 §25.5 item 5a, CR-0056, X-213).
 
 ### 5.11.1 Anatomy (`--card-w` 440px)
 

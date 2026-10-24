@@ -235,6 +235,17 @@ function notBuiltLine(kind: string | undefined): string {
   }
 }
 
+/** CR-0056: the job an email catch-up becomes once Google connects: one step that reads the user's email. */
+function readEmailJob(): Extract<IntakeDecision, { kind: 'job' }> {
+  return {
+    kind: 'job',
+    title: phraseText('read_email', 'next')!,
+    plan: [{ phraseKey: 'read_email', slots: {}, route: 'api' }],
+    routeHint: ['api'],
+    needsApps: ['gmail'],
+  };
+}
+
 /** CR-0054: the feature an intake kind belongs to, when this build left it off; null when it is on or has none. */
 type OffFeature = 'jobs' | 'memory' | 'settings';
 const KIND_FEATURE: Partial<Record<string, OffFeature>> = { job: 'jobs', memory: 'memory', setting: 'settings' };
@@ -281,6 +292,8 @@ export class ChatLane {
   private awaitingConnect = new Map<string, { chatId: string; at: number; cardId: string }>();
   /** CR-0044: messages whose Connect card got Not now (engine RAM, like askAnswers). */
   private connectDeclined = new Set<string>();
+  /** CR-0056: messages whose email catch-up posted Connect Gmail. */
+  private catchUpConnected = new Set<string>();
   /** User messages this engine has started a turn for (a restart's cut-off list may name one of them). */
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
@@ -679,6 +692,16 @@ export class ChatLane {
     }
     // R1 T6: a side question is answered, never turned into a job, a memory change or a setting (04 §17.5).
     if (side && act && act.kind !== 'react') act = { kind: 'reply' };
+    // CR-0056: a message that got Connect Gmail for an email catch-up, and came back from intake as that catch-up again once
+    // Google connected, reads the user's email as a job (the not-built line asks for exactly that).
+    if (
+      act?.kind === 'catch_up' &&
+      act.source.kind === 'gmail' &&
+      this.catchUpConnected.has(messageId) &&
+      !this.connectDeclined.has(messageId) &&
+      !(this.d.appsToConnect?.(['gmail']) ?? []).length
+    )
+      act = readEmailJob();
     const kind = act?.kind ?? 'reply';
     let retryEmpty = false;
     const released = gate.released().trimEnd();
@@ -772,6 +795,7 @@ export class ChatLane {
       // CR-0056 (08-4 §25.5 item 5a): an email catch-up with Google not connected offers Connect Gmail, as a job that needs
       // Gmail does (CR-0040); once Google connects the message goes back to intake, and Not now gets the not-built line.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      this.catchUpConnected.add(messageId);
       await this.connectFirst(chatId, messageId, emailCatchUpConnect, phraseText('read_email', 'next')!, helper);
     } else {
       // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind, after any
