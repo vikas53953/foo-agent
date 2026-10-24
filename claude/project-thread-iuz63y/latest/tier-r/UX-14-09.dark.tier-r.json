@@ -75,6 +75,7 @@
         "10:04",
         "✓",
         "✓",
+        "⏳",
         "train",
         "24",
         "Step",
@@ -377,6 +378,7 @@
         "your",
         "AI",
         "9:41",
+        "🛠",
         "foo",
         "read:",
         "17",
@@ -451,8 +453,13 @@
         "replies",
         "show",
         "here.",
-        "Home:",
-        "localhost"
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
+        "localhost.",
+        "Show",
+        "button."
       ]
     },
     "hl": {
