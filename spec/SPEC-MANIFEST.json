@@ -13,7 +13,7 @@
     "constitution/04-messages-and-composer.md": "4e20fa536c77235d5b479bfa5be79c0a7c723fa507fe59f0f5f1986d75d07652",
     "constitution/05-cards-1.md": "8654403cc266ec99f83122a3220565d2867b8d2cfe804ee45998e52d47bd35cc",
     "constitution/05-cards-2.md": "14329196936e577e437e56f2ceb524d6eae61f3597dd172ed0151af3b7f35702",
-    "constitution/05-cards-3.md": "56049beed0bfde773503bea674ababd1f90eb50f6726771334d0e205e898988a",
+    "constitution/05-cards-3.md": "7e5787e8dc369ab8397c3641a11e217f7a631cf732eb286ffea8ce2e1738098a",
     "constitution/05-cards.md": "a0499c7f7de38be2028e950b5e3e9b7771507876a0c010aee9dce9dffac0ba04",
     "constitution/06-screens-1.md": "7090763ad965c2c522ed5792e34a46578cee8e8e9d67fbc1939f46d7e6c21fa2",
     "constitution/06-screens-2.md": "bc3d511dad63a5ae432306a12a7c1c69ff019c057dc48833586c68bfd9548417",
@@ -26,15 +26,15 @@
     "constitution/08-functions-and-engine-1.md": "9b76bb6efc13d6439753f981a9ae49bf254284f8032bfe4e402cde9b6f552797",
     "constitution/08-functions-and-engine-2.md": "9198d52253c63c5fa7c68dde7f1297ab5fc75fc04d7fdd7cec3bbe9e2553d395",
     "constitution/08-functions-and-engine-3.md": "bf72eacc82f100498bff647693ff92d80e474ba4bed69c3e3d4496a3a5333e11",
-    "constitution/08-functions-and-engine-4.md": "dd95b23acfe10e5734a2616f091b13072f331371e61d4b5001d90d42cce41cad",
+    "constitution/08-functions-and-engine-4.md": "88bba5568aec662b6ade92c39827e61f46165e8bd268eae612dcabc69eeaf266",
     "constitution/09-windows.md": "fcd5793534097a7bb37084f216b4de176862c6821c58870a84083695f4089550",
     "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
-    "constitution/10-acceptance-2.md": "0b95d2e2329ba6a5490c11356ee512bce04aaaaf0b5564fdb86f28224002a82c",
+    "constitution/10-acceptance-2.md": "b59fc8668c58e8d26b648fb3b608efd7e6211859c12c6c5ae4a255ca97f28277",
     "constitution/11-fidelity.md": "e2933c5638dcd7c7e779c32bb94c518b541c042e048c777c2dad1168a0e9b348",
     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "b40b71b89b3a642532f2d8cfd292e2afe101213b7d67dd6bea572d33a3e71cf4",
+    "constitution/DECISIONS.md": "cb8dd3f834d0d8e7ef077e17fce106e2ec378076074f0d278144407604a68935",
     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -56,6 +56,6 @@
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "143ed27b171b0fb2910065e79de1af36bb8507d6987e21285664a17f0542b286",
     "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
-    "trace.csv": "fb4aa39e34d2eea8b9f7b5541756b0ff9bea63e34b6b72ec9e6e3d11a7684daf"
+    "trace.csv": "2216a0d9636b585868469c5cea786b13ae2d72d263ea719b6eea875cf2392d20"
   }
 }

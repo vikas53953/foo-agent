@@ -2,7 +2,7 @@
 // Choice card "Which email do you want me to read?" (Gmail / Outlook / Yahoo Mail) from the job's first step, because the
 // catalogue lists no Gmail tools while Google is not connected (08-4 §27.1). 05-3 §5.11 Trigger ("a job that needs an app that
 // isn't connected") → the Connect card, variant `one_app` (§5.11.2), before any job; 08-2 §5.3.3 (once Google connects the
-// message goes back to intake and the job runs). 08-3 §22.4 (fakes only: the fake Google token endpoint and the fake Gmail).
+// message goes back to intake and the job runs). CR-0056 (AT-446): an email catch_up with Google not connected does the same. 08-3 §22.4 (fakes only: the fake Google token endpoint and the fake Gmail).
 import { request } from 'node:http';
 import { afterEach, describe, expect, it } from 'vitest';
 import { googleEndpoints } from '../../src/engine/tools/connectors/google';
@@ -68,7 +68,7 @@ function hit(url: string): Promise<void> {
 }
 
 /** The engine with main's GoogleConnections holding the token (as the app runs), Google not connected at start. */
-function world(script: Parameters<typeof jobHarness>[0]['script']) {
+function world(script: Parameters<typeof jobHarness>[0]['script'], features?: string) {
   const oauth = new FakeGoogle();
   const apis = fakeGoogle([fakeGmailRead(gmailState())]);
   const http: HttpFetch = (url, init) => (url.includes('oauth2.googleapis.com') ? oauth.fetch(url, init) : apis.fetch(url, init));
@@ -77,6 +77,7 @@ function world(script: Parameters<typeof jobHarness>[0]['script']) {
   let svc: GoogleConnections | null = null;
   const x = jobHarness({
     script,
+    ...(features ? { features } : {}),
     google: (db: Db) => {
       svc = new GoogleConnections({
         db,
@@ -262,5 +263,106 @@ describe('CR-0044 review · a card whose message moved on never starts a second 
     expect(r).toMatchObject({ ok: false, error: { kind: 'CARD_STALE' } });
     await w.h.settle();
     expect(w.h.jobs()).toHaveLength(1);
+  });
+});
+
+describe('CR-0056 · an email catch-up while Google is not connected offers Connect Gmail, not the not-built line', () => {
+  // Real-AI runs 54 and 55 (B13 "check my email", U20 "Read my latest Gmail"): the AI decided `catch_up` from the user's
+  // email, and foo said "I can't do catch-ups yet. Ask me about one thing, like your latest email", which was the ask.
+  const CATCH_UP = '<say></say>\n<act>{"decision":{"kind":"catch_up","source":{"kind":"gmail"}},"usedMemoryIds":[]}</act>';
+  const WA_CATCH_UP =
+    '<say></say>\n<act>{"decision":{"kind":"catch_up","source":{"kind":"wa_group","chatId":"wa_1"}},"usedMemoryIds":[]}</act>';
+  const notNow = (x: JobHarness, cardId: string) =>
+    answerCard(
+      {
+        db: x.db,
+        now: () => x.clock.now(),
+        engine: { send: (kind, payload) => x.bridge.send(kind, payload as never) },
+        emitCard: () => undefined,
+        emitMessage: () => undefined,
+        emitChat: () => undefined,
+      },
+      { cardId, answer: { skip: true }, resolvedBy: 'tap' },
+    );
+
+  it('AT-446 "check my email" decided as catch_up posts Connect Gmail and no not-built line', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP }]);
+    const askId = w.h.userSays('check my email');
+    await w.h.settle();
+    const cards = w.h.cards('connect');
+    expect(cards).toHaveLength(1);
+    expect(payloadOf(cards[0]!)).toEqual({
+      variant: 'one_app',
+      app: 'gmail',
+      scopes: ['gmail'],
+      why: t('cards.connect.one_app.why_job.gmail', { title: 'Read your email' }),
+      intakeConnect: { messageId: askId },
+    });
+    expect(fooTexts(w.h)).not.toContain(t('thread.not_built.catch_up'));
+    expect(w.h.jobs()).toHaveLength(0);
+    expect(w.h.message(askId).badge).toBe(BADGE_OF_STATE.needs_you);
+  });
+
+  it('once Google connects, the message goes back to intake and its job reads the inbox', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP }, { match: { purpose: 'intake' }, reply: REAL_JOB }, ...READ]);
+    w.h.userSays(ASK);
+    await w.h.settle();
+    await w.signIn(['gmail']);
+    await w.h.settle();
+    expect(w.h.jobs().map((j) => j.state)).toEqual(['done']);
+    expect(w.h.cards('connect')).toHaveLength(1);
+  });
+
+  it('once Google connects and intake says catch_up again, the message reads the email as a job', async () => {
+    const READ_ONE = [
+      tool('gmail.search', { query: 'in:inbox', max: 1 }, { delayMs: 100, once: true }),
+      tool('gmail.read', { messageId: 'm_bill_power' }, { delayMs: 100, once: true }),
+      step({ kind: 'done', result: RESULT, proof: { kind: 'emails_read', count: 1, messageIds: ['m_bill_power'] } }, { delayMs: 100 }),
+    ];
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP, once: false }, ...READ_ONE]);
+    w.h.userSays('check my email');
+    await w.h.settle();
+    await w.signIn(['gmail']);
+    await w.h.settle();
+    const jobs = w.h.jobs();
+    expect(jobs.map((j) => j.state)).toEqual(['done']);
+    expect(w.h.toolCalls().map((c) => c.tool)).toEqual(['gmail.search', 'gmail.read']);
+    expect(fooTexts(w.h)).not.toContain(t('thread.not_built.catch_up'));
+    expect(w.h.cards('connect')).toHaveLength(1);
+  });
+
+  it('Not now: the message goes back to intake once and gets the not-built line, no second card', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP, once: false }]);
+    w.h.userSays('check my email');
+    await w.h.settle();
+    expect(notNow(w.h, String(w.h.cards('connect')[0]!.id)).ok).toBe(true);
+    await w.h.settle();
+    expect(w.h.cards('connect').map((c) => c.state)).toEqual(['skipped']);
+    expect(fooTexts(w.h)).toEqual([t('thread.not_built.catch_up')]);
+  });
+
+  it('connections switched off (CR-0054): no Connect card; the not-built line stands', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP }], 'install,ai,name,chat,settings');
+    w.h.userSays('check my email');
+    await w.h.settle();
+    expect(w.h.cards('connect')).toHaveLength(0);
+    expect(fooTexts(w.h)).toEqual([t('thread.not_built.catch_up')]);
+  });
+
+  it('a WhatsApp group catch-up still gets the not-built line', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: WA_CATCH_UP }]);
+    w.h.userSays('catch me up on the family group');
+    await w.h.settle();
+    expect(w.h.cards('connect')).toHaveLength(0);
+    expect(fooTexts(w.h)).toEqual([t('thread.not_built.catch_up')]);
+  });
+
+  it('Google already connected: the not-built line, no Connect card', async () => {
+    const w = world([{ match: { purpose: 'intake' }, reply: CATCH_UP }]);
+    await w.signIn();
+    w.h.userSays('check my email');
+    await w.h.settle();
+    expect(w.h.cards('connect')).toHaveLength(0);
+    expect(fooTexts(w.h)).toEqual([t('thread.not_built.catch_up')]);
   });
 });
