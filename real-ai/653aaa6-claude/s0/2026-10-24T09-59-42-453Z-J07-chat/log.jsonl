@@ -1,0 +1,14 @@
+{"t":"2026-10-24T09:59:42.454Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T09:59:47.862Z","step":"launch","ok":true}
+{"t":"2026-10-24T09:59:47.985Z","i":0,"do":"send","sentAt":1792835987952,"sent":true,"before":0,"ok":true,"ms":120}
+{"t":"2026-10-24T09:59:58.120Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3036,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! What would you like to get done today?\n\n9:59 AM","kit":[],"ms":10135}
+{"t":"2026-10-24T09:59:58.182Z","shot":"01-hi.png"}
+{"t":"2026-10-24T09:59:58.258Z","i":2,"do":"send","sentAt":1792835998253,"sent":true,"before":0,"ok":true,"ms":75}
+{"t":"2026-10-24T10:00:08.403Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3050,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can check your email, calendar and websites, catch you up on chats, set reminders and routines, and help write and send messages. Just tell me what you need.\n\n10:00 AM","kit":[],"ms":10144}
+{"t":"2026-10-24T10:00:08.463Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-24T10:00:08.579Z","i":4,"do":"send","sentAt":1792836008546,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-24T10:00:21.250Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3531,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN puts a private tunnel between your device and the internet, so no one in between can see what you do.\n\nWithout one, your traffic goes straight from your phone or PC to a website, and your internet provider or the café Wi-Fi owner can see where it's going. With one, everything is locked and sent to the VPN company first. They then pass it on to the website for you.\n\nTwo things follow from that:\n\nPrivacy: Others on your network only see scrambled data going to the VPN, not which sites you visit.\nLocation: The website sees the VPN's address, not yours, so you appear to be wherever the VPN is.\n\nA VPN doesn't make you anonymous. The VPN company can still see your traffic, so pick one you trust.\n\n10:00 AM","kit":[],"ms":12670}
+{"t":"2026-10-24T10:00:21.329Z","shot":"03-vpn.png"}
+{"t":"2026-10-24T10:00:21.339Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T10:00:21.471Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-24T10:00:21.484Z","step":"aiTurns","turns":3}
