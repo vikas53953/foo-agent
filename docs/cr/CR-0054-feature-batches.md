@@ -31,11 +31,15 @@ None. Tests are titled by CR: `test/unit/cr-0054-features.test.ts`, `test/integr
 2. **Tests see everything.** A FOO_TEST run and the shared real-AI journeys switch every feature on, so no existing test
    changes; a dev run reads the file like the installer (FOO_FEATURES=all shows everything). A journey with `"features": "shipped"` tests the build's own list.
 3. **A broken file switches batch 1 on**, never nothing and never everything.
-4. **Choice cards stay.** foo's own clarifying question (intake `ask`) is part of chatting; the `choice` feature is the job's
-   Choice steps, which need jobs.
+4. **~~Choice cards stay.~~ An `ask` waits for jobs.** First pick: foo's own clarifying question (intake `ask`) is part of
+   chatting. The real-AI run of `B1-batch1` on 1d498c0 (run 40072988953) showed otherwise: "Book a table for 2 tonight at a cafe
+   in Delhi" got `ask` with "Kaunsa area?" on a Choice card, so a batch-1 user would answer it and only then hear that tasks come
+   later. CR-0028 made `ask` a task's question before its job, so while jobs are off it gets the jobs line, like `job`.
 5. **Lines name the batch, not the milestone.** Vikas reads "a later batch", the word he used.
 6. **Enabling a batch** is one edit to `resources/features.json` and a new installer. When every feature is on, this CR's
    lines and gates can go.
+7. **No talk hint with voice off.** The same run showed "Message foo, or hold Ctrl+Space to talk" with the mic hidden; with
+   voice off the placeholder is the short "Message {name}" (already in the copy for a narrow pill).
 
 ## (d) Review
 

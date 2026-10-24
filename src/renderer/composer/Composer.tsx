@@ -428,7 +428,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
           aiName: ai?.displayName ?? '',
           hasAttachments: chips.length > 0,
           hasText: !empty,
-          narrow,
+          // CR-0054: with voice off there is nothing to hold, so the line is the short "Message {name}".
+          narrow: narrow || !voiceOn,
           kind: chat.kind,
           private: chat.private,
           title: chatName,

@@ -1,6 +1,7 @@
 // Spec: CR-0054 (X-211): a batch-1 build (install, ai, name, chat, settings) shows no entry point of a feature it left off:
 // no New helper, no menu rows for groups, memory, routines, ideas or activity; no Doing now, Using, Know or Spent in the
-// details panel; only the batch-1 settings pages; the + menu keeps Emoji only; an empty composer shows Send, not the mic.
+// details panel; only the batch-1 settings pages; the + menu keeps Emoji only; an empty composer shows Send, not the mic, and
+// its placeholder offers no talk key.
 import { expect, test } from '@playwright/test';
 import { TID } from '../../src/shared/testids';
 import { openPanelChat } from './m4-start';
@@ -33,6 +34,8 @@ test('CR-0054: a batch-1 build hides every entry point of a feature it left off'
     await expect(page.getByTestId(TID[tid])).toHaveCount(0);
 
   await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'send');
+  // B1-batch1 on 1d498c0 showed "or hold Ctrl+Space to talk" with the mic hidden.
+  await expect(page.getByTestId(TID.composerField)).toHaveAttribute('aria-description', /^Message [^,]+$/);
   await page.getByTestId(TID.composerAttach).click();
   await expect(page.getByTestId(TID.composerAttachMenuEmoji)).toBeVisible();
   for (const tid of ['composerAttachMenuFiles', 'composerAttachMenuScreenshot', 'composerAttachMenuSecret'] as const)
