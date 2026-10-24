@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n5:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n5:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already have that saved from earlier today.\n\n5:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n5:34 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked isro.gov.in, pib.gov.in, thehindu.com\nI\nP\nT\nLooked for ISRO news from Sat 17 Oct to Sat 24 Oct\nWrote it\nStopped by you\n5:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:34 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n5:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n5:37 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Email: running 15 minutes late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n5:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:37 AM"
+  }
+]

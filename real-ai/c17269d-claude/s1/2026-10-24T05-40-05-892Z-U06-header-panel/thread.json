@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n5:37 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:38 AM\n5:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:37 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Ixigo\nG\nM\nI\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, timings, duration and stops\nStopped by you\n5:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n5:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. That combination handles coding, Docker and a few browser tabs without slowing down.\n\nRAM: 16 GB at minimum. Skip 8 GB laptops with soldered memory, since you can't upgrade them later.\nScreen and keyboard: a 14 or 15 inch IPS screen, 1080p or better, with a keyboard you like typing on for hours.\nBattery and weight: 8+ hours and under about 1.7 kg if you carry it daily.\nGraphics card: only worth the extra cost for machine learning, games or video work. Otherwise put that money into a better screen and build.\n\nIf you build iPhone or Mac apps, you'll need a Mac, and a new one usually costs more than this budget. What do you mostly code in: web, apps, or data and AI?\n\n5:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n5:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n5:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:39 AM"
+  }
+]

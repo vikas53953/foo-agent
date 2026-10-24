@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T05-38-49-514Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792820343005,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9110,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. That combination handles coding, Docker and a few browser tabs without slowing down.\n\nRAM: 16 GB at minimum. Skip 8 GB laptops with soldered memory, since you can't upgrade them later.\nScreen and keyboard: a 14 or 15 inch IPS screen, 1080p or better, with a keyboard you like typing on for hours.\nBattery and weight: 8+ hours and under about 1.7 kg if you carry it daily.\nGraphics card: only worth the extra cost for machine learning, games or video work. Otherwise put that money into a better screen and build.\n\nIf you build iPhone or Mac apps, you'll need a Mac, and a new one usually costs more than this budget. What do you mostly code in: web, apps, or data and AI?\n\n5:39 AM",
+      "kit": [],
+      "ms": 18215
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}
