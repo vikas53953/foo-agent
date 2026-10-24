@@ -1,0 +1,23 @@
+{"t":"2026-10-24T05:44:15.547Z","journey":"B07-live","title":"Watch live, take over, hand back, stop","spec":"AT-058, AT-272, AT-078, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T05:44:21.088Z","step":"launch","ok":true}
+{"t":"2026-10-24T05:44:21.234Z","i":0,"do":"send","sentAt":1792820661193,"sent":true,"before":0,"ok":true,"ms":143}
+{"t":"2026-10-24T05:44:33.429Z","i":1,"do":"waitReply","firstReplyMs":6061,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking IRCTC\n1\nCheck IRCTC\n2\nFind trains on IRCTC\n3\nLook for New Delhi to Agra trains, Sun 25 Oct\nAbout 3 minutes\nGo\nChange plan\n5:44 AM","kit":[],"ms":12195}
+{"t":"2026-10-24T05:44:33.492Z","shot":"01-irctc.png"}
+{"t":"2026-10-24T05:44:33.533Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":40}
+{"t":"2026-10-24T05:45:18.537Z","i":3,"do":"wait","ok":true,"ms":45003}
+{"t":"2026-10-24T05:45:18.590Z","i":4,"do":"clickIf","found":1,"ok":true,"ms":53}
+{"t":"2026-10-24T05:45:22.591Z","i":5,"do":"wait","ok":true,"ms":4001}
+{"t":"2026-10-24T05:45:22.654Z","shot":"02-live.png"}
+{"t":"2026-10-24T05:45:22.656Z","i":6,"do":"clickIf","found":0,"ok":true,"ms":1}
+{"t":"2026-10-24T05:45:25.658Z","i":7,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-24T05:45:25.733Z","shot":"03-taken-over.png"}
+{"t":"2026-10-24T05:45:25.735Z","i":8,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-24T05:45:28.737Z","i":9,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-24T05:45:28.811Z","shot":"04-handed-back.png"}
+{"t":"2026-10-24T05:45:28.814Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-24T05:45:36.815Z","i":11,"do":"wait","ok":true,"ms":8001}
+{"t":"2026-10-24T05:45:36.889Z","shot":"05-stopped.png"}
+{"t":"2026-10-24T05:45:36.892Z","i":12,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-24T05:45:36.901Z","i":13,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-24T05:45:37.087Z","step":"appLog","lines":22,"dropped":0}
+{"t":"2026-10-24T05:45:37.099Z","step":"aiTurns","turns":10}

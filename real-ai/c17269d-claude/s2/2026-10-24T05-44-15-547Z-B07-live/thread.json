@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n5:37 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a gentle 3-day Jaipur plan with a slow pace, short walks and rest breaks for your parents.\n\nDay 1: Forts and views\n\nAmber Fort early in the morning, before the crowds and heat. Use the vehicle up to the top if climbing is hard.\nJal Mahal photo stop on the way back, then lunch and a rest.\nEvening at Nahargarh Fort for sunset and dinner with a city view.\n\nDay 2: Old city\n\nHawa Mahal in the morning, then City Palace and Jantar Mantar, which are close together.\nLong lunch and an afternoon break at the hotel.\nEvening stroll through Johari Bazaar for jewellery, fabrics and sweets. Dinner at Chokhi Dhani if they enjoy folk music and a village-style meal.\n\nDay 3: Easy and relaxed\n\nAlbert Hall Museum and Birla Mandir, both with little walking.\nShopping for blockprint fabrics, juttis and blue pottery, then a late lunch.\nLeave time for travel back.\n\nStaying near MI Road or the old city saves a lot of travel time, and a hired car with a driver for all three days is easiest. When are they going, and how are they getting there? I can then check trains, hotels and the weather.\n\n5:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n5:37 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Saturday do you mean, for 2 people at 8:00 PM?\n1\nTonight, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nNext week, Sat 31 Oct, 8:00 PM\nSomething else…\nSkip\n5:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n5:41 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 1 min\nDetails\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. Today, Sat 24 Oct, it is open from 10:00 AM to 8:00 PM. Entry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 enter free with an ID card. This is from the museum's own Plan Your Visit page, and I did not see a date on it for when it was last updated.\n\n5:42 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n5:44 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:44 AM\n5:44 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:44 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n5:44 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest options for Sun 25 Oct are Vande Bharat 22470 (Hazrat Nizamuddin 6:00 AM, Agra Cantt 7:40 AM, 1h 40m) and Gatimaan 12050 (Hazrat Nizamuddin 8:10 AM, Agra Cantt 9:50 AM, 1h 40m). Shatabdi 12002 leaves New Delhi at 6:00 AM and reaches Agra Cantt at 7:50 AM (1h 50m). Punjab Mail 12138 leaves New Delhi at 5:10 AM and arrives at 8:10 AM. This list came from another site, not IRCTC, and stops at 11:25 AM. Seats and fares are not checked.\n\n5:45 AM"
+  }
+]
