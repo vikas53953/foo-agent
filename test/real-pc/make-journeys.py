@@ -435,9 +435,10 @@ journey(
         click('composer-attach'),
         click('composer-attach-menu-secret'),
         wait(1500, 'secret', 'Secret box card: Name field, masked key field, eye toggle, Save (CR-0057)', 'BP-CARD-07'),
-        # CR-0057: Name comes first (data-index 0), the masked key second.
-        {**fill('card-secret-field', 'Test key'), 'nth': 0},
-        {**fill('card-secret-field', 'sk-test-0000000000000000000000000000'), 'nth': 1},
+        # CR-0057: Name comes first (data-index 0), the masked key second. Pick them in the newest card: an earlier
+        # card in the thread also has fields (real-AI run 47fea16 U13 typed the key into the Name box).
+        {'do': 'fill', 'css': '[data-testid="card-secret-field"][data-index="0"]', 'value': 'Test key', 'soft': True, 'last': True},
+        {'do': 'fill', 'css': '[data-testid="card-secret-field"][data-index="1"]', 'value': 'sk-test-0000000000000000000000000000', 'soft': True, 'last': True},
         wait(300, 'typed', 'value masked'),
         click('card-secret-eye', last=True),
         wait(300, 'shown', 'value shown after eye'),
