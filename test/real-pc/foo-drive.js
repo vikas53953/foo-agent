@@ -410,10 +410,8 @@ async function main() {
           break;
         case 'fill':
           // "env" names a variable whose value is typed (a real key into the Secret box); only the name is logged.
-          await page
-            .locator(sel(s))
-            .first()
-            .fill(s.env ? process.env[s.env] || '' : s.value);
+          // pick() honours nth / last; .first() ignored them, so U13 typed the key into the Name box (real-AI run 47fea16).
+          await pick(s).fill(s.env ? process.env[s.env] || '' : s.value);
           break;
         case 'key':
           await page.keyboard.press(s.key);
