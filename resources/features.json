@@ -1,0 +1,3 @@
+{
+  "on": ["install", "ai", "name", "chat", "settings"]
+}

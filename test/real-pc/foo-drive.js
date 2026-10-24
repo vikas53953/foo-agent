@@ -16,7 +16,8 @@ const { stillWorking, settled } = require('./settle');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
-const PROFILE = path.join(ROOT, 'profile');
+// A journey with "profile": "own" runs on its own fresh profile (profile-<id>) instead of the shared one (CR-0054).
+let PROFILE = path.join(ROOT, 'profile');
 
 // Never clicked by the driver: real spend, real outbound messages, real bookings.
 const REFUSED_TIDS = new Set([
@@ -44,9 +45,13 @@ function loadPlaywright() {
   throw new Error('playwright-core not found next to foo.exe; run `npm i playwright-core@1.64.1` in this folder');
 }
 
+let journeyFeatures = null;
+
 // foo must start as the app, not as Node: drop the variable this script itself runs under.
 function childEnv() {
   const env = { ...process.env, FOO_DATA_DIR: path.join(PROFILE, 'data'), FOO_LOCAL_DIR: path.join(PROFILE, 'local') };
+  // CR-0054: every feature is on unless the journey asks for the build's own list ("features": "shipped") or names some.
+  env.FOO_FEATURES = journeyFeatures ?? process.env.FOO_FEATURES ?? 'all';
   for (const k of Object.keys(env)) if (k.toUpperCase() === 'ELECTRON_RUN_AS_NODE') delete env[k];
   return env;
 }
@@ -144,6 +149,11 @@ async function main() {
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
   // {AI_ROW} in a journey names the Find-your-AI row to use (FOO_AI_ROW: claude-cli, anthropic-key, openai-key, codex-cli).
   const journey = JSON.parse(fs.readFileSync(file, 'utf8').replaceAll('{AI_ROW}', process.env.FOO_AI_ROW || 'claude-cli'));
+  if (journey.features) journeyFeatures = journey.features;
+  if (journey.profile === 'own') {
+    PROFILE = path.join(ROOT, `profile-${journey.id}`);
+    fs.rmSync(PROFILE, { recursive: true, force: true });
+  }
   const out = path.join(ROOT, 'runs', `${stamp()}-${journey.id}`);
   fs.mkdirSync(out, { recursive: true });
   const logPath = path.join(out, 'log.jsonl');
@@ -399,7 +409,11 @@ async function main() {
           rec.value = await page.evaluate(s.js);
           break;
         case 'fill':
-          await page.locator(sel(s)).first().fill(s.value);
+          // "env" names a variable whose value is typed (a real key into the Secret box); only the name is logged.
+          await page
+            .locator(sel(s))
+            .first()
+            .fill(s.env ? process.env[s.env] || '' : s.value);
           break;
         case 'key':
           await page.keyboard.press(s.key);

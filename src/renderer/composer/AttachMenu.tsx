@@ -15,10 +15,13 @@ export interface AttachMenuProps {
   open: boolean;
   disabled: boolean;
   onOpen: (open: boolean) => void;
-  onFiles: () => void;
+  /** CR-0054: left out while this build leaves photos and papers off; the file rows are then not in the menu. */
+  onFiles?: () => void;
   onEmoji: () => void;
   /** Left out where no Secret box may be posted (a group). */
   onSecret?: () => void;
+  /** CR-0054: sign-in is off in this build, so the "Password or key" row is not in the menu. */
+  hideSecret?: boolean;
 }
 
 /**
@@ -29,12 +32,14 @@ export function attachMenuEntries({
   onFiles,
   onEmoji,
   onSecret,
+  hideSecret = false,
 }: {
-  onFiles: () => void;
+  onFiles?: () => void;
   onEmoji: () => void;
   onSecret?: () => void;
+  hideSecret?: boolean;
 }): MenuEntry[] {
-  return [
+  const all: MenuEntry[] = [
     {
       kind: 'item',
       id: 'files',
@@ -65,11 +70,13 @@ export function attachMenuEntries({
       onSelect: onEmoji,
     },
   ];
+  // CR-0054: rows of a feature this build left off are not shown.
+  return all.filter((e) => !((e.id === 'files' || e.id === 'screenshot') && !onFiles) && !(e.id === 'secret' && hideSecret));
 }
 
-export function AttachMenu({ open, disabled, onOpen, onFiles, onEmoji, onSecret }: AttachMenuProps) {
+export function AttachMenu({ open, disabled, onOpen, onFiles, onEmoji, onSecret, hideSecret }: AttachMenuProps) {
   const [button, setButton] = useState<HTMLButtonElement | null>(null);
-  const entries = attachMenuEntries({ onFiles, onEmoji, onSecret });
+  const entries = attachMenuEntries({ onFiles, onEmoji, onSecret, hideSecret });
   return (
     <>
       <Tooltip text={disabled ? t('composer.send.tooltip.disabled') : t('composer.attach.tooltip')} side="top">

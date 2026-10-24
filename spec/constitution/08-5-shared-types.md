@@ -52,7 +52,7 @@ type PublicSettings = Omit<Settings, 'dev' | 'flags'> & {
   window: Omit<Settings['window'], 'bounds'>;
   locked: SettingsPath[];                 // the 08-0 §A.2 locked paths, for the UI's lock chips
 };
-interface Bootstrap { settings: PublicSettings; chats: ChatRow[]; openChatId?: string; firstMessages: MessageRow[]; setup: SetupState; ai: AiStatus; spend: SpendSummary; connections: ConnectionRow[]; safeMode: boolean }   // 08-1 §3.2 app:getBootstrap
+interface Bootstrap { settings: PublicSettings; chats: ChatRow[]; openChatId?: string; firstMessages: MessageRow[]; setup: SetupState; ai: AiStatus; spend: SpendSummary; connections: ConnectionRow[]; safeMode: boolean; features?: FeatureId[] }   // 08-1 §3.2 app:getBootstrap; `features` CR-0054 (08-4 §25.5 item 5b), absent = every feature
 interface SetupState { complete: boolean; step: 0 | 1 | 2 | 3 | 4 | 5; interviewCard?: 'A'|'B'|'C'|'D'|'E'|'F'|'G'|'H'; answers: Partial<Record<0|1|2|3|4|5, unknown>> }   // 06-1 §2.0 numbering, never a 1–4 index
 interface ReadinessResult { os: 'ok' | 'too_old'; disk: 'ok' | 'low'; webview2: 'ok' | 'missing'; edge: 'ok' | 'missing'; checkedAt: number }
 interface AiStatus { primary: ProviderId | null; backup: ProviderId | null; displayName: string /* 08-0 §B.4 */; billing: 'plan' | 'key' | 'local';

@@ -31,6 +31,7 @@
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
+import type { FeatureId } from '../../shared/features';
 import type { Settings } from '../../shared/settings';
 import {
   chatSettingNotBuilt,
@@ -197,6 +198,9 @@ export interface LaneDeps {
   // CR-0043
   /** Main's `settings.set` (08-1 §4.4.2 step 5): the allow-list only; the reply carries the change record's id. */
   setSetting?(path: string, value: unknown, chatId: string): Promise<Result<{ changeId: string | null; value: unknown }>>;
+  // CR-0054
+  /** Whether this build switched the feature on; absent = every feature is on. */
+  featureOn?(id: FeatureId): boolean;
 }
 
 type GoogleApp = 'gmail' | 'gcal' | 'contacts';
@@ -227,6 +231,26 @@ function notBuiltLine(kind: string | undefined): string {
       return t('thread.not_built.handoff');
     default:
       return t('thread.reply.empty');
+  }
+}
+
+/** CR-0054: the feature an intake kind belongs to, when this build left it off; null when it is on or has none. */
+type OffFeature = 'jobs' | 'memory' | 'settings';
+const KIND_FEATURE: Partial<Record<string, OffFeature>> = { job: 'jobs', memory: 'memory', setting: 'settings' };
+function featureOff(kind: string, featureOn: ((id: FeatureId) => boolean) | undefined): OffFeature | null {
+  const id = KIND_FEATURE[kind];
+  return id && featureOn && !featureOn(id) ? id : null;
+}
+
+/** CR-0054: what foo says for an ask whose feature is switched on in a later batch. */
+function featureOffLine(id: OffFeature): string {
+  switch (id) {
+    case 'jobs':
+      return t('thread.feature_off.jobs');
+    case 'memory':
+      return t('thread.feature_off.memory');
+    case 'settings':
+      return t('thread.feature_off.settings');
   }
 }
 
@@ -443,12 +467,16 @@ export class ChatLane {
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
 
-    const memory = await buildMemoryParts((q, ...args) => this.query(q, ...args), {
-      chatId,
-      text: message.textForAi ?? message.text,
-      timeZone: settings.locale.timeZone,
-      now: this.d.clock.now(),
-    });
+    // CR-0054: with memory off no fact is offered to the turn, so none can be quoted or counted as used.
+    const memory: MemoryParts =
+      this.d.featureOn?.('memory') === false
+        ? { part5: [], part5b: [] }
+        : await buildMemoryParts((q, ...args) => this.query(q, ...args), {
+            chatId,
+            text: message.textForAi ?? message.text,
+            timeZone: settings.locale.timeZone,
+            now: this.d.clock.now(),
+          });
     let built: { system: string; prompt: string; factIds?: string[] } | null;
     try {
       const oldPlan = side ? null : (this.d.jobs?.planChange?.(chatId) ?? null);
@@ -657,14 +685,16 @@ export class ChatLane {
     // CR-0044: the decided kind goes to the tech log (an enum, no words), so a real-AI run shows why a message got its answer.
     this.d.log('chat.intake_kind', act ? kind : 'none', { chatId });
 
-    const memoryKind = act?.kind === 'memory' && this.d.memory ? act : null;
-    const notBuilt = kind === 'routine' || kind === 'catch_up' || kind === 'handoff';
-    const settingKind = act?.kind === 'setting' && this.d.setSetting ? act : null;
+    // CR-0054: a kind whose feature this build left off gets that feature's line, like an unbuilt kind.
+    const offFeature = featureOff(kind, this.d.featureOn);
+    const memoryKind = act?.kind === 'memory' && this.d.memory && !offFeature ? act : null;
+    const notBuilt = offFeature !== null || kind === 'routine' || kind === 'catch_up' || kind === 'handoff';
+    const settingKind = act?.kind === 'setting' && this.d.setSetting && !offFeature ? act : null;
     if (
       kind === 'reply' ||
       (kind !== 'react' &&
         kind !== 'ask' &&
-        !(kind === 'job' && this.d.jobs) &&
+        !(kind === 'job' && this.d.jobs && !offFeature) &&
         !memoryKind &&
         !settingKind &&
         !notBuilt &&
@@ -685,7 +715,9 @@ export class ChatLane {
           },
         ]);
         // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
-        if (kind === 'reply' && !side && tags.includes('intent_capabilities')) await this.capabilitiesCard(chatId, helper);
+        // CR-0054: every row is a task, so no card while jobs are off; the reply's sentence stands alone.
+        if (kind === 'reply' && !side && tags.includes('intent_capabilities') && this.d.featureOn?.('jobs') !== false)
+          await this.capabilitiesCard(chatId, helper);
       } else {
         // Run 21 B14: which empty it was (the AI said nothing, or every sentence it said was dropped), never the words.
         this.d.log(parsed.say.trim() ? 'chat.reply_empty.filtered' : 'chat.reply_empty.no_say', undefined, { chatId });
@@ -697,7 +729,7 @@ export class ChatLane {
           await this.emptyReply(chatId, messageId, helper, who, providerNote);
         }
       }
-    } else if (act && act.kind === 'job' && this.d.jobs) {
+    } else if (act && act.kind === 'job' && this.d.jobs && !offFeature) {
       // 08-2 §5.3.3: the runner takes over; its checklist and result are what the user sees next (ART-22).
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       // CR-0044: after Not now on its Connect card, the message's job runs without those apps.
@@ -731,8 +763,8 @@ export class ChatLane {
       // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind, after any
       // text already released (item 5).
       if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
-      this.d.log('chat.kind_not_built', undefined, { chatId });
-      await this.post(chatId, messageId, notBuiltLine(act?.kind), helper, providerNote);
+      this.d.log(offFeature ? 'chat.kind_feature_off' : 'chat.kind_not_built', offFeature ?? undefined, { chatId });
+      await this.post(chatId, messageId, offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind), helper, providerNote);
     }
     // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.
     if (!retryEmpty) {

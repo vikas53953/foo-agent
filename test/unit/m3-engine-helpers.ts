@@ -97,6 +97,9 @@ export interface HarnessOptions {
   // M9
   /** T8: foo's real browser tools over a test launcher (the sandbox sites), beside the fake tools. */
   browser?: { registry: ToolRegistry; runtime: BrowserRuntime };
+  // CR-0054
+  /** FOO_FEATURES for this engine ("all", "shipped" or a comma list); left out, every feature is on. */
+  features?: string;
 }
 
 /** M4: per-prefix counters (`tc_000001` is the first tool call), so a fake AI line can name an id in a proof. */
@@ -206,7 +209,7 @@ export function makeHarness(o: HarnessOptions): Harness {
   const engine = Engine.create({
     link,
     clock,
-    env: { FOO_FAKE_AI: scriptPath, FOO_TEST: '1' },
+    env: { FOO_FAKE_AI: scriptPath, FOO_TEST: '1', ...(o.features ? { FOO_FEATURES: o.features } : {}) },
     dataDir,
     localDir,
     resourcesDir: RESOURCES,
@@ -283,8 +286,11 @@ export function makeHarness(o: HarnessOptions): Harness {
     turnsJsonl() {
       const f = path.join(dataDir, 'test', 'turns.jsonl');
       if (!existsSync(f)) return [];
+      // Only whole lines: a poll can read the file while the fake AI is still appending its last line (CI run 40070186426,
+      // restart-messages "Unterminated string in JSON").
       return readFileSync(f, 'utf8')
         .split('\n')
+        .slice(0, -1)
         .filter(Boolean)
         .map((l) => JSON.parse(l) as Record<string, unknown>);
     },

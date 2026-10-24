@@ -36,7 +36,7 @@ import { requestRevealCard } from '../messages/reveal';
 import { clockNow } from '../store/apply';
 import { loadHelpersReducer, selectHelpers } from '../store/helpers';
 import { setComposerHint, update, useStore } from '../store/index';
-import { selectAi, selectNow } from '../store/live';
+import { selectAi, selectFeatureOn, selectNow } from '../store/live';
 import { editMessage, selectChatMessages, takeComposerRequest, type StoredMessage } from '../store/messages';
 import { selectAgentName, selectTimeZone } from '../store/settings';
 import { selectDialog } from '../store/ui';
@@ -355,7 +355,12 @@ export function Composer({ chat }: { chat: ChatRow }) {
   }, [chatId, draftRow, helpersById, setChips, writeField]);
 
   // ---------------------------------------------------------------- voice (§22.1)
-  const voice = useVoice({ chatId, enabled: !notSetUp, onBanner: setMicProblem });
+  // CR-0054: no mic while this build leaves voice off, no files while it leaves photos and papers off, no Secret box while it
+  // leaves sign-in off.
+  const voiceOn = useStore(selectFeatureOn('voice'));
+  const photosOn = useStore(selectFeatureOn('photos'));
+  const signinOn = useStore(selectFeatureOn('signin'));
+  const voice = useVoice({ chatId, enabled: !notSetUp && voiceOn, onBanner: setMicProblem });
   const recording = voice.rec?.mode ?? null;
   // P1 T6 (02 §F7.1): the bar shrinks back into the mic after it ends, so it keeps its last look while it leaves.
   const [lastRec, setLastRec] = useState<RecordingView | null>(null);
@@ -368,7 +373,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
   const hasContent = hasText(segs) || chips.length > 0;
   const replying =
     typing || (slice?.ids.slice(-3).some((id) => slice.byId[id]?.status === 'streaming' && slice.byId[id]?.authorKind !== 'user') ?? false);
-  const roundFacts = { notSetUp, editing: strip?.kind === 'edit', recording, hasContent, replying, catchOpen, tooLong };
+  const roundFacts = { notSetUp, editing: strip?.kind === 'edit', recording, hasContent, replying, catchOpen, tooLong, noVoice: !voiceOn };
   const round = roundButtonState(roundFacts);
   const tooltip = roundTooltip(round, roundFacts, talkKey);
   const counter = length >= COUNTER_FROM ? { n: tooLong ? length - TEXT_LIMIT : TEXT_LIMIT - length, over: tooLong } : null;
@@ -625,7 +630,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
 
   const addFiles = useCallback(
     (files: readonly File[], from?: { x: number; y: number }, enter: 'fly' | 'fold' = 'fly') => {
-      if (notSetUp || strip?.kind === 'edit' || !files.length) return;
+      if (notSetUp || strip?.kind === 'edit' || !files.length || !photosOn) return;
       touched.current = true;
       const plan = planFiles(files, chipsRefState.current.length);
       if (plan.notice) showNotice(noticeFor(plan.notice.slot, plan.notice.name));
@@ -659,7 +664,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
       setChips((list) => [...list, ...added]);
       focusField();
     },
-    [focusField, noticeFor, notSetUp, setChips, showNotice, strip],
+    [focusField, noticeFor, notSetUp, photosOn, setChips, showNotice, strip],
   );
 
   const removeChip = useCallback(
@@ -1174,8 +1179,10 @@ export function Composer({ chat }: { chat: ChatRow }) {
                 open={menuOpen}
                 disabled={disabled}
                 onOpen={setMenuOpen}
-                onFiles={() => picker.current?.click()}
-                onSecret={inGroup ? undefined : () => void invoke('secret:offer', { chatId, slot: 'key' }).catch(() => undefined)}
+                {...(photosOn ? { onFiles: () => picker.current?.click() } : {})}
+                {...(signinOn
+                  ? { onSecret: inGroup ? undefined : () => void invoke('secret:offer', { chatId, slot: 'key' }).catch(() => undefined) }
+                  : { hideSecret: true })}
                 onEmoji={() => {
                   focusField();
                   void invoke('app:showEmojiPanel', {}).catch(() => undefined);
