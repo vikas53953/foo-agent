@@ -1,0 +1,43 @@
+{
+  "journey": "J12-draft",
+  "title": "Draft an email (never sends)",
+  "steps": 4,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T07-01-06-766Z-J12-draft",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792825272286,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9696,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your draft for someone@example.com. I can only look in this job, so nothing has been sent:\n\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting (Sun 25 Oct). Sorry for the inconvenience, and please start without me if needed. See you soon.\n\nWant me to change the tone, or add the meeting time?\n\n7:01 AM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:01 AM",
+      "kit": [],
+      "ms": 18809
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

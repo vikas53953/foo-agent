@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:01 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:02 AM\n7:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:01 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, timing, duration and stops\nStopped by you\n7:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n7:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n7:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB of memory, a 512 GB SSD and a recent mid-range processor. You don't need a graphics card unless you do machine learning or games.\n\nMemory: 16 GB is the minimum. Take 32 GB if you run Docker or phone emulators.\nProcessor: Ryzen 5 or 7, Intel Core i5 or Ultra 5, or an Apple M-series chip if one fits your budget.\nScreen and keyboard: 14 to 16 inch, full HD or better, with a keyboard you like typing on for hours.\nBattery and weight: 8+ hours and under 1.7 kg if you carry it daily.\n\nWhat will you mostly build: web and apps, or machine learning and games? I can then look up current options and prices for you.\n\n7:03 AM"
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:58 AM\n6:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:58 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked isro.gov.in, pib.gov.in, thehindu.com\nI\nP\nT\nLooked for ISRO news from Sat 17 Oct to Sat 24 Oct\nWrote it\nStopped by you\n6:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n7:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your draft for someone@example.com. I can only look in this job, so nothing has been sent:\n\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting (Sun 25 Oct). Sorry for the inconvenience, and please start without me if needed. See you soon.\n\nWant me to change the tone, or add the meeting time?\n\n7:01 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n7:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:01 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:02 AM\n7:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:01 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, timing, duration and stops\nStopped by you\n7:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:02 AM"
+  }
+]
