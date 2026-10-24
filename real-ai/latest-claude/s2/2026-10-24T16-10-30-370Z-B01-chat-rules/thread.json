@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:10 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as sending a message. You scan a code or type a number, approve with your PIN, and the money moves from your bank account in seconds. There is no card machine, no change to count and no waiting for a transfer to clear.\n\nHere are the three main reasons:\n\nIt is quick and mostly free. Paying a friend or a shop usually costs nothing, and it works at any hour, even on holidays and Sundays.\nIt works almost everywhere. From a tea stall to a big mall, one printed code is enough. Small sellers don't need costly equipment, so more of them accept it every year.\nOne app, any bank. You can link several accounts and pay through whichever app you like, so you are never locked in to one bank.\n\nHabit and trust did the rest. Banks and the government pushed it early, and once people used it for small things like vegetables or auto rides, they kept going. When most shops accepted UPI, carrying cash started to feel like extra effort. Want a few tips on keeping your UPI payments safe?\n\n4:11 PM"
+  }
+]

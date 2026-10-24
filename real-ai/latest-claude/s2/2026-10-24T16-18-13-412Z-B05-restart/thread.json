@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n4:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a relaxed 3-day Jaipur plan for your parents, with mornings for sightseeing and a rest after lunch.\n\nDay 1, the old city: City Palace, Jantar Mantar and Hawa Mahal in the morning. Spend the afternoon at the Johari and Bapu bazaars for shopping and snacks, and have an early dinner.\nDay 2, forts: Amber Fort early to beat the crowds and the heat. Stop at Jal Mahal for photos on the way back, rest at the hotel, then see Nahargarh Fort at sunset.\nDay 3, easy and local: Albert Hall Museum, then Birla Mandir and a slow lunch. Finish with some last shopping for block-print textiles, jewellery and sweets.\n\nA few tips: hire a car with a driver for all three days. Amber Fort has a steep walk, but jeeps run up to the top. Stay near the old city so the evenings are short trips. Late October and November are pleasant, though midday can still be warm.\n\nDo your parents find lots of walking and stairs hard? I can then adjust the plan.\n\n4:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n4:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Saturday do you mean for the 8:00 PM table?\n1\nTonight, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nNext week, Sat 31 Oct, 8:00 PM\nSomething else…\nSkip\n4:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:15 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n4:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n4:18 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. It is open today, Sat 24 Oct, until 8:00 PM.\n\nEntry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an ID card. The address is Janpath, New Delhi 110011. This is from the museum's own Plan Your Visit page.\n\n4:19 PM"
+  }
+]

@@ -1,0 +1,98 @@
+{
+  "journey": "U22-face-polish",
+  "title": "Living face: thinking while working, resting; motion off in settings",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T16-30-47-921Z-U22-face-polish",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1040
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792859454663,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "26px Thinking face only while the request is in flight (C.7.4)",
+      "ok": true,
+      "ms": 1508
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "poem; face back to resting, blinks",
+      "firstReplyMs": 2521,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Grey clouds roll in over the Marine Drive wall,\nChai steams in hands as the first big raindrops fall.\nTrains hum through puddles, and the city sways,\nMumbai sings softly through the monsoon days.\n\n4:30 PM",
+      "kit": [],
+      "ms": 9575
+    },
+    {
+      "i": 4,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 84
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "face motion setting",
+      "ok": true,
+      "ms": 604
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 50
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23071
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

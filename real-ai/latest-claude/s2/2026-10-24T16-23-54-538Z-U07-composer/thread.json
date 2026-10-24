@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n4:18 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. It is open today, Sat 24 Oct, until 8:00 PM.\n\nEntry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an ID card. The address is Janpath, New Delhi 110011. This is from the museum's own Plan Your Visit page.\n\n4:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n4:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n4:21 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n4:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The fastest morning trains to Agra Cantt are the Shatabdi 12002 from New Delhi (6:00 AM to 7:50 AM, 1h 50m) and, from Hazrat Nizamuddin, the Vande Bharat 22470 (6:00 AM to 7:40 AM, 1h 40m) and the Gatimaan 12050 (8:10 AM to 9:50 AM, 1h 40m).\n\nFrom New Delhi station:\n\nPunjab Mail 12138: 5:10 AM to 8:10 AM, with sleeper and AC classes\nShatabdi 12002: 6:00 AM to 7:50 AM, chair car\nTaj Express 12280: 6:55 AM to 9:25 AM, chair car\nHirakund Exp 20808: 8:15 AM to 10:35 AM, with sleeper and AC classes\nHSX AGC Exp 11906: 7:20 AM to 11:00 AM, with sleeper and AC classes\nSlow passenger train 64074: 4:15 AM to 9:05 AM\n\nThe Shatabdi, Taj Express, Punjab Mail and 64074 run daily. The Vande Bharat and Gatimaan leave from Nizamuddin, and their running days weren't clear on the page I read, so check the day before you plan around them. The list I read stopped at 11:25 AM. I didn't book anything.\n\n4:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n4:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🙏 Hindi में hello को \"नमस्ते\" या \"नमस्कार\" कहते हैं। दोस्तों से आप \"हेलो\" या \"क्या हाल है?\" भी कह सकते हैं।\n\n4:23 PM"
+  }
+]
