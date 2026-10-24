@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n12:51 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Reading your WhatsApp\nDidn’t finish\nReading your WhatsApp\nWrite it\n12:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:51 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "Something went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n12:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n12:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n12:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n12:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with python hello.py.\n\n12:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n12:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n12:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n12:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket booking site is IRCTC. For train running status and PNR checks, use Indian Railways Enquiry.\n\n12:53 PM"
+  }
+]

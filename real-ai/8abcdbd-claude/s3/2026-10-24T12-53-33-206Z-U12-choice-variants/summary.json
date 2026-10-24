@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T12-53-33-206Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1047
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792846419987,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 143
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 8116,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, hilltop views, about 1.5 hrs away\n2\nCubbon Park and café morning\nEasy walk, then breakfast nearby\n3\nFood crawl in VV Puram\nStreet food, dosas and sweets\nSomething else…\nSkip\n12:53 PM",
+      "kit": [],
+      "ms": 14181
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792846434471,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 6102,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Cubbon Park and a café morning it is. Tomorrow, Sun 25 Oct, is a good fit: go around 8:00 AM, when the park is cool and quiet.\n\n8:00 AM: Walk through the park and sit under the trees for a while.\n10:00 AM: Breakfast and coffee at a café nearby.\n\nWant me to add it to your calendar?\n\n12:54 PM",
+      "kit": [],
+      "ms": 14221
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792846448907,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 5062,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, paneer, roti and rice\n3\nBiryani night\nHyderabadi-style, with raita\nSomething else…\nSkip\n12:54 PM",
+      "kit": [],
+      "ms": 11146
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 612
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792846460994,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 122
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 4535,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is, a good easy dinner tonight. Want a quick recipe, or a reminder to start cooking around 7:30 PM?\n\n12:54 PM",
+      "kit": [],
+      "ms": 11081
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

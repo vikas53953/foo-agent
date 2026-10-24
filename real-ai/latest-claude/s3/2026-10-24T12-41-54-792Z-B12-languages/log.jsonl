@@ -1,0 +1,14 @@
+{"t":"2026-10-24T12:41:54.792Z","journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","spec":"07-1 J7; walkthrough ch. 08; AT-031","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T12:42:00.314Z","step":"launch","ok":true}
+{"t":"2026-10-24T12:42:00.453Z","i":0,"do":"send","sentAt":1792845720413,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-24T12:42:18.629Z","i":1,"do":"waitReply","expect":"walkthrough 08 step 4: answers in Hinglish","firstReplyMs":8082,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mummy ke liye yeh options safe rehte hain:\n\nChocolate truffle: sabki favourite, kabhi galat nahi jaata.\nFresh fruit ya pineapple: halka aur fresh, agar mummy ko zyada meetha pasand nahi.\nButterscotch ya rasmalai cake: thoda alag, desi twist ke saath.\nPhoto ya naam wala cake: mummy ki photo ya \"Happy Birthday Mummy\" likhwa sakte ho.\n\nParso ke liye aaj ya kal tak order kar do, taaki subah ka delivery slot mil jaaye. Mummy eggless khati hain ya sugar ka dhyan rakhna hai?\n\n12:42 PM","kit":[],"ms":18176}
+{"t":"2026-10-24T12:42:18.706Z","shot":"01-hinglish.png"}
+{"t":"2026-10-24T12:42:18.816Z","i":2,"do":"send","sentAt":1792845738792,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-24T12:42:38.036Z","i":3,"do":"waitReply","expect":"walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi","firstReplyMs":9108,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਲਈ ਚਾਕਲੇਟ ਟ੍ਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ।\n\nਚਾਕਲੇਟ ਟ੍ਰਫਲ: ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\nਫਰੂਟ ਜਾਂ ਪਾਈਨਐਪਲ: ਹਲਕਾ ਤੇ ਤਾਜ਼ਾ, ਜੇ ਮੰਮੀ ਨੂੰ ਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਹੈ।\nਰਸਮਲਾਈ ਕੇਕ: ਦੇਸੀ ਸੁਆਦ ਨਾਲ ਕੁਝ ਵੱਖਰਾ।\nਫੋਟੋ ਵਾਲਾ ਕੇਕ: ਮੰਮੀ ਦੀ ਫੋਟੋ ਜਾਂ \"Happy Birthday Mummy\" ਲਿਖਵਾ ਸਕਦੇ ਹੋ।\n\nਜਨਮ ਦਿਨ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਮੰਮੀ ਐੱਗਲੈੱਸ ਖਾਂਦੇ ਹਨ ਜਾਂ ਸ਼ੂਗਰ ਦਾ ਧਿਆਨ ਰੱਖਣਾ ਹੈ?\n\n12:42 PM","kit":[],"ms":19220}
+{"t":"2026-10-24T12:42:38.106Z","shot":"02-punjabi.png"}
+{"t":"2026-10-24T12:42:38.211Z","i":4,"do":"send","sentAt":1792845758189,"sent":true,"before":0,"ok":true,"ms":104}
+{"t":"2026-10-24T12:42:50.828Z","i":5,"do":"waitReply","expect":"walkthrough 08 step 3: short 1–3 bubbles, no filler","firstReplyMs":5565,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so it should be a normal working day. Diwali falls on Sun 8 Nov this year. I can't check the official Maharashtra list from here, so confirm with your office or bank if it matters.\n\n12:42 PM","kit":[],"ms":12616}
+{"t":"2026-10-24T12:42:50.903Z","shot":"03-holiday.png"}
+{"t":"2026-10-24T12:42:50.918Z","i":6,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-24T12:42:51.047Z","step":"appLog","lines":11,"dropped":0}
+{"t":"2026-10-24T12:42:51.060Z","step":"aiTurns","turns":3}
