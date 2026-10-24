@@ -1,0 +1,47 @@
+{
+  "id": "BP-CARD-03",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(3) > .mini",
+  "box": {
+    "x": 930.15625,
+    "y": 10758.40625,
+    "width": 351.34375,
+    "height": 220
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-03.light.png",
+      "sha256": "bba95f3ad4044bc0591f2c950924ceb34110efaa1034217eac4693e9fb5157cc"
+    },
+    "dark": {
+      "png": "BP-CARD-03.dark.png",
+      "sha256": "af42ee7a658b1a468e6b824ea42798ab15b71a8ce9c4edc93d86c6a91a1dca19"
+    }
+  },
+  "texts": [
+    "Which flight time works?",
+    "10:15 AM · IndiGo · ₹5,240",
+    "7:10 AM · Air India · ₹4,890",
+    "Something else…"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-03": {
+      "x": 0,
+      "y": 0,
+      "width": 351.34375,
+      "height": 220
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M5",
+  "spec": "05-1 §5.3",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
