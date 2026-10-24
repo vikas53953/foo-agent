@@ -53,9 +53,10 @@ test('M4 Blueprint captures for Tier R: BP-CARD-02, BP-CARD-12, BP-CARD-15, BP-C
   }
 
   // SV-19 has no machine form in spec-values.json (two widths): the standard card is `--card-w` = 440px (02 F5).
-  const widths = await page
-    .locator(`${byTid(TID.cardPlan)}, ${byTid(TID.cardStuck)}, ${byTid(TID.cardSpendCap)}`)
-    .evaluateAll((els) => els.map((e) => e.getBoundingClientRect().width));
+  const cards = page.locator(`${byTid(TID.cardPlan)}, ${byTid(TID.cardStuck)}, ${byTid(TID.cardSpendCap)}`);
+  // The spend-cap card loads lazily (AT-322 budget), so wait for all three before measuring.
+  await expect(cards).toHaveCount(3);
+  const widths = await cards.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().width));
   expect(widths.length).toBe(3);
   for (const w of widths) expect(Math.abs(w - 440)).toBeLessThanOrEqual(0.5);
 
