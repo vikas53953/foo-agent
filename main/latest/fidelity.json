@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-8abcdbd-40094687993",
+  "reportId": "M9-d816e75-40109948962",
   "milestone": "M9",
-  "generatedAt": "2026-10-24T13:15:42.759Z",
-  "commit": "8abcdbd477b6b899a749ff7ed69e896cc2c37f15",
-  "head": "8abcdbd477b6b899a749ff7ed69e896cc2c37f15",
+  "generatedAt": "2026-10-24T16:44:27.880Z",
+  "commit": "d816e75c89fe0c4de3ea3b9af6dde321d3279e02",
+  "head": "d816e75c89fe0c4de3ea3b9af6dde321d3279e02",
   "ci": {
-    "runId": "40094687993",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40094687993"
+    "runId": "40109948962",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40109948962"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "5d610d2ac950b1887904a1aa256df03a70a5ab7988eb27f239267decaf5fff19"
+    "setSha256": "23a40c127fe2217cebb7de78ff4e8f0756a20c9d68113bbcd3831596f9eeca46"
   },
   "runner": {
-    "recordedAt": "2026-10-24T12:46:36.142Z",
+    "recordedAt": "2026-10-24T16:15:29.014Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006046"
+      "runner": "GitHub Actions 1000006072"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,6 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "1 test(s) failed",
     "12 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -964,13 +963,13 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6672,
+        "passed": 6673,
         "failed": 0,
         "skipped": 4
       },
       "e2e": {
-        "passed": 243,
-        "failed": 1,
+        "passed": 244,
+        "failed": 0,
         "skipped": 0
       }
     },
@@ -31041,6 +31040,11 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/prompt/c1-voice.test.ts"
       },
       {
+        "id": "AT-448",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/prompt/intake-setting-not-memory.test.ts"
+      },
+      {
         "id": "AT-447",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/vault/secretIpc.test.ts"
@@ -31137,7 +31141,7 @@
       },
       {
         "id": "PERF-02",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
@@ -32156,16 +32160,9 @@
         "file": "test/fidelity/ux/UX-24.settings.spec.ts"
       }
     ],
-    "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-composer.spec.ts",
-        "title": "PERF-02 · typing in the 5,000-message chat paints within a frame (p95)",
-        "status": "failed"
-      }
-    ],
+    "failed": [],
     "trace": {
-      "live": 336,
+      "live": 337,
       "pending": 65,
       "byMilestone": {
         "M0": 5,
@@ -32177,7 +32174,7 @@
         "M6": 38,
         "M13": 2,
         "M8": 33,
-        "M9": 146,
+        "M9": 147,
         "M7": 1
       }
     }
@@ -32378,6 +32375,11 @@
         "id": "CR-0057",
         "title": "a key or password the user names is saved as `foo/user_key/{name}`",
         "status": "Approved by Vikas, DECISIONS X-214 (his pick on the decision card, 2026-10-24 09:06Z)."
+      },
+      {
+        "id": "CR-0058",
+        "title": "a setting ask is a setting, never a memory",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (independent review and every check green), DECISIONS X-215."
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M9 sections)."
@@ -33653,7 +33655,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.0685869140625,
+        "r5": 0.0685859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34511,7 +34513,7 @@
         "r2": "fail (hl 89/192 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.09 %)",
-        "r5": 0.027259765625,
+        "r5": 0.0274892578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34615,7 +34617,7 @@
         "r2": "fail (hl 244/238 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.02 %)",
-        "r5": 0.029962890625,
+        "r5": 0.02996484375,
         "ref": true,
         "app": true,
         "diff": true
@@ -34719,7 +34721,7 @@
         "r2": "fail (hl 380/396 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (17.91 %)",
-        "r5": 0.304990234375,
+        "r5": 0.304994140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -34849,7 +34851,7 @@
         "r2": "fail (hl 52/1.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (4.47 %)",
-        "r5": 0.07968359375,
+        "r5": 0.0796845703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -34992,7 +34994,7 @@
         "r2": "fail (hl 58/18 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.64 %)",
-        "r5": 0.1191630859375,
+        "r5": 0.1191552734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35122,7 +35124,7 @@
         "r2": "fail (hl 94/278.671875 px)",
         "r3": "fail (hl ΔE 15.62)",
         "r4": "fail (36.54 %)",
-        "r5": 0.1162529296875,
+        "r5": 0.1163857421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35135,7 +35137,7 @@
         "r2": "fail (hl 94/278.671875 px)",
         "r3": "fail (hl ΔE 10.33)",
         "r4": "fail (35.95 %)",
-        "r5": 0.0937021484375,
+        "r5": 0.0938447265625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35148,7 +35150,7 @@
         "r2": "fail (hl 56/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.35 %)",
-        "r5": 0.1187353515625,
+        "r5": 0.11887890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35161,7 +35163,7 @@
         "r2": "fail (hl 56/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.24 %)",
-        "r5": 0.0997392578125,
+        "r5": 0.099869140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35200,7 +35202,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.89 %)",
-        "r5": 0.0918115234375,
+        "r5": 0.0918212890625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35213,7 +35215,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.55 %)",
-        "r5": 0.078138671875,
+        "r5": 0.07815234375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35226,7 +35228,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.75 %)",
-        "r5": 0.1056767578125,
+        "r5": 0.1056494140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35239,7 +35241,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.29 %)",
-        "r5": 0.0859853515625,
+        "r5": 0.085994140625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35278,7 +35280,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.89 %)",
-        "r5": 0.1130419921875,
+        "r5": 0.1130283203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35291,7 +35293,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.45 %)",
-        "r5": 0.0952880859375,
+        "r5": 0.09527734375,
         "ref": true,
         "app": true,
         "diff": true
@@ -35473,7 +35475,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.67 %)",
-        "r5": 0.0884130859375,
+        "r5": 0.088421875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35499,7 +35501,7 @@
         "r2": "fail (hl 42.25/12 px)",
         "r3": "review (hl ΔE 2.53)",
         "r4": "fail (17.17 %)",
-        "r5": 0.3306767578125,
+        "r5": 0.3306748046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35551,7 +35553,7 @@
         "r2": "fail (hl 236/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.06 %)",
-        "r5": 0.0736689453125,
+        "r5": 0.07366796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35590,7 +35592,7 @@
         "r2": "fail (hl 96/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (10.24 %)",
-        "r5": 0.0906357421875,
+        "r5": 0.0906845703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -35759,7 +35761,7 @@
         "r2": "fail (hl 194.6328125/261.265625 px)",
         "r3": "fail (hl ΔE 96.14)",
         "r4": "fail (68.66 %)",
-        "r5": 0.0868623046875,
+        "r5": 0.086853515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -35811,7 +35813,7 @@
         "r2": "fail (hl 70/64 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "skipped: superseded (X-79 (\"Change\"))",
-        "r5": 0.1080126953125,
+        "r5": 0.10801171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -36279,7 +36281,7 @@
         "r2": "fail (hl 91.46875/25.609375 px)",
         "r3": "fail (hl ΔE 57.24)",
         "r4": "fail (57.60 %)",
-        "r5": 0.0856494140625,
+        "r5": 0.0856044921875,
         "ref": true,
         "app": true,
         "diff": true
@@ -36318,7 +36320,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 54.97)",
         "r4": "fail (86.33 %)",
-        "r5": 0.1210888671875,
+        "r5": 0.1210810546875,
         "ref": true,
         "app": true,
         "diff": true
@@ -36331,7 +36333,7 @@
         "r2": "fail (hl 66/24.46875 px)",
         "r3": "fail (hl ΔE 12.77)",
         "r4": "fail (87.44 %)",
-        "r5": 0.091763671875,
+        "r5": 0.091765625,
         "ref": true,
         "app": true,
         "diff": true
