@@ -1,16 +1,16 @@
 {
-  "reportId": "M9-4430ab9-40069732477",
+  "reportId": "M9-0443603-40070186426",
   "milestone": "M9",
-  "generatedAt": "2026-10-24T06:26:32.769Z",
-  "commit": "035590d7b6bec3076ee60bc72168a187cff0c838",
-  "head": "4430ab9b1fdb9332e22a7190ad3dba2aac9856e9",
+  "generatedAt": "2026-10-24T06:33:29.312Z",
+  "commit": "add6bfed1de214b97560242dddc473ea1f54898c",
+  "head": "044360327f024442590c6bd88763a840a67b35c0",
   "ci": {
-    "runId": "40069732477",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40069732477"
+    "runId": "40070186426",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40070186426"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "50558a87e0cc657e03948adac536c2635be979332a517de462d93ddebfc2efec"
+    "setSha256": "149f6a661ff38c2e41d412c289fbf8cc616aba5a653b3693586b15699081d1db"
   },
   "runner": null,
   "fid04": "UNVERIFIABLE",
@@ -660,7 +660,7 @@
     "ids": [],
     "failed": [],
     "trace": {
-      "live": 332,
+      "live": 333,
       "pending": 65,
       "byMilestone": {
         "M0": 5,
@@ -672,7 +672,7 @@
         "M6": 38,
         "M13": 2,
         "M8": 33,
-        "M9": 142,
+        "M9": 143,
         "M7": 1
       }
     }
@@ -848,6 +848,11 @@
         "id": "CR-0050",
         "title": "kit replies with wrong or missing closing brackets still draw",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-208 (his messages 2026-10-18 14:56Z and 14:59Z, and"
+      },
+      {
+        "id": "CR-0053",
+        "title": "tables in replies stay tables",
+        "status": "Approved by Vikas, DECISIONS X-210 (his message 2026-10-24 03:55Z, \"tables OK\")."
       },
       {
         "id": "CR-0054",
