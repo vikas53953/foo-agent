@@ -35,6 +35,22 @@ describe('CR-0054 · feature switches', () => {
     expect(count(h, 'memory_index')).toBe(0);
   });
 
+  it('jobs off: "Book a table for 2 tonight" answered with kind ask gets the jobs line and no Choice card', async () => {
+    // B1-batch1 on 1d498c0: the real AI asked "Kaunsa area?" on a Choice card instead of planning the job.
+    const ask = `<say></say>\n<act>${JSON.stringify({ decision: { kind: 'ask', card: { question: 'Which area?', options: [{ label: 'Connaught Place' }, { label: 'Khan Market' }] } }, usedMemoryIds: [] })}</act>`;
+    const choices = (x: JobHarness) => (x.db.prepare("SELECT COUNT(*) AS n FROM cards WHERE type = 'choice'").get() as { n: number }).n;
+    h = jobHarness({ script: [{ match: { purpose: 'intake' }, reply: ask }], features: BATCH_1 });
+    h.userSays('Book a table for 2 tonight at a cafe in Delhi');
+    await h.settle();
+    expect(fooTexts(h)).toEqual([t('thread.feature_off.jobs')]);
+    expect(choices(h)).toBe(0);
+    h.close();
+    h = jobHarness({ script: [{ match: { purpose: 'intake' }, reply: ask }] });
+    h.userSays('Book a table for 2 tonight at a cafe in Delhi');
+    await h.settle();
+    expect(choices(h)).toBe(1);
+  });
+
   it('batch 1 still chats: "hi" gets the reply', async () => {
     h = jobHarness({
       script: [{ match: { purpose: 'intake' }, reply: envelope('Hi! How can I help?', { kind: 'reply' }) }],
