@@ -29,11 +29,11 @@
       "soft": true
     },
     {
-      "do": "shotEl",
+      "do": "check",
       "tid": "sidebar",
       "name": "left",
       "ref": "BP-APP-L",
-      "soft": true
+      "note": "BP-ANAT-*: executable surface presence check at the baseline viewport"
     },
     {
       "do": "shotEl",
@@ -71,11 +71,11 @@
       "soft": true
     },
     {
-      "do": "shotEl",
+      "do": "check",
       "tid": "app-panel",
       "name": "right",
       "ref": "BP-APP-R",
-      "soft": true
+      "note": "BP-APP-*: executable surface presence check at the baseline viewport"
     },
     {
       "do": "shotEl",
@@ -106,11 +106,11 @@
       "soft": true
     },
     {
-      "do": "shotEl",
+      "do": "check",
       "tid": "composer",
       "name": "comp-empty",
       "ref": "BP-COMP-01",
-      "soft": true
+      "note": "BP-COMP-*: executable surface presence check at the baseline viewport"
     },
     {
       "do": "fill",
@@ -130,6 +130,11 @@
       "tid": "composer-field",
       "value": "Line one\nLine two\nLine three\nLine four",
       "soft": true
+    },
+    {
+      "do": "check",
+      "tid": "composer-field",
+      "note": "BP-COMP-*: multiline composer field is present for the actual typing surface"
     },
     {
       "do": "shotEl",
@@ -216,14 +221,15 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "flights",
-      "expect": "AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later"
+      "expect": "AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\\\"thread-log\\\"] [data-testid=\\\"bubble-foo\\\"]')].at(-1);return !!b&&/compare|flight|Goa/i.test(b.innerText||'');})()",
+      "note": "BP-MSG-04; AT-157: sampled flight reply states the bounded find/compare scope"
     },
     {
       "do": "expectText",
-      "soft": true,
       "re": "compare",
       "tid": "bubble-foo",
-      "note": "AT-157 honest flights scope",
+      "note": "AT-157: hard text check confirms the sampled flight reply mentions compare",
       "last": true
     },
     {

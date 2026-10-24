@@ -11,7 +11,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "hinglish",
-      "expect": "walkthrough 08 step 4: answers in Hinglish"
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const b=rows.slice(rows.indexOf(me)+1).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const t=b?.innerText||'';return !!b&&/[\\u0900-\\u097F]/.test(t)&&/[A-Za-z]/.test(t);})()"
     },
     {
       "do": "send",
@@ -21,7 +22,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "punjabi",
-      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi"
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const b=rows.slice(rows.indexOf(me)+1).flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const t=b?.innerText||'';return !!b&&/[\\u0A00-\\u0A7F]/.test(t);})()"
     },
     {
       "do": "send",
@@ -31,7 +33,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "holiday",
-      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler"
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const replies=rows.slice(rows.indexOf(me)+1).filter((e)=>e.getAttribute('data-side')==='them').flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]);const filler=/great question|how can i help you|i apologize for the confusion/i;return replies.length>=1&&replies.length<=3&&!replies.some((b)=>filler.test(b.innerText||''));})()"
     },
     {
       "do": "dump",

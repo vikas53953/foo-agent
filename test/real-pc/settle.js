@@ -7,7 +7,7 @@
 
 /** items: the rows below the newest user bubble, as { state: bubble data-state, pageState: its ai-page data-state }. */
 function stillWorking(items) {
-  return items.some((x) => x.state === 'streaming' || x.pageState === 'building');
+  return items.some((x) => x.state === 'streaming' || x.state === 'live' || x.pageState === 'building');
 }
 
 /** Settled: a new reply came, foo is not still working on it, and nothing changed for quietMs. */

@@ -19,7 +19,8 @@
       "shot": "dark",
       "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
       "ref": "UX-12-02",
-      "expectJs": "document.documentElement.dataset.theme === 'dark'"
+      "expectJs": "document.documentElement.dataset.theme === 'dark'",
+      "note": "C.5 Settings; C.8 Quiet premium polish: dark theme is applied at the document root"
     },
     {
       "do": "click",
@@ -46,6 +47,11 @@
       "do": "click",
       "soft": true,
       "tid": "settings-row-appearance-theme"
+    },
+    {
+      "do": "check",
+      "tid": "settings-row-appearance-theme",
+      "note": "C.5 Settings: appearance theme row is present"
     },
     {
       "do": "wait",

@@ -10,7 +10,9 @@
     {
       "do": "waitReply",
       "timeoutMs": 180000,
-      "shot": "italian"
+      "shot": "italian",
+      "note": "AT-036: the booking question first produces an actual reply or plan",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const foo=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const plan=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-plan\"]')]).at(-1);const text=(foo?.innerText||'')+' '+(plan?.innerText||'');return !!(foo||plan)&&/restaurant|Italian|Bandra|Mumbai|table|booking/i.test(text);})()"
     },
     {
       "do": "clickIf",
@@ -20,17 +22,35 @@
       "do": "wait",
       "ms": 180000,
       "shot": "italian-later",
-      "expect": "options shown; no booking Approval card until I say book"
+      "expect": "options shown; no booking Approval card until I say book",
+      "note": "AT-036/AT-311: option and no-approval checks below are evaluated on the rendered cards"
     },
     {
       "do": "check",
       "tid": "card-approval",
-      "count": 0
+      "count": 0,
+      "note": "AT-036/AT-311: no booking Approval is present before the user chooses and says book"
     },
     {
       "do": "check",
       "tid": "card-choice",
-      "soft": true
+      "soft": true,
+      "note": "AT-036: preserve the existing choice-card observation"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"card-choice\"][data-card-state=\"asking\"] [data-testid=\"card-choice-option\"]",
+      "note": "AT-036: actual asking choice options are rendered before any booking action"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"app-panel-doing-row\"][data-state=\"needs_you\"]",
+      "note": "AT-108: the live job row exposes the NEEDS YOU state while a choice is waiting"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"card-checklist\"] [data-testid=\"card-checklist-step\"]",
+      "note": "AT-310: a rendered job checklist, when present, has actual step rows"
     },
     {
       "do": "dump",

@@ -10,7 +10,9 @@
     {
       "do": "waitReply",
       "timeoutMs": 240000,
-      "shot": "news"
+      "shot": "news",
+      "note": "AT-020/AT-139: the initial local web request must produce an actual reply or plan",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const foo=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const plan=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-plan\"]')]).at(-1);const text=(foo?.innerText||'')+' '+(plan?.innerText||'');return !!(foo||plan)&&/ISRO|news|source|search/i.test(text);})()"
     },
     {
       "do": "clickIf",
@@ -23,23 +25,43 @@
     },
     {
       "do": "check",
-      "tid": "bubble-sources"
+      "tid": "bubble-sources",
+      "note": "AT-020: the final reply exposes its sources surface"
     },
     {
       "do": "check",
-      "tid": "bubble-citation"
+      "tid": "bubble-citation",
+      "note": "AT-020: the final reply exposes a citation surface"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"bubble-foo\"] [data-testid=\"bubble-sources\"]",
+      "note": "AT-020/AT-139: sources are attached to a foo reply, not only present elsewhere in the page"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"thread-proof-chip\"], [data-testid=\"thread-not-live-chip\"]",
+      "count": 1,
+      "note": "AT-020: the reply carries a proof or explicit not-checked-live chip"
     },
     {
       "do": "expectText",
       "tid": "bubble-foo",
       "last": true,
       "re": "SEARCH_BUSY|search(es)? (is|are) busy|every web search fails",
-      "not": true
+      "not": true,
+      "note": "AT-139: the final local read does not report the blocked-search fallback"
     },
     {
       "do": "check",
       "tid": "card-checklist",
-      "soft": true
+      "soft": true,
+      "note": "AT-310: preserve the existing checklist observation"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"card-checklist\"] [data-testid=\"card-checklist-step\"]",
+      "note": "AT-310: any checklist proof must contain actual named step rows"
     },
     {
       "do": "dump",

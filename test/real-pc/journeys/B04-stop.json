@@ -10,7 +10,9 @@
     {
       "do": "waitReply",
       "timeoutMs": 120000,
-      "shot": "flight-plan"
+      "shot": "flight-plan",
+      "note": "AT-077/AT-107: the stop fixture first renders a real plan or reply",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const foo=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const plan=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-plan\"]')]).at(-1);const text=(foo?.innerText||'')+' '+(plan?.innerText||'');return !!(foo||plan)&&/flight|Delhi|Mumbai|cheapest|compar/i.test(text);})()"
     },
     {
       "do": "clickIf",
@@ -29,7 +31,21 @@
       "do": "waitReply",
       "timeoutMs": 60000,
       "shot": "after-stop",
-      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge \u26d4"
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge \u26d4",
+      "note": "AT-077/AT-107: stop is accepted only with a rendered stop report and stopped badge",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const foo=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"bubble-foo\"]')]).at(-1);const report=(foo?.innerText||'');const stopped=after.some((r)=>r.querySelector('[data-testid=\"bubble-badge\"][data-state=\"stopped\"]'));return !!foo&&/(stopp|nothing.*(running|booked|paid|sent))/i.test(report)&&stopped;})()"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"card-approval\"][data-card-state=\"PENDING\"]",
+      "count": 0,
+      "note": "AT-080: stop leaves no pending approval card exposed"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"card-checklist\"][data-card-state=\"stopped\"]",
+      "count": 1,
+      "note": "AT-107: the working job's checklist is rendered stopped after the user stop"
     },
     {
       "do": "dump",

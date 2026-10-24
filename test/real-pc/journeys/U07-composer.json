@@ -16,6 +16,11 @@
       "ref": "BP-COMP-01"
     },
     {
+      "do": "check",
+      "tid": "composer",
+      "note": "C.3 Composer: composer surface is present"
+    },
+    {
       "do": "click",
       "soft": true,
       "tid": "composer-field"
@@ -65,6 +70,12 @@
       "key": "Escape"
     },
     {
+      "do": "expectText",
+      "tid": "composer-field",
+      "re": "line one[\\s\\S]*line three",
+      "note": "C.3 Composer: multiline composer text preserves all three lines"
+    },
+    {
       "do": "fill",
       "tid": "composer-field",
       "value": "a draft I did not send",
@@ -79,6 +90,12 @@
       "soft": true
     },
     {
+      "do": "expectText",
+      "tid": "composer-field",
+      "re": "a draft I did not send",
+      "note": "C.3 Composer: draft text is restored in the composer after relaunch"
+    },
+    {
       "do": "wait",
       "ms": 1000,
       "shot": "draft-restored",
@@ -86,8 +103,7 @@
     },
     {
       "do": "eval",
-      "soft": true,
-      "note": "draft restored",
+      "note": "draft restored: evaluation is diagnostic only",
       "js": "(document.querySelector('[data-testid=composer-field]') || {}).value || (document.querySelector('[data-testid=composer-field]') || {}).innerText"
     },
     {

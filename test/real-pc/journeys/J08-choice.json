@@ -11,7 +11,8 @@
       "do": "waitReply",
       "timeoutMs": 180000,
       "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "laptop"
+      "shot": "laptop",
+      "expectJs": "(()=>{const log=document.querySelector('[data-testid=\"thread-log\"]');if(!log)return false;const rows=[...log.querySelectorAll('[data-side][data-gap]')];const me=rows.filter((e)=>e.getAttribute('data-side')==='me').at(-1);if(!me)return false;const after=rows.slice(rows.indexOf(me)+1);const c=after.flatMap((r)=>[...r.querySelectorAll('[data-testid=\"card-choice\"]')]).at(-1);return !!c&&c.getAttribute('data-card-state')==='asking'&&c.querySelectorAll('[data-testid=\"card-choice-option\"]').length>=1;})()"
     },
     {
       "do": "check",
