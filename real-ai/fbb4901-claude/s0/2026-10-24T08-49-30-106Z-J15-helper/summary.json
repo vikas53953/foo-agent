@@ -1,0 +1,38 @@
+{
+  "journey": "J15-helper",
+  "title": "Create a helper",
+  "steps": 4,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-49-30-106Z-J15-helper",
+  "results": [
+    {
+      "i": 0,
+      "do": "shot",
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 1,
+      "do": "check",
+      "note": "is New helper disabled?",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 4
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "helper create flow per walkthrough",
+      "ok": true,
+      "ms": 2501
+    }
+  ]
+}

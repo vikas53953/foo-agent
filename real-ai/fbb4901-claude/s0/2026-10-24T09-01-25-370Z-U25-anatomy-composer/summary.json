@@ -1,0 +1,268 @@
+{
+  "journey": "U25-anatomy-composer",
+  "title": "Shell anatomy at every width, composer states, honest flights reply",
+  "steps": 36,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T09-01-25-370Z-U25-anatomy-composer",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 807
+    },
+    {
+      "i": 2,
+      "do": "shot",
+      "expect": "window at 1280x800",
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 4,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 5,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 6,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 7,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 8,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 9,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 10,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 11,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 12,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 13,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 14,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 15,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 16,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 18
+    },
+    {
+      "i": 17,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 18,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "i": 19,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 20,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 27
+    },
+    {
+      "i": 21,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 22,
+      "do": "wait",
+      "expect": "attach menu",
+      "ok": true,
+      "ms": 502
+    },
+    {
+      "i": 23,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 24,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 806
+    },
+    {
+      "i": 25,
+      "do": "shot",
+      "expect": "window at 1000x760",
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 26,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 806
+    },
+    {
+      "i": 27,
+      "do": "shot",
+      "expect": "window at 760x700",
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 28,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 805
+    },
+    {
+      "i": 29,
+      "do": "shot",
+      "expect": "window at 520x640",
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "i": 30,
+      "do": "resize",
+      "soft": true,
+      "ok": true,
+      "ms": 808
+    },
+    {
+      "i": 31,
+      "do": "shot",
+      "expect": "window at 1280x800",
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 32,
+      "do": "send",
+      "sentAt": 1792832498521,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 33,
+      "do": "waitReply",
+      "expect": "AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later",
+      "firstReplyMs": 531,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n9:01 AM",
+      "kit": [],
+      "ms": 6099
+    },
+    {
+      "i": 34,
+      "do": "expectText",
+      "note": "AT-157 honest flights scope",
+      "soft": true,
+      "ok": false,
+      "error": "locator.innerText: Timeout 10000ms exceeded.",
+      "ms": 10078
+    },
+    {
+      "i": 35,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

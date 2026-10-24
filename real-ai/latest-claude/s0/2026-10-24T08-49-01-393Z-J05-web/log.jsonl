@@ -1,0 +1,12 @@
+{"t":"2026-10-24T08:49:01.393Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T08:49:07.095Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:49:15.193Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8095}
+{"t":"2026-10-24T08:49:15.302Z","i":0,"do":"send","sentAt":1792831755264,"sent":true,"before":0,"ok":true,"ms":109}
+{"t":"2026-10-24T08:49:29.023Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7606,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCheck isro.gov.in, pib.gov.in, thehindu.com\nCompare this week's ISRO stories across sources\nWatch live\nStop\nunder 1 min\n8:49 AM","kit":[],"ms":13721}
+{"t":"2026-10-24T08:49:29.211Z","shot":"01-news.png"}
+{"t":"2026-10-24T08:49:29.215Z","i":2,"do":"check","found":0,"ok":false,"ms":4}
+{"t":"2026-10-24T08:49:29.218Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-24T08:49:29.222Z","i":4,"do":"expectText","text":"Stopped. Nothing was booked, paid or sent.\n\n8:49 AM","ok":true,"ms":4}
+{"t":"2026-10-24T08:49:29.237Z","i":5,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-24T08:49:29.940Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-24T08:49:29.953Z","step":"aiTurns","turns":2}

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n8:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 historic monuments, including three UNESCO World Heritage Sites: the Red Fort, Qutub Minar and Humayun's Tomb.\n\n8:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Amritsar's Golden Temple kitchen, the Guru Ka Langar, serves free vegetarian meals to around 1,00,000 people every day, run mostly by volunteers.\n\n8:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n8:55 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:55 AM\n8:55 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:55 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 2 min\nDetails\n8:55 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:55 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value of the three: the MSI Modern 14 (C7M-062IN) at ₹43,219 because it is the only one with 16GB RAM.\n\nMSI Modern 14 C7M-062IN, ₹43,219: Ryzen 5 7530U, 16GB RAM, 512GB SSD, 14-inch screen (from the name).\nAcer Aspire Lite 15 AL15-41, ₹42,990: Ryzen 5 5625U, 8GB RAM, 512GB SSD, 15-inch screen (from the name). Cheapest, but an older chip.\nMSI Modern 14 C7M-284IN, ₹45,990: Ryzen 5 7530U, 8GB RAM, 512GB SSD, 14-inch screen (from the name). Same chip as the first, with half the RAM.\n\nThe price list gave no exact screen details, so I took the sizes from the AI names. Check the resolution on the shop page before you buy. Want me to look up the screen details for these three?\n\n8:58 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "withdrawn",
+    "text": "Key\nsecret\nSkipped. Nothing was saved.\n8:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:58 AM"
+  }
+]

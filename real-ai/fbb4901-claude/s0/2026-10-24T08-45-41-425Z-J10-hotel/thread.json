@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it scrambled.\n\nWithout a VPN, your internet provider and the Wi-Fi owner can see which sites you visit, and sites see your real address. With one, your traffic is locked before it leaves your device, travels through the tunnel to the VPN company's computer, and only then reaches the website. The site sees the VPN's address, not yours.\n\nIt's useful on public Wi-Fi or to hide your browsing from your provider. It doesn't make you anonymous, though, because the VPN company can still see your traffic, so pick one you trust.\n\n8:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n8:45 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or mud\n8:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n8:45 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which shoe size do you wear?\n1\nUK 7\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or more\nSomething else…\nSkip\n8:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:45 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n8:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n8:45 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:46 AM\n8:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:45 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels, Sat 31 Oct to…\nlive checklist\nLooking for Goa hotels, Sat 31 Oct to Mon 2 Nov\nCompare price, rating and area\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n2 min\n8:46 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:46 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Goa hotels, Sat 31 Oct to… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:48 AM"
+  }
+]
