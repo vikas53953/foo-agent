@@ -1,0 +1,92 @@
+{
+  "id": "BP-CARD-16",
+  "theme": "light",
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0010",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "I'll",
+        "·"
+      ],
+      "extra": [
+        "👀",
+        "foo",
+        "12:00",
+        "PM",
+        "I’ll"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-16",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 100
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 600,
+          "height": 152
+        },
+        "dPos": 0,
+        "dSize": 248.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "review",
+    "anchors": [
+      {
+        "name": "BP-CARD-16",
+        "ref": "#F0F0F4",
+        "app": "#FFFFFF",
+        "deltaE": 3.65,
+        "verdict": "review"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.041282051282051285,
+    "diffPixels": 1449,
+    "total": 35100,
+    "sizeMismatch": {
+      "a": [
+        351,
+        100
+      ],
+      "b": [
+        600,
+        152
+      ]
+    },
+    "heatmap": "BP-CARD-16.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-16.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-16.light.png"
+}
