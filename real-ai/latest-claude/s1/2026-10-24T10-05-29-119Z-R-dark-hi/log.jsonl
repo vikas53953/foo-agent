@@ -1,0 +1,12 @@
+{"t":"2026-10-24T10:05:29.120Z","journey":"R-dark-hi","title":"Setting by chat, then hi: foo replies and does not change the setting again","spec":"08-2 §7.2 part 7; 08-4 §25.6 (CR-0043); 06 settings by chat; AT-094","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T10:05:34.627Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:05:34.767Z","i":0,"do":"send","sentAt":1792836334729,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-24T10:05:40.655Z","i":1,"do":"waitFor","note":"a setting answer is a line, not a bubble, so waitReply would never see it (real-AI run 62d419e R-dark-hi step 1)","ok":true,"ms":5888}
+{"t":"2026-10-24T10:05:50.661Z","i":2,"do":"wait","expect":"the theme is dark and foo shows one line \"Changed: Theme → Dark. Undo\"","ok":true,"ms":10005}
+{"t":"2026-10-24T10:05:50.726Z","shot":"01-dark.png"}
+{"t":"2026-10-24T10:05:50.854Z","i":3,"do":"send","sentAt":1792836350815,"sent":true,"before":0,"ok":true,"ms":127}
+{"t":"2026-10-24T10:06:03.978Z","i":4,"do":"waitReply","expect":"foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)","firstReplyMs":6061,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! Your dark mode is on and your Tuesday vegetarian note is saved, but Punjab Kings as your favourite cricket team isn't saved yet. Want me to save it now?\n\n10:05 AM","kit":[],"endState":true,"ms":13123}
+{"t":"2026-10-24T10:06:04.039Z","shot":"02-hi-after-dark.png"}
+{"t":"2026-10-24T10:06:04.048Z","i":5,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-24T10:06:04.175Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-24T10:06:04.187Z","step":"aiTurns","turns":2}
