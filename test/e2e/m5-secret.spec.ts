@@ -68,7 +68,7 @@ test('Secret box eye: shows on click and Alt+F8, Narrator reads the length while
   await app.close();
 });
 
-test('Move to secret box: a password gets its own box, and Save refuses it plainly while it has no vault name (G-M5-21)', async () => {
+test('Move to secret box (CR-0057): a password gets its own box with a Name field, and saves once it is named', async () => {
   const { app, page, refs } = await startWorld();
   await settleSeededJobs(page, refs);
   await openChat(page, 'foo');
@@ -79,14 +79,19 @@ test('Move to secret box: a password gets its own box, and Save refuses it plain
   await page.getByTestId(TID.composerPasteMove).click();
   const card = page.locator(byTid(TID.cardSecret)).last();
   await expect(card).toContainText(t('composer.paste.name.password'));
-  const field = card.getByTestId(TID.cardSecretField);
+  const name = card.getByTestId(TID.cardSecretField).nth(0);
+  const field = card.getByTestId(TID.cardSecretField).nth(1);
+  await expect(name).toHaveValue('');
   await expect(field).toHaveValue('FAKEt2pass99');
   // The value is never in the page's markup (a property, not a `value` attribute).
   expect(await page.content()).not.toContain('FAKEt2pass99');
   await card.getByTestId(TID.cardSecretSave).click();
-  await expect(card).toContainText(t('cards.secret.line.no_kind'));
-  await expect(card.getByTestId(TID.cardSecretSave)).toBeDisabled();
+  await expect(card).toContainText(t('cards.secret.error.key_name'));
   await expect(card).toHaveAttribute('data-card-state', 'asking');
+  await name.fill('Wi-Fi password');
+  await card.getByTestId(TID.cardSecretSave).click();
+  await expect(card).toHaveAttribute('data-card-state', 'saved');
+  await expect(card.getByTestId(TID.cardSecretSaved)).toContainText('Wi-Fi password · saved');
   expect(await page.content()).not.toContain('FAKEt2pass99');
   await app.close();
 });
@@ -101,5 +106,39 @@ test('05-2 §5.8.6 Groups: never; the paste catcher in a group has no Move to se
   await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
   await expect(page.getByTestId(TID.composerPasteMove)).toHaveCount(0);
   await expect(page.getByTestId(TID.composerPasteSend)).toBeVisible();
+  await app.close();
+});
+
+test('CR-0057 Password or key: the + menu box takes a name and saves the key under it', async () => {
+  const { app, page, refs } = await startWorld();
+  await settleSeededJobs(page, refs);
+  await openChat(page, 'foo');
+  await page.getByTestId(TID.composerAttach).click();
+  await page.getByTestId(TID.composerAttachMenuSecret).click();
+  const card = page.locator(byTid(TID.cardSecret)).last();
+  const name = card.getByTestId(TID.cardSecretField).nth(0);
+  const value = card.getByTestId(TID.cardSecretField).nth(1);
+  await expect(name).toHaveAttribute('type', 'text');
+  await expect(value).toHaveAttribute('type', 'password');
+  await expect(card.getByTestId(TID.cardSecretSave)).toBeDisabled();
+  await value.fill(KEY);
+  // No name yet: Save says what is missing and writes nothing.
+  await card.getByTestId(TID.cardSecretSave).click();
+  await expect(card).toContainText(t('cards.secret.error.key_name'));
+  await expect(card).toHaveAttribute('data-card-state', 'asking');
+  await name.fill('GitHub key');
+  await card.getByTestId(TID.cardSecretSave).click();
+  await expect(card).toHaveAttribute('data-card-state', 'saved');
+  await expect(card.getByTestId(TID.cardSecretSaved)).toContainText('GitHub key · saved Fri 16 Oct');
+  await expect(card).not.toContainText(t('cards.secret.line.no_kind'));
+  expect(await page.content()).not.toContain(KEY);
+  // Replace keeps the name (fixed), so the new value goes to the same entry.
+  await card.getByTestId(TID.cardSecretReplace).click();
+  await expect(name).toHaveValue('GitHub key');
+  await expect(name).toHaveAttribute('readonly', '');
+  await value.fill(NEXT);
+  await card.getByTestId(TID.cardSecretSave).click();
+  await expect(card.getByTestId(TID.cardSecretSaved)).toContainText('GitHub key · saved');
+  expect(await page.content()).not.toContain(NEXT);
   await app.close();
 });

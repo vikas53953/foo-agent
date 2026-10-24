@@ -58,6 +58,12 @@ const secretCard = (r: DbRow | undefined): SecretCard | null => {
 const getCard = (db: Db, id: string): SecretCard | null =>
   secretCard(db.prepare("SELECT * FROM cards WHERE id = ? AND type = 'secret' AND deleted_at IS NULL").get(id) as DbRow | undefined);
 
+/** CR-0057: the Name field above the masked value (05-2 §5.8.4 Your key). */
+const userKeyFields = (): SecretPayload['fields'] => [
+  { key: 'name', label: t('cards.secret.field.key_name'), masked: false },
+  { key: 'value', label: t('cards.secret.field.key_value'), masked: true },
+];
+
 /** 04-2 §22.4 suggested names → the Secret box variant and title (G-M5-21). */
 const OFFER: Record<SecretOfferSlot, { kind: SecretCardKind; vaultName?: string; title: () => string; fields: SecretPayload['fields'] }> = {
   openai: {
@@ -83,9 +89,9 @@ const OFFER: Record<SecretOfferSlot, { kind: SecretCardKind; vaultName?: string;
     ],
   },
   otp: { kind: 'otp', title: () => t('composer.paste.name.otp'), fields: [{ key: 'code', label: '', masked: true }] },
-  // No vault kind yet (08-0 §E.8 names keys by provider, logins by host): the box is posted and its Save refuses plainly.
-  password: { kind: 'ai_key', title: () => t('composer.paste.name.password'), fields: [{ key: 'value', label: '', masked: true }] },
-  key: { kind: 'ai_key', title: () => t('composer.paste.name.key'), fields: [{ key: 'value', label: '', masked: true }] },
+  // CR-0057 (X-214): a password or a key foo does not know is saved under the name the user gives it (`foo/user_key/{name}`).
+  password: { kind: 'user_key', title: () => t('composer.paste.name.password'), fields: userKeyFields() },
+  key: { kind: 'user_key', title: () => t('composer.paste.name.key'), fields: userKeyFields() },
 };
 
 export function secretHandlers(d: SecretIpcDeps): IpcHandlers<SecretChannels> {

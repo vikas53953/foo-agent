@@ -277,9 +277,9 @@ export type PermissionApp = 'gmail' | 'calendar' | 'contacts' | 'whatsapp' | 'br
 /** 08-0 §B.2 ChoicePurpose (§G.1). */
 export type ChoicePurpose = 'job' | 'setup' | 'memory_confirm' | 'app_use' | 'stop_which' | 'conflict' | 'file_in' | 'photo_notice';
 /** 08-0 §B.2 SecretKind (= secrets_index.kind CHECK). */
-export type SecretKind = 'ai_key' | 'login' | 'card' | 'conn_token' | 'wa_session' | 'web_key' | 'hub_key';
+export type SecretKind = 'ai_key' | 'login' | 'card' | 'conn_token' | 'wa_session' | 'web_key' | 'hub_key' | 'user_key'; // user_key: CR-0057
 /** 08-0 §G.1 `secret.secretKind` (the card's sub-kind; otp and cvv are never saved). */
-export type SecretCardKind = 'ai_key' | 'voice_key' | 'web_key' | 'login' | 'card' | 'otp' | 'cvv';
+export type SecretCardKind = 'ai_key' | 'voice_key' | 'web_key' | 'login' | 'card' | 'otp' | 'cvv' | 'user_key'; // user_key: CR-0057
 /** 08-1 §3.2 card:approve scope. */
 export type ApprovalScope = 'once' | 'chat' | 'always';
 

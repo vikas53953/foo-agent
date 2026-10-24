@@ -10,6 +10,7 @@ type KitCardModule = typeof import('../kit/KitCard');
 type AiPageCardModule = typeof import('../page/AiPageCard');
 type KeptViewModule = typeof import('../keep/KeptView');
 type SpendCapModule = typeof import('../cards/SpendCap');
+type SignInModule = typeof import('../cards/SignIn');
 
 let kitBlock: KitBlockModule | null = null;
 let pageBlock: PageBlockModule | null = null;
@@ -17,6 +18,7 @@ let kitCard: KitCardModule | null = null;
 let aiPageCard: AiPageCardModule | null = null;
 let keptView: KeptViewModule | null = null;
 let spendCap: SpendCapModule | null = null;
+let signIn: SignInModule | null = null;
 const loadKitBlock = () => import('../kit/KitBlock').then((m) => (kitBlock = m));
 const loadPageBlock = () => import('../page/PageBlock').then((m) => (pageBlock = m));
 const loadKitCard = () => import('../kit/KitCard').then((m) => (kitCard = m));
@@ -24,6 +26,8 @@ const loadAiPageCard = () => import('../page/AiPageCard').then((m) => (aiPageCar
 const loadKeptView = () => import('../keep/KeptView').then((m) => (keptView = m));
 // The spend-cap card shows only once AI spend reaches the cap, so it leaves the first script too (AT-322 budget).
 const loadSpendCap = () => import('../cards/SpendCap').then((m) => (spendCap = m));
+// CR-0057: the Sign-in card shows only inside a job that reaches a sign-in page, so it leaves the first script as well.
+const loadSignIn = () => import('../cards/SignIn').then((m) => (signIn = m));
 
 const LazyKitBlock = lazy(() => loadKitBlock().then((m) => ({ default: m.KitBlock })));
 const LazyPageBlock = lazy(() => loadPageBlock().then((m) => ({ default: m.PageBlock })));
@@ -31,6 +35,7 @@ const LazyKitCard = lazy(() => loadKitCard().then((m) => ({ default: m.KitCard }
 const LazyAiPageCard = lazy(() => loadAiPageCard().then((m) => ({ default: m.AiPageCard })));
 const LazyKeptView = lazy(() => loadKeptView().then((m) => ({ default: m.KeptView })));
 const LazySpendCap = lazy(() => loadSpendCap().then((m) => ({ default: m.SpendCap })));
+const LazySignIn = lazy(() => loadSignIn().then((m) => ({ default: m.SignInCard })));
 
 export function KitBlock(props: ComponentProps<KitBlockModule['KitBlock']>) {
   const [loaded] = useState(() => kitBlock);
@@ -92,8 +97,18 @@ export function SpendCap(props: ComponentProps<SpendCapModule['SpendCap']>) {
   );
 }
 
+export function SignInCard(props: ComponentProps<SignInModule['SignInCard']>) {
+  const [loaded] = useState(() => signIn);
+  if (loaded) return <loaded.SignInCard {...props} />;
+  return (
+    <Suspense fallback={null}>
+      <LazySignIn {...props} />
+    </Suspense>
+  );
+}
+
 /** Fetches the kit and page scripts once launch work is done (called beside preloadPages). */
 export function preloadKit(): void {
-  for (const load of [loadKitBlock, loadPageBlock, loadKitCard, loadAiPageCard, loadKeptView, loadSpendCap])
+  for (const load of [loadKitBlock, loadPageBlock, loadKitCard, loadAiPageCard, loadKeptView, loadSpendCap, loadSignIn])
     void load().catch(() => undefined);
 }

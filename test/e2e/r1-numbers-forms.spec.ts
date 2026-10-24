@@ -278,7 +278,8 @@ test('AT-351 · ShortForm sends one action with the values; a secret-looking val
     await surface.getByRole('button', { name: t('composer.paste.move') }).click();
     const box = page.getByTestId(TID.cardSecret).last();
     await expect(box).toContainText(t('composer.paste.name.password'));
-    await expect(box.getByTestId(TID.cardSecretField)).not.toHaveValue('');
+    // CR-0057: the box's Name field comes first; the moved value is in the masked field after it.
+    await expect(box.getByTestId(TID.cardSecretField).nth(1)).not.toHaveValue('');
     // The secret left the field; the rest stayed.
     await expect(form.getByLabel('Name')).toHaveValue('Asha');
     await expect(surface.getByRole('alert')).toHaveCount(0);

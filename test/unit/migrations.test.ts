@@ -1,6 +1,6 @@
 // 08-1 §4.2 item 4: forward-only migration test. (a) every migration on an empty DB → integrity ok, no FK problems,
 // and sqlite_master equals the §4.3 DDL of the vendored spec exactly, with 0002 (CR-0008 G-M4-03) widening only the two route
-// CHECKs to the five Route values, 0003 and 0004 applied to the reference as written. (b) re-opening applies nothing twice. (c) 0002 keeps the rows and foreign keys of a filled
+// CHECKs to the five Route values, 0003, 0004 and 0005 (CR-0057 user_key) applied to the reference as written. (b) re-opening applies nothing twice. (c) 0002 keeps the rows and foreign keys of a filled
 // database.
 import Database from 'better-sqlite3';
 import { copyFileSync, mkdtempSync, readFileSync } from 'node:fs';
@@ -31,7 +31,7 @@ describe('migrations', () => {
   it('build exactly the spec schema, with only the route CHECKs widened by 0002, the 0003 suggestions column and the 0004 rich-replies changes', () => {
     const db = new Database(':memory:');
     db.pragma('foreign_keys = ON');
-    expect(migrate(db, DIR)).toEqual([1, 2, 3, 4]);
+    expect(migrate(db, DIR)).toEqual([1, 2, 3, 4, 5]);
     expect(db.pragma('foreign_keys', { simple: true })).toBe(1);
     expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(db.pragma('foreign_key_check')).toEqual([]);
@@ -41,6 +41,8 @@ describe('migrations', () => {
     ref.exec(readFileSync(join(DIR, '0003_message_suggestions.sql'), 'utf8'));
     // 0004 (CR-0022, X-180) rebuilds cards with the 27 card types, adds messages.side and kept_items; the reference too.
     ref.exec(readFileSync(join(DIR, '0004_rich_replies.sql'), 'utf8'));
+    // 0005 (CR-0057, X-214) rebuilds secrets_index with kind 'user_key'; the reference too.
+    ref.exec(readFileSync(join(DIR, '0005_user_key.sql'), 'utf8'));
     type Obj = { type: string; name: string; tbl_name: string; sql: string | null };
     const mine = schema(db) as Obj[];
     const spec = schema(ref) as Obj[];
@@ -52,6 +54,30 @@ describe('migrations', () => {
         : o,
     );
     expect(mine).toEqual(widened);
+  });
+
+  it('0005 keeps every vault index row and accepts a user_key (CR-0057)', () => {
+    const db = new Database(':memory:');
+    const four = mkdtempSync(join(tmpdir(), 'foo-mig-'));
+    for (const f of ['0001_init.sql', '0002_routes.sql', '0003_message_suggestions.sql', '0004_rich_replies.sql'])
+      copyFileSync(join(DIR, f), join(four, f));
+    migrate(db, four);
+    const row = (target: string, kind: string, name: string) =>
+      db
+        .prepare(
+          "INSERT INTO secrets_index (target, kind, name, label, storage, created_at, updated_at) VALUES (?, ?, ?, 'L', 'credman', 1, 1)",
+        )
+        .run(target, kind, name);
+    row('foo/ai_key/openai-key', 'ai_key', 'openai-key');
+    expect(() => row('foo/user_key/github-key', 'user_key', 'github-key')).toThrow(/CHECK/);
+    expect(migrate(db, DIR)).toEqual([5]);
+    row('foo/user_key/github-key', 'user_key', 'github-key');
+    expect(db.prepare('SELECT target, kind FROM secrets_index ORDER BY target').all()).toEqual([
+      { target: 'foo/ai_key/openai-key', kind: 'ai_key' },
+      { target: 'foo/user_key/github-key', kind: 'user_key' },
+    ]);
+    expect(() => row('foo/x/y', 'other', 'y')).toThrow(/CHECK/);
+    expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
   });
 
   it('0002 keeps every job, step and foreign key, and accepts the email and handback routes (G-M4-03)', () => {
@@ -68,7 +94,7 @@ describe('migrations', () => {
       "INSERT INTO steps (id, job_id, idx, phrase_key, state, route) VALUES ('s_1', 'j_1', 0, 'look_web', 'running', 'browser')",
     ).run();
     expect(() => db.prepare("UPDATE steps SET route = 'email' WHERE id = 's_1'").run()).toThrow(/CHECK/);
-    expect(migrate(db, DIR)).toEqual([2, 3, 4]);
+    expect(migrate(db, DIR)).toEqual([2, 3, 4, 5]);
     expect(db.prepare('SELECT id, route FROM jobs').all()).toEqual([{ id: 'j_1', route: 'api' }]);
     db.prepare("UPDATE jobs SET route = 'handback' WHERE id = 'j_1'").run();
     db.prepare("UPDATE steps SET route = 'email' WHERE id = 's_1'").run();
@@ -87,7 +113,7 @@ describe('migrations', () => {
     const file = join(mkdtempSync(join(tmpdir(), 'foo-db-')), 'data', 'foo.db');
     openDb(file, DIR).close();
     const db = openDb(file, DIR);
-    expect(db.prepare('SELECT version FROM schema_migrations').pluck().all()).toEqual([1, 2, 3, 4]);
+    expect(db.prepare('SELECT version FROM schema_migrations').pluck().all()).toEqual([1, 2, 3, 4, 5]);
     expect(db.pragma('journal_mode', { simple: true })).toBe('wal');
     db.close();
   });

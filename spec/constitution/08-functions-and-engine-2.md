@@ -711,10 +711,11 @@ AI keys, site passwords, card number/expiry/name, CVV (never stored), OTPs (neve
 | WhatsApp session | safeStorage blob | `{DATA}\vault\wa-session.bin` (> 2,560 bytes) | encrypted Baileys auth state |
 | Web tool key [X-46] | Credential Manager | `foo/web_key/{exa\|tavily\|firecrawl\|browseruse}` | UTF-8 value |
 | Hub key (v1.1) [X-49] | Credential Manager | `foo/hub_key/composio` | JSON `{key, userId, issued_at}` |
+| A key or password the user names (CR-0057, X-214) | Credential Manager only (a value over 2,560 bytes is refused) | `foo/user_key/{name}` | UTF-8 value; no `vault.use` purpose reads it (§11.3), so the AI and its tools never get it until a CR says how |
 
 Names are 08-0 §E.8 (X-73; `SecretKind` per 08-0 §B.2); `secret:save` accepts only these shapes. The OpenAI key used for voice notes [X-43] is the same `foo/ai_key/openai-key` entry the `openai-key` AI uses; saving it for voice does not make OpenAI the user's AI.
 
-**`secretKind` → storage (X-114).** `otp`: registry only, TTL 10 min, never vault; `cvv`: registry only, TTL = the payment job, never vault (G-08-08); `voice_key`: vault `foo/ai_key/openai-key` (the same entry as the `openai-key` provider, X-114); `ai_key`: `foo/ai_key/{providerId}`; `web_key`: `foo/web_key/{provider}`; `login`: `foo/login/{host}`; `card`: `foo/card/{last4}`. No vault name contains a space; the only pattern is `foo/{kind}/{safeName}` (08-0 §E.8).
+**`secretKind` → storage (X-114).** `otp`: registry only, TTL 10 min, never vault; `cvv`: registry only, TTL = the payment job, never vault (G-08-08); `voice_key`: vault `foo/ai_key/openai-key` (the same entry as the `openai-key` provider, X-114); `ai_key`: `foo/ai_key/{providerId}`; `web_key`: `foo/web_key/{provider}`; `login`: `foo/login/{host}`; `card`: `foo/card/{last4}`; `user_key`: `foo/user_key/{name}` (CR-0057). No vault name contains a space; the only pattern is `foo/{kind}/{safeName}` (08-0 §E.8).
 
 Access through `@napi-rs/keyring` `Entry.withTarget(target, 'foo', name)` (Generic credentials, per-user DPAPI) `[verify exact API in M1]`. A value can be written and used, never read back to the renderer (Grok write-only, GRK §1.2). `secret:list` returns `secrets_index` rows only.
 

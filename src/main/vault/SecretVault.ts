@@ -7,13 +7,16 @@
 // `{ failed }`), 08-0 §E.8 (vault names, X-73; one `openai-key` entry for voice and the provider, X-114; two cards with the
 // same last 4 → SECRET_EXISTS, X-129), §B.3 `secrets_index` (never a value), 08-1 §3.2 `secret:save` (every other kind
 // replaces and logs `secret_replaced`), 09 §9.18 (≤ 2,560 bytes Credential Manager, larger safeStorage blobs in
-// `{DATA}\vault\{name}.bin`; encryption unavailable → refuse), CR-0009 G-M5-16 (name rule per kind).
+// `{DATA}\vault\{name}.bin`; encryption unavailable → refuse), CR-0009 G-M5-16 (name rule per kind). CR-0057 (X-214): a key the
+// user names is `foo/user_key/{userKeyName(name)}` UTF-8, labelled with the name as typed, Credential Manager only, and no
+// purpose reads it.
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Clock } from '../../shared/clock';
 import { fail, ok, type Result } from '../../shared/errors';
 import { isKeyProviderId } from '../../shared/settings';
 import type { VaultOff } from '../../shared/ipc';
+import { safeName } from '../../shared/safeName';
 import type { SecretIndexRow, SecretKind, VaultUseRequest } from '../../shared/types';
 import type { RegisterOptions } from '../secrets/registerValue';
 import type { Db } from '../store/db';
@@ -29,10 +32,27 @@ const NAME_RULES: Record<SecretKind, (name: string) => boolean> = {
   login: (n) => n.length <= 253 && /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(n),
   card: (n) => /^\d{4}$/.test(n),
   wa_session: (n) => n === 'whatsapp',
+  user_key: (n) => n.length >= 1 && n.length <= 60 && /^[\p{L}\p{N}]/u.test(n),
+};
+
+/** CR-0057: the name a user typed, as people read it ("GitHub key"): trimmed, inner spaces collapsed. */
+export const userKeyLabel = (name: string): string => name.trim().replace(/\s+/g, ' ');
+
+/** CR-0057 (08-0 §E.8: no space in a vault name): "GitHub key" → `github-key`, via safeName (08-1 §0.7.1). */
+export const userKeyName = (name: string): string => {
+  const label = userKeyLabel(name);
+  // The renderer's rule (05-2 §5.8.4): 1 to 40 characters with a letter or digit; anything else has no vault name.
+  if (!label || label.length > 40 || !/[\p{L}\p{N}]/u.test(label)) return '';
+  return safeName(label)
+    .toLowerCase()
+    .replace(/[ .]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}\p{M}]+$/gu, '');
 };
 
 /** 08-2 §11.3: which secret kind each purpose may read. */
-const PURPOSE_KIND: Record<VaultUseRequest['purpose'], SecretKind> = {
+/** CR-0057: no purpose reads a `user_key` (the AI never uses a key the user named, until a CR says how). */
+const PURPOSE_KIND: Record<VaultUseRequest['purpose'], Exclude<SecretKind, 'user_key'>> = {
   fill_login: 'login',
   fill_card: 'card',
   ai_call: 'ai_key',
@@ -67,6 +87,7 @@ function encode(
   switch (kind) {
     case 'ai_key':
     case 'web_key':
+    case 'user_key':
       return has('value') ? { value: f.value!.trim() } : null;
     case 'login':
       return has('username', 'password') ? { value: JSON.stringify({ u: f.username, p: f.password }) } : null;
@@ -163,8 +184,10 @@ export class SecretVault {
     return this.d.db.prepare('SELECT * FROM secrets_index WHERE target = ?').get(target) as IndexDbRow | undefined;
   }
 
-  save(kind: SecretKind, name: string, fields: Record<string, string>): Result<SaveResult> {
+  save(kind: SecretKind, typed: string, fields: Record<string, string>): Result<SaveResult> {
     const now = this.d.clock.now();
+    // CR-0057: a user key arrives with the name the user typed; the vault names it without spaces.
+    const name = kind === 'user_key' ? userKeyName(typed) : typed;
     const enc = encode(kind, fields, now);
     if (!enc) return fail('VALIDATION');
     // A card is named by its last 4 (08-0 §E.8); the name it came with must agree.
@@ -176,6 +199,8 @@ export class SecretVault {
     const before = this.find(target);
     if (before && kind === 'card') return fail('SECRET_EXISTS');
     const storage = kind !== 'wa_session' && fitsCredman(enc.value) ? 'credman' : 'blob';
+    // CR-0057: a user key never becomes a blob (its name could match another kind's blob file).
+    if (kind === 'user_key' && storage === 'blob') return fail('VALIDATION');
     try {
       if (storage === 'credman') this.d.keyring!.set(target, enc.value);
       else {
@@ -185,7 +210,7 @@ export class SecretVault {
     } catch {
       return fail('VAULT_WRITE_FAILED');
     }
-    const label = secretLabel(kind, name, enc.card?.brand ?? null);
+    const label = kind === 'user_key' ? userKeyLabel(typed) : secretLabel(kind, name, enc.card?.brand ?? null);
     const row: IndexDbRow = {
       target,
       kind,

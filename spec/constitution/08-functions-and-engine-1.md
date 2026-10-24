@@ -963,8 +963,8 @@ CREATE TRIGGER contacts_index_au AFTER UPDATE OF display_name, emails, phones ON
 
 CREATE TABLE secrets_index (
   target     TEXT PRIMARY KEY,                              -- 'foo/{kind}/{name}' exactly per 08-0 §E.8; WhatsApp: 'vault\wa-session.bin'
-  kind       TEXT NOT NULL CHECK (kind IN ('ai_key','login','card','conn_token','wa_session','web_key','hub_key')),   -- SecretKind
-  name       TEXT NOT NULL,                                 -- the {name} part: providerId | host | last4 | google | outlook | exa… | composio | whatsapp
+  kind       TEXT NOT NULL CHECK (kind IN ('ai_key','login','card','conn_token','wa_session','web_key','hub_key','user_key')),   -- SecretKind; 'user_key' by migration 0005 (CR-0057)
+  name       TEXT NOT NULL,                                 -- the {name} part: providerId | host | last4 | google | outlook | exa… | composio | whatsapp | user key name (CR-0057)
   label      TEXT NOT NULL,                                 -- user-facing, e.g. "Visa ••4242", "OpenAI key"
   domain TEXT, brand TEXT, last4 TEXT,
   storage    TEXT NOT NULL CHECK (storage IN ('credman','blob')),
@@ -1150,7 +1150,7 @@ type CardPayload =
   | { type: "draft"; approvalId: string; channel: "email" | "whatsapp" | "x"; to?: { name: string; address: string; isNew: boolean }; subject?: string;
       body: string; signature?: string /* Gmail default send-as signature, shown below the body (owner Q4 default) */; edited: boolean;
       sendAllowed: boolean; xRemaining?: number; undoUntil?: number }
-  | { type: "secret"; secretKind: "ai_key" | "voice_key" | "web_key" | "login" | "card" | "otp" | "cvv"; name: string; why: string;
+  | { type: "secret"; secretKind: "ai_key" | "voice_key" | "web_key" | "login" | "card" | "otp" | "cvv" | "user_key"; name: string; why: string;
       fields: { key: string; label: string; masked: boolean }[]; savedAt?: number;
       requestId?: string /* otp */; sentTo?: string /* otp: masked destination */; paymentCardId?: string /* cvv */ }
   | { type: "signin"; mode: "sign_in_here" | "take_over"; jobId: string; site: string; reason: string }
