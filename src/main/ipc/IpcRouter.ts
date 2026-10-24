@@ -344,7 +344,7 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'secret:save': z
     .object({
       requestId: z.string().min(1).max(80).optional(),
-      kind: z.enum(['ai_key', 'login', 'card', 'conn_token', 'wa_session', 'web_key', 'hub_key']),
+      kind: z.enum(['ai_key', 'login', 'card', 'conn_token', 'wa_session', 'web_key', 'hub_key', 'user_key']),
       name: z.string().min(1).max(253),
       fields: z.record(z.string().min(1).max(40), z.string().max(20_000)),
     })

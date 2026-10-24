@@ -23,6 +23,8 @@ J15-helper
 J21-J22-settings-search
 B11-zoom-appearance
 B13-no-apps-honesty
+R-dark-hi
+B1-batch1
 U01-bubble-menu
 U02-reactions-thanks
 U03-select-delete
@@ -40,7 +42,6 @@ U14-memory
 U15-routines
 U16-settings-all
 U17-settings-by-chat
-R-dark-hi
 U18-new-helper-group
 U19-screens
 U20-errors-honesty
@@ -50,4 +51,3 @@ U23-ai-page-chips
 U25-anatomy-composer
 U27-composer-no-dropped-letters
 U26-crash-reopen
-B1-batch1

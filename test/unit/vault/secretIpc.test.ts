@@ -30,12 +30,17 @@ describe('secret:offer (Move to secret box, 04-2 §22.4)', () => {
     expect(val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'otp' })).id).toBe(asked.id);
   });
 
-  it('a password or unknown key gets its box too, titled from the pattern, with no vault name to save under', async () => {
+  it('CR-0057: a password or unknown key gets a "Your key" box with a Name field above the masked value', async () => {
     const t2 = vaultHarness();
     const pw = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'password' }));
-    expect(pw.payload).toMatchObject({ name: 'Password' });
+    expect(pw.payload).toMatchObject({ secretKind: 'user_key', name: 'Password' });
     expect((pw.payload as unknown as SecretPayload).vaultName).toBeUndefined();
-    expect(val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'key' })).payload).toMatchObject({ name: 'Key' });
+    const key = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'key' })).payload as unknown as SecretPayload;
+    expect(key).toMatchObject({ secretKind: 'user_key', name: 'Key' });
+    expect(key.fields.map((f) => [f.key, f.masked])).toEqual([
+      ['name', false],
+      ['value', true],
+    ]);
   });
 
   it('05-2 §5.8.6 Groups: never; and the box says up front when the vault cannot save (§5.8.3 Disabled)', async () => {
@@ -128,6 +133,47 @@ describe('secret:save', () => {
     expect(rows).toHaveLength(1);
     expect(rows[0]).not.toHaveProperty('target');
     expect(JSON.stringify(rows)).not.toContain(FAKE_KEY);
+  });
+});
+
+describe('CR-0057 · a key the user names (foo/user_key/{name})', () => {
+  it('AT-447 saves under the name the user typed, logs the name only, and keeps the value out of foo.db', async () => {
+    const t2 = vaultHarness();
+    const box = val(await t2.h['secret:offer']({ chatId: 'c_1', slot: 'key' }));
+    const r = val(await t2.h['secret:save']({ requestId: box.id, kind: 'user_key', name: ' GitHub  key ', fields: { value: FAKE_KEY } }));
+    expect(r).toEqual({ target: 'foo/user_key/github-key', savedAt: NOW, label: 'GitHub key' });
+    expect(t2.keyring.entries.get('foo/user_key/github-key')).toBe(FAKE_KEY);
+    expect(t2.cards.at(-1)).toMatchObject({
+      id: box.id,
+      state: 'saved',
+      payload: { target: 'foo/user_key/github-key', label: 'GitHub key' },
+    });
+    expect(t2.db.prepare('SELECT kind, name, label FROM secrets_index').all()).toEqual([
+      { kind: 'user_key', name: 'github-key', label: 'GitHub key' },
+    ]);
+    expect(t2.db.prepare('SELECT summary FROM activity').all()).toEqual([{ summary: 'Saved your GitHub key' }]);
+    const dump = JSON.stringify([t2.db.prepare('SELECT * FROM cards').all(), t2.db.prepare('SELECT * FROM activity').all()]);
+    expect(dump).not.toContain(FAKE_KEY);
+    // The same name again replaces the value (X-129: only cards refuse).
+    val(await t2.h['secret:save']({ kind: 'user_key', name: 'github key', fields: { value: 'sk-fake-second-000000000000' } }));
+    expect(t2.keyring.entries.get('foo/user_key/github-key')).toBe('sk-fake-second-000000000000');
+    expect(t2.db.prepare("SELECT summary FROM activity WHERE event = 'secret_replaced'").get()).toEqual({
+      summary: 'Replaced your github key',
+    });
+  });
+
+  it('a name that is empty, longer than 40 characters or only symbols is refused, and nothing is written', async () => {
+    const t2 = vaultHarness();
+    for (const name of ['', '   ', 'x'.repeat(41), '///'])
+      expect(err(await t2.h['secret:save']({ kind: 'user_key', name, fields: { value: FAKE_KEY } }))).toBe('VALIDATION');
+    expect(t2.keyring.entries.size).toBe(0);
+  });
+
+  it('the AI cannot read a user key: no purpose maps to user_key', async () => {
+    const t2 = vaultHarness();
+    val(await t2.h['secret:save']({ kind: 'user_key', name: 'GitHub key', fields: { value: FAKE_KEY } }));
+    for (const purpose of ['fill_login', 'fill_card', 'ai_call', 'voice_call', 'connector_refresh', 'wa_session', 'web_tool', 'hub_call'])
+      expect(t2.vault.use({ purpose, name: 'github-key' } as never).ok).toBe(false);
   });
 });
 

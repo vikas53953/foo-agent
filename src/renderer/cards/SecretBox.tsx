@@ -52,6 +52,10 @@ const DEFAULT_FIELDS: Record<SecretCardKind, Field[]> = {
   ],
   otp: [{ key: 'code', label: '', masked: true }],
   cvv: [{ key: 'code', label: '', masked: true }],
+  user_key: [
+    { key: 'name', label: t('cards.secret.field.key_name'), masked: false },
+    { key: 'value', label: t('cards.secret.field.key_value'), masked: true },
+  ],
 };
 
 const isCode = (k: SecretCardKind) => k === 'otp' || k === 'cvv';
@@ -66,6 +70,9 @@ export function fieldError(kind: SecretCardKind, v: Record<string, string>): str
     if (!exp) return t('cards.secret.error.expiry');
     if (v.cvv && !/^\d{3,4}$/.test(v.cvv)) return t('cards.secret.error.code');
   }
+  // CR-0057: a key the user names needs a name, 40 characters at most, with a letter or digit in it.
+  if (kind === 'user_key' && !/[\p{L}\p{N}]/u.test(v.name ?? '')) return t('cards.secret.error.key_name');
+  if (kind === 'user_key' && (v.name ?? '').trim().length > 40) return t('cards.secret.error.key_name_long');
   if (kind === 'otp' && !/^\d{4,8}$/.test(digits(v.code ?? ''))) return t('cards.secret.error.code');
   if (kind === 'cvv' && !/^\d{3,4}$/.test(digits(v.code ?? ''))) return t('cards.secret.error.code');
   return null;
@@ -75,6 +82,7 @@ export function fieldError(kind: SecretCardKind, v: Record<string, string>): str
 function saveTarget(p: SecretPayload, v: Record<string, string>): { kind: SecretKind; name: string } | null {
   if (p.secretKind === 'voice_key') return { kind: 'ai_key', name: 'openai-key' };
   if (p.secretKind === 'card') return { kind: 'card', name: digits(v.number ?? '').slice(-4) };
+  if (p.secretKind === 'user_key') return { kind: 'user_key', name: v.name ?? '' };
   if (isCode(p.secretKind) || !p.vaultName) return null;
   return { kind: p.secretKind, name: p.vaultName };
 }
@@ -137,9 +145,11 @@ export function SecretField({
           : kind === 'cvv'
             ? t('cards.secret.cvv.placeholder')
             : undefined
-        : field.label
-          ? undefined
-          : t('cards.secret.placeholder');
+        : field.key === 'name' && kind === 'user_key'
+          ? t('cards.secret.field.key_name_placeholder')
+          : field.label
+            ? undefined
+            : t('cards.secret.placeholder');
   const input = (
     <span className={box.box}>
       <input
@@ -242,7 +252,8 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
   const title = p.name;
   const state = cancelled ? 'withdrawn' : card.state;
   const asking = (state === 'asking' || state === 'rejected' || replacing) && !cancelled;
-  const filled = fields.some((f) => (values[f.key] ?? '').trim() !== '');
+  // CR-0057: a named key is ready to save once its value is typed (the name alone is not a secret).
+  const filled = p.secretKind === 'user_key' ? (values.value ?? '').trim() !== '' : fields.some((f) => (values[f.key] ?? '').trim() !== '');
   const forget = () => {
     setValues({});
     setShown(false);
@@ -268,8 +279,10 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
       setFailure('no_kind');
       return;
     }
-    // A card's CVV is never stored (08-2 §11.2); it does not travel either.
-    const fields = Object.fromEntries(Object.entries(values).filter(([k]) => !(p.secretKind === 'card' && k === 'cvv')));
+    // A card's CVV is never stored (08-2 §11.2); it does not travel either. A user key's name travels as `name` only.
+    const fields = Object.fromEntries(
+      Object.entries(values).filter(([k]) => !(p.secretKind === 'card' && k === 'cvv') && !(p.secretKind === 'user_key' && k === 'name')),
+    );
     run('save', () =>
       invoke('secret:save', { requestId: card.id, kind: target.kind, name: target.name, fields }).then((r) => {
         if (r.ok) {
@@ -313,7 +326,9 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
           ? t('cards.secret.voice_key.saved')
           : p.secretKind === 'web_key'
             ? t('cards.secret.web_key.saved', { service: title.replace(/ key$/, '') })
-            : t('cards.secret.summary.saved', { agentName });
+            : p.secretKind === 'user_key'
+              ? t('cards.secret.user_key.saved', { name: p.label ?? title, agentName })
+              : t('cards.secret.summary.saved', { agentName });
   // CR-0030 pick 5 (05-2 §5.8.4 Code box): "Your bank sent a code to {+91 98••• ••210}." from the masked `sentTo`.
   const reason =
     p.why ||

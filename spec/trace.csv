@@ -398,4 +398,5 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-444,,,10-acceptance-2 §C.10; 04 §13.2; 08-2 §7.6; CR-0053,test/unit/m3-prompt-filters.test.ts,M9,live
 ,,AT-445,,,10-acceptance-2 §C.10; 08-4 §25.3; CR-0055,test/unit/job-result-table.test.ts,M9,live
 ,,AT-446,,,10-acceptance-2 §C.10; 08-4 §25.5 item 5a; CR-0056,test/integration/connect-first.test.ts,M9,live
+,,AT-447,,,10-acceptance-2 §C.10; 05-2 §5.8.4; 08-0 §E.8; 08-2 §11.2; CR-0057,test/unit/vault/secretIpc.test.ts,M9,live
 ,J21,AT-094,,,10-acceptance-1 AT-094; 08-4 §25.6; 08-1 §4.4.2; CR-0043,test/integration/settings-by-chat.test.ts,M13,pending

@@ -105,7 +105,7 @@ Test id: `composer-attach` (`aria-expanded`).
 |---|---|---|---|---|
 | "Photos and files" | `Attach` | "Ctrl+U" | Windows file picker, multi-select, filter = allowed types (§22.6) | `composer-attach-menu-files` |
 | "Take a screenshot" | `Screenshot` (new icon) | — | Opens Windows' own snipping overlay (`ms-screenclip:`). When an image lands on the clipboard within 60 s, it is added as an image chip. Nothing lands → nothing happens | `composer-attach-menu-screenshot` |
-| "Password or key" | `Key` | — | Posts a Secret box card (C7, 05-cards) in this chat with an empty name field. The value never touches the composer | `composer-attach-menu-secret` |
+| "Password or key" | `Key` | — | Posts a Secret box card (C7, 05-cards) in this chat with an empty name field (the Your key variant, 05-2 §5.8.4, CR-0057). The value never touches the composer | `composer-attach-menu-secret` |
 | "Emoji" | `Emoji` (new icon) | "Win+." | Focuses the field and opens the Windows emoji panel (`app.showEmojiPanel()`) | `composer-attach-menu-emoji` |
 
 `[foo decision: no "Create image", "Deep research" or mode items (AIC CG4) — non-technical users never choose modes]`

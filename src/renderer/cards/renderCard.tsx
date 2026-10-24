@@ -20,13 +20,12 @@ import { Plan } from './Plan';
 import { PlaceCard } from './PlaceCard';
 import { SecretBox } from './SecretBox';
 import { SetupCard } from './setup/SetupCard';
-import { SignInCard } from './SignIn';
 import { Stuck } from './Stuck';
 import { TableCard } from './TableCard';
 // M8
 import { ConnectCard } from './Connect';
 // R1 T2 (CR-0022)
-import { AiPageCard, KitCard, SpendCap } from '../pages/lazyKit';
+import { AiPageCard, KitCard, SignInCard, SpendCap } from '../pages/lazyKit';
 // R1 T5
 
 type CardComponent = ComponentType<{ card: CardRow; time: CardTime }>;
