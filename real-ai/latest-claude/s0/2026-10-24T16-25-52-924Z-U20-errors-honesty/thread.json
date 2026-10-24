@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Shortlisted 3 laptops under ₹50,000 with 16GB RAM: MSI Modern 14 C7M (around ₹43,219), Acer Aspire 14 AI (around ₹43,999), Lenovo ThinkBook 16 Gen 7 (around ₹46,990). Prices are approximate, from one review site.\n\n4:23 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Sat 24 Oct\nReplace\nRemove\n4:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n4:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n4:25 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which electricity company is it, and which account? I'll pull up the bill amount and show it to you before anything is paid.\n\n4:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n4:26 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for Domino's menu and offers near you\n3\nKeep 3 pizzas that fit popular and good value\n4\nWait for you to pick one\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 5 minutes\nGo\nChange plan\n4:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n4:26 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n4:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:26 PM"
+  }
+]

@@ -1,0 +1,58 @@
+{"t":"2026-10-24T16:15:17.820Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T16:15:23.307Z","step":"launch","ok":true}
+{"t":"2026-10-24T16:15:31.401Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8091}
+{"t":"2026-10-24T16:15:32.431Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1030}
+{"t":"2026-10-24T16:15:32.534Z","i":1,"do":"send","sentAt":1792858532498,"sent":true,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-24T16:15:42.657Z","i":2,"do":"waitReply","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":3527,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Delhi has more than 1,000 historic monuments, including three UNESCO World Heritage Sites: the Red Fort, Qutub Minar and Humayun's Tomb.\n\n4:15 PM","kit":[],"ms":10122}
+{"t":"2026-10-24T16:15:42.729Z","shot":"01-fact.png"}
+{"t":"2026-10-24T16:15:42.810Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-24T16:15:42.896Z","i":4,"do":"click","soft":true,"ok":true,"ms":86}
+{"t":"2026-10-24T16:15:43.497Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":600}
+{"t":"2026-10-24T16:15:43.558Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-24T16:15:43.626Z","i":6,"do":"click","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-24T16:15:43.705Z","i":7,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-24T16:15:43.827Z","i":8,"do":"click","soft":true,"ok":true,"ms":122}
+{"t":"2026-10-24T16:15:44.429Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":602}
+{"t":"2026-10-24T16:15:44.511Z","shot":"04-react-picker.png"}
+{"t":"2026-10-24T16:15:44.593Z","i":10,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-24T16:15:45.395Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":802}
+{"t":"2026-10-24T16:15:45.463Z","shot":"05-reacted.png"}
+{"t":"2026-10-24T16:15:45.464Z","i":12,"do":"check","note":"reaction chip shows","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-24T16:15:45.536Z","i":13,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-24T16:15:46.338Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":801}
+{"t":"2026-10-24T16:15:46.399Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-24T16:15:46.470Z","i":15,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-24T16:15:47.071Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":601}
+{"t":"2026-10-24T16:15:47.134Z","shot":"07-my-menu.png"}
+{"t":"2026-10-24T16:15:47.209Z","i":17,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-24T16:15:47.714Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":505}
+{"t":"2026-10-24T16:15:47.794Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-24T16:15:47.898Z","i":19,"do":"send","sentAt":1792858547868,"sent":true,"before":0,"ok":true,"ms":104}
+{"t":"2026-10-24T16:15:57.544Z","i":20,"do":"waitReply","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":3054,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Golden Temple in Amritsar runs one of the world's largest free kitchens, serving langar to around 1,00,000 people every day, whatever their religion or background.\n\n4:15 PM","kit":[],"ms":9645}
+{"t":"2026-10-24T16:15:57.608Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-24T16:15:57.610Z","i":21,"do":"check","note":"quote shows inside my bubble","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-24T16:15:57.691Z","i":22,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-24T16:15:57.772Z","i":23,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-24T16:15:58.274Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":501}
+{"t":"2026-10-24T16:15:58.339Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-24T16:15:58.354Z","i":25,"do":"fill","soft":true,"ok":true,"ms":15}
+{"t":"2026-10-24T16:15:58.370Z","i":26,"do":"key","ok":true,"ms":15}
+{"t":"2026-10-24T16:16:18.374Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20004}
+{"t":"2026-10-24T16:16:18.437Z","shot":"11-edited.png"}
+{"t":"2026-10-24T16:16:18.439Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n4:15 PM","ok":true,"ms":2}
+{"t":"2026-10-24T16:16:18.521Z","i":29,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-24T16:16:18.598Z","i":30,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-24T16:16:19.407Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":809}
+{"t":"2026-10-24T16:16:19.482Z","shot":"12-good.png"}
+{"t":"2026-10-24T16:16:19.549Z","i":32,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-10-24T16:16:19.629Z","i":33,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-24T16:16:20.438Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":809}
+{"t":"2026-10-24T16:16:20.497Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-24T16:16:20.500Z","i":35,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-24T16:16:20.565Z","i":36,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-24T16:16:20.643Z","i":37,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-24T16:18:50.676Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150032}
+{"t":"2026-10-24T16:18:50.750Z","shot":"14-try-again.png"}
+{"t":"2026-10-24T16:18:50.760Z","i":39,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T16:18:50.887Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-24T16:18:50.899Z","step":"aiTurns","turns":3}
