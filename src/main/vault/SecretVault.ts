@@ -32,18 +32,23 @@ const NAME_RULES: Record<SecretKind, (name: string) => boolean> = {
   login: (n) => n.length <= 253 && /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(n),
   card: (n) => /^\d{4}$/.test(n),
   wa_session: (n) => n === 'whatsapp',
-  user_key: (n) => n.length >= 1 && n.length <= 40 && /^[a-z0-9]/.test(n),
+  user_key: (n) => n.length >= 1 && n.length <= 60 && /^[\p{L}\p{N}]/u.test(n),
 };
 
 /** CR-0057: the name a user typed, as people read it ("GitHub key"): trimmed, inner spaces collapsed. */
 export const userKeyLabel = (name: string): string => name.trim().replace(/\s+/g, ' ');
 
 /** CR-0057 (08-0 §E.8: no space in a vault name): "GitHub key" → `github-key`, via safeName (08-1 §0.7.1). */
-export const userKeyName = (name: string): string =>
-  // safeName turns an empty name into `file`; an empty or over-long name has no vault name.
-  !userKeyLabel(name) || userKeyLabel(name).length > 40
-    ? ''
-    : safeName(userKeyLabel(name)).toLowerCase().replace(/[ .]+/g, '-').replace(/-{2,}/g, '-').replace(/^-|-$/g, '');
+export const userKeyName = (name: string): string => {
+  const label = userKeyLabel(name);
+  // The renderer's rule (05-2 §5.8.4): 1 to 40 characters with a letter or digit; anything else has no vault name.
+  if (!label || label.length > 40 || !/[\p{L}\p{N}]/u.test(label)) return '';
+  return safeName(label)
+    .toLowerCase()
+    .replace(/[ .]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}\p{M}]+$/gu, '');
+};
 
 /** 08-2 §11.3: which secret kind each purpose may read. */
 /** CR-0057: no purpose reads a `user_key` (the AI never uses a key the user named, until a CR says how). */

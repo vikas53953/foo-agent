@@ -298,6 +298,11 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
       }),
     );
   };
+  // CR-0057: Replace on a named key keeps its name (fixed), so the new value goes to the same vault entry.
+  const replace = () => {
+    if (p.secretKind === 'user_key') setValues({ name: p.label ?? '' });
+    setReplacing(true);
+  };
   const cancel = () => {
     if (replacing) {
       forget();
@@ -377,7 +382,7 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
               title={title}
               value={values[f.key] ?? ''}
               shown={shown}
-              readOnly={busySave}
+              readOnly={busySave || (replacing && p.secretKind === 'user_key' && f.key === 'name')}
               autoFocus={i === 0 && moved}
               onChange={(v) => {
                 setValues((o) => ({ ...o, [f.key]: v }));
@@ -454,7 +459,7 @@ export function SecretBox({ card, time }: { card: CardRow; time: CardTime }) {
           </span>
           {/* X-129: a saved card is removed first, never replaced. */}
           {p.secretKind !== 'card' && (
-            <CardButton tid="cardSecretReplace" kind="secondary" disabled={!!busy} onClick={() => setReplacing(true)}>
+            <CardButton tid="cardSecretReplace" kind="secondary" disabled={!!busy} onClick={replace}>
               {t('cards.secret.button.replace')}
             </CardButton>
           )}

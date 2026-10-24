@@ -35,19 +35,37 @@ the + menu and the moved password through the real window. Before this change it
 ## (c) Picks where the spec is silent
 
 1. **Field order.** Name first, then the masked value. 04-2 §22.4 already says focus moves to the card's name field after
-   Move to secret box, and the + menu box reads top to bottom.
-2. **Name rules.** 1 to 40 characters with a letter or digit. The vault name is `safeName` of the typed name, lower case,
-   with spaces and dots turned into `-` ("GitHub key" → `github-key`). The label keeps the name as typed (inner spaces
+   Move to secret box, and the + menu box reads top to bottom. The Name starts empty, even after a move: the suggested
+   name ("Password", "Key") stays the card's title, because two passwords both saved as "Password" would replace each
+   other.
+2. **Name rules.** 1 to 40 characters with a letter or digit, in any script. The vault name is `safeName` of the typed
+   name, lower case, with spaces and dots turned into `-` and symbols trimmed from both ends ("GitHub key" → `github-key`,
+   "@work key" → `work-key`, "मेरा पासवर्ड" → `मेरा-पासवर्ड`). The label keeps the name as typed (inner spaces
    collapsed), so the saved row and the activity line read "GitHub key".
-3. **Same name again replaces.** Like every kind except cards (X-129), it logs "Replaced your {name}".
+3. **Same name again replaces.** Like every kind except cards (X-129), it logs "Replaced your {name}". Replace on a
+   saved card fills in its name and locks it, so the new value goes to the same entry and no old entry is left behind.
 4. **Credential Manager only.** A blob file is named by `{name}` alone (09 §9.18), so a user name like `exa` could clash
    with another kind's blob. A value over 2,560 bytes is refused, which no typed password or key reaches.
 5. **No reader yet.** No `vault.use` purpose maps to `user_key`, so a saved key is stored and listed but never used. Using
    one in a job (for example, a GitHub key for a GitHub step) needs its own CR. Until then the AI sees only the name
-   (05-2 §5.8.5 rule 2).
+   (05-2 §5.8.5 rule 2). A saved user key is listed by `secret:list` but no Settings page shows it yet (only Settings → AI
+   lists keys), so it is removed from its card's Remove; C-22's Remove line ("…the next time a job needs it") reads a
+   little off for a key no job uses. Both are follow-ups for the Settings batch.
 6. **Copy.** Six new keys in `en-IN.json`: the Name and "Password or key" field labels, the placeholder, the two field
    errors and the saved line. The real-PC journey U13 types a name ("Test key") before the key.
 
 ## (d) Review
 
-Two independent reviews before merge (secrets need two). Findings and fixes are listed in the PR.
+Two independent reviews before merge (secrets need two).
+
+- Security and correctness found no leak. The checks covered the name escape, the value staying out of `foo.db` and the
+  renderer, no purpose reading the key, migration 0005 keeping every row, and the moved value landing in the masked
+  field. It found two bugs, both fixed:
+  - Main's name rule was stricter than the box. Hindi, "@work key" and "CON" passed the box and then failed for good.
+    Main now uses the box's rule and trims symbols, and there is a test.
+  - Replace with a different name left the old entry orphaned. Replace now fixes the name, and the e2e test covers it.
+- Spec and UX found the same two bugs, plus the empty Name after a move, the Settings gap and a stale DDL comment. The
+  first two are recorded in §(c) 1 and 5, and the DDL comment is fixed. It also asked to split out an unrelated
+  `journeys.txt` reorder, which is reverted.
+- Not fixed: Windows Credential Manager may compare targets without case, so two names that differ only in a
+  case-folding letter (Turkish dotless ı) could share one value. This is far-fetched for typed key names; noted here.

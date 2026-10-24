@@ -164,9 +164,18 @@ describe('CR-0057 · a key the user names (foo/user_key/{name})', () => {
 
   it('a name that is empty, longer than 40 characters or only symbols is refused, and nothing is written', async () => {
     const t2 = vaultHarness();
-    for (const name of ['', '   ', 'x'.repeat(41), '///'])
+    for (const name of ['', '   ', 'x'.repeat(41), '///', '..'])
       expect(err(await t2.h['secret:save']({ kind: 'user_key', name, fields: { value: FAKE_KEY } }))).toBe('VALIDATION');
     expect(t2.keyring.entries.size).toBe(0);
+  });
+
+  it('any name the box accepts has a vault name: Hindi, a leading symbol, a reserved Windows word', async () => {
+    const t2 = vaultHarness();
+    const saved = async (name: string) => val(await t2.h['secret:save']({ kind: 'user_key', name, fields: { value: FAKE_KEY } }));
+    expect(await saved('मेरा पासवर्ड')).toMatchObject({ target: 'foo/user_key/मेरा-पासवर्ड', label: 'मेरा पासवर्ड' });
+    expect(await saved('@work key')).toMatchObject({ target: 'foo/user_key/work-key', label: '@work key' });
+    expect(await saved('CON')).toMatchObject({ target: 'foo/user_key/con', label: 'CON' });
+    expect(await saved('Österreich key')).toMatchObject({ target: 'foo/user_key/österreich-key' });
   });
 
   it('the AI cannot read a user key: no purpose maps to user_key', async () => {

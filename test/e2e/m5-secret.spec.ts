@@ -132,5 +132,13 @@ test('CR-0057 Password or key: the + menu box takes a name and saves the key und
   await expect(card.getByTestId(TID.cardSecretSaved)).toContainText('GitHub key · saved Fri 16 Oct');
   await expect(card).not.toContainText(t('cards.secret.line.no_kind'));
   expect(await page.content()).not.toContain(KEY);
+  // Replace keeps the name (fixed), so the new value goes to the same entry.
+  await card.getByTestId(TID.cardSecretReplace).click();
+  await expect(name).toHaveValue('GitHub key');
+  await expect(name).toHaveAttribute('readonly', '');
+  await value.fill(NEXT);
+  await card.getByTestId(TID.cardSecretSave).click();
+  await expect(card.getByTestId(TID.cardSecretSaved)).toContainText('GitHub key · saved');
+  expect(await page.content()).not.toContain(NEXT);
   await app.close();
 });
