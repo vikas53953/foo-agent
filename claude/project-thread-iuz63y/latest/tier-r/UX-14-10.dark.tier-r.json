@@ -67,7 +67,6 @@
         "10:04",
         "✓",
         "✓",
-        "⛔",
         "IRCTC",
         "wants",
         "you",
@@ -337,7 +336,6 @@
         "of",
         "AI",
         "9:41",
-        "🛠",
         "foo",
         "read:",
         "Pune",
@@ -531,8 +529,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.1013681640625,
-    "diffPixels": 103801,
+    "ratio": 0.1038740234375,
+    "diffPixels": 106367,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.dark.diff.png"
