@@ -1,0 +1,13 @@
+{"t":"2026-10-24T10:15:59.386Z","journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","spec":"07 J-crash recovery (CR-0029, X-187); single-instance lock","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T10:16:04.423Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:16:05.455Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1029}
+{"t":"2026-10-24T10:16:05.458Z","i":1,"do":"check","note":"foo is open","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-24T10:16:10.298Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:16:10.301Z","i":2,"do":"crashRelaunch","expect":"kill only the main foo.exe, reopen straight away: a foo window shows (not a silent quit)","fooProcs":1,"ok":true,"ms":4843}
+{"t":"2026-10-24T10:16:10.356Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-24T10:16:16.640Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:16:16.643Z","i":3,"do":"crashRelaunch","expect":"same, reopening 1.5 s after the crash","fooProcs":1,"ok":true,"ms":6286}
+{"t":"2026-10-24T10:16:16.699Z","shot":"02-after-reopen-1500ms.png"}
+{"t":"2026-10-24T10:16:16.708Z","i":4,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-24T10:16:16.803Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-10-24T10:16:16.811Z","step":"aiTurns","turns":0}

@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "UPI has become India's default way to pay because it makes a bank transfer as quick as sending a text. You scan a code or enter a number, type your PIN, and the money moves from your bank account to theirs in seconds, at any hour, even on holidays.\n\nHere are the three main reasons people are switching:\n\nIt's quick and usually free. Paying a friend, a shop or a bill normally costs nothing, and the money arrives at once. There's no waiting, no queue and no hunting for change.\nIt works almost everywhere. From a roadside tea stall to a big online store, one printed QR code is enough. Shopkeepers don't need a card machine, just a phone.\nOne app, any bank. You can link several accounts and pay anyone, whichever bank or UPI app they use. Nobody is locked into one provider.\n\nTrust and habit do the rest. Once your local vendors accept UPI, carrying cash starts to feel like extra work. Banks, phone makers and the government have all pushed it, and the simple PIN steps make it easy even for first-time smartphone users. That's why a ₹10 payment for chai now feels as normal as a big transfer.\n\n9:55 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n9:55 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:56 AM\n9:56 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nKept 3 phones under ₹20,000 that fit best overall value\nComparing price, display, camera, battery and\nWatch live\nStop\n5 min\n9:56 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n9:58 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which job should I pick up?\n1\nContinue the last job\nBEST FIT\nPick up where we stopped\n2\nStart a new job\nTell me what you need\nSomething else…\nSkip\n9:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n9:59 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:59 AM\n9:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:59 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecking Dineout, EazyDiner, Zomato\nD\nE\nZ\nLook for Italian restaurants in Bandra with a\nKeep 3 Italian places with tables free that fit best rated, open at 8:00 PM\nWait for you to pick one\nWatch live\nStop\n2 min\n9:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:59 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n10:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:01 AM"
+  }
+]

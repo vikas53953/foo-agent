@@ -1,0 +1,25 @@
+{"t":"2026-10-24T10:07:46.286Z","journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","spec":"04 §9, 03-2 selection header, 10-2 §C.3","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T10:07:51.299Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:07:52.328Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1027}
+{"t":"2026-10-24T10:07:52.410Z","i":1,"do":"send","sentAt":1792836472388,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-24T10:08:01.550Z","i":2,"do":"waitReply","expect":"short reply","firstReplyMs":3037,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n10:07 AM","kit":[],"ms":9140}
+{"t":"2026-10-24T10:08:01.602Z","shot":"01-hello.png"}
+{"t":"2026-10-24T10:08:01.666Z","i":3,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T10:08:01.747Z","i":4,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-24T10:08:02.361Z","i":5,"do":"wait","expect":"selection header with count, Copy, Delete, Cancel; check circles on bubbles","ok":true,"ms":614}
+{"t":"2026-10-24T10:08:02.412Z","shot":"02-select-mode.png"}
+{"t":"2026-10-24T10:08:02.478Z","i":6,"do":"click","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-24T10:08:02.879Z","i":7,"do":"wait","expect":"count 2","ok":true,"ms":400}
+{"t":"2026-10-24T10:08:02.927Z","shot":"03-two-selected.png"}
+{"t":"2026-10-24T10:08:02.929Z","i":8,"do":"expectText","note":"count shows 2","soft":true,"text":"2 selected","ok":true,"ms":2}
+{"t":"2026-10-24T10:08:02.992Z","i":9,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T10:08:03.059Z","i":10,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-10-24T10:08:03.132Z","i":11,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-24T10:08:03.198Z","i":12,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-24T10:08:03.799Z","i":13,"do":"wait","expect":"confirm dialog; Esc keeps the message","ok":true,"ms":601}
+{"t":"2026-10-24T10:08:03.853Z","shot":"04-delete-dialog.png"}
+{"t":"2026-10-24T10:08:03.858Z","i":14,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-24T10:08:03.859Z","i":15,"do":"check","note":"message kept after Esc","soft":true,"found":3,"ok":true,"ms":1}
+{"t":"2026-10-24T10:08:03.867Z","i":16,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-24T10:08:04.009Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-10-24T10:08:04.017Z","step":"aiTurns","turns":1}

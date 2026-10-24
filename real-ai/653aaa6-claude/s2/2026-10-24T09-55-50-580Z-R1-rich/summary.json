@@ -1,0 +1,84 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T09-55-50-580Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792835755701,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7127,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones under ₹20,000 that fit best overall value\n3\nCompare price, display, camera, battery and\nAbout 3 minutes\nGo\nChange plan\n9:56 AM",
+      "kit": [],
+      "ms": 13198
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 31
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150005
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792835919149,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9149,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which job should I pick up?\n1\nContinue the last job\nBEST FIT\nPick up where we stopped\n2\nStart a new job\nTell me what you need\nSomething else…\nSkip\n9:58 AM",
+      "kit": [],
+      "ms": 15250
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}
