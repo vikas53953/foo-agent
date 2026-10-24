@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through it scrambled, so nobody in between can read it.\n\nHere is how it works:\n\nYour device locks (encrypts) your traffic before it leaves.\nThe locked traffic travels to the VPN company's computer.\nThat computer unlocks it and sends it on to the website you wanted.\nThe website sees the VPN's address, not yours, so it looks like you are browsing from there.\n\nThis helps on public Wi-Fi, because strangers on the same network can't read your traffic. It also hides your location from websites. It does not make you fully anonymous, since the VPN company can still see where you go, so pick one you trust.\n\n5:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n5:33 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or muddy paths\n5:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n5:34 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trail shoes under ₹5,000, what matters most to you?\n1\nGrip on mud\nBEST FIT\nDeep lugs that hold on wet ground\n2\nCushioning\nSofter feel for longer runs\n3\nLight weight\nQuick and easy on the feet\n4\nDurability\nLasts through rough paths\nSomething else…\nSkip\n5:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:34 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n5:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n5:34 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:34 AM\n5:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:34 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels for 2 nights,…\nlive checklist\nLooking for Goa hotels for 2 nights, Fri 30 Oct to\nCompare price, rating and distance to the beach\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n2 min\n5:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:34 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Goa hotels for 2 nights,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n5:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:37 AM"
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n5:44 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best pick is the MSI Modern 14 C7M-062IN at ₹43,219. Prices are from Smartprix, updated Sat 24 Oct 2026.\n\nMSI Modern 14 C7M-062IN: ₹43,219 Ryzen 5 7530U, 16GB, 512GB SSD. Double the memory of the others.\nAcer Aspire Lite 15 AL15-41: ₹42,990 Ryzen 5 5625U, 8GB, 512GB SSD. Cheapest, but an older chip.\nMSI Modern 14 C7M-284IN: ₹45,990 Ryzen 5 7530U, 8GB, 512GB SSD. Same chip as the first, less memory.\n\nWant me to look up reviews for the first one?\n\n5:45 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "withdrawn",
+    "text": "Key\nsecret\nSkipped. Nothing was saved.\n5:47 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n5:48 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n5:51 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Pay electricity bill”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n5:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n5:51 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for Domino's menu and offers near you\n3\nKeep 3 pizzas that fit popular and good value\n4\nWait for you to pick one\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 6 minutes\nGo\nChange plan\n5:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n5:51 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n5:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:51 AM"
+  }
+]

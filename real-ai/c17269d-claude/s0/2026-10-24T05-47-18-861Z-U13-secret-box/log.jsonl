@@ -1,0 +1,25 @@
+{"t":"2026-10-24T05:47:18.862Z","journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","spec":"05-2 §5.8 Secret box, 10-2 §C.4 Secret box (C7), ART-08a","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T05:47:24.076Z","step":"launch","ok":true}
+{"t":"2026-10-24T05:47:25.102Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1023}
+{"t":"2026-10-24T05:47:25.179Z","i":1,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-24T05:47:25.296Z","i":2,"do":"click","soft":true,"ok":true,"ms":117}
+{"t":"2026-10-24T05:47:26.796Z","i":3,"do":"wait","expect":"Secret box card: masked field, eye toggle, Save","ok":true,"ms":1500}
+{"t":"2026-10-24T05:47:26.851Z","shot":"01-secret.png"}
+{"t":"2026-10-24T05:47:26.862Z","i":4,"do":"fill","soft":true,"ok":true,"ms":10}
+{"t":"2026-10-24T05:47:27.163Z","i":5,"do":"wait","expect":"value masked","ok":true,"ms":300}
+{"t":"2026-10-24T05:47:27.225Z","shot":"02-typed.png"}
+{"t":"2026-10-24T05:47:27.287Z","i":6,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-24T05:47:27.589Z","i":7,"do":"wait","expect":"value shown after eye","ok":true,"ms":302}
+{"t":"2026-10-24T05:47:27.647Z","shot":"03-shown.png"}
+{"t":"2026-10-24T05:47:27.706Z","i":8,"do":"click","soft":true,"ok":true,"ms":59}
+{"t":"2026-10-24T05:47:27.771Z","i":9,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-24T05:47:29.774Z","i":10,"do":"wait","expect":"\"· saved {date}\", only Replace offered; value never shown again","ok":true,"ms":2002}
+{"t":"2026-10-24T05:47:29.834Z","shot":"04-saved.png"}
+{"t":"2026-10-24T05:47:52.896Z","shot":"05-error-step11.png"}
+{"t":"2026-10-24T05:47:52.896Z","i":11,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-24T05:47:53.698Z","i":12,"do":"wait","expect":"empty field to replace","ok":true,"ms":801}
+{"t":"2026-10-24T05:47:53.755Z","shot":"06-replace.png"}
+{"t":"2026-10-24T05:47:53.828Z","i":13,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-24T05:47:53.837Z","i":14,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-24T05:47:53.936Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-24T05:47:53.945Z","step":"aiTurns","turns":0}
