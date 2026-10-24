@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's GDP growth swung from a 5.8% fall in FY2020-21 to a 9.7% rebound the next year, and has since settled around 6.5% to 9%. These are real growth rates by financial year (April to March), from my memory of the official figures, so check MoSPI for the latest revisions. I've left out FY2025-26 because its final figure may still change.\n\nIndia real GDP growth (% a year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n6:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n6:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 is the best value of the three: it has the fastest chip and a 120 Hz screen, and it gets 7 years of updates. The Pixel 9 is a close second. This is from my memory of the specs, and I can't see live prices from here. Prices are usually close at launch, so check the current ones before you pick.\n\niPhone 16\nScreen\n6.1 in OLED, 60 Hz\nChip\nApple A18\nRAM\n8 GB\nBase storage\n128 GB\nMain camera\n48 MP\nSoftware updates\nAbout 5 to 6 years\nPixel 9\nScreen\n6.3 in OLED, 120 Hz\nChip\nGoogle Tensor G4\nRAM\n12 GB\nBase storage\n128 GB\nMain camera\n50 MP\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nScreen\n6.2 in OLED, 120 Hz\nChip\nSnapdragon 8 Elite\nRAM\n12 GB\nBase storage\n128 GB\nMain camera\n50 MP\nSoftware updates\n7 years\n\nFastest chip, smooth 120 Hz screen, 12 GB RAM and 7 years of updates.\n\nKeep\n\nIf you mostly care about photos and clean software, the Pixel 9 is the one to pick. If you're already on iPhone, the iPhone 16 makes sense for the ecosystem.\n\n6:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n6:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is ready below. Start it when the tea is in the cup.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n6:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an amount, pick a category and a date, and it totals the month and shows where the money goes. It also warns you when you pass your budget. It keeps entries on this page, and they may not be saved after you close it.\n\nKeep\n6:27 AM"
+  }
+]

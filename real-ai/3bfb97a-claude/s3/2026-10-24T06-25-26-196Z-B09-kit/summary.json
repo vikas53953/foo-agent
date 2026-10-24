@@ -1,0 +1,190 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T06-25-26-196Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792823131818,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 8588,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month for ₹50,00,000 (50 lakh) at 8.5% over 20 years. Change the amount, rate or years below to see it update.\n\nLoan amount (₹)\nInterest rate (% a year)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n6:25 AM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 16706
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792823148715,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 5095,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 places to visit in Jaipur, numbered in a sensible order: start at Amber Fort in the morning, then work your way through the city.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort with grand courtyards. Go early to avoid the heat and crowds.\n2\nNahargarh Fort\nBest city views, especially at sunset.\n3\nJantar Mantar\nGiant stone astronomical instruments.\n4\nCity Palace\nRoyal palace with museums and courtyards.\n5\nHawa Mahal\nThe pink-sandstone facade. It looks best in morning light.\nOpen in Maps\nKeep\n6:25 AM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "ms": 13701
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792823162631,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 6589,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's GDP growth swung from a 5.8% fall in FY2020-21 to a 9.7% rebound the next year, and has since settled around 6.5% to 9%. These are real growth rates by financial year (April to March), from my memory of the official figures, so check MoSPI for the latest revisions. I've left out FY2025-26 because its final figure may still change.\n\nIndia real GDP growth (% a year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n6:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "ms": 15226
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792823178051,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 7577,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three: it has the fastest chip and a 120 Hz screen, and it gets 7 years of updates. The Pixel 9 is a close second. This is from my memory of the specs, and I can't see live prices from here. Prices are usually close at launch, so check the current ones before you pick.\n\niPhone 16\nScreen\n6.1 in OLED, 60 Hz\nChip\nApple A18\nRAM\n8 GB\nBase storage\n128 GB\nMain camera\n48 MP\nSoftware updates\nAbout 5 to 6 years\nPixel 9\nScreen\n6.3 in OLED, 120 Hz\nChip\nGoogle Tensor G4\nRAM\n12 GB\nBase storage\n128 GB\nMain camera\n50 MP\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nScreen\n6.2 in OLED, 120 Hz\nChip\nSnapdragon 8 Elite\nRAM\n12 GB\nBase storage\n128 GB\nMain camera\n50 MP\nSoftware updates\n7 years\n\nFastest chip, smooth 120 Hz screen, 12 GB RAM and 7 years of updates.\n\nKeep\n\nIf you mostly care about photos and clean software, the Pixel 9 is the one to pick. If you're already on iPhone, the iPhone 16 makes sense for the ecosystem.\n\n6:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "ms": 18191
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792823196452,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 165
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 5067,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is ready below. Start it when the tea is in the cup.\n\nLet the tea steep\n2:00 left\nStart timer\nKeep\n6:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "ms": 12663
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792823209328,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 162
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 3058,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for your party plan. Fill in the date, guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "ms": 10670
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792823220223,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 166
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 6576,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add an amount, pick a category and a date, and it totals the month and shows where the money goes. It also warns you when you pass your budget. It keeps entries on this page, and they may not be saved after you close it.\n\nKeep\n6:27 AM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 26974
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

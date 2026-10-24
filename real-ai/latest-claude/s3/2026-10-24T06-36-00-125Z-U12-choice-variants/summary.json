@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T06-36-00-125Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1027
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792823766860,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 7108,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for you?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, about 1.5 hours away\n2\nLalbagh and breakfast\nEasy garden walk, then a classic South Indian meal\n3\nCubbon Park and cafes\nRelaxed walk, then Church Street or Indiranagar\nSomething else…\nSkip\n6:36 AM",
+      "kit": [],
+      "ms": 13200
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792823780358,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 5062,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Lalbagh and breakfast it is. Go early, while it's cool and the paths are quiet, then have a South Indian breakfast nearby afterwards. Want me to put it on your calendar for this weekend?\n\n6:36 AM",
+      "kit": [],
+      "ms": 12695
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792823793255,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 4583,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nSouth Indian thali\nBEST FIT\nLight, filling and easy on the wallet\n2\nNorth Indian curry and naan\nRich gravy, tandoori and butter naan\n3\nBiryani and raita\nHyderabadi or Donne style\nSomething else…\nSkip\n6:36 AM",
+      "kit": [],
+      "ms": 10655
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 612
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792823804863,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 8072,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is, simple and comforting. Want a quick tadka tip to make it extra good?\n\n6:36 AM",
+      "kit": [],
+      "ms": 14658
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

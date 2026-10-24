@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an amount, pick a category and a date, and it totals the month and shows where the money goes. It also warns you when you pass your budget. It keeps entries on this page, and they may not be saved after you close it.\n\nKeep\n6:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n6:27 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:27 AM\n6:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:27 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Booking table for 2, Sun 25 Oct, 8:00 PM\nlive checklist\n2 steps done · Show\nYou picked\nShowed you before the table booking for 2, Sun 25 Oct\nYou said yes\nBooked table for 2, Sun 25 Oct, 8:00 PM\nStopped by you\n6:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:27 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Sun 25 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n6:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Try Shelly, Mochi, Turbo or Pebble. Turbo is a fun joke name for a slow animal, and Pebble suits a small round shell. Tortoises can live for decades, so pick a name you'll still like in 50 years.\n\n6:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n6:32 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking major Indian news sites\nlive checklist\nChecking major Indian news sites\nM\nLook for the top India story today\nWatch live\nStop\nunder 1 min\n6:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:32 AM"
+  }
+]
