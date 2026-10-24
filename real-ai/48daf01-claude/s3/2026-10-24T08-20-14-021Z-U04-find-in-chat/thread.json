@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:18 AM\n8:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:18 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nLook for account balance\n8:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:18 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n8:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n8:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n8:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n8:19 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which WhatsApp chats should I catch you up on?\n1\nAll chats with unread messages\nBEST FIT\nRead only, nothing is sent\n2\nOnly the group with the most unread\nRead only, nothing is sent\n3\nA group I'll name\nTell me which one\nSomething else…\nSkip\n8:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n8:20 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n8:20 AM"
+  }
+]

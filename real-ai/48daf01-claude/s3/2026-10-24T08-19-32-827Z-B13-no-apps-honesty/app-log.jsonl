@@ -1,0 +1,9 @@
+{"t":1792829973845,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792829986576,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792829986577,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792829993654,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"catch_up"}
+{"t":1792829993654,"lvl":"info","mod":"engine","evt":"chat.kind_not_built"}
+{"t":1792829998230,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2927}
+{"t":1792829999942,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792829999942,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792830007330,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"ask"}

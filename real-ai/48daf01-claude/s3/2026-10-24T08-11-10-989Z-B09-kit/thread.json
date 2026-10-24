@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n8:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth went from a 5.8% fall in FY 2020-21 to a 9.7% rebound, then eased to about 6.5% in FY 2024-25. These are approximate, and later revisions may shift them slightly. FY 2025-26 isn't included because the final figure isn't out yet.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n8:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n8:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is the best value of the three: the fastest chip, a smooth 120 Hz screen and 7 years of updates. The Pixel 9 is close, with the biggest battery. Specs are approximate, and the real winner depends on today's price, so check current prices before you buy.\n\niPhone 16\nScreen\n6.1\" OLED, 60 Hz\nChip\nApple A18\nCameras\n48 MP main + 12 MP ultrawide\nBattery\nAbout 3,600 mAh\nUpdates\nLong support, about 6 to 7 years\nBest for\niPhone fans and video\nPixel 9\nScreen\n6.3\" OLED, 120 Hz\nChip\nGoogle Tensor G4\nCameras\n50 MP main + 48 MP ultrawide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest for\nPhotos and clean Android\nBest pick\nGalaxy S25\nScreen\n6.2\" OLED, 120 Hz\nChip\nSnapdragon 8 Elite\nCameras\n50 MP main + ultrawide + 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\nBest for\nAll-round power and zoom\n\nFastest chip, 120 Hz screen, 3x zoom and 7 years of updates, usually at a similar price.\n\nKeep\n\nWant me to look up today's prices for all three?\n\n8:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n8:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is ready below, tap it to start.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n8:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n8:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for planning the party. Fill it in and send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n8:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n8:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your expense tracker. Add an item with its amount and category, and the total and category split update as you go. Entries stay on this page only until you close it.\n\nKeep\n\nWant a monthly budget limit added, with a warning when you go over?\n\n8:12 AM"
+  }
+]
