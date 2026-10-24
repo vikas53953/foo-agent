@@ -1,0 +1,72 @@
+{
+  "journey": "U15-routines",
+  "title": "Routine: create by chat, routines screen, pause, run once",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T07-53-50-668Z-U15-routines",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1025
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792828437375,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Routine card: created, next run time with weekday and date",
+      "firstReplyMs": 11240,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can't set up a repeating 8:00 AM weekday weather routine from here, so nothing is scheduled. I can tell you Delhi's weather whenever you ask. Carrying on with the phones now.\n\n7:54 AM",
+      "kit": [],
+      "ms": 17323
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Routines screen with the new routine row",
+      "ok": true,
+      "ms": 1202
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23054
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

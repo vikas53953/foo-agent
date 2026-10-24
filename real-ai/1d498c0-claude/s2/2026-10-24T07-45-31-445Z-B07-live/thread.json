@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n7:38 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Saturday should I check for 2 at 8:00 PM?\n1\nTonight\nBEST FIT\nSat 24 Oct, 8:00 PM\n2\nNext Saturday\nSat 31 Oct, 8:00 PM\nSomething else…\nSkip\n7:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:39 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Saturday should I check for 8:00 PM?\n1\nTonight, Sat 24 Oct, 8:00 PM\nBEST FIT\nToday\n2\nNext Sat 31 Oct, 8:00 PM\nA week from today\nSomething else…\nSkip\n7:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n7:42 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 1 min\nDetails\n7:42 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:42 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, Janpath, New Delhi, is open today, Sat 24 Oct, from 10:00 AM to 8:00 PM. Tue to Fri it is open 10:00 AM to 6:00 PM, Sat and Sun 10:00 AM to 8:00 PM, and closed on Mondays and national holidays. Entry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 enter free with an ID card. This is from the museum's own Plan Your Visit page.\n\n7:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n7:45 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:45 AM\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "IRCTC blocked foo, so these come from another site. Daily trains to Agra Cantt on Sun 25 Oct: Shatabdi 12002 from New Delhi, 6:00 AM to 7:50 AM (chair car); Taj Express 12280 from New Delhi, 6:55 AM to 9:25 AM; Punjab Mail 12138 from New Delhi, 5:10 AM to 8:10 AM (sleeper and AC). Vande Bharat 22470 (Hazrat Nizamuddin, 6:00 AM to 7:40 AM) and Gatimaan 12050 (Hazrat Nizamuddin, 8:10 AM to 9:50 AM) run on selected days. I could not confirm that they run on Sunday. The page was cut off, and I did not see seat availability or fares.\n\n7:46 AM"
+  }
+]

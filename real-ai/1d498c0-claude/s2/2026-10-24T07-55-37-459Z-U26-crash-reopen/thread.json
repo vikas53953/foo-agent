@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which Saturday for the table for 2 at 8:00 PM? → you changed the plan\n7:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which Saturday should I book the table for? → Sat 31 Oct, 8:00 PM\n7:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking table for 2, Sat 31 Oct, 8:00 PM\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 vegetarian restaurants that fit open tables at 8:00 PM, good ratings\n3\nWait for you to pick one\n4\nShow you before booking a table for 2 on Sat 31 Oct\n5\nShow you before doing anything\n6\nBook table for 2, Sat 31 Oct, 8:00 PM\nAbout 6 minutes\nGo\nChange plan\n7:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n7:52 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n7:53 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n7:53 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't set up a repeating 8:00 AM weekday weather routine from here, so nothing is scheduled. I can tell you Delhi's weather whenever you ask. Carrying on with the phones now.\n\n7:54 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n7:54 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your poem:\n\nGrey clouds roll in over Marine Drive's bend,\nThe sea and the sky in one grey blend.\nChai steams up as the first drops fall,\nAnd Mumbai slows down to hear it all.\n\n7:55 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 7:55 AM.\nLooking on the web was at step 3 of 3. Nothing was paid.\nPick up where I left off\nStop it\n7:55 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:55 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 7:51 AM.\nBooking table for 2, Sat 31 Oct, 8:00 PM was at step 1 of 6. Nothing was paid.\nPick up where I left off\nStop it\n7:55 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:55 AM"
+  }
+]

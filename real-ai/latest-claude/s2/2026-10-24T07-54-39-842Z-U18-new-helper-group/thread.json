@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:45 AM\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "IRCTC blocked foo, so these come from another site. Daily trains to Agra Cantt on Sun 25 Oct: Shatabdi 12002 from New Delhi, 6:00 AM to 7:50 AM (chair car); Taj Express 12280 from New Delhi, 6:55 AM to 9:25 AM; Punjab Mail 12138 from New Delhi, 5:10 AM to 8:10 AM (sleeper and AC). Vande Bharat 22470 (Hazrat Nizamuddin, 6:00 AM to 7:40 AM) and Gatimaan 12050 (Hazrat Nizamuddin, 8:10 AM to 9:50 AM) run on selected days. I could not confirm that they run on Sunday. The page was cut off, and I did not see seat availability or fares.\n\n7:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n7:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🙏 आप कैसे हैं?\n\n7:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n7:47 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which Saturday for the table for 2 at 8:00 PM? → you changed the plan\n7:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which Saturday should I book the table for? → Sat 31 Oct, 8:00 PM\n7:48 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking table for 2, Sat 31 Oct, 8:00 PM\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 vegetarian restaurants that fit open tables at 8:00 PM, good ratings\n3\nWait for you to pick one\n4\nShow you before booking a table for 2 on Sat 31 Oct\n5\nShow you before doing anything\n6\nBook table for 2, Sat 31 Oct, 8:00 PM\nAbout 6 minutes\nGo\nChange plan\n7:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n7:52 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n7:53 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n7:53 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't set up a repeating 8:00 AM weekday weather routine from here, so nothing is scheduled. I can tell you Delhi's weather whenever you ask. Carrying on with the phones now.\n\n7:54 AM"
+  }
+]
