@@ -196,8 +196,8 @@ describe('m3 PromptBuilder budget (§24.15)', () => {
 
   it('stops trimming as soon as it fits (conversation only)', () => {
     const { pb, logs } = setup();
-    // CR-0024 F4 and CR-0027 made part 1 longer, so the messages are a little shorter to keep this a conversation-only trim.
-    const b = pb.buildIntake(input({ conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(900))), local: true }));
+    // CR-0024 F4, CR-0027 and CR-0058 made part 1 longer, so the messages are a little shorter to keep this a conversation-only trim.
+    const b = pb.buildIntake(input({ conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(880))), local: true }));
     expect(logs.filter((l) => l.kind === 'PROMPT_TRIMMED').map((l) => l.detail!.part)).toEqual(['7']);
     const n = b.prompt.split('\n\n')[1]!.split('\n').length - 1;
     expect(n).toBeGreaterThanOrEqual(6);

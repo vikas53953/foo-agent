@@ -26,15 +26,15 @@
     "constitution/08-functions-and-engine-1.md": "a868927c99857c8f7d73c2d802ab61b4023b435bae948a89f3950dbabc20e74a",
     "constitution/08-functions-and-engine-2.md": "e0c84565815b5fb196d862a25354f42de726c2e125d22a0016f169856a630af9",
     "constitution/08-functions-and-engine-3.md": "bf72eacc82f100498bff647693ff92d80e474ba4bed69c3e3d4496a3a5333e11",
-    "constitution/08-functions-and-engine-4.md": "88bba5568aec662b6ade92c39827e61f46165e8bd268eae612dcabc69eeaf266",
+    "constitution/08-functions-and-engine-4.md": "bec89401e62dfd7f2edda8db21a68e0a329278033e960846a5d75446946c43ce",
     "constitution/09-windows.md": "fcd5793534097a7bb37084f216b4de176862c6821c58870a84083695f4089550",
     "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
-    "constitution/10-acceptance-2.md": "0ea7aed59106dfbd2794d928f1f309ed6a3ff3e5b75c91679e5f2614bd7031b8",
+    "constitution/10-acceptance-2.md": "da91da98d01498a3288b9bca77dd265498d29f20d7a5d46cad5a270071190298",
     "constitution/11-fidelity.md": "e2933c5638dcd7c7e779c32bb94c518b541c042e048c777c2dad1168a0e9b348",
     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "5b6f103ec449fc4f16d1efc1f03c8f46cec60bfc22e1495e7f9113cb2fe1df9e",
+    "constitution/DECISIONS.md": "bcea06535b3919f87d409da89e7da991401a9a34391d3f36ac15bbe09261df03",
     "constitution/GAPS.md": "0fc540ebf9754ec6e87a0e114cc7b25123f1312d025a62ed42a175fa085a0229",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -56,6 +56,6 @@
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "143ed27b171b0fb2910065e79de1af36bb8507d6987e21285664a17f0542b286",
     "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
-    "trace.csv": "494e41cfd26c5cd8675cc04dd030943e4703d053e38bb716e56c8482af4c19de"
+    "trace.csv": "c0d6c34d255a332f07c1d935232605f5d62c328829ad165b02181edafcab410f"
   }
 }
