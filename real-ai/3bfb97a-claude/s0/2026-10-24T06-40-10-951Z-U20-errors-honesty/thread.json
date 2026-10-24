@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 4 min\nDetails\n6:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:35 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "withdrawn",
+    "text": "Key\nsecret\nSkipped. Nothing was saved.\n6:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't change how the app looks from here, so dark mode has to be switched on in your app's settings.\n\n6:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best three under ₹50,000 from one review page (prices vary by seller):\n\nLenovo ThinkBook 16, ₹46,990: Ryzen 5 7535HS, 16GB, 512GB, 16-inch 1920x1200 screen. Upgradeable, about 9 hours battery.\nAcer Aspire 14 AI, ₹43,999: Snapdragon X, 16GB, 512GB, 14-inch 120 Hz screen. About 15 hours battery, but some older software won't run on it.\nAcer Aspire 3 A324-53, ₹40,990: Core i5-1334U, 16GB, 512GB, muted screen colours. About 7 hours battery.\n\nIf you want one, the ThinkBook 16 is the safest pick.\n\n6:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n6:40 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying electricity biller\n1\nRead your electricity bill\n2\nSign in to electricity biller\n3\nShow you before the bill amount and payee\n4\nShow you before doing anything\n5\nPay electricity biller\nAbout 4 minutes\nGo\nChange plan\n6:40 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n6:40 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking pizza order\n1\nCheck dominos.co.in\n2\nLook for pizzas and offers near you\n3\nWait for you to pick one\n4\nSign in to dominos.co.in\n5\nFill in your details on dominos.co.in\n…and 3 more · Show\nAbout 6 minutes\nGo\nChange plan\n6:40 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n6:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n6:40 AM"
+  }
+]

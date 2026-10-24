@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 years of recorded history and has been rebuilt as a capital at least seven times, so you're walking on layers of old cities.\n\n6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n6:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Golden Temple's community kitchen, the Guru Ka Langar, serves free meals to around 1,00,000 people every day, whatever their faith or background.\n\n6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n6:35 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:35 AM\n6:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:35 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 4 min\nDetails\n6:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:35 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "withdrawn",
+    "text": "Key\nsecret\nSkipped. Nothing was saved.\n6:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't change how the app looks from here, so dark mode has to be switched on in your app's settings.\n\n6:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best three under ₹50,000 from one review page (prices vary by seller):\n\nLenovo ThinkBook 16, ₹46,990: Ryzen 5 7535HS, 16GB, 512GB, 16-inch 1920x1200 screen. Upgradeable, about 9 hours battery.\nAcer Aspire 14 AI, ₹43,999: Snapdragon X, 16GB, 512GB, 14-inch 120 Hz screen. About 15 hours battery, but some older software won't run on it.\nAcer Aspire 3 A324-53, ₹40,990: Core i5-1334U, 16GB, 512GB, muted screen colours. About 7 hours battery.\n\nIf you want one, the ThinkBook 16 is the safest pick.\n\n6:39 AM"
+  }
+]
