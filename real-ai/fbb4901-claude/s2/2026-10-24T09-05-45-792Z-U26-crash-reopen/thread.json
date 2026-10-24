@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nComparing fares and seats on Shatabdi…\n3\nBoth\nSomething else…\nSkip\n9:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n9:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n9:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:04 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nComparing fares and seats on Shatabdi…\n3\nBoth\nSomething else…\nSkip\n9:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:05 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nComparing fares and seats on Shatabdi…\n3\nBoth\nSomething else…\nSkip\n9:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n9:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your monsoon poem:\n\nGrey clouds roll in from the Arabian Sea,\nMarine Drive waves crash wild and free.\nChai steams hot as the streets turn to streams,\nMumbai sways in the rain's wet dreams.\n\n9:05 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 9:02 AM.\nComparing fares and seats on Shatabdi… was at step 1 of 3. Nothing was paid.\nPick up where I left off\nStop it\n9:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:05 AM"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 24 Oct, 8:00 PM\nlive checklist\nLooked for vegetarian restaurants in Connaught\nPicking the best restaurants\nWait for you to pick one\nShow you before the booking for 2, Sat 24 Oct, 8:00 PM\nShow you before doing anything\nBook table for 2, Sat 24 Oct, 8:00 PM\nWatch live\nStop\n6 min\n8:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest trains from Delhi to Agra Cantt for Sun 25 Oct 2026 (no fares were on the page, so none are listed):\n\nVande Bharat 22470: Hazrat Nizamuddin 6:00 AM to 7:40 AM, 1h 40m, chair car and executive\nGatimaan Exp 12050: Hazrat Nizamuddin 8:10 AM to 9:50 AM, 1h 40m, chair car and executive\nShatabdi 12002: New Delhi 6:00 AM to 7:50 AM, 1h 50m, daily, chair car and executive\nTaj Express 12280: New Delhi 6:55 AM to 9:25 AM, 2h 30m, daily, chair car and second seating\nPunjab Mail 12138: New Delhi 5:10 AM to 8:10 AM, 3h, daily, sleeper and AC classes\n\nVande Bharat and Gatimaan start from Nizamuddin, not New Delhi, and the page doesn't show if they run on Sunday. Nothing is booked. Want me to check fares and seats on the Shatabdi and Vande Bharat?\n\n8:58 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 24 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n3 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n9:02 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Comparing fares and seats on Shatabdi…\n1\nFind trains on IRCTC\n2\nGet the fare\n3\nCompare fares and seats on Shatabdi 12002 and\nAbout 3 minutes\nGo\nChange plan\n9:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:03 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nComparing fares and seats on Shatabdi…\n3\nBoth\nSomething else…\nSkip\n9:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n9:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n9:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:04 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nComparing fares and seats on Shatabdi…\n3\nBoth\nSomething else…\nSkip\n9:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:04 AM"
+  }
+]

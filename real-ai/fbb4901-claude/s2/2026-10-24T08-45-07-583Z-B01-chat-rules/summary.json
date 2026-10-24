@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-45-07-583Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792831513138,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20007
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792831533321,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 9597,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People are switching to UPI because it makes paying faster, cheaper and simpler than cash or cards. You send money straight from your bank account using a phone number, a QR code or a UPI ID. There's no card to swipe and no change to count. It works the same at a tea stall and at a big shop.\n\nThree main reasons:\n\nFast and usually free: Payments reach the other person in seconds, at any hour, even on holidays. Most everyday payments cost the user nothing.\nWorks everywhere: A shopkeeper only needs a printed QR code. Street sellers, auto drivers and small shops can accept payments without a machine or monthly fees.\nEasy and open: It works with any bank and many apps. Setup takes a few minutes with your mobile number and a PIN, and the apps come in many Indian languages, so first-time users manage on their own.\n\nSafety helps too. Every payment needs your PIN, and the shop never sees your bank details. Early offers and strong government support got people started, but now it's mostly habit. Once you stop making ATM trips and hunting for change, going back to cash feels like a chore.\n\n8:45 AM",
+      "kit": [],
+      "ms": 18713
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}
