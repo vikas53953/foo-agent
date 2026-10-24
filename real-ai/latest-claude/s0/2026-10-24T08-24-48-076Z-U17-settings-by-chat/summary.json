@@ -1,0 +1,99 @@
+{
+  "journey": "U17-settings-by-chat",
+  "title": "Change a setting by chat: mini line with Undo; theme and accent rows",
+  "steps": 12,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-24-48-076Z-U17-settings-by-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1022
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792830294415,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 150185
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23073
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "back to light",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "theme options",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23052
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

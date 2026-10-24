@@ -1,0 +1,14 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-09-10-515Z-J01-J02-first-run"}
+{"journey":"J07-chat","title":"Casual chat","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-10-00-828Z-J07-chat"}
+{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-10-38-084Z-B02-choice"}
+{"journey":"B10-paste-secret","title":"Paste bands and secret guard","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-11-08-177Z-B10-paste-secret"}
+{"journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","steps":6,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-11-18-922Z-J10-hotel"}
+{"journey":"J05-web","title":"First real task with the internet (news + sources)","steps":6,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-14-40-050Z-J05-web"}
+{"journey":"J15-helper","title":"Create a helper","steps":4,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-15-02-725Z-J15-helper"}
+{"journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","steps":40,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-15-18-881Z-U01-bubble-menu"}
+{"journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","steps":34,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-18-53-812Z-U05-chat-list"}
+{"journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-20-47-865Z-U09-plan-checklist"}
+{"journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-24-12-852Z-U13-secret-box"}
+{"journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","steps":12,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-24-48-076Z-U17-settings-by-chat"}
+{"journey":"U20-errors-honesty","title":"Things foo cannot do: honest error/connect, no fake success","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-28-13-794Z-U20-errors-honesty"}
+{"journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","steps":36,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-29-01-815Z-U25-anatomy-composer"}

@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n8:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n8:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! What would you like to get done today?\n\n8:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n8:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email and calendar, check websites and prices, fill in forms, draft messages, and set up routines that watch things for you.\n\n8:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n8:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, so nobody in between can see what you send.\n\nWithout one, your traffic goes through your internet provider or the café Wi-Fi, and they can see which sites you visit. With one, your data is locked (encrypted) and sent to the VPN company's computer first. That computer then talks to the website for you.\n\nTwo things follow from this:\n\nWebsites see the VPN's location, not yours.\nYour internet provider sees only scrambled data going to the VPN, not what is inside it.\n\nIt does not make you invisible. The VPN company can still see your activity, so pick one you trust.\n\n8:10 AM"
+  }
+]

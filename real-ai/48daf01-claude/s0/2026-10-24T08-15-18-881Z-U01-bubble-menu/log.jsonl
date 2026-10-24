@@ -1,0 +1,58 @@
+{"t":"2026-10-24T08:15:18.881Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T08:15:24.182Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:15:32.272Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8087}
+{"t":"2026-10-24T08:15:33.302Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1030}
+{"t":"2026-10-24T08:15:33.392Z","i":1,"do":"send","sentAt":1792829733362,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-24T08:15:44.527Z","i":2,"do":"waitReply","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":4053,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Delhi has more than 1,000 years of history under its streets, and the Qutub Minar there, finished around 1220, is still the tallest brick minaret in the world.\n\n8:15 AM","kit":[],"ms":11134}
+{"t":"2026-10-24T08:15:44.594Z","shot":"01-fact.png"}
+{"t":"2026-10-24T08:15:44.665Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-24T08:15:44.735Z","i":4,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-24T08:15:45.337Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":601}
+{"t":"2026-10-24T08:15:45.391Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-24T08:15:45.450Z","i":6,"do":"click","soft":true,"ok":true,"ms":58}
+{"t":"2026-10-24T08:15:45.528Z","i":7,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-24T08:15:45.874Z","i":8,"do":"click","soft":true,"ok":true,"ms":345}
+{"t":"2026-10-24T08:15:46.475Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":600}
+{"t":"2026-10-24T08:15:46.560Z","shot":"04-react-picker.png"}
+{"t":"2026-10-24T08:15:46.649Z","i":10,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-24T08:15:47.450Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":801}
+{"t":"2026-10-24T08:15:47.503Z","shot":"05-reacted.png"}
+{"t":"2026-10-24T08:15:47.505Z","i":12,"do":"check","note":"reaction chip shows","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-24T08:15:47.564Z","i":13,"do":"click","soft":true,"ok":true,"ms":59}
+{"t":"2026-10-24T08:15:48.373Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":808}
+{"t":"2026-10-24T08:15:48.435Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-24T08:15:48.497Z","i":15,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-10-24T08:15:49.102Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":605}
+{"t":"2026-10-24T08:15:49.161Z","shot":"07-my-menu.png"}
+{"t":"2026-10-24T08:15:49.233Z","i":17,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-24T08:15:49.741Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":507}
+{"t":"2026-10-24T08:15:49.839Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-24T08:15:49.923Z","i":19,"do":"send","sentAt":1792829749918,"sent":true,"before":0,"ok":true,"ms":83}
+{"t":"2026-10-24T08:16:00.068Z","i":20,"do":"waitReply","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":3552,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Golden Temple in Amritsar runs one of the world's largest free kitchens, serving langar to around 1,00,000 people every day, whoever they are and whatever they believe.\n\n8:15 AM","kit":[],"ms":10144}
+{"t":"2026-10-24T08:16:00.123Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-24T08:16:00.124Z","i":21,"do":"check","note":"quote shows inside my bubble","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-24T08:16:00.185Z","i":22,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-10-24T08:16:00.264Z","i":23,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-24T08:16:00.765Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":501}
+{"t":"2026-10-24T08:16:00.842Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-24T08:16:00.854Z","i":25,"do":"fill","soft":true,"ok":true,"ms":12}
+{"t":"2026-10-24T08:16:00.864Z","i":26,"do":"key","ok":true,"ms":10}
+{"t":"2026-10-24T08:16:20.867Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20003}
+{"t":"2026-10-24T08:16:20.923Z","shot":"11-edited.png"}
+{"t":"2026-10-24T08:16:20.925Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:15 AM","ok":true,"ms":2}
+{"t":"2026-10-24T08:16:20.981Z","i":29,"do":"click","soft":true,"ok":true,"ms":56}
+{"t":"2026-10-24T08:16:21.046Z","i":30,"do":"click","soft":true,"ok":true,"ms":64}
+{"t":"2026-10-24T08:16:21.848Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":802}
+{"t":"2026-10-24T08:16:21.905Z","shot":"12-good.png"}
+{"t":"2026-10-24T08:16:21.965Z","i":32,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-24T08:16:22.028Z","i":33,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T08:16:22.829Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":801}
+{"t":"2026-10-24T08:16:22.889Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-24T08:16:22.892Z","i":35,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-24T08:16:22.965Z","i":36,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-24T08:16:23.028Z","i":37,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T08:18:53.486Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150458}
+{"t":"2026-10-24T08:18:53.548Z","shot":"14-try-again.png"}
+{"t":"2026-10-24T08:18:53.556Z","i":39,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-24T08:18:53.654Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-24T08:18:53.665Z","step":"aiTurns","turns":3}
