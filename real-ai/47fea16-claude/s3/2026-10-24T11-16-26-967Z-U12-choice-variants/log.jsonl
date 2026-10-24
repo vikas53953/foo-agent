@@ -1,0 +1,22 @@
+{"t":"2026-10-24T11:16:26.968Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T11:16:32.541Z","step":"launch","ok":true}
+{"t":"2026-10-24T11:16:33.575Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1031}
+{"t":"2026-10-24T11:16:33.710Z","i":1,"do":"send","sentAt":1792840593673,"sent":true,"before":0,"ok":true,"ms":134}
+{"t":"2026-10-24T11:16:45.410Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":5584,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best in Bengaluru?\n1\nLalbagh and a South Indian brunch\nBEST FIT\nEasy morning walk, then dosa and filter coffee\n2\nNandi Hills sunrise\nEarly start, about 60 km out, back by noon\n3\nCubbon Park and Church Street\nRelaxed stroll, books, cafes and live music\nSomething else…\nSkip\n11:16 AM","kit":[],"ms":11699}
+{"t":"2026-10-24T11:16:45.469Z","shot":"01-choice.png"}
+{"t":"2026-10-24T11:16:45.558Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-24T11:16:45.696Z","i":4,"do":"send","sentAt":1792840605643,"sent":true,"before":0,"ok":true,"ms":138}
+{"t":"2026-10-24T11:16:59.854Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":6570,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Nandi Hills sunrise it is. It's about 60 km from the city, so leave by around 4:00 AM to reach before first light, and carry a light jacket because the top is windy and cool.\n\nWant me to put it in your calendar for Sun 25 Oct, 4:00 AM?\n\n11:16 AM","kit":[],"ms":14158}
+{"t":"2026-10-24T11:16:59.925Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-24T11:17:00.039Z","i":6,"do":"send","sentAt":1792840620026,"sent":true,"before":0,"ok":true,"ms":113}
+{"t":"2026-10-24T11:17:12.197Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":6061,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, South Indian classic\n2\nButter chicken with naan\nRich North Indian comfort\n3\nVeg biryani with raita\nFragrant and filling\nSomething else…\nSkip\n11:17 AM","kit":[],"ms":12157}
+{"t":"2026-10-24T11:17:12.267Z","shot":"04-choice-2.png"}
+{"t":"2026-10-24T11:17:12.369Z","i":8,"do":"click","soft":true,"ok":true,"ms":101}
+{"t":"2026-10-24T11:17:12.983Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":614}
+{"t":"2026-10-24T11:17:13.047Z","shot":"05-something-else.png"}
+{"t":"2026-10-24T11:17:13.151Z","i":10,"do":"send","sentAt":1792840633136,"sent":true,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-24T11:17:24.841Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":5077,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, a good call for a Saturday night. Want a quick tadka recipe to go with it?\n\n11:17 AM","kit":[],"ms":11689}
+{"t":"2026-10-24T11:17:24.905Z","shot":"06-own-answer.png"}
+{"t":"2026-10-24T11:17:24.916Z","i":12,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-24T11:17:25.037Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-10-24T11:17:25.049Z","step":"aiTurns","turns":4}

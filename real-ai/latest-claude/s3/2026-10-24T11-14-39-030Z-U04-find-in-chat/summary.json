@@ -1,0 +1,104 @@
+{
+  "journey": "U04-find-in-chat",
+  "title": "Find in chat: Ctrl+F, count, next, previous, close",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T11-14-39-030Z-U04-find-in-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792840485767,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "a short list",
+      "firstReplyMs": 3034,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Ganga, the Godavari and the Krishna are three major Indian rivers.\n\n11:14 AM",
+      "kit": [],
+      "ms": 10125
+    },
+    {
+      "i": 3,
+      "do": "key",
+      "expect": "find bar in the chat header with a field and count",
+      "ok": true,
+      "ms": 10
+    },
+    {
+      "i": 4,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 14
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "matches highlighted; count \"1 of n\"",
+      "ok": true,
+      "ms": 816
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "Ctrl+K search overlay (J22) if built; else nothing happens",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 11,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

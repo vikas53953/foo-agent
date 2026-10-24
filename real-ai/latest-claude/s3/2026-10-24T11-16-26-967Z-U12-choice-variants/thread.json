@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three states with their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n11:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n11:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways passenger booking site is IRCTC.\n\n11:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n11:16 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best in Bengaluru? → Nandi Hills sunrise\n11:16 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n11:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nandi Hills sunrise it is. It's about 60 km from the city, so leave by around 4:00 AM to reach before first light, and carry a light jacket because the top is windy and cool.\n\nWant me to put it in your calendar for Sun 25 Oct, 4:00 AM?\n\n11:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n11:16 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, South Indian classic\n2\nButter chicken with naan\nRich North Indian comfort\n3\nVeg biryani with raita\nFragrant and filling\nSomething else…\nSkip\n11:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:17 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n11:17 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good call for a Saturday night. Want a quick tadka recipe to go with it?\n\n11:17 AM"
+  }
+]
