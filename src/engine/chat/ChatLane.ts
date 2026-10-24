@@ -467,12 +467,16 @@ export class ChatLane {
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
 
-    const memory = await buildMemoryParts((q, ...args) => this.query(q, ...args), {
-      chatId,
-      text: message.textForAi ?? message.text,
-      timeZone: settings.locale.timeZone,
-      now: this.d.clock.now(),
-    });
+    // CR-0054: with memory off no fact is offered to the turn, so none can be quoted or counted as used.
+    const memory: MemoryParts =
+      this.d.featureOn?.('memory') === false
+        ? { part5: [], part5b: [] }
+        : await buildMemoryParts((q, ...args) => this.query(q, ...args), {
+            chatId,
+            text: message.textForAi ?? message.text,
+            timeZone: settings.locale.timeZone,
+            now: this.d.clock.now(),
+          });
     let built: { system: string; prompt: string; factIds?: string[] } | null;
     try {
       const oldPlan = side ? null : (this.d.jobs?.planChange?.(chatId) ?? null);
