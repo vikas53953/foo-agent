@@ -1,4 +1,0 @@
-{"t":1792827357159,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1792827365055,"lvl":"info","mod":"composer","evt":"paste catcher shown","ids":{"chatId":"c_01a16cd4-9b40-7ea9-80be-2e31b88c538f"},"kind":"password, choice: move"}
-{"t":1792827367256,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
-{"t":1792827367257,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

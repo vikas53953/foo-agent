@@ -1,0 +1,9 @@
+{"t":"2026-10-24T08:13:33.351Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T08:13:38.911Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:13:39.041Z","i":0,"do":"send","sentAt":1792829619002,"sent":true,"before":0,"ok":true,"ms":124}
+{"t":"2026-10-24T08:14:02.282Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":12650,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Here's your draft for someone@example.com. I can't send email from here, so it's text for you to copy.\n\nSubject: Running 15 minutes late tomorrow\n\nHi,\n\nI'll be about 15 minutes late to tomorrow's meeting (Sun 25 Oct). Please start without me if needed, and I'll join as soon as I can.\n\nThanks,\n\nI'm still checking the ISRO news.\n\n8:13 AM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry The Hindu instead\nTry another way\nTake over\nStop\n8:13 AM","kit":[],"ms":23241}
+{"t":"2026-10-24T08:14:02.356Z","shot":"01-draft.png"}
+{"t":"2026-10-24T08:14:02.359Z","i":2,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-24T08:14:02.367Z","i":3,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-24T08:14:02.638Z","step":"appLog","lines":11,"dropped":0}
+{"t":"2026-10-24T08:14:02.651Z","step":"aiTurns","turns":3}

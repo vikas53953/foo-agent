@@ -1,0 +1,69 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-14-02-803Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792829656587,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6604,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, timings and airline\nAbout 3 minutes\nGo\nChange plan\n8:14 AM",
+      "kit": [],
+      "ms": 12682
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40006
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792829709572,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 175
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": 538,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Stopped. Nothing was booked, paid or sent.\n\n8:15 AM",
+      "kit": [],
+      "ms": 6114
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}
