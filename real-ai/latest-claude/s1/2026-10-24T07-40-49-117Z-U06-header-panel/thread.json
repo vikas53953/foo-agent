@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your draft. I can't send email from this job, so copy it across when you're ready.\n\nSubject: Running 15 minutes late tomorrow\n\nHi,\n\nI'll be about 15 minutes late to tomorrow's meeting (Sun 25 Oct). Sorry for the inconvenience, and please start without me if needed.\n\nThanks,\n\nI'm carrying on with the ISRO news.\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:38 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:38 AM\n7:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ISRO news from the past week, from search snippets only (I haven't opened the full articles):\n• SPADEX: ISRO has wrapped up the satellite docking mission with a final re-entry phase (about 1 day ago).\n• NVS-03: the navigation satellite is planned for Fri 30 Oct 2026 on a GSLV Mk II from Sriharikota, to strengthen NavIC.\n• Cyclone warning: one site reports an ISRO warning for Odisha, Andhra Pradesh and West Bengal in Oct-Nov. It is a lesser-known source, so treat it with care.\nWant me to open any of these for more detail?\n\n7:38 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 30 Oct\nKept 3 flights that fit lowest fare\nCompared fare, departure time, duration and stops\nStopped by you\n7:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n7:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5 chip. Those matter more than a dedicated graphics card.\n\nScreen: 14–15 inch, 1920x1200 or better, so you can fit more code on screen.\nKeyboard and battery: try the keys in a shop if you can, and look for 8+ hours of real use.\nUpgrade room: a free RAM or SSD slot saves money later.\nGraphics card: only worth it if you'll train ML or run heavy games.\n\nDo you mostly build web and app projects, or ML and games? That decides whether to spend on battery and weight or on graphics.\n\n7:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n7:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n7:40 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n7:40 AM"
+  }
+]
