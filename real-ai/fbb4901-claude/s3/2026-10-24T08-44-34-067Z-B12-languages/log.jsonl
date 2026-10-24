@@ -1,0 +1,14 @@
+{"t":"2026-10-24T08:44:34.068Z","journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","spec":"07-1 J7; walkthrough ch. 08; AT-031","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T08:44:39.479Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:44:39.602Z","i":0,"do":"send","sentAt":1792831479568,"sent":true,"before":0,"ok":true,"ms":120}
+{"t":"2026-10-24T08:44:55.801Z","i":1,"do":"waitReply","expect":"walkthrough 08 step 4: answers in Hinglish","firstReplyMs":6100,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mummy ke birthday (Mon 26 Oct) ke liye ye teen cakes safe aur pasand aane wale hain:\n\nButterscotch ya black forest: sabko pasand aate hain, kabhi galat nahi jaate.\nRasmalai ya gulab jamun cake: desi swaad, bade logon ko aksar zyada pasand aata hai.\nPhoto cake ya naam wala cake: thoda personal touch, agar surprise dena ho.\n\nKal, Sun 25 Oct tak order kar do, taaki Mon 26 Oct ko time par delivery mil jaye. Agar mummy ko meetha kam pasand hai, to fruit cake ya pineapple halka rahega.\n\nMummy ko kaunsa flavour zyada pasand hai?\n\n8:44 AM","kit":[],"ms":16199}
+{"t":"2026-10-24T08:44:55.878Z","shot":"01-hinglish.png"}
+{"t":"2026-10-24T08:44:56.024Z","i":2,"do":"send","sentAt":1792831495987,"sent":true,"before":0,"ok":true,"ms":146}
+{"t":"2026-10-24T08:45:12.251Z","i":3,"do":"waitReply","expect":"walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi","firstReplyMs":7078,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਲਈ ਰਸਮਲਾਈ ਕੇਕ ਸਭ ਤੋਂ ਵਧੀਆ ਰਹੇਗਾ, ਕਿਉਂਕਿ ਇਸ ਦਾ ਦੇਸੀ ਸੁਆਦ ਵੱਡਿਆਂ ਨੂੰ ਅਕਸਰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। ਜੇ ਹਲਕਾ ਮਿੱਠਾ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਪਾਈਨਐਪਲ ਜਾਂ ਬਟਰਸਕੌਚ ਲੈ ਲਓ।\n\nਜਨਮ ਦਿਨ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੇਕ ਕੱਲ੍ਹ Sun 25 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਕੀ ਮੈਂ ਨੇੜੇ ਦੀਆਂ ਦੁਕਾਨਾਂ ਵੇਖ ਕੇ ਤੁਹਾਨੂੰ ਵਿਕਲਪ ਦਿਖਾਵਾਂ?\n\n8:45 AM","kit":[],"ms":16226}
+{"t":"2026-10-24T08:45:12.311Z","shot":"02-punjabi.png"}
+{"t":"2026-10-24T08:45:12.415Z","i":4,"do":"send","sentAt":1792831512395,"sent":true,"before":0,"ok":true,"ms":104}
+{"t":"2026-10-24T08:45:25.646Z","i":5,"do":"waitReply","expect":"walkthrough 08 step 3: short 1–3 bubbles, no filler","firstReplyMs":6108,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"No, Mon 2 Nov doesn't look like a holiday in Mumbai. I don't know of any public or bank holiday that day, but I can't check the official Maharashtra list from here. Diwali (Lakshmi Pujan) falls on Sun 8 Nov, so that's the date to watch.\n\n8:45 AM","kit":[],"ms":13231}
+{"t":"2026-10-24T08:45:25.717Z","shot":"03-holiday.png"}
+{"t":"2026-10-24T08:45:25.730Z","i":6,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-24T08:45:25.859Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-24T08:45:25.871Z","step":"aiTurns","turns":3}

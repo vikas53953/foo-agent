@@ -1,0 +1,19 @@
+{"t":"2026-10-24T08:51:34.662Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T08:51:40.296Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:51:48.404Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8104}
+{"t":"2026-10-24T08:51:48.516Z","i":0,"do":"send","sentAt":1792831908483,"sent":true,"before":0,"ok":true,"ms":112}
+{"t":"2026-10-24T08:51:51.517Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-24T08:51:56.884Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:51:56.884Z","i":2,"do":"relaunch","ok":true,"ms":5366}
+{"t":"2026-10-24T08:52:05.512Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":512,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is my top pick, simple and sweet. Other good ones:\n\nSheldon, a tortoise with a grumpy-professor feel\nTurbo, funny because tortoises are so slow\nPickle, small, green and a bit wrinkly\nDumpling, round and cute\n\nIs your tortoise a boy or a girl? I can narrow the list down.\n\n8:51 AM","kit":[],"ms":8627}
+{"t":"2026-10-24T08:52:05.581Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-24T08:52:05.584Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n8:51 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-24T08:52:05.777Z","i":5,"do":"send","sentAt":1792831925703,"sent":true,"before":0,"ok":true,"ms":193}
+{"t":"2026-10-24T08:52:07.780Z","i":6,"do":"wait","ok":true,"ms":2003}
+{"t":"2026-10-24T08:52:13.124Z","step":"launch","ok":true}
+{"t":"2026-10-24T08:52:13.124Z","i":7,"do":"relaunch","ok":true,"ms":5344}
+{"t":"2026-10-24T08:52:23.283Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":4034,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for biggest India news story today, Sat 24\nWatch live\nStop\nunder 1 min\n8:52 AM","kit":[],"ms":10159}
+{"t":"2026-10-24T08:52:23.393Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-24T08:52:23.416Z","i":9,"do":"dump","ok":true,"ms":23}
+{"t":"2026-10-24T08:52:24.601Z","step":"appLog","lines":19,"dropped":0}
+{"t":"2026-10-24T08:52:24.614Z","step":"aiTurns","turns":3}

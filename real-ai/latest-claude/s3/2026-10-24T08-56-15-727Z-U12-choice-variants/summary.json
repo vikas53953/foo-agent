@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T08-56-15-727Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1027
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792832182520,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 138
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 6050,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for you in Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly drive, misty views, breakfast on the way\n2\nLalbagh and Cubbon Park walk\nEasy, green and free, a good lazy morning\n3\nIndiranagar cafe and brewery crawl\nFood, coffee and craft beer in the evening\nSomething else…\nSkip\n8:56 AM",
+      "kit": [],
+      "ms": 12162
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792832194973,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 156
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 6107,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Lalbagh and Cubbon Park walk it is. Both are green and easy to cover on foot, so it works best in the cooler morning hours, like Sun 25 Oct, 7:00 AM. Want me to put it on your calendar?\n\n8:56 AM",
+      "kit": [],
+      "ms": 12683
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792832207895,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 148
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 5047,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner would you like tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight South Indian tiffin\n2\nPaneer butter masala with naan\nRich North Indian comfort\n3\nVegetable biryani with raita\nOne-pot and filling\nSomething else…\nSkip\n8:56 AM",
+      "kit": [],
+      "ms": 11163
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 612
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792832220038,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 4561,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is, a warm and easy dinner for tonight. Want a quick recipe for it?\n\n8:57 AM",
+      "kit": [],
+      "ms": 11131
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}
