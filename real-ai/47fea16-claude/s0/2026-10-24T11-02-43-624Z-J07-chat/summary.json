@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T11-02-43-624Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792839768728,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3029,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! What would you like to get done today?\n\n11:02 AM",
+      "kit": [],
+      "ms": 10126
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792839778976,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2555,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can check your email, calendar and websites, catch you up on WhatsApp groups, draft and send messages, and set up routines that watch things for you.\n\n11:03 AM",
+      "kit": [],
+      "ms": 9626
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792839788710,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 5554,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through that tunnel in scrambled form, so people in between can't read it.\n\nHere is how it goes:\n\nYour device scrambles your traffic before it leaves.\nIt travels to the VPN company's computer, which unscrambles it.\nThat computer then visits the website for you, so the site sees the VPN's address instead of yours.\n\nThis helps on public Wi-Fi, since others on the network can't snoop. It also hides your location from websites. It does not make you fully anonymous, because the VPN company can still see your activity.\n\n11:03 AM",
+      "kit": [],
+      "ms": 14224
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

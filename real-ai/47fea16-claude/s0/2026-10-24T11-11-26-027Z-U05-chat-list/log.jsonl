@@ -1,0 +1,57 @@
+{"t":"2026-10-24T11:11:26.027Z","journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","spec":"03-1 §3.4, 10-2 §C.2 Left shell / Filter chips","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T11:11:31.001Z","step":"launch","ok":true}
+{"t":"2026-10-24T11:11:39.113Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8104}
+{"t":"2026-10-24T11:11:40.140Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1027}
+{"t":"2026-10-24T11:11:40.196Z","shot":"01-list.png"}
+{"t":"2026-10-24T11:11:40.197Z","i":1,"do":"shot","expect":"chat list with foo row (and any helpers); filter chips All · Needs you · Working · Done","ok":true,"ms":57}
+{"t":"2026-10-24T11:11:40.261Z","i":2,"do":"click","soft":true,"ok":true,"ms":64}
+{"t":"2026-10-24T11:11:40.771Z","i":3,"do":"wait","expect":"filter selected; empty state if nothing needs me","ok":true,"ms":510}
+{"t":"2026-10-24T11:11:40.820Z","shot":"02-filter-needs-you.png"}
+{"t":"2026-10-24T11:11:40.886Z","i":4,"do":"click","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-24T11:11:41.396Z","i":5,"do":"wait","ok":true,"ms":509}
+{"t":"2026-10-24T11:11:41.445Z","shot":"03-filter-working.png"}
+{"t":"2026-10-24T11:11:41.514Z","i":6,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-24T11:11:42.021Z","i":7,"do":"wait","ok":true,"ms":507}
+{"t":"2026-10-24T11:11:42.070Z","shot":"04-filter-done.png"}
+{"t":"2026-10-24T11:11:42.137Z","i":8,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-10-24T11:11:42.201Z","i":9,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T11:11:42.702Z","i":10,"do":"wait","expect":"row menu: Pin, Mark unread, Mute, Profile, Find, Clear, Delete","ok":true,"ms":501}
+{"t":"2026-10-24T11:11:42.758Z","shot":"05-row-menu.png"}
+{"t":"2026-10-24T11:12:05.807Z","shot":"06-error-step11.png"}
+{"t":"2026-10-24T11:12:05.808Z","i":11,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23049}
+{"t":"2026-10-24T11:12:06.310Z","i":12,"do":"wait","expect":"pin icon on the row","ok":true,"ms":502}
+{"t":"2026-10-24T11:12:06.354Z","shot":"07-pinned.png"}
+{"t":"2026-10-24T11:12:06.356Z","i":13,"do":"check","note":"pinned mark","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-24T11:12:06.420Z","i":14,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T11:12:06.497Z","i":15,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-24T11:12:06.899Z","i":16,"do":"wait","expect":"mute choices 8 hours, 1 week, Always","ok":true,"ms":401}
+{"t":"2026-10-24T11:12:06.950Z","shot":"08-mute-sub.png"}
+{"t":"2026-10-24T11:12:07.013Z","i":17,"do":"click","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-24T11:12:07.014Z","i":18,"do":"check","note":"muted mark","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-24T11:12:07.075Z","i":19,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-10-24T11:12:07.137Z","i":20,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-24T11:12:07.644Z","i":21,"do":"wait","expect":"unread dot/count on the row","ok":true,"ms":506}
+{"t":"2026-10-24T11:12:07.696Z","shot":"09-unread.png"}
+{"t":"2026-10-24T11:12:07.761Z","i":22,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-24T11:12:30.841Z","shot":"10-error-step23.png"}
+{"t":"2026-10-24T11:12:30.841Z","i":23,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23080}
+{"t":"2026-10-24T11:12:30.902Z","i":24,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-10-24T11:12:30.968Z","i":25,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-24T11:12:54.027Z","shot":"11-error-step26.png"}
+{"t":"2026-10-24T11:12:54.027Z","i":26,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23059}
+{"t":"2026-10-24T11:12:54.088Z","shot":"12-error-step27.png"}
+{"t":"2026-10-24T11:12:54.088Z","i":27,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]","ms":61}
+{"t":"2026-10-24T11:12:54.690Z","i":28,"do":"wait","expect":"list filtered to foo","ok":true,"ms":602}
+{"t":"2026-10-24T11:12:54.745Z","shot":"13-search-chats.png"}
+{"t":"2026-10-24T11:12:54.807Z","shot":"14-error-step29.png"}
+{"t":"2026-10-24T11:12:54.807Z","i":29,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]","ms":62}
+{"t":"2026-10-24T11:12:55.409Z","i":30,"do":"wait","expect":"empty result message","ok":true,"ms":602}
+{"t":"2026-10-24T11:12:55.463Z","shot":"15-search-none.png"}
+{"t":"2026-10-24T11:13:18.511Z","shot":"16-error-step31.png"}
+{"t":"2026-10-24T11:13:18.511Z","i":31,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23047}
+{"t":"2026-10-24T11:13:19.547Z","i":32,"do":"openChat","soft":true,"ok":true,"ms":1035}
+{"t":"2026-10-24T11:13:19.564Z","i":33,"do":"dump","ok":true,"ms":17}
+{"t":"2026-10-24T11:13:19.574Z","step":"recheck","i":27,"do":"fill","late":true}
+{"t":"2026-10-24T11:13:19.576Z","step":"recheck","i":29,"do":"fill","late":true}
+{"t":"2026-10-24T11:13:19.684Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-24T11:13:19.694Z","step":"aiTurns","turns":0}

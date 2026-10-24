@@ -1,0 +1,12 @@
+{"t":"2026-10-24T11:04:03.556Z","journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","spec":"07-1 J10; 05 approval card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T11:04:08.604Z","step":"launch","ok":true}
+{"t":"2026-10-24T11:04:08.718Z","i":0,"do":"send","sentAt":1792839848669,"sent":true,"before":0,"ok":true,"ms":111}
+{"t":"2026-10-24T11:04:21.936Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7059,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for Goa hotels, Sat 31 Oct to Mon 2 Nov\n3\nCompare price, rating and area\n4\nKeep 3 hotels that fit under ₹6,000 a night, best rated\n5\nWait for you to pick one\nAbout 4 minutes\nGo\nChange plan\n11:04 AM","kit":[],"ms":13217}
+{"t":"2026-10-24T11:04:21.987Z","shot":"01-hotel.png"}
+{"t":"2026-10-24T11:04:22.020Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":33}
+{"t":"2026-10-24T11:07:22.018Z","i":3,"do":"wait","ok":true,"ms":179998}
+{"t":"2026-10-24T11:07:22.080Z","shot":"02-hotel-working.png"}
+{"t":"2026-10-24T11:07:22.084Z","i":4,"do":"check","found":0,"ok":false,"ms":4}
+{"t":"2026-10-24T11:07:22.100Z","i":5,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-24T11:07:22.340Z","step":"appLog","lines":70,"dropped":0}
+{"t":"2026-10-24T11:07:22.348Z","step":"aiTurns","turns":34}

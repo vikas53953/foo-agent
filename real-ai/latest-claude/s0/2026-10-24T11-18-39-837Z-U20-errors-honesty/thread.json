@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-secret",
+    "state": "withdrawn",
+    "text": "Key\nsecret\nSkipped. Nothing was saved.\n11:16 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n11:17 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n11:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:17 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n11:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n11:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n11:18 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying electricity provider\n1\nRead your electricity bill\n2\nSign in to electricity provider\n3\nShow you before paying the bill\n4\nShow you before doing anything\n5\nPay electricity provider\nAbout 4 minutes\nGo\nChange plan\n11:19 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n11:19 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for pizza options and offers\n3\nWait for you to pick one\n4\nFill in your details on Domino's\n5\nShow you before placing the order\n…and 2 more · Show\nAbout 5 minutes\nGo\nChange plan\n11:19 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n11:19 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n11:19 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:19 AM"
+  }
+]
