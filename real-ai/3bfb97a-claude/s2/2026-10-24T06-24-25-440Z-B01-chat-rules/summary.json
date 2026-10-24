@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T06-24-25-440Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792823070983,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20002
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792823091172,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 3556,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying as easy as scanning a code, and it costs almost nothing. You open any payment app, scan or enter a phone number, type your PIN, and the money moves from your bank account in seconds. There's no card to carry, no cash to count and no change to hunt for.\n\nIt also works everywhere. Chai stalls, vegetable sellers, auto drivers and big shops all take it, so you can use one habit for nearly every payment. Because every bank and app works with the same system, you aren't locked into a single provider. You can pay a friend on a different app without any fuss.\n\nShops like it too. They need only a printed QR code, with no machine to rent and no card fees to pay. That has pushed even the smallest sellers to accept it, which in turn makes more customers switch. Regular use has also built trust, since payments are quick, show up in your bank messages straight away and are easy to look back on.\n\nThe three main reasons:\n\nSpeed and ease: a payment takes a few seconds, straight from your bank account.\nAlmost no cost: it's free for most people, and cheap for small shops.\nWorks everywhere: one method for friends, shops, bills and street sellers, on any app.\n6:24 AM",
+      "kit": [],
+      "ms": 13717
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

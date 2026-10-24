@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:23 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:24 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n6:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as scanning a code, and it costs almost nothing. You open any payment app, scan or enter a phone number, type your PIN, and the money moves from your bank account in seconds. There's no card to carry, no cash to count and no change to hunt for.\n\nIt also works everywhere. Chai stalls, vegetable sellers, auto drivers and big shops all take it, so you can use one habit for nearly every payment. Because every bank and app works with the same system, you aren't locked into a single provider. You can pay a friend on a different app without any fuss.\n\nShops like it too. They need only a printed QR code, with no machine to rent and no card fees to pay. That has pushed even the smallest sellers to accept it, which in turn makes more customers switch. Regular use has also built trust, since payments are quick, show up in your bank messages straight away and are easy to look back on.\n\nThe three main reasons:\n\nSpeed and ease: a payment takes a few seconds, straight from your bank account.\nAlmost no cost: it's free for most people, and cheap for small shops.\nWorks everywhere: one method for friends, shops, bills and street sellers, on any app.\n6:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n6:25 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nKept 3 phones that fit best value under ₹20,000\nCompared price, battery, camera, screen\nWatch live\nStop\n2 min\n6:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:25 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Want me to redo that last step and give you a shorter answer?\n1\nYes, redo it\nBEST FIT\nI'll rerun it and keep the result short\n2\nNo, leave it\nSomething else…\nSkip\n6:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:27 AM"
+  }
+]
