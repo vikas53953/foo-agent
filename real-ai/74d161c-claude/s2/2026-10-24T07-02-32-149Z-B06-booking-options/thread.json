@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n6:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You scan a code or pick a contact, enter a PIN, and the money moves from your bank account in seconds. There's no card to carry, no cash to count and no change to hunt for.\n\nIt also works almost everywhere. Chai stalls, vegetable sellers, auto drivers and big stores all show the same kind of QR code, so one habit covers nearly every payment. Shopkeepers like it too, because the money lands straight in their bank account without a card machine.\n\nHere are the three main reasons:\n\nFree and fast: Most person-to-person and small shop payments cost nothing, and they go through in seconds, any time of day, including holidays.\nSimple to use: One app, one PIN. It works with almost any bank, and you can use whichever app you like, such as PhonePe, Google Pay or Paytm.\nAccepted everywhere: From street vendors to online bills, UPI is taken in far more places than cards, and it needs only a basic smartphone.\n\nSafety helps as well. Your bank details stay hidden behind a UPI ID, and every payment needs your PIN. Over time, more people trusted it, which made more shops accept it, and that kept the cycle going.\n\n6:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n6:59 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:59 AM\n6:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:59 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n6:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value from Gadgets360's under ₹20,000 list: 1) Realme P4x 5G, from ₹15,499 (₹13,499 with offers): 7000mAh battery, 6.72-inch screen, 50MP camera, 6GB/128GB. Strong battery and speed, average cameras. 2) Moto G67 Power: IP64 water and dust rating, 120Hz screen, two-day battery, decent cameras, only one major Android update. Price not on the page. 3) OPPO K14x 5G: 6500mAh, 6.75-inch (720p), 50MP, 4GB/128GB. Price not on the page.\n\n7:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n7:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a gentle 3-day Jaipur plan for your parents, with a slow start each morning and a rest after lunch.\n\nDay 1, forts and old city: Amber Fort early, before the crowds and heat, with a photo stop at Jal Mahal on the way back. After lunch and a rest, see City Palace and Jantar Mantar, then Hawa Mahal from outside at sunset.\nDay 2, culture and shopping: Govind Dev Ji temple in the morning, then Albert Hall Museum. After a rest, stroll Johari Bazaar for jewellery and Bapu Bazaar for textiles. Dinner at Chokhi Dhani for Rajasthani food and folk music.\nDay 3, easy and scenic: Panna Meena ka Kund and Sisodia Rani Garden in the morning, a last chai and shopping stop, then head home.\n\nBook a car with a driver for all three days. It saves their knees, and Amber Fort has steep slopes, so a jeep up is easier than walking. Late October to March is the best time for weather. Do they walk comfortably, or should I make it lighter? Tell me their dates and I'll shape it around those.\n\n7:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n7:02 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Saturday at 8:00 PM do you mean?\n1\nTonight, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nNext week, Sat 31 Oct, 8:00 PM\nSomething else…\nSkip\n7:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:02 AM"
+  }
+]

@@ -1,0 +1,13 @@
+{"t":"2026-10-24T07:02:32.150Z","journey":"B06-booking-options","title":"Restaurant options without booking","spec":"AT-036, J9, AT-108, AT-310, AT-311","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:02:37.707Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:02:37.850Z","i":0,"do":"send","sentAt":1792825357812,"sent":true,"before":0,"ok":true,"ms":140}
+{"t":"2026-10-24T07:02:50.025Z","i":1,"do":"waitReply","firstReplyMs":6062,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which Saturday at 8:00 PM do you mean?\n1\nTonight, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nNext week, Sat 31 Oct, 8:00 PM\nSomething else…\nSkip\n7:02 AM","kit":[],"ms":12175}
+{"t":"2026-10-24T07:02:50.110Z","shot":"01-italian.png"}
+{"t":"2026-10-24T07:02:50.113Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-24T07:05:50.115Z","i":3,"do":"wait","expect":"options shown; no booking Approval card until I say book","ok":true,"ms":180002}
+{"t":"2026-10-24T07:05:50.187Z","shot":"02-italian-later.png"}
+{"t":"2026-10-24T07:05:50.190Z","i":4,"do":"check","found":0,"ok":true,"ms":2}
+{"t":"2026-10-24T07:05:50.192Z","i":5,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-24T07:05:50.204Z","i":6,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-24T07:05:50.337Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-24T07:05:50.350Z","step":"aiTurns","turns":2}

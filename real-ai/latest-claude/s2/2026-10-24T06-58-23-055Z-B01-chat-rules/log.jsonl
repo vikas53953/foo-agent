@@ -1,0 +1,14 @@
+{"t":"2026-10-24T06:58:23.055Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T06:58:28.508Z","step":"launch","ok":true}
+{"t":"2026-10-24T06:58:28.636Z","i":0,"do":"send","sentAt":1792825108601,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-10-24T06:58:48.647Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20009}
+{"t":"2026-10-24T06:58:48.725Z","shot":"01-thanks.png"}
+{"t":"2026-10-24T06:58:48.727Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":2}
+{"t":"2026-10-24T06:58:48.841Z","i":3,"do":"send","sentAt":1792825128836,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-24T06:59:02.054Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":3063,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying someone as easy as sending a message. You scan a code or pick a contact, enter a PIN, and the money moves from your bank account in seconds. There's no card to carry, no cash to count and no change to hunt for.\n\nIt also works almost everywhere. Chai stalls, vegetable sellers, auto drivers and big stores all show the same kind of QR code, so one habit covers nearly every payment. Shopkeepers like it too, because the money lands straight in their bank account without a card machine.\n\nHere are the three main reasons:\n\nFree and fast: Most person-to-person and small shop payments cost nothing, and they go through in seconds, any time of day, including holidays.\nSimple to use: One app, one PIN. It works with almost any bank, and you can use whichever app you like, such as PhonePe, Google Pay or Paytm.\nAccepted everywhere: From street vendors to online bills, UPI is taken in far more places than cards, and it needs only a basic smartphone.\n\nSafety helps as well. Your bank details stay hidden behind a UPI ID, and every payment needs your PIN. Over time, more people trusted it, which made more shops accept it, and that kept the cycle going.\n\n6:58 AM","kit":[],"ms":13212}
+{"t":"2026-10-24T06:59:02.123Z","shot":"02-long.png"}
+{"t":"2026-10-24T06:59:02.126Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-10-24T06:59:02.127Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-24T06:59:02.137Z","i":7,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-24T06:59:02.285Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-24T06:59:02.302Z","step":"aiTurns","turns":2}

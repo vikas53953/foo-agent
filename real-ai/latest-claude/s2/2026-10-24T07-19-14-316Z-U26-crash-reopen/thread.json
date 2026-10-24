@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n7:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:17 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n7:17 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n7:17 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:18 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n7:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:18 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 24 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n7:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n7:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Grey clouds roll in from the Arabian sea,\nMarine Drive shines in the rain's wild spree.\nChai steams hot as the local trains crawl,\nMumbai sways to the monsoon's call.\n\n7:18 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 7:16 AM.\nLooking for vegetarian restaurants in… was at step 1 of 6. Nothing was paid.\nPick up where I left off\nStop it\n7:19 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:19 AM"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:57 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:57 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:57 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:57 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n6:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a message. You scan a code or pick a contact, enter a PIN, and the money moves from your bank account in seconds. There's no card to carry, no cash to count and no change to hunt for.\n\nIt also works almost everywhere. Chai stalls, vegetable sellers, auto drivers and big stores all show the same kind of QR code, so one habit covers nearly every payment. Shopkeepers like it too, because the money lands straight in their bank account without a card machine.\n\nHere are the three main reasons:\n\nFree and fast: Most person-to-person and small shop payments cost nothing, and they go through in seconds, any time of day, including holidays.\nSimple to use: One app, one PIN. It works with almost any bank, and you can use whichever app you like, such as PhonePe, Google Pay or Paytm.\nAccepted everywhere: From street vendors to online bills, UPI is taken in far more places than cards, and it needs only a basic smartphone.\n\nSafety helps as well. Your bank details stay hidden behind a UPI ID, and every payment needs your PIN. Over time, more people trusted it, which made more shops accept it, and that kept the cycle going.\n\n6:58 AM"
+  }
+]
