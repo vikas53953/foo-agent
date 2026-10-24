@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nBooking table for 2, Sun 25 Oct, 8:00 PM\nBEST FIT\n2\nChecking major Indian news sites\nSomething else…\nSkip\n7:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n7:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nBooking table for 2, Sun 25 Oct, 8:00 PM\nBEST FIT\n2\nChecking major Indian news sites\nSomething else…\nSkip\n7:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n7:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nBooking table for 2, Sun 25 Oct, 8:00 PM\nBEST FIT\n2\nChecking major Indian news sites\nSomething else…\nSkip\n7:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n7:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nBooking table for 2, Sun 25 Oct, 8:00 PM\nBEST FIT\n2\nChecking major Indian news sites\nSomething else…\nSkip\n7:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n7:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Fold this into which job?\n1\nBooking table for 2, Sun 25 Oct, 8:00 PM\nBEST FIT\n2\nChecking major Indian news sites\nSomething else…\nSkip\n7:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:07 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Checking major Indian news sites job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry major Indian news sites instead\nTry another way\nTake over\nStop\n7:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:07 AM"
+  }
+]

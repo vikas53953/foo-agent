@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n6:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's economy grew from -5.8% in FY 2020-21 (the Covid year) to 9.7% in FY 2021-22, then 7.6%, 9.2% and 6.5% in FY 2024-25. These are real growth figures from the government's latest revised numbers as I know them. I can't check live data from here, so confirm against the official release if you need exact values. I haven't included FY 2025-26.\n\nIndia's real GDP growth by financial year\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n6:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n6:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 is the best value of the three: it costs about the same as the others but has a 120 Hz screen, a telephoto camera and the fastest chip. All three launched near ₹80,000 in India, but I can't check live prices, so look at current offers before you buy. The specs below are from what I know, so confirm them on the maker's site.\n\niPhone 16\nScreen\n6.1 inch OLED, 60 Hz\nChip\nApple A18\nCameras\n48 MP main + 12 MP ultra-wide\nBattery\nSmallest of the three\nUpdates\nLong, about 6 to 7 years in practice\nBest for\niPhone users and long resale value\nPixel 9\nScreen\n6.3 inch OLED, 120 Hz\nChip\nGoogle Tensor G4\nCameras\n50 MP main + 48 MP ultra-wide\nBattery\nLargest of the three\nUpdates\n7 years\nBest for\nPhotos, clean Android, AI features\nBest pick\nGalaxy S25\nScreen\n6.2 inch OLED, 120 Hz\nChip\nSnapdragon 8 Elite\nCameras\n50 MP main + 12 MP ultra-wide + 10 MP 3x telephoto\nBattery\nMid-sized\nUpdates\n7 years\nBest for\nAll-round value and speed\n\nSame price band, but with a 120 Hz screen, a telephoto lens and the strongest chip.\n\nKeep\n6:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n6:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is ready below. Press start when the water goes in.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n6:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a short form for your party plan: fill in the date, guest count and budget, then submit.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n7:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an expense with its amount, category and date, then switch months to see totals, a split by category and what is left of your budget. Entries are saved on this PC when your app allows it.\n\nKeep\n7:00 AM"
+  }
+]
