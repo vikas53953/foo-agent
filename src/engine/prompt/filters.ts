@@ -1,7 +1,8 @@
 // Spec: 08-2 §7.6 (output filters on every <say>: 1 banned words with mapped plain words, an unmapped one needs one rewrite
-// turn, still failing → the sentence is dropped; 2 filler sentences removed; 3 tables → "label: value" lines; 4 Redactor last),
+// turn, still failing → the sentence is dropped; 2 filler sentences removed; 3 tables kept as they are, CR-0053; 4 Redactor
+// last),
 // 08-4 §25.8 (Hindi and Punjabi script forms, `(?<![\p{L}\p{M}])…(?![\p{L}\p{M}])` with the `u` flag; agent / agent loop /
-// tool call mappings), 08-4 §25.9 (the engine only turns tables into label: value lines), Article 2 (the banned list; the
+// tool call mappings), Article 2 (the banned list; the
 // copy of record is scripts/check-copy.ts, X-140 — test/unit/m3-prompt-filters.test.ts keeps the two in step).
 import type { Redactor } from '../redact/Redactor';
 
@@ -157,47 +158,6 @@ export function removeFiller(text: string): string {
     .join('');
 }
 
-const ROW = /^\s*\|(.*)\|\s*$/u;
-const SEP = /^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?\s*$/u;
-const cells = (line: string): string[] =>
-  ROW.exec(line)![1]!
-    .split('|')
-    .map((c) => c.trim());
-
-/**
- * 08-4 §25.9: a markdown table becomes one "label: value" line per row. Pick: the first cell is the label; with two columns
- * the value is the second cell; with more, the value is "{header} {cell}" pairs joined by ", ".
- */
-export function tablesToLines(text: string): string {
-  const lines = text.split('\n');
-  const out: string[] = [];
-  for (let i = 0; i < lines.length; i++) {
-    const head = lines[i]!;
-    const sep = lines[i + 1];
-    if (ROW.test(head) && sep !== undefined && SEP.test(sep)) {
-      const headers = cells(head);
-      let j = i + 2;
-      for (; j < lines.length && ROW.test(lines[j]!); j++) {
-        const row = cells(lines[j]!);
-        const label = row[0] ?? '';
-        const rest = row.slice(1);
-        const value =
-          headers.length <= 2
-            ? (rest[0] ?? '')
-            : rest
-                .map((c, k) => `${headers[k + 1] ?? ''} ${c}`.trim())
-                .filter(Boolean)
-                .join(', ');
-        out.push(`${label}: ${value}`);
-      }
-      i = j - 1;
-      continue;
-    }
-    out.push(head);
-  }
-  return out.join('\n');
-}
-
 export interface FilterOptions {
   /**
    * `messages.lang` of the reply's user message. Reserved: mappings follow the script of the word itself (08-4 §25.8), so the
@@ -216,12 +176,11 @@ export interface FilterResult {
 }
 
 /**
- * 08-2 §7.6 steps 1, 2, 3 (tables) and 4 over one `<say>` (or one sentence of it): mapped banned words replaced, filler
- * sentences removed, tables turned into lines, then the Redactor. `needsRewrite` says an unmapped banned word remains.
+ * 08-2 §7.6 steps 1, 2 and 4 over one `<say>` (or one sentence of it): mapped banned words replaced, filler sentences
+ * removed, then the Redactor; tables pass through (step 3, CR-0053). `needsRewrite` says an unmapped banned word remains.
  */
 export function filterSay(text: string, opts: FilterOptions = {}): FilterResult {
-  let out = tablesToLines(text);
-  out = mapBannedWords(out);
+  let out = mapBannedWords(text);
   out = removeFiller(out);
   if (opts.redactor) out = opts.redactor.scrub(out).text;
   const unmapped = findUnmapped(out);

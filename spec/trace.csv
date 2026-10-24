@@ -395,4 +395,5 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-441,,,10-acceptance-2 §C.10; 04 §13.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live
 ,,AT-442,,,10-acceptance-2 §C.10; 08-4 §24.5; CR-0046,test/unit/kit-real-replies.test.ts,M9,live
 ,,AT-443,,,10-acceptance-2 §C.10; 04 §13.5; CR-0050,test/unit/kit-real-replies.test.ts,M9,live
+,,AT-444,,,10-acceptance-2 §C.10; 04 §13.2; 08-2 §7.6; CR-0053,test/unit/m3-prompt-filters.test.ts,M9,live
 ,J21,AT-094,,,10-acceptance-1 AT-094; 08-4 §25.6; 08-1 §4.4.2; CR-0043,test/integration/settings-by-chat.test.ts,M13,pending

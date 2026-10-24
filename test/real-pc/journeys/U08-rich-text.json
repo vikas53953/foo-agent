@@ -34,7 +34,7 @@
       "do": "waitReply",
       "timeoutMs": 150000,
       "shot": "table",
-      "expect": "table renders (or label: value lines), not raw pipes"
+      "expect": "table renders as a table (CR-0053), not raw pipes"
     },
     {
       "do": "send",
