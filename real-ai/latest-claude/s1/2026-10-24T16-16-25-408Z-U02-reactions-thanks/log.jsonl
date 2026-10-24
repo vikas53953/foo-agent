@@ -1,0 +1,20 @@
+{"t":"2026-10-24T16:16:25.408Z","journey":"U02-reactions-thanks","title":"Reactions: foo thumbs-up on thanks, react and un-react","spec":"04 §12, 10-1 AT-027, 10-2 §C.3 Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T16:16:31.033Z","step":"launch","ok":true}
+{"t":"2026-10-24T16:16:39.120Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8084}
+{"t":"2026-10-24T16:16:40.157Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1037}
+{"t":"2026-10-24T16:16:40.266Z","i":1,"do":"send","sentAt":1792858600230,"sent":true,"before":0,"ok":true,"ms":109}
+{"t":"2026-10-24T16:16:52.375Z","i":2,"do":"waitReply","expect":"answer 144","firstReplyMs":6051,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"12 times 12 is 144.\n\n4:16 PM","kit":[],"ms":12109}
+{"t":"2026-10-24T16:16:52.465Z","shot":"01-math.png"}
+{"t":"2026-10-24T16:16:52.564Z","i":3,"do":"send","sentAt":1792858612540,"sent":true,"before":0,"ok":true,"ms":99}
+{"t":"2026-10-24T16:17:07.565Z","i":4,"do":"wait","expect":"foo adds a 👍 reaction on my thanks and posts no message (AT-027)","ok":true,"ms":15001}
+{"t":"2026-10-24T16:17:07.633Z","shot":"02-thanks.png"}
+{"t":"2026-10-24T16:17:07.636Z","i":5,"do":"check","note":"foo reacted to my thanks","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-10-24T16:17:07.712Z","i":6,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-24T16:17:07.835Z","i":7,"do":"click","soft":true,"ok":true,"ms":122}
+{"t":"2026-10-24T16:17:07.942Z","i":8,"do":"click","soft":true,"ok":true,"ms":107}
+{"t":"2026-10-24T16:17:08.651Z","i":9,"do":"wait","expect":"more emoji","ok":true,"ms":709}
+{"t":"2026-10-24T16:17:08.717Z","shot":"03-react-more.png"}
+{"t":"2026-10-24T16:17:08.722Z","i":10,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-24T16:17:08.738Z","i":11,"do":"dump","ok":true,"ms":16}
+{"t":"2026-10-24T16:17:09.164Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-24T16:17:09.190Z","step":"aiTurns","turns":6}

@@ -1,0 +1,10 @@
+{"t":1792858630375,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1792858632035,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
+{"t":1792858632061,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792858632063,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792858637703,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1792858640269,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792858640270,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792858646952,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792858646953,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1792858652067,"lvl":"info","mod":"engine","evt":"job.stuck.budget","kind":"STUCK"}

@@ -1,0 +1,11 @@
+{"t":"2026-10-24T16:15:23.490Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T16:15:29.042Z","step":"launch","ok":true}
+{"t":"2026-10-24T16:15:37.137Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8091}
+{"t":"2026-10-24T16:15:37.269Z","i":0,"do":"send","sentAt":1792858537228,"sent":true,"before":0,"ok":true,"ms":132}
+{"t":"2026-10-24T16:16:04.637Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":18234,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For programming under ₹80,000 aim for 16 GB memory, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/i7 processor.\n\nMemory: 16 GB is the floor, and 8 GB gets tight with an editor, browser and Docker open. Pick one that can be upgraded.\nScreen and keyboard: Full HD, IPS, 14 to 15.6 inches, with a comfortable keyboard. You'll look at it all day.\nBattery: Look for 8+ hours in real reviews, not just the listed figure.\nGraphics card: Skip it unless you'll do AI training or games. That money is better spent on memory and a good screen.\n\nI haven't looked up live prices or specific laptops yet. What will you mainly build: web and app work, or AI and data work?\n\n4:15 PM","kit":[],"ms":27367}
+{"t":"2026-10-24T16:16:04.704Z","shot":"01-laptop.png"}
+{"t":"2026-10-24T16:16:04.707Z","i":2,"do":"check","found":2,"ok":true,"ms":3}
+{"t":"2026-10-24T16:16:04.709Z","i":3,"do":"check","found":6,"ok":true,"ms":2}
+{"t":"2026-10-24T16:16:04.721Z","i":4,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-24T16:16:05.066Z","step":"appLog","lines":20,"dropped":0}
+{"t":"2026-10-24T16:16:05.079Z","step":"aiTurns","turns":6}

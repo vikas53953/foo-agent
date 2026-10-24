@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n4:10 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 18 to 24 Oct 2026, with\nWrite it\nWatch live\nStop\n4 min\n4:10 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n4:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your draft for someone@example.com. Nothing has been sent.\n\nSubject: Running 15 minutes late tomorrow\n\nHi, I'll be about 15 minutes late to tomorrow's meeting (Sun 25 Oct). Please start without me if needed. Thanks for understanding.\n\nWant it shorter, or with the meeting time added?\n\n4:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n4:14 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:14 PM\n4:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:14 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for flights Delhi to Mumbai on…\nlive checklist\nLooking for flights Delhi to Mumbai on Fri 30 Oct\nKeep 3 flights that fit lowest fare\nCompare the 3 cheapest flights by fare, timings\nWatch live\nStop\nunder 1 min\n4:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:15 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for flights Delhi to Mumbai on…\n3\nBoth\nSomething else…\nSkip\n4:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:15 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:15 PM"
+  }
+]

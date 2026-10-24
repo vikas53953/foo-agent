@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:19 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Stop which one? → Looking for flights Delhi to Mumbai on…\n4:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n4:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n4:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n4:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n4:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the top 3 news headlines in India today\n4:20 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 India news headlines that fit most prominent today\nWatch live\nStop\nunder 1 min\n4:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:20 PM"
+  }
+]

@@ -1,0 +1,14 @@
+{"t":"2026-10-24T16:14:00.796Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T16:14:06.685Z","step":"launch","ok":true}
+{"t":"2026-10-24T16:14:06.863Z","i":0,"do":"send","sentAt":1792858446820,"sent":true,"before":0,"ok":true,"ms":168}
+{"t":"2026-10-24T16:14:30.413Z","i":1,"do":"waitReply","firstReplyMs":17473,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for flights Delhi to Mumbai on…\n1\nLook for flights Delhi to Mumbai on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare the 3 cheapest flights by fare, timings\nAbout 3 minutes\nGo\nChange plan\n4:14 PM","kit":[],"ms":23550}
+{"t":"2026-10-24T16:14:30.486Z","shot":"01-flight-plan.png"}
+{"t":"2026-10-24T16:14:30.539Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":53}
+{"t":"2026-10-24T16:15:10.541Z","i":3,"do":"wait","ok":true,"ms":40002}
+{"t":"2026-10-24T16:15:10.605Z","shot":"02-flight-working.png"}
+{"t":"2026-10-24T16:15:10.735Z","i":4,"do":"send","sentAt":1792858510697,"sent":true,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-24T16:15:22.897Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","firstReplyMs":506,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for flights Delhi to Mumbai on…\n3\nBoth\nSomething else…\nSkip\n4:15 PM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:15 PM","kit":[],"ms":12161}
+{"t":"2026-10-24T16:15:22.963Z","shot":"03-after-stop.png"}
+{"t":"2026-10-24T16:15:22.972Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-24T16:15:23.336Z","step":"appLog","lines":44,"dropped":0}
+{"t":"2026-10-24T16:15:23.350Z","step":"aiTurns","turns":18}

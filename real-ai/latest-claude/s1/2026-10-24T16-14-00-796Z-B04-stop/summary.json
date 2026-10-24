@@ -1,0 +1,69 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T16-14-00-796Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792858446820,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 168
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 17473,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for flights Delhi to Mumbai on…\n1\nLook for flights Delhi to Mumbai on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare the 3 cheapest flights by fare, timings\nAbout 3 minutes\nGo\nChange plan\n4:14 PM",
+      "kit": [],
+      "ms": 23550
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40002
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792858510697,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "firstReplyMs": 506,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for flights Delhi to Mumbai on…\n3\nBoth\nSomething else…\nSkip\n4:15 PM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:15 PM",
+      "kit": [],
+      "ms": 12161
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
