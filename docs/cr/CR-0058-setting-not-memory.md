@@ -18,10 +18,10 @@ behaviour proof on main.
 
 ## (b) Spec before → after
 
-| #   | What the run saw                                   | Spec before                                   | Spec after                                                                                                    |
-| --- | -------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| 1   | "Switch to dark mode" after memory talk → `memory` | "memory": "remember …" or "forget …"          | "memory": only when the message itself asks to "remember …" or "forget …"                                     |
-| 2   | The theme stayed light; "Not saving this one."     | "setting" line names paths, silent on context | adds: asking to change one, like "switch to dark mode", is always "setting", even right after memory messages |
+| #   | What the run saw                                   | Spec before                                   | Spec after                                                                                                       |
+| --- | -------------------------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| 1   | "Switch to dark mode" after memory talk → `memory` | "memory": "remember …" or "forget …"          | "memory": only when the message itself asks to remember or forget, in any words ("note that …", "yaad rakhna …") |
+| 2   | The theme stayed light; "Not saving this one."     | "setting" line names paths, silent on context | adds: asking to change one, like "switch to dark mode", is always "setting", even right after memory messages    |
 
 ## (c) Picks where the spec is silent
 
@@ -30,4 +30,8 @@ behaviour proof on main.
 
 ## (d) Review
 
-To be filled from the independent review in the PR.
+Result (2026-10-24): two independent reviews (AI behaviour change). Reviewer A (prompt risk): PASS with one act item:
+"only when … \"remember …\" or \"forget …\"" read like a keyword match, so "note that …", "keep in mind …", "don't forget …"
+or "yaad rakhna …" could stop being memory. Applied: the line says "in any words" with two examples, "note that …" and
+"yaad rakhna …" (kept short: the prompt budget tests in m3-prompt-builder leave little room); the test checks them. No conflict with job, ask or reply; the 900 → 880 fixture keeps its assertions. Reviewer B (process):
+PASS; trace, manifests and spec mirror match, and the test fails on the old prompt. Approved on Vikas's behalf.
