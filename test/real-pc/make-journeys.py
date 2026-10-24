@@ -332,7 +332,7 @@ journey(
         reply('code', 'code block in mono with a Copy button', 'BP-MSG-03'),
         click('bubble-code-copy', last=True),
         send('Make a 3-row table of Indian states and capitals'),
-        reply('table', 'table renders (or label: value lines), not raw pipes'),
+        reply('table', 'table renders as a table (CR-0053), not raw pipes'),
         send('Give me the link to the Indian Railways website'),
         reply('link', 'a clickable link; right-click shows open/copy'),
         click('bubble-autolink', last=True, button='right'),
