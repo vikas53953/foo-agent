@@ -29,10 +29,6 @@
       "ref": "UX-23-02"
     },
     {
-      "do": "key",
-      "key": "Escape"
-    },
-    {
       "do": "waitReply",
       "timeoutMs": 180000,
       "shot": "news",

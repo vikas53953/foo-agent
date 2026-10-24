@@ -601,7 +601,7 @@ journey(
         wait(4000),
         {'do': 'key', 'key': 'Alt+F4'},
         wait(1500, 'first-close', 'first-close dialog: foo keeps running in the tray', 'UX-23-02'),
-        esc(),
+        # No Esc here: with no dialog open, Esc stops the typing reply (04-2 Esc order), which is not what this checks.
         reply('news', 'job still finishes after the dialog', None, 180000),
     ],
 )
