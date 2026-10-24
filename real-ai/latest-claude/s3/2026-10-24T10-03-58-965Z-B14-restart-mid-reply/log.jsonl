@@ -1,0 +1,19 @@
+{"t":"2026-10-24T10:03:58.965Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T10:04:04.524Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:04:12.624Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8096}
+{"t":"2026-10-24T10:04:12.739Z","i":0,"do":"send","sentAt":1792836252702,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-24T10:04:15.740Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-24T10:04:21.003Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:04:21.003Z","i":2,"do":"relaunch","ok":true,"ms":5263}
+{"t":"2026-10-24T10:04:29.089Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":509,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is a lovely pick for a tortoise, and a few more ideas below.\n\nTurbo: a funny one for a slow mover\nDadaji: a wise old-grandfather name\nBiscuit: small, round and sweet\n\nDo you want names with an Indian feel, or silly ones?\n\n10:04 AM","kit":[],"ms":8086}
+{"t":"2026-10-24T10:04:29.163Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-24T10:04:29.165Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n10:04 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-24T10:04:29.314Z","i":5,"do":"send","sentAt":1792836269255,"sent":true,"before":0,"ok":true,"ms":149}
+{"t":"2026-10-24T10:04:31.316Z","i":6,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-24T10:04:36.595Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:04:36.595Z","i":7,"do":"relaunch","ok":true,"ms":5279}
+{"t":"2026-10-24T10:04:47.264Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":4549,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCompare top headlines\nWatch live\nStop\nunder 1 min\n10:04 AM","kit":[],"ms":10669}
+{"t":"2026-10-24T10:04:47.370Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-24T10:04:47.389Z","i":9,"do":"dump","ok":true,"ms":19}
+{"t":"2026-10-24T10:04:47.853Z","step":"appLog","lines":21,"dropped":0}
+{"t":"2026-10-24T10:04:47.865Z","step":"aiTurns","turns":3}

@@ -1,0 +1,78 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T09-56-55-195Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792835820730,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 8105,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ka birthday Mon 26 Oct ko hai, to cake aaj ya kal tak order kar do, taaki delivery ka time mil jaye. Ye options achhe rahenge:\n\nRasmalai cake: desi swaad, aur jo log zyada meetha nahi chahte unko pasand aata hai.\nChocolate truffle: sabko pasand aane wala, kabhi galat nahi jaata.\nPhoto cake: mummy ki pasandida photo ke saath, personal lagta hai.\nFresh fruit ya pineapple cake: halka aur fresh.\n\nMummy ko kaunsa swaad zyada pasand hai, aur cake eggless chahiye?\n\n9:57 AM",
+      "kit": [],
+      "ms": 17197
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792835838118,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 7073,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਜੇ ਮੰਮੀ ਨੂੰ ਦੇਸੀ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਸਭ ਤੋਂ ਵਧੀਆ ਰਹੇਗਾ, ਨਹੀਂ ਤਾਂ ਚਾਕਲੇਟ ਟ੍ਰਫਲ ਕਦੇ ਗਲਤ ਨਹੀਂ ਜਾਂਦਾ।\n\nਜੇ ਕੁਝ ਖਾਸ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਮੰਮੀ ਦੀ ਪਸੰਦੀਦਾ ਫੋਟੋ ਵਾਲਾ ਫੋਟੋ ਕੇਕ ਬਹੁਤ ਆਪਣਾ ਜਿਹਾ ਲੱਗਦਾ ਹੈ। ਹਲਕਾ ਚਾਹੀਦਾ ਹੋਵੇ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਜਾਂ ਪਾਈਨਐਪਲ ਕੇਕ ਠੀਕ ਰਹੇਗਾ।\n\nਬਰਥਡੇ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਨੂੰ ਕਿਹੜਾ ਸੁਆਦ ਜ਼ਿਆਦਾ ਪਸੰਦ ਹੈ, ਅਤੇ ਕੀ ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n9:57 AM",
+      "kit": [],
+      "ms": 16682
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792835854974,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 7104,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public holiday in Mumbai that I know of. It looks like a normal working day, but I haven't checked a live holiday list. Diwali comes the week after, around Sun 8 Nov, so offices and banks may close then.\n\n9:57 AM",
+      "kit": [],
+      "ms": 14202
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

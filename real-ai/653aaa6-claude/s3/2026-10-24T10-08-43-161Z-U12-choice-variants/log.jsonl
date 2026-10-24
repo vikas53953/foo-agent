@@ -1,0 +1,22 @@
+{"t":"2026-10-24T10:08:43.162Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T10:08:48.775Z","step":"launch","ok":true}
+{"t":"2026-10-24T10:08:49.815Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1037}
+{"t":"2026-10-24T10:08:49.948Z","i":1,"do":"send","sentAt":1792836529906,"sent":true,"before":0,"ok":true,"ms":132}
+{"t":"2026-10-24T10:09:02.120Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":6055,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which kind of weekend sounds best?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, about 1.5 hrs away\n2\nCubbon Park and café brunch\nEasy, relaxed, in the city\n3\nLalbagh and VV Puram food street\nGardens, then street food\nSomething else…\nSkip\n10:08 AM","kit":[],"ms":12172}
+{"t":"2026-10-24T10:09:02.195Z","shot":"01-choice.png"}
+{"t":"2026-10-24T10:09:02.298Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":103}
+{"t":"2026-10-24T10:09:02.436Z","i":4,"do":"send","sentAt":1792836542386,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-24T10:09:18.119Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":8607,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Cubbon Park and café brunch is a good pick: a slow morning walk under the trees, then brunch nearby. Early is best, since the park is calmer and cooler before the crowds come. Want me to add it to your calendar for Sun 25 Oct, 9:00 AM?\n\n10:09 AM","kit":[],"ms":15683}
+{"t":"2026-10-24T10:09:18.181Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-24T10:09:18.284Z","i":6,"do":"send","sentAt":1792836558268,"sent":true,"before":0,"ok":true,"ms":102}
+{"t":"2026-10-24T10:09:29.460Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":5086,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, sabzi, roti and rice\n3\nBiryani night\nOne-pot and filling\nSomething else…\nSkip\n10:09 AM","kit":[],"ms":11175}
+{"t":"2026-10-24T10:09:29.526Z","shot":"04-choice-2.png"}
+{"t":"2026-10-24T10:09:29.641Z","i":8,"do":"click","soft":true,"ok":true,"ms":115}
+{"t":"2026-10-24T10:09:30.244Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":602}
+{"t":"2026-10-24T10:09:30.307Z","shot":"05-something-else.png"}
+{"t":"2026-10-24T10:09:30.426Z","i":10,"do":"send","sentAt":1792836570388,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-24T10:09:46.606Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":9118,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, simple and comforting. Want a quick recipe, or a reminder to start cooking around 7:30 PM tonight?\n\n10:09 AM","kit":[],"ms":16180}
+{"t":"2026-10-24T10:09:46.664Z","shot":"06-own-answer.png"}
+{"t":"2026-10-24T10:09:46.674Z","i":12,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-24T10:09:46.805Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-10-24T10:09:46.817Z","step":"aiTurns","turns":4}

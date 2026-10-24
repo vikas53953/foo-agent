@@ -1,0 +1,190 @@
+{
+  "journey": "U16-settings-all",
+  "title": "Settings: every section",
+  "steps": 26,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T10-09-46-971Z-U16-settings-all",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1026
+    },
+    {
+      "i": 1,
+      "do": "key",
+      "expect": "Settings opens (Ctrl+,) on Account",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "Settings · account: rows match the spec section",
+      "ok": true,
+      "ms": 703
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Settings · appearance: rows match the spec section",
+      "ok": true,
+      "ms": 702
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "Settings · notifications: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "Settings · permissions: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "Settings · money: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "Settings · privacy: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "Settings · routines-settings: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 16,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "expect": "Settings · connections: rows match the spec section",
+      "ok": true,
+      "ms": 702
+    },
+    {
+      "i": 18,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 19,
+      "do": "wait",
+      "expect": "Settings · chat: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "expect": "Settings · shortcuts: rows match the spec section",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "expect": "Settings · about: rows match the spec section",
+      "ok": true,
+      "ms": 700
+    },
+    {
+      "i": 24,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 154
+    },
+    {
+      "i": 25,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}

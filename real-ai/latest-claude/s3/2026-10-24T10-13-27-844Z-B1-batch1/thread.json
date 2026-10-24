@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n10:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n10:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, kaise ho?\n10:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise hain? Aaj main aapki kya madad kar sakti hoon?\n\n10:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n10:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi doctor ke paas gaya aur bola, \"Doctor sahab, mujhe lagta hai main invisible ho gaya hoon.\" Doctor ne kaha, \"Maaf kijiye, main abhi aapko nahi dekh sakta!\"\n\n10:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n10:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you in this test version of foo yet. That comes in a later batch. For now I can chat and answer questions.\n\n10:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n10:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things in this test version of foo yet. That comes in a later batch, so tell me again when it matters.\n\n10:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n10:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dark mode is on now.\n\n10:15 AM"
+  }
+]

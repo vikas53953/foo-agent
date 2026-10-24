@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:56 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:56 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:56 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n9:56 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:56 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n9:57 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ka birthday Mon 26 Oct ko hai, to cake aaj ya kal tak order kar do, taaki delivery ka time mil jaye. Ye options achhe rahenge:\n\nRasmalai cake: desi swaad, aur jo log zyada meetha nahi chahte unko pasand aata hai.\nChocolate truffle: sabko pasand aane wala, kabhi galat nahi jaata.\nPhoto cake: mummy ki pasandida photo ke saath, personal lagta hai.\nFresh fruit ya pineapple cake: halka aur fresh.\n\nMummy ko kaunsa swaad zyada pasand hai, aur cake eggless chahiye?\n\n9:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n9:57 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਜੇ ਮੰਮੀ ਨੂੰ ਦੇਸੀ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਸਭ ਤੋਂ ਵਧੀਆ ਰਹੇਗਾ, ਨਹੀਂ ਤਾਂ ਚਾਕਲੇਟ ਟ੍ਰਫਲ ਕਦੇ ਗਲਤ ਨਹੀਂ ਜਾਂਦਾ।\n\nਜੇ ਕੁਝ ਖਾਸ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਮੰਮੀ ਦੀ ਪਸੰਦੀਦਾ ਫੋਟੋ ਵਾਲਾ ਫੋਟੋ ਕੇਕ ਬਹੁਤ ਆਪਣਾ ਜਿਹਾ ਲੱਗਦਾ ਹੈ। ਹਲਕਾ ਚਾਹੀਦਾ ਹੋਵੇ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਜਾਂ ਪਾਈਨਐਪਲ ਕੇਕ ਠੀਕ ਰਹੇਗਾ।\n\nਬਰਥਡੇ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਨੂੰ ਕਿਹੜਾ ਸੁਆਦ ਜ਼ਿਆਦਾ ਪਸੰਦ ਹੈ, ਅਤੇ ਕੀ ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n9:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n9:57 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai that I know of. It looks like a normal working day, but I haven't checked a live holiday list. Diwali comes the week after, around Sun 8 Nov, so offices and banks may close then.\n\n9:57 AM"
+  }
+]
