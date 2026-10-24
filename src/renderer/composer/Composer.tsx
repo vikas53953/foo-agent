@@ -1175,6 +1175,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
                 disabled={disabled}
                 onOpen={setMenuOpen}
                 onFiles={() => picker.current?.click()}
+                onSecret={inGroup ? undefined : () => void invoke('secret:offer', { chatId, slot: 'key' }).catch(() => undefined)}
                 onEmoji={() => {
                   focusField();
                   void invoke('app:showEmojiPanel', {}).catch(() => undefined);

@@ -9,23 +9,28 @@ type PageBlockModule = typeof import('../page/PageBlock');
 type KitCardModule = typeof import('../kit/KitCard');
 type AiPageCardModule = typeof import('../page/AiPageCard');
 type KeptViewModule = typeof import('../keep/KeptView');
+type SpendCapModule = typeof import('../cards/SpendCap');
 
 let kitBlock: KitBlockModule | null = null;
 let pageBlock: PageBlockModule | null = null;
 let kitCard: KitCardModule | null = null;
 let aiPageCard: AiPageCardModule | null = null;
 let keptView: KeptViewModule | null = null;
+let spendCap: SpendCapModule | null = null;
 const loadKitBlock = () => import('../kit/KitBlock').then((m) => (kitBlock = m));
 const loadPageBlock = () => import('../page/PageBlock').then((m) => (pageBlock = m));
 const loadKitCard = () => import('../kit/KitCard').then((m) => (kitCard = m));
 const loadAiPageCard = () => import('../page/AiPageCard').then((m) => (aiPageCard = m));
 const loadKeptView = () => import('../keep/KeptView').then((m) => (keptView = m));
+// The spend-cap card shows only once AI spend reaches the cap, so it leaves the first script too (AT-322 budget).
+const loadSpendCap = () => import('../cards/SpendCap').then((m) => (spendCap = m));
 
 const LazyKitBlock = lazy(() => loadKitBlock().then((m) => ({ default: m.KitBlock })));
 const LazyPageBlock = lazy(() => loadPageBlock().then((m) => ({ default: m.PageBlock })));
 const LazyKitCard = lazy(() => loadKitCard().then((m) => ({ default: m.KitCard })));
 const LazyAiPageCard = lazy(() => loadAiPageCard().then((m) => ({ default: m.AiPageCard })));
 const LazyKeptView = lazy(() => loadKeptView().then((m) => ({ default: m.KeptView })));
+const LazySpendCap = lazy(() => loadSpendCap().then((m) => ({ default: m.SpendCap })));
 
 export function KitBlock(props: ComponentProps<KitBlockModule['KitBlock']>) {
   const [loaded] = useState(() => kitBlock);
@@ -77,7 +82,18 @@ export function KeptView(props: ComponentProps<KeptViewModule['KeptView']>) {
   );
 }
 
+export function SpendCap(props: ComponentProps<SpendCapModule['SpendCap']>) {
+  const [loaded] = useState(() => spendCap);
+  if (loaded) return <loaded.SpendCap {...props} />;
+  return (
+    <Suspense fallback={null}>
+      <LazySpendCap {...props} />
+    </Suspense>
+  );
+}
+
 /** Fetches the kit and page scripts once launch work is done (called beside preloadPages). */
 export function preloadKit(): void {
-  for (const load of [loadKitBlock, loadPageBlock, loadKitCard, loadAiPageCard, loadKeptView]) void load().catch(() => undefined);
+  for (const load of [loadKitBlock, loadPageBlock, loadKitCard, loadAiPageCard, loadKeptView, loadSpendCap])
+    void load().catch(() => undefined);
 }
