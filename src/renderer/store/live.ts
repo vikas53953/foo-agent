@@ -5,6 +5,7 @@
 // (10 s repeat guard), §F15.9.9 (`selectChatMood`, `playOnce`, `faceQueue` max 3). Quiet hours read
 // `settings.notifications.quiet` directly until M7 exposes `quietHours.isQuiet` (M11 ticket map, LF stub).
 import { FACE_QUEUE_MAX, isOneTime, LISTEN_MS, MOOD_PRIORITY, ONE_TIME_MS, REPEAT_GUARD_MS, type OneTimeMood } from '../../shared/face';
+import type { FeatureId } from '../../shared/features';
 import type { AiStatus, CardRow, JobRow, MessageRow, Mood } from '../../shared/types';
 import { effectivePill } from '../chatlist/rules';
 import { quietUntil } from '../shell/statusLine';
@@ -35,6 +36,8 @@ export interface LiveState {
   /** Bootstrap is in; the list shows skeleton rows before. */
   loaded: boolean;
   loadFailed: boolean;
+  /** CR-0054: the switched-on features (Bootstrap.features); null = every feature (no list sent). */
+  features: FeatureId[] | null;
 }
 
 export function initialLive(now: number): LiveState {
@@ -54,6 +57,7 @@ export function initialLive(now: number): LiveState {
     markedUnread: {},
     loaded: false,
     loadFailed: false,
+    features: null,
   };
 }
 
@@ -65,6 +69,8 @@ export const selectWindowFocused = (s: RootState) => s.live.windowFocused;
 export const selectMarkedUnread = (chatId: string) => (s: RootState) => s.live.markedUnread[chatId] === true;
 export const selectLoaded = (s: RootState) => s.live.loaded;
 export const selectLoadFailed = (s: RootState) => s.live.loadFailed;
+/** CR-0054: true when this build switched the feature on (every feature until the bootstrap says otherwise). */
+export const selectFeatureOn = (id: FeatureId) => (s: RootState) => s.live.features === null || s.live.features.includes(id);
 
 /** What a chat's face can know (§F15.9.3a: job runner, card store, connection monitor, composer, clock; never AI text). */
 export interface MoodInput {

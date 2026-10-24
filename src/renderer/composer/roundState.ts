@@ -19,6 +19,8 @@ export interface RoundFacts {
   catchOpen: boolean;
   /** §23.6 over the limit. */
   tooLong: boolean;
+  /** CR-0054: this build left voice off, so an empty field shows Send (which does nothing) instead of the mic. */
+  noVoice?: boolean;
 }
 
 export function roundButtonState(f: RoundFacts): RoundButtonState {
@@ -28,7 +30,7 @@ export function roundButtonState(f: RoundFacts): RoundButtonState {
   if (f.recording === 'hold') return 'recording';
   if (f.hasContent) return 'send';
   if (f.replying) return 'stop';
-  return 'mic';
+  return f.noVoice ? 'send' : 'mic';
 }
 
 /** The tooltip and accessible name of each state (04-2 §21.2, §22.4, §23.6, §23.7). */

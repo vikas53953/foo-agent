@@ -1,9 +1,11 @@
 // Spec: 03-shell-1 §3.4.2 left shell header (60 high, padding 0 16, no bottom border; "foo" wordmark in `--t-wordmark`,
 // never `{agentName}`, not a button, a drag region; "+ New helper" outline pill 32 with Add 16, disabled with the tooltip
 // "Finish setting up first" until setup is done, tooltip "New helper (Ctrl+N)"; More options MoreHorizontal 20 in a 36
-// icon button, 8 after the button; the More options menu items in order with their shortcuts and test ids).
+// icon button, 8 after the button; the More options menu items in order with their shortcuts and test ids). CR-0054: items
+// and the New helper button of a feature this build left off are not shown.
 import { useCallback, useRef, useState } from 'react';
 import { t } from '../../shared/copy/t';
+import type { FeatureId } from '../../shared/features';
 import { TID } from '../../shared/testids';
 import { invoke } from '../ipc/client';
 import { KEY_HINT } from '../shell/keys';
@@ -27,8 +29,18 @@ async function quit(): Promise<void> {
   }
 }
 
-function moreEntries(setup: boolean): MenuEntry[] {
-  return [
+/** CR-0054: the feature each item belongs to; an item whose feature is off is not in the menu. */
+const ITEM_FEATURE: Partial<Record<string, FeatureId>> = {
+  'new-helper': 'helpers',
+  'new-group': 'groups',
+  memory: 'memory',
+  routines: 'routines',
+  ideas: 'ideas',
+  activity: 'data',
+};
+
+function moreEntries(setup: boolean, on: (id: FeatureId) => boolean): MenuEntry[] {
+  const all: MenuEntry[] = [
     {
       kind: 'item',
       id: 'new-helper',
@@ -95,10 +107,18 @@ function moreEntries(setup: boolean): MenuEntry[] {
     { kind: 'separator', id: 's2' },
     { kind: 'item', id: 'quit', label: t('sidebar.menu.quit'), tid: 'sidebarMenuQuit', onSelect: () => void quit() },
   ];
+  const kept = all.filter((e) => {
+    const f = ITEM_FEATURE[e.id];
+    return !f || on(f);
+  });
+  // No separator first or two in a row once items are gone.
+  return kept.filter((e, i) => e.kind !== 'separator' || (i > 0 && kept[i - 1]?.kind !== 'separator'));
 }
 
 export function ChatListHeader() {
   const setup = useStore(selectSetupComplete);
+  const features = useStore((s) => s.live.features);
+  const on = (id: FeatureId) => features === null || features.includes(id);
   const menuOpen = useStore((s) => s.ui.menu === MORE_MENU_ID);
   const more = useRef<HTMLButtonElement>(null);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -114,18 +134,20 @@ export function ChatListHeader() {
   return (
     <div className={styles.header}>
       <span className={styles.wordmark}>{t('sidebar.header.wordmark')}</span>
-      <Tooltip text={setup ? t('sidebar.new_helper.tooltip') : t('sidebar.new_helper.tooltip.disabled')}>
-        <Button
-          variant="outline"
-          size="sm"
-          icon="Add"
-          disabled={!setup}
-          data-testid={TID.sidebarNewHelper}
-          onClick={() => openDialog('new-helper')}
-        >
-          {t('sidebar.new_helper.label')}
-        </Button>
-      </Tooltip>
+      {on('helpers') && (
+        <Tooltip text={setup ? t('sidebar.new_helper.tooltip') : t('sidebar.new_helper.tooltip.disabled')}>
+          <Button
+            variant="outline"
+            size="sm"
+            icon="Add"
+            disabled={!setup}
+            data-testid={TID.sidebarNewHelper}
+            onClick={() => openDialog('new-helper')}
+          >
+            {t('sidebar.new_helper.label')}
+          </Button>
+        </Tooltip>
+      )}
       <IconButton
         ref={more}
         icon="MoreHorizontal"
@@ -147,7 +169,7 @@ export function ChatListHeader() {
         }}
       />
       {menuOpen && anchor && (
-        <Menu entries={moreEntries(setup)} anchor={{ el: anchor, align: 'end' }} label={t('sidebar.more.label')} onClose={close} />
+        <Menu entries={moreEntries(setup, on)} anchor={{ el: anchor, align: 'end' }} label={t('sidebar.more.label')} onClose={close} />
       )}
     </div>
   );

@@ -82,6 +82,7 @@ import { keepIpc } from '../keep/keepIpc'; // R1 T7
 import { finderChosen, finderWanted, type FinderWrite } from '../setup/aiFinder';
 import { ensureSetupCard, faceChosen, nameAnswered, skipRest, welcomeStart } from '../setup/firstRun'; // CR-0026
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
+import { shippedFeatures } from '../features'; // CR-0054
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
 
@@ -457,7 +458,8 @@ export function registerIpc(ctx: AppContext): void {
     if (process.env.FOO_TEST !== '1' || process.env.FOO_TEST_FIRST_RUN === '1')
       emitFinderWrite(ctx, ensureSetupCard(db, settings, now(), ctx.dataDir));
     const s = settings.get();
-    return ok(bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null }));
+    const b = bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null });
+    return ok({ ...b, features: shippedFeatures() });
   });
   handle('app:quit', ({ confirm }) => {
     const runningJobs = db

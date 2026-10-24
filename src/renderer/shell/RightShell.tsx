@@ -5,10 +5,12 @@
 // (CR-0022 pick 9): the chat's kept items close the panel.
 import { useEffect, useRef } from 'react';
 import { t } from '../../shared/copy/t';
+import type { FeatureId } from '../../shared/features';
 import { TID } from '../../shared/testids';
 import type { ChatRow } from '../../shared/types';
 import { registerFocusTarget } from '../a11y/focusTargets';
 import { KeptList } from '../keep/KeptList';
+import { useStore } from '../store/index';
 import { IconButton } from '../ui/IconButton';
 import { DoingNow } from './DoingNow';
 import { GroupMembers } from './GroupMembers';
@@ -20,6 +22,9 @@ import { useRightShell } from './useRightShell';
 
 export function RightShell({ chat }: { chat: ChatRow }) {
   const panel = useRightShell();
+  // CR-0054: a section whose feature this build left off is not shown.
+  const features = useStore((s) => s.live.features);
+  const on = (id: FeatureId) => features === null || features.includes(id);
   const ref = useRef<HTMLElement>(null);
   const overlay = panel.mode !== 'push';
 
@@ -82,10 +87,10 @@ export function RightShell({ chat }: { chat: ChatRow }) {
         )}
       </header>
       <div className={styles.body}>
-        <DoingNow chat={chat} />
-        <UsingChips chat={chat} />
-        {group ? <GroupMembers chat={chat} /> : <KnowList chat={chat} />}
-        {!group && <SpentMeters />}
+        {on('jobs') && <DoingNow chat={chat} />}
+        {on('connections') && <UsingChips chat={chat} />}
+        {group ? <GroupMembers chat={chat} /> : on('memory') && <KnowList chat={chat} />}
+        {!group && on('spend') && <SpentMeters />}
         <KeptList chat={chat} />
       </div>
     </aside>

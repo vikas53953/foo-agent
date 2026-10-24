@@ -7,12 +7,14 @@
 // (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
 import { useEffect } from 'react';
 import { ZOOM_STEPS } from '../../shared/settingsLists';
+import type { FeatureId } from '../../shared/features';
 import { focusPane } from '../a11y/focusTargets';
 import { togglePin, toggleUnread } from '../chatlist/actions';
 import { effectivePill } from '../chatlist/rules';
 import { invoke } from '../ipc/client';
 import { navigate, openDialog, useStore } from '../store/index';
 import { selectOrderedChatIds, selectVisibleChatIds } from '../store/chats';
+import { selectFeatureOn } from '../store/live';
 import { openChat } from './actions';
 
 export { KEY_HINT } from './keys';
@@ -131,14 +133,16 @@ function onKeyDown(e: KeyboardEvent): void {
     const id = openId();
     return id ? s.chats.byId[id] : undefined;
   })();
+  // CR-0054: a shortcut for a feature this build left off does nothing.
+  const on = (id: FeatureId) => selectFeatureOn(id)(s);
   if (key === 'n' && !e.shiftKey) {
-    if (setup) run(() => openDialog('new-helper'));
+    if (setup && on('helpers')) run(() => openDialog('new-helper'));
   } else if (key === 'n' && e.shiftKey) {
-    if (setup) run(() => openDialog('new-group'));
+    if (setup && on('groups')) run(() => openDialog('new-group'));
   } else if (e.key === ',' && !e.shiftKey) {
     run(() => navigate({ kind: 'settings', page: 'account' }));
   } else if (key === 'm' && !e.shiftKey) {
-    run(() => navigate({ kind: 'screen', id: 'memory' }));
+    if (on('memory')) run(() => navigate({ kind: 'screen', id: 'memory' }));
   } else if (e.key === '/' && !e.shiftKey) {
     run(() => openDialog('shortcuts'));
   } else if (key === 'f' && e.shiftKey) {

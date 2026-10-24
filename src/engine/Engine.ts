@@ -20,7 +20,7 @@ import type { EngineChat, EngineMessage } from '../main/db/queries';
 import { AiRegistry, CliLimiter, createAdapters, loadPricing, nodeAiFs, nodeWhich, sweepSystemFiles } from './ai';
 import { AiService } from './AiService';
 import { testHomeEnv, testHomeWhich, vaultKeyReader } from './ai/vaultKeys';
-import { ChatLane, type IntakeDecisionView, type IntakeInput, type IntakeTag, type LaneProtocol } from './chat/ChatLane';
+import { ChatLane, type IntakeDecisionView, type IntakeInput, type IntakeTag, type LaneMemory, type LaneProtocol } from './chat/ChatLane';
 import type { DbOp, DbTxReply, MainLink, MainToEngine } from './protocol';
 import { MemoryService, UNDO_MS } from './memory/MemoryService';
 import { MemoryShare } from './memory/askShare';
@@ -62,6 +62,7 @@ import { ConnTrouble } from './connections/trouble';
 import type { GoogleBases } from './tools/connectors/limiter';
 import type { HttpFetch } from './tools/connectors/types';
 import { KitActions } from './kit/kitAction';
+import { resolveFeatures, type FeatureId } from '../shared/features'; // CR-0054
 
 export interface EngineOptions {
   link: MainLink;
@@ -157,6 +158,16 @@ export class Engine {
       promptsDir: join(o.resourcesDir, 'prompts'),
     });
     const pricing = loadPricing(JSON.parse(readFileSync(join(o.resourcesDir, 'pricing.json'), 'utf8')));
+    // CR-0054: the features this build switched on (the same file main reads).
+    const features = new Set<FeatureId>(
+      resolveFeatures(o.env, o.testRun, () => {
+        try {
+          return readFileSync(join(o.resourcesDir, 'features.json'), 'utf8');
+        } catch {
+          return null;
+        }
+      }),
+    );
     // M9 T4: web tools (08-2 §8.2); each cloud call writes its ai_turns row (08-4 §27.3 item 5).
     this.web = createEngineWeb({
       ...o,
@@ -390,14 +401,21 @@ export class Engine {
       jobs: this.jobs,
       // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
       capCheck: (chars, purpose) => this.jobs.allowChatCall(chars, purpose),
-      // M6 T5: memory in the lane; the seams are built below and only called once messages flow.
-      memory: {
-        beforeTurn: (chat, m) => this.memoryIntake.beforeTurn(chat, m),
-        decide: (chat, helper, m, act) => this.memoryIntake.decide(chat, helper, m, act),
-        used: (chatId, anchorId, facts) => this.memoryChips.used(chatId, anchorId, facts),
-        answered: (chatId) => this.memoryReview.after(chatId),
-        onCardAnswered: (a) => this.memoryIntake.onCardAnswered(a),
-      },
+      // CR-0054: an intake kind whose feature this build left off gets one fixed line.
+      featureOn: (id) => features.has(id),
+      // M6 T5: memory in the lane; the seams are built below and only called once messages flow. CR-0054: none while
+      // memory is off, so no fact is read into a turn or written from one.
+      ...(features.has('memory')
+        ? {
+            memory: {
+              beforeTurn: (chat, m) => this.memoryIntake.beforeTurn(chat, m),
+              decide: (chat, helper, m, act) => this.memoryIntake.decide(chat, helper, m, act),
+              used: (chatId, anchorId, facts) => this.memoryChips.used(chatId, anchorId, facts),
+              answered: (chatId) => this.memoryReview.after(chatId),
+              onCardAnswered: (a) => this.memoryIntake.onCardAnswered(a),
+            } satisfies LaneMemory,
+          }
+        : {}),
       // C1 T2 (04 §13.7): Gmail counts as connected only in status `connected`; WhatsApp while the bridge is open.
       capabilityState: () => ({
         gmailConnected: this.google !== null && this.trouble.gmailConnected(),

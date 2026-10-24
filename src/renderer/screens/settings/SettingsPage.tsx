@@ -8,9 +8,10 @@
 // Appearance (06-2 §6.2) is built whole.
 import { useRef, type KeyboardEvent } from 'react';
 import { t } from '../../../shared/copy/t';
+import type { FeatureId } from '../../../shared/features';
 import { TID } from '../../../shared/testids';
 import type { SettingsPage as PageId } from '../../../shared/types';
-import { back, update } from '../../store/index';
+import { back, update, useStore } from '../../store/index';
 import { Icon, type IconName } from '../../ui/Icon';
 import { cx } from '../../ui/cx';
 import { PageHeader } from '../shared/PageHeader';
@@ -52,9 +53,25 @@ const openPage = (page: PageId) =>
     s.ui.view = { kind: 'settings', page };
   });
 
+/** CR-0054: the feature a settings page belongs to; a page whose feature this build left off is not in the nav. */
+const PAGE_FEATURE: Partial<Record<PageId, FeatureId>> = {
+  notifications: 'notify',
+  permissions: 'connections',
+  money: 'bills',
+  privacy: 'data',
+  'routines-settings': 'routines',
+  connections: 'connections',
+  chat: 'voice',
+};
+
 export function SettingsPage({ page }: { page: PageId }) {
   const nav = useRef<HTMLElement>(null);
-  const current = NAV.find((n) => n.id === page) ?? NAV[0]!;
+  const features = useStore((s) => s.live.features);
+  const pages = NAV.filter((n) => {
+    const f = PAGE_FEATURE[n.id];
+    return !f || features === null || features.includes(f);
+  });
+  const current = pages.find((n) => n.id === page) ?? pages[0]!;
 
   const keys = (e: KeyboardEvent) => {
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
@@ -72,7 +89,7 @@ export function SettingsPage({ page }: { page: PageId }) {
       <PageHeader title={t('settings.page.title')} backLabel={t('settings.page.back')} onBack={back} />
       <div className={styles.body}>
         <nav ref={nav} className={styles.nav} aria-label={t('settings.page.nav_label')} onKeyDown={keys}>
-          {NAV.map((n) => {
+          {pages.map((n) => {
             const selected = n.id === current.id;
             return (
               <button
