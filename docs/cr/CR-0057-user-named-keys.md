@@ -44,6 +44,8 @@ the + menu and the moved password through the real window. Before this change it
    collapsed), so the saved row and the activity line read "GitHub key".
 3. **Same name again replaces.** Like every kind except cards (X-129), it logs "Replaced your {name}". Replace on a
    saved card fills in its name and locks it, so the new value goes to the same entry and no old entry is left behind.
+   Two names with the same vault name ("@work key" and "work key") are the same entry, so the second save replaces the
+   first.
 4. **Credential Manager only.** A blob file is named by `{name}` alone (09 §9.18), so a user name like `exa` could clash
    with another kind's blob. A value over 2,560 bytes is refused, which no typed password or key reaches.
 5. **No reader yet.** No `vault.use` purpose maps to `user_key`, so a saved key is stored and listed but never used. Using
