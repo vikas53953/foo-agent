@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Sun 25 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n4:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n4:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Try Shelly, Speedy (a fun joke for a slow one) or Biscuit. Other good ones are Pebble, Mochi and Turbo. Tortoises live for decades, so pick a name you'll still like in 50 years.\n\n4:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n4:17 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for the biggest India news story today, Sat\nStopped by you\n4:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n4:18 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:18 PM\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nLook for account balance\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  }
+]

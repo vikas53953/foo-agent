@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:09 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:09 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday ke liye ye 4 cakes safe rahenge:\n\nButterscotch ya pineapple: sabko pasand aate hain, galti ka chance kam.\nChocolate truffle: agar mummy ko meetha pasand hai.\nFresh fruit cake: halka hota hai, aur khane ke baad bhaari nahi lagta.\nPhoto cake: mummy ki pasandida photo ke saath, personal lagta hai.\n\nParso Mon 26 Oct hai, toh order aaj hi kar do, khaaskar agar photo ya custom design chahiye. Eggless chahiye ya nahi, ye pehle pakka kar lena.\n\nBata do kitne log honge aur budget kitna hai, main usi hisaab se options dekh leti hoon.\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਜੇ ਇੱਕ ਹੀ ਚੁਣਨਾ ਹੋਵੇ ਤਾਂ ਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ ਕੇਕ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਰਹੇਗਾ, ਕਿਉਂਕਿ ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਚਾਕਲੇਟ ਟ੍ਰਫਲ: ਜੇ ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਪਸੰਦ ਹੈ।\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਹਲਕਾ ਹੁੰਦਾ ਹੈ, ਖਾਣ ਤੋਂ ਬਾਅਦ ਭਾਰੀ ਨਹੀਂ ਲੱਗਦਾ।\nਫੋਟੋ ਕੇਕ: ਮੰਮੀ ਦੀ ਮਨਪਸੰਦ ਫੋਟੋ ਨਾਲ, ਬਹੁਤ ਖਾਸ ਲੱਗਦਾ ਹੈ।\n\nਜਨਮ ਦਿਨ Mon 26 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਫੋਟੋ ਜਾਂ ਖਾਸ ਡਿਜ਼ਾਈਨ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਅੱਜ ਹੀ ਆਰਡਰ ਕਰ ਦਿਓ। ਕੀ ਮੰਮੀ ਆਂਡੇ ਤੋਂ ਬਿਨਾਂ (eggless) ਕੇਕ ਖਾਂਦੇ ਹਨ?\n\n4:10 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n4:10 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mon 2 Nov doesn't look like a public holiday in Mumbai. I don't know of any Maharashtra government holiday that day, so banks and offices should be open. Diwali this year falls on Sun 8 Nov. I can't confirm the official holiday list from here, so check the Maharashtra or RBI list if it matters for a bank visit.\n\n4:10 PM"
+  }
+]

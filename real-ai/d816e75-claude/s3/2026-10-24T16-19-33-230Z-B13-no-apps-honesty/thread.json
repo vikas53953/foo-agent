@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for the biggest India news story today, Sat\nStopped by you\n4:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n4:18 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:18 PM\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nLook for account balance\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n4:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n4:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n4:19 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Read your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n4:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n4:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group should I catch you up on? Tell me its name and I'll read what you missed.\n\n4:20 PM"
+  }
+]
