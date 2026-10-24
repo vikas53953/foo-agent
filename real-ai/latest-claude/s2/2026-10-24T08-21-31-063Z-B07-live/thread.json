@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n8:18 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n8:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:18 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum is open today, Sat 24 Oct, from 10:00 AM to 8:00 PM.\n\nHours\n\nTue to Fri: 10:00 AM to 6:00 PM\nSat and Sun: 10:00 AM to 8:00 PM\nClosed on Mondays and national holidays\n\nEntry fee\n\nAdults: ₹20\nForeign nationals: ₹500\nStudents up to class 12: free, with their ID card\n\nThe museum is on Janpath, New Delhi 110011. Its site lists online tickets at https://www.zoonga.com/national-museum. I read this from the museum's own site and did not book anything.\n\n8:19 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n8:21 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n8:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The best morning trains from New Delhi to Agra Cantt on IRCTC are:\n\nShatabdi 12002: leaves 6:00 AM, arrives 7:50 AM, daily, CC and EC\nTaj Express 12280: leaves 6:55 AM, arrives 9:25 AM, daily, CC and 2S\nPunjab Mail 12138: leaves 5:10 AM, arrives 8:10 AM, daily, 1A, 2A, 3A and SL\nHirakund Exp 20808: leaves 8:15 AM, arrives 10:35 AM, not daily, 2A, 3A, SL and 3E\n\nFrom Hazrat Nizamuddin, the fastest are Vande Bharat 22470 (6:00 AM to 7:40 AM) and Gatimaan 12050 (8:10 AM to 9:50 AM). Both run on selected days only.\n\nThe page did not show which travel date it was for, so check the date before you pick. Want me to narrow this to one date?\n\n8:22 AM"
+  }
+]

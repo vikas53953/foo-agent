@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n8:24 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which Saturday should I book the table for? → Next week, Sat 31 Oct, 8:00 PM\n8:24 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:24 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking table for 2, Sat 31 Oct, 8:00 PM\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 restaurants that fit vegetarian, well rated, table free at\n3\nWait for you to pick one\n4\nShow you before booking a table for 2 on Sat 31 Oct\n5\nShow you before doing anything\n6\nBook table for 2, Sat 31 Oct, 8:00 PM\nAbout 6 minutes\nGo\nChange plan\n8:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n8:28 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for vegetarian restaurants in…\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 restaurants that fit best rated with a free table at 8:00 PM\n3\nWait for you to pick one\n4\nShow you before the booking for 2 on Sat 24 Oct, 8:00 PM\n5\nShow you before doing anything\n6\nBook table for 2, Sat 24 Oct, 8:00 PM\nAbout 4 minutes\nGo\nChange plan\n8:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n8:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n8:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n8:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your monsoon poem:\n\nGrey clouds roll in over the Arabian Sea,\nMarine Drive gleams as the rain falls free.\nChai steams hot on a crowded street,\nAnd Mumbai dances to the monsoon's beat.\n\n8:30 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 8:27 AM.\nBooking table for 2, Sat 31 Oct, 8:00 PM was at step 1 of 6. Nothing was paid.\nPick up where I left off\nStop it\n8:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:31 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "I closed unexpectedly at 8:28 AM.\nLooking for vegetarian restaurants in… was at step 1 of 6. Nothing was paid.\nPick up where I left off\nStop it\n8:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:31 AM"
+  }
+]
