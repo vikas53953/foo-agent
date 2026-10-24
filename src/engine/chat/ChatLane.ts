@@ -248,7 +248,8 @@ function readEmailJob(): Extract<IntakeDecision, { kind: 'job' }> {
 
 /** CR-0054: the feature an intake kind belongs to, when this build left it off; null when it is on or has none. */
 type OffFeature = 'jobs' | 'memory' | 'settings';
-const KIND_FEATURE: Partial<Record<string, OffFeature>> = { job: 'jobs', memory: 'memory', setting: 'settings' };
+// An `ask` is a task's question before its job (CR-0028), so it is off while jobs are off (B1-batch1 run on 1d498c0).
+const KIND_FEATURE: Partial<Record<string, OffFeature>> = { job: 'jobs', ask: 'jobs', memory: 'memory', setting: 'settings' };
 function featureOff(kind: string, featureOn: ((id: FeatureId) => boolean) | undefined): OffFeature | null {
   const id = KIND_FEATURE[kind];
   return id && featureOn && !featureOn(id) ? id : null;
@@ -777,7 +778,7 @@ export class ChatLane {
           askedText: message.textForAi ?? message.text,
           helperId: helper?.id ?? null,
         });
-    } else if (act && act.kind === 'ask') {
+    } else if (act && act.kind === 'ask' && !offFeature) {
       // CR-0028 (08-4 §25.5 item 5): the question goes on a Choice card with no job; text already released stands.
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.ask(chatId, messageId, act.card, helper);
