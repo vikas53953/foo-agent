@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good morning. What can I do for you today?\n\n6:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n6:57 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can help with your email, calendar, bills, bookings and reminders, and keep an eye on things for you. The app shows what works on your PC right now.\n\n6:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n6:57 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send is scrambled before it leaves your device, so your Wi-Fi owner or internet company can't read it.\n\nThe scrambled data goes to the VPN company's computer, which then talks to the website for you. The website sees the VPN's address instead of yours, so your location and identity stay hidden.\n\nIt's handy on public Wi-Fi, or to reach sites from another country. It won't make you fully anonymous, because the VPN company can still see what you do.\n\n6:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n6:58 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or rough ground\n6:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n6:58 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most to you in trail shoes under ₹5,000?\n1\nStrong grip\nBEST FIT\nGood for mud, loose soil and wet ground\n2\nSoft cushioning\nEasier on knees and longer runs\n3\nLight and fast\nLess weight, quicker feel\n4\nTough and long-lasting\nHandles rocks and rough use\nSomething else…\nSkip\n6:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:58 AM"
+  }
+]

@@ -1,0 +1,22 @@
+{"t":"2026-10-24T07:15:00.845Z","journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","spec":"05-3 §5.24 Plan, §5.5 Checklist, §5.18 Proof, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-24T07:15:06.065Z","step":"launch","ok":true}
+{"t":"2026-10-24T07:15:14.142Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8074}
+{"t":"2026-10-24T07:15:15.167Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1025}
+{"t":"2026-10-24T07:15:15.251Z","i":1,"do":"send","sentAt":1792826115227,"sent":true,"before":0,"ok":true,"ms":84}
+{"t":"2026-10-24T07:15:28.474Z","i":2,"do":"waitReply","expect":"a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan","firstReplyMs":7111,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for laptops under ₹50,000 in India with\n3\nKeep 3 budget laptops that fit best value for price, performance and\n4\nCompare price, processor, RAM, storage, screen\nAbout 5 minutes\nGo\nChange plan\n7:15 AM","kit":[],"ms":13223}
+{"t":"2026-10-24T07:15:28.527Z","shot":"01-plan.png"}
+{"t":"2026-10-24T07:15:28.602Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-24T07:15:28.679Z","i":4,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-24T07:15:33.681Z","i":5,"do":"wait","expect":"checklist appears with the current step spinning","ok":true,"ms":5001}
+{"t":"2026-10-24T07:15:33.744Z","shot":"03-checklist.png"}
+{"t":"2026-10-24T07:15:56.809Z","shot":"04-error-step6.png"}
+{"t":"2026-10-24T07:15:56.809Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23065}
+{"t":"2026-10-24T07:15:57.811Z","i":7,"do":"wait","expect":"details expanded","ok":true,"ms":1002}
+{"t":"2026-10-24T07:15:57.871Z","shot":"05-checklist-details.png"}
+{"t":"2026-10-24T07:18:27.870Z","i":8,"do":"wait","expect":"job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer","ok":true,"ms":149999}
+{"t":"2026-10-24T07:18:27.972Z","shot":"06-done.png"}
+{"t":"2026-10-24T07:18:28.019Z","i":9,"do":"check","note":"receipt footer","soft":true,"found":0,"ok":false,"ms":47}
+{"t":"2026-10-24T07:18:28.033Z","i":10,"do":"check","note":"sources","soft":true,"found":0,"ok":false,"ms":14}
+{"t":"2026-10-24T07:18:28.049Z","i":11,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-24T07:18:28.305Z","step":"appLog","lines":70,"dropped":0}
+{"t":"2026-10-24T07:18:28.316Z","step":"aiTurns","turns":34}

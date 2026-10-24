@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-24T06-57-25-303Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792825050535,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3029,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good morning. What can I do for you today?\n\n6:57 AM",
+      "kit": [],
+      "ms": 10154
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792825060827,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2537,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can help with your email, calendar, bills, bookings and reminders, and keep an eye on things for you. The app shows what works on your PC right now.\n\n6:57 AM",
+      "kit": [],
+      "ms": 9123
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792825070081,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2559,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet. Everything you send is scrambled before it leaves your device, so your Wi-Fi owner or internet company can't read it.\n\nThe scrambled data goes to the VPN company's computer, which then talks to the website for you. The website sees the VPN's address instead of yours, so your location and identity stay hidden.\n\nIt's handy on public Wi-Fi, or to reach sites from another country. It won't make you fully anonymous, because the VPN company can still see what you do.\n\n6:57 AM",
+      "kit": [],
+      "ms": 11168
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
