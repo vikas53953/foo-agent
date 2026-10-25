@@ -1,0 +1,278 @@
+{
+  "journey": "B1-batch1",
+  "title": "Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so",
+  "steps": 34,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-25T21-37-35-813Z-B1-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "ok": true,
+      "ms": 20001
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 10
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "ok": true,
+      "ms": 30012
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 1,
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Anthropic key (your AI)\n9:37 PM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "ok": true,
+      "ms": 10002
+    },
+    {
+      "i": 16,
+      "do": "check",
+      "note": "batch 1 has no helpers: no New helper button",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 17,
+      "do": "check",
+      "note": "batch 1 has no voice: the round button is Send, not the mic",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "sentAt": 1792964322501,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "a short warm reply in Hinglish, streamed",
+      "firstReplyMs": 2029,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Main bilkul theek hoon, shukriya! Aap kaise hain? Kya main aapki kisi cheez mein madad kar sakta hoon?\n\n9:38 PM",
+      "kit": [],
+      "ms": 9599
+    },
+    {
+      "i": 20,
+      "do": "send",
+      "sentAt": 1792964332236,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 21,
+      "do": "waitReply",
+      "expect": "a joke, in the user's mix of Hindi and English",
+      "firstReplyMs": 3044,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Ek aadmi ne apne dost se kaha: \"Yaar, meri biwi mujhe Superman samajhti hai.\"\n\nDost bola: \"Wow, kitna accha hai!\"\n\nAadmi: \"Haan, har kaam ke liye mujhe hi bulati hai!\"\n\n9:38 PM",
+      "kit": [],
+      "ms": 11200
+    },
+    {
+      "i": 22,
+      "do": "send",
+      "sentAt": 1792964343583,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 23,
+      "do": "waitReply",
+      "expect": "the batch-1 line: tasks come in a later batch; no checklist, no plan card",
+      "firstReplyMs": 2552,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Aapko aaj raat Delhi mein ek cafe mein 2 logon ke liye table book karni hai. Kaunsa area prefer karenge aur kitne baje?\n\n9:39 PM\n---\nI can’t do tasks for you in this test version of foo yet. That comes in a later batch. For now I can chat and answer questions.\n\n9:39 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 11172
+    },
+    {
+      "i": 24,
+      "do": "send",
+      "sentAt": 1792964354907,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 25,
+      "do": "waitReply",
+      "expect": "the batch-1 memory line, or a plain reply; never a memory chip",
+      "firstReplyMs": 2038,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Main yaad rakh lunga ki aap vegetarian hain.\n\n9:39 PM\n---\nI can’t remember things in this test version of foo yet. That comes in a later batch, so tell me again when it matters.\n\n9:39 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 9139
+    },
+    {
+      "i": 26,
+      "do": "send",
+      "sentAt": 1792964364209,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 27,
+      "do": "waitFor",
+      "note": "settings by chat is on in batch 1",
+      "ok": true,
+      "ms": 2815
+    },
+    {
+      "i": 28,
+      "do": "wait",
+      "expect": "dark theme; one line Changed: Theme → Dark. Undo",
+      "ok": true,
+      "ms": 5002
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 30,
+      "do": "wait",
+      "expect": "Settings, Keyboard shortcuts and Quit only",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 31,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 32,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 33,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

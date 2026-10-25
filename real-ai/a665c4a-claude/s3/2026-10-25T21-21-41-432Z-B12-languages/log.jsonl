@@ -1,0 +1,14 @@
+{"t":"2026-10-25T21:21:41.432Z","journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","spec":"07-1 J7; walkthrough ch. 08; AT-031","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-25T21:21:46.827Z","step":"launch","ok":true}
+{"t":"2026-10-25T21:21:46.960Z","i":0,"do":"send","sentAt":1792963306925,"sent":true,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-25T21:22:01.621Z","i":1,"do":"waitReply","expect":"walkthrough 08 step 4: answers in Hinglish","firstReplyMs":5564,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mummy ka birthday Tue 27 Oct ko hai, to cake kal tak order kar do taaki time pe pahunch jaye. Ye teen options achhe rahenge:\n\nChocolate truffle: sabko pasand aata hai, safe choice.\nButterscotch ya pineapple: halka aur classic, bade logon ko aksar zyada pasand aata hai.\nPhoto cake ya naam likha cake: thoda personal touch, mummy ko khush kar dega.\n\nCake eggless chahiye ya normal?\n\n9:21 PM","kit":[],"ms":14661}
+{"t":"2026-10-25T21:22:01.689Z","shot":"01-hinglish.png"}
+{"t":"2026-10-25T21:22:01.809Z","i":2,"do":"send","sentAt":1792963321779,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-25T21:22:18.501Z","i":3,"do":"waitReply","expect":"walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi","firstReplyMs":7600,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਲਈ ਚਾਕਲੇਟ ਟ੍ਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਲਗਭਗ ਹਰ ਕਿਸੇ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। ਜੇ ਉਨ੍ਹਾਂ ਨੂੰ ਹਲਕਾ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ ਵਧੀਆ ਰਹੇਗਾ।\n\nਥੋੜ੍ਹਾ ਖ਼ਾਸ ਬਣਾਉਣ ਲਈ ਉੱਤੇ ਉਨ੍ਹਾਂ ਦਾ ਨਾਂ ਜਾਂ ਫੋਟੋ ਲਗਵਾ ਲਓ। ਕੀ ਕੇਕ ਬਿਨਾਂ ਆਂਡੇ ਵਾਲਾ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਆਮ?\n\n9:22 PM","kit":[],"ms":16692}
+{"t":"2026-10-25T21:22:18.562Z","shot":"02-punjabi.png"}
+{"t":"2026-10-25T21:22:18.663Z","i":4,"do":"send","sentAt":1792963338645,"sent":true,"before":0,"ok":true,"ms":101}
+{"t":"2026-10-25T21:22:31.292Z","i":5,"do":"waitReply","expect":"walkthrough 08 step 3: short 1–3 bubbles, no filler","firstReplyMs":5566,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I don't know of any public or bank holiday in Mumbai on Mon 2 Nov, so it looks like a normal working day. I can't check a live list from here, so confirm with the official Maharashtra holiday list if it matters. Diwali comes the week after, so check that week's dates too.\n\n9:22 PM","kit":[],"ms":12629}
+{"t":"2026-10-25T21:22:31.363Z","shot":"03-holiday.png"}
+{"t":"2026-10-25T21:22:31.372Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-25T21:22:31.494Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-25T21:22:31.509Z","step":"aiTurns","turns":3}
