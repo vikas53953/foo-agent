@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt so many times that historians count at least seven different cities on the same ground.\n\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n9:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:27 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "What should I pick up? → you changed the plan\n9:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n9:30 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:30 PM\n9:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:30 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n9:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:30 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:30 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:30 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The best value of the lot is the Asus CX9406 Googlebook at ₹34,999 but it is not out yet and runs ChromeOS. Here are my 3 picks under ₹50,000 all with 16 GB RAM or more:\n\nLaptop\tPrice\tProcessor\tRAM\tStatus\nAsus CX9406 Googlebook (ChromeOS)\t₹34,999\tIntel Core Ultra 5 325\t32 GB\tUpcoming\nXiaomi Redmi Book 14 (2025) Refreshed\t₹40,990\t13th Gen Core i5\t16 GB\tUpcoming\nMSI Modern 14 C7M-062IN (Win11)\t₹43,219\tRyzen 5 7530U\t16 GB DDR4\tAvailable\n\nIf you want one you can buy now with Windows, the MSI is the pick. The next best on sale is the HP 15 250R G10 at ₹47,880 (Core 3 100U, 16 GB). Prices come from one list on Smartprix, so check them on the shop's own page before buying.\n\n9:31 PM"
+  }
+]

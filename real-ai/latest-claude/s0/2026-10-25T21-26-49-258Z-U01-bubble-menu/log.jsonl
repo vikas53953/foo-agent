@@ -1,0 +1,57 @@
+{"t":"2026-10-25T21:26:49.258Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-25T21:26:54.982Z","step":"launch","ok":true}
+{"t":"2026-10-25T21:26:56.032Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1047}
+{"t":"2026-10-25T21:26:56.175Z","i":1,"do":"send","sentAt":1792963616128,"sent":true,"before":0,"ok":true,"ms":143}
+{"t":"2026-10-25T21:27:14.140Z","i":2,"do":"waitReply","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":11854,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Delhi has been rebuilt so many times that historians count at least seven different cities on the same ground.\n\n9:27 PM","kit":[],"ms":17965}
+{"t":"2026-10-25T21:27:14.217Z","shot":"01-fact.png"}
+{"t":"2026-10-25T21:27:14.294Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-25T21:27:14.382Z","i":4,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-25T21:27:14.983Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":600}
+{"t":"2026-10-25T21:27:15.043Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-25T21:27:15.113Z","i":6,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-25T21:27:15.193Z","i":7,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-25T21:27:15.421Z","i":8,"do":"click","soft":true,"ok":true,"ms":228}
+{"t":"2026-10-25T21:27:16.025Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":604}
+{"t":"2026-10-25T21:27:16.208Z","shot":"04-react-picker.png"}
+{"t":"2026-10-25T21:27:16.335Z","i":10,"do":"click","soft":true,"ok":true,"ms":127}
+{"t":"2026-10-25T21:27:17.137Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":802}
+{"t":"2026-10-25T21:27:17.203Z","shot":"05-reacted.png"}
+{"t":"2026-10-25T21:27:17.205Z","i":12,"do":"check","note":"reaction chip shows","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-25T21:27:17.341Z","i":13,"do":"click","soft":true,"ok":true,"ms":136}
+{"t":"2026-10-25T21:27:18.141Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":800}
+{"t":"2026-10-25T21:27:18.236Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-25T21:27:18.350Z","i":15,"do":"click","soft":true,"ok":true,"ms":114}
+{"t":"2026-10-25T21:27:18.952Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":602}
+{"t":"2026-10-25T21:27:19.034Z","shot":"07-my-menu.png"}
+{"t":"2026-10-25T21:27:19.117Z","i":17,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-25T21:27:19.621Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":503}
+{"t":"2026-10-25T21:27:19.730Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-25T21:27:19.894Z","i":19,"do":"send","sentAt":1792963639891,"sent":true,"before":0,"ok":true,"ms":164}
+{"t":"2026-10-25T21:27:36.620Z","i":20,"do":"waitReply","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":10618,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n9:27 PM","kit":[],"ms":16726}
+{"t":"2026-10-25T21:27:36.685Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-25T21:27:36.688Z","i":21,"do":"check","note":"quote shows inside my bubble","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-25T21:27:36.774Z","i":22,"do":"click","soft":true,"ok":true,"ms":86}
+{"t":"2026-10-25T21:27:36.849Z","i":23,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-25T21:27:37.354Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":505}
+{"t":"2026-10-25T21:27:37.431Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-25T21:27:37.445Z","i":25,"do":"fill","soft":true,"ok":true,"ms":13}
+{"t":"2026-10-25T21:27:37.459Z","i":26,"do":"key","ok":true,"ms":14}
+{"t":"2026-10-25T21:27:57.461Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20002}
+{"t":"2026-10-25T21:27:57.535Z","shot":"11-edited.png"}
+{"t":"2026-10-25T21:27:57.538Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n9:27 PM","ok":true,"ms":3}
+{"t":"2026-10-25T21:27:57.647Z","i":29,"do":"click","soft":true,"ok":true,"ms":109}
+{"t":"2026-10-25T21:27:57.727Z","i":30,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-25T21:27:58.529Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":801}
+{"t":"2026-10-25T21:27:58.606Z","shot":"12-good.png"}
+{"t":"2026-10-25T21:27:58.676Z","i":32,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-25T21:27:58.770Z","i":33,"do":"click","soft":true,"ok":true,"ms":94}
+{"t":"2026-10-25T21:27:59.572Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":802}
+{"t":"2026-10-25T21:27:59.633Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-25T21:27:59.637Z","i":35,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-25T21:27:59.707Z","i":36,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-25T21:27:59.783Z","i":37,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-25T21:28:14.474Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":8618,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What should I pick up?\n1\nRepeat the last task\nBEST FIT\nStart it again from the beginning\n2\nStart something new\nTell me what you need\nSomething else…\nSkip\n9:28 PM","kit":[],"ms":14691}
+{"t":"2026-10-25T21:28:14.541Z","shot":"14-try-again.png"}
+{"t":"2026-10-25T21:28:14.556Z","i":39,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-25T21:28:14.751Z","step":"appLog","lines":25,"dropped":0}
+{"t":"2026-10-25T21:28:14.763Z","step":"aiTurns","turns":11}
