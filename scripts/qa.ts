@@ -57,6 +57,8 @@ const sh = (cmd: string, a: string[], env: Record<string, string> = {}) => {
   });
 };
 const esc = (s: string) => s.replace(/"/g, '\\"');
+// eslint-disable-next-line no-control-regex -- terminal colour codes in runner messages
+const plain = (s: string) => s.replace(/\u001b\[[0-9;]*m/g, '');
 
 // ---- 1. vitest ----
 type VitestJson = {
@@ -211,7 +213,7 @@ const results: Result[] = SCENARIOS.map((s): Result => {
     if (!a) return { id: s.id, status: 'missing', error: 'no test with this title ran', repro };
     const r: Result = { id: s.id, status: a.status === 'passed' ? 'pass' : a.status === 'failed' ? 'fail' : 'missing', repro };
     if (a.duration !== undefined) r.ms = Math.round(a.duration);
-    if (a.failureMessages.length) r.error = a.failureMessages.join('\n').slice(0, 1500);
+    if (a.failureMessages.length) r.error = plain(a.failureMessages.join('\n')).slice(0, 1500);
     const ev = evidenceFor(s.id, s);
     if (ev) r.evidence = relative(out, ev);
     return r;
@@ -229,7 +231,7 @@ const results: Result[] = SCENARIOS.map((s): Result => {
       ms: last.duration,
       repro,
     };
-    if (last.error?.message) r.error = last.error.message.slice(0, 1500);
+    if (last.error?.message) r.error = plain(last.error.message).slice(0, 1500);
     const trace = last.attachments?.find((x) => x.name === 'trace')?.path;
     if (trace) r.evidence = relative(out, trace);
     const ev = evidenceFor(s.id, s);
