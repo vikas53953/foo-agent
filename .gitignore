@@ -2,6 +2,7 @@ node_modules/
 out/
 dist/
 test-results/
+qa-report/
 playwright-report/
 qa-evidence/*/screens/
 *.log
@@ -12,6 +13,7 @@ qa-evidence/*/fidelity.html
 qa-evidence/*/fidelity.json
 .claude/*
 !.claude/skills/
+!.claude/agents/
 qa-evidence/verify/
 
 # M8: the real Google OAuth client is owner-provided and never committed (public repo)

@@ -1,0 +1,174 @@
+# Spec: CR-0054 (batch 1), 07-1 J7/J21, project testing rule §6 (real AI before done); Vikas's QA ask of 2026-10-25.
+# The batch-1 AI-judged asks (test/judge) on the real foo app with only batch 1 switched on, each ask 3 times. The
+# deterministic checks decide; the judge's scores are kept apart (scripts/qa.ts). Adapted from PR #97's ai-judge.yml.
+# Spend guards: owner only, one run at a time, a cap on asks, Sonnet-class models, the key only in the steps that need it,
+# the evidence scanned for the key before anything is pushed. Results go to evidence:qa-judge/<sha>/ and qa-judge/latest/,
+# where `pnpm qa --tier full` reads them.
+name: QA batch-1 AI judge
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to test
+        default: main
+        required: true
+      filter:
+        description: Only asks whose description matches this regex (route-, plan-, tone-, honest-, safety-), or empty for all
+        default: ''
+        required: false
+      max_asks:
+        description: Stop after this many asks (cost cap; each runs 3 times)
+        default: '13'
+        required: true
+      model:
+        description: Model the Claude CLI uses for foo's turns
+        default: claude-sonnet-5-5
+        required: true
+      judge:
+        description: Model that judges the answers
+        default: claude-sonnet-5-5
+        required: true
+
+concurrency:
+  group: qa-ai-judge
+  cancel-in-progress: false
+
+permissions:
+  contents: write # pushes the evidence branch only
+
+jobs:
+  judge:
+    name: Batch-1 asks x3, judged (ubuntu-latest)
+    # Only the owner may spend the key: triggering_actor, so a re-run by anyone else is refused too. workflow_dispatch has no
+    # fork trigger, and fork PRs never see secrets.
+    if: github.triggering_actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      PROMPTFOO_DISABLE_TELEMETRY: '1'
+      PROMPTFOO_DISABLE_UPDATE: '1'
+      OUT: ${{ github.workspace }}/../judge-out
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          # The code under test and npm packages run beside the key; they must not also find a write token in .git/config.
+          # The push step brings its own.
+          persist-credentials: false
+      # The judge kit always comes from this workflow's branch, so an older ref can still be judged with today's asks.
+      - name: Take the judge kit from the workflow's branch
+        env:
+          KIT_REF: ${{ github.sha }}
+        run: |
+          git fetch -q --depth 1 origin "$KIT_REF"
+          rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
+          git archive FETCH_HEAD test/judge test/real-pc | tar -x -C "$RUNNER_TEMP/kit"
+          echo "head $(git rev-parse HEAD) kit $KIT_REF"
+      - name: Check for the key
+        env:
+          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          [ "$HAS_KEY" = "true" ] || { echo "::error::Add ANTHROPIC_API_KEY under Settings > Secrets and variables > Actions."; exit 1; }
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      # foo finds the CLI with `which claude` on Linux (src/engine/ai/detect.ts) and counts ANTHROPIC_API_KEY as signed in.
+      - name: Install the Claude Code CLI and promptfoo
+        run: |
+          npm install -g @anthropic-ai/claude-code promptfoo@0.123.1
+          claude --version
+      - name: First run (makes the signed-in profile)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ inputs.model }}
+          FOO_AI_ROW: claude-cli
+          ELECTRON_RUN_AS_NODE: '1'
+        run: |
+          E="$(readlink -f node_modules/electron)/dist/electron"
+          mkdir -p "$OUT/first-run"
+          FOO_EXE="$E" FOO_ARGS="$GITHUB_WORKSPACE --no-sandbox" FOO_REAL_TEST_DIR="$OUT/first-run" NODE_PATH="$GITHUB_WORKSPACE/node_modules" \
+            xvfb-run -a "$E" "$RUNNER_TEMP/kit/test/real-pc/foo-drive.js" "$RUNNER_TEMP/kit/test/real-pc/journeys/J01-J02-first-run.json" \
+            > "$OUT/first-run/console.txt" 2>&1 || { tail -n 40 "$OUT/first-run/console.txt"; echo "::error::First run failed; no ask can run."; exit 1; }
+          pkill -f "$E" || true
+          mv "$OUT/first-run/profile" "$RUNNER_TEMP/profile"
+      - name: Ask and judge
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ inputs.model }}
+          FILTER: ${{ inputs.filter }}
+          MAX_ASKS: ${{ inputs.max_asks }}
+          JUDGE: ${{ inputs.judge }}
+        run: |
+          E="$(readlink -f node_modules/electron)/dist/electron"
+          args=(eval -c "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml" --no-cache --grader "anthropic:messages:$JUDGE"
+            --repeat 3 --filter-first-n "$MAX_ASKS" -o "$OUT/results.json" "$OUT/report.html")
+          [ -n "$FILTER" ] && args+=(--filter-pattern "$FILTER")
+          FOO_FEATURES=install,ai,name,chat,settings FOO_EXE="$E" FOO_ARGS="$GITHUB_WORKSPACE --no-sandbox" FOO_JUDGE_PROFILE="$RUNNER_TEMP/profile" FOO_JUDGE_OUT="$OUT/shots" \
+            NODE_PATH="$GITHUB_WORKSPACE/node_modules" xvfb-run -a promptfoo "${args[@]}"
+      - name: Summary
+        if: always()
+        env:
+          REF: ${{ inputs.ref }}
+        run: |
+          [ -f "$OUT/results.json" ] || { echo "no results" >> "$GITHUB_STEP_SUMMARY"; exit 0; }
+          node "$RUNNER_TEMP/kit/test/judge/summary.cjs" "$OUT/results.json" "$REF ($(git rev-parse --short HEAD))" | tee "$OUT/SUMMARY.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Scan the evidence for the key
+        id: scan
+        if: always()
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          [ -d "$OUT" ] || exit 0
+          : > "$RUNNER_TEMP/leak.txt"
+          if [ -n "$KEY_A" ]; then
+            # The whole key, and its middle 24 characters (a cut or wrapped copy).
+            grep -rlF -- "$KEY_A" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true
+            [ "${#KEY_A}" -gt 40 ] && { grep -rlF -- "${KEY_A:16:24}" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true; }
+            # UTF-16 copies (a Chromium store or a Windows log).
+            k16="$(printf '%s' "${KEY_A:16:24}" | sed 's/./&\\x00/g')"
+            grep -rlaP -- "$k16" "$OUT" >> "$RUNNER_TEMP/leak.txt" 2>/dev/null || true
+          fi
+          if [ -s "$RUNNER_TEMP/leak.txt" ]; then
+            touch "$RUNNER_TEMP/no-push"
+            echo "::error::The key appeared in $(sort -u "$RUNNER_TEMP/leak.txt" | wc -l) evidence file(s); they are deleted and nothing is pushed."
+            sort -u "$RUNNER_TEMP/leak.txt" | xargs -d '\n' rm -f
+          fi
+      - name: Push evidence to the evidence branch
+        # Only after a scan that finished: a failed or cancelled scan pushes nothing.
+        if: always() && steps.scan.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REF: ${{ inputs.ref }}
+          MODEL: ${{ inputs.model }}
+          JUDGE: ${{ inputs.judge }}
+        run: |
+          [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
+          [ -d "$OUT" ] || { echo "no results"; exit 0; }
+          rm -rf "$OUT/first-run/profile"
+          short="$(git rev-parse --short=7 HEAD)"
+          printf 'run %s · ref %s · commit %s · foo model %s · judge %s\n' "$GITHUB_RUN_ID" "$REF" "$(git rev-parse HEAD)" "$MODEL" "$JUDGE" > "$OUT/RUN.txt"
+          work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
+          git init -q && git config core.autocrlf false
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          g() { git -c "http.extraheader=$auth" "$@"; }
+          for attempt in 1 2 3 4 5; do
+            if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
+            rm -rf "qa-judge/$short" "qa-judge/latest" && mkdir -p "qa-judge/$short" "qa-judge/latest"
+            cp -R "$OUT/." "qa-judge/$short/" && cp -R "$OUT/." "qa-judge/latest/"
+            git add -A -- qa-judge
+            git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
+            git commit -q -m "Evidence: QA batch-1 AI judge on $short (run $GITHUB_RUN_ID)"
+            g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:qa-judge/$short"; exit 0; }
+            sleep $((attempt * 3))
+          done
+          exit 1
