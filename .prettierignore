@@ -9,6 +9,7 @@ src/shared/tokens.ts
 src/main/store/migrations/
 qa-evidence/
 test-results/
+qa-report/
 playwright-report/
 golden/manifest.json
 resources/prompts/
