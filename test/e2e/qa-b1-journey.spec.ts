@@ -208,6 +208,16 @@ test('QA-B1-E01 · batch-1 walk: own key in the Secret box, Hinglish chat stream
  * part of an inactive control; axe still flags it, so the report lists it under `exempt` for a person to confirm.
  */
 async function axe(page: Page, exempt: string[]): Promise<string[]> {
+  // Measure the settled screen: a card that just changed state fades in (Card.module.css card-fade), and mid-fade text is
+  // blended with the page. Finite animations only; an endless shimmer would never finish.
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => Number.isFinite(a.effect?.getComputedTiming().endTime ?? Infinity))
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
   const r = await new AxeBuilder({ page }).setLegacyMode(true).analyze();
   const locked = t('setup.composer.locked');
   const disabled = await page
@@ -217,7 +227,7 @@ async function axe(page: Page, exempt: string[]): Promise<string[]> {
   const out: string[] = [];
   for (const v of r.violations.filter((x) => x.impact === 'serious' || x.impact === 'critical'))
     for (const n of v.nodes) {
-      const line = `${v.id}: ${n.target.join(' ')} ${n.html.slice(0, 80)}`;
+      const line = `${v.id}: ${n.target.join(' ')} ${n.html.slice(0, 80)} (${(n.failureSummary ?? '').replace(/\s+/g, ' ').slice(0, 160)})`;
       if (v.id === 'color-contrast' && disabled && n.html.includes(locked)) exempt.push(line);
       else out.push(line);
     }
