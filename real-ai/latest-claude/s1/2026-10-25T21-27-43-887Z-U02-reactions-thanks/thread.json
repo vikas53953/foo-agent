@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:26 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n9:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 go for 16 GB memory, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip.\n\nMemory: 16 GB is the minimum. 8 GB gets tight with an editor, browser and Docker open.\nStorage: 512 GB SSD, ideally with a free slot to upgrade later.\nScreen and keyboard: a full HD, 14 or 15 inch screen and a comfortable keyboard matter more than raw speed, since you'll stare at them all day.\nGraphics card: skip it unless you plan to train AI or play games. The money is better spent on memory and build quality.\nBattery: look for 8 hours or more in real use, which Ryzen and Apple chips tend to do better.\n\nA MacBook Air with an M-series chip can also come close to this budget during sales, and it's a strong choice for web and app work.\n\nWhat kind of programming will you do mostly: web and apps, or AI and data work?\n\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:27 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:27 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n9:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n9:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n9:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:28 PM"
+  }
+]

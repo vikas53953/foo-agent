@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n9:22 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecking isro.gov.in, The Hindu, PTI, Times of\nI\nT\nP\nT\nCompare reports on each story\nWrite it\nWatch live\nStop\n4 min\n9:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n9:25 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your draft. It isn't sent, and I can't send it from this job:\n\nSubject: Running 15 minutes late tomorrow\n\nHi,\n\nI'll be about 15 minutes late to tomorrow's meeting (Mon 26 Oct). Please start without me if needed, and I'll join as soon as I can.\n\nThanks,\n\nWant me to add the meeting time or a reason?\n\n9:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n9:25 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:25 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:25 PM\n9:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:25 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Delhi to Mumbai flights on…\nlive checklist\nLooking for Delhi to Mumbai flights on Fri 30 Oct\nSlow here, trying another way\nKeep 3 flights that fit lowest fare\nCompare the 3 flights on fare, times and\nWatch live\nStop\nunder 1 min\n9:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:26 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:25 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:25 PM\n9:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:25 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Delhi to Mumbai flights on…\nlive checklist\nLooking for Delhi to Mumbai flights on Fri 30 Oct\nStill working, this one takes a while\nKeep 3 flights that fit lowest fare\nCompare the 3 flights on fare, times and\nWatch live\nStop\n1 min\n9:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:26 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:26 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Delhi to Mumbai flights on…\n3\nBoth\nSomething else…\nSkip\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n9:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 go for 16 GB memory, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip.\n\nMemory: 16 GB is the minimum. 8 GB gets tight with an editor, browser and Docker open.\nStorage: 512 GB SSD, ideally with a free slot to upgrade later.\nScreen and keyboard: a full HD, 14 or 15 inch screen and a comfortable keyboard matter more than raw speed, since you'll stare at them all day.\nGraphics card: skip it unless you plan to train AI or play games. The money is better spent on memory and build quality.\nBattery: look for 8 hours or more in real use, which Ryzen and Apple chips tend to do better.\n\nA MacBook Air with an M-series chip can also come close to this budget during sales, and it's a strong choice for web and app work.\n\nWhat kind of programming will you do mostly: web and apps, or AI and data work?\n\n9:27 PM"
+  }
+]
