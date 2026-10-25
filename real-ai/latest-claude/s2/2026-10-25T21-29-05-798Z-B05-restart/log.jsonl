@@ -1,0 +1,16 @@
+{"t":"2026-10-25T21:29:05.799Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-25T21:29:11.339Z","step":"launch","ok":true}
+{"t":"2026-10-25T21:29:11.510Z","i":0,"do":"send","sentAt":1792963751443,"sent":true,"before":0,"ok":true,"ms":168}
+{"t":"2026-10-25T21:29:17.687Z","i":1,"do":"waitReply","firstReplyMs":507,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Fold this into which job?\n1\nLooking on the web\nBEST FIT\n2\nLooking for good Italian restaurants…\nSomething else…\nSkip\n9:29 PM","kit":[],"ms":6176}
+{"t":"2026-10-25T21:29:17.847Z","shot":"01-museum-start.png"}
+{"t":"2026-10-25T21:29:17.862Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":15}
+{"t":"2026-10-25T21:29:25.865Z","i":3,"do":"wait","ok":true,"ms":8002}
+{"t":"2026-10-25T21:29:31.449Z","step":"launch","ok":true}
+{"t":"2026-10-25T21:29:31.450Z","i":4,"do":"relaunch","ok":true,"ms":5585}
+{"t":"2026-10-25T21:29:39.452Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8002}
+{"t":"2026-10-25T21:29:39.567Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-25T21:32:09.569Z","i":6,"do":"wait","ok":true,"ms":150001}
+{"t":"2026-10-25T21:32:09.638Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-25T21:32:09.651Z","i":7,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-25T21:32:09.898Z","step":"appLog","lines":58,"dropped":0}
+{"t":"2026-10-25T21:32:09.911Z","step":"aiTurns","turns":20}

@@ -1,0 +1,16 @@
+{"t":"2026-10-25T21:22:13.823Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-25T21:22:19.305Z","step":"launch","ok":true}
+{"t":"2026-10-25T21:22:19.436Z","i":0,"do":"send","sentAt":1792963339397,"sent":true,"before":0,"ok":true,"ms":129}
+{"t":"2026-10-25T21:22:33.138Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7619,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 budget phones that fit priced under ₹20,000 with good reviews\n3\nCompare price, display, camera, battery and\n4\nWrite it\nAbout 3 minutes\nGo\nChange plan\n9:22 PM","kit":[],"ms":13702}
+{"t":"2026-10-25T21:22:33.230Z","shot":"01-table.png"}
+{"t":"2026-10-25T21:22:33.268Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":38}
+{"t":"2026-10-25T21:25:03.275Z","i":3,"do":"wait","ok":true,"ms":150007}
+{"t":"2026-10-25T21:25:03.385Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-25T21:25:03.390Z","i":4,"do":"check","found":0,"ok":false,"ms":5}
+{"t":"2026-10-25T21:25:03.402Z","i":5,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-25T21:25:03.570Z","i":6,"do":"send","sentAt":1792963503551,"sent":true,"before":0,"ok":true,"ms":168}
+{"t":"2026-10-25T21:25:31.907Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":19272,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's a relaxed 3 day Jaipur plan for your parents, with few stairs and long rests in the afternoon.\n\nDay 1, the old city: Hawa Mahal from outside for photos, then City Palace and Jantar Mantar. Finish with a slow evening walk in Bapu Bazaar for bangles and fabrics.\nDay 2, forts and lakes: Go to Amber Fort early, before the crowds and heat, and take a jeep up instead of walking. Stop at Jal Mahal for photos, rest after lunch, then see Nahargarh Fort at sunset by car.\nDay 3, temples and shopping: Visit Govind Dev Ji Temple in the morning, then Birla Mandir. Spend the rest of the day on shopping and Rajasthani food before you leave.\n\nLate October and November are pleasant for Jaipur, so mornings and evenings suit sightseeing best. Book a car with a driver for all three days to save your parents from tiring auto rides.\n\nWhen are they travelling, and are they comfortable with some walking and steps?\n\n9:25 PM","kit":[],"ms":28337}
+{"t":"2026-10-25T21:25:31.985Z","shot":"03-trip.png"}
+{"t":"2026-10-25T21:25:31.993Z","i":8,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-25T21:25:32.326Z","step":"appLog","lines":66,"dropped":0}
+{"t":"2026-10-25T21:25:32.339Z","step":"aiTurns","turns":30}

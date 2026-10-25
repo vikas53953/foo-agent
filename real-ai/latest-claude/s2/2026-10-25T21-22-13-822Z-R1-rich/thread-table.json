@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:20 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:20 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n9:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying someone as easy as sending a text. You open any payment app, scan a code or pick a contact, enter a PIN, and the money moves from bank to bank in seconds. There is no card machine, no cash to count and no change to hunt for.\n\nIt also reached everyone quickly. Small shops, tea stalls and vegetable sellers can accept payments with just a printed QR code, so customers can pay almost anywhere. Because it works across banks and apps, you are not locked into one provider. Payments between people and most shop payments cost the user nothing, which helps a lot with adoption.\n\nHere are the three main reasons:\n\nSpeed and ease: Payments take seconds, with one PIN and no cash or cards needed.\nWorks everywhere: One QR code lets even the smallest seller take payments from any app or bank.\nLow or no cost: Most everyday payments are free for users, and sellers need no costly equipment.\n\nTogether, these made UPI the default way to pay for many people, from big cities to small towns. Once friends, family and local shops use it, everyone else has a good reason to join in too. Trust also grew with time, since payments are linked directly to your own bank account and each one needs your PIN.\n\n9:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n9:22 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:22 PM\n9:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:22 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nPicking the best budget phones\nCompare price, display, camera, battery and\nWrite it\nWatch live\nStop\n2 min\n9:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:22 PM"
+  }
+]

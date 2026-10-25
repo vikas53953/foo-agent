@@ -1,0 +1,24 @@
+{"t":"2026-10-25T21:32:10.059Z","journey":"B07-live","title":"Watch live, take over, hand back, stop","spec":"AT-058, AT-272, AT-078, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-25T21:32:15.675Z","step":"launch","ok":true}
+{"t":"2026-10-25T21:32:23.776Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8097}
+{"t":"2026-10-25T21:32:23.874Z","i":0,"do":"send","sentAt":1792963943836,"sent":true,"before":0,"ok":true,"ms":98}
+{"t":"2026-10-25T21:32:36.030Z","i":1,"do":"waitReply","firstReplyMs":6094,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking irctc.co.in\n1\nCheck irctc.co.in\n2\nFind trains on IRCTC\n3\nLook for New Delhi to Agra trains on Mon 26 Oct\nAbout 3 minutes\nGo\nChange plan\n9:32 PM","kit":[],"ms":12156}
+{"t":"2026-10-25T21:32:36.107Z","shot":"01-irctc.png"}
+{"t":"2026-10-25T21:32:36.144Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":37}
+{"t":"2026-10-25T21:33:21.146Z","i":3,"do":"wait","ok":true,"ms":45001}
+{"t":"2026-10-25T21:33:21.201Z","i":4,"do":"clickIf","found":1,"ok":true,"ms":55}
+{"t":"2026-10-25T21:33:25.204Z","i":5,"do":"wait","ok":true,"ms":4002}
+{"t":"2026-10-25T21:33:25.290Z","shot":"02-live.png"}
+{"t":"2026-10-25T21:33:25.293Z","i":6,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-25T21:33:28.293Z","i":7,"do":"wait","ok":true,"ms":3000}
+{"t":"2026-10-25T21:33:28.355Z","shot":"03-taken-over.png"}
+{"t":"2026-10-25T21:33:28.358Z","i":8,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-25T21:33:31.358Z","i":9,"do":"wait","ok":true,"ms":3000}
+{"t":"2026-10-25T21:33:31.419Z","shot":"04-handed-back.png"}
+{"t":"2026-10-25T21:33:31.421Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-25T21:33:39.422Z","i":11,"do":"wait","ok":true,"ms":8001}
+{"t":"2026-10-25T21:33:39.502Z","shot":"05-stopped.png"}
+{"t":"2026-10-25T21:33:39.504Z","i":12,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-25T21:33:39.516Z","i":13,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-25T21:33:39.753Z","step":"appLog","lines":22,"dropped":0}
+{"t":"2026-10-25T21:33:39.767Z","step":"aiTurns","turns":10}
