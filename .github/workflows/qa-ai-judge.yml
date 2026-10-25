@@ -40,8 +40,9 @@ permissions:
 jobs:
   judge:
     name: Batch-1 asks x3, judged (ubuntu-latest)
-    # Only the owner may spend the key. workflow_dispatch has no fork trigger, and fork PRs never see secrets.
-    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    # Only the owner may spend the key: triggering_actor, so a re-run by anyone else is refused too. workflow_dispatch has no
+    # fork trigger, and fork PRs never see secrets.
+    if: github.triggering_actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
@@ -52,6 +53,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
+          # The code under test and npm packages run beside the key; they must not also find a write token in .git/config.
+          # The push step brings its own.
+          persist-credentials: false
       # The judge kit always comes from this workflow's branch, so an older ref can still be judged with today's asks.
       - name: Take the judge kit from the workflow's branch
         env:
@@ -116,20 +120,29 @@ jobs:
           [ -f "$OUT/results.json" ] || { echo "no results" >> "$GITHUB_STEP_SUMMARY"; exit 0; }
           node "$RUNNER_TEMP/kit/test/judge/summary.cjs" "$OUT/results.json" "$REF ($(git rev-parse --short HEAD))" | tee "$OUT/SUMMARY.md" >> "$GITHUB_STEP_SUMMARY"
       - name: Scan the evidence for the key
+        id: scan
         if: always()
         env:
           KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           [ -d "$OUT" ] || exit 0
           : > "$RUNNER_TEMP/leak.txt"
-          if [ -n "$KEY_A" ]; then grep -rlF -- "$KEY_A" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true; fi
+          if [ -n "$KEY_A" ]; then
+            # The whole key, and its middle 24 characters (a cut or wrapped copy).
+            grep -rlF -- "$KEY_A" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true
+            [ "${#KEY_A}" -gt 40 ] && { grep -rlF -- "${KEY_A:16:24}" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true; }
+            # UTF-16 copies (a Chromium store or a Windows log).
+            k16="$(printf '%s' "${KEY_A:16:24}" | sed 's/./&\x00/g')"
+            grep -rlaP -- "$k16" "$OUT" >> "$RUNNER_TEMP/leak.txt" 2>/dev/null || true
+          fi
           if [ -s "$RUNNER_TEMP/leak.txt" ]; then
-            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted and nothing is pushed."
-            xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
             touch "$RUNNER_TEMP/no-push"
+            echo "::error::The key appeared in $(sort -u "$RUNNER_TEMP/leak.txt" | wc -l) evidence file(s); they are deleted and nothing is pushed."
+            sort -u "$RUNNER_TEMP/leak.txt" | xargs -d '\n' rm -f
           fi
       - name: Push evidence to the evidence branch
-        if: always()
+        # Only after a scan that finished: a failed or cancelled scan pushes nothing.
+        if: always() && steps.scan.outcome == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REF: ${{ inputs.ref }}

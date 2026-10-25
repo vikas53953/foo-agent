@@ -10,7 +10,7 @@
 //   full  + the real-AI B1-batch1 runs from the evidence branch (every merge to main runs them) and the judge file if given
 // Exit code: 0 PASS, 1 REVISE (a scenario failed), 2 BLOCKED (a scenario could not run or its test is missing).
 import { spawnSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { SCENARIOS, type Scenario } from '../test/qa/scenarios';
 
@@ -34,7 +34,14 @@ const tier = (opt('--tier') ?? 'e2e') as Tier;
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const out = opt('--out') ?? join('qa-report', stamp);
 const evDir = join(out, 'evidence');
+// A reused --out must never lend an older run's results to this one.
+for (const f of ['vitest.json', 'playwright.json', 'judge-results.json', 'evidence', 'pw'])
+  rmSync(join(out, f), { recursive: true, force: true });
 mkdirSync(evDir, { recursive: true });
+const headSha = spawnSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).stdout.trim();
+// The full tier reads the evidence branch (real-AI runs, judge results): fetch it once, first.
+if (tier === 'full' && !flag('--no-fetch'))
+  spawnSync('git', ['fetch', '-q', 'origin', 'evidence:refs/remotes/origin/evidence'], { stdio: 'inherit' });
 
 const inTier = (s: Scenario) =>
   s.layer === 'vitest' ||
@@ -76,8 +83,10 @@ interface PwSuite {
 const pwOut = join(out, 'playwright.json');
 const pFiles = files('playwright');
 let pwRan = false;
-if (pFiles.length) {
-  if (!flag('--no-build')) sh('pnpm', ['build']);
+let buildFailed = false;
+if (pFiles.length && !flag('--no-build')) buildFailed = sh('pnpm', ['build']).status !== 0;
+// A failed build would leave Playwright testing an older out/: nothing runs and the e2e scenarios are BLOCKED.
+if (pFiles.length && !buildFailed) {
   const headless = process.platform === 'linux' && !process.env.DISPLAY;
   const [cmd, pre] = headless ? ['xvfb-run', ['-a', 'npx']] : ['npx', [] as string[]];
   const r = sh(
@@ -100,7 +109,6 @@ interface RealRun {
 }
 function realRuns(journey: string): RealRun[] | null {
   const git = (a: string[]) => spawnSync('git', a, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
-  if (!flag('--no-fetch')) git(['fetch', '-q', 'origin', 'evidence:refs/remotes/origin/evidence']);
   const ls = git(['ls-tree', '-r', '--name-only', 'origin/evidence', 'real-ai/']);
   if (ls.status !== 0) return null;
   const summaries = ls.stdout.split('\n').filter((p) => new RegExp(`^real-ai/[0-9a-f]{7}-claude/.*-${journey}/summary\\.json$`).test(p));
@@ -156,11 +164,18 @@ interface JudgeRow {
 }
 let judge: JudgeRow[] | null = null;
 // Without --judge, the full tier reads the newest results qa-ai-judge.yml pushed to the evidence branch.
+// The workflow's RUN.txt names the commit it judged; results for another commit prove nothing about this one.
 let judgeFile = opt('--judge');
+let judgeCommit: string | null = null;
 if (!judgeFile && tier === 'full') {
-  const g = spawnSync('git', ['show', 'origin/evidence:qa-judge/latest/results.json'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const show = (f: string) =>
+    spawnSync('git', ['show', `origin/evidence:qa-judge/latest/${f}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const g = show('results.json');
   if (g.status === 0) writeFileSync((judgeFile = join(out, 'judge-results.json')), g.stdout);
+  judgeCommit = /commit ([0-9a-f]{40})/.exec(show('RUN.txt').stdout)?.[1] ?? null;
 }
+/** Every ask the judge config holds; a run with fewer (a filter, a cap) does not prove the scenario. */
+const judgeAsks = [...readFileSync('test/judge/promptfooconfig.yaml', 'utf8').matchAll(/^\s*- description: (\S+)/gm)].map((m) => m[1]!);
 if (judgeFile && existsSync(judgeFile)) {
   type Comp = { pass: boolean; score?: number; assertion?: { type?: string; metric?: string } };
   type Row = { testCase?: { description?: string }; failureReason?: number; gradingResult?: { componentResults?: Comp[] } };
@@ -203,6 +218,7 @@ const results: Result[] = SCENARIOS.map((s): Result => {
   if (s.layer === 'playwright') {
     const hit = pwSpecs.find((x) => s.file.endsWith(x.file) && x.title === s.test);
     const repro = `${process.platform === 'linux' ? 'xvfb-run -a ' : ''}npx playwright test ${s.file} -g "${esc(s.test ?? '')}"`;
+    if (buildFailed) return { id: s.id, status: 'missing', error: 'pnpm build failed', repro };
     if (!pwRan || !pJson) return { id: s.id, status: 'missing', error: 'Playwright did not run', repro };
     if (!hit) return { id: s.id, status: 'missing', error: 'no test with this title ran', repro };
     const last = hit.t.results.at(-1)!;
@@ -240,7 +256,12 @@ const results: Result[] = SCENARIOS.map((s): Result => {
   if (s.layer === 'judge') {
     const repro = 'qa-ai-judge.yml (real Claude on the key), then: pnpm qa --tier full --judge <results.json>';
     if (!judge) return { id: s.id, status: 'missing', error: 'no judge results given (--judge)', repro };
-    const bad = judge.filter((j) => !j.checksPass || j.runs < (s.repeat ?? 1));
+    if (judgeCommit !== null && judgeCommit !== headSha)
+      return { id: s.id, status: 'missing', error: `the newest judge results are for ${judgeCommit.slice(0, 7)}, not this commit`, repro };
+    const short = judgeAsks.filter((a) => (judge!.find((j) => j.ask === a)?.runs ?? 0) < (s.repeat ?? 1));
+    if (short.length)
+      return { id: s.id, status: 'missing', error: `asks with fewer than ${s.repeat ?? 1} runs: ${short.join(', ')}`, repro };
+    const bad = judge.filter((j) => !j.checksPass);
     return {
       id: s.id,
       status: bad.length ? 'fail' : 'pass',

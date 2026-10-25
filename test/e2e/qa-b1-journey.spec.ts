@@ -90,7 +90,9 @@ test('QA-B1-E01 · batch-1 walk: own key in the Secret box, Hinglish chat stream
   const script = join(dirs.FOO_DATA_DIR, '..', 'fake-ai.jsonl');
   mkdirSync(join(dirs.FOO_DATA_DIR, '..'), { recursive: true });
   writeFileSync(script, LINES.map((l) => JSON.stringify(l)).join('\n') + '\n');
-  const app = await launch(dirs, [], {
+  // Chromium's own profile (Local Storage, IndexedDB, caches, crash dumps) goes in this run's folder too, so the scan sees it.
+  const chromium = join(dirs.FOO_DATA_DIR, '..', 'chromium');
+  const app = await launch(dirs, [`--user-data-dir=${chromium}`], {
     FOO_FAKE_AI: script,
     FOO_TEST_FIRST_RUN: '1',
     FOO_TEST_AI_HOME: aiHome([]),
@@ -144,7 +146,7 @@ test('QA-B1-E01 · batch-1 walk: own key in the Secret box, Hinglish chat stream
 
   // Art. 4: the key is in the in-memory vault only; no file foo wrote holds it (UTF-8 or UTF-16).
   const needles = [Buffer.from(FAKE_KEY, 'utf8'), Buffer.from(FAKE_KEY, 'utf16le'), Buffer.from(FAKE_KEY.slice(14, 40), 'utf8')];
-  const written = [dirs.FOO_DATA_DIR, dirs.FOO_LOCAL_DIR, dirs.FOO_OUT_DIR].flatMap((d) => {
+  const written = [dirs.FOO_DATA_DIR, dirs.FOO_LOCAL_DIR, dirs.FOO_OUT_DIR, chromium].flatMap((d) => {
     try {
       return files(d);
     } catch {
@@ -158,6 +160,9 @@ test('QA-B1-E01 · batch-1 walk: own key in the Secret box, Hinglish chat stream
   const turns = fakeTurns(dirs);
   // The run's own database, read back after foo closed: nothing the off asks could have left behind.
   const dbFile = written.find((f) => /\.(db|sqlite)$/.test(f));
+  // 08-3 §12.2: the memory files are the truth and the index a cache, so a fact file counts even without its index row.
+  const memoryFiles = written.filter((f) => f.startsWith(join(dirs.FOO_DATA_DIR, 'memory'))).length;
+  const chromiumFiles = written.filter((f) => f.startsWith(chromium)).length;
   const counts: Record<string, number> = {};
   if (dbFile) {
     const db = new Database(dbFile, { readonly: true });
@@ -180,6 +185,8 @@ test('QA-B1-E01 · batch-1 walk: own key in the Secret box, Hinglish chat stream
       filesScanned: written.length,
       keyLeaks: leaks.map((f) => f.replace(dirs.FOO_DATA_DIR, '{DATA}')),
       db: dbFile ? 'read' : 'not found',
+      memoryFiles,
+      chromiumFiles,
       ...counts,
     },
     expected: 'streamed Hinglish, two off lines, dark theme, 0 files holding the key',
@@ -187,6 +194,8 @@ test('QA-B1-E01 · batch-1 walk: own key in the Secret box, Hinglish chat stream
   });
   expect(written.length).toBeGreaterThan(0);
   expect(dbFile).toBeTruthy();
+  expect(chromiumFiles).toBeGreaterThan(0);
+  expect(memoryFiles).toBe(0);
   expect(counts).toEqual({ jobs: 0, tool_calls: 0, memory_index: 0, routines: 0, approvals: 0, outbox: 0 });
   expect(leaks).toEqual([]);
   // No AI request ever carries the key either.
