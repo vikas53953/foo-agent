@@ -167,7 +167,8 @@ let judge: JudgeRow[] | null = null;
 // The workflow's RUN.txt names the commit it judged; results for another commit prove nothing about this one.
 let judgeFile = opt('--judge');
 let judgeCommit: string | null = null;
-if (!judgeFile && tier === 'full') {
+const judgeFromEvidence = !judgeFile && tier === 'full';
+if (judgeFromEvidence) {
   const show = (f: string) =>
     spawnSync('git', ['show', `origin/evidence:qa-judge/latest/${f}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   const g = show('results.json');
@@ -256,6 +257,8 @@ const results: Result[] = SCENARIOS.map((s): Result => {
   if (s.layer === 'judge') {
     const repro = 'qa-ai-judge.yml (real Claude on the key), then: pnpm qa --tier full --judge <results.json>';
     if (!judge) return { id: s.id, status: 'missing', error: 'no judge results given (--judge)', repro };
+    if (judgeFromEvidence && judgeCommit === null)
+      return { id: s.id, status: 'missing', error: 'the newest judge results name no commit (RUN.txt)', repro };
     if (judgeCommit !== null && judgeCommit !== headSha)
       return { id: s.id, status: 'missing', error: `the newest judge results are for ${judgeCommit.slice(0, 7)}, not this commit`, repro };
     const short = judgeAsks.filter((a) => (judge!.find((j) => j.ask === a)?.runs ?? 0) < (s.repeat ?? 1));

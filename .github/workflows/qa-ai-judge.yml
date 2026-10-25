@@ -132,7 +132,7 @@ jobs:
             grep -rlF -- "$KEY_A" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true
             [ "${#KEY_A}" -gt 40 ] && { grep -rlF -- "${KEY_A:16:24}" "$OUT" >> "$RUNNER_TEMP/leak.txt" || true; }
             # UTF-16 copies (a Chromium store or a Windows log).
-            k16="$(printf '%s' "${KEY_A:16:24}" | sed 's/./&\x00/g')"
+            k16="$(printf '%s' "${KEY_A:16:24}" | sed 's/./&\\x00/g')"
             grep -rlaP -- "$k16" "$OUT" >> "$RUNNER_TEMP/leak.txt" 2>/dev/null || true
           fi
           if [ -s "$RUNNER_TEMP/leak.txt" ]; then
