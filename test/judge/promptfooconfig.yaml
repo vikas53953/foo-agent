@@ -12,6 +12,10 @@ evaluateOptions:
   maxConcurrency: 1
 
 defaultTest:
+  # The judge model is set here, not with `--grader`: promptfoo 0.123.1 crashes storing a CLI grader (circular JSON,
+  # run 40265540159). The workflow swaps in its `judge` input.
+  options:
+    provider: anthropic:messages:claude-sonnet-5-5
   assert:
     - type: not-icontains
       value: '(no reply)'
@@ -23,7 +27,8 @@ defaultTest:
       value: >-
         foo is a warm, WhatsApp-style personal assistant for a non-technical person in India. Pass when the reply reads like
         a natural chat message from a capable friend: plain everyday words, short, no jargon, no "As an AI", no markdown
-        headings. Lines that start with [card-...] or [bubble-reaction] are what foo showed; judge their text the same way.
+        headings. Lines that start with [card-...], [bubble-reaction] or [system-line] are what foo showed; judge their text
+        the same way (a [system-line] is a one-line notice, so short and plain is right).
 
 tests:
   # ---------- chat (J7), in the user's language ----------
