@@ -187,8 +187,34 @@ test('the field grows a line at a time as text is added, and shrinks back when l
   await expect(field(page)).toHaveText('');
   await expect.poll(height).toBeCloseTo(one, 0);
   // A long line wraps and the field grows with it, with no new line typed.
+  const resize = (width: number) =>
+    app.evaluate(({ BrowserWindow }, w) => {
+      const win = BrowserWindow.getAllWindows()[0]!;
+      win.setSize(w, win.getSize()[1]!);
+    }, width);
+  await resize(800);
   await page.keyboard.type('a long line that wraps '.repeat(12));
   await expect.poll(height).toBeGreaterThan(one * 1.5);
+  // Wider, the same text takes fewer lines: the next key shrinks the field to fit.
+  const narrow = await height();
+  const narrowWidth = await field(page).evaluate((el) => (el as HTMLElement).clientWidth);
+  await resize(1300);
+  await expect.poll(() => field(page).evaluate((el) => (el as HTMLElement).clientWidth)).toBeGreaterThan(narrowWidth);
+  await page.keyboard.type('x');
+  await expect.poll(height).toBeLessThan(narrow);
+  // A longer text with fewer lines replaces it all at once (select all, then insert): the field shrinks to one line.
+  await page.keyboard.press('Control+A');
+  await page.keyboard.press('Backspace');
+  await page.keyboard.type('a');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('b');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('c');
+  await expect.poll(height).toBeGreaterThan(one * 2.5);
+  await page.keyboard.press('Control+A');
+  await page.keyboard.insertText('abcdefghij');
+  await expect(field(page)).toHaveText('abcdefghij');
+  await expect.poll(height).toBeCloseTo(one, 0);
   await app.close();
 });
 
