@@ -138,15 +138,6 @@ export const DEFECTS: Defect[] = [
     test: 'QA-X-F24',
   },
   {
-    id: 'F02',
-    sev: 'S3',
-    kind: 'functional',
-    title: 'Name field cuts at 20 mid-word, says "under 20" while accepting 20',
-    where: 'Setup card 2a',
-    test: 'QA-X-F02',
-    shot: 'F02-name-cut-at-20.png',
-  },
-  {
     id: 'F01',
     sev: 'S3',
     kind: 'visual',

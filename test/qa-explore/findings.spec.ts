@@ -163,15 +163,15 @@ test('QA-X-F20 · editing your last message tells the AI (04 Edit: "The user cha
   expect(turns(w).length, 'the AI hears about the change').toBeGreaterThan(asked);
 });
 
-test('QA-X-F02 · a too-long name is never cut mid-word and accepted with an error showing (06-1 §2.3)', async () => {
+// F02 withdrawn 26 Oct: 06-1 §2.3 says a name over 20 keeps the first 20 AND shows the field error, which the app does.
+// This checks that rule instead (QA's earlier expectation contradicted the spec).
+test('QA-X-N02 · a name over 20 letters keeps the first 20 and shows the field error (06-1 §2.3)', async () => {
   w = await open([], { firstRun: true });
   await w.page.getByTestId(TID.setupWelcomeStart).click();
   await w.page.getByTestId(TID.setupAiUse).click({ timeout: 20_000 });
   await w.page.getByTestId(TID.setupNameField).fill('Shri Venkateswara Balaji Narasimha');
-  const value = await w.page.getByTestId(TID.setupNameField).inputValue();
-  const err = await w.page.getByText(/under 20 letters/).count();
-  // Either the long text is kept and Done is blocked, or the counter reads 20/20 without an error.
-  if (value.length === 20) expect(err, '20 letters is allowed, so no "under 20" error').toBe(0);
+  expect(await w.page.getByTestId(TID.setupNameField).inputValue()).toBe('Shri Venkateswara Ba');
+  await expect(w.page.getByText(/under 20 letters/)).toBeVisible();
 });
 
 test('QA-X-F16 · 👍 on an answer is still on after a restart (04 §17.2 "saved on this PC")', async () => {
