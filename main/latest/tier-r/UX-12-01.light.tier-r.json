@@ -6,8 +6,7 @@
     "cr": "CR-0013",
     "checks": [
       "r1",
-      "r2",
-      "r4"
+      "r2"
     ]
   },
   "r1": {
@@ -133,6 +132,7 @@
         "less",
         "of…",
         "✓✓",
+        "👀",
         "＋",
         "🎙",
         "✕",
@@ -449,7 +449,8 @@
     },
     "hl": {
       "missing": [
-        "✓✓"
+        "✓✓",
+        "👀"
       ],
       "extra": [
         "foo",
@@ -504,15 +505,15 @@
     ]
   },
   "r4": {
-    "verdict": "fail",
-    "skipped": null,
-    "ratio": 0.523215785054576,
-    "diffPixels": 12463,
-    "total": 23820
+    "verdict": "pass",
+    "skipped": "superseded (X-216 (👀 after 2 s, as 3D eyes))",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
   },
   "r5": {
-    "ratio": 0.1116728515625,
-    "diffPixels": 114353,
+    "ratio": 0.1117470703125,
+    "diffPixels": 114429,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-01.light.diff.png"

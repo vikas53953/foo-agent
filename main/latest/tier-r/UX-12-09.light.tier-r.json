@@ -466,7 +466,6 @@
         "9:05",
         "AM",
         "9:05",
-        "👀",
         "foo",
         "Approve",
         "it’s",
@@ -635,8 +634,8 @@
     "total": 252252
   },
   "r5": {
-    "ratio": 0.6392783203125,
-    "diffPixels": 654621,
+    "ratio": 0.6393642578125,
+    "diffPixels": 654709,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-09.light.diff.png"

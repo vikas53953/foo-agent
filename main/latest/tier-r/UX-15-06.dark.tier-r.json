@@ -491,7 +491,6 @@
         "it",
         "9:41",
         "9:41",
-        "👀",
         "T",
         "Trips",
         "booked,",
@@ -635,8 +634,8 @@
     "total": 12654
   },
   "r5": {
-    "ratio": 0.1075927734375,
-    "diffPixels": 110175,
+    "ratio": 0.107599609375,
+    "diffPixels": 110182,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-06.dark.diff.png"
