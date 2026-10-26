@@ -1,0 +1,60 @@
+{
+  "journey": "R-dark-hi",
+  "title": "Setting by chat, then hi: foo replies and does not change the setting again",
+  "steps": 6,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-08-46-317Z-R-dark-hi",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792994931436,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 1,
+      "do": "waitFor",
+      "note": "a setting answer is a line, not a bubble, so waitReply would never see it (real-AI run 62d419e R-dark-hi step 1)",
+      "ok": true,
+      "ms": 4325
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "the theme is dark and foo shows one line \"Changed: Theme → Dark. Undo\"",
+      "ok": true,
+      "ms": 10001
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1792994945918,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)",
+      "firstReplyMs": 4551,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for flights Delhi to Mumbai on…\n1\nLook for flights Delhi to Mumbai on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare the 3 cheapest flights by fare, time and\nAbout 4 minutes\nGo\nChange plan\n6:09 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 10620
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}

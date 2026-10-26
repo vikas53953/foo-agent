@@ -1,0 +1,14 @@
+{"t":"2026-10-26T06:03:40.658Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T06:03:45.721Z","step":"launch","ok":true}
+{"t":"2026-10-26T06:03:45.816Z","i":0,"do":"send","sentAt":1792994625792,"sent":true,"before":0,"ok":true,"ms":92}
+{"t":"2026-10-26T06:04:06.818Z","i":1,"do":"waitReply","firstReplyMs":14560,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nThis coming Friday\n2\nFri 6 Nov\nThe Friday after\nSomething else…\nSkip\n6:03 AM","kit":[],"ms":21001}
+{"t":"2026-10-26T06:04:07.086Z","shot":"01-flight-plan.png"}
+{"t":"2026-10-26T06:04:07.094Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":8}
+{"t":"2026-10-26T06:04:47.098Z","i":3,"do":"wait","ok":true,"ms":40004}
+{"t":"2026-10-26T06:04:47.146Z","shot":"02-flight-working.png"}
+{"t":"2026-10-26T06:04:47.262Z","i":4,"do":"send","sentAt":1792994687204,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-26T06:04:53.333Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","firstReplyMs":511,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Stopped. Nothing was booked, paid or sent.\n\n6:04 AM","kit":[],"ms":6071}
+{"t":"2026-10-26T06:04:53.380Z","shot":"03-after-stop.png"}
+{"t":"2026-10-26T06:04:53.386Z","i":6,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-26T06:04:53.524Z","step":"appLog","lines":20,"dropped":0}
+{"t":"2026-10-26T06:04:53.534Z","step":"aiTurns","turns":8}

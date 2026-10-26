@@ -1,0 +1,35 @@
+{"t":"2026-10-26T06:08:11.342Z","journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","spec":"05-3 §5.17 Memory chip, 06 Memory page, 10-2 §C.4 / §C.5","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T06:08:16.361Z","step":"launch","ok":true}
+{"t":"2026-10-26T06:08:17.398Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1034}
+{"t":"2026-10-26T06:08:17.505Z","i":1,"do":"send","sentAt":1792994897462,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-10-26T06:08:28.697Z","i":2,"do":"waitReply","expect":"memory chip \"I'll remember · Undo\"","firstReplyMs":5072,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’ll remember: Vegetarian on Tuesdays\nUndo","kit":[],"ms":11191}
+{"t":"2026-10-26T06:08:28.747Z","shot":"01-chip.png"}
+{"t":"2026-10-26T06:08:28.749Z","i":3,"do":"check","note":"Undo on the chip","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-26T06:08:28.831Z","i":4,"do":"send","sentAt":1792994908808,"sent":true,"before":0,"ok":true,"ms":82}
+{"t":"2026-10-26T06:08:39.477Z","i":5,"do":"waitReply","expect":"second memory chip","firstReplyMs":4556,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’ll remember: Favourite cricket team: Punjab Kings\nUndo","kit":[],"ms":10646}
+{"t":"2026-10-26T06:08:39.527Z","shot":"02-chip-2.png"}
+{"t":"2026-10-26T06:08:39.592Z","i":6,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-26T06:08:41.095Z","i":7,"do":"wait","expect":"chip says forgotten / undone","ok":true,"ms":1502}
+{"t":"2026-10-26T06:08:41.151Z","shot":"03-undone.png"}
+{"t":"2026-10-26T06:08:41.220Z","i":8,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-26T06:08:41.323Z","i":9,"do":"click","soft":true,"ok":true,"ms":103}
+{"t":"2026-10-26T06:08:42.525Z","i":10,"do":"wait","expect":"Memory page: rows with source and date, search, filters","ok":true,"ms":1202}
+{"t":"2026-10-26T06:08:42.569Z","shot":"04-memory-page.png"}
+{"t":"2026-10-26T06:08:42.572Z","i":11,"do":"expectText","note":"no empty-measure guesses","soft":true,"text":"What I know about you\n+ Add something\nAll\nYou said\nI guessed\nFrom chats\nThis week I learned 2 new things.\nSee them\nFACTS · 2\nFavourite food: South Indian\nYou said · 26 Oct\nEdit\n·\nForget\nVegetarian on Tuesdays\nYou said · 26 Oct\nEdit\n·\nForget","ok":true,"ms":3}
+{"t":"2026-10-26T06:08:42.581Z","i":12,"do":"fill","soft":true,"ok":true,"ms":9}
+{"t":"2026-10-26T06:08:43.383Z","i":13,"do":"wait","expect":"row found","ok":true,"ms":802}
+{"t":"2026-10-26T06:08:43.429Z","shot":"05-memory-search.png"}
+{"t":"2026-10-26T06:08:43.503Z","i":14,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-26T06:08:44.105Z","i":15,"do":"wait","expect":"inline edit","ok":true,"ms":602}
+{"t":"2026-10-26T06:08:44.147Z","shot":"06-memory-edit.png"}
+{"t":"2026-10-26T06:08:44.151Z","i":16,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-26T06:08:44.216Z","i":17,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-26T06:08:45.018Z","i":18,"do":"wait","expect":"row gone, 5 s Undo bar","ok":true,"ms":802}
+{"t":"2026-10-26T06:08:45.067Z","shot":"07-forgot.png"}
+{"t":"2026-10-26T06:08:45.138Z","i":19,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-26T06:08:45.938Z","i":20,"do":"wait","expect":"row back","ok":true,"ms":800}
+{"t":"2026-10-26T06:08:45.974Z","shot":"08-undo.png"}
+{"t":"2026-10-26T06:08:46.084Z","i":21,"do":"click","soft":true,"ok":true,"ms":110}
+{"t":"2026-10-26T06:08:46.097Z","i":22,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-26T06:08:46.199Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-26T06:08:46.208Z","step":"aiTurns","turns":2}
