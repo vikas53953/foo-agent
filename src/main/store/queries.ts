@@ -577,6 +577,9 @@ export function editMessage(db: Db, messageId: string, text: string, now: number
     now,
     messageId,
   );
+  // CR-0059: the chat-list preview shows the last message's words, so its chat row takes a new rev (the window drops a
+  // same-rev chat:upsert as stale).
+  db.prepare('UPDATE chats SET rev = rev + 1 WHERE last_message_id = ?').run(messageId);
   return touched(db, messageId);
 }
 
@@ -593,6 +596,8 @@ export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: s
       chatIds.add(String(r.chat_id));
       done.push(id);
     }
+    // CR-0059 row 5: the chat-list preview moves to the message before; a new rev lets the window take it.
+    for (const chatId of chatIds) db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ?').run(chatId);
   })();
   return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
 }

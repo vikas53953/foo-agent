@@ -36,7 +36,7 @@
 .row[data-gap='s5'] {
   padding-top: var(--s5);
 }
-.row[data-chips] > .line:not(:last-child):not(:has(+ [data-older])) {
+.row[data-chips] > .line:not(:last-child) {
   /* §8: whatever sits under a bubble with chips (action row 4 + 20 = 24, proof chip, why line) starts below the chip. */
   margin-bottom: var(--s4);
 }
@@ -401,21 +401,14 @@
 .earlier {
   margin-top: var(--s1);
 }
+/* 04 §17.1: the Link "Show earlier answer", --t-caption --fg-3 under the text. */
 .earlierLink {
-  min-height: var(--s7);
-  padding: 0;
-  border: 0;
-  background: transparent;
   color: var(--fg-3);
   font: var(--t-caption);
-  text-decoration: underline;
-  cursor: pointer;
 }
 .earlierText {
-  margin: 0;
   font: var(--t-small);
   color: var(--fg-2);
-  white-space: pre-wrap;
 }
 .backup {
   display: inline-flex;
@@ -1041,10 +1034,6 @@
 /* ---- action row (§17.1) */
 .actionsWrap {
   margin-top: var(--s0);
-}
-.row[data-chips] > .actionsWrap[data-older] {
-  /* An older row floats below the bubble: under a reaction chip it starts below the chip (§8, as in flow). */
-  margin-top: var(--s5);
 }
 
 .actions {

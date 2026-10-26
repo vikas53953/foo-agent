@@ -500,6 +500,7 @@ export const SUPERSEDED: Record<string, string> = {
   'UX-22-04': 'X-15 (C-21 typed field)',
   'UX-05-02': 'X-216 (👀 after 2 s, as 3D eyes)',
   'UX-12-01': 'X-216 (👀 after 2 s, as 3D eyes)',
+  'UX-13-01': 'X-216 (👀 after 2 s, as 3D eyes)',
   'UX-24-09': '06-2 §6.2 ("Same as Windows · Light · Dark")',
 };
 

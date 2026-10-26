@@ -545,7 +545,14 @@ export function registerIpc(ctx: AppContext): void {
       return ok(target);
     }
     // CR-0059 row 1 (04 §17.1 "Write this answer again"): a finished text answer is written again in place.
-    if (target && target.authorKind !== 'user' && target.kind === 'text' && target.status === 'complete' && !target.deletedAt) {
+    // Only an answer of foo's or a helper's; the engine answers as a plain reply, so it never repeats an action.
+    if (
+      target &&
+      (target.authorKind === 'foo' || target.authorKind === 'helper') &&
+      target.kind === 'text' &&
+      target.status === 'complete' &&
+      !target.deletedAt
+    ) {
       if (!ctx.engine?.live) return { ok: false, error: { kind: 'AI_SERVICE_DOWN' } };
       ctx.engine.send('reply.rewrite', { messageId: id });
       return ok(target);

@@ -158,6 +158,8 @@ export function upsertMessageReducer(s: MessagesState, row: MessageRow): void {
   const stored = c.byId[row.id];
   if (stored && !stored.pending && !acceptRev('message', row.id, stored, row)) return;
   c.byId[row.id] = row;
+  // A finished row's delta count is done with: a later stream into the same id starts again at 1.
+  if (row.status !== 'streaming') delete s.deltaSeq[row.id];
   if (!c.ids.includes(row.id)) {
     c.ids.push(row.id);
     if (row.seq < (c.byId[c.ids[c.ids.length - 2] ?? '']?.seq ?? -Infinity)) sortIds(c);

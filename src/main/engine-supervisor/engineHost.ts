@@ -396,7 +396,8 @@ function writeSet(
     fx.chatIds.add(String(cur.chat_id));
     // CR-0059 row 1: new words in the chat's last message (a streamed answer, a Try again rewrite) change the chat-list
     // preview, so the chat row takes a new rev and the window accepts it (a same-rev chat:upsert is dropped as stale).
-    if ('text' in s) db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ? AND last_message_id = ?').run(cur.chat_id, id);
+    if ('text' in s && s.text !== cur.text)
+      db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ? AND last_message_id = ?').run(cur.chat_id, id);
   }
   if (table === 'jobs') noteJob(db, id, fx);
   if (table === 'steps' || table === 'tool_calls') noteJob(db, String(cur.job_id), fx);

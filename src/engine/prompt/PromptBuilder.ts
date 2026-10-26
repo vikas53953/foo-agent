@@ -42,8 +42,6 @@ import type { Visuals } from '../../shared/settings';
 /** 04-2 §21.7: the reply may end with up to 3 follow-ups the composer shows as chips (P1 T6). */
 export const SUGGESTIONS_ASK =
   'For "reply" you may end <say> with one last line "Suggestions: a | b | c": up to 3 short next things the user might ask, each under 40 characters, in their words. Leave the line out when nothing fits or when money is involved.';
-/** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
- * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
 /**
  * CR-0059 row 6 (CR-0054): a build with jobs switched off tells the AI so; asked "did you book my cab?", the real AI said it
  * had "no record" of one instead of saying it cannot book yet (judge run 40269932734, off-already-done).
@@ -51,6 +49,8 @@ export const SUGGESTIONS_ASK =
 export const JOBS_OFF_LINE =
   'This build cannot do tasks yet (booking, buying, sending, paying). Asked to do one, decide "job" as usual. Asked whether you already did one, say plainly that you have not and cannot do tasks yet; never say you have "no record" of it.';
 
+/** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
+ * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
 export const ACTIONS_ASK =
   'You may add one line "Actions: [{"kind":"call|map|calendar|link","label":"…","value":"…"}]": ≤ 3 taps (a phone number, a place, an ISO date-time or an https link); never for money.';
 

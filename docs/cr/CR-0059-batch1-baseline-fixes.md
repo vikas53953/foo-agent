@@ -23,7 +23,7 @@
 
 ## (a) Trace rows
 
-`AT-449` → `test/e2e/qa-b1-sweep.spec.ts`, status `live`. The sweep is also scenario `QA-B1-W01` in `pnpm qa`.
+`AT-449` → `test/e2e/qa-b1-sweep.spec.ts`, status `live`. The sweep is also scenario `QA-B1-080` in `pnpm qa`.
 
 ## (b) Spec before → after
 
@@ -31,23 +31,29 @@
 | --- | ------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | 1   | Try again does nothing                      | 04 §17.1 rewrite in place, not built for a finished reply | built: same bubble, new words, "Rewritten", "Show earlier answer" (`messages.earlier_text`, migration 0006)  |
 | 2   | Buttons over the next message               | CR-0024: every answer keeps its action row on hover       | only the newest answer shows the row; older answers use the ⋯ menu                                           |
-| 3   | Job filters and ₹ line in batch 1           | always shown                                              | hidden while `jobs` is off; the spend line also hidden unless the AI is on the user's plan                   |
+| 3   | Job filters and ₹ line in batch 1           | always shown                                              | chips hidden while `jobs` is off; the spend line hidden while `spend` is off on a key-billed AI              |
 | 4   | 👀 on every message                         | 04 §4.2: on the first byte, ≤ 1 s (PERF-07)               | only after foo has been on it 2 s, as blinking 3D eyes; PERF-07 times send → ✓✓ read (the same write) ≤ 1 s  |
-| 5   | "You deleted this message" left behind      | 04 §6.3 / §10.4 tombstone bubble                          | the bubble leaves the chat                                                                                   |
+| 5   | "You deleted this message" left behind      | 04 §6.3 / §10.4 tombstone bubble                          | the bubble leaves the chat; the chat-list preview moves to the message before                                |
 | 6   | "No record of booking a cab"; "later batch" | feature-off lines named batches; intake silent            | plain lines; with `jobs` off intake is told foo cannot do tasks yet and must say so when asked if it did one |
 
 ## (c) Picks where the spec is silent
 
-1. **Chat-list preview after a rewrite.** The sweep found that the chat list kept the old answer after Try again: a
-   message update did not bump the chat's rev, so the window dropped the chat:upsert as stale. An update that changes the
-   text of the chat's last message now bumps the chat rev (engineHost `updateRow`).
+1. **Chat-list preview.** The sweep found that the chat list kept the old answer after Try again: a message update did not
+   bump the chat's rev, so the window dropped the chat:upsert as stale. A change to the last message's words now bumps the
+   chat rev in all three places that make one: the engine's `updateRow`, `editMessage` and `deleteMessages`.
 2. **The eyes picture** is Microsoft's Fluent Emoji 3D "eyes" (MIT, `@lobehub/fluent-emoji-3d` 1.1.0), served from
    `src/renderer/public/emoji/eyes-3d.webp` (3.6 KB) so the first-script budget (AT-322) is untouched. Blink: one scaleY
-   dip per `--m-face-blink-slow`; none with reduced motion.
-3. **The bug-finder sweep** (`QA-B1-W01`) checks behaviour, not code: every ⋯ menu item must change what the user can see
-   (words, dialogs, pressed states, the composer or the clipboard), no hover control may overlap another bubble's words,
-   switched-off features leave no trace, 👀 timing, Try again and delete. Run on main c232e9e (before this change) it
-   reports Vikas's bugs 2–5 and the Try again failure by itself; on this branch it reports none.
+   dip per `--m-face-blink-slow`; with reduced motion (`--motion-move` 0) the eyes stay open.
+3. **The bug-finder sweep** (`QA-B1-080`) checks behaviour, not code: every ⋯ menu item must change what the user can see
+   (words, open dialogs and pickers, pressed states, the composer or the clipboard, read with no menu open), no hover
+   control may overlap another bubble's words, switched-off features leave no trace, 👀 timing, Try again from the action
+   row and from an older answer's ⋯ menu, and delete (bubble and chat-list preview). Run on main c232e9e (before this
+   change) it reports Vikas's bugs 2–5 and the Try again failure by itself; on this branch it reports none.
+4. **A rewrite is atomic.** The new answer is not streamed into the old bubble: the Thinking row shows while the AI
+   works, and the old text, chips and status are replaced in one write when the new answer is complete. A failure, Stop,
+   the spend cap, no AI or a restart leave the old answer as it was (logged `chat.rewrite_kept` / `chat.rewrite_skipped`).
+   The rewrite is always a plain reply (`act` forced to `reply`, as for a side question), so Try again never starts a
+   job, saves a memory or changes a setting. A 👍/👎 given to the old words stays on the bubble.
 
 ## (d) Review
 

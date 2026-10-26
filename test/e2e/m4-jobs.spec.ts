@@ -123,22 +123,29 @@ test('PERF-07: send → seen (✓✓ read) painted, p95 ≤ 1 s over 20 runs (jo
     await type(ask(tag));
     // Timed inside the window: Enter's keydown → the first frame after the new bubble's tick reads ✓✓ read (the lane's 👀
     // write; CR-0059 row 4 holds the 👀 picture itself back 2 s). No Playwright polling in the measured span.
-    await page.evaluate((sel) => {
-      const w = window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } };
-      w.__perf07 = {};
-      addEventListener('keydown', (e) => e.key === 'Enter' && (w.__perf07.sentAt ??= performance.now()), { capture: true, once: true });
-      const before = new Set(Array.from(document.querySelectorAll(sel)));
-      const fresh = () => Array.from(document.querySelectorAll(sel)).filter((b) => !before.has(b));
-      const seen = () => fresh().some((b) => b.getAttribute('data-state') === 'read');
-      new MutationObserver((_, obs) => {
-        if (w.__perf07.sentAt === undefined) return;
-        // When the new bubble first shows (main has stored it), to split the span: window + main, then the engine's turn.
-        if (w.__perf07.bubbleAt === undefined && fresh().length) w.__perf07.bubbleAt = performance.now();
-        if (!seen()) return;
-        obs.disconnect();
-        requestAnimationFrame(() => (w.__perf07.paintedAt = performance.now()));
-      }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-state'] });
-    }, byTid(TID.bubbleTick));
+    await page.evaluate(
+      ({ sel, text }) => {
+        const w = window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } };
+        w.__perf07 = {};
+        addEventListener('keydown', (e) => e.key === 'Enter' && (w.__perf07.sentAt ??= performance.now()), { capture: true, once: true });
+        const before = new Set(Array.from(document.querySelectorAll(sel)));
+        // Only this run's own bubble counts: an older row that remounts already reads ✓✓ (independent review of #155).
+        const fresh = () =>
+          Array.from(document.querySelectorAll(sel)).filter(
+            (b) => !before.has(b) && (b.closest('[data-message-id]')?.textContent ?? '').includes(text),
+          );
+        const seen = () => fresh().some((b) => b.getAttribute('data-state') === 'read');
+        new MutationObserver((_, obs) => {
+          if (w.__perf07.sentAt === undefined) return;
+          // When the new bubble first shows (main has stored it), to split the span: window + main, then the engine's turn.
+          if (w.__perf07.bubbleAt === undefined && fresh().length) w.__perf07.bubbleAt = performance.now();
+          if (!seen()) return;
+          obs.disconnect();
+          requestAnimationFrame(() => (w.__perf07.paintedAt = performance.now()));
+        }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-state'] });
+      },
+      { sel: byTid(TID.bubbleTick), text: ask(tag) },
+    );
     await page.keyboard.press('Enter');
     const { sentAt, bubbleAt, paintedAt } = await page
       .waitForFunction(() => {

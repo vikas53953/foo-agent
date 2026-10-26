@@ -46,6 +46,54 @@ describe('CR-0059 · the batch-1 baseline', () => {
     expect((h.db.prepare('SELECT rev FROM chats WHERE id = ?').get(chatId) as { rev: number }).rev).toBeGreaterThan(revBefore);
   });
 
+  it('a streamed rewrite lands whole in the same bubble', async () => {
+    const chunks = (a: string, b: string) => ({
+      chunks: [
+        { text: `<say>${a}` },
+        { text: `${b}</say><act>${JSON.stringify({ decision: { kind: 'reply' }, usedMemoryIds: [] })}</act>`, delayMs: 300 },
+      ],
+    });
+    h = makeHarness({
+      script: [intake('', chunks('First part. ', 'First end.')), intake('', chunks('Second part. ', 'Second end.'))],
+      settings: verified(),
+      tools: {},
+    });
+    await h.idle();
+    h.userSays('Tell me something');
+    await h.idle();
+    const [first] = fooAnswers(h);
+    expect(first!.text).toBe('First part. First end.');
+    h.send('reply.rewrite', { messageId: first!.id });
+    await h.idle();
+    expect(fooAnswers(h)).toEqual([
+      { id: first!.id, text: 'Second part. Second end.', status: 'complete', earlier_text: 'First part. First end.' },
+    ]);
+  });
+
+  it('a rewrite that fails leaves the old answer exactly as it was', async () => {
+    h = makeHarness({ script: [intake(reply('Keep me.')), intake('', { error: 'AI_TIMEOUT' })], settings: verified(), tools: {} });
+    await h.idle();
+    h.userSays('Tell me something');
+    await h.idle();
+    const [first] = fooAnswers(h);
+    h.send('reply.rewrite', { messageId: first!.id });
+    await h.idle();
+    expect(fooAnswers(h)).toEqual([{ id: first!.id, text: 'Keep me.', status: 'complete', earlier_text: null }]);
+  });
+
+  it('a rewrite is only ever a new answer in words: a memory decision saves nothing', async () => {
+    const remember = `<say>New words.</say><act>${JSON.stringify({ decision: { kind: 'memory', op: 'remember', text: 'Likes tea' }, usedMemoryIds: [] })}</act>`;
+    h = makeHarness({ script: [intake(reply('Old words.')), intake(remember)], settings: verified(), tools: {} });
+    await h.idle();
+    h.userSays('Tell me something');
+    await h.idle();
+    const [first] = fooAnswers(h);
+    h.send('reply.rewrite', { messageId: first!.id });
+    await h.idle();
+    expect(fooAnswers(h)).toEqual([{ id: first!.id, text: 'New words.', status: 'complete', earlier_text: 'Old words.' }]);
+    expect((h.db.prepare('SELECT COUNT(*) AS n FROM memory_index').get() as { n: number }).n).toBe(0);
+  });
+
   it('with jobs off, intake is told foo cannot do tasks yet; with every feature on, it is not', async () => {
     const intakeText = async (features?: string) => {
       h = makeHarness({ script: [intake(reply('No, I have not.'))], settings: verified(), tools: {}, ...(features ? { features } : {}) });

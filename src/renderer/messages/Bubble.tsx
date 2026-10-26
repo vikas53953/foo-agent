@@ -9,7 +9,7 @@
 // aligned like foo's bubbles). R1 T6 (X-180): §6.5 "foo read:" line under the last user bubble, §1.9 Ask about this
 // (`data-ask-about` marks a foo / helper text bubble for the selection pill; §17.4 menu item).
 // 02 §F7.1 "Chat" (CR-0021, X-179): the user bubble grows from the send button, the error bubble shakes once, a picked reaction bounces once, the retry spinner turns into ✓, "Read more" grows, streamed words fade.
-import { memo, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
+import { memo, useContext, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -31,6 +31,7 @@ import {
 } from '../store/messages';
 import { Face } from '../ui/Avatar';
 import { Icon } from '../ui/Icon';
+import { Button } from '../ui/Button';
 import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuAnchor } from '../ui/Menu';
 import { cx } from '../ui/cx';
@@ -705,7 +706,7 @@ function BubbleBody({
           {t('bubble.stopped.caption')}
         </div>
       )}
-      {rewritten && <EarlierAnswer text={m.earlierText!} />}
+      {rewritten && <EarlierAnswer text={m.earlierText!} author={m.authorKind} />}
       {sources.length >= 2 && <SourcesRow sources={sources} />}
       {worked && job && <WorkedLine messageId={m.id} jobId={job.id} ms={job.finishedAt! - job.startedAt!} />}
       {(m.status === 'failed' || again.phase !== 'idle') && <CutOffRow phase={again.phase} onRetry={again.retry} />}
@@ -715,23 +716,25 @@ function BubbleBody({
 }
 
 /** CR-0059 row 1 (04 §17.1): a rewritten answer's old text, behind "Show earlier answer". */
-function EarlierAnswer({ text }: { text: string }) {
+function EarlierAnswer({ text, author }: { text: string; author: MessageRow['authorKind'] }) {
   const [open, setOpen] = useState(false);
+  const id = useId();
   return (
     <div className={styles.earlier}>
-      <button
-        type="button"
+      <Button
+        variant="link"
         className={styles.earlierLink}
         aria-expanded={open}
+        aria-controls={id}
         data-testid={TID.bubbleEarlierAnswer}
         onClick={() => setOpen((o) => !o)}
       >
-        {open ? t('bubble.earlier.hide') : t('bubble.earlier.show')}
-      </button>
+        {t('bubble.actions.earlier_answer')}
+      </Button>
       {open && (
-        <p className={styles.earlierText} data-copy="ai">
-          {text}
-        </p>
+        <div id={id} className={styles.earlierText} data-copy="ai">
+          <Blocks blocks={fooOnlyBlocks(blocksOf(text), author)} />
+        </div>
       )}
     </div>
   );

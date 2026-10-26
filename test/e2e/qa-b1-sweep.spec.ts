@@ -28,6 +28,8 @@ const LINES: FakeLine[] = [
   { match: { purpose: 'intake', promptIncludes: 'long one' }, ...say(LONG) },
   { match: { purpose: 'intake', promptIncludes: 'short one' }, ...say('Short.') },
   { match: { purpose: 'intake' }, ...say('Okay.') },
+  // Try again on the older long answer, from its ⋯ menu (after the catch-all above is used up by the first Try again).
+  { match: { purpose: 'intake', promptIncludes: 'long one' }, ...say('A new take on the long one.') },
 ];
 
 const out = () => process.env.QA_EVIDENCE_DIR;
@@ -35,7 +37,7 @@ async function shot(page: Page, name: string) {
   const dir = out();
   if (!dir) return;
   mkdirSync(join(dir, 'shots'), { recursive: true });
-  await page.screenshot({ path: join(dir, 'shots', `QA-B1-W01-${name}.png`) });
+  await page.screenshot({ path: join(dir, 'shots', `QA-B1-080-${name}.png`) });
 }
 const advance = (page: Page, ms: number) => page.evaluate((n) => window.__fooTest!.clock.advance(n), ms);
 const byTid = (id: string) => `[data-testid="${id}"]`;
@@ -59,18 +61,23 @@ async function send(page: Page, text: string) {
   await page.waitForTimeout(300);
 }
 
-/** What the user can see change: the window's words, the open dialogs and pickers, the checked/pressed states, the clipboard. */
+/**
+ * What the user can see change, read with no menu open: the window's words, the open dialogs, pickers and popovers, the
+ * pressed and checked states, the composer and the clipboard. Hover-only toolbars and the menu itself are left out, so
+ * closing a menu is not a change.
+ */
 async function visible(app: ElectronApplication, page: Page): Promise<string> {
-  const dom = await page.evaluate(() => {
-    const states = Array.from(document.querySelectorAll('[data-state],[aria-pressed],[aria-checked],[aria-expanded]'))
+  const dom = await page.evaluate((fieldSel) => {
+    const states = Array.from(document.querySelectorAll('[data-state],[aria-pressed],[aria-checked]'))
       .map(
         (e) =>
-          `${e.getAttribute('data-testid') ?? ''}:${e.getAttribute('data-state') ?? ''}${e.getAttribute('aria-pressed') ?? ''}${e.getAttribute('aria-checked') ?? ''}${e.getAttribute('aria-expanded') ?? ''}`,
+          `${e.getAttribute('data-testid') ?? ''}:${e.getAttribute('data-state') ?? ''}${e.getAttribute('aria-pressed') ?? ''}${e.getAttribute('aria-checked') ?? ''}`,
       )
       .join('|');
-    const field = (document.querySelector('[data-testid="composer-field"]') as HTMLTextAreaElement | null)?.value ?? '';
-    return `${document.body.innerText}\n${states}\n${field}`;
-  });
+    const open = document.querySelectorAll('[role=dialog],[role=alertdialog],[role=listbox],[popover]:popover-open').length;
+    const field = (document.querySelector(fieldSel) as HTMLTextAreaElement | null)?.value ?? '';
+    return `${document.body.innerText}\n${states}\n${open}\n${field}`;
+  }, byTid(TID.composerField));
   const clip = await app.evaluate(({ clipboard }) => clipboard.readText());
   return `${dom}\n${clip}`;
 }
@@ -98,14 +105,14 @@ async function otherBubbleBoxes(page: Page, own: Locator) {
           return { x: r.x, y: r.y, w: r.width, h: r.height, text: (b.textContent ?? '').slice(0, 40) };
         })
         .filter((r) => r.w > 0 && r.h > 0),
-    { ownId, sel: `${'[data-testid="bubble-foo"]'}, ${'[data-testid="bubble-me"]'}` },
+    { ownId, sel: `${byTid(TID.bubbleFoo)}, ${byTid(TID.bubbleMe)}` },
   );
 }
 
 type Box = { x: number; y: number; w: number; h: number };
 const overlaps = (a: Box, b: Box) => a.x < b.x + b.w - 1 && b.x < a.x + a.w - 1 && a.y < b.y + b.h - 1 && b.y < a.y + a.h - 1;
 
-test('AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, nothing covers a bubble, off features leave no trace', async () => {
+test('AT-449 QA-B1-080 · bug-finder sweep: every bubble action does something, nothing covers a bubble, off features leave no trace', async () => {
   test.setTimeout(300_000);
   const findings: string[] = [];
   const dirs = testDirs();
@@ -138,12 +145,17 @@ test('AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, 
   const log = page.getByTestId(TID.threadLog);
   const eyesSeen: string[] = [];
   await page.exposeFunction('__qaEyes', (s: string) => eyesSeen.push(s));
-  await page.evaluate(() => {
-    new MutationObserver(() => {
-      for (const b of Array.from(document.querySelectorAll('[data-testid="bubble-badge"][data-state="seen"]')))
-        (window as unknown as { __qaEyes: (s: string) => void }).__qaEyes(b.closest('[data-message-id]')?.textContent?.slice(0, 30) ?? '');
-    }).observe(document.body, { subtree: true, childList: true, attributes: true });
-  });
+  await page.evaluate(
+    (sel) => {
+      new MutationObserver(() => {
+        for (const b of Array.from(document.querySelectorAll(sel)))
+          (window as unknown as { __qaEyes: (s: string) => void }).__qaEyes(
+            b.closest('[data-message-id]')?.textContent?.slice(0, 30) ?? '',
+          );
+      }).observe(document.body, { subtree: true, childList: true, attributes: true });
+    },
+    `${byTid(TID.bubbleBadge)}[data-state="seen"]`,
+  );
   await send(page, 'quick one');
   if (eyesSeen.length) findings.push(`👀 shown on a quick answer: ${eyesSeen[0]}`);
   await page.getByTestId(TID.composerField).fill('slow one');
@@ -196,12 +208,17 @@ test('AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, 
     await page.keyboard.press('Escape');
     for (const id of items) {
       if (id === TID.bubbleMenuDelete || id === TID.bubbleMenuTryAgain) continue; // proved on their own below
+      await page.mouse.move(0, 0);
+      await page.waitForTimeout(300);
+      const before = await visible(app, page);
+      // The check itself can see "no change": two reads with nothing done in between agree.
+      expect(await visible(app, page), 'the sweep reads a still window the same twice').toBe(before);
       await hover(page, bubble);
       await moreOf(bubble).click();
-      const before = await visible(app, page);
       await page.getByTestId(id).click();
-      await advance(page, 1_000);
       await page.waitForTimeout(600);
+      await page.mouse.move(0, 0);
+      await page.waitForTimeout(300);
       const after = await visible(app, page);
       if (after === before) findings.push(`dead menu item on ${who}'s bubble: ${id} changed nothing on screen`);
       await page.keyboard.press('Escape');
@@ -232,6 +249,20 @@ test('AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, 
     if (!(await log.innerText()).includes('Short.')) findings.push('Try again: "Show earlier answer" does not show it');
   }
 
+  // 5b. An older answer has no action row (row 2), so its Try again is in the ⋯ menu; it rewrites in place too.
+  const older = log.getByTestId(TID.bubbleFoo).filter({ hasText: 'Here is a longer answer' });
+  await hover(page, older);
+  await moreOf(older).click();
+  await page.getByTestId(TID.bubbleMenuTryAgain).click();
+  for (let i = 0; i < 20 && (await older.count()); i++) await advance(page, 500);
+  await advance(page, 2_000);
+  await page.waitForTimeout(400);
+  if (await older.count()) findings.push('Try again from the ⋯ menu on an older answer: the answer did not change');
+  if ((await log.getByTestId(TID.bubbleFoo).count()) !== fooCount)
+    findings.push('Try again from the ⋯ menu: a new bubble instead of a rewrite');
+  if (!(await log.getByTestId(TID.bubbleFoo).filter({ hasText: 'A new take on the long one.' }).count()))
+    findings.push('Try again from the ⋯ menu: the new answer is not in the old bubble');
+
   // 6. Delete removes the bubble from the chat (CR-0059 row 5): no "You deleted this message" left behind.
   const doomed = log.getByTestId(TID.bubbleMe).filter({ hasText: 'quick one' });
   await hover(page, doomed);
@@ -245,9 +276,23 @@ test('AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, 
   if (await doomed.count()) findings.push('delete: the deleted message is still in the chat');
   if ((await log.innerText()).includes(t('bubble.deleted.text'))) findings.push('delete: the chat still shows "You deleted this message"');
   await shot(page, '6-deleted');
+  // Deleting the newest message moves the chat-list preview back to the one before it.
+  const newest = log.getByTestId(TID.bubbleFoo).last();
+  const newestText = (await newest.innerText()).split('\n')[0]!.trim();
+  await hover(page, newest);
+  await moreOf(newest).click();
+  await page.getByTestId(TID.bubbleMenuDelete).click();
+  await page
+    .locator('[role=dialog],[role=alertdialog]')
+    .getByRole('button', { name: t('dialog.c_24.primary'), exact: true })
+    .click();
+  await page.waitForTimeout(1_000);
+  const afterDelete = await page.getByTestId(TID.chatlistRowPreview).first().innerText();
+  if (newestText && afterDelete.includes(newestText))
+    findings.push(`delete: the chat list still shows the deleted message ("${afterDelete}")`);
 
   const unique = [...new Set(findings)];
-  if (out()) writeFileSync(join(out()!, 'QA-B1-W01-findings.json'), JSON.stringify(unique, null, 2));
+  if (out()) writeFileSync(join(out()!, 'QA-B1-080-findings.json'), JSON.stringify(unique, null, 2));
   expect(unique, `bug-finder sweep findings:\n${unique.join('\n')}`).toEqual([]);
   await app.close();
 });

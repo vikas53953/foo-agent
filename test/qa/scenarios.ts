@@ -445,7 +445,7 @@ export const SCENARIOS: Scenario[] = [
     'visual',
     'Bug-finder sweep: every ⋯ menu item does something, no hover control covers a bubble, off features leave no trace, 👀 only when slow, Try again and delete work',
     'test/e2e/qa-b1-sweep.spec.ts',
-    'AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, nothing covers a bubble, off features leave no trace',
+    'AT-449 QA-B1-080 · bug-finder sweep: every bubble action does something, nothing covers a bubble, off features leave no trace',
   ),
   V(
     'QA-B1-081',
