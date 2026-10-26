@@ -111,7 +111,7 @@ jobs:
           JUDGE: ${{ inputs.judge }}
         run: |
           E="$(readlink -f node_modules/electron)/dist/electron"
-          sed -i "s/anthropic:messages:claude-sonnet-5-5/anthropic:messages:$JUDGE/" "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml"
+          sed -i "s|anthropic:messages:claude-sonnet-5-5|anthropic:messages:$JUDGE|" "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml"
           args=(eval -c "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml" --no-cache
             --repeat 3 --filter-first-n "$MAX_ASKS" -o "$OUT/results.json" "$OUT/report.html")
           [ -n "$FILTER" ] && args+=(--filter-pattern "$FILTER")
