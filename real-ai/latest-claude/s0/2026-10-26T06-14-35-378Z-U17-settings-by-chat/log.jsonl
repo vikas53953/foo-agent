@@ -1,0 +1,22 @@
+{"t":"2026-10-26T06:14:35.378Z","journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","spec":"06 Settings changed-by-chat, settings:undo, 10-2 §C.5 Settings","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T06:14:40.871Z","step":"launch","ok":true}
+{"t":"2026-10-26T06:14:48.968Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":0,"ms":8094}
+{"t":"2026-10-26T06:14:49.997Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1029}
+{"t":"2026-10-26T06:14:50.105Z","i":1,"do":"send","sentAt":1792995290072,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-10-26T06:17:20.498Z","i":2,"do":"waitReply","expect":"foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150393}
+{"t":"2026-10-26T06:17:20.563Z","shot":"01-dark.png"}
+{"t":"2026-10-26T06:17:43.625Z","shot":"02-error-step3.png"}
+{"t":"2026-10-26T06:17:43.625Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-26T06:17:45.126Z","i":4,"do":"wait","expect":"back to light","ok":true,"ms":1500}
+{"t":"2026-10-26T06:17:45.188Z","shot":"03-undo.png"}
+{"t":"2026-10-26T06:17:45.242Z","i":5,"do":"key","ok":true,"ms":54}
+{"t":"2026-10-26T06:17:45.333Z","i":6,"do":"click","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-26T06:17:45.417Z","i":7,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-26T06:17:46.022Z","i":8,"do":"wait","expect":"theme options","ok":true,"ms":605}
+{"t":"2026-10-26T06:17:46.083Z","shot":"04-theme-row.png"}
+{"t":"2026-10-26T06:17:46.135Z","i":9,"do":"key","ok":true,"ms":52}
+{"t":"2026-10-26T06:18:09.203Z","shot":"05-error-step10.png"}
+{"t":"2026-10-26T06:18:09.203Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23068}
+{"t":"2026-10-26T06:18:09.214Z","i":11,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-26T06:18:09.345Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-26T06:18:09.358Z","step":"aiTurns","turns":2}

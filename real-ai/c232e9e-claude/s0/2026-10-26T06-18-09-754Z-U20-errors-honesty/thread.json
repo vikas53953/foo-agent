@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Mon 26 Oct\nReplace\nRemove\n6:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n6:18 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which electricity bill should I pay?\n1\nFind it in my email\nBEST FIT\nI read your inbox for the latest bill\n2\nBSES (Delhi)\n3\nPSPCL (Punjab)\n4\nAnother provider\nTell me the name\nSomething else…\nSkip\n6:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n6:18 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nCheck dominos.co.in\n2\nSign in to dominos.co.in\n3\nLook for pizza menu and offers near you\n4\nKeep 3 pizzas that fit best value\n5\nWait for you to pick one\n…and 4 more · Show\nAbout 6 minutes\nGo\nChange plan\n6:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n6:18 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n6:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:18 AM"
+  }
+]
