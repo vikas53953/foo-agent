@@ -1,0 +1,190 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-02-38-651Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1792994564331,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 146
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 11685,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month for ₹50,00,000 (50 lakh) at 8.5% over 20 years. Total interest is roughly ₹54,13,840 (54.1 lakh). You can change the amount, rate or years below.\n\nLoan amount (₹)\nYearly interest rate (%)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n6:02 AM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 20261
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1792994584789,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 6079,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 places worth visiting in Jaipur, numbered in a route that works well from the old city. Amber Fort is the farthest, so it's best to go there first thing in the morning.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort with palaces and mirror work. Go early to beat the crowds.\n2\nNahargarh Fort\nGreat city views, especially at sunset.\n3\nJantar Mantar\n18th-century stone astronomy instruments.\n4\nCity Palace\nRoyal palace with museums and courtyards.\n5\nHawa Mahal\nThe pink palace of windows. Best photographed in the morning light.\nOpen in Maps\nKeep\n6:03 AM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "ms": 15179
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792994600174,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 155
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 11161,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's GDP growth over the last 5 financial years went from a 5.8% fall in FY2020-21 to a 9.7% rebound the next year, then settled around 6.5% to 9.2%. These are approximate figures from official estimates, which get revised, and I can't check live data from here.\n\nIndia's yearly GDP growth (%)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n6:03 AM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "ms": 19258
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792994619657,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 132
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 8642,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three: the fastest chip, 12GB memory and 7 years of updates for about the same price. These are approximate India launch prices for the base AI, and I can't check live prices from here. Street prices are often lower, so compare them before you buy.\n\niPhone 16\nLaunch price\n₹79,900\nChip\nApple A18\nMemory\n8GB\nScreen\n6.1 inch OLED, 60Hz\nMain camera\n48MP\nBattery\nAbout 3,561 mAh\nUpdates\nAround 6 years\nPixel 9\nLaunch price\n₹79,999\nChip\nGoogle Tensor G4\nMemory\n12GB\nScreen\n6.3 inch OLED, 120Hz\nMain camera\n50MP\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999\nChip\nSnapdragon 8 Elite\nMemory\n12GB\nScreen\n6.2 inch OLED, 120Hz\nMain camera\n50MP\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest chip, 12GB memory and 7 years of updates for a similar price.\n\nKeep\n6:03 AM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "ms": 19274
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1792994639122,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 4569,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is below. Tap start when the tea goes in.\n\nTea steeping\n2:00 left\nStart timer\nKeep\n6:04 AM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "ms": 11644
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792994650954,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 7121,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Fill in the three details below and I'll use them to plan your party.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:04 AM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "ms": 14731
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1792994665916,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 195
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 9627,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your expense tracker is below. Add each spend with an amount and category, and it totals the month, shows where the money went and compares it with a budget you set. It tries to remember your entries on this PC, so check that they are still there when you reopen it.\n\nKeep\n6:04 AM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 30444
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

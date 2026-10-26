@@ -1,0 +1,19 @@
+{"t":"2026-10-26T06:09:10.996Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T06:09:16.707Z","step":"launch","ok":true}
+{"t":"2026-10-26T06:09:24.819Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8107}
+{"t":"2026-10-26T06:09:24.952Z","i":0,"do":"send","sentAt":1792994964905,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-26T06:09:27.954Z","i":1,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-26T06:09:33.373Z","step":"launch","ok":true}
+{"t":"2026-10-26T06:09:33.374Z","i":2,"do":"relaunch","ok":true,"ms":5420}
+{"t":"2026-10-26T06:09:42.986Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":1525,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is my top pick, simple and sweet. A few more that suit a slow, steady pet:\n\nDosa, round and a bit crispy-looking\nTurbo, funny for a very slow friend\nGigi, short and easy to call\nPebble, small and sturdy\n\nWant a few more in a different style, like funny or classic?\n\n6:09 AM","kit":[],"ms":9612}
+{"t":"2026-10-26T06:09:43.072Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-26T06:09:43.075Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n6:09 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-26T06:09:43.276Z","i":5,"do":"send","sentAt":1792994983195,"sent":true,"before":0,"ok":true,"ms":201}
+{"t":"2026-10-26T06:09:45.278Z","i":6,"do":"wait","ok":true,"ms":2002}
+{"t":"2026-10-26T06:09:50.729Z","step":"launch","ok":true}
+{"t":"2026-10-26T06:09:50.729Z","i":7,"do":"relaunch","ok":true,"ms":5451}
+{"t":"2026-10-26T06:09:58.822Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":1013,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can't read live news from here, so I can't tell you today's biggest story in India. Want me to look at your email or a news site for it?\n\n6:09 AM","kit":[],"ms":8093}
+{"t":"2026-10-26T06:09:58.899Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-26T06:09:58.910Z","i":9,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-26T06:09:59.058Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-10-26T06:09:59.070Z","step":"aiTurns","turns":2}

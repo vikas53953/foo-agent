@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:00 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:00 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this in Settings.\n\n6:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n6:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ka birthday Wed 28 Oct ko hai, to cake aaj ya kal tak order kar dena achha rahega. Ye options suggest karunga:\n\nChocolate truffle: sabko pasand aata hai, safe choice.\nButterscotch ya pineapple: classic birthday wala swaad.\nFruit cake ya fresh fruit cake: halka hota hai, agar mummy ko kam meetha pasand hai.\nPhoto ya message cake: mummy ki photo ya \"Happy Birthday Mummy\" likhwa sakte ho, to personal lagta hai.\n\nMummy ko kaunsa flavour pasand hai, aur eggless chahiye?\n\n6:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n6:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਜੇ ਮੰਮੀ ਦੀ ਪਸੰਦ ਪਤਾ ਨਹੀਂ, ਤਾਂ ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ। ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਹੈ: ਫ੍ਰੈਸ਼ ਫਰੂਟ ਕੇਕ।\nਪੁਰਾਣਾ ਸੁਆਦ ਪਸੰਦ ਹੈ: ਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ।\nਖਾਸ ਬਣਾਉਣਾ ਹੈ: ਉੱਤੇ ਮੰਮੀ ਦੀ ਫੋਟੋ ਜਾਂ \"ਹੈਪੀ ਬਰਥਡੇ ਮੰਮੀ\" ਲਿਖਵਾ ਲਓ।\n\nਜਨਮ ਦਿਨ Wed 28 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਨਹੀਂ?\n\n6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n6:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so it should be a normal working day for offices, schools and banks. The big festival that week is Diwali on Sun 8 Nov. I can't check live holiday lists from here, so confirm with your school, office or bank if it matters.\n\n6:02 AM"
+  }
+]

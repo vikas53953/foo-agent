@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-13-33-958Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1792995220730,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 154
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 5573,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend activity sounds best in Bengaluru?\n1\nCubbon Park and café hop\nBEST FIT\nEasy, outdoors, low cost\n2\nNandi Hills sunrise\nEarly start, about 60 km out\n3\nBrewery and live music night\nIndiranagar or Koramangala\nSomething else…\nSkip\n6:13 AM",
+      "kit": [],
+      "ms": 11683
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1792995232696,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 149
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 5570,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Nandi Hills sunrise it is, a good pick for this weekend (Sat 31 Oct or Sun 1 Nov).\n\nLeave Bengaluru well before dawn, since the road and parking fill up early.\nCarry a light jacket, because the hilltop is cooler and windy.\nCheck the entry rules and sunrise time before you go, as they can change.\n\nWant me to add it to your calendar?\n\n6:13 AM",
+      "kit": [],
+      "ms": 12646
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1792995245567,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 5569,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nDal tadka with jeera rice\nBEST FIT\nLight, comforting, ready in 30 minutes\n2\nPaneer butter masala with roti\nRich and filling\n3\nMasala dosa with chutney\nSouth Indian classic, easy to order in\nSomething else…\nSkip\n6:14 AM",
+      "kit": [],
+      "ms": 11653
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1792995258183,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 17791,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal is a good call for tonight. Simple, filling and easy on the stomach.\n\nWant a quick recipe, or a side to go with it like papad, pickle or a bowl of curd?\n\n6:14 AM",
+      "kit": [],
+      "ms": 24883
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}

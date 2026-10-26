@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Tue 27 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n6:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n6:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Shelly is my top pick, simple and sweet. A few more that suit a slow, steady pet:\n\nDosa, round and a bit crispy-looking\nTurbo, funny for a very slow friend\nGigi, short and easy to call\nPebble, small and sturdy\n\nWant a few more in a different style, like funny or classic?\n\n6:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n6:09 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't read live news from here, so I can't tell you today's biggest story in India. Want me to look at your email or a news site for it?\n\n6:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n6:10 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:10 AM\n6:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:10 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Checking HDFC net banking\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nCheck HDFC net banking\n6:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:10 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n6:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:10 AM"
+  }
+]
