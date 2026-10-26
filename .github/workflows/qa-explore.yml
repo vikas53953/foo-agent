@@ -11,9 +11,6 @@ on:
         description: Branch, tag or commit to test
         default: main
         required: true
-  # TEMPORARY: one run on the QA branch to prove the harness on Windows; removed again before the PR leaves draft.
-  push:
-    branches: [claude/project-thread-gzzs6c]
 
 concurrency:
   group: qa-explore-${{ github.ref }}
