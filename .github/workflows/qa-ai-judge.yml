@@ -79,7 +79,11 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      # Same native build recipe as ci.yml and real-ai-e2e.yml: install without scripts, then fetch the Electron binary
+      # (its postinstall is a script, so a plain install left dist/electron missing: run 40264363943).
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
       - run: pnpm build
       - name: Rebuild native modules for Electron
         run: pnpm rebuild:electron
