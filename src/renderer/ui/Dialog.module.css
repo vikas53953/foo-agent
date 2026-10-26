@@ -38,6 +38,9 @@
 .md {
   width: min(var(--dialog-md), 100%);
 }
+.lg {
+  width: min(var(--dialog-lg), 100%);
+}
 .head {
   display: flex;
   align-items: flex-start;

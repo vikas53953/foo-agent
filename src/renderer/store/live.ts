@@ -40,6 +40,8 @@ export interface LiveState {
   features: FeatureId[] | null;
   /** CR-0060: the app version for Settings → About. */
   appVersion: string | null;
+  /** CR-0061 (X-44): an unsigned tester build. */
+  testerBuild: boolean;
 }
 
 export function initialLive(now: number): LiveState {
@@ -61,6 +63,7 @@ export function initialLive(now: number): LiveState {
     loadFailed: false,
     features: null,
     appVersion: null,
+    testerBuild: false,
   };
 }
 

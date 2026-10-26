@@ -10,6 +10,7 @@ import { TID } from '../../shared/testids';
 import type { ChatRow } from '../../shared/types';
 import { registerFocusTarget } from '../a11y/focusTargets';
 import { KeptList } from '../keep/KeptList';
+import { useKeptList } from '../keep/kept';
 import { useStore } from '../store/index';
 import { IconButton } from '../ui/IconButton';
 import { DoingNow } from './DoingNow';
@@ -19,6 +20,19 @@ import styles from './RightShell.module.css';
 import { SpentMeters } from './SpentMeters';
 import { UsingChips } from './UsingChips';
 import { useRightShell } from './useRightShell';
+
+/**
+ * CR-0061 (X-218 item 9): whether the chat's details panel has a section in this build (the same gates as the body below,
+ * CR-0054). With none, the panel stays shut and the header has no Details button, so batch 1 never shows a panel that
+ * holds only its title. Kept items count once there are any.
+ */
+export function usePanelHasContent(chat: ChatRow | null): boolean {
+  const features = useStore((s) => s.live.features);
+  const on = (id: FeatureId) => features === null || features.includes(id);
+  const sections = !!chat && (on('jobs') || on('connections') || on('pages') || chat.kind === 'group' || on('memory') || on('spend'));
+  const kept = useKeptList(chat && !sections ? chat.id : null);
+  return sections || (kept?.length ?? 0) > 0;
+}
 
 export function RightShell({ chat }: { chat: ChatRow }) {
   const panel = useRightShell();

@@ -37,9 +37,11 @@ export function Shell({ main, right }: ShellProps) {
   useShellShortcuts();
   const width = useWindowWidth();
   const sidebarWidth = useStore(selectSidebarWidth);
-  const rightOpenL = useStore(selectRightShellOpen);
-  const rightOpenOverlay = useStore(selectRightShellOpenOverlay);
-  const xsPane = useStore(selectXsPane);
+  // CR-0061 (X-218 item 9): an empty details panel is not opened, by default or by hand.
+  const panelEmpty = useStore((s) => s.ui.panelEmpty);
+  const rightOpenL = useStore(selectRightShellOpen) && !panelEmpty;
+  const rightOpenOverlay = useStore(selectRightShellOpenOverlay) && !panelEmpty;
+  const xsPane = useStore((s) => (s.ui.panelEmpty && selectXsPane(s) === 'panel' ? 'chat' : selectXsPane(s)));
   const view = useStore(selectView);
   const backDepth = useStore((s) => s.ui.back.length);
   const motion = useViewMotion(view, backDepth);

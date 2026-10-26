@@ -77,9 +77,11 @@ export function FooProfile() {
   );
 }
 
+const SHELL_DIALOGS = new Set<string>(['shortcuts', 'c-01', 'privacy', 'whats-new', 'report', 'licences']);
+
 /** The shell's lazily loaded dialogs: nothing until one of them is asked for. */
 export function ShellDialogs() {
-  const wanted = useStore((s) => s.ui.dialog === 'shortcuts' || s.ui.dialog === 'c-01');
+  const wanted = useStore((s) => s.ui.dialog !== null && SHELL_DIALOGS.has(s.ui.dialog));
   if (!wanted && !dialogsModule) return null;
   return (
     <Suspense fallback={null}>
@@ -98,6 +100,10 @@ export function preloadPages(): void {
   preloadKit();
   void loadFirstRun().catch(() => undefined);
   void loadCapDialogs().catch(() => undefined);
+  // CR-0061: and the 👎 and "Why am I getting this?" popovers and the reaction picker (loaded on first open).
+  void Promise.all([import('../messages/FeedbackPopover'), import('../messages/WhyPopover'), import('../messages/ReactionPicker')]).catch(
+    () => undefined,
+  );
 }
 
 /** The page frame while its script loads: empty at first, the §0.5 skeleton once `delay-loading` (150ms) has passed. */

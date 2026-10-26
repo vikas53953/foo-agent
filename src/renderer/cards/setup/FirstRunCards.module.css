@@ -45,6 +45,15 @@
   font: var(--t-caption);
   color: var(--fg-3);
 }
+.privacyLink {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: var(--t-caption);
+  text-decoration: underline;
+  cursor: pointer;
+}
 .question {
   margin: 0 0 var(--s1);
   font: var(--t-body-strong);

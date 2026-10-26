@@ -41,10 +41,11 @@ export async function keep(key: string, req: InvokeIn['keep:save']): Promise<Kep
 }
 
 /** The chat's kept items, newest first; reloads after every Keep. */
-export function useKeptList(chatId: string): KeptItem[] | null {
+export function useKeptList(chatId: string | null): KeptItem[] | null {
   const v = useSyncExternalStore(subscribe, () => version);
   const [items, setItems] = useState<{ chatId: string; items: KeptItem[] } | null>(null);
   useEffect(() => {
+    if (chatId === null) return;
     let live = true;
     void invoke('keep:list', { chatId }).then(
       (r) => live && setItems({ chatId, items: r.ok ? r.value : [] }),

@@ -38,8 +38,8 @@ export interface MessagesState {
   byChat: Record<string, ChatMessages>;
   /** Parts a user expanded ("Read more", "Show all {n} lines|rows", worked steps, voice transcript): `${messageId}:${part}`. */
   expanded: Record<string, true>;
-  /** 04 §17.1: 👍 / 👎 on an answer (this session; see implementation-notes GAP). */
-  feedback: Record<string, 'good' | 'bad'>;
+  /** 04 §17.1: a 👍 / 👎 the user just gave, shown until `message:feedback` answers; the kept one is the row's (CR-0062). */
+  feedback: Record<string, 'good' | 'bad' | null>;
   /** The newest request per chat for the composer; the composer clears it with takeComposerRequest. */
   composer: Record<string, ComposerRequest | undefined>;
   /** Last applied `message:delta` seq per streaming message. */
@@ -336,11 +336,26 @@ export function toggleExpand(messageId: string, part: string): void {
   });
 }
 
-export function setFeedback(messageId: string, value: 'good' | 'bad' | null): void {
+export type FeedbackChip = 'wrong' | 'not_asked' | 'too_long' | 'too_short' | 'other';
+
+/** CR-0062: 👍 / 👎 (with the §17.2 chips and words) kept on this PC through `message:feedback`; null clears it. */
+/** The latest `setFeedback` call per message: an older reply must not clear a newer pending vote (👍 then 👎 quickly). */
+const feedbackCalls = new Map<string, number>();
+
+export function setFeedback(messageId: string, value: 'good' | 'bad' | null, extra: { chips?: FeedbackChip[]; note?: string } = {}): void {
+  const call = (feedbackCalls.get(messageId) ?? 0) + 1;
+  feedbackCalls.set(messageId, call);
   update((d) => {
-    if (value) d.messages.feedback[messageId] = value;
-    else delete d.messages.feedback[messageId];
+    d.messages.feedback[messageId] = value;
   });
+  const settle = () => {
+    if (feedbackCalls.get(messageId) !== call) return;
+    feedbackCalls.delete(messageId);
+    update((d) => {
+      delete d.messages.feedback[messageId];
+    });
+  };
+  void invoke('message:feedback', { messageId, vote: value, ...extra }).then(settle, settle);
 }
 
 export function setHighlight(messageId: string | null): void {
@@ -354,4 +369,10 @@ export const selectMessageIds = (chatId: string) => (s: RootState) => s.messages
 export const selectMessage = (chatId: string, id: string) => (s: RootState) => s.messages.byChat[chatId]?.byId[id];
 export const selectChatMessages = (chatId: string) => (s: RootState) => s.messages.byChat[chatId];
 export const selectExpanded = (messageId: string, part: string) => (s: RootState) => !!s.messages.expanded[`${messageId}:${part}`];
-export const selectFeedback = (messageId: string) => (s: RootState) => s.messages.feedback[messageId];
+/**
+ * The 👍/👎 shown on an answer: a vote still in flight, else the stored one the bubble already holds (`MessageRow.feedback`,
+ * CR-0062). The stored value comes in from the caller, so this stays one lookup on every store update (PERF-02: it runs
+ * for every answer on screen at each key).
+ */
+export const selectFeedback = (messageId: string, stored: 'good' | 'bad' | null | undefined) => (s: RootState) =>
+  messageId in s.messages.feedback ? s.messages.feedback[messageId] : (stored ?? null);

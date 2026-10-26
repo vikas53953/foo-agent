@@ -17,6 +17,7 @@ const INVOKES = new Set([
   'message:list',
   'message:get',
   'message:react',
+  'message:feedback',
   'message:pin',
   'message:send',
   'composer:checkSecret',
@@ -34,6 +35,8 @@ const INVOKES = new Set([
   'routine:pause',
   'link:open',
   'app:showEmojiPanel',
+  'app:reportPreview',
+  'app:reportSave',
   'job:stop',
   'job:watch',
   // M4 T5 job and card answers (08-1 §3.2, CR-0008 G-M4-09).

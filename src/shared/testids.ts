@@ -113,6 +113,8 @@ export const TID = {
 
   // app: right shell and app-wide parts (03-shell-2 §3.7, 02-3 §F25.2)
   appPanel: 'app-panel',
+  // CR-0061 (X-218 item 7): the details panel's Kept section.
+  appPanelKept: 'app-panel-kept',
   appPanelClose: 'app-panel-close',
   appPanelBack: 'app-panel-back',
   appPanelDoing: 'app-panel-doing',
@@ -156,6 +158,20 @@ export const TID = {
   dialogShortcutsRow: 'dialog-shortcuts-row',
   settingsRowShortcuts: 'settings-row-shortcuts',
   settingsRowAboutVersion: 'settings-row-about-version',
+  // CR-0061 (X-218): the batch-1 About rows (06-2 §6.11); update and repair are listed so tests can prove they are absent.
+  settingsRowAboutUpdate: 'settings-row-about-update',
+  settingsRowAboutWhatsNew: 'settings-row-about-whats-new',
+  settingsRowAboutReport: 'settings-row-about-report',
+  settingsRowAboutRepair: 'settings-row-about-repair',
+  settingsRowAboutLeaves: 'settings-row-about-leaves',
+  settingsRowAboutLicences: 'settings-row-about-licences',
+  dialogPrivacy: 'dialog-privacy',
+  dialogWhatsNew: 'dialog-whats-new',
+  dialogReport: 'dialog-report',
+  dialogReportPreview: 'dialog-report-preview',
+  dialogReportNote: 'dialog-report-note',
+  dialogLicences: 'dialog-licences',
+  setupPrivacyDetails: 'setup-privacy-details',
   screenHelperProfile: 'screen-helper-profile',
   screenGroupProfile: 'screen-group-profile',
   // M1 builder B additions

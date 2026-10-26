@@ -15,6 +15,7 @@ import type { MemoryCmdPayload } from '../../engine/protocol';
 import { KitActionMessageSchema } from '../../shared/kit/catalog';
 import { PageIdSchema, PageRpcCallSchema } from '../../shared/kit/page';
 import { runMemoryExport } from '../memory/export';
+import { reportPreview, reportSave, UNSIGNED_BUILD } from '../about/report';
 import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
@@ -34,6 +35,8 @@ import {
   chatOpen,
   chatRowById,
   answerAfter,
+  FEEDBACK_CHIPS,
+  feedbackMessage,
   fooChatId,
   clearChat,
   deleteMessages,
@@ -185,6 +188,15 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'message:list': z.object({ chatId, beforeSeq: z.number().int().optional(), limit: z.number().int().min(1).max(200) }).strict(),
   'message:get': z.object({ messageId }).strict(),
   'message:react': z.object({ messageId, emoji, on: z.boolean() }).strict(),
+  // CR-0062: 👍 / 👎 with the §17.2 chips and the optional words (1–3 lines; 500 is the field's own cap).
+  'message:feedback': z
+    .object({
+      messageId,
+      vote: z.enum(['good', 'bad']).nullable(),
+      chips: z.array(z.enum(FEEDBACK_CHIPS)).max(5).optional(),
+      note: z.string().max(500).optional(),
+    })
+    .strict(),
   'message:pin': z.object({ messageId, on: z.boolean() }).strict(),
   'message:send': z
     .object({
@@ -230,6 +242,8 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'routine:pause': z.object({ routineId: z.string().min(1).max(80), confirm: z.literal(true).optional() }).strict(),
   'link:open': z.object({ url: z.string().min(1).max(2048) }).strict(),
   'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
+  'app:reportPreview': empty as z.ZodType<Record<string, never>>,
+  'app:reportSave': z.object({ previewId: z.string().min(1).max(80), note: z.string().max(500).optional() }).strict(),
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
   // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T6 (sign-in, take over) and T8 (hand-back sites); T5's live ones are real.
@@ -470,7 +484,7 @@ export function registerIpc(ctx: AppContext): void {
       emitFinderWrite(ctx, ensureSetupCard(db, settings, now(), ctx.dataDir));
     const s = settings.get();
     const b = bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null });
-    return ok({ ...b, features: shippedFeatures(), appVersion: app.getVersion() });
+    return ok({ ...b, features: shippedFeatures(), appVersion: app.getVersion(), testerBuild: UNSIGNED_BUILD });
   });
   handle('app:quit', ({ confirm }) => {
     const runningJobs = db
@@ -522,6 +536,7 @@ export function registerIpc(ctx: AppContext): void {
     return ok(r.row);
   };
   const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
+  handle('message:feedback', ({ messageId: id, vote, chips, note }) => asVoid(written(feedbackMessage(db, id, vote, chips, note))));
   handle('message:react', ({ messageId: id, emoji: e, on }) => {
     const r = asVoid(written(reactMessage(db, id, e, on, now())));
     // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
@@ -715,6 +730,19 @@ export function registerIpc(ctx: AppContext): void {
     if (!LINK_SCHEMES.includes(parsed.protocol)) return fail('URL_NOT_ALLOWED');
     await shell.openExternal(parsed.toString());
     return ok(undefined);
+  });
+  // CR-0061 (06-3 §18.2): the report is saved on this PC only, in `{OUT}\reports\` (08-0 §E.6: FOO_OUT_DIR in test runs,
+  // which open nothing).
+  handle('app:reportPreview', () =>
+    ok(reportPreview({ dataDir: ctx.dataDir, version: app.getVersion(), now: now(), timeZone: settings.get().locale.timeZone })),
+  );
+  handle('app:reportSave', ({ previewId, note }) => {
+    const test = process.env.FOO_TEST === '1';
+    const folder = join(process.env.FOO_OUT_DIR ?? join(app.getPath('documents'), 'foo'), 'reports');
+    const r = reportSave(previewId, note, folder, now(), settings.get().locale.timeZone);
+    if (!r.ok) return fail(r.error);
+    if (!test) shell.showItemInFolder(r.zipPath);
+    return ok({ zipPath: r.zipPath });
   });
   handle('app:showEmojiPanel', () => {
     if (app.isEmojiPanelSupported()) app.showEmojiPanel();

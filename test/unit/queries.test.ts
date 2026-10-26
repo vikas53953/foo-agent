@@ -71,6 +71,14 @@ describe('preview helpers (03-shell-1 §3.4.6)', () => {
   it('strips markdown and joins lines', () => {
     expect(plainLine('**Booked**\nfor _Fri_')).toBe('Booked for Fri');
   });
+  it('CR-0061: a table reads as its cells, never as raw | and --- markdown', () => {
+    const table = 'Here:\n| Plan | Price | Data |\n|---|:---:|---|\n| Airtel | ₹649 | 75 GB |\n| Jio | ₹599 | 60 GB |';
+    expect(plainLine(table)).toBe('Here: Plan · Price · Data Airtel · ₹649 · 75 GB Jio · ₹599 · 60 GB');
+    expect(plainLine('Pick one | or the other')).toBe('Pick one | or the other');
+    expect(plainLine('Plan | Price\n--- | ---\nA | 1')).toBe('Plan · Price A · 1');
+    expect(plainLine('| Only |\n|---|\n| one |')).toBe('Only one');
+    expect(plainLine('Intro\n\n---\n\nEnd')).not.toContain('·');
+  });
   it('maps message status to the tick', () => {
     expect(tickOf({ status: 'queued', badge: null } as never)).toBe('waiting');
     expect(tickOf({ status: 'failed', badge: null } as never)).toBe('not_sent');

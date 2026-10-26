@@ -590,6 +590,8 @@ export interface MessageRow {
   actions: ActionChip[] | null;
   /** CR-0059 row 1 (04 §17.1): a rewritten answer's text before "Write this answer again"; null when never rewritten. */
   earlierText?: string | null;
+  /** CR-0062 (04 §17.1–§17.2): the user's 👍 / 👎 on this answer, kept on this PC; null when none. */
+  feedback?: 'good' | 'bad' | null;
   /**
    * R1 T3 (05-1 §5.3.5 parity): the ListPick or TimePick answer this user message gave, derived by main from its AI text
    * (shared/kit/pick.ts `kitPickOf`); null otherwise. A pick with an answer in the chat stays answered.
@@ -861,6 +863,8 @@ export interface Bootstrap {
   features?: FeatureId[];
   /** CR-0060: Settings → About "Version {1.0.3}" (06-2 §6.11). */
   appVersion?: string;
+  /** CR-0061 (X-44): this build is unsigned, for the named test group ("Version {v} · tester build"). */
+  testerBuild?: boolean;
 }
 
 /** 08-1 §3.2 `chat:open` reply. */

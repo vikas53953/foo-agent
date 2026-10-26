@@ -10,7 +10,7 @@ import { FACE_GLYPHS, FIRST_TILES, glyphRef, surpriseName, surpriseTiles, type G
 import { TID } from '../../../shared/testids';
 import type { CardRow, SetupCardPayload } from '../../../shared/types';
 import { invoke } from '../../ipc/client';
-import { useStore } from '../../store/index';
+import { openDialog, useStore } from '../../store/index';
 import { selectFeatureOn } from '../../store/live';
 import { Face } from '../../ui/Face';
 import { Icon } from '../../ui/Icon';
@@ -90,7 +90,13 @@ export function WelcomeCard({ card, time }: { card: CardRow; time: CardTime }) {
           </CardButton>
         </div>
       </CardFrame>
-      <p className={styles.privacy}>{t('setup.welcome.privacy')}</p>
+      <p className={styles.privacy}>
+        {t('setup.welcome.privacy')}{' '}
+        {/* CR-0061: "Privacy details" opens the 06-1 §2.1 dialog (the same one as About → What leaves this PC). */}
+        <button type="button" className={styles.privacyLink} data-testid={TID.setupPrivacyDetails} onClick={() => openDialog('privacy')}>
+          {t('setup.welcome.privacy_details')}
+        </button>
+      </p>
     </div>
   );
 }

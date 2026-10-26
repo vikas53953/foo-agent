@@ -16,9 +16,9 @@ export function layoutNow(): Layout {
   return computeLayout({
     width: window.innerWidth,
     sidebarWidth: selectSidebarWidth(s),
-    rightOpenL: selectRightShellOpen(s),
-    rightOpenOverlay: s.ui.rightShellOpenOverlay,
-    xsPane: s.ui.xsPane,
+    rightOpenL: selectRightShellOpen(s) && !s.ui.panelEmpty,
+    rightOpenOverlay: s.ui.rightShellOpenOverlay && !s.ui.panelEmpty,
+    xsPane: s.ui.panelEmpty && s.ui.xsPane === 'panel' ? 'chat' : s.ui.xsPane,
   });
 }
 
@@ -40,6 +40,8 @@ export function rightShellOverlaysNow(): boolean {
 }
 
 export function setRightShell(open: boolean, opts: { byKeyboard?: boolean } = {}): void {
+  // CR-0061: an empty panel never opens (and the stored open/closed choice is left as it was).
+  if (open && useStore.getState().ui.panelEmpty) return;
   if (rightShellOpenNow() === open) return;
   const focusWasInside = !!document.activeElement?.closest(`[data-testid="${TID.appPanel}"]`);
   toggleRightShell(layoutNow().bp);

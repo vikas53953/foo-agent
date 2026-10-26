@@ -42,7 +42,11 @@ function Caps({ row }: { row: ShortcutRow }) {
 /** The grouped list, shared by the sheet and the Settings page. */
 export function ShortcutList({ query = '', rowTid }: { query?: string; rowTid: 'dialogShortcutsRow' | 'settingsRowShortcuts' }) {
   const features = useStore((s) => s.live.features);
-  const groups = shortcutGroups(features, query);
+  // CR-0061 (X-218 item 9): with nothing in the details panel, its shortcut is not listed (the key does nothing).
+  const panelEmpty = useStore((s) => s.ui.panelEmpty);
+  const groups = shortcutGroups(features, query)
+    .map((g) => (panelEmpty ? { ...g, rows: g.rows.filter((r) => r.id !== 'details') } : g))
+    .filter((g) => g.rows.length > 0);
   const cardsLine = features === null || features.includes(CARDS_LINE_FEATURE);
   if (!groups.length) return <p className={styles.none}>{t('shortcuts.sheet.none', { query })}</p>;
   return (

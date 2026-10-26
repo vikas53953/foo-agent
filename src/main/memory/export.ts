@@ -67,7 +67,7 @@ function entries(dataDir: string): { name: string; bytes: Buffer }[] {
 }
 
 /** A plain zip (deflate, UTF-8 names, no zip64: memory files are small). */
-function zip(files: { name: string; bytes: Buffer }[], now: Date): Buffer {
+export function zip(files: { name: string; bytes: Buffer }[], now: Date): Buffer {
   const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | Math.floor(now.getSeconds() / 2);
   const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
   const local: Buffer[] = [];
