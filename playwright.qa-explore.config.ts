@@ -1,5 +1,5 @@
 // Spec: Vikas 2026-10-26 (exploratory QA of the running app). Its own config so the exploration and the open-defect
-// regressions (red until the builder fixes them) never turn the main e2e suite red, and never touch golden baselines.
+// regressions (red until the builder fixes them) never turn the main e2e suite red. It takes no screenshots baselines at all.
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
@@ -9,5 +9,4 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   reporter: [['list'], ['json', { outputFile: `${process.env.QA_EXPLORE_DIR ?? 'qa-explore-report/latest'}/playwright.json` }]],
-  updateSnapshots: 'none',
 });
