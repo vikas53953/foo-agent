@@ -79,9 +79,6 @@
         "foo",
         "Fri",
         "16",
-        "1",
-        "new",
-        "message",
         "Hi,",
         "I'm",
         "foo.",
@@ -255,8 +252,8 @@
     "total": 16400
   },
   "r5": {
-    "ratio": 0.029962890625,
-    "diffPixels": 30682,
+    "ratio": 0.030138671875,
+    "diffPixels": 30862,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-06.light.diff.png"
