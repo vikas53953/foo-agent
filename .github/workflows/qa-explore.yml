@@ -1,0 +1,57 @@
+# Spec: Vikas 2026-10-26 (exploratory QA of the running product, on Windows where foo ships); 09 (Windows).
+# Runs `pnpm qa:explore` on windows-latest: the crawler, the QA-owned defect regressions and the restart journeys, on the
+# real Electron build with the fake AI (no key, no network). Uploads the HTML report, registry and screenshots.
+# Exit 1 (open defects) is expected until the builder fixes them; the job stays red so nobody mistakes it for a pass.
+name: QA explore (Windows)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to test
+        default: main
+        required: true
+  # TEMPORARY: one run on the QA branch to prove the harness on Windows; removed again before the PR leaves draft.
+  push:
+    branches: [claude/project-thread-gzzs6c]
+
+concurrency:
+  group: qa-explore-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  explore:
+    name: Explore the running app (windows-latest)
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: pnpm qa:explore
+        shell: bash
+        run: pnpm qa:explore --no-build --out qa-explore-report/ci
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-explore-windows
+          path: |
+            qa-explore-report/ci
+            test-results
+          retention-days: 14

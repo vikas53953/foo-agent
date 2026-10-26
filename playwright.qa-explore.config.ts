@@ -1,5 +1,5 @@
 // Spec: Vikas 2026-10-26 (exploratory QA of the running app). Its own config so the exploration and the open-defect
-// regressions (red until the builder fixes them) never turn the main e2e suite red. It takes no screenshots baselines at all.
+// regressions (red until the builder fixes them) never turn the main e2e suite red. It uses no screenshot baselines.
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
