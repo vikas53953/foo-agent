@@ -1,0 +1,1 @@
+/usr/bin/xvfb-run: 200: /home/runner/work/foo-agent/foo-agent/node_modules/.pnpm/electron@44.9.0/node_modules/electron/dist/electron: not found
