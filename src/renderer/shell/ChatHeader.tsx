@@ -12,7 +12,7 @@ import type { ChatRow, JobRow, View } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { closeDialog, navigate, openDialog, setFindOpen, setMenu, setXsPane, update, useStore } from '../store/index';
 import { selectHelpers } from '../store/helpers';
-import { selectAi, selectChatMood, selectConnection, selectFeatureOn, selectNow, selectTypingChatId } from '../store/live';
+import { selectAi, selectChatMood, selectConnection, selectFeatureOn, selectNow, selectTypingChatId, quietHours } from '../store/live';
 import { selectSettings } from '../store/settings';
 import { selectMenu } from '../store/ui';
 import { Avatar, type AvatarMember } from '../ui/Avatar';
@@ -132,7 +132,8 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
         : undefined,
     [chat.kind, chat.memberIds, helpers, agentName],
   );
-  const quiet = settings ? quietUntil(settings.notifications.quiet, now, tz) : null;
+  const quietRule = useStore(quietHours);
+  const quiet = quietRule ? quietUntil(quietRule, now, tz) : null;
   const status = statusLine({
     chat,
     jobs,

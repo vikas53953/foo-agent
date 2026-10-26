@@ -29,12 +29,12 @@
     "constitution/08-functions-and-engine-4.md": "bec89401e62dfd7f2edda8db21a68e0a329278033e960846a5d75446946c43ce",
     "constitution/09-windows.md": "fcd5793534097a7bb37084f216b4de176862c6821c58870a84083695f4089550",
     "constitution/10-acceptance-1.md": "85328dec86eb54d04f2501792915758f89e376df404efbf7b34fcfa14d835dc9",
-    "constitution/10-acceptance-2.md": "2a72e556d364724abb07616621da9350f3f55255830d96ae885b05c6299b4348",
+    "constitution/10-acceptance-2.md": "dc9a172edcba9802a78829f33447f29c859cef48685c5e4f541290e480c7dedc",
     "constitution/11-fidelity.md": "e2933c5638dcd7c7e779c32bb94c518b541c042e048c777c2dad1168a0e9b348",
     "constitution/12-features-r25-r31-1.md": "245851c058fb1c996c6a009b63b8d78fbc67584d2de67e2c869ad53e97a5deee",
     "constitution/12-features-r25-r31-2.md": "5ad445f0950e2c5b3907e587f92819610524b52c60b7d130eeeb63a4b648db1f",
     "constitution/CHANGELOG.md": "ea2638f512ebc100213db9019d94be15586a7d2a41e830e011a7b68d5fc08b2b",
-    "constitution/DECISIONS.md": "600bb2390c84bd7f9564a9ed6f21a21480ab72639a4bc4dd07e0b4ec3e1076ef",
+    "constitution/DECISIONS.md": "f50d0f4093b73d8ceeb92d08f332b1665dbdf334bc5d0349f5f192813bb99bd5",
     "constitution/GAPS.md": "ad07cfd1acf3a7f1fcd97e4e4ee1821f543267da67d021421d1414b630f7cf05",
     "constitution/research/capabilities-sources.md": "aa1c57be0b731b7e77dd5275c3db9c7fc76c1819e52f51881627d4c4be1c2c1f",
     "constitution/research/capabilities.md": "9ea45503d0d2f6dea65915d0bf9f35aa5f2b02a9d7ad9113557284f100684daf",
@@ -56,6 +56,6 @@
     "refs/ux/foo-ux-walkthrough.html": "d5eb3d4a42bce526548be701afaf4585a843e3098af2200d8f0a2c7535778f87",
     "spec-values.json": "143ed27b171b0fb2910065e79de1af36bb8507d6987e21285664a17f0542b286",
     "state-machines.json": "ab7b48b785a63dc92b13a4ce60f1aefcd80411bdb7f27551de680451787b28b4",
-    "trace.csv": "a66192d1a16b9ddc8495fb3be77daba537a889ce3e0b86cd2d6ba1386c77d05d"
+    "trace.csv": "9b43a5404621a52758d8590a0c27b738cf87ef082297e97d539f13adba3a0428"
   }
 }
