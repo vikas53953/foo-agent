@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:12 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:13 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People are switching to UPI because it makes paying faster, cheaper and simpler than cash or cards, and it works on almost any phone with a bank account.\n\nBefore UPI, paying meant carrying cash, hunting for change or waiting for a card machine. Now you scan a QR code or type a phone number, enter your PIN, and the money moves between bank accounts in seconds, at any hour, including Sundays and holidays.\n\nThe 3 main reasons:\n\nIt's free for most people. Paying a shop or sending money to a friend usually costs nothing, while cards and wallets often add fees.\nIt works everywhere. Malls, chai stalls and vegetable carts all take it. One QR code is enough, and the main payment apps work with every major bank.\nIt's simple and fairly safe. You never share card numbers, you approve each payment with your own PIN, and you get an instant record of it.\n\nShopkeepers like it too. There's no change to count and no cash to carry to the bank, and the money lands straight in their account. Once a few shops nearby accept UPI, customers expect it everywhere, so the habit spreads fast.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n6:14 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nKept 3 phones that fit best value under ₹20,000\nComparing price, display, camera, battery and\nWatch live\nStop\n2 min\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  }
+]

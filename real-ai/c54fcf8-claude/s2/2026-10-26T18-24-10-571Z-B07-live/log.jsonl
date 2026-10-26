@@ -1,0 +1,23 @@
+{"t":"2026-10-26T18:24:10.571Z","journey":"B07-live","title":"Watch live, take over, hand back, stop","spec":"AT-058, AT-272, AT-078, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:24:15.843Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:24:15.946Z","i":0,"do":"send","sentAt":1793039055919,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-26T18:24:52.460Z","i":1,"do":"waitReply","firstReplyMs":14626,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking for New Delhi to Agra trains…\nlive checklist\nChecking other train sites\nO\nLook for New Delhi to Agra trains leaving Tue 27\nCompare departure times and durations\nWatch live\nStop\nunder 1 min\n6:24 PM","kit":[],"ms":36514}
+{"t":"2026-10-26T18:24:52.527Z","shot":"01-irctc.png"}
+{"t":"2026-10-26T18:24:52.530Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-26T18:25:37.530Z","i":3,"do":"wait","ok":true,"ms":45000}
+{"t":"2026-10-26T18:25:37.598Z","i":4,"do":"clickIf","found":1,"ok":true,"ms":68}
+{"t":"2026-10-26T18:25:41.598Z","i":5,"do":"wait","ok":true,"ms":4000}
+{"t":"2026-10-26T18:25:41.656Z","shot":"02-live.png"}
+{"t":"2026-10-26T18:25:41.658Z","i":6,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-26T18:25:44.660Z","i":7,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-26T18:25:44.718Z","shot":"03-taken-over.png"}
+{"t":"2026-10-26T18:25:44.720Z","i":8,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-26T18:25:47.720Z","i":9,"do":"wait","ok":true,"ms":3000}
+{"t":"2026-10-26T18:25:47.780Z","shot":"04-handed-back.png"}
+{"t":"2026-10-26T18:25:47.783Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-26T18:25:55.785Z","i":11,"do":"wait","ok":true,"ms":8002}
+{"t":"2026-10-26T18:25:55.842Z","shot":"05-stopped.png"}
+{"t":"2026-10-26T18:25:55.846Z","i":12,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-26T18:25:55.856Z","i":13,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-26T18:25:56.018Z","step":"appLog","lines":14,"dropped":0}
+{"t":"2026-10-26T18:25:56.029Z","step":"aiTurns","turns":11}

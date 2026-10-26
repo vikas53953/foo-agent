@@ -1,0 +1,67 @@
+{
+  "journey": "B05-restart",
+  "title": "Quit mid-job and reopen: job resumes",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T18-20-56-643Z-B05-restart",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793038862045,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 10608,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Checking National Museum, New Delhi…\nlive checklist\nChecking National Museum, New Delhi official site\nN\nN\nLook for opening hours and days closed\nLook for ticket price for Indian visitors\nWatch live\nStop\nunder 1 min\n6:21 PM",
+      "kit": [],
+      "ms": 16721
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 8001
+    },
+    {
+      "i": 4,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5245
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "AT-118: recovery card; job resumes (WAITING → WORKING)",
+      "ok": true,
+      "ms": 8001
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 150005
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

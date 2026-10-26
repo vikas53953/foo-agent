@@ -1,0 +1,17 @@
+{"t":"2026-10-26T18:14:31.045Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:14:36.306Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:14:36.405Z","i":0,"do":"send","sentAt":1793038476375,"sent":true,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-26T18:14:51.557Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":9050,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nKeep 3 phones that fit best value under ₹20,000\nCompare price, display, camera, battery and\nWatch live\nStop\nunder 1 min\n6:14 PM","kit":[],"ms":15152}
+{"t":"2026-10-26T18:14:51.620Z","shot":"01-table.png"}
+{"t":"2026-10-26T18:14:51.622Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":0,"ok":true,"ms":2}
+{"t":"2026-10-26T18:17:21.621Z","i":3,"do":"wait","ok":true,"ms":149999}
+{"t":"2026-10-26T18:17:21.672Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-26T18:17:21.673Z","i":4,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-26T18:17:21.681Z","i":5,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-26T18:17:21.732Z","i":6,"do":"send","sentAt":1793038641719,"sent":true,"before":0,"ok":true,"ms":51}
+{"t":"2026-10-26T18:17:36.841Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":9064,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Realme P3 5G (8GB + 128GB) is the best value at ₹16,999. It has the biggest battery and a sharp 120 Hz screen, but the weakest cameras of the three.\n\nPhone\tPrice\tDisplay\tCamera\tBattery\nRealme P3 5G (8GB + 128GB)\t₹16,999\t6.67 in, 120 Hz\t50 MP + 2 MP rear, 16 MP front\t6000 mAh, 45W\nRealme P2 Pro 5G\t₹17,999\t6.7 in, 120 Hz\t50 MP + 8 MP rear, 32 MP front\t5200 mAh, 80W\nAlcatel V3 Ultra (8GB + 128GB)\t₹18,410\t6.78 in, 120 Hz\t108 MP + 8 MP + 2 MP rear, 32 MP front\t5010 mAh, 33W\nBest camera: Alcatel V3 Ultra, with NFC too, but it costs the most and runs older Android 14.\nFastest charging: Realme P2 Pro 5G, with a stronger chip (Snapdragon 7s Gen 2) and a 32 MP selfie camera.\n\nPrices are from Smartprix, updated Mon 26 Oct 2026, and may differ in shops. I only read the top of their list, so a cheaper option further down could exist.\n\n6:17 PM","kit":[],"ms":15108}
+{"t":"2026-10-26T18:17:36.906Z","shot":"03-trip.png"}
+{"t":"2026-10-26T18:17:36.912Z","i":8,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-26T18:17:36.916Z","step":"recheck","i":4,"do":"check","late":true}
+{"t":"2026-10-26T18:17:37.070Z","step":"appLog","lines":30,"dropped":0}
+{"t":"2026-10-26T18:17:37.081Z","step":"aiTurns","turns":28}

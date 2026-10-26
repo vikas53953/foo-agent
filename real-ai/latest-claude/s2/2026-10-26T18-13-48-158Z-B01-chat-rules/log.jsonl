@@ -1,0 +1,14 @@
+{"t":"2026-10-26T18:13:48.159Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:13:53.376Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:13:53.480Z","i":0,"do":"send","sentAt":1793038433453,"sent":true,"before":0,"ok":true,"ms":102}
+{"t":"2026-10-26T18:14:13.482Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20002}
+{"t":"2026-10-26T18:14:13.532Z","shot":"01-thanks.png"}
+{"t":"2026-10-26T18:14:13.534Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":2}
+{"t":"2026-10-26T18:14:13.606Z","i":3,"do":"send","sentAt":1793038453595,"sent":true,"before":0,"ok":true,"ms":72}
+{"t":"2026-10-26T18:14:30.746Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":8571,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People are switching to UPI because it makes paying faster, cheaper and simpler than cash or cards, and it works on almost any phone with a bank account.\n\nBefore UPI, paying meant carrying cash, hunting for change or waiting for a card machine. Now you scan a QR code or type a phone number, enter your PIN, and the money moves between bank accounts in seconds, at any hour, including Sundays and holidays.\n\nThe 3 main reasons:\n\nIt's free for most people. Paying a shop or sending money to a friend usually costs nothing, while cards and wallets often add fees.\nIt works everywhere. Malls, chai stalls and vegetable carts all take it. One QR code is enough, and the main payment apps work with every major bank.\nIt's simple and fairly safe. You never share card numbers, you approve each payment with your own PIN, and you get an instant record of it.\n\nShopkeepers like it too. There's no change to count and no cash to carry to the bank, and the money lands straight in their account. Once a few shops nearby accept UPI, customers expect it everywhere, so the habit spreads fast.\n\n6:14 PM","kit":[],"ms":17140}
+{"t":"2026-10-26T18:14:30.801Z","shot":"02-long.png"}
+{"t":"2026-10-26T18:14:30.803Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-26T18:14:30.804Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-26T18:14:30.811Z","i":7,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-26T18:14:30.913Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-26T18:14:30.924Z","step":"aiTurns","turns":2}
