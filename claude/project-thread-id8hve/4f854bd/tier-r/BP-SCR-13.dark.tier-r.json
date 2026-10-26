@@ -1,0 +1,103 @@
+{
+  "id": "BP-SCR-13",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0013",
+    "checks": [
+      "r1",
+      "r2",
+      "r3"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "makemytrip.com",
+        "●",
+        "\"You're",
+        "in",
+        "control.",
+        "foo",
+        "is",
+        "paused.\"",
+        "Fields",
+        "blurred."
+      ],
+      "extra": [
+        "Goa",
+        "stay",
+        "·",
+        "step",
+        "3",
+        "of",
+        "4"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-SCR-13",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 383.328125,
+          "height": 236
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 1024,
+          "height": 720
+        },
+        "dPos": 0,
+        "dSize": 640.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-SCR-13",
+        "ref": "#16161C",
+        "app": "#FFFFFF",
+        "deltaE": 89.41,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.5039496393326548,
+    "diffPixels": 45551,
+    "total": 90388,
+    "sizeMismatch": {
+      "a": [
+        383,
+        236
+      ],
+      "b": [
+        1024,
+        720
+      ]
+    },
+    "heatmap": "BP-SCR-13.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-SCR-13.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-SCR-13.dark.png"
+}
