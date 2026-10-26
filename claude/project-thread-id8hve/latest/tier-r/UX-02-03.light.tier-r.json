@@ -90,9 +90,6 @@
         "foo",
         "Fri",
         "16",
-        "1",
-        "new",
-        "message",
         "3:30",
         "AM",
         "I’m",
@@ -233,8 +230,8 @@
     "total": 22272
   },
   "r5": {
-    "ratio": 0.03605859375,
-    "diffPixels": 36924,
+    "ratio": 0.0358466796875,
+    "diffPixels": 36707,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-03.light.diff.png"

@@ -58,6 +58,7 @@
         "3:30",
         "AM",
         "up…",
+        "2",
         "Uses",
         "your",
         "plan",
@@ -78,9 +79,6 @@
         "foo",
         "Fri",
         "16",
-        "1",
-        "new",
-        "message",
         "Hi,",
         "I'm",
         "foo.",
@@ -254,8 +252,8 @@
     "total": 16400
   },
   "r5": {
-    "ratio": 0.0297353515625,
-    "diffPixels": 30449,
+    "ratio": 0.030138671875,
+    "diffPixels": 30862,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-06.light.diff.png"

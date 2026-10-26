@@ -83,9 +83,6 @@
         "foo",
         "Fri",
         "16",
-        "1",
-        "new",
-        "message",
         "3:30",
         "AM",
         "3:30",
@@ -165,7 +162,7 @@
         },
         "app": {
           "x": 356,
-          "y": 322,
+          "y": 282,
           "width": 520,
           "height": 66
         },
@@ -195,8 +192,8 @@
     "total": 28815
   },
   "r5": {
-    "ratio": 0.0325966796875,
-    "diffPixels": 33379,
+    "ratio": 0.031912109375,
+    "diffPixels": 32678,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-05.dark.diff.png"

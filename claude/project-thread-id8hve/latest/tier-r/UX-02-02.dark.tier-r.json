@@ -88,9 +88,6 @@
         "foo",
         "Fri",
         "16",
-        "1",
-        "new",
-        "message",
         "3:30",
         "AM",
         "I’m",
@@ -198,11 +195,11 @@
         },
         "app": {
           "x": 372,
-          "y": 382,
+          "y": 342,
           "width": 488,
           "height": 56
         },
-        "dPos": 89,
+        "dPos": 129,
         "dSize": 192,
         "verdict": "fail"
       }
@@ -223,13 +220,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.05974156891495601,
-    "diffPixels": 6519,
+    "ratio": 0.05973240469208211,
+    "diffPixels": 6518,
     "total": 109120
   },
   "r5": {
-    "ratio": 0.036966796875,
-    "diffPixels": 37854,
+    "ratio": 0.036369140625,
+    "diffPixels": 37242,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-02.dark.diff.png"
