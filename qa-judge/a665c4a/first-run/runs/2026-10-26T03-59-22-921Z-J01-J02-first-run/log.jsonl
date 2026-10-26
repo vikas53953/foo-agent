@@ -1,0 +1,26 @@
+{"t":"2026-10-26T03:59:22.922Z","journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","spec":"07-1 J1, J2; 06-1 §1–§2; AT-005, AT-313, AT-314","exe":"/home/runner/work/foo-agent/foo-agent/node_modules/.pnpm/electron@44.9.0/node_modules/electron/dist/electron"}
+{"t":"2026-10-26T03:59:28.213Z","step":"launch","ok":true}
+{"t":"2026-10-26T03:59:28.616Z","i":0,"do":"wait","expect":"96px face wakes once, wordmark, no flicker","ok":true,"ms":401}
+{"t":"2026-10-26T03:59:28.687Z","shot":"01-splash.png"}
+{"t":"2026-10-26T03:59:28.690Z","i":1,"do":"waitFor","expect":"Welcome card: Hi, I'm foo, Let's go; header says step 1 of 2 (CR-0026 quick first run)","ok":true,"ms":3}
+{"t":"2026-10-26T03:59:28.752Z","shot":"02-welcome.png"}
+{"t":"2026-10-26T03:59:28.906Z","i":2,"do":"click","note":"Let's go starts Find your AI","ok":true,"ms":153}
+{"t":"2026-10-26T03:59:28.910Z","i":3,"do":"waitFor","expect":"Find your AI card, rows test live with shimmer","ok":true,"ms":4}
+{"t":"2026-10-26T03:59:29.047Z","shot":"03-finder-testing.png"}
+{"t":"2026-10-26T03:59:59.052Z","i":4,"do":"wait","expect":"the chosen AI shows works and is pre-selected; others show a clear reason, never \"slow to answer\"","ok":true,"ms":30005}
+{"t":"2026-10-26T03:59:59.126Z","shot":"04-finder-tested.png"}
+{"t":"2026-10-26T03:59:59.129Z","i":5,"do":"text","soft":true,"text":"Step 1 of 2 · foo finds your AI","ok":true,"ms":3}
+{"t":"2026-10-26T03:59:59.130Z","i":6,"do":"check","note":"did any AI pass the first test on its own?","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-26T03:59:59.132Z","i":7,"do":"click","note":"retest the chosen AI alone, only if no AI passed the first test","skipped":"setup-ai-use already showing","ok":true,"ms":2}
+{"t":"2026-10-26T03:59:59.134Z","i":8,"do":"waitFor","expect":"the chosen AI works; Use button shows","ok":true,"ms":2}
+{"t":"2026-10-26T03:59:59.209Z","shot":"05-after-claude-retest.png"}
+{"t":"2026-10-26T03:59:59.308Z","i":9,"do":"click","expect":"chat opens; next setup step (name and face) per J3","ok":true,"ms":99}
+{"t":"2026-10-26T03:59:59.390Z","shot":"06-after-use.png"}
+{"t":"2026-10-26T04:00:02.391Z","i":10,"do":"wait","expect":"step 2 of 2: name card, with Skip the rest in the header","ok":true,"ms":3001}
+{"t":"2026-10-26T04:00:02.451Z","shot":"07-step2.png"}
+{"t":"2026-10-26T04:00:02.525Z","i":11,"do":"clickIf","note":"take the defaults for name, face and vibe so later journeys start in a ready chat","found":1,"ok":true,"ms":74}
+{"t":"2026-10-26T04:00:12.533Z","i":12,"do":"wait","expect":"foo texts first with a warm welcome (J3/J4); composer unlocked","ok":true,"ms":10008}
+{"t":"2026-10-26T04:00:12.604Z","shot":"08-first-chat.png"}
+{"t":"2026-10-26T04:00:12.611Z","i":13,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-26T04:00:12.672Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-26T04:00:12.672Z","step":"aiTurns","ok":false,"error":"Error: Cannot find module '/home/runner/work/foo-agent/foo-agent/node_modules/.pnpm/electron@44.9.0/node_modules/electron/dist/resources/app.asar.unpacked/node_modules/better-sqlite3'\nRequire stack:\n- /home/runner/work/_temp/kit/test/real-pc/foo-drive.js"}

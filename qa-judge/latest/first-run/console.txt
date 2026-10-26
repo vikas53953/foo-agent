@@ -1,1 +1,1 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"/home/runner/work/foo-agent/judge-out/first-run/runs/2026-10-26T03-46-17-412Z-J01-J02-first-run"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"/home/runner/work/foo-agent/judge-out/first-run/runs/2026-10-26T03-59-22-921Z-J01-J02-first-run"}
