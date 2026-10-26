@@ -6,12 +6,12 @@ import { useEffect } from 'react';
 import { Announcer } from './a11y/Announcer';
 import { preloadPages } from './pages/lazyPages';
 import { MainShell } from './shell/MainShell';
-import { RightShell } from './shell/RightShell';
+import { RightShell, usePanelHasContent } from './shell/RightShell';
 import { Shell } from './shell/Shell';
 import { ShellKeys } from './shell/ShellKeys';
 import { loadBootstrap, startClock, wireEvents } from './store/apply';
 import { selectChat } from './store/chats';
-import { useStore } from './store/index';
+import { setPanelEmpty, useStore } from './store/index';
 import { selectOpenChatId } from './store/ui';
 import { FaceRaster } from './ui/FaceRaster';
 
@@ -29,9 +29,11 @@ export function App() {
   }, []);
   const openChatId = useStore(selectOpenChatId);
   const chat = useStore(selectChat(openChatId));
+  const hasPanel = usePanelHasContent(chat ?? null);
+  useEffect(() => setPanelEmpty(!!chat && !hasPanel), [chat, hasPanel]);
   return (
     <>
-      <Shell main={openChatId ? <MainShell chatId={openChatId} /> : null} right={chat ? <RightShell chat={chat} /> : null} />
+      <Shell main={openChatId ? <MainShell chatId={openChatId} /> : null} right={chat && hasPanel ? <RightShell chat={chat} /> : null} />
       <ShellKeys />
       <Announcer />
       <FaceRaster />

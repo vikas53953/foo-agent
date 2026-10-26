@@ -113,6 +113,8 @@ export const TID = {
 
   // app: right shell and app-wide parts (03-shell-2 §3.7, 02-3 §F25.2)
   appPanel: 'app-panel',
+  // CR-0061 (X-218 item 7): the details panel's Kept section.
+  appPanelKept: 'app-panel-kept',
   appPanelClose: 'app-panel-close',
   appPanelBack: 'app-panel-back',
   appPanelDoing: 'app-panel-doing',

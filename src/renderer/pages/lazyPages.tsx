@@ -100,8 +100,10 @@ export function preloadPages(): void {
   preloadKit();
   void loadFirstRun().catch(() => undefined);
   void loadCapDialogs().catch(() => undefined);
-  // CR-0061: and the 👎 and "Why am I getting this?" popovers (AnswerExtras loads them on first open).
-  void Promise.all([import('../messages/FeedbackPopover'), import('../messages/WhyPopover')]).catch(() => undefined);
+  // CR-0061: and the 👎 and "Why am I getting this?" popovers and the reaction picker (loaded on first open).
+  void Promise.all([import('../messages/FeedbackPopover'), import('../messages/WhyPopover'), import('../messages/ReactionPicker')]).catch(
+    () => undefined,
+  );
 }
 
 /** The page frame while its script loads: empty at first, the §0.5 skeleton once `delay-loading` (150ms) has passed. */

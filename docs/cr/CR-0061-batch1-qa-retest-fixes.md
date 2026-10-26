@@ -45,6 +45,9 @@
 4. **F17, the last job words** (QA re-test of #157, 18:38Z): the chat details panel's empty "Kept" section and the
    "job details" in the What leaves this PC AI line. While `pages` is off an empty Kept section is not shown (anything kept
    still is); with `jobs` and `web` off the AI line reads "Your messages go to your AI ({ai})." (X-218 items 7 and 8).
+   With every panel feature off (batch 1) foo's details panel then held only its header and opened on its own during
+   setup (QA re-test of 4f854bd, 18:54Z): X-218 item 9 hides the Details toggle, the default open and the Ctrl+Shift+D row
+   while the panel has nothing to show.
 5. **X-217 item 4 is replaced** by X-218 item 3. Both deferrals (Updates, Repair) and the private-start channel are logged in
    GAPS.
 

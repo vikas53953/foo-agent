@@ -79,6 +79,8 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   // CR-0061: private chats come with their batch (CR-0054); until then the header has no private toggle.
   // GAP: GAPS.md 2026-10-26 "**Open:** starting a private chat" (no channel yet; the toggle waits for `private`)
   const privateOn = useStore(selectFeatureOn('private'));
+  // CR-0061 (X-218 item 9): no Details button while the panel has nothing to show.
+  const panelEmpty = useStore((s) => s.ui.panelEmpty);
   const { bp } = useLayout();
   const now = useStore(selectNow);
   const jobsById = useStore((s) => s.jobs.byId);
@@ -367,16 +369,18 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
           data-testid={TID.chatHeaderFind}
           onClick={() => setFindOpen(!findOpen)}
         />
-        <IconButton
-          icon="PanelRight"
-          label={t('chat_header.panel.label')}
-          tooltip={panelTooltip}
-          pressed={panel.open}
-          aria-expanded={panel.open}
-          aria-keyshortcuts="Control+Shift+D"
-          data-testid={TID.chatHeaderPanel}
-          onClick={(e) => panel.toggle(byKey(e))}
-        />
+        {!panelEmpty && (
+          <IconButton
+            icon="PanelRight"
+            label={t('chat_header.panel.label')}
+            tooltip={panelTooltip}
+            pressed={panel.open}
+            aria-expanded={panel.open}
+            aria-keyshortcuts="Control+Shift+D"
+            data-testid={TID.chatHeaderPanel}
+            onClick={(e) => panel.toggle(byKey(e))}
+          />
+        )}
         <span className={styles.menuAnchor}>
           <IconButton
             icon="MoreHorizontal"

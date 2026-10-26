@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import type {} from '../../src/shared/ipc';
 import { t } from '../../src/shared/copy/t';
 import { TID } from '../../src/shared/testids';
+import { windowSize } from '../fidelity/capture';
 import { aiHome, finderRow } from './ai-step-world';
 import { VERIFY_OK, type FakeLine } from './fakeAi';
 import { launch, testDirs } from './launch';
@@ -25,7 +26,7 @@ const opens = (l: Locator) =>
     () => false,
   );
 
-test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About rows open, no job words, report saved, 👍 / 👎 kept after restart', async () => {
+test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About rows open, no job words, no empty panel, report saved, 👍 / 👎 kept after restart', async () => {
   test.setTimeout(240_000);
   const findings: string[] = [];
   const dirs = testDirs();
@@ -36,6 +37,9 @@ test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About
   let app = await launch(dirs, [], { ...env, FOO_TEST_FIRST_RUN: '1' });
   let page = await app.firstWindow();
   await page.getByTestId(TID.titlebarStrip).waitFor();
+  // At L the details panel opens by default (03-shell-2 §3.7.1): the width where QA saw an empty one open during setup.
+  await windowSize(app, page, 1440, 900);
+  const panelDuringSetup = await opens(page.getByTestId(TID.appPanel));
 
   // 1. The welcome card's "Privacy details" opens what leaves this PC, with only batch-1 services (F07, 06-1 §2.1).
   await page.getByTestId(TID.setupPrivacyDetails).click();
@@ -64,11 +68,22 @@ test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About
 
   // 3. No private-chat toggle while `private` is off (F25).
   if (await page.getByTestId(TID.chatHeaderPrivateToggle).count()) findings.push('the chat header shows a private toggle in batch 1');
-  // The chat details panel shows no empty Kept section: nothing in batch 1 can keep a page (F17).
-  await page.getByTestId(TID.chatHeaderPanel).click();
-  await page.waitForTimeout(400);
-  if (await page.locator('#app-panel-kept-title').count()) findings.push('the details panel shows an empty "Kept" section in batch 1');
-  await page.getByTestId(TID.appPanelClose).click();
+  // The chat details panel has nothing to show in batch 1 (no Kept section, F17), so it never opens: not on its own during
+  // setup, not from a header toggle, not from Ctrl+Shift+D, and the shortcuts sheet does not list the key (X-218 item 9).
+  if (panelDuringSetup || (await page.getByTestId(TID.appPanel).count()))
+    findings.push('an empty details panel opened on its own during setup');
+  if (await page.getByTestId(TID.chatHeaderPanel).count()) findings.push('the chat header shows a Details toggle for an empty panel');
+  await page.keyboard.press('Control+Shift+d');
+  if (await opens(page.getByTestId(TID.appPanel))) {
+    findings.push('Ctrl+Shift+D opens an empty details panel');
+    await page.getByTestId(TID.appPanelClose).click();
+  }
+  await page.keyboard.press('Control+/');
+  if (await opens(page.getByTestId(TID.dialogShortcuts))) {
+    if (await page.locator(`[data-testid="${TID.dialogShortcutsRow}"][data-row-id="details"]`).count())
+      findings.push('the shortcuts sheet lists Ctrl+Shift+D though the details panel is empty');
+    await page.keyboard.press('Escape');
+  }
 
   // 4. A table answer: the chat list reads its cells, never raw | or --- (F24).
   await page.getByTestId(TID.composerField).fill('compare two plans');

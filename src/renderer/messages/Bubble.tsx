@@ -9,7 +9,20 @@
 // aligned like foo's bubbles). R1 T6 (X-180): §6.5 "foo read:" line under the last user bubble, §1.9 Ask about this
 // (`data-ask-about` marks a foo / helper text bubble for the selection pill; §17.4 menu item).
 // 02 §F7.1 "Chat" (CR-0021, X-179): the user bubble grows from the send button, the error bubble shakes once, a picked reaction bounces once, the retry spinner turns into ✓, "Read more" grows, streamed words fade.
-import { memo, useContext, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
+import {
+  lazy,
+  memo,
+  Suspense,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -65,7 +78,6 @@ import { SystemLine } from './Markers';
 import { fooOnlyBlocks } from '../kit/fooOnly';
 import { allSources, inlineText, isRich, parseBlocks, parseWhatsApp, plainText, streamSafe } from './markdownParse';
 import { menuEntries, type MenuAction, type MenuFacts } from './messageMenu';
-import { ReactionPicker } from './ReactionPicker';
 import { requestReveal } from './reveal';
 import { retryOutgoing } from '../composer/send';
 import { voiceTextState } from './voiceRules';
@@ -74,7 +86,11 @@ import { emojiOnly, scriptLang } from './textRules';
 import { copyText } from './linkActions';
 import { VoicePlayer } from './VoicePlayer';
 import { ReadLine, showsReadLine } from './ReadLine'; // R1 T6
+
 import styles from './Bubble.module.css';
+
+// CR-0061: the reaction picker opens on a tap, so it loads then (and is preloaded after the first paint), not in the first script.
+const ReactionPicker = lazy(() => import('./ReactionPicker').then((m) => ({ default: m.ReactionPicker })));
 
 export interface RowCtx {
   chat: ChatRow;
@@ -506,14 +522,16 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
       </div>
       {menu && <Menu entries={menuEntries(facts, run)} anchor={menu} label={t('bubble.toolbar.more')} onClose={() => setMenu(null)} />}
       {picker && (
-        <ReactionPicker
-          anchorRef={bubbleRef}
-          onClose={() => setPicker(false)}
-          onPick={(e) => {
-            setPicker(false);
-            void react(m.chatId, m.id, e);
-          }}
-        />
+        <Suspense fallback={null}>
+          <ReactionPicker
+            anchorRef={bubbleRef}
+            onClose={() => setPicker(false)}
+            onPick={(e) => {
+              setPicker(false);
+              void react(m.chatId, m.id, e);
+            }}
+          />
+        </Suspense>
       )}
     </BubbleCtx.Provider>
   );

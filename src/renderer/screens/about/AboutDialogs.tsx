@@ -31,7 +31,7 @@ export function useLeavesLines(firstRun: boolean): string[] {
   const ai = useStore(selectAi);
   const on = useStore((s) => SERVICES.map((x) => selectFeatureOn(x.feature)(s)).join(','));
   const shown = SERVICES.filter((_, i) => on.split(',')[i] === 'true');
-  // CR-0063 (X-220): with jobs and web off foo only chats, so the line names messages only (no job details, no sites).
+  // CR-0061 (X-218 item 8): with jobs and web off foo only chats, so the line names messages only (no job details, no sites).
   const acts = useStore((st) => selectFeatureOn('jobs')(st) || selectFeatureOn('web')(st));
   const name = ai?.primary ? ai.displayName : null;
   const aiLine = acts
