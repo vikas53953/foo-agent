@@ -1,0 +1,12 @@
+{"t":"2026-10-26T18:15:12.752Z","journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","spec":"07-1 J10; 05 approval card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:15:17.943Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:15:18.045Z","i":0,"do":"send","sentAt":1793038518018,"sent":true,"before":0,"ok":true,"ms":99}
+{"t":"2026-10-26T18:15:32.203Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8046,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dates for the 2 nights in Goa?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nWeekend after this one\n2\nSat 7 Nov to Mon 9 Nov\nWeekend after this one\n3\nFri 30 Oct to Sun 1 Nov\nThis coming weekend\n4\nSat 31 Oct to Mon 2 Nov\nThis coming weekend\nSomething else…\nSkip\n6:15 PM","kit":[],"ms":14158}
+{"t":"2026-10-26T18:15:32.267Z","shot":"01-hotel.png"}
+{"t":"2026-10-26T18:15:32.269Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":0,"ok":true,"ms":2}
+{"t":"2026-10-26T18:18:32.275Z","i":3,"do":"wait","ok":true,"ms":180006}
+{"t":"2026-10-26T18:18:32.334Z","shot":"02-hotel-working.png"}
+{"t":"2026-10-26T18:18:32.338Z","i":4,"do":"check","found":0,"ok":false,"ms":4}
+{"t":"2026-10-26T18:18:32.348Z","i":5,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-26T18:18:32.463Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-26T18:18:32.473Z","step":"aiTurns","turns":2}

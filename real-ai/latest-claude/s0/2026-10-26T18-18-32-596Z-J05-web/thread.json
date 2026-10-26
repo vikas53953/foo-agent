@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and your traffic travels through it.\n\nNormally, websites see your address and your internet provider can see where you go. With a VPN, your data is scrambled before it leaves your phone or laptop, then unscrambled at the VPN's computer, which sends it on to the website. So the website sees the VPN's address, not yours, and your provider or a café Wi-Fi owner sees only scrambled data.\n\nIt helps on public Wi-Fi and for keeping your browsing away from your provider. It doesn't make you anonymous: the VPN company can see your traffic instead, so pick one you trust.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n6:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or mud\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n6:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trail running under ₹5,000, what matters most to you?\n1\nGrip in mud\nBEST FIT\nDeep lugs for wet, slippery ground\n2\nCushioning\nSofter feel for longer runs\n3\nLightweight\nQuicker, less bulky feel\n4\nDurability\nLasts through rough ground\nSomething else…\nSkip\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n6:15 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dates for the 2 nights in Goa?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nWeekend after this one\n2\nSat 7 Nov to Mon 9 Nov\nWeekend after this one\n3\nFri 30 Oct to Sun 1 Nov\nThis coming weekend\n4\nSat 31 Oct to Mon 2 Nov\nThis coming weekend\nSomething else…\nSkip\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n6:18 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Mon 19 Oct to Mon 26 Oct\nCompare stories across sources, with links\nWatch live\nStop\nunder 1 min\n6:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:18 PM"
+  }
+]

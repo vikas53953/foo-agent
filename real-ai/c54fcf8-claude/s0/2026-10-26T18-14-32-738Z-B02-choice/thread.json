@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What shall we sort out today?\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and websites, set up repeating checks, and help with bookings and bills, always asking before I send, book or pay.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and your traffic travels through it.\n\nNormally, websites see your address and your internet provider can see where you go. With a VPN, your data is scrambled before it leaves your phone or laptop, then unscrambled at the VPN's computer, which sends it on to the website. So the website sees the VPN's address, not yours, and your provider or a café Wi-Fi owner sees only scrambled data.\n\nIt helps on public Wi-Fi and for keeping your browsing away from your provider. It doesn't make you anonymous: the VPN company can see your traffic instead, so pick one you trust.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n6:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or mud\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n6:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trail running under ₹5,000, what matters most to you?\n1\nGrip in mud\nBEST FIT\nDeep lugs for wet, slippery ground\n2\nCushioning\nSofter feel for longer runs\n3\nLightweight\nQuicker, less bulky feel\n4\nDurability\nLasts through rough ground\nSomething else…\nSkip\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  }
+]
