@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Anthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Mon 26 Oct\nReplace\nRemove\n10:58 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:58 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n10:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, kaise ho?\n10:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise ho? Kuch kaam hai?\n\n10:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n10:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi apne dost se: \"Yaar, meri biwi mujhe Superman samajhti hai.\"\nDost: \"Wow, kitna accha hai!\"\nAadmi: \"Haan, har kaam ke liye mujhe hi bulati hai.\" 😄\n\n10:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n11:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n11:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n11:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Noted: Vegetarian.\n\n11:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n11:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n11:00 PM"
+  }
+]

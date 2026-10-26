@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n10:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n10:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Indian Railways ticket booking is at irctc.co.in. For train running status and enquiries, try indianrail.gov.in.\n\n10:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n10:53 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend activity sounds best in Bengaluru? → Nandi Hills sunrise\n10:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n10:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nandi Hills sunrise it is. Leave by about 4:00 AM so you get there before the crowd, and carry a light jacket because it's cold on top. Want a reminder on Fri 30 Oct, 9:00 PM, to sleep early?\n\n10:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n10:54 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight, South Indian, quick\n2\nPaneer butter masala with naan\nRich North Indian comfort\n3\nVegetable biryani with raita\nFilling, one-pot style\nSomething else…\nSkip\n10:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n10:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good call for a late Monday night. Want a quick 20-minute recipe?\n\n10:54 PM"
+  }
+]

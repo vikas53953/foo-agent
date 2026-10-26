@@ -1,0 +1,15 @@
+{"t":"2026-10-26T22:58:06.135Z","journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","spec":"10-2 §C.9 Rich replies (X-180)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T22:58:11.770Z","step":"launch","ok":true}
+{"t":"2026-10-26T22:58:12.822Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1049}
+{"t":"2026-10-26T22:58:12.972Z","i":1,"do":"send","sentAt":1793055492923,"sent":true,"before":0,"ok":true,"ms":149}
+{"t":"2026-10-26T22:58:32.211Z","i":2,"do":"waitReply","expect":"an AI page / kit card opens with the tracker","firstReplyMs":6049,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Here's a water tracker with a goal of 8 glasses. Tap + after each glass and it resets by itself each day.\n\nKeep\n\nWant a reminder to drink water every 2 hours during the day?\n\n10:58 PM","kit":["kit-keep"],"endState":false,"ms":19238}
+{"t":"2026-10-26T22:58:32.288Z","shot":"01-ai-page.png"}
+{"t":"2026-10-26T22:58:32.290Z","i":3,"do":"check","note":"AI page card","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-26T22:58:32.291Z","i":4,"do":"check","note":"action chips under the reply","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-26T22:58:32.375Z","i":5,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-26T22:58:33.178Z","i":6,"do":"wait","expect":"reply chip fills the composer","ok":true,"ms":802}
+{"t":"2026-10-26T22:58:33.237Z","shot":"02-chip-fills.png"}
+{"t":"2026-10-26T22:58:33.259Z","i":7,"do":"fill","soft":true,"ok":true,"ms":21}
+{"t":"2026-10-26T22:58:33.273Z","i":8,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-26T22:58:33.436Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-26T22:58:33.448Z","step":"aiTurns","turns":1}

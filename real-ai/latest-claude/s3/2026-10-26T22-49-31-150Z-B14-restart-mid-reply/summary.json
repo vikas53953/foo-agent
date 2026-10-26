@@ -1,0 +1,91 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T22-49-31-150Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793054984877,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3000
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5241
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 506,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "That reply got cut off.\nTry again\n10:49 PM",
+      "kit": [],
+      "ms": 6036
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n10:49 PM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793054999367,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 138
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2000
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5265
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 10059,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dosa is a good name for a tortoise: round, slow and best taken with patience. Other picks are Turbo (ironic), Pickle or Shelly.\n\nI can't see today's headlines from here, so I won't guess the biggest story. Want me to look it up on the web?\n\n10:50 PM",
+      "kit": [],
+      "ms": 16594
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

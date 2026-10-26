@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n10:41 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:41 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n10:41 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:41 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n10:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n10:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Wed 28 Oct hai, toh cake aaj ya kal tak order kar do, taaki time par pahunch jaye. Kuch achhe options:\n\nRasmalai cake: halka aur desi, mummy ko aksar pasand aata hai\nChocolate truffle: sabka favourite, kabhi galat nahi jaata\nButterscotch ya pineapple: purana classic\nPhoto cake: mummy ki pasandida photo ke saath, thoda special\nEggless ya sugar-free: agar ghar mein parhez ho\n\nMummy ko meetha kaunsa zyada pasand hai, chocolate ya fruity?\n\n10:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n10:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਜੇ ਪੱਕਾ ਨਹੀਂ ਪਤਾ, ਤਾਂ ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। ਜੇ ਮੰਮੀ ਨੂੰ ਹਲਕੀ ਤੇ ਦੇਸੀ ਮਿਠਾਸ ਪਸੰਦ ਹੈ, ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ।\n\nਜੇ ਕੁਝ ਖਾਸ ਕਰਨਾ ਹੈ, ਤਾਂ ਉਨ੍ਹਾਂ ਦੀ ਪਸੰਦੀਦਾ ਫੋਟੋ ਵਾਲਾ ਕੇਕ ਬਣਵਾ ਲਓ। ਬੁੱਧਵਾਰ Wed 28 Oct ਨੂੰ ਪਹੁੰਚਾਉਣ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ।\n\n10:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n10:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so banks and offices should be open as usual. The next big ones are Diwali around Sun 8 Nov and Guru Nanak Jayanti around Tue 24 Nov. I can't see the official Maharashtra holiday list from here, so check it if something important depends on that day.\n\n10:43 PM"
+  }
+]
