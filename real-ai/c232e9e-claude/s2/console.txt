@@ -1,0 +1,14 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-00-41-789Z-J01-J02-first-run"}
+{"journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-01-32-724Z-B01-chat-rules"}
+{"journey":"R1-rich","title":"Rich replies: table, steps, numbers","steps":9,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-02-23-733Z-R1-rich"}
+{"journey":"B06-booking-options","title":"Restaurant options without booking","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-05-42-887Z-B06-booking-options"}
+{"journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-09-20-495Z-B05-restart"}
+{"journey":"B07-live","title":"Watch live, take over, hand back, stop","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-12-38-950Z-B07-live"}
+{"journey":"B11-zoom-appearance","title":"Zoom keys, settings rows","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-14-09-972Z-B11-zoom-appearance"}
+{"journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","steps":17,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-14-32-320Z-U03-select-delete"}
+{"journey":"U07-composer","title":"Composer: multi-line, attach menu, emoji, Esc, draft kept after restart","steps":18,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-15-07-459Z-U07-composer"}
+{"journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","steps":16,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-15-24-097Z-U11-approval-states"}
+{"journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-20-56-066Z-U15-routines"}
+{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-21-48-696Z-U18-new-helper-group"}
+{"journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-22-04-821Z-U22-face-polish"}
+{"journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T06-22-56-604Z-U26-crash-reopen"}
