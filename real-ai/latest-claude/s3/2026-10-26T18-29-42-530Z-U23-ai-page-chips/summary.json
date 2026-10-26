@@ -1,0 +1,85 @@
+{
+  "journey": "U23-ai-page-chips",
+  "title": "AI page, action chips, reply chips",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T18-29-42-530Z-U23-ai-page-chips",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793039389250,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "an AI page / kit card opens with the tracker",
+      "firstReplyMs": 9577,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Here's your water tracker. Tap a glass to fill it, and it counts toward your goal of 8.\n\nKeep\n\nIt starts fresh each day if your device lets the page remember things. Want a reminder every two hours to drink up?\n\n6:29 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": false,
+      "ms": 22744
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "AI page card",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "action chips under the reply",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "reply chip fills the composer",
+      "ok": true,
+      "ms": 800
+    },
+    {
+      "i": 7,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 43
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

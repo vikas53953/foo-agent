@@ -1,0 +1,14 @@
+{"t":"2026-10-26T18:14:28.954Z","journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","spec":"07-1 J7; walkthrough ch. 08; AT-031","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:14:34.395Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:14:34.535Z","i":0,"do":"send","sentAt":1793038474498,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-26T18:14:49.203Z","i":1,"do":"waitReply","expect":"walkthrough 08 step 4: answers in Hinglish","firstReplyMs":5551,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Parso Wed 28 Oct hai, toh cake ek din pehle, Tue 27 Oct tak order kar do, taaki time pe mil jaye. Kuch achhe options:\n\nChocolate truffle: Sabko pasand aata hai, galti ki gunjaish kam.\nRasmalai cake: Desi twist, mummy ke liye special lagta hai.\nFresh fruit cake: Halka hai, agar mummy ko meetha kam pasand hai.\nButterscotch ya pineapple: Purana classic, hamesha chalta hai.\n\nMummy ko kaunsa flavour sabse zyada pasand hai? Fir main options dhoondh deta hoon.\n\n6:14 PM","kit":[],"ms":14668}
+{"t":"2026-10-26T18:14:49.272Z","shot":"01-hinglish.png"}
+{"t":"2026-10-26T18:14:49.407Z","i":2,"do":"send","sentAt":1793038489382,"sent":true,"before":0,"ok":true,"ms":135}
+{"t":"2026-10-26T18:15:01.557Z","i":3,"do":"waitReply","expect":"walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi","firstReplyMs":6051,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mummy ko kaunsa cake flavour pasand hai?\n1\nChocolate truffle\nBEST FIT\nSabki pasand, safe choice\n2\nRasmalai cake\nDesi twist, special lagta hai\n3\nFresh fruit cake\nHalka aur kam meetha\n4\nButterscotch ya pineapple\nPurana classic\nSomething else…\nSkip\n6:14 PM","kit":[],"ms":12150}
+{"t":"2026-10-26T18:15:01.618Z","shot":"02-punjabi.png"}
+{"t":"2026-10-26T18:15:01.713Z","i":4,"do":"send","sentAt":1793038501692,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-10-26T18:15:14.859Z","i":5,"do":"waitReply","expect":"walkthrough 08 step 3: short 1–3 bubbles, no filler","firstReplyMs":6047,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"No, Mon 2 Nov doesn't look like a public holiday in Mumbai, though I can't check the official list from here. The big one that week is Diwali, around Sun 8 Nov, so banks and offices should be open on Mon 2 Nov. Want me to look up the Maharashtra holiday list to be sure?\n\n6:15 PM","kit":[],"ms":13145}
+{"t":"2026-10-26T18:15:14.929Z","shot":"03-holiday.png"}
+{"t":"2026-10-26T18:15:14.937Z","i":6,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-26T18:15:15.064Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-26T18:15:15.077Z","step":"aiTurns","turns":3}

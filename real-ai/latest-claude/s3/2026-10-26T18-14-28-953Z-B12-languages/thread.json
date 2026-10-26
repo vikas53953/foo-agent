@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:13 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:13 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Wed 28 Oct hai, toh cake ek din pehle, Tue 27 Oct tak order kar do, taaki time pe mil jaye. Kuch achhe options:\n\nChocolate truffle: Sabko pasand aata hai, galti ki gunjaish kam.\nRasmalai cake: Desi twist, mummy ke liye special lagta hai.\nFresh fruit cake: Halka hai, agar mummy ko meetha kam pasand hai.\nButterscotch ya pineapple: Purana classic, hamesha chalta hai.\n\nMummy ko kaunsa flavour sabse zyada pasand hai? Fir main options dhoondh deta hoon.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n6:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Mummy ko kaunsa cake flavour pasand hai?\n1\nChocolate truffle\nBEST FIT\nSabki pasand, safe choice\n2\nRasmalai cake\nDesi twist, special lagta hai\n3\nFresh fruit cake\nHalka aur kam meetha\n4\nButterscotch ya pineapple\nPurana classic\nSomething else…\nSkip\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n6:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov doesn't look like a public holiday in Mumbai, though I can't check the official list from here. The big one that week is Diwali, around Sun 8 Nov, so banks and offices should be open on Mon 2 Nov. Want me to look up the Maharashtra holiday list to be sure?\n\n6:15 PM"
+  }
+]

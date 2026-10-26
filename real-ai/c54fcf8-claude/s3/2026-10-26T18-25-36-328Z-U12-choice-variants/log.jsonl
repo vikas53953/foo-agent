@@ -1,0 +1,22 @@
+{"t":"2026-10-26T18:25:36.329Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:25:41.912Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:25:42.942Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1026}
+{"t":"2026-10-26T18:25:43.070Z","i":1,"do":"send","sentAt":1793039143033,"sent":true,"before":0,"ok":true,"ms":128}
+{"t":"2026-10-26T18:25:54.741Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":5543,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which kind of weekend do you feel like?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, back by brunch\n2\nCubbon Park and Church Street\nEasy walk, then food and coffee\n3\nBrewery crawl in Indiranagar\nRelaxed evening with friends\nSomething else…\nSkip\n6:25 PM","kit":[],"ms":11670}
+{"t":"2026-10-26T18:25:54.806Z","shot":"01-choice.png"}
+{"t":"2026-10-26T18:25:54.909Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":103}
+{"t":"2026-10-26T18:25:55.034Z","i":4,"do":"send","sentAt":1793039154992,"sent":true,"before":0,"ok":true,"ms":125}
+{"t":"2026-10-26T18:26:08.171Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":7042,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best?\n1\nCubbon Park and Church Street\nBEST FIT\nGreen walk by day, cafés after\n2\nCubbon Park morning walk\nSlow, shaded and easy on the wallet\n3\nChurch Street evening\nCafés, bookshops and people-watching\nSomething else…\nSkip\n6:26 PM","kit":[],"ms":13136}
+{"t":"2026-10-26T18:26:08.244Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-26T18:26:08.360Z","i":6,"do":"send","sentAt":1793039168329,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-26T18:26:17.967Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":3528,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nBiryani\nBEST FIT\nHyderabadi-style, hearty and filling\n2\nDosa and chutneys\nLight and quick South Indian\n3\nPaneer tikka with naan\nNorth Indian, a bit indulgent\nSomething else…\nSkip\n6:26 PM","kit":[],"ms":9607}
+{"t":"2026-10-26T18:26:18.036Z","shot":"04-choice-2.png"}
+{"t":"2026-10-26T18:26:18.109Z","i":8,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-26T18:26:18.711Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":601}
+{"t":"2026-10-26T18:26:18.772Z","shot":"05-something-else.png"}
+{"t":"2026-10-26T18:26:18.867Z","i":10,"do":"send","sentAt":1793039178853,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-10-26T18:26:30.025Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":4032,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, a solid Monday night choice. 🌿 Want a quick tadka idea to lift it?\n\n6:26 PM","kit":[],"ms":11157}
+{"t":"2026-10-26T18:26:30.084Z","shot":"06-own-answer.png"}
+{"t":"2026-10-26T18:26:30.095Z","i":12,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-26T18:26:30.216Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-26T18:26:30.229Z","step":"aiTurns","turns":4}

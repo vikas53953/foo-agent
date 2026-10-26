@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below: add what you spend, see the month's total, and watch it against a budget. Entries stay only while this page is open, so don't close it before you've noted what you need.\n\nKeep\n\nWant me to add a monthly export or a category-wise budget next?\n\n6:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n6:17 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:17 PM\n6:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:17 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Booking table for 2, Tue 27 Oct, 8:00 PM\nlive checklist\n2 steps done · Show\nYou picked\nShowed you before booking the table\nYou said yes\nBooked table for 2, Tue 27 Oct, 8:00 PM\nStopped by you\n6:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:17 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Tue 27 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n6:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n6:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Turbo is my pick, because the joke never gets old. Other good ones: Gulab Jamun, Sheldon, Dhimu.\n\nI can't see today's news from here, so I won't guess at the biggest story. I can look it up if you'd like.\n\n6:22 PM"
+  }
+]

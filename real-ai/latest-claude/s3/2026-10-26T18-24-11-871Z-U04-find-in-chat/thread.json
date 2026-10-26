@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Turbo is my pick, because the joke never gets old. Other good ones: Gulab Jamun, Sheldon, Dhimu.\n\nI can't see today's news from here, so I won't guess at the biggest story. I can look it up if you'd like.\n\n6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n6:22 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:22 PM\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n6:23 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Read your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n6:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n6:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group should I catch you up on? Tell me its name and I'll read what's new there.\n\n6:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n6:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n6:24 PM"
+  }
+]

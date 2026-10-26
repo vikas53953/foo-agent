@@ -1,0 +1,21 @@
+{"t":"2026-10-26T18:24:31.796Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T18:24:37.328Z","step":"launch","ok":true}
+{"t":"2026-10-26T18:24:38.379Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-26T18:24:38.531Z","i":1,"do":"send","sentAt":1793039078485,"sent":true,"before":0,"ok":true,"ms":151}
+{"t":"2026-10-26T18:24:51.124Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","firstReplyMs":5555,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with Python. Want a slightly bigger one that takes your name?\n\n6:24 PM","kit":[],"ms":12593}
+{"t":"2026-10-26T18:24:51.200Z","shot":"01-code.png"}
+{"t":"2026-10-26T18:24:51.287Z","i":3,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-26T18:24:51.397Z","i":4,"do":"send","sentAt":1793039091379,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-26T18:25:01.492Z","i":5,"do":"waitReply","expect":"table renders as a table (CR-0053), not raw pipes","firstReplyMs":3028,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are three states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n6:24 PM","kit":[],"ms":10094}
+{"t":"2026-10-26T18:25:01.555Z","shot":"02-table.png"}
+{"t":"2026-10-26T18:25:01.675Z","i":6,"do":"send","sentAt":1793039101638,"sent":true,"before":0,"ok":true,"ms":120}
+{"t":"2026-10-26T18:25:12.352Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","firstReplyMs":3026,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Indian Railways ticket site is IRCTC. For train running status and PNR checks, try Indian Railways enquiry.\n\n6:25 PM","kit":[],"ms":10677}
+{"t":"2026-10-26T18:25:12.414Z","shot":"03-link.png"}
+{"t":"2026-10-26T18:25:35.476Z","shot":"04-error-step8.png"}
+{"t":"2026-10-26T18:25:35.476Z","i":8,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-26T18:25:35.977Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":501}
+{"t":"2026-10-26T18:25:36.039Z","shot":"05-link-menu.png"}
+{"t":"2026-10-26T18:25:36.043Z","i":10,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-26T18:25:36.054Z","i":11,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-26T18:25:36.172Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-26T18:25:36.184Z","step":"aiTurns","turns":4}
