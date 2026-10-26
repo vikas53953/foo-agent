@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n9:28 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for Delhi to Mumbai flights on…\n1\nLook for Delhi to Mumbai flights on Fri 30 Oct\n2\nCheck flight booking sites\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 cheapest flights\nAbout 4 minutes\nGo\nChange plan\n9:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the top 3 news headlines in India today\n9:28 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking major Indian news sites\nlive checklist\nChecking major Indian news sites\nM\nLook for top stories in India today, Mon 26 Oct\nKeep 3 headlines that fit most covered across sites\nWatch live\nStop\nunder 1 min\n9:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:28 PM"
+  }
+]

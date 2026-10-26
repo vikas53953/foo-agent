@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n9:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I've got it noted from earlier today. Craving a dosa yet? 🌿\n\n9:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n9:19 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecking isro.gov.in, pib.gov.in, thehindu.com\nI\nP\nT\nWrite it\nWatch live\nStop\n2 min\n9:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:19 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry thehindu.com instead\nTry another way\nTake over\nStop\n9:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:22 PM"
+  }
+]

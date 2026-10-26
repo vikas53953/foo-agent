@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n9:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 go for 16 GB RAM, a 512 GB SSD and a recent 6 to 8 core processor. Those three matter far more than a flashy graphics card.\n\nRAM: 16 GB is the minimum. A free slot to reach 32 GB later is a bonus.\nProcessor: Ryzen 5 or 7, or Intel Core i5 or Ultra 5, from the last two years.\nScreen and keyboard: 14 to 15.6 inch full HD, with a keyboard you like typing on all day.\nBattery: 8 hours or more of real use.\nGraphics card: Skip it unless you plan to train machine learning projects.\n\nA base MacBook Air can also land near this budget during sales, if you're open to macOS. What will you mostly build: websites, apps or machine learning?\n\n9:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n9:25 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n9:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n9:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n9:26 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n9:26 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:27 PM\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks that fit easy difficulty only, doable in a\nCompared difficulty and cost of the 5 easy treks\nStopped by you\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n9:27 PM"
+  }
+]

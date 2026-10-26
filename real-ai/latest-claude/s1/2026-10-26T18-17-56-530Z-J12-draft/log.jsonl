@@ -1,9 +1,0 @@
-{"t":"2026-10-26T18:17:56.531Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-26T18:18:02.108Z","step":"launch","ok":true}
-{"t":"2026-10-26T18:18:02.233Z","i":0,"do":"send","sentAt":1793038682202,"sent":true,"before":0,"ok":true,"ms":122}
-{"t":"2026-10-26T18:18:26.567Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":14599,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Here's your draft for someone@example.com. It's text only, nothing is sent.\n\nSubject: Running 15 minutes late tomorrow\n\nHi,\n\nI'll be about 15 minutes late to tomorrow's meeting. Please start without me if needed, and I'll join as soon as I can.\n\nThanks!\n\nWant it shorter or more formal?\n\n6:18 PM\n---\nI’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:18 PM","kit":[],"ms":24334}
-{"t":"2026-10-26T18:18:26.633Z","shot":"01-draft.png"}
-{"t":"2026-10-26T18:18:26.635Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
-{"t":"2026-10-26T18:18:26.642Z","i":3,"do":"dump","ok":true,"ms":7}
-{"t":"2026-10-26T18:18:26.845Z","step":"appLog","lines":9,"dropped":0}
-{"t":"2026-10-26T18:18:26.858Z","step":"aiTurns","turns":2}

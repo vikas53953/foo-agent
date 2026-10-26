@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n9:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n9:26 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n9:26 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:27 PM\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks that fit easy difficulty only, doable in a\nCompared difficulty and cost of the 5 easy treks\nStopped by you\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n9:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n9:28 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for Delhi to Mumbai flights on…\n1\nLook for Delhi to Mumbai flights on Fri 30 Oct\n2\nCheck flight booking sites\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 cheapest flights\nAbout 4 minutes\nGo\nChange plan\n9:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:28 PM"
+  }
+]

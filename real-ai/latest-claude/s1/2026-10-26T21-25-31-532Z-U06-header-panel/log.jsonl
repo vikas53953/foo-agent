@@ -1,0 +1,27 @@
+{"t":"2026-10-26T21:25:31.533Z","journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","spec":"03-2 §3.6, 10-2 §C.2 Headers / Right shell","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T21:25:37.157Z","step":"launch","ok":true}
+{"t":"2026-10-26T21:25:38.208Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-26T21:25:38.273Z","shot":"01-header.png"}
+{"t":"2026-10-26T21:25:38.273Z","i":1,"do":"shot","expect":"header 60px: face, name, status line, find, details toggle, ⋮","ok":true,"ms":65}
+{"t":"2026-10-26T21:25:38.374Z","i":2,"do":"click","soft":true,"ok":true,"ms":101}
+{"t":"2026-10-26T21:25:38.876Z","i":3,"do":"wait","expect":"header ⋮ menu items","ok":true,"ms":501}
+{"t":"2026-10-26T21:25:38.942Z","shot":"02-more-menu.png"}
+{"t":"2026-10-26T21:25:38.948Z","i":4,"do":"key","ok":true,"ms":6}
+{"t":"2026-10-26T21:25:38.970Z","i":5,"do":"key","expect":"details panel toggles (Ctrl+Shift+D)","ok":true,"ms":22}
+{"t":"2026-10-26T21:25:39.071Z","shot":"03-panel-toggle.png"}
+{"t":"2026-10-26T21:25:39.872Z","i":6,"do":"wait","expect":"right panel: Doing now, Using, What I know, Spent this month (AI ₹1,000 / purchases ₹25,000)","ok":true,"ms":800}
+{"t":"2026-10-26T21:25:39.943Z","shot":"04-panel.png"}
+{"t":"2026-10-26T21:25:40.024Z","i":7,"do":"shotEl","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-26T21:25:40.099Z","i":8,"do":"shotEl","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-26T21:25:40.195Z","i":9,"do":"shotEl","soft":true,"ok":true,"ms":95}
+{"t":"2026-10-26T21:26:03.285Z","shot":"08-error-step10.png"}
+{"t":"2026-10-26T21:26:03.285Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23090}
+{"t":"2026-10-26T21:26:04.086Z","i":11,"do":"wait","expect":"memory page opens","ok":true,"ms":801}
+{"t":"2026-10-26T21:26:04.163Z","shot":"09-know-all.png"}
+{"t":"2026-10-26T21:26:27.226Z","shot":"10-error-step12.png"}
+{"t":"2026-10-26T21:26:27.227Z","i":12,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23064}
+{"t":"2026-10-26T21:26:27.238Z","i":13,"do":"key","expect":"panel hidden again","ok":true,"ms":11}
+{"t":"2026-10-26T21:26:27.319Z","shot":"11-panel-hidden.png"}
+{"t":"2026-10-26T21:26:27.330Z","i":14,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-26T21:26:27.457Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-26T21:26:27.469Z","step":"aiTurns","turns":0}

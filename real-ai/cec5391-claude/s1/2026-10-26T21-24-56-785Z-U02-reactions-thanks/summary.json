@@ -1,0 +1,102 @@
+{
+  "journey": "U02-reactions-thanks",
+  "title": "Reactions: foo thumbs-up on thanks, react and un-react",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T21-24-56-785Z-U02-reactions-thanks",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1053
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793049903477,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 168
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "answer 144",
+      "firstReplyMs": 3522,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "12 times 12 is 144.\n\n9:25 PM",
+      "kit": [],
+      "ms": 10558
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1793049914221,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "foo adds a 👍 reaction on my thanks and posts no message (AT-027)",
+      "ok": true,
+      "ms": 15001
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "foo reacted to my thanks",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 872
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "more emoji",
+      "ok": true,
+      "ms": 701
+    },
+    {
+      "i": 10,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T21-24-11-446Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793049865557,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 154
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 10064,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 go for 16 GB RAM, a 512 GB SSD and a recent 6 to 8 core processor. Those three matter far more than a flashy graphics card.\n\nRAM: 16 GB is the minimum. A free slot to reach 32 GB later is a bonus.\nProcessor: Ryzen 5 or 7, or Intel Core i5 or Ultra 5, from the last two years.\nScreen and keyboard: 14 to 15.6 inch full HD, with a keyboard you like typing on all day.\nBattery: 8 hours or more of real use.\nGraphics card: Skip it unless you plan to train machine learning projects.\n\nA base MacBook Air can also land near this budget during sales, if you're open to macOS. What will you mostly build: websites, apps or machine learning?\n\n9:24 PM",
+      "kit": [],
+      "ms": 19130
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 2,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}
