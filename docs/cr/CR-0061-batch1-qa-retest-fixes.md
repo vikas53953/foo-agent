@@ -42,7 +42,10 @@
      batch 3).
    - **Version line:** "Version {v} · tester build" while builds are unsigned (X-44, `UNSIGNED_BUILD` in
      `src/main/about/report.ts`, flipped by the release that signs the installer).
-4. **X-217 item 4 is replaced** by X-218 item 3. Both deferrals (Updates, Repair) and the private-start channel are logged in
+4. **F17, the last job words** (QA re-test of #157, 18:38Z): the chat details panel's empty "Kept" section and the
+   "job details" in the What leaves this PC AI line. While `pages` is off an empty Kept section is not shown (anything kept
+   still is); with `jobs` and `web` off the AI line reads "Your messages go to your AI ({ai})." (X-218 items 7 and 8).
+5. **X-217 item 4 is replaced** by X-218 item 3. Both deferrals (Updates, Repair) and the private-start channel are logged in
    GAPS.
 
 ## (b) Trace rows

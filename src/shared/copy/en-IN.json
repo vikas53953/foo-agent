@@ -1778,6 +1778,8 @@
   "setup.privacy.got_it": "Got it",
   "privacy.leaves.ai": "Your messages and job details go to your AI ({ai}). Sites you ask me to use see what you'd send them yourself.",
   "privacy.leaves.ai_unnamed": "Your messages and job details go to your AI. Sites you ask me to use see what you'd send them yourself.",
+  "privacy.leaves.ai_chat": "Your messages go to your AI ({ai}).",
+  "privacy.leaves.ai_chat_unnamed": "Your messages go to your AI.",
   "privacy.leaves.voice": "Your voice notes go to OpenAI to become text.",
   "privacy.leaves.search": "What you ask me to search goes to Exa.",
   "privacy.leaves.reading": "Pages I read for you go to Firecrawl.",

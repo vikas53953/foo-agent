@@ -31,7 +31,16 @@ export function useLeavesLines(firstRun: boolean): string[] {
   const ai = useStore(selectAi);
   const on = useStore((s) => SERVICES.map((x) => selectFeatureOn(x.feature)(s)).join(','));
   const shown = SERVICES.filter((_, i) => on.split(',')[i] === 'true');
-  const aiLine = ai?.primary ? t('privacy.leaves.ai', { ai: ai.displayName }) : t('privacy.leaves.ai_unnamed');
+  // CR-0063 (X-220): with jobs and web off foo only chats, so the line names messages only (no job details, no sites).
+  const acts = useStore((st) => selectFeatureOn('jobs')(st) || selectFeatureOn('web')(st));
+  const name = ai?.primary ? ai.displayName : null;
+  const aiLine = acts
+    ? name
+      ? t('privacy.leaves.ai', { ai: name })
+      : t('privacy.leaves.ai_unnamed')
+    : name
+      ? t('privacy.leaves.ai_chat', { ai: name })
+      : t('privacy.leaves.ai_chat_unnamed');
   return [
     aiLine,
     ...shown.map((x) => x.line() + (firstRun ? t('setup.privacy.not_on_suffix') : '')),

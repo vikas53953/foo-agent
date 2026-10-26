@@ -12,7 +12,7 @@ import type { ChatRow, KeptItem } from '../../shared/types';
 import section from '../shell/PanelSection.module.css';
 import { invoke } from '../ipc/client';
 import { useStore } from '../store/index';
-import { selectNow } from '../store/live';
+import { selectFeatureOn, selectNow } from '../store/live';
 import { selectTimeZone } from '../store/settings';
 import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
@@ -25,7 +25,10 @@ export function KeptList({ chat }: { chat: ChatRow }) {
   const timeZone = useStore(selectTimeZone);
   const now = useStore(selectNow);
   const [open, setOpen] = useState<KeptItem | null>(null);
-  if (items === null) return null;
+  // CR-0063 (X-220): while mini pages are off (CR-0054) nothing in the build makes a kept page, so an empty list is not
+  // shown at all; anything kept still shows.
+  const pagesOn = useStore(selectFeatureOn('pages'));
+  if (items === null || (!items.length && !pagesOn)) return null;
   return (
     <section className={section.section} data-empty={!items.length || undefined} aria-labelledby="app-panel-kept-title">
       <h2 className={section.label} id="app-panel-kept-title">
