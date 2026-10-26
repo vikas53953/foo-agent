@@ -5,19 +5,16 @@
 // row "That reply got cut off." + "Try again"), §19.6 ("Why am I getting this?" footer and popover: reason by source, "Stop
 // these" / "Keep them", caption for 4 s).
 // 02 §F7.1 "Chat" (CR-0021, X-179): the cut-off row's retry spinner turns into ✓.
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { t } from '../../shared/copy/t';
-import { formatDate } from '../../shared/format';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
 import type { MessageWhy, StepRow } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { useStore } from '../store/index';
 import { selectExpanded, selectFeedback, setFeedback, toggleExpand } from '../store/messages';
-import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { IconButton } from '../ui/IconButton';
-import { Popover } from '../ui/Popover';
 import { cx } from '../ui/cx';
 import { workedAccessible, workedLabel } from './bubbleState';
 import { copyText } from './linkActions';
@@ -40,74 +37,8 @@ function useFlag(ms: number): [boolean, () => void] {
 
 // ---------------------------------------------------------------- §17.1 / §17.2
 
-const CHIPS = ['wrong', 'not_asked', 'too_long', 'too_short', 'other'] as const;
-type Chip = (typeof CHIPS)[number];
-
-function chipLabel(c: Chip): string {
-  switch (c) {
-    case 'wrong':
-      return t('bubble.feedback.chip.wrong');
-    case 'not_asked':
-      return t('bubble.feedback.chip.not_asked');
-    case 'too_long':
-      return t('bubble.feedback.chip.too_long');
-    case 'too_short':
-      return t('bubble.feedback.chip.too_short');
-    case 'other':
-      return t('bubble.feedback.chip.other');
-  }
-}
-
-function FeedbackPopover({ anchor, onDone, onClose }: { anchor: HTMLElement; onDone: () => void; onClose: () => void }) {
-  const [chips, setChips] = useState<Set<Chip>>(new Set());
-  const [note, setNote] = useState('');
-  const toggle = (c: Chip) =>
-    setChips((s) => {
-      const n = new Set(s);
-      if (n.has(c)) n.delete(c);
-      else n.add(c);
-      return n;
-    });
-  return (
-    // GAP: GAPS.md 2026-10-17 "thumbs feedback has no table or channel"
-    <Popover anchor={anchor} label={t('bubble.feedback.title')} tid="bubbleFeedback" autoFocus onClose={onClose}>
-      <div className={styles.popTitle}>{t('bubble.feedback.title')}</div>
-      <div className={styles.feedbackChips}>
-        {CHIPS.map((c, i) => (
-          <button
-            key={c}
-            type="button"
-            className={cx(styles.fbChip, chips.has(c) && styles.fbChipOn)}
-            aria-pressed={chips.has(c)}
-            data-testid={TID.bubbleFeedbackChip}
-            data-index={i}
-            onClick={() => toggle(c)}
-          >
-            {chips.has(c) && <Icon name="Checkmark" size={16} />}
-            {chipLabel(c)}
-          </button>
-        ))}
-      </div>
-      <textarea
-        className={styles.fbField}
-        rows={1}
-        placeholder={t('bubble.feedback.placeholder')}
-        aria-label={t('bubble.feedback.placeholder')}
-        data-testid={TID.bubbleFeedbackField}
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-      />
-      <div className={styles.popButtons}>
-        <Button variant="primary" size="md" disabled={chips.size === 0} data-testid={TID.bubbleFeedbackSend} onClick={onDone}>
-          {t('bubble.feedback.send')}
-        </Button>
-        <Button variant="secondary" size="md" data-testid={TID.bubbleFeedbackCancel} onClick={onClose}>
-          {t('bubble.feedback.cancel')}
-        </Button>
-      </div>
-    </Popover>
-  );
-}
+/** 04 §17.2: the 👎 popover loads on its first open (AT-322 first-script budget, CR-0062). */
+const FeedbackPopover = lazy(() => import('./FeedbackPopover').then((m) => ({ default: m.FeedbackPopover })));
 
 export function ActionRow({
   messageId,
@@ -174,15 +105,17 @@ export function ActionRow({
       </div>
       {thanks && <div className={styles.caption}>{t('bubble.feedback.thanks')}</div>}
       {asking && bad && (
-        <FeedbackPopover
-          anchor={bad}
-          onClose={() => setAsking(false)}
-          onDone={() => {
-            setAsking(false);
-            setFeedback(messageId, 'bad');
-            flashThanks();
-          }}
-        />
+        <Suspense fallback={null}>
+          <FeedbackPopover
+            anchor={bad}
+            onClose={() => setAsking(false)}
+            onDone={(chips, note) => {
+              setAsking(false);
+              setFeedback(messageId, 'bad', { chips, note });
+              flashThanks();
+            }}
+          />
+        </Suspense>
       )}
     </div>
   );
@@ -258,38 +191,8 @@ export function CutOffRow({ phase, onRetry }: { phase: RetryPhase; onRetry: () =
 
 // ---------------------------------------------------------------- §19.6 Why am I getting this?
 
-export function whyReason(why: MessageWhy, o: { timeZone: string; now: number }): string {
-  const v = why.vars;
-  const date = v.at ? formatDate(Number(v.at), 'date', o) : (v.date ?? '');
-  switch (why.source) {
-    case 'routine_asked':
-      return t('bubble.why.reason.routine_asked', { date, title: v.title ?? '' });
-    case 'routine_suggested':
-      return t('bubble.why.reason.routine_suggested', { date, title: v.title ?? '' });
-    case 'suggestion':
-      return t('bubble.why.reason.suggestion', { what: v.what ?? '' });
-    case 'habit_offer':
-      return t('bubble.why.reason.habit_offer', { count: Number(v.count ?? 0) });
-    case 'housekeeping':
-      return t('bubble.why.reason.housekeeping');
-    case 'cap_warning':
-      return t('bubble.why.reason.cap_warning');
-  }
-}
-
-// GAP: GAPS.md 2026-10-17 "Stop these has no setting for every reason"
-/**
- * What "Stop these" can do in M2 (GAPS.md): a routine is paused with routine:pause; the cap warning turns
- * `money.warnAt80` off. Suggestion kinds, habit offers and housekeeping messages have no settings keys or channel yet, so
- * their Stop only closes the popover with the caption.
- */
-async function stopSource(why: MessageWhy): Promise<boolean> {
-  if ((why.source === 'routine_asked' || why.source === 'routine_suggested') && why.routineId) {
-    return (await invoke('routine:pause', { routineId: why.routineId })).ok;
-  }
-  if (why.source === 'cap_warning') return (await invoke('settings:set', { path: 'money.warnAt80', value: false })).ok;
-  return true;
-}
+/** 04 §19.6: the popover loads on its first open (AT-322 first-script budget). */
+const WhyPopover = lazy(() => import('./WhyPopover').then((m) => ({ default: m.WhyPopover })));
 
 export function WhyFooter({ why, timeZone, now }: { why: MessageWhy; timeZone: string; now: number }) {
   const [anchor, setAnchor] = useState<HTMLButtonElement | null>(null);
@@ -310,26 +213,9 @@ export function WhyFooter({ why, timeZone, now }: { why: MessageWhy; timeZone: s
       </button>
       {stopped && <div className={styles.caption}>{t('bubble.why.stopped')}</div>}
       {open && anchor && (
-        <Popover anchor={anchor} label={t('bubble.why.title')} tid="bubbleWhyPopover" autoFocus onClose={() => setOpen(false)}>
-          <div className={styles.popTitle}>{t('bubble.why.title')}</div>
-          <p className={styles.popBody}>{whyReason(why, { timeZone, now })}</p>
-          <div className={styles.popButtons}>
-            <Button
-              variant="secondary"
-              size="md"
-              data-testid={TID.bubbleWhyStop}
-              onClick={() => {
-                setOpen(false);
-                void stopSource(why).then((ok) => ok && flashStopped());
-              }}
-            >
-              {t('bubble.why.stop')}
-            </Button>
-            <Button variant="primary" size="md" data-testid={TID.bubbleWhyKeep} onClick={() => setOpen(false)}>
-              {t('bubble.why.keep')}
-            </Button>
-          </div>
-        </Popover>
+        <Suspense fallback={null}>
+          <WhyPopover anchor={anchor} why={why} timeZone={timeZone} now={now} onClose={() => setOpen(false)} onStopped={flashStopped} />
+        </Suspense>
       )}
     </div>
   );

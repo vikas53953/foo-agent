@@ -80,6 +80,16 @@ export interface Invokes {
   'message:list': { req: { chatId: string; beforeSeq?: number; limit: number }; res: MessageRow[] };
   'message:get': { req: { messageId: string }; res: MessageRow };
   'message:react': { req: { messageId: string; emoji: string; on: boolean }; res: void };
+  /** CR-0062 (04 §17.1–§17.2): 👍 / 👎 on an answer, kept on this PC; null clears it. */
+  'message:feedback': {
+    req: {
+      messageId: string;
+      vote: 'good' | 'bad' | null;
+      chips?: ('wrong' | 'not_asked' | 'too_long' | 'too_short' | 'other')[];
+      note?: string;
+    };
+    res: void;
+  };
   'message:pin': { req: { messageId: string; on: boolean }; res: void };
   /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
   'message:send': {
@@ -124,6 +134,9 @@ export interface Invokes {
   'link:open': { req: { url: string }; res: void };
   /** Not in 08-1 §3.2 (gap): 04 §9.3 "+" opens the Windows emoji panel (Electron app.showEmojiPanel). */
   'app:showEmojiPanel': { req: Record<string, never>; res: void };
+  /** CR-0061 (06-3 §18.2, 08-1 §3.2): the exact redacted text Save report writes; saved locally only (X-12). */
+  'app:reportPreview': { req: Record<string, never>; res: { previewId: string; text: string } };
+  'app:reportSave': { req: { previewId: string; note?: string }; res: { zipPath: string } };
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
   // M9 (CR-0013; 08-1 §3.2): live window, sign-in and take over, hand-back sites (X-124, X-129, X-135).
@@ -353,6 +366,7 @@ export const INVOKE_CHANNELS = [
   'message:list',
   'message:get',
   'message:react',
+  'message:feedback',
   'message:pin',
   'message:send',
   'composer:checkSecret',
@@ -370,6 +384,8 @@ export const INVOKE_CHANNELS = [
   'routine:pause',
   'link:open',
   'app:showEmojiPanel',
+  'app:reportPreview',
+  'app:reportSave',
   'job:stop',
   'job:watch',
   'job:openWindow',

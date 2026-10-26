@@ -44,7 +44,7 @@ beforeEach(() => {
 describe('R2: Store.writeRedacted on every §4.6 rule 2 column', () => {
   it('lists exactly the rule 2 columns', () => {
     expect(REDACTED_COLUMNS).toEqual({
-      messages: ['text', 'text_for_ai', 'transcript', 'earlier_text'], // earlier_text: CR-0059 (X-216)
+      messages: ['text', 'text_for_ai', 'transcript', 'earlier_text', 'feedback_note'], // earlier_text: CR-0059 (X-216); feedback_note: CR-0062
       drafts: ['text'],
       tool_calls: ['args', 'result'],
       activity: ['summary', 'fields'],

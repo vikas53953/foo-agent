@@ -12,7 +12,7 @@ import type { ChatRow, JobRow, View } from '../../shared/types';
 import { invoke } from '../ipc/client';
 import { closeDialog, navigate, openDialog, setFindOpen, setMenu, setXsPane, update, useStore } from '../store/index';
 import { selectHelpers } from '../store/helpers';
-import { selectAi, selectChatMood, selectConnection, selectNow, selectTypingChatId } from '../store/live';
+import { selectAi, selectChatMood, selectConnection, selectFeatureOn, selectNow, selectTypingChatId } from '../store/live';
 import { selectSettings } from '../store/settings';
 import { selectMenu } from '../store/ui';
 import { Avatar, type AvatarMember } from '../ui/Avatar';
@@ -76,6 +76,9 @@ function stepPillText(step: number): string | null {
 function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
   // 04 §14.3: the face thinks while foo replies (02-2 §F15.9.3 moods).
   const mood = useStore(selectChatMood(chat.id));
+  // CR-0061: private chats come with their batch (CR-0054); until then the header has no private toggle.
+  // GAP: GAPS.md 2026-10-26 "**Open:** starting a private chat" (no channel yet; the toggle waits for `private`)
+  const privateOn = useStore(selectFeatureOn('private'));
   const { bp } = useLayout();
   const now = useStore(selectNow);
   const jobsById = useStore((s) => s.jobs.byId);
@@ -337,7 +340,7 @@ function HeaderBar({ chat, findOpen }: { chat: ChatRow; findOpen: boolean }) {
             {!compact && <span>{t('chat_header.watch_live.label')}</span>}
           </Button>
         )}
-        {isFoo && (
+        {isFoo && (privateOn || chat.private) && (
           <IconButton
             icon="EyeOff"
             label={t('chat_header.private.title')}

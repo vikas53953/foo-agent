@@ -129,10 +129,39 @@ export function derivePill(input: PillInput, now: number): { pill: ChatPill | nu
   return { pill: null, pillUntil: null };
 }
 
-/** Markdown stripped, line breaks become spaces (03-shell-1 §3.4.6, last paragraph). */
+/** A markdown table separator row (`|---|:---:|`, `--- | ---`): dashes in cells, with at least one `|`. */
+const TABLE_RULE = /^[ \t]*(?=[^\n]*\|)\|?([ \t]*:?-+:?[ \t]*\|?)+[ \t]*$/;
+const cells = (line: string) =>
+  line
+    .replace(/^[ \t]*\|/, '')
+    .replace(/\|[ \t]*$/, '')
+    .split('|')
+    .map((c) => c.trim())
+    .filter(Boolean)
+    .join(' · ');
+
+/**
+ * CR-0061 (X-218 item 1): a table reads as its cells. The separator row goes; the row above it and the rows under it that
+ * hold a `|` read as their cells joined by " · " (outer pipes or not); any other line with outer pipes reads the same way.
+ */
+function tableAsCells(text: string): string {
+  const lines = text.split('\n');
+  const inTable = new Set<number>();
+  lines.forEach((l, i) => {
+    if (!TABLE_RULE.test(l) || i === 0 || !lines[i - 1]!.includes('|')) return;
+    inTable.add(i - 1);
+    for (let j = i + 1; j < lines.length && lines[j]!.includes('|') && !TABLE_RULE.test(lines[j]!); j++) inTable.add(j);
+    lines[i] = '';
+  });
+  return lines.map((l, i) => (inTable.has(i) || /^[ \t]*\|.*\|[ \t]*$/.test(l) ? cells(l) : l)).join('\n');
+}
+
+/**
+ * Markdown stripped, line breaks become spaces (03-shell-1 §3.4.6, last paragraph). CR-0061: a table is markdown too, so
+ * its `|---|` line goes and its cells read "Plan · Price · Data".
+ */
 export function plainLine(text: string): string {
-  return text
-    .replace(/```[\s\S]*?```/g, ' ')
+  return tableAsCells(text.replace(/```[\s\S]*?```/g, ' '))
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/(\*\*|__)(.+?)\1/g, '$2')
@@ -532,6 +561,41 @@ export function reactMessage(db: Db, messageId: string, emoji: string, on: boole
     if (on) db.prepare("INSERT INTO reactions (message_id, by, emoji, created_at) VALUES (?, 'user', ?, ?)").run(messageId, emoji, now);
     db.prepare('UPDATE messages SET rev = rev + 1 WHERE id = ?').run(messageId);
   })();
+  return touched(db, messageId);
+}
+
+/** CR-0062 the §17.2 chip ids (`bubble.feedback.chip.*`). */
+export const FEEDBACK_CHIPS = ['wrong', 'not_asked', 'too_long', 'too_short', 'other'] as const;
+export type FeedbackChip = (typeof FEEDBACK_CHIPS)[number];
+
+/**
+ * CR-0062 `message:feedback` (04 §17.1–§17.2): 👍 or 👎 on foo's or a helper's answer, with the 👎 chips and optional
+ * words (redacted), kept on this PC; `null` clears all three. A private chat keeps none (12-2 §12.30.6). The words are not
+ * given to the AI yet: they become a preference note with `memory` (batch 3).
+ */
+// GAP: GAPS.md 2026-10-26 "**Open:** the 👎 " (the words wait for `memory` to become a preference note)
+export function feedbackMessage(
+  db: Db,
+  messageId: string,
+  vote: 'good' | 'bad' | null,
+  chips: readonly FeedbackChip[] = [],
+  note = '',
+): MessageWriteResult {
+  const r = db
+    .prepare(
+      'SELECT m.author_kind, m.kind, c.private FROM messages m JOIN chats c ON c.id = m.chat_id WHERE m.id = ? AND m.deleted_at IS NULL',
+    )
+    .get(messageId) as DbRow | undefined;
+  if (!r) return { ok: false, reason: 'not_found' };
+  if (r.author_kind === 'user' || r.author_kind === 'system' || r.kind !== 'text' || r.private) return { ok: false, reason: 'not_allowed' };
+  const words = vote === 'bad' && note.trim() ? writeRedacted(note.trim()) : null;
+  const picked = vote === 'bad' && chips.length ? JSON.stringify([...new Set(chips)]) : null;
+  db.prepare('UPDATE messages SET feedback = ?, feedback_chips = ?, feedback_note = ?, rev = rev + 1 WHERE id = ?').run(
+    vote,
+    picked,
+    words,
+    messageId,
+  );
   return touched(db, messageId);
 }
 

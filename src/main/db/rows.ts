@@ -91,6 +91,7 @@ export function messageRow(r: DbRow, reactions: MessageRow['reactions'] = []): M
     understood: parseJson<string[] | null>(r.understood, null),
     actions: parseJson<ActionChip[] | null>(r.actions, null),
     earlierText: str(r.earlier_text),
+    feedback: r.feedback === 'good' || r.feedback === 'bad' ? r.feedback : null,
     kitPick: r.author_kind === 'user' ? kitPickOf(str(r.text_for_ai)) : null,
     rev: Number(r.rev),
     createdAt: Number(r.created_at),

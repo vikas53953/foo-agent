@@ -1,0 +1,738 @@
+[
+  {
+    "name": "@acemir/cssom",
+    "licence": "MIT"
+  },
+  {
+    "name": "@asamuzakjp/css-color",
+    "licence": "MIT"
+  },
+  {
+    "name": "@asamuzakjp/dom-selector",
+    "licence": "MIT"
+  },
+  {
+    "name": "@asamuzakjp/generational-cache",
+    "licence": "MIT"
+  },
+  {
+    "name": "@asamuzakjp/nwsapi",
+    "licence": "MIT"
+  },
+  {
+    "name": "@babel/runtime",
+    "licence": "MIT"
+  },
+  {
+    "name": "@borewit/text-codec",
+    "licence": "MIT"
+  },
+  {
+    "name": "@bramus/specificity",
+    "licence": "MIT"
+  },
+  {
+    "name": "@cacheable/memory",
+    "licence": "MIT"
+  },
+  {
+    "name": "@cacheable/node-cache",
+    "licence": "MIT"
+  },
+  {
+    "name": "@cacheable/utils",
+    "licence": "MIT"
+  },
+  {
+    "name": "@csstools/color-helpers",
+    "licence": "MIT-0"
+  },
+  {
+    "name": "@csstools/css-calc",
+    "licence": "MIT"
+  },
+  {
+    "name": "@csstools/css-color-parser",
+    "licence": "MIT"
+  },
+  {
+    "name": "@csstools/css-parser-algorithms",
+    "licence": "MIT"
+  },
+  {
+    "name": "@csstools/css-syntax-patches-for-csstree",
+    "licence": "MIT-0"
+  },
+  {
+    "name": "@csstools/css-tokenizer",
+    "licence": "MIT"
+  },
+  {
+    "name": "@emotion/hash",
+    "licence": "MIT"
+  },
+  {
+    "name": "@exodus/bytes",
+    "licence": "MIT"
+  },
+  {
+    "name": "@fluentui/react-icons",
+    "licence": "MIT"
+  },
+  {
+    "name": "@formatjs/fast-memoize",
+    "licence": "MIT"
+  },
+  {
+    "name": "@formatjs/icu-messageformat-parser",
+    "licence": "MIT"
+  },
+  {
+    "name": "@formatjs/icu-skeleton-parser",
+    "licence": "MIT"
+  },
+  {
+    "name": "@griffel/core",
+    "licence": "MIT"
+  },
+  {
+    "name": "@griffel/react",
+    "licence": "MIT"
+  },
+  {
+    "name": "@griffel/style-types",
+    "licence": "MIT"
+  },
+  {
+    "name": "@hapi/boom",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@hapi/hoek",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@img/colour",
+    "licence": "MIT"
+  },
+  {
+    "name": "@img/sharp-libvips-linux-x64",
+    "licence": "LGPL-3.0-or-later"
+  },
+  {
+    "name": "@img/sharp-libvips-linuxmusl-x64",
+    "licence": "LGPL-3.0-or-later"
+  },
+  {
+    "name": "@img/sharp-linux-x64",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "@img/sharp-linuxmusl-x64",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "@keyv/bigmap",
+    "licence": "MIT"
+  },
+  {
+    "name": "@keyv/serialize",
+    "licence": "MIT"
+  },
+  {
+    "name": "@mixmark-io/domino",
+    "licence": "BSD-2-Clause"
+  },
+  {
+    "name": "@mozilla/readability",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "@napi-rs/keyring",
+    "licence": "MIT"
+  },
+  {
+    "name": "@napi-rs/keyring-linux-x64-gnu",
+    "licence": "MIT"
+  },
+  {
+    "name": "@napi-rs/keyring-linux-x64-musl",
+    "licence": "MIT"
+  },
+  {
+    "name": "@noble/hashes",
+    "licence": "MIT"
+  },
+  {
+    "name": "@pinojs/redact",
+    "licence": "MIT"
+  },
+  {
+    "name": "@protobufjs/aspromise",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/base64",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/codegen",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/eventemitter",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/fetch",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/float",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/path",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/pool",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@protobufjs/utf8",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "@tanstack/react-virtual",
+    "licence": "MIT"
+  },
+  {
+    "name": "@tanstack/virtual-core",
+    "licence": "MIT"
+  },
+  {
+    "name": "@tokenizer/inflate",
+    "licence": "MIT"
+  },
+  {
+    "name": "@tokenizer/token",
+    "licence": "MIT"
+  },
+  {
+    "name": "@types/node",
+    "licence": "MIT"
+  },
+  {
+    "name": "@types/react",
+    "licence": "MIT"
+  },
+  {
+    "name": "@whiskeysockets/baileys",
+    "licence": "MIT"
+  },
+  {
+    "name": "agent-base",
+    "licence": "MIT"
+  },
+  {
+    "name": "ansi-regex",
+    "licence": "MIT"
+  },
+  {
+    "name": "ansi-styles",
+    "licence": "MIT"
+  },
+  {
+    "name": "async-mutex",
+    "licence": "MIT"
+  },
+  {
+    "name": "atomic-sleep",
+    "licence": "MIT"
+  },
+  {
+    "name": "better-sqlite3",
+    "licence": "MIT"
+  },
+  {
+    "name": "bidi-js",
+    "licence": "MIT"
+  },
+  {
+    "name": "cacheable",
+    "licence": "MIT"
+  },
+  {
+    "name": "camelcase",
+    "licence": "MIT"
+  },
+  {
+    "name": "Chromium",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "cliui",
+    "licence": "ISC"
+  },
+  {
+    "name": "color-convert",
+    "licence": "MIT"
+  },
+  {
+    "name": "color-name",
+    "licence": "MIT"
+  },
+  {
+    "name": "content-type",
+    "licence": "MIT"
+  },
+  {
+    "name": "core-js",
+    "licence": "MIT"
+  },
+  {
+    "name": "css-tree",
+    "licence": "MIT"
+  },
+  {
+    "name": "cssstyle",
+    "licence": "MIT"
+  },
+  {
+    "name": "csstype",
+    "licence": "MIT"
+  },
+  {
+    "name": "curve25519-js",
+    "licence": "MIT"
+  },
+  {
+    "name": "data-urls",
+    "licence": "MIT"
+  },
+  {
+    "name": "debug",
+    "licence": "MIT"
+  },
+  {
+    "name": "decamelize",
+    "licence": "MIT"
+  },
+  {
+    "name": "decimal.js",
+    "licence": "MIT"
+  },
+  {
+    "name": "detect-libc",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "dijkstrajs",
+    "licence": "MIT"
+  },
+  {
+    "name": "Electron",
+    "licence": "MIT"
+  },
+  {
+    "name": "emoji-regex",
+    "licence": "MIT"
+  },
+  {
+    "name": "entities",
+    "licence": "BSD-2-Clause"
+  },
+  {
+    "name": "eventemitter3",
+    "licence": "MIT"
+  },
+  {
+    "name": "file-type",
+    "licence": "MIT"
+  },
+  {
+    "name": "find-up",
+    "licence": "MIT"
+  },
+  {
+    "name": "Fluent Emoji 3D",
+    "licence": "MIT"
+  },
+  {
+    "name": "get-caller-file",
+    "licence": "ISC"
+  },
+  {
+    "name": "hashery",
+    "licence": "MIT"
+  },
+  {
+    "name": "hookified",
+    "licence": "MIT"
+  },
+  {
+    "name": "html-encoding-sniffer",
+    "licence": "MIT"
+  },
+  {
+    "name": "http-proxy-agent",
+    "licence": "MIT"
+  },
+  {
+    "name": "https-proxy-agent",
+    "licence": "MIT"
+  },
+  {
+    "name": "ieee754",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "immer",
+    "licence": "MIT"
+  },
+  {
+    "name": "intl-messageformat",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "is-fullwidth-code-point",
+    "licence": "MIT"
+  },
+  {
+    "name": "is-potential-custom-element-name",
+    "licence": "MIT"
+  },
+  {
+    "name": "jsdom",
+    "licence": "MIT"
+  },
+  {
+    "name": "keyv",
+    "licence": "MIT"
+  },
+  {
+    "name": "libsignal",
+    "licence": "GPL-3.0"
+  },
+  {
+    "name": "locate-path",
+    "licence": "MIT"
+  },
+  {
+    "name": "long",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "lru-cache",
+    "licence": "BlueOak-1.0.0"
+  },
+  {
+    "name": "mdn-data",
+    "licence": "CC0-1.0"
+  },
+  {
+    "name": "media-typer",
+    "licence": "MIT"
+  },
+  {
+    "name": "ms",
+    "licence": "MIT"
+  },
+  {
+    "name": "music-metadata",
+    "licence": "MIT"
+  },
+  {
+    "name": "node-addon-api",
+    "licence": "MIT"
+  },
+  {
+    "name": "Node.js",
+    "licence": "MIT"
+  },
+  {
+    "name": "on-exit-leak-free",
+    "licence": "MIT"
+  },
+  {
+    "name": "p-limit",
+    "licence": "MIT"
+  },
+  {
+    "name": "p-locate",
+    "licence": "MIT"
+  },
+  {
+    "name": "p-queue",
+    "licence": "MIT"
+  },
+  {
+    "name": "p-timeout",
+    "licence": "MIT"
+  },
+  {
+    "name": "p-try",
+    "licence": "MIT"
+  },
+  {
+    "name": "parse5",
+    "licence": "MIT"
+  },
+  {
+    "name": "path-exists",
+    "licence": "MIT"
+  },
+  {
+    "name": "pino",
+    "licence": "MIT"
+  },
+  {
+    "name": "pino-abstract-transport",
+    "licence": "MIT"
+  },
+  {
+    "name": "pino-std-serializers",
+    "licence": "MIT"
+  },
+  {
+    "name": "playwright-core",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "pngjs",
+    "licence": "MIT"
+  },
+  {
+    "name": "process-warning",
+    "licence": "MIT"
+  },
+  {
+    "name": "protobufjs",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "punycode",
+    "licence": "MIT"
+  },
+  {
+    "name": "qified",
+    "licence": "MIT"
+  },
+  {
+    "name": "qrcode",
+    "licence": "MIT"
+  },
+  {
+    "name": "quick-format-unescaped",
+    "licence": "MIT"
+  },
+  {
+    "name": "react",
+    "licence": "MIT"
+  },
+  {
+    "name": "react-dom",
+    "licence": "MIT"
+  },
+  {
+    "name": "real-require",
+    "licence": "MIT"
+  },
+  {
+    "name": "require-directory",
+    "licence": "MIT"
+  },
+  {
+    "name": "require-from-string",
+    "licence": "MIT"
+  },
+  {
+    "name": "require-main-filename",
+    "licence": "ISC"
+  },
+  {
+    "name": "rtl-css-js",
+    "licence": "MIT"
+  },
+  {
+    "name": "safe-stable-stringify",
+    "licence": "MIT"
+  },
+  {
+    "name": "saxes",
+    "licence": "ISC"
+  },
+  {
+    "name": "scheduler",
+    "licence": "MIT"
+  },
+  {
+    "name": "semver",
+    "licence": "ISC"
+  },
+  {
+    "name": "set-blocking",
+    "licence": "ISC"
+  },
+  {
+    "name": "sharp",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "sonic-boom",
+    "licence": "MIT"
+  },
+  {
+    "name": "source-map-js",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "split2",
+    "licence": "ISC"
+  },
+  {
+    "name": "SQLite",
+    "licence": "Public domain"
+  },
+  {
+    "name": "string-width",
+    "licence": "MIT"
+  },
+  {
+    "name": "strip-ansi",
+    "licence": "MIT"
+  },
+  {
+    "name": "strtok3",
+    "licence": "MIT"
+  },
+  {
+    "name": "stylis",
+    "licence": "MIT"
+  },
+  {
+    "name": "symbol-tree",
+    "licence": "MIT"
+  },
+  {
+    "name": "thread-stream",
+    "licence": "MIT"
+  },
+  {
+    "name": "tldts",
+    "licence": "MIT"
+  },
+  {
+    "name": "tldts-core",
+    "licence": "MIT"
+  },
+  {
+    "name": "token-types",
+    "licence": "MIT"
+  },
+  {
+    "name": "tough-cookie",
+    "licence": "BSD-3-Clause"
+  },
+  {
+    "name": "tr46",
+    "licence": "MIT"
+  },
+  {
+    "name": "tslib",
+    "licence": "0BSD"
+  },
+  {
+    "name": "turndown",
+    "licence": "MIT"
+  },
+  {
+    "name": "twemoji-parser",
+    "licence": "MIT"
+  },
+  {
+    "name": "twitter-text",
+    "licence": "Unknown"
+  },
+  {
+    "name": "uint8array-extras",
+    "licence": "MIT"
+  },
+  {
+    "name": "undici",
+    "licence": "MIT"
+  },
+  {
+    "name": "undici-types",
+    "licence": "MIT"
+  },
+  {
+    "name": "uuid",
+    "licence": "MIT"
+  },
+  {
+    "name": "w3c-xmlserializer",
+    "licence": "MIT"
+  },
+  {
+    "name": "webidl-conversions",
+    "licence": "BSD-2-Clause"
+  },
+  {
+    "name": "whatsapp-rust-bridge",
+    "licence": "MIT"
+  },
+  {
+    "name": "whatwg-mimetype",
+    "licence": "MIT"
+  },
+  {
+    "name": "whatwg-url",
+    "licence": "MIT"
+  },
+  {
+    "name": "which-module",
+    "licence": "ISC"
+  },
+  {
+    "name": "win-guid",
+    "licence": "MIT"
+  },
+  {
+    "name": "wrap-ansi",
+    "licence": "MIT"
+  },
+  {
+    "name": "ws",
+    "licence": "MIT"
+  },
+  {
+    "name": "xml-name-validator",
+    "licence": "Apache-2.0"
+  },
+  {
+    "name": "xmlchars",
+    "licence": "MIT"
+  },
+  {
+    "name": "y18n",
+    "licence": "ISC"
+  },
+  {
+    "name": "yargs",
+    "licence": "MIT"
+  },
+  {
+    "name": "yargs-parser",
+    "licence": "ISC"
+  },
+  {
+    "name": "zod",
+    "licence": "MIT"
+  },
+  {
+    "name": "zustand",
+    "licence": "MIT"
+  }
+]
