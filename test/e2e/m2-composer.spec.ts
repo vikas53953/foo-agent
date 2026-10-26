@@ -166,6 +166,32 @@ test('Enter sends: the bubble shows at once, the field clears and keeps focus, S
   await app.close();
 });
 
+test('the field grows a line at a time as text is added, and shrinks back when lines go or the message is sent (02 §F7.1)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  await field(page).focus();
+  // At Off the height changes at once, so each read is the settled height.
+  await page.evaluate(() => document.documentElement.setAttribute('data-motion', 'off'));
+  const height = () => field(page).evaluate((el) => (el as HTMLElement).getBoundingClientRect().height);
+  await page.keyboard.type('one');
+  const one = await height();
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('two');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('three');
+  await expect.poll(height).toBeGreaterThan(one * 2.5);
+  for (let i = 0; i < 'three'.length + 1; i++) await page.keyboard.press('Backspace');
+  await expect.poll(height).toBeLessThan(one * 2.5);
+  await expect.poll(height).toBeGreaterThan(one * 1.5);
+  await page.keyboard.press('Enter');
+  await expect(field(page)).toHaveText('');
+  await expect.poll(height).toBeCloseTo(one, 0);
+  // A long line wraps and the field grows with it, with no new line typed.
+  await page.keyboard.type('a long line that wraps '.repeat(12));
+  await expect.poll(height).toBeGreaterThan(one * 1.5);
+  await app.close();
+});
+
 test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', async () => {
   test.setTimeout(180_000);
   const { app, page } = await start('perf');

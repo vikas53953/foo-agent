@@ -450,11 +450,19 @@ export function Composer({ chat }: { chat: ChatRow }) {
 
   // P1 T6 (02 §F7.1): the field grows and shrinks smoothly. Its height is set to what the text needs (max-height still caps
   // it at 6 lines) and CSS animates between the two; at Basic and Off the change is instant.
+  // While the text only grows, the field can only grow, so its scroll height is read as it stands: the layout that read
+  // forces is the one the next paint needs anyway. Setting `height: auto` first (to let it shrink) costs a second layout
+  // of the window on every key (PERF-02), so that happens only when text went away or the field came back.
+  const measured = useRef<{ length: number; recording: typeof recording } | null>(null);
   useLayoutEffect(() => {
     const el = field.current;
     if (!el) return;
     const before = el.style.height;
-    el.style.height = 'auto';
+    const last = measured.current;
+    const grewOnly = before !== '' && last !== null && last.recording === recording && length >= last.length;
+    measured.current = { length, recording };
+    if (grewOnly && el.scrollHeight <= parseFloat(before)) return;
+    if (!grewOnly) el.style.height = 'auto';
     const next = `${el.scrollHeight}px`;
     el.style.height = before;
     if (before === next) return;
