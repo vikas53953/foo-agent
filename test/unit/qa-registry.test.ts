@@ -24,9 +24,9 @@ function holds(src: string, title: string): boolean {
 }
 
 describe('QA batch-1 scenario list', () => {
-  it('has 30 to 50 scenarios with unique ids', () => {
+  it('has 30 to 60 scenarios with unique ids (50 in the first brief, + the CR-0059 sweep set)', () => {
     expect(SCENARIOS.length).toBeGreaterThanOrEqual(30);
-    expect(SCENARIOS.length).toBeLessThanOrEqual(50);
+    expect(SCENARIOS.length).toBeLessThanOrEqual(60);
     expect(new Set(SCENARIOS.map((s) => s.id)).size).toBe(SCENARIOS.length);
   });
 

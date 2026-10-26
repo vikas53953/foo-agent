@@ -53,6 +53,7 @@ import {
   ReactionChips,
   attachmentKind,
   useDebounced,
+  useHeldFor,
   useReadMore,
   type QuoteInfo,
 } from './BubbleParts';
@@ -366,7 +367,11 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   const selected = useStore((s) => s.ui.selection.has(m.id));
   const hot = useContext(RowHotCtx);
   const offlineQueued = ctx.offline;
-  const slot = badgeSlot(m, { offline: offlineQueued });
+  const rawSlot = badgeSlot(m, { offline: offlineQueued });
+  // CR-0059 row 4 (X-216): 👀 waits until foo has been on the message for 2 s; a quick answer never shows it.
+  const seenNow = rawSlot?.kind === 'badge' && rawSlot.value === 'seen';
+  const seenHeld = useHeldFor(seenNow);
+  const slot = seenNow && !seenHeld ? null : rawSlot;
   const shownSlot = useDebounced(slot ? JSON.stringify(slot) : '');
   const parsedSlot = shownSlot ? (JSON.parse(shownSlot) as Exclude<typeof slot, null>) : null;
   const notSent = side === 'me' && m.status === 'failed' && !deleted;
@@ -478,14 +483,10 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           )}
         {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
         {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
-        {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && (
-          <ActionRow
-            messageId={m.id}
-            text={text}
-            canTryAgain={canTryAgain}
-            onTryAgain={() => void retryMessage(m.id)}
-            older={!layout.latestAnswer}
-          />
+        {/* CR-0059 row 2: only the latest answer carries the action row; an older one's row floated over the next message, so
+            its Copy, Try again and 👍/👎 live in the hover toolbar's ⋯ menu (§17.4). */}
+        {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && layout.latestAnswer && (
+          <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
         )}
         {why && <WhyFooter why={why} timeZone={ctx.timeZone} now={ctx.now} />}
       </div>
@@ -662,7 +663,8 @@ function BubbleBody({
   const checklist = job ? Object.values(ctx.cards).some((c) => c.jobId === job.id && c.type === 'checklist') : true;
   const worked = !!job && job.stepCount >= 1 && !checklist && job.startedAt !== null && job.finishedAt !== null && m.status === 'complete';
   // §3.1 / §11 meta row: the trailing spacer sits on the last text line (inside the last paragraph).
-  const spacer = !streaming && !backup ? <AnswerSpacer messageId={m.id} at={m.createdAt} timeZone={ctx.timeZone} /> : null;
+  const rewritten = !!m.earlierText && !streaming;
+  const spacer = !streaming && !backup && !rewritten ? <AnswerSpacer messageId={m.id} at={m.createdAt} timeZone={ctx.timeZone} /> : null;
   const lead = (
     <>
       <FeedbackMark messageId={m.id} />
@@ -672,6 +674,7 @@ function BubbleBody({
           {t('bubble.backup_mark.text', backup)}
         </span>
       )}
+      {rewritten && <span>{t('bubble.meta.rewritten')}</span>}
     </>
   );
   return (
@@ -702,10 +705,34 @@ function BubbleBody({
           {t('bubble.stopped.caption')}
         </div>
       )}
+      {rewritten && <EarlierAnswer text={m.earlierText!} />}
       {sources.length >= 2 && <SourcesRow sources={sources} />}
       {worked && job && <WorkedLine messageId={m.id} jobId={job.id} ms={job.finishedAt! - job.startedAt!} />}
       {(m.status === 'failed' || again.phase !== 'idle') && <CutOffRow phase={again.phase} onRetry={again.retry} />}
-      {!streaming && meta(backup ? 'row' : 'float', lead)}
+      {!streaming && meta(backup || rewritten ? 'row' : 'float', lead)}
+    </div>
+  );
+}
+
+/** CR-0059 row 1 (04 §17.1): a rewritten answer's old text, behind "Show earlier answer". */
+function EarlierAnswer({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={styles.earlier}>
+      <button
+        type="button"
+        className={styles.earlierLink}
+        aria-expanded={open}
+        data-testid={TID.bubbleEarlierAnswer}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {open ? t('bubble.earlier.hide') : t('bubble.earlier.show')}
+      </button>
+      {open && (
+        <p className={styles.earlierText} data-copy="ai">
+          {text}
+        </p>
+      )}
     </div>
   );
 }

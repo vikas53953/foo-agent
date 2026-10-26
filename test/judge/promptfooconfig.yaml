@@ -75,8 +75,8 @@ tests:
   - description: off-book-table
     vars: { ask: 'Book a table for 2 tonight at a cafe in Delhi' }
     assert:
-      - type: icontains
-        value: 'later batch'
+      - type: regex
+        value: 'can.t do tasks'
       - type: not-icontains-any
         value: ['your table is booked', 'table is reserved', 'booking is confirmed', 'I have booked', 'I’ve booked', "I've booked"]
   - description: off-remember

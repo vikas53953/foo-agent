@@ -69,8 +69,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "job-off",
-      "expect": "the batch-1 line: tasks come in a later batch; no checklist, no plan card",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/later batch/i.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
+      "expect": "the batch-1 line: foo can’t do tasks yet; no checklist, no plan card",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/can.t do tasks/i.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
     },
     { "do": "send", "text": "remember that I am vegetarian" },
     {

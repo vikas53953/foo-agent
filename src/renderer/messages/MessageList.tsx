@@ -183,17 +183,21 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
 
   const rows = useMemo<VRow[]>(() => {
     if (isWa) return buildWaRows(waRowsData ?? [], { now, timeZone: tz }, mirrorDrafts);
-    const r = buildRows(messages, {
-      now,
-      timeZone: tz,
-      hasMore: slice?.hasMore ?? true,
-      unreadFromId: unreadFrom,
-      unreadCount: unread.count,
-      chatTitle: chat.title,
-      chatCreatedAt: chat.createdAt,
-      isFoo: chat.kind === 'foo' && !chat.private,
-      agentName,
-    });
+    // CR-0059 row 5: a deleted message leaves the chat; no "You deleted this message" line stays behind.
+    const r = buildRows(
+      messages.filter((m) => m.deletedAt === null),
+      {
+        now,
+        timeZone: tz,
+        hasMore: slice?.hasMore ?? true,
+        unreadFromId: unreadFrom,
+        unreadCount: unread.count,
+        chatTitle: chat.title,
+        chatCreatedAt: chat.createdAt,
+        isFoo: chat.kind === 'foo' && !chat.private,
+        agentName,
+      },
+    );
     if (live) r.push(live);
     return r;
   }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live]);

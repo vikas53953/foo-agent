@@ -299,6 +299,8 @@ export class ChatLane {
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
   private retried = new Set<string>();
+  /** CR-0059 row 1 (04 §17.1): user message id → the finished answer its next turn writes over, and that answer's text. */
+  private rewrites = new Map<string, { fooId: string; text: string }>();
   /** R1 T6: user messages that are side questions; every foo row answering one carries `side = 1` (04 §17.5). */
   private sideTurns = new Set<string>();
   /** Resolves when every queued turn has finished (tests). */
@@ -349,9 +351,26 @@ export class ChatLane {
     return true;
   }
 
-  private async askedBefore(fooMessageId: string): Promise<EngineMessage | null> {
+  /**
+   * CR-0059 row 1 (04 §17.1 "Write this answer again"): the AI answers the same user message again and the new text replaces
+   * this finished answer in place; the old text is kept as `earlier_text`. A rewrite already queued or running is not doubled.
+   */
+  rewrite(fooMessageId: string): boolean {
+    if ([...this.rewrites.values()].some((r) => r.fooId === fooMessageId)) return false;
+    void (async () => {
+      const reply = await this.messageById(fooMessageId);
+      if (!reply || reply.authorKind === 'user' || reply.kind !== 'text' || reply.status !== 'complete') return;
+      const userId = this.answered.get(fooMessageId) ?? (await this.askedBefore(fooMessageId, 'complete'))?.id;
+      if (!userId || this.inflight.has(userId)) return;
+      this.rewrites.set(userId, { fooId: fooMessageId, text: reply.text });
+      this.enqueue(reply.chatId, userId, { intakeOnly: true });
+    })();
+    return true;
+  }
+
+  private async askedBefore(fooMessageId: string, status: 'failed' | 'complete' = 'failed'): Promise<EngineMessage | null> {
     const reply = await this.messageById(fooMessageId);
-    if (!reply || reply.authorKind === 'user' || reply.status !== 'failed') return null;
+    if (!reply || reply.authorKind === 'user' || reply.status !== status) return null;
     const before = (await this.query<EngineMessage[]>('messagesBefore', reply.chatId, reply.seq, CONVERSATION)) ?? [];
     return [...before].reverse().find((m) => m.authorKind === 'user') ?? null;
   }
@@ -459,6 +478,8 @@ export class ChatLane {
     if (side) this.sideTurns.add(messageId);
     else this.sideTurns.delete(messageId);
     const intakeOnly = this.intakeOnly.delete(messageId) || side;
+    const rewrite = this.rewrites.get(messageId) ?? null;
+    this.rewrites.delete(messageId);
     // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
     if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
     if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
@@ -571,6 +592,22 @@ export class ChatLane {
       later(async () => {
         // Nothing reaches the bubble after Stop or a cut-off (08-4 §30.7), not even a held sentence's late rewrite.
         if (abort.signal.aborted) return;
+        if (!fooId && rewrite) {
+          // CR-0059 row 1: the new answer goes into the old bubble; its old text stays reachable.
+          fooId = rewrite.fooId;
+          this.answered.set(fooId, messageId);
+          this.typing(chatId, false, who);
+          await this.tx([
+            {
+              op: 'update',
+              table: 'messages',
+              id: fooId,
+              set: { text: mode === 'whole' ? text : '', status: mode === 'whole' ? 'complete' : 'streaming', earlier_text: rewrite.text },
+            },
+            { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
+          ]);
+          if (mode === 'whole') return;
+        }
         if (!fooId) {
           fooId = this.d.newId('m');
           this.answered.set(fooId, messageId);

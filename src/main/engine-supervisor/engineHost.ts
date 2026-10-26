@@ -190,7 +190,7 @@ const UPSERT_TABLES = new Set(['memory_tombstones', 'memory_group_grants', 'sugg
 /** Columns the engine may change with `update` (ids, owners and creation times never move; `jobs.state` only by transition). */
 const UPDATE_COLUMNS: Record<string, readonly string[]> = {
   // M6 T5: a memory chip's state (why.memoryChip); P1 T6: a reply's follow-ups; R1 (X-180): side answers, "foo read:", action chips.
-  messages: ['text', 'status', 'badge', 'provider_note', 'job_id', 'why', 'suggestions', 'side', 'understood', 'actions'],
+  messages: ['text', 'status', 'badge', 'provider_note', 'job_id', 'why', 'suggestions', 'side', 'understood', 'actions', 'earlier_text'],
   ai_turns: AI_TURN_COLUMNS.filter((c) => c !== 'id'),
   jobs: JOB_COLUMNS.filter(
     (c) => !['id', 'chat_id', 'origin_chat_id', 'owner_kind', 'origin', 'origin_ref', 'created_at', 'state'].includes(c),
@@ -394,6 +394,9 @@ function writeSet(
   if (table === 'messages') {
     fx.messageIds.add(id);
     fx.chatIds.add(String(cur.chat_id));
+    // CR-0059 row 1: new words in the chat's last message (a streamed answer, a Try again rewrite) change the chat-list
+    // preview, so the chat row takes a new rev and the window accepts it (a same-rev chat:upsert is dropped as stale).
+    if ('text' in s) db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ? AND last_message_id = ?').run(cur.chat_id, id);
   }
   if (table === 'jobs') noteJob(db, id, fx);
   if (table === 'steps' || table === 'tool_calls') noteJob(db, String(cur.job_id), fx);

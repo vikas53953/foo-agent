@@ -544,6 +544,12 @@ export function registerIpc(ctx: AppContext): void {
       ctx.engine?.send('reply.retry', { messageId: id });
       return ok(target);
     }
+    // CR-0059 row 1 (04 §17.1 "Write this answer again"): a finished text answer is written again in place.
+    if (target && target.authorKind !== 'user' && target.kind === 'text' && target.status === 'complete' && !target.deletedAt) {
+      if (!ctx.engine?.live) return { ok: false, error: { kind: 'AI_SERVICE_DOWN' } };
+      ctx.engine.send('reply.rewrite', { messageId: id });
+      return ok(target);
+    }
     const r = written(retryMessage(db, id));
     if (r.ok && target) ctx.engine?.send('user.message', { messageId: id, chatId: target.chatId });
     return r;

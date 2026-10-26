@@ -23,7 +23,9 @@ export function SidebarFooter() {
   const tz = useStore(selectTimeZone);
   const status = footerAi(ai, { setupComplete, offline, now });
   const statusText = aiText(status, ai, now, tz);
-  const spendLine = footerSpend(spend, ai?.displayName ?? '');
+  // CR-0059 row 3 (CR-0054): with spend off a key-billed AI shows no "₹0 of ₹1,000 AI this month" line (a plan still says so).
+  const spendOn = useStore((s) => s.live.features === null || s.live.features.includes('spend'));
+  const spendLine = spendOn || spend?.aiBilling !== 'key' ? footerSpend(spend, ai?.displayName ?? '') : null;
   const name = t('sidebar.footer.status.name', { you: firstName ?? 'none', status: statusText, spend: spendLine?.text ?? '' });
 
   return (

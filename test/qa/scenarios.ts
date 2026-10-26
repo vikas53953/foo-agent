@@ -438,6 +438,32 @@ export const SCENARIOS: Scenario[] = [
     'AT-094 · anything off the allow-list is refused with Open Settings; nothing changes a permission is never changed by chat, even with a real path',
   ),
 
+  // ---- the bug-finder sweep (CR-0059, X-216): finds what Vikas saw on 2026-10-26 without being told ----
+  V(
+    'QA-B1-080',
+    'chat',
+    'visual',
+    'Bug-finder sweep: every ⋯ menu item does something, no hover control covers a bubble, off features leave no trace, 👀 only when slow, Try again and delete work',
+    'test/e2e/qa-b1-sweep.spec.ts',
+    'AT-449 QA-B1-W01 · bug-finder sweep: every bubble action does something, nothing covers a bubble, off features leave no trace',
+  ),
+  V(
+    'QA-B1-081',
+    'chat',
+    'positive',
+    'Try again on a finished answer rewrites the same bubble and keeps the earlier answer',
+    'test/integration/cr-0059-baseline.test.ts',
+    'CR-0059 · the batch-1 baseline Try again on a finished answer rewrites the same bubble and keeps the earlier answer',
+  ),
+  V(
+    'QA-B1-082',
+    'gating',
+    'negative',
+    '"Did you book my cab?" with jobs off: foo is told it cannot do tasks yet',
+    'test/integration/cr-0059-baseline.test.ts',
+    'CR-0059 · the batch-1 baseline with jobs off, intake is told foo cannot do tasks yet; with every feature on, it is not',
+  ),
+
   // ---- real AI: the B1-batch1 journey on every merge to main (Claude on Vikas's key, packaged foo.exe, Windows) ----
   {
     id: 'QA-B1-091',

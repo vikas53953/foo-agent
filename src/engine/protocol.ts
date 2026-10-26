@@ -163,6 +163,8 @@ export const mainToEngineSchema = z.discriminatedUnion('kind', [
   z.object({ id: z.string(), kind: z.literal('webkey.check'), payload: z.object({ provider: WebProviderSchema }).strict() }),
   /** Not in 08-1 §2.4 (gap, implementation-notes "M3"): 04 §19.4 "Try again" on a cut-off foo reply re-runs its turn. */
   z.object({ id: z.string(), kind: z.literal('reply.retry'), payload: z.object({ messageId: z.string() }).strict() }),
+  /** CR-0059 row 1 (04 §17.1): "Write this answer again" on a finished text answer; the new text replaces it in place. */
+  z.object({ id: z.string(), kind: z.literal('reply.rewrite'), payload: z.object({ messageId: z.string() }).strict() }),
   z.object({ id: z.string(), kind: z.literal('reply.stop'), payload: z.object({ chatId: z.string() }).strict() }),
   // FOO_TEST runs only (08-3 §22): the engine's fake clock follows main's, and test:reset cancels every turn.
   z.object({ id: z.string(), kind: z.literal('test.reset'), payload: z.object({}).strict() }),

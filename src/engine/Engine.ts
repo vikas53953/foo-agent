@@ -396,7 +396,7 @@ export class Engine {
       newId: (p) => newId(p, o.clock.now()),
       settings: () => this.settings,
       ai: this.ai,
-      protocol: this.protocol(),
+      protocol: this.protocol(features.has('jobs')),
       log: (evt, kind) => log(evt, kind),
       jobs: this.jobs,
       // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
@@ -688,7 +688,7 @@ export class Engine {
   }
 
   /** The reply protocol for the chat lane, from the prompt modules. */
-  private protocol(): LaneProtocol {
+  private protocol(jobsOn = true): LaneProtocol {
     const redactor = this.redactor;
     const decision = (act: unknown): IntakeDecisionView | null => {
       const v = validateAct('intake', act);
@@ -741,6 +741,7 @@ export class Engine {
           visuals: i.settings.appearance?.visuals ?? 'balanced',
           ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
           ...(i.answers ? { answers: i.answers } : {}),
+          ...(jobsOn ? {} : { jobsOff: true }),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
@@ -864,6 +865,9 @@ export class Engine {
         return undefined;
       case 'reply.retry':
         this.lane.retry(msg.payload.messageId);
+        return undefined;
+      case 'reply.rewrite':
+        this.lane.rewrite(msg.payload.messageId);
         return undefined;
       case 'ai.cmd': {
         const id = msg.payload.providerId as ProviderId | undefined;

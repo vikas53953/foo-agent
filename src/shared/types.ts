@@ -588,6 +588,8 @@ export interface MessageRow {
   understood: string[] | null;
   /** 04-2 §21.7: ≤ 3 action chips on a foo reply (never after an approval or payment card); null when none. */
   actions: ActionChip[] | null;
+  /** CR-0059 row 1 (04 §17.1): a rewritten answer's text before "Write this answer again"; null when never rewritten. */
+  earlierText?: string | null;
   /**
    * R1 T3 (05-1 §5.3.5 parity): the ListPick or TimePick answer this user message gave, derived by main from its AI text
    * (shared/kit/pick.ts `kitPickOf`); null otherwise. A pick with an answer in the chat stays answered.

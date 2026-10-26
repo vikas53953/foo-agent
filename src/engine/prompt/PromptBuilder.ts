@@ -44,6 +44,13 @@ export const SUGGESTIONS_ASK =
   'For "reply" you may end <say> with one last line "Suggestions: a | b | c": up to 3 short next things the user might ask, each under 40 characters, in their words. Leave the line out when nothing fits or when money is involved.';
 /** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
  * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
+/**
+ * CR-0059 row 6 (CR-0054): a build with jobs switched off tells the AI so; asked "did you book my cab?", the real AI said it
+ * had "no record" of one instead of saying it cannot book yet (judge run 40269932734, off-already-done).
+ */
+export const JOBS_OFF_LINE =
+  'This build cannot do tasks yet (booking, buying, sending, paying). Asked to do one, decide "job" as usual. Asked whether you already did one, say plainly that you have not and cannot do tasks yet; never say you have "no record" of it.';
+
 export const ACTIONS_ASK =
   'You may add one line "Actions: [{"kind":"call|map|calendar|link","label":"…","value":"…"}]": ≤ 3 taps (a phone number, a place, an ISO date-time or an https link); never for money.';
 
@@ -111,6 +118,8 @@ export interface IntakeInput {
   oldPlan?: { title: string; steps: string[] };
   /** CR-0028: the intake questions this message already got answers to ("- Q: … → A: …"), part 8 form (08-4 §24.22). */
   answers?: string[];
+  /** CR-0059 row 6: jobs are switched off in this build (JOBS_OFF_LINE goes with part 4). */
+  jobsOff?: boolean;
   /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
   visuals?: Visuals;
 }
@@ -313,7 +322,7 @@ export class PromptBuilder {
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
     const protocolWith = (kit: string) =>
       gate(
-        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}`,
+        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}`,
         '4',
       );
     let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;
