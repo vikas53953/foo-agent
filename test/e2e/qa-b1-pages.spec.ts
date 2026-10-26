@@ -57,6 +57,18 @@ async function visible(app: ElectronApplication, page: Page): Promise<string> {
   return `${dom}\n${clip}`;
 }
 
+/**
+ * `visible` once foo's face has stopped listening: it drops from "listening" 5 s after the last key (LISTEN_MS; to resting,
+ * or to asleep in quiet hours), and that change is nobody's menu item.
+ */
+async function settled(app: ElectronApplication, page: Page): Promise<string> {
+  await expect
+    .poll(() => page.locator('[data-state="listening"]').count(), { timeout: 8_000 })
+    .toBe(0)
+    .catch(() => undefined);
+  return visible(app, page);
+}
+
 /** Words on the open page other than its title and back button. */
 const pageWords = (page: Page, sel: string) =>
   page.evaluate((s) => {
@@ -255,7 +267,7 @@ test('AT-450 QA-B1-083 · bug-finder sweep: every page shows something, every me
       await backToChat(page);
       await page.mouse.move(0, 0);
       await page.waitForTimeout(300);
-      const before = await visible(app, page);
+      const before = await settled(app, page);
       await page.getByTestId(button).click();
       await page.getByTestId(id).click();
       await page.waitForTimeout(600);
@@ -305,7 +317,7 @@ test('AT-450 QA-B1-083 · bug-finder sweep: every page shows something, every me
     await page.mouse.move(0, 0);
     // Pressed from the message box, where the user's hands are (a field must not swallow a listed shortcut).
     await page.getByTestId(TID.composerField).click();
-    const before = await visible(app, page);
+    const before = await settled(app, page);
     await page.keyboard.press(key);
     await page.waitForTimeout(500);
     if ((await visible(app, page)) === before) findings.push(`shortcut ${key} does nothing`);

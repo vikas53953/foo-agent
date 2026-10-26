@@ -82,6 +82,18 @@ async function visible(app: ElectronApplication, page: Page): Promise<string> {
   return `${dom}\n${clip}`;
 }
 
+/**
+ * `visible` once foo's face has stopped listening: it drops from "listening" 5 s after the last key (LISTEN_MS; to resting,
+ * or to asleep in quiet hours), and that change is nobody's menu item.
+ */
+async function settled(app: ElectronApplication, page: Page): Promise<string> {
+  await expect
+    .poll(() => page.locator('[data-state="listening"]').count(), { timeout: 8_000 })
+    .toBe(0)
+    .catch(() => undefined);
+  return visible(app, page);
+}
+
 /** The More button in `bubble`'s own row. */
 const rowOf = (bubble: Locator) => bubble.locator('xpath=ancestor::*[@data-message-id][1]');
 const moreOf = (bubble: Locator) => rowOf(bubble).getByTestId(TID.bubbleToolbarMore);
@@ -210,7 +222,7 @@ test('AT-449 QA-B1-080 · bug-finder sweep: every bubble action does something, 
       if (id === TID.bubbleMenuDelete || id === TID.bubbleMenuTryAgain) continue; // proved on their own below
       await page.mouse.move(0, 0);
       await page.waitForTimeout(300);
-      const before = await visible(app, page);
+      const before = await settled(app, page);
       // The check itself can see "no change": two reads with nothing done in between agree.
       expect(await visible(app, page), 'the sweep reads a still window the same twice').toBe(before);
       await hover(page, bubble);
