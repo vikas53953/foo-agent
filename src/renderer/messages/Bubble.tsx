@@ -494,7 +494,13 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
         {/* CR-0059 row 2: only the latest answer carries the action row; an older one's row floated over the next message, so
             its Copy, Try again and 👍/👎 live in the hover toolbar's ⋯ menu (§17.4). */}
         {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && layout.latestAnswer && (
-          <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
+          <ActionRow
+            messageId={m.id}
+            stored={m.feedback}
+            text={text}
+            canTryAgain={canTryAgain}
+            onTryAgain={() => void retryMessage(m.id)}
+          />
         )}
         {why && <WhyFooter why={why} timeZone={ctx.timeZone} now={ctx.now} />}
       </div>
@@ -672,10 +678,13 @@ function BubbleBody({
   const worked = !!job && job.stepCount >= 1 && !checklist && job.startedAt !== null && job.finishedAt !== null && m.status === 'complete';
   // §3.1 / §11 meta row: the trailing spacer sits on the last text line (inside the last paragraph).
   const rewritten = !!m.earlierText && !streaming;
-  const spacer = !streaming && !backup && !rewritten ? <AnswerSpacer messageId={m.id} at={m.createdAt} timeZone={ctx.timeZone} /> : null;
+  const spacer =
+    !streaming && !backup && !rewritten ? (
+      <AnswerSpacer messageId={m.id} stored={m.feedback} at={m.createdAt} timeZone={ctx.timeZone} />
+    ) : null;
   const lead = (
     <>
-      <FeedbackMark messageId={m.id} />
+      <FeedbackMark messageId={m.id} stored={m.feedback} />
       {backup && (
         <span className={styles.backup} data-testid={TID.bubbleBackupMark}>
           <Icon name="ArrowSync" size={16} />
@@ -748,8 +757,18 @@ function EarlierAnswer({ text, author }: { text: string; author: MessageRow['aut
 }
 
 /** The time-only meta's spacer; it widens while the meta carries the 👍/👎 mark (§17.1). */
-function AnswerSpacer({ messageId, at, timeZone }: { messageId: string; at: number; timeZone: string }) {
-  const mark = useStore(selectFeedback(messageId));
+function AnswerSpacer({
+  messageId,
+  stored,
+  at,
+  timeZone,
+}: {
+  messageId: string;
+  stored: 'good' | 'bad' | null | undefined;
+  at: number;
+  timeZone: string;
+}) {
+  const mark = useStore(selectFeedback(messageId, stored));
   return <TimeSpacer at={at} timeZone={timeZone} mark={!!mark} />;
 }
 

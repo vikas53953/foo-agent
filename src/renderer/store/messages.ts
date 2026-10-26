@@ -369,5 +369,10 @@ export const selectMessageIds = (chatId: string) => (s: RootState) => s.messages
 export const selectMessage = (chatId: string, id: string) => (s: RootState) => s.messages.byChat[chatId]?.byId[id];
 export const selectChatMessages = (chatId: string) => (s: RootState) => s.messages.byChat[chatId];
 export const selectExpanded = (messageId: string, part: string) => (s: RootState) => !!s.messages.expanded[`${messageId}:${part}`];
-export const selectFeedback = (messageId: string) => (s: RootState) =>
-  messageId in s.messages.feedback ? s.messages.feedback[messageId] : (findMessage(s.messages, messageId)?.feedback ?? null);
+/**
+ * The 👍/👎 shown on an answer: a vote still in flight, else the stored one the bubble already holds (`MessageRow.feedback`,
+ * CR-0062). The stored value comes in from the caller, so this stays one lookup on every store update (PERF-02: it runs
+ * for every answer on screen at each key).
+ */
+export const selectFeedback = (messageId: string, stored: 'good' | 'bad' | null | undefined) => (s: RootState) =>
+  messageId in s.messages.feedback ? s.messages.feedback[messageId] : (stored ?? null);

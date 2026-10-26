@@ -42,16 +42,19 @@ const FeedbackPopover = lazy(() => import('./FeedbackPopover').then((m) => ({ de
 
 export function ActionRow({
   messageId,
+  stored,
   text,
   canTryAgain,
   onTryAgain,
 }: {
   messageId: string;
+  /** The stored vote (`MessageRow.feedback`, CR-0062). */
+  stored: 'good' | 'bad' | null | undefined;
   text: string;
   canTryAgain: boolean;
   onTryAgain: () => void;
 }) {
-  const feedback = useStore(selectFeedback(messageId));
+  const feedback = useStore(selectFeedback(messageId, stored));
   const [copied, flashCopied] = useFlag(motion['dur-confirm']);
   const [thanks, flashThanks] = useFlag(CAPTION_MS);
   const [bad, setBad] = useState<HTMLDivElement | null>(null);
@@ -122,8 +125,8 @@ export function ActionRow({
 }
 
 /** §17.1: an older answer keeps its 👍 / 👎 as a tiny 16px glyph next to the meta. */
-export function FeedbackMark({ messageId }: { messageId: string }) {
-  const f = useStore(selectFeedback(messageId));
+export function FeedbackMark({ messageId, stored }: { messageId: string; stored: 'good' | 'bad' | null | undefined }) {
+  const f = useStore(selectFeedback(messageId, stored));
   if (!f) return null;
   return (
     <span className={styles.fbMark} aria-hidden="true">
