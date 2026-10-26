@@ -115,7 +115,8 @@ jobs:
           JUDGE: ${{ inputs.judge || 'claude-sonnet-5-5' }}
         run: |
           E="$(readlink -f node_modules/electron)/dist/electron"
-          args=(eval -c "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml" --no-cache --grader "anthropic:messages:$JUDGE"
+          sed -i "s/anthropic:messages:claude-sonnet-5-5/anthropic:messages:$JUDGE/" "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml"
+          args=(eval -c "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml" --no-cache
             --repeat 3 --filter-first-n "$MAX_ASKS" -o "$OUT/results.json" "$OUT/report.html")
           [ -n "$FILTER" ] && args+=(--filter-pattern "$FILTER")
           FOO_FEATURES=install,ai,name,chat,settings FOO_EXE="$E" FOO_ARGS="$GITHUB_WORKSPACE --no-sandbox" FOO_JUDGE_PROFILE="$RUNNER_TEMP/profile" FOO_JUDGE_OUT="$OUT/shots" \

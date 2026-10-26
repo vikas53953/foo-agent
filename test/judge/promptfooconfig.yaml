@@ -12,6 +12,10 @@ evaluateOptions:
   maxConcurrency: 1
 
 defaultTest:
+  # The judge model is set here, not with `--grader`: promptfoo 0.123.1 crashes storing a CLI grader (circular JSON,
+  # run 40265540159). The workflow swaps in its `judge` input.
+  options:
+    provider: anthropic:messages:claude-sonnet-5-5
   assert:
     - type: not-icontains
       value: '(no reply)'
