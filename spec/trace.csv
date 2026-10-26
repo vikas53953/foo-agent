@@ -405,3 +405,4 @@ R11 · R8,J18,,UX-15-09,,06-3 §11.1–§11.2; 09 §9.27.2,test/fidelity/ux/UX-1
 ,,AT-450,,,10-acceptance-2 §C.10; 06-1 §2.3; 06-2 §6.10 §6.11; 06-3 §19; 06-4 C-1; CR-0060,test/e2e/qa-b1-pages.spec.ts,M9,live
 ,,AT-451,,,10-acceptance-2 §C.10; 03-shell-1 §3.4.6; 06-1 §2.1; 06-2 §6.11; 06-3 §16 §18.2; CR-0061,test/e2e/qa-b1-about.spec.ts,M9,live
 ,,AT-452,,,10-acceptance-2 §C.10; 04 §17.1 §17.2; 08-1 §3.2 §4.6; CR-0062,test/integration/answer-feedback.test.ts,M9,live
+,,AT-453,,,10-acceptance-2 §C.10; 02-2 §F15.9.3; 03-shell-2 §3.6.2.1 §3.6.5; CR-0063,test/e2e/qa-b1-dayone.spec.ts,M9,live

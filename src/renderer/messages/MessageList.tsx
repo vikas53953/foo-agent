@@ -169,6 +169,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     if (n > userCount.current) setUnreadFrom(null);
     userCount.current = n;
   }, [messages]);
+  // CR-0063 (X-220 item 2): first-run setup is the user talking with foo step by step, so its messages are never "new"; the
+  // divider is dropped for good while setup runs.
+  const inSetup = useStore((s) => s.settings.value !== null && !s.settings.value.setup.complete);
+  useEffect(() => {
+    if (inSetup) setUnreadFrom(null);
+  }, [inSetup]);
 
   // §14.2 / §14.3: the status line when a working job of this chat reports its step and no answer started; else the
   // Thinking row while a reply is in flight (chat:typing).
@@ -195,7 +201,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       now,
       timeZone: tz,
       hasMore: slice?.hasMore ?? true,
-      unreadFromId: unreadFrom,
+      unreadFromId: inSetup ? null : unreadFrom,
       unreadCount: unread.count,
       chatTitle: chat.title,
       chatCreatedAt: chat.createdAt,
@@ -204,7 +210,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     });
     if (live) r.push(live);
     return r;
-  }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live]);
+  }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, inSetup, unread.count, chat, agentName, live]);
   const layouts = useMemo<RowLayout[]>(() => layoutRows(rows, { chatKind: chat.kind }), [rows, chat.kind]);
   const latestUserId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--)

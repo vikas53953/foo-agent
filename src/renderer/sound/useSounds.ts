@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { quietUntil } from '../shell/statusLine';
 import { useStore, type RootState } from '../store/index';
+import { quietHours } from '../store/live';
 import { selectOpenChatId } from '../store/ui';
 import { approvedByUser, doneWithProof, soundAllowed, type SoundName } from './gate';
 import { playTone } from './tones';
@@ -10,9 +11,10 @@ import { playTone } from './tones';
 function allowed(s: RootState): boolean {
   const v = s.settings.value;
   if (!v) return false;
+  const hours = quietHours(s);
   return soundAllowed({
     setting: v.appearance.sounds,
-    quiet: quietUntil(v.notifications.quiet, s.live.now, v.locale.timeZone) !== null,
+    quiet: hours !== null && quietUntil(hours, s.live.now, v.locale.timeZone) !== null,
     hidden: document.visibilityState === 'hidden',
   });
 }

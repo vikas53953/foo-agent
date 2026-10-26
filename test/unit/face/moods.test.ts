@@ -10,6 +10,7 @@ import {
   noteJobForFace,
   noteMessageForFace,
   playOnceReducer,
+  quietHours,
   resetFaceGuard,
   selectOnceStart,
   selectChatMood,
@@ -182,6 +183,15 @@ describe('selectChatMood and playOnce (§F15.9.9)', () => {
   });
   it('reads quiet hours from settings.notifications.quiet', () => {
     expect(selectChatMood('c1')(world(NIGHT))).toBe('asleep');
+  });
+  it('CR-0063 X-220 item 1: while `notify` is off quiet hours never make foo asleep, and turn back on with it', () => {
+    const s = world(NIGHT);
+    s.live.features = ['install', 'ai', 'name', 'chat', 'settings'];
+    expect(quietHours(s)).toBeNull();
+    expect(selectChatMood('c1')(s)).not.toBe('asleep');
+    s.live.features = [...s.live.features, 'notify'];
+    expect(quietHours(s)).toBe(s.settings.value!.notifications.quiet);
+    expect(selectChatMood('c1')(s)).toBe('asleep');
   });
   it('keeps at most 3 entries and never repeats a mood within 10 s', () => {
     const s = world();
