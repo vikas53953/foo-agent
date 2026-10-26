@@ -7,6 +7,7 @@ import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
 import { navigate, useStore } from '../store/index';
 import { selectFirstName, selectSetupComplete, selectTimeZone } from '../store/settings';
+import { selectFeatureOn } from '../store/live';
 import { Avatar } from '../ui/Avatar';
 import { IconButton } from '../ui/IconButton';
 import { aiText, footerAi, footerSpend } from './footer';
@@ -23,7 +24,9 @@ export function SidebarFooter() {
   const tz = useStore(selectTimeZone);
   const status = footerAi(ai, { setupComplete, offline, now });
   const statusText = aiText(status, ai, now, tz);
-  const spendLine = footerSpend(spend, ai?.displayName ?? '');
+  // CR-0059 row 3 (CR-0054): with spend off a key-billed AI shows no "₹0 of ₹1,000 AI this month" line (a plan still says so).
+  const spendOn = useStore(selectFeatureOn('spend'));
+  const spendLine = spendOn || spend?.aiBilling !== 'key' ? footerSpend(spend, ai?.displayName ?? '') : null;
   const name = t('sidebar.footer.status.name', { you: firstName ?? 'none', status: statusText, spend: spendLine?.text ?? '' });
 
   return (

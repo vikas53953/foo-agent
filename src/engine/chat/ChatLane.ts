@@ -299,6 +299,8 @@ export class ChatLane {
   private taken = new Set<string>();
   /** Cut-off bubbles that already had their one Try again. */
   private retried = new Set<string>();
+  /** CR-0059 row 1 (04 §17.1): user message id → the finished answer its next turn writes over, and that answer's text. */
+  private rewrites = new Map<string, { fooId: string; text: string }>();
   /** R1 T6: user messages that are side questions; every foo row answering one carries `side = 1` (04 §17.5). */
   private sideTurns = new Set<string>();
   /** Resolves when every queued turn has finished (tests). */
@@ -349,9 +351,51 @@ export class ChatLane {
     return true;
   }
 
-  private async askedBefore(fooMessageId: string): Promise<EngineMessage | null> {
+  /**
+   * CR-0059 row 1 (04 §17.1 "Write this answer again"): the AI answers the same user message again and the new text replaces
+   * this finished answer in place; the old text is kept as `earlier_text`. A rewrite already queued or running is not doubled.
+   * The old answer is untouched until the new one is complete (the Thinking row shows meanwhile), so a failure, Stop, a cap
+   * or a restart mid-rewrite leaves it as it was.
+   */
+  rewrite(fooMessageId: string): boolean {
+    if ([...this.rewrites.values()].some((r) => r.fooId === fooMessageId)) return false;
+    void (async () => {
+      const reply = await this.messageById(fooMessageId);
+      if (!reply || reply.authorKind === 'user' || reply.kind !== 'text' || reply.status !== 'complete') {
+        this.d.log('chat.rewrite_skipped', 'not_a_finished_answer');
+        return;
+      }
+      const userId = this.answered.get(fooMessageId) ?? (await this.askedBefore(fooMessageId, 'complete'))?.id;
+      if (!userId || this.inflight.has(userId)) {
+        this.d.log('chat.rewrite_skipped', userId ? 'busy' : 'no_question', { chatId: reply.chatId });
+        return;
+      }
+      this.rewrites.set(userId, { fooId: fooMessageId, text: reply.text });
+      this.enqueue(reply.chatId, userId, { intakeOnly: true });
+    })();
+    return true;
+  }
+
+  /**
+   * CR-0059 row 1: a rewrite that produced no new answer leaves the old one as it was; 👀 and the Thinking row go, and one
+   * line says so, so the tap never looks like it did nothing.
+   */
+  private async rewriteKept(
+    chatId: string,
+    messageId: string,
+    who: string,
+    why: string,
+    helper: EngineHelper | null = null,
+  ): Promise<void> {
+    this.d.log('chat.rewrite_kept', why, { chatId });
+    await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: null } }]);
+    this.typing(chatId, false, who);
+    await this.post(chatId, messageId, t('thread.rewrite.kept'), helper, null);
+  }
+
+  private async askedBefore(fooMessageId: string, status: 'failed' | 'complete' = 'failed'): Promise<EngineMessage | null> {
     const reply = await this.messageById(fooMessageId);
-    if (!reply || reply.authorKind === 'user' || reply.status !== 'failed') return null;
+    if (!reply || reply.authorKind === 'user' || reply.status !== status) return null;
     const before = (await this.query<EngineMessage[]>('messagesBefore', reply.chatId, reply.seq, CONVERSATION)) ?? [];
     return [...before].reverse().find((m) => m.authorKind === 'user') ?? null;
   }
@@ -459,10 +503,24 @@ export class ChatLane {
     if (side) this.sideTurns.add(messageId);
     else this.sideTurns.delete(messageId);
     const intakeOnly = this.intakeOnly.delete(messageId) || side;
+    const rewrite = this.rewrites.get(messageId) ?? null;
+    this.rewrites.delete(messageId);
+    // The turn runs once more with what it was given: its intake-only mark and (CR-0059 row 1) its rewrite (the protocol
+    // retry; a rewrite with an empty reply keeps the old answer instead).
+    const again = () => {
+      if (rewrite) this.rewrites.set(messageId, rewrite);
+      if (rewrite || (intakeOnly && !side)) this.intakeOnly.add(messageId);
+      return this.turn(chatId, messageId);
+    };
     // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
     if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
     if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
     const pick = this.d.ai.pick();
+    if (!pick && rewrite) {
+      // CR-0059 row 1: an answered message never goes back to "Waiting to send"; the old answer stays.
+      await this.rewriteKept(chatId, messageId, '', 'no_ai');
+      return;
+    }
     if (!pick) {
       // 04 §3.3 Waiting to send: foo cannot hand it on now; drained when the AI is back (Engine.drainQueued).
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
@@ -513,6 +571,10 @@ export class ChatLane {
     // M5 T10 (CR-0008 (j) row 5): the pre-call cap check covers intake turns (08-2 §5.10 item 4). At the cap the message
     // waits to send (04 §3.3, composer "Messages wait until you raise it") and is drained when the cap is lifted.
     if (built && this.d.capCheck && !(await this.d.capCheck(built.system.length + built.prompt.length, 'intake'))) {
+      if (rewrite) {
+        await this.rewriteKept(chatId, messageId, who, 'cap', helper);
+        return;
+      }
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
       return;
     }
@@ -532,7 +594,8 @@ export class ChatLane {
         op: 'update',
         table: 'messages',
         id: messageId,
-        set: { status: 'complete', badge: 'seen', understood: understood.length ? JSON.stringify(understood) : null },
+        // CR-0059 row 1: a rewrite's message was answered already; the Thinking row is the sign (no 👀 to leave behind on a restart).
+        set: { status: 'complete', badge: rewrite ? null : 'seen', understood: understood.length ? JSON.stringify(understood) : null },
       },
     ]);
     this.typing(chatId, true, who);
@@ -543,7 +606,8 @@ export class ChatLane {
       // A message over the prompt budget (PromptBudgetError) or a broken prompt file: the reply is cut off with Try again
       // instead of leaving 👀 and the Thinking row up (04 §19.4).
       this.d.log('chat.prompt_failed', 'PROTOCOL_INVALID', { chatId });
-      await this.cutOff(chatId, messageId, null, who, '', helper, pick.backup ? 'backup' : null);
+      if (rewrite) await this.rewriteKept(chatId, messageId, who, 'prompt_failed', helper);
+      else await this.cutOff(chatId, messageId, null, who, '', helper, pick.backup ? 'backup' : null);
       await this.turnRow(
         turnId,
         chatId,
@@ -571,6 +635,8 @@ export class ChatLane {
       later(async () => {
         // Nothing reaches the bubble after Stop or a cut-off (08-4 §30.7), not even a held sentence's late rewrite.
         if (abort.signal.aborted) return;
+        // CR-0059 row 1: a rewrite streams nothing; the old answer stays until the new one is complete.
+        if (rewrite) return;
         if (!fooId) {
           fooId = this.d.newId('m');
           this.answered.set(fooId, messageId);
@@ -640,12 +706,13 @@ export class ChatLane {
       await pending;
       this.d.ai.reportError(pick.providerId, 'AI_PROTOCOL_VIOLATION');
       await this.turnRow(turnId, chatId, pick, startedAt, result, 'error');
-      return this.turn(chatId, messageId);
+      return again();
     }
     if (failed) {
       abort.abort();
       await pending;
-      await this.cutOff(chatId, messageId, fooId, who, gate.released().trimEnd(), helper, providerNote);
+      if (rewrite) await this.rewriteKept(chatId, messageId, who, result.errorKind ?? 'UNKNOWN', helper);
+      else await this.cutOff(chatId, messageId, fooId, who, gate.released().trimEnd(), helper, providerNote);
       this.d.ai.reportError(pick.providerId, result.errorKind ?? 'UNKNOWN', result.resetAt);
       await this.turnRow(turnId, chatId, pick, startedAt, result, result.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error');
       return;
@@ -693,6 +760,8 @@ export class ChatLane {
     }
     // R1 T6: a side question is answered, never turned into a job, a memory change or a setting (04 §17.5).
     if (side && act && act.kind !== 'react') act = { kind: 'reply' };
+    // CR-0059 row 1: a rewrite is only ever a new answer in words (04 §17.1: Try again never repeats an action).
+    if (rewrite && act) act = { kind: 'reply' };
     // CR-0056: a message that got Connect Gmail for an email catch-up, and came back from intake as that catch-up again once
     // Google connected, reads the user's email as a job (the not-built line asks for exactly that).
     if (
@@ -712,6 +781,34 @@ export class ChatLane {
     // CR-0044: the decided kind goes to the tech log (an enum, no words), so a real-AI run shows why a message got its answer.
     this.d.log('chat.intake_kind', act ? kind : 'none', { chatId });
 
+    if (rewrite) {
+      // CR-0059 row 1: only a plain answer replaces the old one, in one write; any other decision keeps it as it was.
+      if (kind === 'reply' && released.trim()) {
+        const trailer = splitSuggestions(parsed.say);
+        const actions = splitActions(trailer.text).actions;
+        this.answered.set(rewrite.fooId, messageId);
+        await this.tx([
+          {
+            op: 'update',
+            table: 'messages',
+            id: rewrite.fooId,
+            set: {
+              text: released,
+              status: 'complete',
+              earlier_text: rewrite.text,
+              suggestions: trailer.suggestions ?? null,
+              actions: actions ?? null,
+              badge: null,
+              provider_note: providerNote,
+            },
+          },
+          { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
+        ]);
+        this.typing(chatId, false, who);
+      } else await this.rewriteKept(chatId, messageId, who, 'empty', helper);
+      await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+      return;
+    }
     // CR-0054: a kind whose feature this build left off gets that feature's line, like an unbuilt kind.
     const offFeature = featureOff(kind, this.d.featureOn);
     const memoryKind = act?.kind === 'memory' && this.d.memory && !offFeature ? act : null;
@@ -820,8 +917,7 @@ export class ChatLane {
     // CR-0041: the retried turn takes the same message, with its answers, its changed plan and its intake-only mark.
     if (retryEmpty) {
       await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
-      if (intakeOnly && !side) this.intakeOnly.add(messageId);
-      return this.turn(chatId, messageId);
+      return again();
     }
     // M5 T10: the changed plan went with a turn that answered; the next message is a fresh one.
     if (!side) this.d.jobs?.planChange?.(chatId, true);

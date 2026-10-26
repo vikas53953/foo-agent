@@ -1315,7 +1315,10 @@
       "f": "Starts a job. 👀 means \"seen\", and it comes from the real job, not from the AI.",
       "hl": "mybill",
       "milestone": "M12",
-      "firstTested": "M4"
+      "firstTested": "M4",
+      "superseded": {
+        "decision": "X-216 (👀 after 2 s, as 3D eyes)"
+      }
     },
     {
       "id": "UX-05-03",
@@ -2211,7 +2214,10 @@
       "s": "\"book a table for 4 at a good Italian place in South Mumbai, Saturday 8pm\" with 👀.",
       "f": "Fills the rest from memory: family of 4, vegetarian on Tuesdays (not today), your usual areas.",
       "hl": "ask",
-      "milestone": "M9"
+      "milestone": "M9",
+      "superseded": {
+        "decision": "X-216 (👀 after 2 s, as 3D eyes)"
+      }
     },
     {
       "id": "UX-12-02",
@@ -2405,7 +2411,10 @@
       "s": "\"ok book the Goa hotel then, under ₹8,000 a night, near the beach\" with 👀.",
       "f": "Sees it's a travel job, and travel belongs to Trips.",
       "hl": "ask",
-      "milestone": "M10"
+      "milestone": "M10",
+      "superseded": {
+        "decision": "X-216 (👀 after 2 s, as 3D eyes)"
+      }
     },
     {
       "id": "UX-13-02",
@@ -4707,6 +4716,18 @@
     {
       "id": "UX-22-04",
       "decision": "X-15 (C-21 typed field)"
+    },
+    {
+      "id": "UX-05-02",
+      "decision": "X-216 (👀 after 2 s, as 3D eyes)"
+    },
+    {
+      "id": "UX-12-01",
+      "decision": "X-216 (👀 after 2 s, as 3D eyes)"
+    },
+    {
+      "id": "UX-13-01",
+      "decision": "X-216 (👀 after 2 s, as 3D eyes)"
     },
     {
       "id": "UX-24-09",

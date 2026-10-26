@@ -93,6 +93,14 @@ describe('message writes', () => {
     expect(list.find((m) => m.id === ids.marker)!.deletedAt).toBeNull();
     expect(reactMessage(db, ids.old!, '👍', true, NOW).ok).toBe(false);
   });
+  it('delete the newest message: the chat row takes a new rev and its last message is the one before (CR-0059 row 5)', () => {
+    const before = db.prepare('SELECT rev, last_message_id FROM chats WHERE id = ?').get(chat) as { rev: number; last_message_id: string };
+    expect(before.last_message_id).toBe(ids.latest);
+    deleteMessages(db, [ids.latest!], NOW);
+    const after = db.prepare('SELECT rev, last_message_id FROM chats WHERE id = ?').get(chat) as { rev: number; last_message_id: string };
+    expect(after.rev).toBeGreaterThan(before.rev);
+    expect(after.last_message_id).toBe(ids.marker);
+  });
 });
 
 describe('files stay inside {DATA}', () => {

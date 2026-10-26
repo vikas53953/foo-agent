@@ -1,4 +1,5 @@
-// Spec: 10-acceptance-2 §E PERF-07 (send → 👀 painted ≤ 1 s, C1), PERF-08 (job start → checklist painted, no earlier than
+// Spec: 10-acceptance-2 §E PERF-07 (send → foo's "seen" painted ≤ 1 s, C1; CR-0059 row 4 / X-216: the ✓✓ read tick, set in the
+// same write as 👀, which itself waits 2 s), PERF-08 (job start → checklist painted, no earlier than
 // 1.5 s and by 2 s, J5), PERF-11 (network cut → WAITING + offline banner strip ≤ 10 s, J19); §E.1 (each test runs 20 times;
 // the 95th percentile must meet the budget); 08-3 §20 (the e2e lane), 08-2 §5.4.2 (checklist after 1.5 s when step_count ≥ 2),
 // 03-shell-1 §3.3 (banner). M5 T10 (CR-0008 (j) row 11): 20 runs each in one window, p95 against the budget; PERF-07 on the job
@@ -113,31 +114,38 @@ async function start(o: { intakeDelayMs?: number } = {}) {
   return { app, page, log, badgeOf, expectBadge, toNewest, type, send, stopJob };
 }
 
-test('PERF-07: send → 👀 painted, p95 ≤ 1 s over 20 runs (job path)', async () => {
+test('PERF-07: send → seen (✓✓ read) painted, p95 ≤ 1 s over 20 runs (job path)', async () => {
   test.setTimeout(300_000);
   const { app, page, expectBadge, type, stopJob } = await start({ intakeDelayMs: 2_000 });
   const ms: number[] = [];
   const split: string[] = [];
   for (const tag of TAGS) {
     await type(ask(tag));
-    // Timed inside the window: Enter's keydown → the first frame after the new bubble's badge shows 👀. No Playwright polling
-    // in the measured span.
-    await page.evaluate((sel) => {
-      const w = window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } };
-      w.__perf07 = {};
-      addEventListener('keydown', (e) => e.key === 'Enter' && (w.__perf07.sentAt ??= performance.now()), { capture: true, once: true });
-      const before = new Set(Array.from(document.querySelectorAll(sel)));
-      const fresh = () => Array.from(document.querySelectorAll(sel)).filter((b) => !before.has(b));
-      const seen = () => fresh().some((b) => b.getAttribute('data-state') === 'seen');
-      new MutationObserver((_, obs) => {
-        if (w.__perf07.sentAt === undefined) return;
-        // When the new bubble first shows (main has stored it), to split the span: window + main, then the engine's turn.
-        if (w.__perf07.bubbleAt === undefined && fresh().length) w.__perf07.bubbleAt = performance.now();
-        if (!seen()) return;
-        obs.disconnect();
-        requestAnimationFrame(() => (w.__perf07.paintedAt = performance.now()));
-      }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-state'] });
-    }, byTid(TID.bubbleBadge));
+    // Timed inside the window: Enter's keydown → the first frame after the new bubble's tick reads ✓✓ read (the lane's 👀
+    // write; CR-0059 row 4 holds the 👀 picture itself back 2 s). No Playwright polling in the measured span.
+    await page.evaluate(
+      ({ sel, text }) => {
+        const w = window as unknown as { __perf07: { sentAt?: number; bubbleAt?: number; paintedAt?: number } };
+        w.__perf07 = {};
+        addEventListener('keydown', (e) => e.key === 'Enter' && (w.__perf07.sentAt ??= performance.now()), { capture: true, once: true });
+        const before = new Set(Array.from(document.querySelectorAll(sel)));
+        // Only this run's own bubble counts: an older row that remounts already reads ✓✓ (independent review of #155).
+        const fresh = () =>
+          Array.from(document.querySelectorAll(sel)).filter(
+            (b) => !before.has(b) && (b.closest('[data-message-id]')?.textContent ?? '').includes(text),
+          );
+        const seen = () => fresh().some((b) => b.getAttribute('data-state') === 'read');
+        new MutationObserver((_, obs) => {
+          if (w.__perf07.sentAt === undefined) return;
+          // When the new bubble first shows (main has stored it), to split the span: window + main, then the engine's turn.
+          if (w.__perf07.bubbleAt === undefined && fresh().length) w.__perf07.bubbleAt = performance.now();
+          if (!seen()) return;
+          obs.disconnect();
+          requestAnimationFrame(() => (w.__perf07.paintedAt = performance.now()));
+        }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['data-state'] });
+      },
+      { sel: byTid(TID.bubbleTick), text: ask(tag) },
+    );
     await page.keyboard.press('Enter');
     const { sentAt, bubbleAt, paintedAt } = await page
       .waitForFunction(() => {

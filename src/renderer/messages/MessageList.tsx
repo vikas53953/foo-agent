@@ -96,6 +96,10 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
     return (id && s.chats.byId[id]?.face) || '';
   });
+  const fooColor = useStore((s) => {
+    const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
+    return (id && s.chats.byId[id]?.colorToken) || null;
+  });
   const reduced = useReducedMotion();
   const find = useFind();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -148,7 +152,11 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const flingCheckRef = useRef(flingCheck);
   flingCheckRef.current = flingCheck;
 
-  const messages = useMemo<StoredMessage[]>(() => (slice ? slice.ids.map((id) => slice.byId[id]!) : []), [slice]);
+  // CR-0059 row 5: a deleted message leaves the chat (no "You deleted this message" line), for every row, divider and count.
+  const messages = useMemo<StoredMessage[]>(
+    () => (slice ? slice.ids.map((id) => slice.byId[id]!).filter((m) => m.deletedAt === null) : []),
+    [slice],
+  );
   const isWa = chat.kind === 'wa_mirror';
   const isGroup = chat.kind === 'group';
   // The unread divider is fixed when the chat opens and removed when the user sends a message here (§3.6.5).
@@ -214,6 +222,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       isGroup,
       agentName,
       fooFace,
+      fooColor,
       timeZone: tz,
       now,
       offline: connection === 'offline',
@@ -232,6 +241,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       isGroup,
       agentName,
       fooFace,
+      fooColor,
       tz,
       now,
       connection,
@@ -836,7 +846,7 @@ function Row({
       return h ? (
         <ThinkingRow face={h.faceRef} name={h.name} kind="helper" color={h.colorToken} label={ctx.isGroup} />
       ) : (
-        <ThinkingRow face={ctx.fooFace} name={ctx.agentName} kind="foo" label={ctx.isGroup} />
+        <ThinkingRow face={ctx.fooFace} name={ctx.agentName} kind="foo" color={ctx.fooColor} label={ctx.isGroup} />
       );
     }
     case 'message': {

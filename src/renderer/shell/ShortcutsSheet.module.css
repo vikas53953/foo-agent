@@ -1,0 +1,79 @@
+/* Spec: 06-3 §19 (Dialog md, body scrolls to the window height − 64px), 06-2 §6.10 key caps (24px tall, padding 0 8px, --r-xs,
+ * 1px --line-strong, --bg-sunken, --t-caption, 4px between caps, no "+" drawn), rows action --t-body left, keys right. */
+.filter {
+  margin-top: var(--s3);
+  width: 100%;
+}
+.scroll {
+  margin-top: var(--s3);
+  max-height: calc(100vh - var(--s9) * 4);
+  overflow-y: auto;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.groupTitle {
+  margin: 0 0 var(--s1);
+  font: var(--t-small);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.row td {
+  padding: var(--s1) 0;
+  vertical-align: middle;
+}
+.action {
+  font: var(--t-body);
+  color: var(--fg-1);
+}
+.keysCell {
+  text-align: right;
+}
+.keys {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--s1);
+}
+.alt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s0);
+}
+.or,
+.hold {
+  font: var(--t-caption);
+  color: var(--fg-2);
+}
+.cap {
+  display: inline-flex;
+  align-items: center;
+  height: var(--s5);
+  padding: 0 var(--s1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-xs);
+  background: var(--bg-sunken);
+  font: var(--t-caption);
+  color: var(--fg-1);
+}
+.cardsLine,
+.none {
+  margin: 0;
+  font: var(--t-small);
+  color: var(--fg-2);
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.sheetLink {
+  align-self: flex-start;
+}

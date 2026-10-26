@@ -8,7 +8,7 @@ import { mainRegistry } from '../secrets/registerValue';
 
 /** §4.6 rule 2: the text columns that only ever hold redacted text. JSON columns have every string leaf redacted. */
 export const REDACTED_COLUMNS: Readonly<Record<string, readonly string[]>> = {
-  messages: ['text', 'text_for_ai', 'transcript'],
+  messages: ['text', 'text_for_ai', 'transcript', 'earlier_text'],
   drafts: ['text'],
   tool_calls: ['args', 'result'],
   activity: ['summary', 'fields'],

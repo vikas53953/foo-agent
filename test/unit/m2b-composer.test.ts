@@ -137,6 +137,7 @@ describe('keys (04-2 §22.9)', () => {
     ...o,
   });
   const f: KeyFacts = {
+    hasSelection: true,
     fieldEmpty: false,
     canEditLast: true,
     menuOpen: false,
@@ -175,6 +176,8 @@ describe('keys (04-2 §22.9)', () => {
     expect(composerKeyAction(k({ key: 'u', ctrlKey: true }), f)).toBe('pick_files');
     expect(composerKeyAction(k({ key: 'b', ctrlKey: true }), f)).toBe('wrap_bold');
     expect(composerKeyAction(k({ key: 'i', ctrlKey: true }), f)).toBe('wrap_italic');
+    // CR-0060: with nothing selected Ctrl+I is left to the shell, which opens the profile (09 §9.17).
+    expect(composerKeyAction(k({ key: 'i', ctrlKey: true }), { ...f, hasSelection: false })).toBeNull();
     expect(composerKeyAction(k({ key: 'X', ctrlKey: true, shiftKey: true }), f)).toBe('wrap_strike');
   });
   it('while recording only Esc, Enter (locked) and Space pass', () => {

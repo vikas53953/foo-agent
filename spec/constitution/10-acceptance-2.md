@@ -230,7 +230,7 @@ Fixture: FOO_TEST world, fake AI, pinned clock, motion off for pictures.
 | AT-427 | One bubble | a 3-paragraph chat-mode reply of ≤ 600 characters shows as one bubble with one time |
 | AT-428 | Sender label in own chats | foo's chat and a helper's chat show the face and name above the first bubble of each output run |
 | AT-429 | Your bubble colour | dark theme user bubble is `#2C359A`; light stays `#0B0B10` |
-| AT-430 | Reply actions on older answers | the action row shows under the latest answer, and under an older answer on hover or focus only |
+| AT-430 | Reply actions on older answers | the action row shows under the latest answer only; an older answer offers Copy, Try again, 👍 and 👎 in its ⋯ menu (X-216, replacing the CR-0024 hover row) |
 | AT-431 | Chip icons | each suggestion chip shows the icon its words map to (04-2 §21.7 Look); unknown words get `Edit` |
 | AT-432 | Answered steer tick | a message answered while a job runs shows ✓✓ read, not ⏳, once its answer posts |
 | AT-433 | Trying another way | a failed tool call with the job carrying on shows "Slow here, trying another way" under the current step until the next successful call |
@@ -262,6 +262,8 @@ AT-436 to AT-439 are reserved for this patch.
 | AT-446 | An email catch-up offers Connect Gmail | with Google not connected and `connections` on, an intake `catch_up` with source `gmail` posts the Connect card for Gmail (`one_app`, line naming "Read your email") and no not-built line; once Google connects the message goes back to intake, and the same catch-up again runs as a one-step `read_email` job; Not now sends it to one more intake turn without the card, where a catch-up gets `thread.not_built.catch_up`; a WhatsApp catch-up, Google already connected, or `connections` off keep the not-built line (CR-0056) |
 | AT-447 | A key the user names saves | the Secret box from "Password or key" (or a moved password or unknown key) has a Name field above the masked value; with a name it saves as `foo/user_key/{name}` ("GitHub key" → `foo/user_key/github-key`), the card shows "GitHub key · saved {date}", the activity line names it only, and the value is in no row of `foo.db`; an empty or 41-character name is refused and writes nothing; no `vault.use` purpose reads it (CR-0057) |
 | AT-448 | A setting ask after memory talk is a setting | `intake.md` (08-4 §24.5) limits "memory" to a message that itself asks to remember or forget, and says asking to change a setting ("switch to dark mode") is always "setting", even right after messages about memory (CR-0058, X-215); the real-AI journey R-dark-hi checks the theme turns dark |
+| AT-449 | The batch-1 bug-finder sweep is clean | on the batch-1 build (CR-0054) the sweep `QA-B1-080` finds nothing: no job filter chips or spend line, no 👀 on a quick answer and the 3D eyes on a slow one, no hover control over another bubble's words, every ⋯ menu item changes what the user sees, Try again (action row or ⋯ menu) rewrites in place with "Rewritten" and "Show earlier answer" and a fresh chat-list preview, and a deleted message leaves no bubble while the chat-list preview moves to the message before it (CR-0059, X-216) |
+| AT-450 | Every batch-1 page, menu item and shortcut does something | on the batch-1 build (CR-0054) the sweep `QA-B1-083` finds nothing: a glyph face keeps its colour in the header and bubbles, no hover toolbar leaves the pane, an edit rewrites foo's answer, no empty "Draft:", every Settings page and foo's profile show content, a profile name change reaches the chat list and the vibe sticks, every sidebar and chat ⋯ item changes what the user sees and no submenu covers its menu, the Ctrl+/ sheet lists rows and every listed key does something, and Clear messages empties the chat (CR-0060, X-217) |
 
 **Job answers with tables (CR-0055, X-212; 08-4 §25.3).**
 
@@ -351,7 +353,7 @@ E.1 Run on the reference laptop (A.6), Windows 10 and 11, release build, after a
 | PERF-04 | Scroll **60 fps** with 5,000 messages | fling from bottom to top and back, mixed bubbles, cards and images | ≤ 1 % frames over 16.7 ms; DOM message nodes bounded (virtualised list) |
 | PERF-05 | Search first page < **300 ms** (J22) | last keystroke + 150 ms debounce → first results painted, at 50,000 and at 100,000 messages | p95 < 300 ms |
 | PERF-06 | Stop < **1 s** (J18) | "stop" sent → last click or AI call for that job | 0 events after 1 s |
-| PERF-07 | Seen badge ≤ **1 s** (C1) | send → 👀 painted | p95 ≤ 1 s |
+| PERF-07 | Seen ≤ **1 s** (C1) | send → ✓✓ read painted (X-216: the same write sets `seen`; the 👀 picture itself waits 2 s) | p95 ≤ 1 s |
 | PERF-08 | Checklist ≤ **2 s** (J5) | job start → checklist painted (appears no earlier than 1.5 s) | 1.5 s ≤ p95 ≤ 2 s |
 | PERF-09 | Taskbar overlay ≤ **2 s** (J20) | job enters NEEDS YOU → overlay shown | p95 ≤ 2 s |
 | PERF-10 | Face/name update ≤ **1 s** (J3) | face tapped → chat list, header, jump list updated | p95 ≤ 1 s |

@@ -111,7 +111,7 @@ test('AT-431 Chip icons: each chip leads with the icon its words map to; unknown
   expect(icons).toEqual(['Mail', 'CalendarLtr', 'Edit']);
 });
 
-test('AT-430 Reply actions on older answers: always under the latest, under an older one only on hover or focus', async () => {
+test('AT-430 Reply actions on older answers: the row only under the latest; an older one keeps them in its ⋯ menu (X-216)', async () => {
   await openChat(page, 'News & X');
   if ((await answerRow(SAY_1).count()) === 0) await ask(ASK_1, SAY_1);
   await ask(ASK_2, SAY_2);
@@ -123,42 +123,14 @@ test('AT-430 Reply actions on older answers: always under the latest, under an o
   await expect.poll(() => opacityOf(actionsOf(latest))).toBe('1');
   await expect(latest.getByTestId(TID.bubbleActionsCopy)).toBeVisible();
 
-  // The older answer has the row, hidden until the pointer is over it.
-  await expect(older.getByTestId(TID.bubbleActionsCopy)).toHaveCount(1);
-  await expect.poll(() => opacityOf(actionsOf(older))).toBe('0');
+  // CR-0059 row 2: the older answer has no row, not even on hover (it drew over the next message).
+  await expect(older.getByTestId(TID.bubbleActionsCopy)).toHaveCount(0);
   await older.getByTestId(TID.bubbleHelper).hover();
-  await expect.poll(() => opacityOf(actionsOf(older))).toBe('1');
-  // It fades in over 120ms (§17.1).
-  const was = await page.evaluate(() => document.documentElement.dataset.motion ?? '');
-  const fade = (level: string) =>
-    actionsOf(older).evaluate((el, lvl) => {
-      document.documentElement.dataset.motion = lvl;
-      return getComputedStyle(el).transitionDuration;
-    }, level);
-  expect(await fade('full')).toBe('0.12s');
-  expect(await fade('off')).toBe('0.083s');
-  await fade(was);
-  await expect(older.getByTestId(TID.bubbleActionsGood)).toBeVisible();
+  await expect(older.getByTestId(TID.bubbleActionsCopy)).toHaveCount(0);
 
-  // Pointer away: hidden again; keyboard focus inside the row shows it.
-  await page.getByTestId(TID.composerField).hover();
-  await expect.poll(() => opacityOf(actionsOf(older))).toBe('0');
-  await older.getByTestId(TID.bubbleActionsCopy).focus();
-  await expect.poll(() => opacityOf(actionsOf(older))).toBe('1');
-
-  // 👍 on the older answer works from the hover row.
-  await older.getByTestId(TID.bubbleHelper).hover();
-  await older.getByTestId(TID.bubbleActionsGood).click();
-  await expect(older.getByTestId(TID.bubbleActionsGood)).toHaveAttribute('aria-pressed', 'true');
-
-  // 👎 on the older answer: the row stays while its popover is open and while the thanks caption shows.
-  await older.getByTestId(TID.bubbleActionsBad).click();
-  const pop = page.getByTestId(TID.bubbleFeedback);
-  await expect(pop).toBeVisible();
-  await pop.getByTestId(TID.bubbleFeedbackChip).first().click();
-  await expect.poll(() => opacityOf(actionsOf(older))).toBe('1');
-  await pop.getByTestId(TID.bubbleFeedbackSend).click();
-  await page.getByTestId(TID.composerField).hover();
-  await expect(older.getByText(t('bubble.feedback.thanks'))).toBeVisible();
-  await expect.poll(() => opacityOf(actionsOf(older))).toBe('1');
+  // Its ⋯ menu carries Copy, Try again, 👍 and 👎.
+  await older.getByTestId(TID.bubbleToolbarMore).click();
+  for (const id of [TID.bubbleMenuCopy, TID.bubbleMenuTryAgain, TID.bubbleMenuGood, TID.bubbleMenuBad])
+    await expect(page.getByTestId(id)).toBeVisible();
+  await page.keyboard.press('Escape');
 });

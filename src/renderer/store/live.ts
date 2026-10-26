@@ -38,6 +38,8 @@ export interface LiveState {
   loadFailed: boolean;
   /** CR-0054: the switched-on features (Bootstrap.features); null = every feature (no list sent). */
   features: FeatureId[] | null;
+  /** CR-0060: the app version for Settings → About. */
+  appVersion: string | null;
 }
 
 export function initialLive(now: number): LiveState {
@@ -58,6 +60,7 @@ export function initialLive(now: number): LiveState {
     loaded: false,
     loadFailed: false,
     features: null,
+    appVersion: null,
   };
 }
 

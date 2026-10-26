@@ -9,7 +9,7 @@
 // aligned like foo's bubbles). R1 T6 (X-180): §6.5 "foo read:" line under the last user bubble, §1.9 Ask about this
 // (`data-ask-about` marks a foo / helper text bubble for the selection pill; §17.4 menu item).
 // 02 §F7.1 "Chat" (CR-0021, X-179): the user bubble grows from the send button, the error bubble shakes once, a picked reaction bounces once, the retry spinner turns into ✓, "Read more" grows, streamed words fade.
-import { memo, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
+import { memo, useContext, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
 import { motion } from '../../shared/tokens';
 import { TID } from '../../shared/testids';
@@ -31,6 +31,7 @@ import {
 } from '../store/messages';
 import { Face } from '../ui/Avatar';
 import { Icon } from '../ui/Icon';
+import { Button } from '../ui/Button';
 import { IconButton } from '../ui/IconButton';
 import { Menu, type MenuAnchor } from '../ui/Menu';
 import { cx } from '../ui/cx';
@@ -53,6 +54,7 @@ import {
   ReactionChips,
   attachmentKind,
   useDebounced,
+  useHeldFor,
   useReadMore,
   type QuoteInfo,
 } from './BubbleParts';
@@ -79,6 +81,8 @@ export interface RowCtx {
   isGroup: boolean;
   agentName: string;
   fooFace: string;
+  /** CR-0060: the tile colour of a glyph face picked for foo (`chats.color_token` of foo's chat). */
+  fooColor: string | null;
   timeZone: string;
   now: number;
   offline: boolean;
@@ -98,15 +102,20 @@ export interface Sender {
   face: string;
   kind: 'foo' | 'helper' | 'user';
   color: string | null;
+  /** The face's fill when it differs from the name colour (foo's glyph face, CR-0060). */
+  faceColor?: string | null;
 }
 
-export function senderOf(m: Pick<MessageRow, 'authorKind' | 'authorId'>, ctx: Pick<RowCtx, 'agentName' | 'fooFace' | 'helpers'>): Sender {
+export function senderOf(
+  m: Pick<MessageRow, 'authorKind' | 'authorId'>,
+  ctx: Pick<RowCtx, 'agentName' | 'fooFace' | 'helpers'> & { fooColor?: string | null },
+): Sender {
   if (m.authorKind === 'user') return { name: t('bubble.row.you'), face: '', kind: 'user', color: null };
   if (m.authorKind === 'helper') {
     const h = m.authorId ? ctx.helpers[m.authorId] : undefined;
     return { name: h?.name ?? '', face: h?.faceRef ?? '', kind: 'helper', color: h?.colorToken ?? null };
   }
-  return { name: ctx.agentName, face: ctx.fooFace, kind: 'foo', color: null };
+  return { name: ctx.agentName, face: ctx.fooFace, kind: 'foo', color: null, faceColor: ctx.fooColor ?? null };
 }
 
 /**
@@ -156,7 +165,7 @@ export function messagePlainText(m: MessageRow, cards: Record<string, CardRow>):
 
 const names = new WeakMap<StoredMessage, { ctx: RowCtx; name: string }>();
 /** The context fields a name reads (a new page of history changes `byId` only, which no name reads). */
-const NAME_CTX = ['agentName', 'fooFace', 'helpers', 'timeZone', 'now', 'offline', 'aiDown', 'jobs', 'cards'] as const;
+const NAME_CTX = ['agentName', 'fooFace', 'fooColor', 'helpers', 'timeZone', 'now', 'offline', 'aiDown', 'jobs', 'cards'] as const;
 /** Kept per message object and list context (both immutable), so a row scrolled back into view does not rebuild it. */
 export function messageAccessibleName(m: StoredMessage, ctx: RowCtx): string {
   const hit = names.get(m);
@@ -218,7 +227,7 @@ function SenderLabel({ sender, tid }: { sender: Sender; tid: 'bubbleSender' | 'c
         face={sender.face}
         name={sender.name}
         kind={sender.kind === 'user' ? 'foo' : sender.kind}
-        color={sender.color}
+        color={sender.faceColor ?? sender.color}
         size="inline"
         animate={false}
       />
@@ -366,7 +375,11 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   const selected = useStore((s) => s.ui.selection.has(m.id));
   const hot = useContext(RowHotCtx);
   const offlineQueued = ctx.offline;
-  const slot = badgeSlot(m, { offline: offlineQueued });
+  const rawSlot = badgeSlot(m, { offline: offlineQueued });
+  // CR-0059 row 4 (X-216): 👀 waits until foo has been on the message for 2 s; a quick answer never shows it.
+  const seenNow = rawSlot?.kind === 'badge' && rawSlot.value === 'seen';
+  const seenHeld = useHeldFor(seenNow);
+  const slot = seenNow && !seenHeld ? null : rawSlot;
   const shownSlot = useDebounced(slot ? JSON.stringify(slot) : '');
   const parsedSlot = shownSlot ? (JSON.parse(shownSlot) as Exclude<typeof slot, null>) : null;
   const notSent = side === 'me' && m.status === 'failed' && !deleted;
@@ -478,14 +491,10 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
           )}
         {/* 05-3 §5.15–§5.16 (M4 T5): proof chip or "Not checked live" chip + receipt footer under a job's result. */}
         {job && job.resultMessageId === m.id && !deleted && <ResultProof job={job} />}
-        {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && (
-          <ActionRow
-            messageId={m.id}
-            text={text}
-            canTryAgain={canTryAgain}
-            onTryAgain={() => void retryMessage(m.id)}
-            older={!layout.latestAnswer}
-          />
+        {/* CR-0059 row 2: only the latest answer carries the action row; an older one's row floated over the next message, so
+            its Copy, Try again and 👍/👎 live in the hover toolbar's ⋯ menu (§17.4). */}
+        {side === 'them' && !isCard && !deleted && m.kind === 'text' && m.status === 'complete' && layout.latestAnswer && (
+          <ActionRow messageId={m.id} text={text} canTryAgain={canTryAgain} onTryAgain={() => void retryMessage(m.id)} />
         )}
         {why && <WhyFooter why={why} timeZone={ctx.timeZone} now={ctx.now} />}
       </div>
@@ -662,7 +671,8 @@ function BubbleBody({
   const checklist = job ? Object.values(ctx.cards).some((c) => c.jobId === job.id && c.type === 'checklist') : true;
   const worked = !!job && job.stepCount >= 1 && !checklist && job.startedAt !== null && job.finishedAt !== null && m.status === 'complete';
   // §3.1 / §11 meta row: the trailing spacer sits on the last text line (inside the last paragraph).
-  const spacer = !streaming && !backup ? <AnswerSpacer messageId={m.id} at={m.createdAt} timeZone={ctx.timeZone} /> : null;
+  const rewritten = !!m.earlierText && !streaming;
+  const spacer = !streaming && !backup && !rewritten ? <AnswerSpacer messageId={m.id} at={m.createdAt} timeZone={ctx.timeZone} /> : null;
   const lead = (
     <>
       <FeedbackMark messageId={m.id} />
@@ -672,6 +682,7 @@ function BubbleBody({
           {t('bubble.backup_mark.text', backup)}
         </span>
       )}
+      {rewritten && <span>{t('bubble.meta.rewritten')}</span>}
     </>
   );
   return (
@@ -702,10 +713,36 @@ function BubbleBody({
           {t('bubble.stopped.caption')}
         </div>
       )}
+      {rewritten && <EarlierAnswer text={m.earlierText!} author={m.authorKind} />}
       {sources.length >= 2 && <SourcesRow sources={sources} />}
       {worked && job && <WorkedLine messageId={m.id} jobId={job.id} ms={job.finishedAt! - job.startedAt!} />}
       {(m.status === 'failed' || again.phase !== 'idle') && <CutOffRow phase={again.phase} onRetry={again.retry} />}
-      {!streaming && meta(backup ? 'row' : 'float', lead)}
+      {!streaming && meta(backup || rewritten ? 'row' : 'float', lead)}
+    </div>
+  );
+}
+
+/** CR-0059 row 1 (04 §17.1): a rewritten answer's old text, behind "Show earlier answer". */
+function EarlierAnswer({ text, author }: { text: string; author: MessageRow['authorKind'] }) {
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  return (
+    <div className={styles.earlier}>
+      <Button
+        variant="link"
+        className={styles.earlierLink}
+        aria-expanded={open}
+        aria-controls={id}
+        data-testid={TID.bubbleEarlierAnswer}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {t('bubble.actions.earlier_answer')}
+      </Button>
+      {open && (
+        <div id={id} className={styles.earlierText} data-copy="ai">
+          <Blocks blocks={fooOnlyBlocks(blocksOf(text), author)} />
+        </div>
+      )}
     </div>
   );
 }

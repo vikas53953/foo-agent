@@ -51,6 +51,8 @@ export interface KeyFacts {
   strip: 'reply' | 'side' | 'edit' | null; // R1 T6: 'side' is the side-question strip (04 §17.5)
   streaming: boolean;
   chips: number;
+  /** Text is selected in the field: Ctrl+I wraps it; with none, Ctrl+I is the shell's "Open profile" (09 §9.17, CR-0060). */
+  hasSelection: boolean;
 }
 
 export function composerKeyAction(e: KeyLike, f: KeyFacts): KeyAction | null {
@@ -89,7 +91,7 @@ export function composerKeyAction(e: KeyLike, f: KeyFacts): KeyAction | null {
     const k = e.key.toLowerCase();
     if (k === 'u' && !e.shiftKey) return 'pick_files';
     if (k === 'b' && !e.shiftKey) return 'wrap_bold';
-    if (k === 'i' && !e.shiftKey) return 'wrap_italic';
+    if (k === 'i' && !e.shiftKey) return f.hasSelection ? 'wrap_italic' : null;
     if (k === 'x' && e.shiftKey) return 'wrap_strike';
   }
   return null;

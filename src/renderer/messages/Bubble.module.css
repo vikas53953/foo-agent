@@ -36,7 +36,7 @@
 .row[data-gap='s5'] {
   padding-top: var(--s5);
 }
-.row[data-chips] > .line:not(:last-child):not(:has(+ [data-older])) {
+.row[data-chips] > .line:not(:last-child) {
   /* §8: whatever sits under a bubble with chips (action row 4 + 20 = 24, proof chip, why line) starts below the chip. */
   margin-bottom: var(--s4);
 }
@@ -151,8 +151,10 @@
   min-width: 0;
   max-width: min(72%, var(--bubble-max));
 }
+/* CR-0060: a rich bubble leaves room on the far side for its hover toolbar (§9.2: two 40px buttons, gap and offset), so the
+ * React and More buttons stay inside the chat on a full-width table. */
 .hold:has(> .rich) {
-  width: min(var(--bubble-max-rich), 100%);
+  width: min(var(--bubble-max-rich), calc(100% - var(--s7) * 2 - var(--s0) - var(--s1)));
   max-width: none;
 }
 /* A card sizes itself (`min(--card-w, 100%)`, 05-1 §0.2) but has inline-size containment, so it has no intrinsic width:
@@ -397,6 +399,20 @@
   font: var(--t-caption);
   color: var(--fg-3);
 }
+/* CR-0059 row 1 (04 §17.1): "Show earlier answer" is a Link in --t-caption --fg-3 under the text. */
+.earlier {
+  margin-top: var(--s1);
+}
+/* 04 §17.1: the Link "Show earlier answer", --t-caption --fg-3 under the text. */
+.earlierLink.earlierLink {
+  --btn-fg: var(--fg-3);
+  color: var(--fg-3);
+  font: var(--t-caption);
+}
+.earlierText {
+  font: var(--t-small);
+  color: var(--fg-2);
+}
 .backup {
   display: inline-flex;
   align-items: center;
@@ -436,6 +452,24 @@
 @keyframes fade-in {
   from {
     opacity: 0;
+  }
+}
+/* CR-0059 row 4 (X-216): the 3D eyes fill the badge circle and blink once per slow face-blink cycle; with reduced motion
+   (--motion-move 0, tokens.css) they stay open. */
+.eyes {
+  width: var(--s4);
+  height: var(--s4);
+  pointer-events: none;
+  animation: eyes-blink var(--m-face-blink-slow) var(--ease-standard) infinite;
+}
+@keyframes eyes-blink {
+  0%,
+  96%,
+  100% {
+    transform: scaleY(1);
+  }
+  98% {
+    transform: scaleY(calc(1 - 0.9 * var(--motion-move)));
   }
 }
 .chips {
@@ -1003,10 +1037,6 @@
 /* ---- action row (§17.1) */
 .actionsWrap {
   margin-top: var(--s0);
-}
-.row[data-chips] > .actionsWrap[data-older] {
-  /* An older row floats below the bubble: under a reaction chip it starts below the chip (§8, as in flow). */
-  margin-top: var(--s5);
 }
 
 .actions {

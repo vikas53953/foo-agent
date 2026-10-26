@@ -1,4 +1,4 @@
-// Spec: 04 §17.1 (action row under foo's latest text answer, and under an older one on hover or focus, CR-0024 F7: Copy
+// Spec: 04 §17.1 (action row under foo's latest text answer only, CR-0059 row 2 / X-216; CR-0024 F7: Copy
 // (→ Checkmark `--ok` 2 s) · Try again · 👍 · 👎, 32px icon buttons 4 apart, 4px below the bubble), §17.2 (👎 feedback popover: "What went wrong?", five multi-select chips, optional
 // field, "Send feedback" disabled until a chip is on, "Cancel"; after send "Thanks. I'll keep that in mind." for 4 s), §15
 // ("Worked for 12s ›" link that expands into the step list, ChevronRight → ChevronDown, `aria-expanded`), §19.4 (inline error
@@ -24,7 +24,6 @@ import { copyText } from './linkActions';
 import { RetryControl } from './BubbleParts';
 import type { RetryPhase } from './retry';
 import styles from './Bubble.module.css';
-import own from './AnswerExtras.module.css';
 
 /** 04 §17.2 and §19.6 captions stay for 4 s. */
 export const CAPTION_MS = 4000;
@@ -115,14 +114,11 @@ export function ActionRow({
   text,
   canTryAgain,
   onTryAgain,
-  older = false,
 }: {
   messageId: string;
   text: string;
   canTryAgain: boolean;
   onTryAgain: () => void;
-  /** §17.3: an older answer's row shows only on hover or focus. */
-  older?: boolean;
 }) {
   const feedback = useStore(selectFeedback(messageId));
   const [copied, flashCopied] = useFlag(motion['dur-confirm']);
@@ -130,8 +126,7 @@ export function ActionRow({
   const [bad, setBad] = useState<HTMLDivElement | null>(null);
   const [asking, setAsking] = useState(false);
   return (
-    // An older row stays shown while its own popover, ✓ flash or caption is up (they live outside the hover).
-    <div className={cx(styles.actionsWrap, older && !asking && !thanks && !copied && own.older)} data-older={older || undefined}>
+    <div className={styles.actionsWrap}>
       <div className={styles.actions} role="toolbar" aria-label={t('bubble.toolbar.more')}>
         <IconButton
           icon={copied ? 'Checkmark' : 'Copy'}

@@ -577,6 +577,9 @@ export function editMessage(db: Db, messageId: string, text: string, now: number
     now,
     messageId,
   );
+  // CR-0059: the chat-list preview shows the last message's words, so its chat row takes a new rev (the window drops a
+  // same-rev chat:upsert as stale).
+  db.prepare('UPDATE chats SET rev = rev + 1 WHERE last_message_id = ?').run(messageId);
   return touched(db, messageId);
 }
 
@@ -593,8 +596,58 @@ export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: s
       chatIds.add(String(r.chat_id));
       done.push(id);
     }
+    // CR-0059 row 5: the chat-list preview moves to the message before (the newest one not deleted), and a new rev lets
+    // the window take it.
+    for (const chatId of chatIds)
+      db.prepare(
+        `UPDATE chats SET rev = rev + 1, last_message_id = COALESCE(
+           (SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1), last_message_id)
+         WHERE id = ?`,
+      ).run(chatId, chatId);
   })();
   return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
+}
+
+/**
+ * CR-0060 (04 §6.2 Edit: "foo receives the new text as a correction … and replies only if the answer changes"): foo's or a
+ * helper's finished text answer right after this message, which an edit writes again in place (CR-0059 rewrite); null when
+ * the next message is anything else (no answer yet: the queued turn reads the new words itself).
+ */
+export function answerAfter(db: Db, messageId: string): string | null {
+  const m = db.prepare('SELECT chat_id, seq FROM messages WHERE id = ?').get(messageId) as DbRow | undefined;
+  if (!m) return null;
+  const next = db
+    .prepare('SELECT id, author_kind, kind, status FROM messages WHERE chat_id = ? AND seq > ? AND deleted_at IS NULL ORDER BY seq LIMIT 1')
+    .get(m.chat_id, m.seq) as DbRow | undefined;
+  return next && (next.author_kind === 'foo' || next.author_kind === 'helper') && next.kind === 'text' && next.status === 'complete'
+    ? String(next.id)
+    : null;
+}
+
+/**
+ * CR-0060 `chat:clear` (06-3 §14 C-1 "Clear messages"): every message and card in the chat gets `deleted_at`, so the chat
+ * shows only the composer; the chat row stays, with no unread count. A private chat ends through C-23 instead, and foo's
+ * chat keeps its setup cards until setup is complete (`keepSetup`), so setup still has its open card. Returns the cleared
+ * message rows for the window, or null for a chat that is not there or is private.
+ */
+export function clearChat(db: Db, chatId: string, now: number, opts: { keepSetup?: boolean } = {}): MessageRow[] | null {
+  const chat = db.prepare('SELECT private FROM chats WHERE id = ? AND deleted_at IS NULL').get(chatId) as DbRow | undefined;
+  if (!chat || chat.private) return null;
+  const setupCard = "(type = 'setup' OR json_extract(payload, '$.setupCard') IS NOT NULL)";
+  const keep = opts.keepSetup ? `AND (card_id IS NULL OR card_id NOT IN (SELECT id FROM cards WHERE ${setupCard}))` : '';
+  const ids = db.prepare(`SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ${keep}`).pluck().all(chatId) as string[];
+  db.transaction(() => {
+    db.prepare(`UPDATE messages SET deleted_at = ?, rev = rev + 1 WHERE chat_id = ? AND deleted_at IS NULL ${keep}`).run(now, chatId);
+    db.prepare(
+      `UPDATE cards SET deleted_at = ? WHERE chat_id = ? AND deleted_at IS NULL ${opts.keepSetup ? `AND NOT ${setupCard}` : ''}`,
+    ).run(now, chatId);
+    db.prepare(
+      `UPDATE chats SET rev = rev + 1, unread_count = 0, last_message_id = COALESCE(
+         (SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1), last_message_id)
+       WHERE id = ?`,
+    ).run(chatId, chatId);
+  })();
+  return ids.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m);
 }
 
 // GAP: GAPS.md 2026-10-17 "Try again on foo's answer before the engine"

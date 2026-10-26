@@ -17,6 +17,12 @@ export const BADGE_DEBOUNCE_MS = 700;
  */
 export const badgeDelay = (shown: string): number => (shown === '' ? 0 : BADGE_DEBOUNCE_MS);
 
+/**
+ * CR-0059 row 4 (X-216): 👀 `seen` shows only once foo has been on the message this long. A quick answer clears it first,
+ * so 👀 appears only when foo is taking a while.
+ */
+export const SEEN_AFTER_MS = 2_000;
+
 /** 04 §6.2: edits are allowed this long after sending. */
 export const EDIT_WINDOW_MS = 15 * 60_000;
 

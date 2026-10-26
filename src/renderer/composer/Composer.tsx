@@ -967,6 +967,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
         strip: strip?.kind ?? null,
         streaming: replying,
         chips: chipsRefState.current.length,
+        // Read only for Ctrl+I, so the other keys pay nothing for it (PERF-02).
+        hasSelection: e.ctrlKey && e.key.toLowerCase() === 'i' && !(window.getSelection()?.isCollapsed ?? true),
       });
       if (!action) return;
       switch (action) {
