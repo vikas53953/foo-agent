@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:23 PM\n9:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:23 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Italian restaurants in…\nlive checklist\nLooked for Italian restaurants in Bandra, Mumbai\nChecking restaurant booking sites\nR\nKeep 3 Italian places with a table for 2 on Sat that fit best rated first\nWatch live\nStop\n6 min\n9:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:23 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:24 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Italian restaurants in… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant booking sites instead\nTry another way\nTake over\nStop\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:26 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Italian restaurants in…\n3\nBoth\nSomething else…\nSkip\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n9:26 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n9:26 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum (Janpath, New Delhi) is open Tue–Sun, 10:00 AM to 6:00 PM, and closed on Mondays and national holidays. Today is Monday, so the next chance is tomorrow, Tue 27 Oct, 10:00 AM.\n\nTickets\n\nAdults: ₹20\nForeign nationals: ₹500\nStudents up to class 12: free with an I-card\n\nThe site has a note from May 2023 saying the Arms and Armour, Textiles and Jewellery galleries were closed for renovation. It may be out of date, so check before you go if those matter to you.\n\n9:27 PM"
+  }
+]

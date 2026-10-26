@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n9:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:38 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Italian restaurants in…\n3\nChecking IRCTC\n4\nAll of them\nSomething else…\nSkip\n9:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n9:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n9:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:39 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Italian restaurants in…\n3\nChecking IRCTC\n4\nAll of them\nSomething else…\nSkip\n9:39 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:39 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for Italian restaurants in…\n3\nChecking IRCTC\n4\nAll of them\nSomething else…\nSkip\n9:39 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n9:39 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Grey clouds spill over Marine Drive's sea,\nChai steams in hands as the rain sets free.\nLocal trains hum through the silver sheet,\nMumbai dances on its flooded street. 🌧️\n\n9:40 PM"
+  }
+]
