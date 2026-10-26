@@ -1,0 +1,11 @@
+{"t":1793050600384,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793050606079,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793050612947,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793050619337,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793050636432,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1793050636434,"lvl":"info","mod":"engine","evt":"chat.reply_empty.no_say"}
+{"t":1793050636442,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793050643474,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793050649695,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793050654226,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793050660953,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}

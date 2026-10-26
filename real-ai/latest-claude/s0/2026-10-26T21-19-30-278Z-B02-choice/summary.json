@@ -1,0 +1,78 @@
+{
+  "journey": "B02-choice",
+  "title": "Choice card: options, Best fit, typed answer",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T21-19-30-278Z-B02-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793049575830,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6051,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nDaily runs, cushioned and light\n2\nTreadmill or gym\nIndoor, flat surface\n3\nTrails or muddy paths\nMore grip and sturdy build\n4\nA bit of everything\nSomething else…\nSkip\n9:19 PM",
+      "kit": [],
+      "ms": 12137
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 4,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "text",
+      "soft": true,
+      "text": "Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nDaily runs, cushioned and light\n2\nTreadmill or gym\nIndoor, flat surface\n3\nTrails or muddy paths\nMore grip and sturdy build\n4\nA bit of everything\nSomething else…\nSkip\n9:19 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793049588131,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "firstReplyMs": 7553,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For treadmill and gym runs, what matters most in the shoe?\nSoft cushioning\nBEST FIT\nEasy on knees and feet\nLightweight and breathable\nStays cool, feels quick\nDurable and sturdy\nLasts through daily use\nWide fit\nMore room for the toes\nSomething else…\nDone\nSkip\n9:19 PM",
+      "kit": [],
+      "ms": 13694
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

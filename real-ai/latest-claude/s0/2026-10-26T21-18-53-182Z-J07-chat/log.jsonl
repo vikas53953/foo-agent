@@ -1,0 +1,14 @@
+{"t":"2026-10-26T21:18:53.183Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T21:18:58.601Z","step":"launch","ok":true}
+{"t":"2026-10-26T21:18:58.711Z","i":0,"do":"send","sentAt":1793049538676,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-10-26T21:19:08.808Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2527,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! Good to see you. What are we sorting out tonight?\n\n9:19 PM","kit":[],"ms":10096}
+{"t":"2026-10-26T21:19:08.870Z","shot":"01-hi.png"}
+{"t":"2026-10-26T21:19:08.958Z","i":2,"do":"send","sentAt":1793049548944,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-26T21:19:18.606Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2544,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I'm foo, your personal helper: I can read your email and calendar, check websites, set up repeat checks, draft and send messages when you ask, and remember things about you. The app shows what's ready on this PC.\n\n9:19 PM","kit":[],"ms":9647}
+{"t":"2026-10-26T21:19:18.666Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-26T21:19:18.760Z","i":4,"do":"send","sentAt":1793049558743,"sent":true,"before":0,"ok":true,"ms":94}
+{"t":"2026-10-26T21:19:29.925Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2543,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through that tunnel, scrambled so nobody in between can read it.\n\nHere's the simple flow:\n\nYour device scrambles (encrypts) your traffic.\nIt travels to the VPN company's computer.\nThat computer unscrambles it and talks to the website for you.\n\nSo the website sees the VPN's address, not yours. Your Wi-Fi owner or internet provider only sees scrambled data going to the VPN. It's handy on public Wi-Fi, but it doesn't make you invisible: the VPN company can still see your activity, so pick one you trust.\n\n9:19 PM","kit":[],"ms":11164}
+{"t":"2026-10-26T21:19:30.004Z","shot":"03-vpn.png"}
+{"t":"2026-10-26T21:19:30.014Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-26T21:19:30.128Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-26T21:19:30.142Z","step":"aiTurns","turns":3}

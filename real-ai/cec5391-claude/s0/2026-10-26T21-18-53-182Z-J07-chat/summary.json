@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T21-18-53-182Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793049538676,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2527,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good to see you. What are we sorting out tonight?\n\n9:19 PM",
+      "kit": [],
+      "ms": 10096
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793049548944,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2544,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper: I can read your email and calendar, check websites, set up repeat checks, draft and send messages when you ask, and remember things about you. The app shows what's ready on this PC.\n\n9:19 PM",
+      "kit": [],
+      "ms": 9647
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793049558743,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2543,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer on the internet. Everything you send goes through that tunnel, scrambled so nobody in between can read it.\n\nHere's the simple flow:\n\nYour device scrambles (encrypts) your traffic.\nIt travels to the VPN company's computer.\nThat computer unscrambles it and talks to the website for you.\n\nSo the website sees the VPN's address, not yours. Your Wi-Fi owner or internet provider only sees scrambled data going to the VPN. It's handy on public Wi-Fi, but it doesn't make you invisible: the VPN company can still see your activity, so pick one you trust.\n\n9:19 PM",
+      "kit": [],
+      "ms": 11164
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}
