@@ -51,7 +51,7 @@
     "id": "SV-08",
     "ok": true,
     "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-    "measured": "10 bubbles within"
+    "measured": "15 bubbles within"
   },
   {
     "id": "SV-04",
