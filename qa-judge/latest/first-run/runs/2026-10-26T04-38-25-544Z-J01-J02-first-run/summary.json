@@ -3,7 +3,7 @@
   "title": "Install, first launch and Find your AI (fresh profile)",
   "steps": 14,
   "failed": 0,
-  "out": "/home/runner/work/foo-agent/judge-out/first-run/runs/2026-10-26T03-59-22-921Z-J01-J02-first-run",
+  "out": "/home/runner/work/foo-agent/judge-out/first-run/runs/2026-10-26T04-38-25-544Z-J01-J02-first-run",
   "results": [
     {
       "i": 0,
@@ -17,14 +17,14 @@
       "do": "waitFor",
       "expect": "Welcome card: Hi, I'm foo, Let's go; header says step 1 of 2 (CR-0026 quick first run)",
       "ok": true,
-      "ms": 3
+      "ms": 4
     },
     {
       "i": 2,
       "do": "click",
       "note": "Let's go starts Find your AI",
       "ok": true,
-      "ms": 153
+      "ms": 156
     },
     {
       "i": 3,
@@ -55,7 +55,7 @@
       "soft": true,
       "found": 1,
       "ok": true,
-      "ms": 1
+      "ms": 2
     },
     {
       "i": 7,
@@ -70,21 +70,21 @@
       "do": "waitFor",
       "expect": "the chosen AI works; Use button shows",
       "ok": true,
-      "ms": 2
+      "ms": 3
     },
     {
       "i": 9,
       "do": "click",
       "expect": "chat opens; next setup step (name and face) per J3",
       "ok": true,
-      "ms": 99
+      "ms": 124
     },
     {
       "i": 10,
       "do": "wait",
       "expect": "step 2 of 2: name card, with Skip the rest in the header",
       "ok": true,
-      "ms": 3001
+      "ms": 3000
     },
     {
       "i": 11,
@@ -92,7 +92,7 @@
       "note": "take the defaults for name, face and vibe so later journeys start in a ready chat",
       "found": 1,
       "ok": true,
-      "ms": 74
+      "ms": 84
     },
     {
       "i": 12,
@@ -105,7 +105,7 @@
       "i": 13,
       "do": "dump",
       "ok": true,
-      "ms": 7
+      "ms": 8
     }
   ]
 }
