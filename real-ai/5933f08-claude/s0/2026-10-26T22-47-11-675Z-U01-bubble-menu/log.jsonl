@@ -1,0 +1,57 @@
+{"t":"2026-10-26T22:47:11.675Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T22:47:17.287Z","step":"launch","ok":true}
+{"t":"2026-10-26T22:47:18.343Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1052}
+{"t":"2026-10-26T22:47:18.494Z","i":1,"do":"send","sentAt":1793054838456,"sent":true,"before":0,"ok":true,"ms":151}
+{"t":"2026-10-26T22:47:29.565Z","i":2,"do":"waitReply","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":4531,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Delhi has a 1,600-year-old iron pillar in the Qutub complex that has barely rusted, even after standing in the open for centuries.\n\n10:47 PM","kit":[],"ms":11070}
+{"t":"2026-10-26T22:47:29.636Z","shot":"01-fact.png"}
+{"t":"2026-10-26T22:47:29.716Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-26T22:47:29.807Z","i":4,"do":"click","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-26T22:47:30.408Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":600}
+{"t":"2026-10-26T22:47:30.480Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-26T22:47:30.548Z","i":6,"do":"click","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-26T22:47:30.628Z","i":7,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-26T22:47:30.705Z","i":8,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-26T22:47:31.305Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":600}
+{"t":"2026-10-26T22:47:31.387Z","shot":"04-react-picker.png"}
+{"t":"2026-10-26T22:47:31.483Z","i":10,"do":"click","soft":true,"ok":true,"ms":96}
+{"t":"2026-10-26T22:47:32.286Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":803}
+{"t":"2026-10-26T22:47:32.353Z","shot":"05-reacted.png"}
+{"t":"2026-10-26T22:47:32.356Z","i":12,"do":"check","note":"reaction chip shows","soft":true,"found":1,"ok":true,"ms":3}
+{"t":"2026-10-26T22:47:32.444Z","i":13,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-26T22:47:33.246Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":801}
+{"t":"2026-10-26T22:47:33.304Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-26T22:47:33.377Z","i":15,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-26T22:47:33.977Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":600}
+{"t":"2026-10-26T22:47:34.040Z","shot":"07-my-menu.png"}
+{"t":"2026-10-26T22:47:34.116Z","i":17,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-26T22:47:34.616Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":500}
+{"t":"2026-10-26T22:47:34.682Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-26T22:47:34.780Z","i":19,"do":"send","sentAt":1793054854762,"sent":true,"before":0,"ok":true,"ms":98}
+{"t":"2026-10-26T22:47:44.366Z","i":20,"do":"waitReply","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":3030,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Golden Temple's Langar in Amritsar serves free meals to around 1,00,000 people every day, cooked and served mostly by volunteers.\n\n10:47 PM","kit":[],"ms":9585}
+{"t":"2026-10-26T22:47:44.443Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-26T22:47:44.447Z","i":21,"do":"check","note":"quote shows inside my bubble","soft":true,"found":1,"ok":true,"ms":4}
+{"t":"2026-10-26T22:47:44.520Z","i":22,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-26T22:47:44.601Z","i":23,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-26T22:47:45.101Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":500}
+{"t":"2026-10-26T22:47:45.167Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-26T22:47:45.181Z","i":25,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-26T22:47:45.199Z","i":26,"do":"key","ok":true,"ms":17}
+{"t":"2026-10-26T22:48:05.199Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20000}
+{"t":"2026-10-26T22:48:05.282Z","shot":"11-edited.png"}
+{"t":"2026-10-26T22:48:05.285Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n10:47 PM","ok":true,"ms":3}
+{"t":"2026-10-26T22:48:05.380Z","i":29,"do":"click","soft":true,"ok":true,"ms":94}
+{"t":"2026-10-26T22:48:05.464Z","i":30,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-26T22:48:06.265Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":801}
+{"t":"2026-10-26T22:48:06.345Z","shot":"12-good.png"}
+{"t":"2026-10-26T22:48:06.426Z","i":32,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-26T22:48:06.511Z","i":33,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-26T22:48:07.313Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":801}
+{"t":"2026-10-26T22:48:07.368Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-26T22:48:07.372Z","i":35,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-26T22:48:07.454Z","i":36,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-26T22:48:07.536Z","i":37,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-26T22:50:37.893Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150356}
+{"t":"2026-10-26T22:50:37.961Z","shot":"14-try-again.png"}
+{"t":"2026-10-26T22:50:37.971Z","i":39,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-26T22:50:38.108Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-26T22:50:38.120Z","step":"aiTurns","turns":5}

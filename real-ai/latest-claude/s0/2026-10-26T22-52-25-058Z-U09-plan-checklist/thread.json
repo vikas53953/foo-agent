@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for ISRO news from Mon 19 Oct to Mon 26 Oct\n3\nCheck it went through\n4\nWrite it\nAbout 3 minutes\nGo\nChange plan\n10:46 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n10:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has a 1,600-year-old iron pillar in the Qutub complex that has barely rusted, even after standing in the open for centuries.\n\n10:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n10:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because its hosiery and woollen industry makes a huge share of the country's knitwear, especially winter clothes.\n\nShow earlier answer\nRewritten\n10:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n10:52 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:52 PM\n10:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:52 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n10:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value of the lot is the MSI Modern 14 (C7M-062IN): a newer Ryzen 5 and 16GB memory for ₹43,219.\n\nLaptop\tPrice\tProcessor\tMemory / storage\nMSI Modern 14 C7M-062IN\t₹43,219\tRyzen 5 7530U\t16GB / 512GB SSD\nAcer Aspire Lite AL15-41\t₹42,990\tRyzen 5 5625U (older)\t8GB / 512GB SSD\nDell DC15255\t₹47,990\tRyzen 5 7520U\t8GB / 512GB SSD\nThe Acer is ₹229 cheaper than the MSI, but it has an older processor and half the memory.\nThe Dell costs about ₹4,771 more than the MSI for less memory.\n\nThe prices come from one list on Smartprix, so check the shop price before you buy. The MSI was first listed in Mar 2023, so stock may be limited.\n\n10:53 PM"
+  }
+]
