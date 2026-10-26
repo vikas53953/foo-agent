@@ -3,6 +3,7 @@
 // yet (JOBS_OFF_LINE). The real Engine over a temp SQLite db, as in AT-074.
 import { afterEach, describe, expect, it } from 'vitest';
 import { JOBS_OFF_LINE } from '../../src/engine/prompt/PromptBuilder';
+import { t } from '../../src/shared/copy/t';
 import { intake, makeHarness, verified, type Harness } from '../unit/m3-engine-helpers';
 
 let h: Harness | null = null;
@@ -70,7 +71,7 @@ describe('CR-0059 · the batch-1 baseline', () => {
     ]);
   });
 
-  it('a rewrite that fails leaves the old answer exactly as it was', async () => {
+  it('a rewrite that fails leaves the old answer exactly as it was and says so in one line', async () => {
     h = makeHarness({ script: [intake(reply('Keep me.')), intake('', { error: 'AI_TIMEOUT' })], settings: verified(), tools: {} });
     await h.idle();
     h.userSays('Tell me something');
@@ -78,7 +79,10 @@ describe('CR-0059 · the batch-1 baseline', () => {
     const [first] = fooAnswers(h);
     h.send('reply.rewrite', { messageId: first!.id });
     await h.idle();
-    expect(fooAnswers(h)).toEqual([{ id: first!.id, text: 'Keep me.', status: 'complete', earlier_text: null }]);
+    const answers = fooAnswers(h);
+    expect(answers[0]).toEqual({ id: first!.id, text: 'Keep me.', status: 'complete', earlier_text: null });
+    // One line says so, so the tap never looks like it did nothing.
+    expect(answers.slice(1).map((a) => a.text)).toEqual([t('thread.rewrite.kept')]);
   });
 
   it('a rewrite is only ever a new answer in words: a memory decision saves nothing', async () => {

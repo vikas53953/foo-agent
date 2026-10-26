@@ -290,6 +290,8 @@ test('AT-449 QA-B1-080 · bug-finder sweep: every bubble action does something, 
   const afterDelete = await page.getByTestId(TID.chatlistRowPreview).first().innerText();
   if (newestText && afterDelete.includes(newestText))
     findings.push(`delete: the chat list still shows the deleted message ("${afterDelete}")`);
+  else if (!afterDelete.includes('short one'))
+    findings.push(`delete: the chat list does not move to the message before ("${afterDelete}")`);
 
   const unique = [...new Set(findings)];
   if (out()) writeFileSync(join(out()!, 'QA-B1-080-findings.json'), JSON.stringify(unique, null, 2));

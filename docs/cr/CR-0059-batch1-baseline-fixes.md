@@ -16,7 +16,7 @@
 - **Spec sections:** 04 §4.2 (`seen`), §6.3 and §10.4 (deleted bubble), §17.1 (Try again); 03-shell-1 §3 (filter chips,
   sidebar footer); CR-0024 (older-answer row); CR-0054 (feature switches); 10-acceptance-2 PERF-07; DECISIONS X-216;
   10-acceptance-2 AT-449.
-- **Status:** Asked for by Vikas (above); merged under his approve-on-my-behalf rule (independent review, every check green).
+- **Status:** Approved by Vikas's approve-on-my-behalf rule (two independent reviews, every check green), DECISIONS X-216.
 - **Change:** DECISIONS X-216 states the six rules and wins over the chapter text; AT-449 added; `golden/manifest.json`
   marks UX-05-02 and UX-12-01 superseded (X-216) for the 👀 picture.
 - **Manifest:** `pnpm tsx scripts/spec-verify.ts --write` run in the same commit; `pnpm golden:manifest` regenerated.
@@ -57,4 +57,30 @@
 
 ## (d) Review
 
-Pending.
+Tier **high** (`pnpm review:tier`: spec, golden, CR, fidelity gates, AI engine, IPC trust): two independent reviewers
+(Fable and Opus), same diff, read-only. Round 1 on d3052aa, round 2 on a117312 (new commit only), fixes in the next commit.
+
+| Finding (raised by)                                                                                      | Bucket    | Outcome                                                                                          |
+| -------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
+| R1 A streamed rewrite dropped its deltas (renderer delta count) (Fable)                                  | Act on    | fixed: a rewrite no longer streams into the old bubble                                           |
+| R1 Old answer wiped before the new one existed; failure / Stop / restart left a failed bubble (both)     | Act on    | fixed: one final write; failure, Stop, cap, no AI, restart keep the old answer                   |
+| R1 Retries and early exits lost the rewrite; answered message flipped to "Waiting to send" (both)        | Act on    | fixed: `again()` keeps it; no queued write for a rewrite                                         |
+| R1 A rewrite could become a job, memory, setting or a second feature-off line (Opus)                     | Act on    | fixed: `act` forced to `reply`                                                                   |
+| R1 Old chips / badge / backup mark stayed under the new words (both)                                     | Act on    | fixed (round 2 added `provider_note`)                                                            |
+| R1 The sweep's menu check could never fail (Opus)                                                        | Act on    | fixed; proved by making Copy a no-op: the sweep reported it on both bubbles                      |
+| R1 Delete / edit left a stale chat-list preview (Opus); R2 preview went blank, not to the message before | Act on    | fixed: rev bump in all three paths; `last_message_id` moves to the newest message not deleted    |
+| R1 IPC accepted any non-user author (both)                                                               | Act on    | fixed: foo or helper only; the §17.1 rule holds because a rewrite is only ever a reply           |
+| R1 PERF-07 retarget could count an older row (Opus)                                                      | Act on    | fixed: only the run's own row; PERF-07 spec row updated                                          |
+| R1 Unread divider counted deleted rows; older-row code left in place (both)                              | Act on    | fixed: filtered once in the messages memo; `older` path and its CSS removed                      |
+| R1 Earlier answer: spec key, Link, formatting, aria-controls (both)                                      | Act on    | fixed: `bubble.actions.earlier_answer`, `Button variant="link"`, the bubble's `Blocks`           |
+| R1 Try again from an older answer's ⋯ menu untested; UX-13-01 also draws 👀; ids and wording (Opus)      | Act on    | fixed                                                                                            |
+| R2 Restart mid-rewrite left 👀 on the answered message (Fable)                                           | Act on    | fixed: a rewrite turn never sets `seen`                                                          |
+| R2 A kept / skipped rewrite was silent (both)                                                            | Act on    | fixed: one line "I couldn’t write a new answer just now, so I kept the one above."               |
+| R1 Spend line gated on `spend`, spec said `jobs` (Opus)                                                  | Act on    | fixed in X-216's words (the code was right)                                                      |
+| R1 After a restart the asked message is found by seq (Fable)                                             | Consider  | intentional: the same rule cut-off retries use; persisting the link is a schema change for later |
+| R2 A rewrite skips the memory "Used:" bookkeeping (both)                                                 | Noted     | memory is off in batch 1; decide when memory ships                                               |
+| R2 Rewriting a job's result message when jobs are on (Fable)                                             | Noted     | unreachable in batch 1; the rewrite is a plain reply and runs no action                          |
+| R1 Real 2 s timer vs the fake clock in the sweep (Opus)                                                  | Consider  | no-matter for now; the quick answer lands in well under 1 s                                      |
+| R1 / R2 nits: optional `earlierText`, `jobsOn` param, one label for the Link                             | Dismissed | no-matter                                                                                        |
+
+Result: found 33, verified by both rounds, fixed 26, wrong 0. Approved on Vikas's behalf once every check is green.

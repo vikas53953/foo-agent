@@ -717,6 +717,7 @@
   "thread.not_built.routine": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.",
   "thread.not_built.catch_up": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.",
   "thread.not_built.handoff": "I can’t pass jobs to a helper from here yet. Open the helper’s chat and ask there.",
+  "thread.rewrite.kept": "I couldn’t write a new answer just now, so I kept the one above.",
   "thread.feature_off.jobs": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.",
   "thread.feature_off.memory": "I can’t remember things for you yet, so tell me again when it matters.",
   "thread.feature_off.settings": "I can’t change settings from the chat yet. You can change them in Settings.",

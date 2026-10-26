@@ -402,7 +402,8 @@
   margin-top: var(--s1);
 }
 /* 04 §17.1: the Link "Show earlier answer", --t-caption --fg-3 under the text. */
-.earlierLink {
+.earlierLink.earlierLink {
+  --btn-fg: var(--fg-3);
   color: var(--fg-3);
   font: var(--t-caption);
 }

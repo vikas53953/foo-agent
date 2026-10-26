@@ -376,11 +376,21 @@ export class ChatLane {
     return true;
   }
 
-  /** CR-0059 row 1: a rewrite that produced no new answer leaves the old one as it was; 👀 and the Thinking row go. */
-  private async rewriteKept(chatId: string, messageId: string, who: string, why: string): Promise<void> {
+  /**
+   * CR-0059 row 1: a rewrite that produced no new answer leaves the old one as it was; 👀 and the Thinking row go, and one
+   * line says so, so the tap never looks like it did nothing.
+   */
+  private async rewriteKept(
+    chatId: string,
+    messageId: string,
+    who: string,
+    why: string,
+    helper: EngineHelper | null = null,
+  ): Promise<void> {
     this.d.log('chat.rewrite_kept', why, { chatId });
     await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: null } }]);
     this.typing(chatId, false, who);
+    await this.post(chatId, messageId, t('thread.rewrite.kept'), helper, null);
   }
 
   private async askedBefore(fooMessageId: string, status: 'failed' | 'complete' = 'failed'): Promise<EngineMessage | null> {
@@ -495,7 +505,8 @@ export class ChatLane {
     const intakeOnly = this.intakeOnly.delete(messageId) || side;
     const rewrite = this.rewrites.get(messageId) ?? null;
     this.rewrites.delete(messageId);
-    // CR-0059 row 1: the turn that redoes an answer runs again with its rewrite (a protocol or empty-reply retry).
+    // The turn runs once more with what it was given: its intake-only mark and (CR-0059 row 1) its rewrite (the protocol
+    // retry; a rewrite with an empty reply keeps the old answer instead).
     const again = () => {
       if (rewrite) this.rewrites.set(messageId, rewrite);
       if (rewrite || (intakeOnly && !side)) this.intakeOnly.add(messageId);
@@ -507,7 +518,7 @@ export class ChatLane {
     const pick = this.d.ai.pick();
     if (!pick && rewrite) {
       // CR-0059 row 1: an answered message never goes back to "Waiting to send"; the old answer stays.
-      this.d.log('chat.rewrite_skipped', 'no_ai', { chatId });
+      await this.rewriteKept(chatId, messageId, '', 'no_ai');
       return;
     }
     if (!pick) {
@@ -561,7 +572,7 @@ export class ChatLane {
     // waits to send (04 §3.3, composer "Messages wait until you raise it") and is drained when the cap is lifted.
     if (built && this.d.capCheck && !(await this.d.capCheck(built.system.length + built.prompt.length, 'intake'))) {
       if (rewrite) {
-        this.d.log('chat.rewrite_skipped', 'cap', { chatId });
+        await this.rewriteKept(chatId, messageId, who, 'cap', helper);
         return;
       }
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
@@ -583,7 +594,8 @@ export class ChatLane {
         op: 'update',
         table: 'messages',
         id: messageId,
-        set: { status: 'complete', badge: 'seen', understood: understood.length ? JSON.stringify(understood) : null },
+        // CR-0059 row 1: a rewrite's message was answered already; the Thinking row is the sign (no 👀 to leave behind on a restart).
+        set: { status: 'complete', badge: rewrite ? null : 'seen', understood: understood.length ? JSON.stringify(understood) : null },
       },
     ]);
     this.typing(chatId, true, who);
@@ -594,7 +606,7 @@ export class ChatLane {
       // A message over the prompt budget (PromptBudgetError) or a broken prompt file: the reply is cut off with Try again
       // instead of leaving 👀 and the Thinking row up (04 §19.4).
       this.d.log('chat.prompt_failed', 'PROTOCOL_INVALID', { chatId });
-      if (rewrite) await this.rewriteKept(chatId, messageId, who, 'prompt_failed');
+      if (rewrite) await this.rewriteKept(chatId, messageId, who, 'prompt_failed', helper);
       else await this.cutOff(chatId, messageId, null, who, '', helper, pick.backup ? 'backup' : null);
       await this.turnRow(
         turnId,
@@ -699,7 +711,7 @@ export class ChatLane {
     if (failed) {
       abort.abort();
       await pending;
-      if (rewrite) await this.rewriteKept(chatId, messageId, who, result.errorKind ?? 'UNKNOWN');
+      if (rewrite) await this.rewriteKept(chatId, messageId, who, result.errorKind ?? 'UNKNOWN', helper);
       else await this.cutOff(chatId, messageId, fooId, who, gate.released().trimEnd(), helper, providerNote);
       this.d.ai.reportError(pick.providerId, result.errorKind ?? 'UNKNOWN', result.resetAt);
       await this.turnRow(turnId, chatId, pick, startedAt, result, result.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error');
@@ -787,12 +799,13 @@ export class ChatLane {
               suggestions: trailer.suggestions ?? null,
               actions: actions ?? null,
               badge: null,
+              provider_note: providerNote,
             },
           },
           { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
         ]);
         this.typing(chatId, false, who);
-      } else await this.rewriteKept(chatId, messageId, who, kind === 'reply' ? 'empty' : kind);
+      } else await this.rewriteKept(chatId, messageId, who, 'empty', helper);
       await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
       return;
     }

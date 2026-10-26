@@ -596,8 +596,14 @@ export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: s
       chatIds.add(String(r.chat_id));
       done.push(id);
     }
-    // CR-0059 row 5: the chat-list preview moves to the message before; a new rev lets the window take it.
-    for (const chatId of chatIds) db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ?').run(chatId);
+    // CR-0059 row 5: the chat-list preview moves to the message before (the newest one not deleted), and a new rev lets
+    // the window take it.
+    for (const chatId of chatIds)
+      db.prepare(
+        `UPDATE chats SET rev = rev + 1, last_message_id = COALESCE(
+           (SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1), last_message_id)
+         WHERE id = ?`,
+      ).run(chatId, chatId);
   })();
   return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
 }
