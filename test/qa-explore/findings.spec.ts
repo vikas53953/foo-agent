@@ -78,7 +78,9 @@ test('QA-X-F08 · an empty message box never shows "Draft:" in the chat list (03
   await p.getByTestId(TID.composerField).fill('reply text');
   await p.keyboard.press('Enter');
   await p.waitForTimeout(1500);
-  await p.getByTestId(TID.chatHeaderPrivateToggle).click();
+  // The private toggle was part of the original mix; batch 1 hides it since PR #157 (F25), so it is pressed only when shown.
+  const priv = p.getByTestId(TID.chatHeaderPrivateToggle);
+  if (await priv.count()) await priv.click();
   await p.keyboard.press('Control+f');
   await p.keyboard.type('Hi');
   await p.keyboard.press('Escape');

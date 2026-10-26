@@ -85,8 +85,11 @@ window.__qa = {
         !['log', 'listbox', 'separator', 'grid', 'list'].includes(e.getAttribute('role')) && !all.some((o) => o !== e && e.contains(o)),
     );
     const topAt = (x, y) => document.elementFromPoint(x, y);
+    // A modal dialog covers the page on purpose: only its own controls must be usable.
+    const modal = [...document.querySelectorAll('[role=dialog],[role=alertdialog]')].find((d) => this.visible(d));
     // 1) control whose centre is covered by something unrelated (not usable / overlapped)
     for (const c of ctrls) {
+      if (modal && !modal.contains(c)) continue;
       const r = c.getBoundingClientRect();
       const cx = r.x + r.width / 2,
         cy = r.y + r.height / 2;
@@ -171,6 +174,8 @@ window.__qa = {
   },
   coveredText() {
     const issues = [];
+    // A modal dialog covers the page on purpose: only text inside it must be readable.
+    const modal = [...document.querySelectorAll('[role=dialog],[role=alertdialog]')].find((d) => this.visible(d));
     const overlay =
       '[data-testid=thread-date-sticky],[role=menu],[role=dialog],[role=alertdialog],[role=tooltip],[data-testid$="-picker"],[data-testid=chat-header],[data-testid=composer],[data-testid=titlebar-strip]';
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -179,6 +184,7 @@ window.__qa = {
       if (!n.textContent.trim()) continue;
       const el = n.parentElement;
       if (!el || !this.visible(el) || el.closest(overlay)) continue;
+      if (modal && !modal.contains(el)) continue;
       const clip = this.clipRect(el);
       const range = document.createRange();
       range.selectNodeContents(n);

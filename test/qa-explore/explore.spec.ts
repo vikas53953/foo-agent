@@ -79,7 +79,18 @@ function describe(before: Awaited<ReturnType<typeof signature>>, after: Awaited<
 
 /** Puts the app back where `place` starts: no menus, the right screen. */
 async function reset(page: Page, goto: () => Promise<void>) {
-  for (let i = 0; i < 3; i++) await page.keyboard.press('Escape');
+  // Esc until no menu or dialog is left (a long dialog can still be opening on the first press).
+  for (let i = 0; i < 6; i++) {
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(150);
+    if (!(await page.locator('[role=dialog],[role=alertdialog],[role=menu]').count())) break;
+  }
+  const stuck = await page.evaluate(() =>
+    [...document.querySelectorAll('[role=dialog],[role=alertdialog],[role=menu]')].map(
+      (d) => `${d.getAttribute('role')} "${(d.textContent ?? '').slice(0, 40)}" focus=${document.activeElement?.outerHTML.slice(0, 80)}`,
+    ),
+  );
+  if (stuck.length) console.log('QAX-STUCK after Esc:', stuck.join(' | '));
   const back = page.getByTestId(TID.screenBack);
   if (await back.count()) await back.click().catch(() => {});
   await goto();
@@ -203,6 +214,18 @@ test('QA-X explore · every reachable control in batch 1 is exercised and record
       retry.effect.push(more > 0 ? `asked the AI again (${more} request)` : 'NO NEW AI REQUEST');
       if (!more) retry.status = 'fail';
     }
+    // Copy has no lasting on-screen effect; what it must do is put the answer on the clipboard.
+    const copy = out.find((x) => x.id === 'answer/bubble-actions-copy');
+    if (copy) {
+      await w.app.evaluate(({ clipboard }) => clipboard.writeText('QAX-SENTINEL'));
+      await hoverLast();
+      await w.page.getByTestId(TID.bubbleActionsCopy).last().click();
+      await w.page.waitForTimeout(500);
+      const clip = await w.app.evaluate(({ clipboard }) => clipboard.readText());
+      const copied = clip !== 'QAX-SENTINEL' && clip.trim().length > 0;
+      copy.effect.push(copied ? `clipboard holds the answer (${clip.length} chars)` : 'NOTHING COPIED');
+      copy.status = copied && !copy.issues.length ? 'pass' : 'fail';
+    }
     for (const nav of [TID.settingsNavAccount, TID.settingsNavAppearance, TID.settingsNavShortcuts, TID.settingsNavAbout]) {
       const go = async () => {
         if (!(await w.page.getByTestId(TID.screenSettings).count())) await w.page.getByTestId(TID.sidebarFooterSettings).click();
@@ -215,8 +238,8 @@ test('QA-X explore · every reachable control in batch 1 is exercised and record
         (tid) => !/^(sidebar|chatlist|settings-nav)-/.test(tid) && tid !== TID.screenBack && !/^searchbox:/.test(tid),
         out,
       );
-      // An empty Settings page is a finding by itself.
-      await go();
+      // An empty Settings page is a finding by itself. Reset first: the last control may have left a dialog open.
+      await reset(w.page, go);
       const body = await w.page.getByTestId(TID.screenSettings).innerText();
       const navText = await w.page.locator('[data-testid^="settings-nav-"]').allInnerTexts();
       const rest = navText
