@@ -7,10 +7,6 @@
 name: QA batch-1 AI judge
 
 on:
-  # One-off run for Vikas's ask of 26 Oct ("just do the testing"): threads get 403 on dispatch, so a push to this thread's
-  # branch starts it. This trigger lives only on the thread branch, never on main.
-  push:
-    branches: [claude/project-thread-id8hve]
   workflow_dispatch:
     inputs:
       ref:
@@ -56,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref || 'main' }}
+          ref: ${{ inputs.ref }}
           # The code under test and npm packages run beside the key; they must not also find a write token in .git/config.
           # The push step brings its own.
           persist-credentials: false
@@ -95,7 +91,7 @@ jobs:
       - name: First run (makes the signed-in profile)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ANTHROPIC_MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
+          ANTHROPIC_MODEL: ${{ inputs.model }}
           FOO_AI_ROW: claude-cli
           ELECTRON_RUN_AS_NODE: '1'
         run: |
@@ -109,10 +105,10 @@ jobs:
       - name: Ask and judge
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ANTHROPIC_MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
-          FILTER: ${{ inputs.filter || '' }}
-          MAX_ASKS: ${{ inputs.max_asks || '13' }}
-          JUDGE: ${{ inputs.judge || 'claude-sonnet-5-5' }}
+          ANTHROPIC_MODEL: ${{ inputs.model }}
+          FILTER: ${{ inputs.filter }}
+          MAX_ASKS: ${{ inputs.max_asks }}
+          JUDGE: ${{ inputs.judge }}
         run: |
           E="$(readlink -f node_modules/electron)/dist/electron"
           sed -i "s/anthropic:messages:claude-sonnet-5-5/anthropic:messages:$JUDGE/" "$RUNNER_TEMP/kit/test/judge/promptfooconfig.yaml"
@@ -124,7 +120,7 @@ jobs:
       - name: Summary
         if: always()
         env:
-          REF: ${{ inputs.ref || 'main' }}
+          REF: ${{ inputs.ref }}
         run: |
           [ -f "$OUT/results.json" ] || { echo "no results" >> "$GITHUB_STEP_SUMMARY"; exit 0; }
           node "$RUNNER_TEMP/kit/test/judge/summary.cjs" "$OUT/results.json" "$REF ($(git rev-parse --short HEAD))" | tee "$OUT/SUMMARY.md" >> "$GITHUB_STEP_SUMMARY"
@@ -154,9 +150,9 @@ jobs:
         if: always() && steps.scan.outcome == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REF: ${{ inputs.ref || 'main' }}
-          MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
-          JUDGE: ${{ inputs.judge || 'claude-sonnet-5-5' }}
+          REF: ${{ inputs.ref }}
+          MODEL: ${{ inputs.model }}
+          JUDGE: ${{ inputs.judge }}
         run: |
           [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           [ -d "$OUT" ] || { echo "no results"; exit 0; }
