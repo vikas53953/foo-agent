@@ -243,7 +243,7 @@ export function vibeAnswered(db: Db, settings: SettingsPort, card: CardRow, now:
   const chatId = fooChatId(db);
   if (!chatId || card.chatId !== chatId || which(card) !== 'vibe') return null;
   const a = card.answer as { optionId?: string; text?: string; skip?: true } | null;
-  const id = a?.optionId && a.optionId in VIBES ? (a.optionId as VibeId) : null;
+  const id = a?.optionId && Object.hasOwn(VIBES, a.optionId) ? (a.optionId as VibeId) : null;
   const typed = cutWords(a?.text?.trim() ?? '');
   const line = id ? VIBES[id].line() : typed ? t('setup.vibe.line.custom', { words: typed }) : VIBES.o1.line();
   const vibe = id ? VIBES[id].vibe : typed ? 'custom' : VIBES.o1.vibe;

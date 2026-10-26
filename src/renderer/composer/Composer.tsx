@@ -967,6 +967,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
         strip: strip?.kind ?? null,
         streaming: replying,
         chips: chipsRefState.current.length,
+        hasSelection: !(window.getSelection()?.isCollapsed ?? true),
       });
       if (!action) return;
       switch (action) {

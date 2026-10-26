@@ -3,6 +3,8 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { t } from '../../src/shared/copy/t';
 import { intake, makeHarness, verified, type Harness } from '../unit/m3-engine-helpers';
+import { BILLS_PLAN, jobHarness, jobIntake, step, tool } from './jobs/jobHarness';
+import { until } from './jobs/t3Helpers';
 
 let h: Harness | null = null;
 afterEach(() => {
@@ -24,6 +26,23 @@ describe('QA explore fixes · what the AI is told', () => {
     h.userSays('Hello');
     await h.idle();
     const turn = h.turnsJsonl().filter((x) => x.purpose === 'intake')[0]!;
+    expect(String(turn.system) + String(turn.prompt)).toContain(`Vibe: ${line}`);
+  });
+
+  it('the talk style picked in setup is in every job step prompt too', async () => {
+    const line = t('setup.vibe.line.warm');
+    const jh = jobHarness({
+      script: [
+        jobIntake(BILLS_PLAN),
+        tool('gmail.search', { query: 'bill' }),
+        step({ kind: 'done', result: 'Two bills.', unverified: true }),
+      ],
+      settings: (s) => verified()({ ...s, identity: { ...s.identity, vibe: 'warm', vibeLine: line } }),
+    });
+    h = jh;
+    jh.userSays('Find bills due this week');
+    await until(jh, () => jh.turnsJsonl().some((x) => x.purpose === 'step'), 250);
+    const turn = jh.turnsJsonl().find((x) => x.purpose === 'step')!;
     expect(String(turn.system) + String(turn.prompt)).toContain(`Vibe: ${line}`);
   });
 });

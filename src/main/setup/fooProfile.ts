@@ -35,7 +35,7 @@ export function setFooFace(db: Db, face: string, colour?: string): FinderWrite |
 /** A setup choice id (o1–o3), or the "Something else…" words. */
 export function setFooVibe(settings: SettingsPort, choice: { optionId: string } | { words: string }): boolean {
   if ('optionId' in choice) {
-    if (!(choice.optionId in VIBES)) return false;
+    if (!Object.hasOwn(VIBES, choice.optionId)) return false;
     const v = VIBES[choice.optionId as keyof typeof VIBES];
     settings.update((cur) => ({ ...cur, identity: { ...cur.identity, vibe: v.vibe, vibeLine: v.line() } }));
     return true;

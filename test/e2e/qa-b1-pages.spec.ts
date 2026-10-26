@@ -49,7 +49,9 @@ async function visible(app: ElectronApplication, page: Page): Promise<string> {
       )
       .join('|');
     const open = document.querySelectorAll('[role=dialog],[role=alertdialog],[role=listbox],[popover]:popover-open').length;
-    return `${document.body.innerText}\n${states}\n${open}`;
+    // Where the caret is counts too: Ctrl+Shift+F only moves it to the chat-list search.
+    const focus = document.activeElement?.getAttribute('data-testid') ?? document.activeElement?.tagName ?? '';
+    return `${document.body.innerText}\n${states}\n${open}\n${window.devicePixelRatio}\n${focus}`;
   });
   const clip = await app.evaluate(({ clipboard }) => clipboard.readText());
   return `${dom}\n${clip}`;
@@ -118,7 +120,8 @@ test('AT-450 QA-B1-083 · bug-finder sweep: every page shows something, every me
   });
   if (headerColour !== tileColour) findings.push(`face 3 lost its colour: the tile was ${tileColour}, the header shows ${headerColour}`);
   const bubbleFace = page.getByTestId(TID.thread).getByTestId(TID.bubbleSender).last();
-  if (await bubbleFace.count()) {
+  if (!(await bubbleFace.count())) findings.push("foo's bubbles show no face to check the colour on");
+  else {
     const c = await bubbleFace.evaluate((e) => {
       const el = (e.querySelector('[style*="background"]') as HTMLElement | null) ?? (e.firstElementChild as HTMLElement);
       return getComputedStyle(el).backgroundColor;
@@ -164,6 +167,8 @@ test('AT-450 QA-B1-083 · bug-finder sweep: every page shows something, every me
 
   // 2b. Editing your last message tells foo, and its answer under it changes (F20, 04 §6.2).
   const mine = page.getByTestId(TID.thread).getByTestId(TID.bubbleMe).last();
+  const fooBubbles = page.getByTestId(TID.thread).getByTestId(TID.bubbleFoo);
+  const fooBefore = await fooBubbles.count();
   await mine.hover();
   await page.waitForTimeout(250);
   await mine.locator('xpath=ancestor::*[@data-message-id][1]').getByTestId(TID.bubbleToolbarMore).click();
@@ -173,6 +178,8 @@ test('AT-450 QA-B1-083 · bug-finder sweep: every page shows something, every me
   const edited = page.getByTestId(TID.thread).getByTestId(TID.bubbleFoo).filter({ hasText: 'Answer to the edit.' });
   for (let i = 0; i < 20 && !(await edited.count()); i++) await advance(page, 500);
   if (!(await edited.count())) findings.push("edit: foo never hears the edited message (its answer under it didn't change)");
+  else if ((await fooBubbles.count()) !== fooBefore)
+    findings.push('edit: foo posted a second answer instead of writing the one under the edited message again');
   await advance(page, 2_000);
   await page.mouse.move(0, 0);
 
@@ -278,21 +285,32 @@ test('AT-450 QA-B1-083 · bug-finder sweep: every page shows something, every me
   // 7. Ctrl+/ shows the shortcuts, and every shortcut it lists that opens something does (F15).
   await page.keyboard.press('Control+/');
   await page.waitForTimeout(400);
+  const keys: string[] = [];
   const sheet = page.getByTestId(TID.dialogShortcuts);
   if (!(await sheet.count())) findings.push('Ctrl+/ shows no keyboard shortcuts');
   else {
     const rows = await sheet.getByTestId(TID.dialogShortcutsRow).count();
     if (!rows) findings.push('the keyboard shortcuts sheet lists nothing');
+    // Every key the sheet lists that can be pressed alone (the row's `data-press`).
+    for (const k of await sheet
+      .locator(`${byTid(TID.dialogShortcutsRow)}[data-press]`)
+      .evaluateAll((els) => els.map((e) => e.getAttribute('data-press') ?? '')))
+      if (k) keys.push(k);
+    if (!keys.length) findings.push('the keyboard shortcuts sheet lists no key that can be pressed');
     await shot(page, '7-shortcuts');
   }
   await backToChat(page);
-  for (const key of ['Control+,', 'Control+i', 'Control+Shift+d', 'Control+f']) {
+  for (const key of keys) {
     await backToChat(page);
     await page.mouse.move(0, 0);
+    // Pressed from the message box, where the user's hands are (a field must not swallow a listed shortcut).
+    await page.getByTestId(TID.composerField).click();
     const before = await visible(app, page);
     await page.keyboard.press(key);
     await page.waitForTimeout(500);
     if ((await visible(app, page)) === before) findings.push(`shortcut ${key} does nothing`);
+    if (key === 'Control+=') await page.keyboard.press('Control+0');
+    if (key === 'Control+Shift+u') await page.keyboard.press('Control+Shift+u');
   }
   await backToChat(page);
 

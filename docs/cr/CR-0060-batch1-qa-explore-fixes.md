@@ -46,14 +46,20 @@
    are off). Name, face and vibe write through new channels `profile:setName`, `profile:setFace`, `profile:setVibe`, with
    the same checks as setup; a name change also renames the chat.
 3. **About** shows the wordmark and "Version {v}" (`app.getVersion()` in the bootstrap). The other §6.11 rows wait.
-4. **Clear messages** soft-deletes every message and card of the chat in one write (`chat:clear`, `confirm: true`) and
-   bumps the chat rev. The C-1 activity row is not written yet.
+4. **Clear messages** stops the chat's reply first, then soft-deletes every message and card of the chat in one write
+   (`chat:clear`, `confirm: true`), clears its unread count and bumps the chat rev. A private chat is refused (C-23 ends
+   it), and on foo's chat before setup is complete the setup cards stay, so setup keeps its open card. Not built yet, and
+   the C-1 words say more: the words stay in `foo.db` until a purge (as `message:delete` today), files are not touched,
+   and the activity row is not written.
 5. **Ctrl+Shift+M** unmutes a muted chat, else opens the chat ⋯ menu (the submenu is one more key). **Ctrl+I** opens the
    profile unless text is selected in a field, where it stays italic.
 6. **Edit → rewrite.** After an edit, if the next message is foo's (or a helper's) complete text answer, it is rewritten
    in place by the X-216 rule (atomic, a plain reply, the old words kept on failure).
 
-7. **The first script stays in its budget** (AT-322, 1,024 KB; 1,021.4 KB before this change). The new copy (2.8 KB) has
+7. **Settings → Keyboard shortcuts rows** carry `settings-row-shortcuts` plus `data-row-id="{actionId}"` (06-2 §6.10 says
+   `settings-row-shortcuts-{actionId}`): test ids come only from the TID registry, which holds no templates.
+8. **Ctrl+I in the message box** wraps in italics only when text is selected; with none it opens the profile (09 §9.17).
+9. **The first script stays in its budget** (AT-322, 1,024 KB; 1,021.4 KB before this change). The new copy (2.8 KB) has
    to be in it, so foo's profile, the Ctrl+/ sheet, C-1 and the two cap dialogs (C-21, the AI finder's) now load on first
    open, or when the window is idle with the pages: 1,022.5 KB after. The budget is unchanged.
 
@@ -61,5 +67,19 @@
 
 Tier **high**: two independent reviewers (Fable and Opus), same diff, read-only. Findings and outcomes are recorded below.
 
-| Finding (raised by) | Bucket | Outcome |
-| ------------------- | ------ | ------- |
+Round 1 on fa2cf88, fixes in the next commit.
+
+| Finding (raised by)                                                                                     | Bucket   | Outcome                                                                                                         |
+| ------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| Ctrl+I in the message box never opens the profile: the composer took every Ctrl+I (Fable)               | Act on   | fixed: italic only with a selection (unit test); the sweep presses keys from the message box                    |
+| The sweep pressed 4 fixed keys, not every listed one (both)                                             | Act on   | fixed: it presses every row's `data-press` key                                                                  |
+| Clear messages left the unread badge (Opus)                                                             | Act on   | fixed: `unread_count = 0` in the same write (unit test)                                                         |
+| Clear on foo's chat during setup removed the open setup card (both)                                     | Act on   | fixed: setup cards stay until setup is complete (unit test)                                                     |
+| A reply still being written lands in the cleared chat (both)                                            | Consider | fixed: `reply.stop` for the chat first                                                                          |
+| `chat:clear` answered ok for an unknown chat and cleared a private one (Opus)                           | Consider | fixed: NOT_FOUND for both                                                                                       |
+| `optionId in VIBES` passes `toString` and friends (both)                                                | Consider | fixed: `Object.hasOwn`, here and in setup                                                                       |
+| Edit check passed if foo posted a second answer; colour check could skip itself (Opus)                  | Consider | fixed: foo's bubble count must not change; no face = a finding                                                  |
+| The job-step half of the vibe fix had no test (Opus)                                                    | Consider | added: fails without the fix                                                                                    |
+| C-1 says more than the code does (words purged, files, activity row) (both)                             | Consider | recorded in pick 4; a later CR                                                                                  |
+| Shortcuts page row ids differ from 06-2 §6.10 (Fable)                                                   | Consider | recorded as pick 7                                                                                              |
+| An edit with no live AI saves without a rewrite and says nothing; no IpcRouter-level wiring test (both) | Consider | stays: the edited words are saved and the next turn reads them; the rewrite path is the X-216 one, tested there |

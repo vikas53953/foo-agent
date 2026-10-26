@@ -626,14 +626,26 @@ export function answerAfter(db: Db, messageId: string): string | null {
 
 /**
  * CR-0060 `chat:clear` (06-3 §14 C-1 "Clear messages"): every message and card in the chat gets `deleted_at`, so the chat
- * shows only the composer; the chat row stays. Returns the cleared message rows for the window.
+ * shows only the composer; the chat row stays, with no unread count. A private chat ends through C-23 instead, and foo's
+ * chat keeps its setup cards until setup is complete (`keepSetup`), so setup still has its open card. Returns the cleared
+ * message rows for the window, or null for a chat that is not there or is private.
  */
-export function clearChat(db: Db, chatId: string, now: number): MessageRow[] {
-  const ids = db.prepare('SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL').pluck().all(chatId) as string[];
+export function clearChat(db: Db, chatId: string, now: number, opts: { keepSetup?: boolean } = {}): MessageRow[] | null {
+  const chat = db.prepare('SELECT private FROM chats WHERE id = ? AND deleted_at IS NULL').get(chatId) as DbRow | undefined;
+  if (!chat || chat.private) return null;
+  const setupCard = "(type = 'setup' OR json_extract(payload, '$.setupCard') IS NOT NULL)";
+  const keep = opts.keepSetup ? `AND (card_id IS NULL OR card_id NOT IN (SELECT id FROM cards WHERE ${setupCard}))` : '';
+  const ids = db.prepare(`SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ${keep}`).pluck().all(chatId) as string[];
   db.transaction(() => {
-    db.prepare('UPDATE messages SET deleted_at = ?, rev = rev + 1 WHERE chat_id = ? AND deleted_at IS NULL').run(now, chatId);
-    db.prepare('UPDATE cards SET deleted_at = ? WHERE chat_id = ? AND deleted_at IS NULL').run(now, chatId);
-    db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ?').run(chatId);
+    db.prepare(`UPDATE messages SET deleted_at = ?, rev = rev + 1 WHERE chat_id = ? AND deleted_at IS NULL ${keep}`).run(now, chatId);
+    db.prepare(
+      `UPDATE cards SET deleted_at = ? WHERE chat_id = ? AND deleted_at IS NULL ${opts.keepSetup ? `AND NOT ${setupCard}` : ''}`,
+    ).run(now, chatId);
+    db.prepare(
+      `UPDATE chats SET rev = rev + 1, unread_count = 0, last_message_id = COALESCE(
+         (SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1), last_message_id)
+       WHERE id = ?`,
+    ).run(chatId, chatId);
   })();
   return ids.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m);
 }

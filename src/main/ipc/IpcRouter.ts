@@ -34,6 +34,7 @@ import {
   chatOpen,
   chatRowById,
   answerAfter,
+  fooChatId,
   clearChat,
   deleteMessages,
   editMessage,
@@ -547,7 +548,11 @@ export function registerIpc(ctx: AppContext): void {
     return r;
   });
   handle('chat:clear', ({ chatId: id }) => {
-    for (const row of clearChat(db, id, now())) emit('message:upsert', row);
+    // A reply still being written would land in the emptied chat, so the chat's lane stops first (as message:stopReply).
+    if (ctx.engine?.live) ctx.engine.send('reply.stop', { chatId: id });
+    const rows = clearChat(db, id, now(), { keepSetup: id === fooChatId(db) && !settings.get().setup.complete });
+    if (!rows) return fail('NOT_FOUND');
+    for (const row of rows) emit('message:upsert', row);
     emitChat(id);
     return ok(undefined);
   });

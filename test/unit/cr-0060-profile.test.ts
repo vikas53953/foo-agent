@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { t } from '../../src/shared/copy/t';
 import { settingsDefaults } from '../../src/shared/settingsDefaults';
 import type { Settings } from '../../src/shared/settings';
-import { faceColour } from '../../src/main/setup/firstRun';
+import { ensureSetupCard, faceColour } from '../../src/main/setup/firstRun';
 import { setFooFace, setFooName, setFooVibe } from '../../src/main/setup/fooProfile';
 import { migrate, type Db } from '../../src/main/store/db';
 import { answerAfter, clearChat, ensureFooChat, messageList } from '../../src/main/store/queries';
@@ -62,18 +62,31 @@ describe('CR-0060 profile writes', () => {
 });
 
 describe('CR-0060 chat writes', () => {
-  it('Clear messages removes every message of the chat and bumps its rev', () => {
+  it('Clear messages removes every message of the chat, its unread count, and bumps its rev', () => {
     add('m1', 1, 'user');
     add('m2', 2, 'foo');
+    db.prepare("UPDATE chats SET unread_count = 3 WHERE id = 'c_foo'").run();
     const rev = Number(chat().rev);
-    expect(
-      clearChat(db, 'c_foo', T + 10)
-        .map((m) => m.id)
-        .sort(),
-    ).toEqual(['m1', 'm2']);
+    expect((clearChat(db, 'c_foo', T + 10) ?? []).map((m) => m.id).sort()).toEqual(['m1', 'm2']);
     expect(messageList(db, 'c_foo', 50).filter((m) => !m.deletedAt)).toEqual([]);
     expect(Number(chat().rev)).toBe(rev + 1);
+    expect(db.prepare("SELECT unread_count FROM chats WHERE id = 'c_foo'").pluck().get()).toBe(0);
     expect(clearChat(db, 'c_foo', T + 11)).toEqual([]);
+    expect(clearChat(db, 'c_nope', T + 12)).toBeNull();
+  });
+
+  it('a private chat is not cleared here (C-23 ends it); setup cards stay while setup runs', () => {
+    db.prepare("UPDATE chats SET private = 1 WHERE id = 'c_foo'").run();
+    expect(clearChat(db, 'c_foo', T)).toBeNull();
+    db.prepare("UPDATE chats SET private = 0 WHERE id = 'c_foo'").run();
+    s = { ...s, ai: { ...s.ai, primary: 'claude-cli' }, setup: { complete: false, step: 2 } };
+    ensureSetupCard(db, port, T);
+    add('m9', 90, 'user');
+    const live = () => db.prepare("SELECT COUNT(*) FROM cards WHERE chat_id = 'c_foo' AND deleted_at IS NULL").pluck().get();
+    const before = live();
+    expect(before).toBeGreaterThan(0);
+    expect((clearChat(db, 'c_foo', T + 1, { keepSetup: true }) ?? []).map((m) => m.id)).toEqual(['m9']);
+    expect(live()).toBe(before);
   });
 
   it('an edit rewrites only the complete foo text answer right after it', () => {
