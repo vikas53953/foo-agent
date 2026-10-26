@@ -1,0 +1,25 @@
+{"t":"2026-10-26T22:54:18.253Z","journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","spec":"04 §9, 03-2 selection header, 10-2 §C.3","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-26T22:54:23.830Z","step":"launch","ok":true}
+{"t":"2026-10-26T22:54:24.881Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-26T22:54:25.036Z","i":1,"do":"send","sentAt":1793055264972,"sent":true,"before":0,"ok":true,"ms":155}
+{"t":"2026-10-26T22:54:31.081Z","i":2,"do":"waitReply","expect":"short reply","firstReplyMs":507,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Fold this into which job?\n1\nLooking for well-rated Italian…\nBEST FIT\n2\nChecking IRCTC\nSomething else…\nSkip\n10:54 PM","kit":[],"ms":6044}
+{"t":"2026-10-26T22:54:31.139Z","shot":"01-hello.png"}
+{"t":"2026-10-26T22:54:31.214Z","i":3,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-26T22:54:31.298Z","i":4,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-26T22:54:31.898Z","i":5,"do":"wait","expect":"selection header with count, Copy, Delete, Cancel; check circles on bubbles","ok":true,"ms":600}
+{"t":"2026-10-26T22:54:31.964Z","shot":"02-select-mode.png"}
+{"t":"2026-10-26T22:54:32.037Z","i":6,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-26T22:54:32.438Z","i":7,"do":"wait","expect":"count 2","ok":true,"ms":400}
+{"t":"2026-10-26T22:54:32.495Z","shot":"03-two-selected.png"}
+{"t":"2026-10-26T22:54:32.498Z","i":8,"do":"expectText","note":"count shows 2","soft":true,"text":"2 selected","ok":true,"ms":3}
+{"t":"2026-10-26T22:54:32.569Z","i":9,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-26T22:54:32.661Z","i":10,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-10-26T22:54:32.742Z","i":11,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-26T22:54:32.823Z","i":12,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-26T22:54:33.425Z","i":13,"do":"wait","expect":"confirm dialog; Esc keeps the message","ok":true,"ms":602}
+{"t":"2026-10-26T22:54:33.485Z","shot":"04-delete-dialog.png"}
+{"t":"2026-10-26T22:54:33.490Z","i":14,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-26T22:54:33.492Z","i":15,"do":"check","note":"message kept after Esc","soft":true,"found":3,"ok":true,"ms":1}
+{"t":"2026-10-26T22:54:33.503Z","i":16,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-26T22:54:33.632Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-26T22:54:33.644Z","step":"aiTurns","turns":0}

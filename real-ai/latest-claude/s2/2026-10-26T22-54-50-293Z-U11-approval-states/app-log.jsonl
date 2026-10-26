@@ -1,0 +1,6 @@
+{"t":1793055291265,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793055469571,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793055478103,"lvl":"info","mod":"engine","evt":"job.steer_effect","kind":"new_job"}
+{"t":1793055478128,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793055478171,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793055484382,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}

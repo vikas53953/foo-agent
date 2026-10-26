@@ -1,0 +1,84 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-26T22-42-52-859Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793054578454,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 8582,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 phones under ₹20,000 that fit best value for money\nCompare price, battery, camera, display and\nWatch live\nStop\nunder 1 min\n10:43 PM",
+      "kit": [],
+      "ms": 14685
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150003
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 17
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793054743420,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 83
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 9583,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a gentle 3-day Jaipur plan for your parents, with early starts and a long midday rest each day:\n\nDay 1, Old city: City Palace and Jantar Mantar in the morning. Take a Hawa Mahal photo stop from a rooftop cafe across the road. In the evening, stroll Johari Bazaar for jewellery and fabrics.\nDay 2, Forts: Reach Amer Fort early, before the crowds and heat, and take a jeep up to the entrance to skip the climb. Stop at Jal Mahal for photos. In the evening, go to Nahargarh by car for the sunset view.\nDay 3, Easy day: Albert Hall Museum and Birla Mandir in the morning. Shop for juttis and block prints at Bapu Bazaar. End with dinner and folk music at Chokhi Dhani.\n\nHire a cab with a driver for all three days, so there is little walking and no hunting for rides. Stay near the old city or in C-Scheme. Try dal baati churma and a glass of lassi. Cooler months, October to March, are the best time to go.\n\nWant me to fit this to your travel dates and a budget?\n\n10:45 PM",
+      "kit": [],
+      "ms": 19169
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
