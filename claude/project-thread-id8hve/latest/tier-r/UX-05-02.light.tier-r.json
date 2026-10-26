@@ -1,7 +1,7 @@
 {
   "id": "UX-05-02",
   "theme": "light",
-  "verdict": "review",
+  "verdict": "disputed",
   "disputed": {
     "cr": "CR-0008",
     "checks": [
@@ -67,6 +67,7 @@
         "7:48",
         "PM",
         "✓✓",
+        "👀",
         "＋",
         "■",
         "✕",
@@ -475,15 +476,15 @@
     ]
   },
   "r4": {
-    "verdict": "review",
-    "skipped": null,
-    "ratio": 0.04469507101086048,
-    "diffPixels": 428,
-    "total": 9576
+    "verdict": "pass",
+    "skipped": "superseded (X-216 (👀 after 2 s, as 3D eyes))",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
   },
   "r5": {
-    "ratio": 0.07968359375,
-    "diffPixels": 81596,
+    "ratio": 0.0797646484375,
+    "diffPixels": 81679,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-05-02.light.diff.png"

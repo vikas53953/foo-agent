@@ -23,7 +23,6 @@
         "⌕",
         "Search",
         "chats",
-        "👍",
         "8:00",
         "AM",
         "Good",
@@ -62,7 +61,6 @@
         "1?",
         "🙂",
         "⚙",
-        "👍",
         "⌕",
         "▯",
         "⋯",
@@ -108,6 +106,7 @@
         "to",
         "peanuts",
         "Done",
+        "1",
         "T",
         "11:58",
         "AM",
@@ -462,8 +461,8 @@
     "total": 6838
   },
   "r5": {
-    "ratio": 0.0984443359375,
-    "diffPixels": 100807,
+    "ratio": 0.098732421875,
+    "diffPixels": 101102,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-01.dark.diff.png"
