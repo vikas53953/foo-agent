@@ -2,7 +2,7 @@
 // is filled from app:getBootstrap and kept current by events), 02-3 §F25.2 (one announcer), §3.9.2 / §3.9.4 (F6 and the Esc
 // ladder: one root handler, ShellKeys), 02-2 §F15.9.9 (one hidden `<FaceRaster>`), AT-322 (pages load lazily; P1 T10 fetches
 // their scripts once the window is idle after launch). The chat view (`main`) and the details panel (`right`) mount into the shell here.
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { Announcer } from './a11y/Announcer';
 import { preloadPages } from './pages/lazyPages';
 import { MainShell } from './shell/MainShell';
@@ -30,7 +30,8 @@ export function App() {
   const openChatId = useStore(selectOpenChatId);
   const chat = useStore(selectChat(openChatId));
   const hasPanel = usePanelHasContent(chat ?? null);
-  useEffect(() => setPanelEmpty(!!chat && !hasPanel), [chat, hasPanel]);
+  // Before paint, so the first frame of a chat with an empty panel has no panel column and no toggle.
+  useLayoutEffect(() => setPanelEmpty(!!chat && !hasPanel), [chat, hasPanel]);
   return (
     <>
       <Shell main={openChatId ? <MainShell chatId={openChatId} /> : null} right={chat && hasPanel ? <RightShell chat={chat} /> : null} />

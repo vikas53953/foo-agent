@@ -83,7 +83,7 @@ test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About
     if (await page.locator(`[data-testid="${TID.dialogShortcutsRow}"][data-row-id="details"]`).count())
       findings.push('the shortcuts sheet lists Ctrl+Shift+D though the details panel is empty');
     await page.keyboard.press('Escape');
-  }
+  } else findings.push('Ctrl+/ opens no shortcuts sheet');
 
   // 4. A table answer: the chat list reads its cells, never raw | or --- (F24).
   await page.getByTestId(TID.composerField).fill('compare two plans');

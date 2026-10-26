@@ -18,7 +18,7 @@ export function layoutNow(): Layout {
     sidebarWidth: selectSidebarWidth(s),
     rightOpenL: selectRightShellOpen(s) && !s.ui.panelEmpty,
     rightOpenOverlay: s.ui.rightShellOpenOverlay && !s.ui.panelEmpty,
-    xsPane: s.ui.xsPane,
+    xsPane: s.ui.panelEmpty && s.ui.xsPane === 'panel' ? 'chat' : s.ui.xsPane,
   });
 }
 

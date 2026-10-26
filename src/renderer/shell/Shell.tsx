@@ -41,7 +41,7 @@ export function Shell({ main, right }: ShellProps) {
   const panelEmpty = useStore((s) => s.ui.panelEmpty);
   const rightOpenL = useStore(selectRightShellOpen) && !panelEmpty;
   const rightOpenOverlay = useStore(selectRightShellOpenOverlay) && !panelEmpty;
-  const xsPane = useStore(selectXsPane);
+  const xsPane = useStore((s) => (s.ui.panelEmpty && selectXsPane(s) === 'panel' ? 'chat' : selectXsPane(s)));
   const view = useStore(selectView);
   const backDepth = useStore((s) => s.ui.back.length);
   const motion = useViewMotion(view, backDepth);
