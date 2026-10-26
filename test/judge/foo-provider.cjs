@@ -47,15 +47,19 @@ function childEnv(profile) {
 }
 
 async function replies(page) {
-  return page
-    .locator('[data-testid="thread-log"] [data-testid]')
-    .evaluateAll(
-      (els, tids) =>
-        els
-          .filter((e) => tids.includes(e.getAttribute('data-testid')))
-          .map((e) => `[${e.getAttribute('data-testid')}] ${(e.innerText || '').replace(/\s+\n/g, '\n').trim()}`),
-      [...REPLY_TIDS],
-    );
+  return page.locator('[data-testid="thread-log"] [data-testid]').evaluateAll(
+    (els, tids) =>
+      els
+        .map((e) => {
+          const tid = e.getAttribute('data-testid');
+          // A settings change or refusal answers with a one-line system notice, not a bubble (08-4 §25.6).
+          if (tid === 'thread-marker' && e.getAttribute('data-state') === 'system_line') return ['system-line', e];
+          return tids.includes(tid) ? [tid, e] : null;
+        })
+        .filter(Boolean)
+        .map(([tid, e]) => `[${tid}] ${(e.innerText || '').replace(/\s+\n/g, '\n').trim()}`),
+    [...REPLY_TIDS],
+  );
 }
 
 /** Waits until the welcome and any restart notes have landed (nothing new for 4 s, cap 20 s); returns the count. */
