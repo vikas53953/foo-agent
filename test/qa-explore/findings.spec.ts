@@ -196,3 +196,15 @@ test('QA-X-F24 · the chat-list preview never shows raw table markdown (03-1 §3
   await send(w.page, 'QAX-F24 compare plans');
   await expect(w.page.getByTestId(TID.chatlistRow).first()).not.toContainText('|---|');
 });
+
+test('QA-X-F26 · pasted text with a blank line is sent with one blank line, as typed text is (04 §22.5)', async () => {
+  w = await open([], { firstRun: true });
+  await finishSetup(w.page);
+  await w.app.evaluate(({ clipboard }) => clipboard.writeText('gamma\n\ndelta'));
+  await w.page.getByTestId(TID.composerField).click();
+  await w.page.keyboard.press('Control+V');
+  await w.page.keyboard.press('Enter');
+  const mine = w.page.getByTestId(TID.bubbleMe).last();
+  await expect(mine).toContainText('delta');
+  expect(await mine.innerText()).toMatch(/^gamma\n\ndelta\n/);
+});

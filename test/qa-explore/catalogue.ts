@@ -138,6 +138,15 @@ export const DEFECTS: Defect[] = [
     test: 'QA-X-F24',
   },
   {
+    id: 'F26',
+    sev: 'S3',
+    kind: 'functional',
+    title: 'Pasted text with a blank line is sent with two blank lines (typed text keeps one)',
+    where: 'Paste "a, blank line, b" into the message box → Enter',
+    test: 'QA-X-F26',
+    note: 'found on main 5933f08 while checking the new auto-height composer',
+  },
+  {
     id: 'F01',
     sev: 'S3',
     kind: 'visual',
