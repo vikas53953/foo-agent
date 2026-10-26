@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n10:43 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Email about running late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n10:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n10:44 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "withdrawn",
+    "text": "No longer needed. The job was stopped.\n10:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:44 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nThis coming Friday\n2\nFri 6 Nov\nThe Friday after\nSomething else…\nSkip\n10:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n10:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n10:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB memory, a 512 GB SSD and a recent 6-core or better processor. Those matter more than a fancy graphics card.\n\nMemory: 16 GB minimum. 8 GB gets slow fast with a code editor, browser and Docker open.\nStorage: 512 GB SSD, ideally with a free slot to add more later.\nProcessor: Ryzen 5/7 or Intel Core i5/i7 (H or P series) for speed. An Apple M-series Air also fits if you find one in budget, and it has great battery life.\nScreen and keyboard: full HD or better, matte if possible, and a keyboard you like typing on for hours.\nGraphics card: only needed for games or AI training, so skip it to save money.\n\nWhat will you mostly build: web or app development, data and AI work, or games?\n\n10:45 PM"
+  }
+]
