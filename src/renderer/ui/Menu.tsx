@@ -3,7 +3,8 @@
 // separators; destructive items `--bad`; opens with `--m-normal` `--ease-in` (fade + 4px drop), instant under reduced
 // motion. Keys: ↑/↓ move, Home/End, Enter/Space choose, → opens a submenu, ←/Esc closes, Tab closes. `role="menu"` /
 // `menuitem`. Test ids come from TID by key (lint foo/testid-from-registry). P1 T3 (CR-0021 pick 5, AT-303): menus scale
-// in from the button that opened them (transform-origin at the anchor).
+// in from the button that opened them (transform-origin at the anchor). CR-0060: a submenu with no room on the right opens
+// on the left of its menu, never over it.
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { TID } from '../../shared/testids';
@@ -41,6 +42,7 @@ function place(anchor: MenuAnchor, menu: { width: number; height: number }): { x
   } else {
     x = anchor.x;
     y = anchor.y;
+    if (anchor.flipX !== undefined && x + menu.width > window.innerWidth - gap) x = Math.max(gap, anchor.flipX - menu.width);
     if (y + menu.height > window.innerHeight - gap) y = Math.max(gap, y - menu.height);
   }
   x = Math.min(Math.max(gap, x), window.innerWidth - menu.width - gap);
@@ -193,7 +195,11 @@ export function Menu({ entries, anchor, onClose, label, tid, autoFocus = true, l
       {sub && subEntry?.kind === 'item' && subEntry.submenu && (
         <Menu
           entries={subEntry.submenu}
-          anchor={{ x: sub.el.getBoundingClientRect().right, y: sub.el.getBoundingClientRect().top }}
+          anchor={{
+            x: sub.el.parentElement?.getBoundingClientRect().right ?? sub.el.getBoundingClientRect().right,
+            y: sub.el.getBoundingClientRect().top,
+            flipX: sub.el.parentElement?.getBoundingClientRect().left ?? sub.el.getBoundingClientRect().left,
+          }}
           level={level + 1}
           onClose={(chose) => {
             const opener = sub.el;

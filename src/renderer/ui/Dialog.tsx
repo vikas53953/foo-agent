@@ -21,7 +21,8 @@ export interface DialogProps {
   title: string;
   body?: string;
   primary: string;
-  secondary: string;
+  /** Absent: one button (an information sheet such as 06-3 §19). */
+  secondary?: string;
   destructive?: boolean;
   size?: 'sm' | 'md';
   primaryDisabled?: boolean;
@@ -90,11 +91,11 @@ export function Dialog({
       {primary}
     </Button>
   );
-  const secondaryButton = (
+  const secondaryButton = secondary ? (
     <Button variant="secondary" size="md" data-testid={TID.dialogSecondary} onClick={onClose}>
       {secondary}
     </Button>
-  );
+  ) : null;
 
   return createPortal(
     <div className={styles.scrim}>

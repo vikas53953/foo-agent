@@ -179,11 +179,7 @@ export function AppearancePage() {
         >
           <Toggle checked={a.useWindowsAccent} label={t('settings.appearance.accent.label')} disabled={highContrast} onChange={setAccent} />
         </Row>
-        <Row
-          tid="settingsRowAppearanceZoom"
-          label={t('settings.appearance.zoom.label')}
-          second={t('settings.appearance.zoom.second', { agentName })}
-        >
+        <Row tid="settingsRowAppearanceZoom" label={t('settings.appearance.zoom.label')} second={t('settings.appearance.zoom.second')}>
           <button
             type="button"
             className={styles.menuButton}

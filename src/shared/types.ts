@@ -859,6 +859,8 @@ export interface Bootstrap {
   safeMode: boolean;
   /** CR-0054: the features this build switched on, in menu order; absent = every feature. */
   features?: FeatureId[];
+  /** CR-0060: Settings → About "Version {1.0.3}" (06-2 §6.11). */
+  appVersion?: string;
 }
 
 /** 08-1 §3.2 `chat:open` reply. */

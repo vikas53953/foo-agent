@@ -143,6 +143,19 @@ export const TID = {
   screenSpend: 'screen-spend',
   screenIdeas: 'screen-ideas',
   screenFooProfile: 'screen-foo-profile',
+  // 06-1 §4.1 / §4.2 profile page rows (CR-0060: the batch-1 part of foo's profile)
+  profileHero: 'profile-hero',
+  profileMessage: 'profile-message',
+  profileRowName: 'profile-row-name',
+  profileRowFace: 'profile-row-face',
+  profileRowVibe: 'profile-row-vibe',
+  profileRunSetup: 'profile-run-setup',
+  // 06-3 §19 keyboard shortcuts sheet, 06-2 §6.10 page rows
+  dialogShortcuts: 'dialog-shortcuts',
+  dialogShortcutsFilter: 'dialog-shortcuts-filter',
+  dialogShortcutsRow: 'dialog-shortcuts-row',
+  settingsRowShortcuts: 'settings-row-shortcuts',
+  settingsRowAboutVersion: 'settings-row-about-version',
   screenHelperProfile: 'screen-helper-profile',
   screenGroupProfile: 'screen-group-profile',
   // M1 builder B additions
@@ -501,6 +514,7 @@ export const TID = {
   settingsRowConnectionsWHidden: 'settings-row-connections-w-hidden',
   dialogLinkWhatsapp: 'dialog-link-whatsapp',
   dialogC08: 'dialog-c-08',
+  dialogC01: 'dialog-c-01',
   dialogC13: 'dialog-c-13',
   dialogC11: 'dialog-c-11',
   cardSignin: 'card-signin',

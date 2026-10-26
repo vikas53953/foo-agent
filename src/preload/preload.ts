@@ -10,6 +10,7 @@ const INVOKES = new Set([
   'app:quit',
   'app:openWindowsSettings',
   'chat:list',
+  'chat:clear',
   'chat:open',
   'chat:markRead',
   'chat:pin',
@@ -74,6 +75,9 @@ const INVOKES = new Set([
   'setup:name',
   'setup:face',
   'setup:skipRest',
+  'profile:setName',
+  'profile:setFace',
+  'profile:setVibe',
   'notifications:status',
   // M8 T3
   'whatsapp:linkStart',

@@ -648,7 +648,7 @@ export class Engine {
           turnFacts: memory.part5b,
           agentName: this.settings.identity.agentName,
           firstName: this.settings.user.firstName ?? null,
-          vibeLine: '',
+          vibeLine: this.settings.identity.vibeLine ?? '',
           emoji: '',
           timeZone: this.settings.locale.timeZone,
           tools,
@@ -727,7 +727,7 @@ export class Engine {
         return this.prompts.buildIntake({
           chatKind: i.chat.kind === 'helper' ? 'helper' : 'foo',
           agentName: i.settings.identity.agentName,
-          vibeLine: '',
+          vibeLine: i.settings.identity.vibeLine ?? '',
           emoji: '',
           firstName: i.settings.user.firstName ?? null,
           timeZone: i.settings.locale.timeZone,

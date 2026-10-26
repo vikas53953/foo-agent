@@ -1,7 +1,8 @@
 // Spec: 03-shell-2 §3.9.3 chat list keys that work anywhere in the app (Ctrl+1…9 opens the chat at that position in the
 // current list; Alt+↓ / Alt+↑ and Ctrl+Tab / Ctrl+Shift+Tab open the next / previous chat; Alt+Shift+↓ opens the next
 // chat that needs you), 09 §9.17 shell shortcuts (Ctrl+N New helper, Ctrl+Shift+N New group, Ctrl+, Settings, Ctrl+/
-// Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread, Ctrl+M Memory), 03-shell-1 §3.4.2 / §3.4.9
+// Keyboard shortcuts, Ctrl+Shift+F search chats, Ctrl+Shift+P pin, Ctrl+Shift+U unread, Ctrl+M Memory; CR-0060: Ctrl+Shift+M
+// mute, Ctrl+I profile of the open chat, Ctrl+W close the window), 03-shell-1 §3.4.2 / §3.4.9
 // (the hints shown in menus and tooltips), 09 §9.14.3 app zoom (Ctrl+= / Ctrl+Numpad + in, Ctrl+- / Ctrl+Numpad - out, Ctrl+0
 // reset, Ctrl+wheel the same; one `zoom` value shared with Settings → Appearance, AT-321, CR-0021 pick 22). Chat-view keys
 // (Ctrl+F, Ctrl+Shift+D, F6, Esc) belong to the main shell.
@@ -9,11 +10,12 @@ import { useEffect } from 'react';
 import { ZOOM_STEPS } from '../../shared/settingsLists';
 import type { FeatureId } from '../../shared/features';
 import { focusPane } from '../a11y/focusTargets';
-import { togglePin, toggleUnread } from '../chatlist/actions';
+import { mute, openProfile, togglePin, toggleUnread } from '../chatlist/actions';
+import { TID } from '../../shared/testids';
 import { effectivePill } from '../chatlist/rules';
 import { invoke } from '../ipc/client';
 import { navigate, openDialog, useStore } from '../store/index';
-import { selectOrderedChatIds, selectVisibleChatIds } from '../store/chats';
+import { selectIsMuted, selectOrderedChatIds, selectVisibleChatIds } from '../store/chats';
 import { selectFeatureOn } from '../store/live';
 import { openChat } from './actions';
 
@@ -151,7 +153,26 @@ function onKeyDown(e: KeyboardEvent): void {
     run(() => void togglePin(row));
   } else if (key === 'u' && e.shiftKey && row) {
     run(() => toggleUnread(row, s.live.markedUnread[row.id] === true));
+  } else if (key === 'm' && e.shiftKey && row && !row.private) {
+    // 09 §9.17: unmutes at once; muting opens the chat's options, where Mute holds its 8 hours / 1 week / Always choice.
+    if (selectIsMuted(row.id)(s)) run(() => mute(row.id, null));
+    else run(() => document.querySelector<HTMLElement>(`[data-testid="${TID.chatHeaderMore}"]`)?.click());
+  } else if (key === 'i' && !e.shiftKey && row && !italicKey(e)) {
+    if (on(row.kind === 'foo' ? 'name' : 'helpers')) run(() => openProfile(row));
+  } else if (key === 'w' && !e.shiftKey) {
+    // 09 §9.17 Ctrl+W: the same as ✕ (tray or quit per §9.8.2).
+    run(() => window.close());
   }
+}
+
+/** 09 §9.17: inside the composer with text selected, Ctrl+I keeps its italic meaning (04 §10). */
+function italicKey(e: KeyboardEvent): boolean {
+  const el = e.target as HTMLElement | null;
+  if (!el || !(el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement || el.isContentEditable)) return false;
+  const sel = window.getSelection();
+  return el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement
+    ? (el.selectionEnd ?? 0) > (el.selectionStart ?? 0)
+    : !!sel && !sel.isCollapsed;
 }
 
 /** Mounted once by the shell. */

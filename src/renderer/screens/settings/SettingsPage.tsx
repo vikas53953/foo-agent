@@ -19,6 +19,9 @@ import { AccountAi } from './AccountAi';
 import { AppearancePage } from './AppearancePage';
 // M8 T2: Connections (06-2 §6.8; Google + X rows, the rest per CR-0012 G-M8-05)
 import { ConnectionsPage } from './ConnectionsPage';
+// CR-0060: Keyboard shortcuts (06-2 §6.10) and the batch-1 part of About (§6.11)
+import { ShortcutsPage } from '../../shell/ShortcutsSheet';
+import { AboutPage } from './AboutPage';
 import styles from './SettingsPage.module.css';
 
 interface NavItem {
@@ -113,6 +116,8 @@ export function SettingsPage({ page }: { page: PageId }) {
             {current.id === 'account' && <AccountAi />}
             {current.id === 'appearance' && <AppearancePage />}
             {current.id === 'connections' && <ConnectionsPage />}
+            {current.id === 'shortcuts' && <ShortcutsPage />}
+            {current.id === 'about' && <AboutPage />}
           </div>
         </main>
       </div>

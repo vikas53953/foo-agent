@@ -96,6 +96,10 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
     return (id && s.chats.byId[id]?.face) || '';
   });
+  const fooColor = useStore((s) => {
+    const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
+    return (id && s.chats.byId[id]?.colorToken) || null;
+  });
   const reduced = useReducedMotion();
   const find = useFind();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -218,6 +222,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       isGroup,
       agentName,
       fooFace,
+      fooColor,
       timeZone: tz,
       now,
       offline: connection === 'offline',
@@ -236,6 +241,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       isGroup,
       agentName,
       fooFace,
+      fooColor,
       tz,
       now,
       connection,
@@ -840,7 +846,7 @@ function Row({
       return h ? (
         <ThinkingRow face={h.faceRef} name={h.name} kind="helper" color={h.colorToken} label={ctx.isGroup} />
       ) : (
-        <ThinkingRow face={ctx.fooFace} name={ctx.agentName} kind="foo" label={ctx.isGroup} />
+        <ThinkingRow face={ctx.fooFace} name={ctx.agentName} kind="foo" color={ctx.fooColor} label={ctx.isGroup} />
       );
     }
     case 'message': {

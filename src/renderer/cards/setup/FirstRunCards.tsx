@@ -6,10 +6,12 @@
 // own picture" are not built yet.
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { t } from '../../../shared/copy/t';
-import { FIRST_TILES, glyphRef, surpriseName, surpriseTiles, type GlyphTile } from '../../../shared/firstRunPools';
+import { FACE_GLYPHS, FIRST_TILES, glyphRef, surpriseName, surpriseTiles, type GlyphTile } from '../../../shared/firstRunPools';
 import { TID } from '../../../shared/testids';
 import type { CardRow, SetupCardPayload } from '../../../shared/types';
 import { invoke } from '../../ipc/client';
+import { useStore } from '../../store/index';
+import { selectFeatureOn } from '../../store/live';
 import { Face } from '../../ui/Face';
 import { Icon } from '../../ui/Icon';
 import { TextField } from '../../ui/TextField';
@@ -48,6 +50,8 @@ function Collapsed({ card, question, answer, time }: { card: CardRow; question: 
 /** §2.1 Welcome. */
 export function WelcomeCard({ card, time }: { card: CardRow; time: CardTime }) {
   const [busy, setBusy] = useState(false);
+  // CR-0060: with jobs off (batch 1) the welcome promises only what this build does.
+  const jobsOn = useStore(selectFeatureOn('jobs'));
   const start = useRef<HTMLDivElement>(null);
   useEffect(() => start.current?.querySelector('button')?.focus(), []);
   if (card.state !== 'shown')
@@ -69,7 +73,7 @@ export function WelcomeCard({ card, time }: { card: CardRow; time: CardTime }) {
           {t('setup.welcome.title')}
         </h2>
         <div className={styles.welcomeBody} data-testid={TID.setupWelcomeBody}>
-          <p>{t('setup.welcome.body_1')}</p>
+          <p>{jobsOn ? t('setup.welcome.body_1') : t('setup.welcome.body_1_chat')}</p>
           <p>{t('setup.welcome.body_2')}</p>
         </div>
         <div ref={start} className={styles.welcomeActions}>
@@ -187,7 +191,7 @@ const COLOUR_NAME: Record<GlyphTile['colour']['id'], () => string> = {
   raspberry: () => t('setup.face.colour.raspberry'),
   ochre: () => t('setup.face.colour.ochre'),
 };
-const glyphAria = (tile: GlyphTile, n: number) =>
+export const glyphAria = (tile: GlyphTile, n: number) =>
   t('setup.face.tile_glyph_aria', { n, glyph: GLYPH_NAME[tile.glyph.id](), colour: COLOUR_NAME[tile.colour.id]() });
 
 /** §2.3 Card 2b · Face (2×2 picker). */
@@ -199,7 +203,12 @@ export function FaceCard({ card, time }: { card: CardRow; time: CardTime }) {
   const grid = useRef<HTMLDivElement>(null);
   if (card.state !== 'shown') {
     const a = p.answer ?? '';
-    const answer = a.startsWith('glyph:') ? t('setup.face.answer_glyph', { glyph: a.slice(6) }) : t('setup.face.answer_living');
+    const g = a.startsWith('glyph:') ? FACE_GLYPHS.find((x) => a.slice(6).startsWith(x.glyph)) : undefined;
+    const answer = g
+      ? t('setup.face.answer_glyph', { glyph: g.glyph, name: GLYPH_NAME[g.id]() })
+      : a.startsWith('glyph:')
+        ? a.slice(6)
+        : t('setup.face.answer_living');
     return <Collapsed card={card} question={t('setup.face.question')} answer={answer} time={time} />;
   }
   const refOf = (i: number) => (i === 0 ? 'living:default' : glyphRef(tiles[i - 1]!));
@@ -283,7 +292,10 @@ export function FaceCard({ card, time }: { card: CardRow; time: CardTime }) {
           busy={busy}
           onClick={() => {
             setBusy(true);
-            void invoke('setup:face', { face: refOf(picked) }).finally(() => setBusy(false));
+            const tile = picked > 0 ? tiles[picked - 1] : undefined;
+            void invoke('setup:face', { face: refOf(picked), ...(tile ? { colour: tile.colour.token } : {}) }).finally(() =>
+              setBusy(false),
+            );
           }}
         >
           {t('setup.face.use')}

@@ -14,7 +14,7 @@ import type { ProviderId, SecretIndexRow } from '../../../shared/types';
 import { absoluteTime } from '../../ui/time';
 import { invoke } from '../../ipc/client';
 import { navigate, useStore } from '../../store/index';
-import { selectAi, selectConnection } from '../../store/live';
+import { selectAi, selectConnection, selectFeatureOn } from '../../store/live';
 import { selectSettings, selectTimeZone } from '../../store/settings';
 import { Button } from '../../ui/Button';
 import { Icon } from '../../ui/Icon';
@@ -73,6 +73,8 @@ export function AccountAi() {
   const ai = useStore(selectAi);
   const settings = useStore(selectSettings);
   const offline = useStore(selectConnection) === 'offline';
+  // CR-0060: with jobs off (batch 1) the backup row does not talk about jobs.
+  const jobsOn = useStore(selectFeatureOn('jobs'));
   const timeZone = useStore(selectTimeZone);
   const now = useStore((s) => s.live.now);
   const [testing, setTesting] = useState(false);
@@ -187,7 +189,9 @@ export function AccountAi() {
           <li className={styles.row} data-testid={TID.settingsRowAccountAiBackup} data-row-id="settings/account/ai-backup">
             <span className={styles.rowText}>
               <span className={styles.rowLabel}>{t('settings.account.ai_backup.label')}</span>
-              <span className={styles.rowSecond}>{t('settings.account.ai_backup.second', { AI: name })}</span>
+              <span className={styles.rowSecond}>
+                {jobsOn ? t('settings.account.ai_backup.second', { AI: name }) : t('settings.account.ai_backup.second_chat', { AI: name })}
+              </span>
             </span>
             <button
               type="button"

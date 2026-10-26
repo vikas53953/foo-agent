@@ -81,6 +81,8 @@ export interface RowCtx {
   isGroup: boolean;
   agentName: string;
   fooFace: string;
+  /** CR-0060: the tile colour of a glyph face picked for foo (`chats.color_token` of foo's chat). */
+  fooColor: string | null;
   timeZone: string;
   now: number;
   offline: boolean;
@@ -100,15 +102,20 @@ export interface Sender {
   face: string;
   kind: 'foo' | 'helper' | 'user';
   color: string | null;
+  /** The face's fill when it differs from the name colour (foo's glyph face, CR-0060). */
+  faceColor?: string | null;
 }
 
-export function senderOf(m: Pick<MessageRow, 'authorKind' | 'authorId'>, ctx: Pick<RowCtx, 'agentName' | 'fooFace' | 'helpers'>): Sender {
+export function senderOf(
+  m: Pick<MessageRow, 'authorKind' | 'authorId'>,
+  ctx: Pick<RowCtx, 'agentName' | 'fooFace' | 'helpers'> & { fooColor?: string | null },
+): Sender {
   if (m.authorKind === 'user') return { name: t('bubble.row.you'), face: '', kind: 'user', color: null };
   if (m.authorKind === 'helper') {
     const h = m.authorId ? ctx.helpers[m.authorId] : undefined;
     return { name: h?.name ?? '', face: h?.faceRef ?? '', kind: 'helper', color: h?.colorToken ?? null };
   }
-  return { name: ctx.agentName, face: ctx.fooFace, kind: 'foo', color: null };
+  return { name: ctx.agentName, face: ctx.fooFace, kind: 'foo', color: null, faceColor: ctx.fooColor ?? null };
 }
 
 /**
@@ -158,7 +165,7 @@ export function messagePlainText(m: MessageRow, cards: Record<string, CardRow>):
 
 const names = new WeakMap<StoredMessage, { ctx: RowCtx; name: string }>();
 /** The context fields a name reads (a new page of history changes `byId` only, which no name reads). */
-const NAME_CTX = ['agentName', 'fooFace', 'helpers', 'timeZone', 'now', 'offline', 'aiDown', 'jobs', 'cards'] as const;
+const NAME_CTX = ['agentName', 'fooFace', 'fooColor', 'helpers', 'timeZone', 'now', 'offline', 'aiDown', 'jobs', 'cards'] as const;
 /** Kept per message object and list context (both immutable), so a row scrolled back into view does not rebuild it. */
 export function messageAccessibleName(m: StoredMessage, ctx: RowCtx): string {
   const hit = names.get(m);
@@ -220,7 +227,7 @@ function SenderLabel({ sender, tid }: { sender: Sender; tid: 'bubbleSender' | 'c
         face={sender.face}
         name={sender.name}
         kind={sender.kind === 'user' ? 'foo' : sender.kind}
-        color={sender.color}
+        color={sender.faceColor ?? sender.color}
         size="inline"
         animate={false}
       />

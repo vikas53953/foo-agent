@@ -161,14 +161,20 @@ export interface Invokes {
   /** CR-0026 (06-1 §2.1, §2.3, §2.0): Welcome "Let's go", Card 2a name, Card 2b face, "Skip the rest". */
   'setup:welcome': { req: Record<string, never>; res: null };
   'setup:name': { req: { name: string }; res: null };
-  'setup:face': { req: { face: string }; res: null };
+  'setup:face': { req: { face: string; colour?: string }; res: null };
   'setup:skipRest': { req: Record<string, never>; res: null };
+  /** CR-0060 (06-1 §4.2 foo profile "Name and look"): the name, the face, "How I talk" (a setup choice id or the words). */
+  'profile:setName': { req: { name: string }; res: null };
+  'profile:setFace': { req: { face: string; colour?: string }; res: null };
+  'profile:setVibe': { req: { optionId: string } | { words: string }; res: null };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
   // M8 T3: 08-1 §3.2 WhatsApp link and Hide from foo
   'whatsapp:linkStart': { req: Record<string, never>; res: void };
   'whatsapp:linkCancel': { req: Record<string, never>; res: void };
   'whatsapp:unlink': { req: Record<string, never>; res: void };
   'chat:archive': { req: { chatId: string; on: boolean }; res: ChatRow };
+  /** CR-0060 (06-3 §14 C-1 "Clear messages"): every message and card in the chat is removed; the chat stays. */
+  'chat:clear': { req: { chatId: string; confirm: true }; res: void };
   // M8 T2 (08-1 §3.2): Google connections. `outlook` only while flags.outlook (X-41), so v1 accepts 'google' alone.
   'connection:list': { req: Record<string, never>; res: ConnectionRow[] };
   'connection:connect': {
@@ -339,6 +345,7 @@ export const INVOKE_CHANNELS = [
   'app:quit',
   'app:openWindowsSettings',
   'chat:list',
+  'chat:clear',
   'chat:open',
   'chat:markRead',
   'chat:pin',
@@ -394,6 +401,9 @@ export const INVOKE_CHANNELS = [
   'setup:name',
   'setup:face',
   'setup:skipRest',
+  'profile:setName',
+  'profile:setFace',
+  'profile:setVibe',
   'notifications:status',
   // M8 T3
   'whatsapp:linkStart',

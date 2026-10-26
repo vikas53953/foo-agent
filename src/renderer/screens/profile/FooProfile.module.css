@@ -1,0 +1,121 @@
+/* Spec: 06-1 §4.1 frame (page header 60, content column max 760 centred, pad 24; sections with a heading and rows), §4.2
+ * hero (`--avatar-hero` 96 face, name `--t-title`, line `--t-body` `--fg-2`); 06-1 §2.3 face tiles. */
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-app);
+}
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.column {
+  max-width: var(--column-max);
+  margin: 0 auto;
+  padding: var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s6);
+}
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s1);
+}
+.heroGlyph {
+  display: grid;
+  place-items: center;
+  width: var(--avatar-hero);
+  height: var(--avatar-hero);
+  border-radius: var(--r-full);
+  background: var(--fg-1);
+  color: var(--on-helper);
+  font: var(--t-title);
+}
+.heroName {
+  margin: 0;
+  font: var(--t-title);
+  color: var(--fg-1);
+}
+.heroLine {
+  margin: 0;
+  font: var(--t-body);
+  color: var(--fg-2);
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.sectionTitle {
+  margin: 0;
+  font: var(--t-subtitle);
+  color: var(--fg-1);
+}
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.rowLabel {
+  font: var(--t-body);
+  font-weight: 600;
+  color: var(--fg-1);
+}
+.fieldRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+}
+.field {
+  flex: 1;
+  min-width: 0;
+}
+.error {
+  margin: 0;
+  font: var(--t-small);
+  color: var(--bad);
+}
+.tiles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+}
+.tile {
+  display: grid;
+  place-items: center;
+  padding: var(--s0);
+  border: 1px solid transparent;
+  border-radius: var(--r-full);
+  background: none;
+  cursor: pointer;
+}
+.tileOn {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.glyph {
+  display: grid;
+  place-items: center;
+  width: var(--s8);
+  height: var(--s8);
+  border-radius: var(--r-full);
+  color: var(--on-helper);
+  font: var(--t-subtitle);
+}
+.radios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.radio {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  font: var(--t-body);
+  color: var(--fg-1);
+}

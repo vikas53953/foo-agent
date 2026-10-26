@@ -29,7 +29,7 @@ import { CardButton } from '../CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from '../CardFrame';
 import cardStyles from '../Card.module.css';
 import { logoFor } from './aiLogos';
-import { CapDialog } from './CapDialog';
+import { CapDialog } from '../lazyCapDialogs';
 import { FinderChoice } from './FinderChoice';
 import {
   backupFor,

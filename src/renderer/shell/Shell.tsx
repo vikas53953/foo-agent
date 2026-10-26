@@ -16,7 +16,7 @@ import { tokenMs } from '../ui/tokens';
 import { BannerStrip } from '../banner/BannerStrip';
 import { LeftShell } from '../chatlist/LeftShell';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
-import { MemoryPage } from '../pages/lazyPages';
+import { MemoryPage, ShellDialogs } from '../pages/lazyPages';
 import { useStore } from '../store/index';
 import { selectRightShellOpen, selectSidebarWidth } from '../store/settings';
 import { selectRightShellOpenOverlay, selectView, selectXsPane } from '../store/ui';
@@ -83,6 +83,7 @@ export function Shell({ main, right }: ShellProps) {
             </div>
           )}
         </div>
+        <ShellDialogs />
       </div>
     </LayoutContext.Provider>
   );

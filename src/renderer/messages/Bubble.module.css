@@ -151,8 +151,10 @@
   min-width: 0;
   max-width: min(72%, var(--bubble-max));
 }
+/* CR-0060: a rich bubble leaves room on the far side for its hover toolbar (§9.2: two 40px buttons, gap and offset), so the
+ * React and More buttons stay inside the chat on a full-width table. */
 .hold:has(> .rich) {
-  width: min(var(--bubble-max-rich), 100%);
+  width: min(var(--bubble-max-rich), calc(100% - var(--s7) * 2 - var(--s0) - var(--s1)));
   max-width: none;
 }
 /* A card sizes itself (`min(--card-w, 100%)`, 05-1 §0.2) but has inline-size containment, so it has no intrinsic width:

@@ -608,6 +608,36 @@ export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: s
   return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
 }
 
+/**
+ * CR-0060 (04 §6.2 Edit: "foo receives the new text as a correction … and replies only if the answer changes"): foo's or a
+ * helper's finished text answer right after this message, which an edit writes again in place (CR-0059 rewrite); null when
+ * the next message is anything else (no answer yet: the queued turn reads the new words itself).
+ */
+export function answerAfter(db: Db, messageId: string): string | null {
+  const m = db.prepare('SELECT chat_id, seq FROM messages WHERE id = ?').get(messageId) as DbRow | undefined;
+  if (!m) return null;
+  const next = db
+    .prepare('SELECT id, author_kind, kind, status FROM messages WHERE chat_id = ? AND seq > ? AND deleted_at IS NULL ORDER BY seq LIMIT 1')
+    .get(m.chat_id, m.seq) as DbRow | undefined;
+  return next && (next.author_kind === 'foo' || next.author_kind === 'helper') && next.kind === 'text' && next.status === 'complete'
+    ? String(next.id)
+    : null;
+}
+
+/**
+ * CR-0060 `chat:clear` (06-3 §14 C-1 "Clear messages"): every message and card in the chat gets `deleted_at`, so the chat
+ * shows only the composer; the chat row stays. Returns the cleared message rows for the window.
+ */
+export function clearChat(db: Db, chatId: string, now: number): MessageRow[] {
+  const ids = db.prepare('SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL').pluck().all(chatId) as string[];
+  db.transaction(() => {
+    db.prepare('UPDATE messages SET deleted_at = ?, rev = rev + 1 WHERE chat_id = ? AND deleted_at IS NULL').run(now, chatId);
+    db.prepare('UPDATE cards SET deleted_at = ? WHERE chat_id = ? AND deleted_at IS NULL').run(now, chatId);
+    db.prepare('UPDATE chats SET rev = rev + 1 WHERE id = ?').run(chatId);
+  })();
+  return ids.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m);
+}
+
 // GAP: GAPS.md 2026-10-17 "Try again on foo's answer before the engine"
 /**
  * message:retry (gap channel, 04 §7 "Try again" on Not sent): the failed user message goes back to `queued`. Sending
