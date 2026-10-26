@@ -534,8 +534,8 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.058909574468085105,
-    "diffPixels": 4873,
+    "ratio": 0.05892166344294004,
+    "diffPixels": 4874,
     "total": 82720
   },
   "r5": {
