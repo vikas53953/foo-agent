@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n6:18 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday should I check for Delhi to Mumbai flights?\n1\nFri 30 Oct\nBEST FIT\nThis coming Friday\n2\nFri 6 Nov\nThe Friday after\nSomething else…\nSkip\n6:18 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n6:19 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What will you mostly code? It decides which laptop suits you under ₹80,000.\n1\nWeb or app development\nBEST FIT\n16 GB RAM, light and long battery\n2\nData science or AI\nMore RAM, maybe a graphics chip\n3\nGames or heavy builds\nStronger graphics, heavier laptop\n4\nNot sure, a bit of everything\nSomething else…\nSkip\n6:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 PM"
+  }
+]

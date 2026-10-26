@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n6:19 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What will you mostly code? It decides which laptop suits you under ₹80,000.\n1\nWeb or app development\nBEST FIT\n16 GB RAM, light and long battery\n2\nData science or AI\nMore RAM, maybe a graphics chip\n3\nGames or heavy builds\nStronger graphics, heavier laptop\n4\nNot sure, a bit of everything\nSomething else…\nSkip\n6:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n6:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\nYour laptop question is still open. Want me to shortlist options under ₹80,000 for programming?\n\n6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n6:21 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n6:22 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:22 PM\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune\nKept 5 treks near Pune that fit easy difficulty only, doable in a\nCompared difficulty and cost\nStopped by you\n6:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n6:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n6:22 PM"
+  }
+]
