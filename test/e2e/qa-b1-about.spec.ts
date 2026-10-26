@@ -36,6 +36,8 @@ test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About
   const env = { FOO_FAKE_AI: script, FOO_TEST_AI_HOME: aiHome(['claude']), FOO_FEATURES: BATCH_1 };
   let app = await launch(dirs, [], { ...env, FOO_TEST_FIRST_RUN: '1' });
   let page = await app.firstWindow();
+  // Every step is bounded, so a stuck one fails with its own line and call log instead of the whole test's timeout.
+  page.setDefaultTimeout(30_000);
   await page.getByTestId(TID.titlebarStrip).waitFor();
   // At L the details panel opens by default (03-shell-2 §3.7.1): the width where QA saw an empty one open during setup.
   await windowSize(app, page, 1440, 900);
@@ -167,6 +169,7 @@ test('AT-451 QA-B1-084 · re-test sweep: table preview, no private toggle, About
   await app.close();
   app = await launch(dirs, [], env);
   page = await app.firstWindow();
+  page.setDefaultTimeout(30_000);
   await page.getByTestId(TID.titlebarStrip).waitFor();
   const row = page.getByTestId(TID.chatlistRow).first();
   if (await row.count()) await row.click();
