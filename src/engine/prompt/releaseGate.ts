@@ -6,7 +6,9 @@
 // (PROTOCOL_SAY_LEAK is decided by the caller from what was released), 08-3 §22.2 (injected Clock), 04-2 §21.7 (the
 // `Suggestions:` line never reaches the bubble: it is held from its first character and stripped at </say>; P1 T6; R1 T7:
 // the `Actions:` line too), CR-0022
-// pick 14 (inside any fence, ```page, ```a2ui or plain code, only the Redactor step runs: no word map, rewrite or drop).
+// pick 14 (inside any fence, ```page, ```a2ui or plain code, only the Redactor step runs: no word map, rewrite or drop),
+// CR-0068 (untagged text followed by a <say> block: the block's text is the say, or, once sentences went out, the say ends
+// at the tag).
 import type { Clock, TimerId } from '../../shared/clock';
 import type { Redactor } from '../redact/Redactor';
 import { dropBannedSentences, filterSay, type FilterResult } from './filters';
@@ -125,7 +127,18 @@ export class ReleaseGate {
       }
     }
     const raw = this.buf.slice(this.bodyStart);
-    const ends = [raw.indexOf(ACT_OPEN), this.tagged ? raw.indexOf(SAY_CLOSE) : -1].filter((i) => i !== -1);
+    // CR-0068 (QA-X-F31): untagged text that a <say> block follows. Nothing queued yet: the reply is tagged after all and
+    // the text before the tag is stray (item 1, as parseEnvelope reads it). Sentences already queued: the say ends at the
+    // tag, so the block (the same answer again) is never shown, tags and all.
+    const lateSay = this.tagged ? -1 : raw.indexOf(SAY_OPEN);
+    const act = raw.indexOf(ACT_OPEN);
+    if (lateSay !== -1 && (act === -1 || lateSay < act) && this.consumed === 0) {
+      this.tagged = true;
+      this.bodyStart += lateSay + SAY_OPEN.length;
+      this.parse(final);
+      return;
+    }
+    const ends = [act, this.tagged ? raw.indexOf(SAY_CLOSE) : lateSay].filter((i) => i !== -1);
     if (ends.length || final) {
       this.body = ends.length ? raw.slice(0, Math.min(...ends)) : raw;
       if (!this.tagged) this.body = this.body.trimStart();
@@ -146,7 +159,7 @@ export class ReleaseGate {
     const lt = this.body.lastIndexOf('<');
     if (lt === -1) return this.body.length;
     const tail = this.body.slice(lt);
-    return SAY_CLOSE.startsWith(tail) || ACT_OPEN.startsWith(tail) ? lt : this.body.length;
+    return SAY_CLOSE.startsWith(tail) || ACT_OPEN.startsWith(tail) || (!this.tagged && SAY_OPEN.startsWith(tail)) ? lt : this.body.length;
   }
 
   /** Whether `at` lies inside a code fence: counts only the fence lines after the last call's point, so a reply stays O(n). */
