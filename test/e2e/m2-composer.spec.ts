@@ -180,6 +180,15 @@ test('a pasted blank line is sent as one blank line, the same as typed with Shif
     expect(await mine(page).last().innerText()).toMatch(new RegExp(`^${text}\n`));
     await expect(field(page)).toHaveText('');
   }
+  // The same words typed: one blank line too.
+  await field(page).focus();
+  await page.keyboard.type('typed gamma');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('typed delta');
+  await page.keyboard.press('Enter');
+  await expect(mine(page).last()).toContainText('typed delta');
+  expect(await mine(page).last().innerText()).toMatch(/^typed gamma\n\ntyped delta\n/);
   await app.close();
 });
 
