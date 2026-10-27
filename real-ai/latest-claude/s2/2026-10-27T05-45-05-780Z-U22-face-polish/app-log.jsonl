@@ -1,4 +1,0 @@
-{"t":1793079906608,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793079920318,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793079924742,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
-{"t":1793079931271,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":3341}
