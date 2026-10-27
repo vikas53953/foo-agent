@@ -168,6 +168,58 @@ test('Enter sends: the bubble shows at once, the field clears and keeps focus, S
   await app.close();
 });
 
+test('a pasted blank line is sent as one blank line, the same as typed with Shift+Enter (04-2 §22.5, QA-X-F26)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  for (const text of ['gamma\n\ndelta', 'one\ntwo', 'first\n\nsecond\nthird']) {
+    await field(page).focus();
+    await paste(page, text);
+    await page.keyboard.press('Enter');
+    const last = text.split('\n').at(-1)!;
+    await expect(mine(page).last()).toContainText(last);
+    expect(await mine(page).last().innerText()).toMatch(new RegExp(`^${text}\n`));
+    await expect(field(page)).toHaveText('');
+  }
+  // The same words typed: one blank line too.
+  await field(page).focus();
+  await page.keyboard.type('typed gamma');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('typed delta');
+  await page.keyboard.press('Enter');
+  await expect(mine(page).last()).toContainText('typed delta');
+  expect(await mine(page).last().innerText()).toMatch(/^typed gamma\n\ntyped delta\n/);
+  await app.close();
+});
+
+test('a key pasted after a multi-line paste is masked where the caret is, not lines early (04-2 §22.4, QA-X-F28)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  await field(page).focus();
+  await paste(page, 'one\ntwo\n\nthree ');
+  await paste(page, 'sk-proj-AbCdEfGhIjKlMnOpQrStUvWx1234');
+  await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
+  expect(await field(page).innerText()).toMatch(/three ••••$/);
+  await app.close();
+});
+
+test('a mention picked after a multi-line paste replaces just the "@" words (04-2 §22.8)', async () => {
+  const { app, page } = await start('ux-world');
+  // The helpers load at start-up, before the seed wrote them; a reload lists them in the mention menu.
+  await page.reload();
+  await page.getByTestId(TID.titlebarStrip).waitFor();
+  await openChat(page, 'foo');
+  await field(page).focus();
+  await paste(page, 'one\ntwo\n\nthree');
+  await page.keyboard.type(' @');
+  const row = page.getByTestId(TID.composerMentionRow).first();
+  await expect(row).toBeVisible();
+  const name = await row.locator('span').filter({ hasNotText: /^.$/ }).first().innerText();
+  await row.click();
+  expect(await field(page).innerText()).toBe(`one\ntwo\n\nthree @${name} `);
+  await app.close();
+});
+
 test('the field grows a line at a time as text is added, and shrinks back when lines go or the message is sent (02 §F7.1)', async () => {
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
