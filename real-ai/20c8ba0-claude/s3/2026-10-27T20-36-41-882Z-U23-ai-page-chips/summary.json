@@ -1,0 +1,86 @@
+{
+  "journey": "U23-ai-page-chips",
+  "title": "AI page, action chips, reply chips",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-36-41-882Z-U23-ai-page-chips",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1027
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793133408191,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "an AI page / kit card opens with the tracker",
+      "firstReplyMs": 8645,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Here's a water tracker with a goal of 8 glasses. Tap + after each glass, and it starts fresh each day.\n\nKeep\n8:36 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": false,
+      "ms": 21346
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "AI page card",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "action chips under the reply",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23065
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "reply chip fills the composer",
+      "ok": true,
+      "ms": 801
+    },
+    {
+      "i": 7,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 10
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

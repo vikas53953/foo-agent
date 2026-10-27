@@ -1,0 +1,22 @@
+{"t":"2026-10-27T20:32:19.285Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T20:32:24.556Z","step":"launch","ok":true}
+{"t":"2026-10-27T20:32:25.589Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1029}
+{"t":"2026-10-27T20:32:25.686Z","i":1,"do":"send","sentAt":1793133145663,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-27T20:32:40.422Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":8626,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best for Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool air, great views\n2\nCubbon Park and a cafe crawl\nEasy, green and relaxed\n3\nLalbagh and a South Indian brunch\nGardens first, then a long breakfast\nSomething else…\nSkip\n8:32 PM","kit":[],"ms":14735}
+{"t":"2026-10-27T20:32:40.477Z","shot":"01-choice.png"}
+{"t":"2026-10-27T20:32:40.552Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":75}
+{"t":"2026-10-27T20:32:40.649Z","i":4,"do":"send","sentAt":1793133160625,"sent":true,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-27T20:32:53.805Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":6077,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Cubbon Park and a cafe crawl is a solid pick: a slow morning walk under the trees, then coffee and a long breakfast. Want me to check your calendar for Sat 31 Oct or Sun 1 Nov?\n\n8:32 PM","kit":[],"ms":13156}
+{"t":"2026-10-27T20:32:53.868Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-27T20:32:53.955Z","i":6,"do":"send","sentAt":1793133173944,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-27T20:33:09.160Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":9124,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nLight, South Indian classic\n2\nBiryani\nHearty and comforting\n3\nPaneer tikka with rotis\nNorth Indian, easy to share\nSomething else…\nSkip\n8:33 PM","kit":[],"ms":15205}
+{"t":"2026-10-27T20:33:09.225Z","shot":"04-choice-2.png"}
+{"t":"2026-10-27T20:33:09.287Z","i":8,"do":"click","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-27T20:33:09.888Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":600}
+{"t":"2026-10-27T20:33:09.942Z","shot":"05-something-else.png"}
+{"t":"2026-10-27T20:33:10.008Z","i":10,"do":"send","sentAt":1793133189999,"sent":true,"before":0,"ok":true,"ms":65}
+{"t":"2026-10-27T20:33:30.343Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":13761,"newBubbles":3,"ok":true,"duplicates":0,"lastReply":"Indian Railways is at indianrailways.gov.in, and for tickets use IRCTC at irctc.co.in. Dal chawal noted. 🌿\n\n8:33 PM\n---\nGot it, I’ll fold that in.\n\n8:33 PM\n---\nWhat should I do with the dal chawal?\n1\nFind a simple recipe\nBEST FIT\nHome-cooked, easy steps\n2\nFind a place that delivers it\nOnly look, no ordering\n3\nJust note it for now\nSomething else…\nSkip\n8:33 PM","kit":[],"ms":20334}
+{"t":"2026-10-27T20:33:30.397Z","shot":"06-own-answer.png"}
+{"t":"2026-10-27T20:33:30.407Z","i":12,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-27T20:33:30.529Z","step":"appLog","lines":14,"dropped":0}
+{"t":"2026-10-27T20:33:30.539Z","step":"aiTurns","turns":7}

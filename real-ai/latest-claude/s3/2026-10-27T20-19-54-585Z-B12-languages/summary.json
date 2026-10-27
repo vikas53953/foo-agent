@@ -1,0 +1,78 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-19-54-585Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793132399813,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 7605,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Thu 29 Oct ke liye ye teen cheezein safe rahengi:\n\nPineapple ya butterscotch: simple aur sabko pasand aane wala.\nChocolate truffle: agar mummy ko chocolate pasand hai.\nFresh fruit ya rasmalai cake: halka aur thoda desi, family ke liye achha.\n\nParso ka din hai, isliye aaj raat hi order kar do. Kal subah tak same-day slot kam mil sakte hain. Mummy eggless khati hain ya koi bhi chalega?\n\n8:20 PM",
+      "kit": [],
+      "ms": 16757
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793132416746,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 6570,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਲਈ ਬਟਰਸਕਾਚ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਲਗਭਗ ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਬਟਰਸਕਾਚ ਜਾਂ ਪਾਈਨੈਪਲ: ਸਾਦਾ ਅਤੇ ਹਰ ਕਿਸੇ ਦੀ ਪਸੰਦ।\nਚਾਕਲੇਟ ਟਰਫਲ: ਜੇ ਮੰਮੀ ਨੂੰ ਚਾਕਲੇਟ ਪਸੰਦ ਹੈ।\nਰਸਮਲਾਈ ਜਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਹਲਕਾ ਅਤੇ ਥੋੜ੍ਹਾ ਦੇਸੀ।\n\nThu 29 Oct ਲਈ ਅੱਜ ਰਾਤ ਹੀ ਆਰਡਰ ਕਰਨਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਐੱਗਲੈੱਸ ਖਾਂਦੇ ਹਨ ਜਾਂ ਕੋਈ ਵੀ ਚੱਲੇਗਾ?\n\n8:20 PM",
+      "kit": [],
+      "ms": 16221
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793132433111,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 5539,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public or bank holiday in Mumbai as far as I know, so it should be a normal working day. Diwali falls later that week, on Sun 8 Nov. Check the official Maharashtra holiday list if you need to be certain.\n\n8:20 PM",
+      "kit": [],
+      "ms": 12656
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}
