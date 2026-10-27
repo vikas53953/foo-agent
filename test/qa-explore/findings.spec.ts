@@ -271,3 +271,24 @@ test('QA-X-F29 · with memory off, "remember that…" gets only the can’t-reme
     expect.stringContaining('can’t remember things'),
   ]);
 });
+
+test('QA-X-F31 · a reply that also carries a <say> block shows the answer once, never the raw tags (real AI 2467a76)', async () => {
+  // Real Claude wrote the answer as plain text and again inside <say>…</say>; the bubble showed both, tags included.
+  const text = 'Nahi, maine cab book nahi ki.';
+  w = await open(
+    [
+      {
+        match: { purpose: 'intake', promptIncludes: 'QAX-F31' },
+        reply: `${text}\n\n<say>${text}</say>\n<act>${JSON.stringify({ decision: { kind: 'reply' }, usedMemoryIds: [] })}</act>`,
+      },
+    ],
+    { firstRun: true },
+  );
+  await finishSetup(w.page);
+  await w.page.getByTestId(TID.composerField).fill('QAX-F31 did you book the cab?');
+  await w.page.keyboard.press('Enter');
+  await expect(lastFoo(w.page)).toContainText(text, { timeout: 20_000 });
+  const shown = await lastFoo(w.page).innerText();
+  expect(shown, 'no raw <say> tags in the bubble').not.toMatch(/<\/?say>/);
+  expect(shown.split(text).length - 1, 'the answer shows once').toBe(1);
+});
