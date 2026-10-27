@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n9:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n9:06 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n9:08 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n9:08 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:08 PM\n9:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:08 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n9:08 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:08 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000 is the Acer Aspire 14 AI at about ₹43,999 with the Lenovo ThinkBook 16 the strongest on speed.\n\nLaptop\tPrice (about)\tProcessor\tRAM / storage\tScreen\nAcer Aspire 14 AI\t₹43,999\tSnapdragon X (X1-26-100)\t16GB / 512GB\t14-inch WUXGA, 120Hz\nLenovo ThinkBook 16\t₹46,990\tRyzen 5 7535HS\t16GB / 512GB\t16-inch WUXGA, 60Hz\nAcer Aspire 3 (A324-53)\t₹40,990 to ₹49,990\tCore i5-1334U\t16GB / 512GB\t14-inch FHD, 60Hz\nAspire 14 AI: best battery life and the smoothest screen.\nThinkBook 16: fastest chip of the three and about 9 hours of battery in one review, but it is big and better kept on a desk.\nAspire 3: cheapest, good for students.\n\nThese figures come from one roundup (TechVerdict, last updated Fri 23 Oct 2026), which did not test the laptops itself. Prices differ a lot between sellers, so check the exact AI and live price before buying.\n\n9:09 PM"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n8:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! I'm here. What would you like to get done tonight?\n\n8:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n8:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email, calendar and websites, then draft, book or remind you, and I only send, pay or book when you say so. The app shows what works on this PC right now.\n\n8:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n8:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Your data is locked before it leaves your phone or PC, travels to the VPN company's computer, and only then goes out to the website you wanted.\n\nTwo things follow from that:\n\nPrivacy on public Wi-Fi: the café or hotel network can't read what you send, because it only sees locked data.\nHidden location: the website sees the VPN computer's address, not yours. So it looks like you are browsing from wherever that computer is.\n\nA VPN does not make you fully anonymous. The VPN company can still see your activity, so pick one you trust. And it won't protect you if you sign in to a fake website.\n\n8:58 PM"
+  }
+]

@@ -1,0 +1,11 @@
+{"t":"2026-10-27T21:03:05.584Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T21:03:11.088Z","step":"launch","ok":true}
+{"t":"2026-10-27T21:03:11.217Z","i":0,"do":"send","sentAt":1793134991181,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-27T21:03:25.043Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7120,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from the past 7 days\nWrite it\nWatch live\nStop\nunder 1 min\n9:03 PM","kit":[],"ms":13826}
+{"t":"2026-10-27T21:03:25.132Z","shot":"01-news.png"}
+{"t":"2026-10-27T21:03:25.134Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T21:03:25.137Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T21:03:25.143Z","i":4,"do":"expectText","text":"A VPN is a private tunnel between your device and the internet. Your data is locked before it leaves your phone or PC, travels to the VPN company's computer, and only then goes out to the website you wanted.\n\nTwo things follow from that:\n\nPrivacy on public Wi-Fi: the café or hotel network can't read what you send, because it only sees locked data.\nHidden location: the website sees the VPN computer's address, not yours. So it looks like you are browsing from wherever that computer is.\n\nA VPN does not make you fully anonymous. The VPN company can still see your activity, so pick one you trust. And it won't protect you if you sign in to a fake website.\n\n8:58 PM","ok":true,"ms":6}
+{"t":"2026-10-27T21:03:25.156Z","i":5,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-27T21:03:25.512Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-27T21:03:25.525Z","step":"aiTurns","turns":2}
