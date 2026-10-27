@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-094e621-40427749410",
+  "reportId": "M9-46c2e6b-40429604037",
   "milestone": "M9",
-  "generatedAt": "2026-10-27T00:57:47.121Z",
-  "commit": "3bb46c46a45389870cba00c2666808f0ab0a400f",
-  "head": "094e6218d89f5bc0c480801cbb6c6c914f8ef5b5",
+  "generatedAt": "2026-10-27T01:18:54.430Z",
+  "commit": "623b6f0f7f6c56ec254d5e4a4839ded3c5cef53a",
+  "head": "46c2e6beaecadef912c930a0294d96809315164e",
   "ci": {
-    "runId": "40427749410",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40427749410"
+    "runId": "40429604037",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40429604037"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "08d3127ded51639f9698834d507194f8dd3ea3182c25f61f73e22f160168ef3e"
+    "setSha256": "ccdf7983e8bc06a7a6b313b0045d25d584dcf65caf343205047fdbfa38f11b09"
   },
   "runner": {
-    "recordedAt": "2026-10-27T00:50:53.674Z",
+    "recordedAt": "2026-10-27T01:08:17.334Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006311"
+      "runner": "GitHub Actions 1000006318"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -744,7 +744,7 @@
         "id": "SV-10",
         "ok": true,
         "expected": "height 46 (±0.5)",
-        "measured": "639.9998779296875×46"
+        "measured": "640×46"
       },
       {
         "id": "SV-11",
@@ -895,14 +895,14 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6973,
+        "passed": 6974,
         "failed": 0,
         "skipped": 4
       },
       "e2e": {
-        "passed": 67,
+        "passed": 77,
         "failed": 0,
-        "skipped": 190
+        "skipped": 180
       }
     },
     "ids": [
@@ -31797,66 +31797,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/r1-kit-safety.test.ts"
       },
       {
-        "id": "AT-059",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
-      },
-      {
-        "id": "AT-114a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
-      },
-      {
-        "id": "AT-114a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
-      },
-      {
-        "id": "AT-144",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
-      },
-      {
-        "id": "AT-144",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
-      },
-      {
-        "id": "AT-060",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/signin.test.ts"
-      },
-      {
-        "id": "AT-037",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-037",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-037",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-038",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-033",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-034",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
         "id": "AT-110",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/decline.test.ts"
@@ -31965,6 +31905,66 @@
         "id": "AT-128",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/withdraw.test.ts"
+      },
+      {
+        "id": "AT-059",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
+      },
+      {
+        "id": "AT-114a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
+      },
+      {
+        "id": "AT-114a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
+      },
+      {
+        "id": "AT-144",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
+      },
+      {
+        "id": "AT-144",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
+      },
+      {
+        "id": "AT-060",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/signin.test.ts"
+      },
+      {
+        "id": "AT-037",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-037",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-037",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-038",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-033",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-034",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
       },
       {
         "id": "AT-118a",
@@ -32703,17 +32703,17 @@
       },
       {
         "id": "AT-006",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "PERF-07",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-08",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
@@ -33941,6 +33941,11 @@
       {
         "id": "CR-0063",
         "title": "the batch-1 day-one fixes (F21, F22)",
+        "status": "Approved by Vikas's approve-on-my-behalf rule (independent review, every check green; no spec clash),"
+      },
+      {
+        "id": "CR-0064",
+        "title": "WhatsApp addresses are kept whole in the store",
         "status": "Approved by Vikas's approve-on-my-behalf rule (independent review, every check green; no spec clash),"
       }
     ],
