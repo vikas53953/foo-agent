@@ -711,8 +711,8 @@
   "r4": {
     "verdict": "fail",
     "skipped": null,
-    "ratio": 0.17906295627532462,
-    "diffPixels": 41452,
+    "ratio": 0.1790586365089376,
+    "diffPixels": 41451,
     "total": 231494
   },
   "r5": {
