@@ -1,0 +1,6 @@
+G1-first-run
+B1-batch1
+G2-chat
+G3-restart
+G4-settings
+G5-wrong-key

@@ -1,0 +1,273 @@
+# Spec: project testing rule §4–10 (Vikas 2026-10-21); CR-0054 (batch 1); Vikas 2026-10-27 "professionals test the actual
+# app, every feature, like a user, and visually". The release gate: nothing goes to Vikas unless this run says PASS.
+#   drive   builds the app exactly as he downloads it (win-unpacked, test hooks checked absent), opens it on Windows with a
+#           real AI (his ANTHROPIC_API_KEY typed into foo's own Secret box) and walks test/real-pc/gate.txt like a user:
+#           messy Hinglish, Hindi, Punjabi, typos, wrong name and key, gibberish, restarts and quits, every control clicked.
+#           Each journey is filmed; each answer is pictured while foo is still working (1.5, 3 and 6 s) and after.
+#           pass^k: the chat, restart and settings journeys run `rounds` times and every round counts; nothing is re-run.
+#   review  a separate reviewer (Sonnet through the API, never the builder) checks each picture beside its walkthrough frame,
+#           then scripts/release-gate.ts writes one HTML report: per feature works / wrong vs design / broken / not tested,
+#           plus the other checks on the same commit (CI fast lane, the four Windows shards, golden lane), which must be green.
+#   release only on PASS, re-uploads the exact app that was tested as foo-windows-app-gated: the one artifact to send.
+# Evidence (report, pictures, step records; no videos) goes to the `evidence` branch under gate/<short-sha>/ and
+# gate/latest/, since agents cannot read CI artifacts. The videos are in the release-gate-report download.
+# Spend guards: owner-started runs only, one run at a time, Sonnet for the reviewer, a hard timeout.
+# The driver never clicks Approve, Pay, Book or Send. The key reaches only the steps that need it and the evidence is
+# scanned for it before anything is kept.
+name: Release gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to test (main, or a PR head branch)
+        default: main
+        required: true
+      rounds:
+        description: pass^k - how many times the chat, restart and settings journeys run (every round must pass)
+        default: '3'
+        required: true
+      model:
+        description: Model the separate reviewer uses (foo's own turns use foo's own pick for the Anthropic key)
+        default: claude-sonnet-5-5
+        required: true
+
+concurrency:
+  group: release-gate
+  cancel-in-progress: false
+
+permissions:
+  contents: write # pushes the evidence branch only
+  checks: read
+  actions: read
+
+jobs:
+  drive:
+    name: Drive the packaged app like a user (windows-latest, real AI)
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: windows-latest
+    timeout-minutes: 200
+    outputs:
+      sha: ${{ steps.head.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - id: head
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      # The journey kit and the crawler helpers come from this workflow's branch, so an older commit (the one Vikas saw a
+      # bug on) can be tested with today's gate: it must come out red there, or the gate does not catch that bug.
+      - name: Take the gate kit from the workflow's branch
+        shell: bash
+        env:
+          KIT_REF: ${{ github.sha }}
+        run: |
+          git fetch -q --depth 1 origin "$KIT_REF"
+          rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
+          paths="test/real-pc"
+          git cat-file -e FETCH_HEAD:test/qa-explore/inpage.js 2>/dev/null && paths="$paths test/qa-explore/inpage.js"
+          git archive FETCH_HEAD $paths | (cd "$RUNNER_TEMP/kit" && tar -x)
+          echo "app $(git rev-parse HEAD) kit $KIT_REF ($paths)"
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Package (unpacked, the same build as the app Vikas downloads)
+        run: pnpm package:dir
+      - name: No test hooks in the tested build (08-3 §22.1)
+        shell: bash
+        run: |
+          for needle in "__fooTest" "test:clock" "test:seed"; do
+            if grep -a -q "$needle" dist/win-unpacked/resources/app.asar; then echo "$needle found in app.asar"; exit 1; fi
+          done
+      - name: Video recorder for the journeys
+        run: pnpm exec playwright install ffmpeg
+      - name: Run the gate journeys
+        shell: bash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ELECTRON_RUN_AS_NODE: '1'
+          FOO_VIDEO: '1'
+          FOO_WATCH_MS: '1500,3000,6000'
+          ROUNDS: ${{ inputs.rounds || '3' }}
+        run: |
+          export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
+          export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-gate"
+          export FOO_QA_INPAGE="$RUNNER_TEMP/kit/test/qa-explore/inpage.js"
+          kit="$RUNNER_TEMP/kit/test/real-pc"
+          rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
+          [ -n "$ANTHROPIC_API_KEY" ] || { echo "::error::ANTHROPIC_API_KEY is not set: the gate needs a real AI."; exit 1; }
+          file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
+          drive() { echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; return $s; }
+          list=$(tr -d '\r' < "$kit/gate.txt")
+          cd "$kit"
+          # The first run sets up the shared profile; every later shared-profile journey needs its AI. No retry.
+          first=$(echo $list | cut -d' ' -f1)
+          drive "$first" || { echo "::error::$first failed; the journeys after it need its setup, stopping."; exit 1; }
+          for round in $(seq 1 "$ROUNDS"); do
+            for j in $list; do
+              [ "$j" = "$first" ] && continue
+              # Journeys that only check a first-run screen (a wrong key) run once; the rest run every round.
+              if [ "$round" -gt 1 ] && grep -q '"once": true' "$(file "$j")"; then continue; fi
+              drive "$j" || echo "::warning::$j ended with an error (judged in the report)"
+            done
+          done
+          tail -n 40 "$FOO_REAL_TEST_DIR/runs/console.txt" || true
+          # A failed step is judged in the report; the job itself fails only when the driver could not run.
+          exit 0
+      - name: Scan the evidence for the key
+        if: always()
+        shell: bash
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          runs="$RUNNER_TEMP/foo-gate/runs"
+          [ -d "$runs" ] || exit 0
+          if [ -n "$KEY_A" ] && grep -rlF -- "$KEY_A" "$runs" > "$RUNNER_TEMP/leak.txt"; then
+            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted."
+            xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
+          fi
+      - name: Keep the runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-runs
+          path: ${{ runner.temp }}/foo-gate/runs
+          retention-days: 14
+      - name: Keep the tested app (released only if the gate passes)
+        uses: actions/upload-artifact@v4
+        with:
+          name: foo-windows-app-candidate
+          path: dist/win-unpacked/
+          retention-days: 14
+
+  review:
+    name: Separate reviewer and the gate report (ubuntu-latest)
+    needs: drive
+    if: always() && needs.drive.result != 'cancelled' && needs.drive.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    outputs:
+      status: ${{ steps.report.outputs.status }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: gate-runs
+          path: gate-runs
+      - name: Draw the walkthrough frames the journeys name
+        run: |
+          pnpm exec playwright install chromium
+          ids=$(pnpm -s exec tsx scripts/release-gate.ts refs --runs gate-runs)
+          [ -z "$ids" ] || pnpm golden:render --ids "$ids" --engine chromium --out gate-refs
+      # The gate also needs every other check on the same commit green (no known-red waivers). Wait for them to finish.
+      - name: The other checks on this commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ needs.drive.outputs.sha }}
+        run: |
+          for i in $(seq 1 90); do
+            gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs?per_page=100" \
+              --jq '[.check_runs[] | select(.name | test("^(Fast lane|Screen change|Full suite|Golden lane)")) | {name, conclusion, url: .html_url}]' > checks.json
+            n=$(jq length checks.json); open=$(jq '[.[] | select(.conclusion == null)] | length' checks.json)
+            echo "checks: $n found, $open still running"
+            [ "$n" -gt 0 ] && [ "$open" -eq 0 ] && break
+            sleep 60
+          done
+      - name: Separate reviewer looks at every picture
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: pnpm exec tsx scripts/release-gate.ts review --runs gate-runs --refs gate-refs --out gate-report --model "${{ inputs.model || 'claude-sonnet-5-5' }}"
+      - name: Gate report
+        id: report
+        env:
+          SHA: ${{ needs.drive.outputs.sha }}
+        run: |
+          set +e
+          pnpm exec tsx scripts/release-gate.ts report --runs gate-runs --refs gate-refs --out gate-report --checks checks.json --sha "$SHA"
+          code=$?
+          echo "status=$(jq -r .status gate-report/verdict.json)" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Release gate on $SHA: $(jq -r .status gate-report/verdict.json)"
+            echo "| Feature | Verdict | Checkpoints | Broken | Wrong vs design |"; echo "|---|---|---|---|---|"
+            jq -r '.features[] | "| \(.name) | \(.verdict) | \(.checkpoints) | \(.broken) | \(.wrong) |"' gate-report/verdict.json
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+      - name: Scan the report for the key
+        if: always()
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          [ -d gate-report ] || exit 0
+          if [ -n "$KEY_A" ] && grep -rlF -- "$KEY_A" gate-report gate-runs > leak.txt; then
+            echo "::error::The key appeared in the report; nothing is kept."; rm -rf gate-report gate-runs; exit 1
+          fi
+      - name: Keep the report (with videos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-gate-report
+          path: gate-report
+          retention-days: 30
+      - name: Push the report to the evidence branch (no videos)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ needs.drive.outputs.sha }}
+        run: |
+          [ -f gate-report/index.html ] || { echo "no report"; exit 0; }
+          short="${SHA:0:7}"
+          work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
+          git init -q && git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          g() { git -c "http.extraheader=$auth" "$@"; }
+          for attempt in 1 2 3 4 5; do
+            if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
+            for d in "gate/$short" gate/latest; do
+              rm -rf "$d" && mkdir -p "$d"
+              (cd "$GITHUB_WORKSPACE/gate-report" && tar -c --exclude=videos .) | (cd "$d" && tar -x)
+              (cd "$GITHUB_WORKSPACE/gate-runs" && find . -name summary.json | tar -c -T -) | (cd "$d" && mkdir -p runs && cd runs && tar -x)
+            done
+            printf 'run %s · commit %s\n' "$GITHUB_RUN_ID" "$SHA" > gate/latest/RUN.txt
+            git add -A -- gate
+            git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
+            git commit -q -m "Evidence: release gate on $short (run $GITHUB_RUN_ID)"
+            g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:gate/$short"; exit 0; }
+            sleep $((attempt * 3))
+          done
+          exit 1
+
+  release:
+    name: Release the tested app (only on PASS)
+    needs: review
+    if: needs.review.outputs.status == 'PASS'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: foo-windows-app-candidate
+          path: app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foo-windows-app-gated
+          path: app/
+          retention-days: 30

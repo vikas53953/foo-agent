@@ -1,0 +1,66 @@
+{
+  "id": "G5-wrong-key",
+  "title": "Release gate: a fresh PC where the user pastes a wrong key, and types in the chat before any AI is connected",
+  "spec": "07-1 J2; 06-1 §2.2 key row; walkthrough UX-02-07..09",
+  "feature": "ai",
+  "features": "shipped",
+  "profile": "own",
+  "once": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000
+    },
+    {
+      "do": "wait",
+      "ms": 15000,
+      "shot": "locked-composer",
+      "expect": "the message box says to connect an AI first; Send is not live",
+      "ref": "UX-02-03"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "value": "sk-ant-api03-this-is-not-a-real-key-000000000000"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "wrong-key",
+      "expect": "the key row says plainly the key did not work and offers to try again; no crash, no fake works"
+    },
+    {
+      "do": "check",
+      "tid": "setup-ai-use",
+      "count": 0,
+      "note": "a wrong key is never offered as Use"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

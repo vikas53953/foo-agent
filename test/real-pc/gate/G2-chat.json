@@ -1,0 +1,139 @@
+{
+  "id": "G2-chat",
+  "title": "Release gate: just chatting like a real person, in Hinglish, Hindi, Punjabi and with typos, while the AI takes its time",
+  "spec": "07-1 J7; 04 §4.2 (status badge), §17 (answer actions); X-216; CR-0066 (no 👀 on plain chat, Vikas 2026-10-27)",
+  "feature": "chat",
+  "features": "shipped",
+  "steps": [
+    {
+      "do": "send",
+      "text": "hi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "hi",
+      "expect": "while waiting: the Thinking row (foo's small face) and no 👀 on my message; after: one short warm reply",
+      "ref": "UX-08-02"
+    },
+    {
+      "do": "send",
+      "text": "kal office jaana hai, mood off hai yaar. kuch motivate karo"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "hinglish",
+      "expect": "a short, kind reply in Hinglish (Roman script), not in English or Devanagari",
+      "ref": "UX-08-04"
+    },
+    {
+      "do": "send",
+      "text": "आज दिल्ली में मौसम कैसा रहेगा, अंदाज़ा बताओ?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "hindi",
+      "expect": "Devanagari shows properly (no boxes); the answer is in Hindi and honest that it cannot check live weather"
+    },
+    {
+      "do": "send",
+      "text": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "punjabi",
+      "expect": "Gurmukhi shows properly; the joke is in Punjabi",
+      "ref": "UX-08-05"
+    },
+    {
+      "do": "send",
+      "text": "wat is teh capitl of austrlia??"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "typos",
+      "expect": "understands the typos: Canberra, in one short bubble, no lecture about spelling"
+    },
+    {
+      "do": "send",
+      "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "forbidBadge": "seen",
+      "shot": "long",
+      "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words"
+    },
+    {
+      "do": "sweep",
+      "within": "[data-testid=\"thread-log\"]",
+      "max": 25,
+      "expect": "every control in the chat (answer actions, chips, links) does something visible; nothing covers a bubble's words"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "click",
+      "tid": "composer-field"
+    },
+    {
+      "do": "key",
+      "key": "Enter"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "empty-send",
+      "expect": "pressing Enter on an empty box sends nothing: no empty bubble"
+    },
+    {
+      "do": "pasteSend",
+      "text": "line one\n\nline three after a blank line"
+    },
+    {
+      "do": "wait",
+      "ms": 15000,
+      "shot": "paste-blank-line",
+      "expect": "the pasted text with a blank line went as ONE message, exactly as pasted, and foo answered it once"
+    },
+    {
+      "do": "send",
+      "text": "thanks 🙏"
+    },
+    {
+      "do": "wait",
+      "ms": 8000,
+      "shot": "thanks",
+      "expect": "a small 👍 or ❤️ reaction on my thanks, or one short line; no long You're welcome speech",
+      "ref": "UX-08-01"
+    },
+    {
+      "do": "send",
+      "text": "asdfghjkl qwerty ???"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "allowDidntGet": true,
+      "shot": "gibberish",
+      "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

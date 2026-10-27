@@ -3,90 +3,223 @@
   "title": "Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so",
   "spec": "CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b",
   "covers": ["CR-0054"],
+  "feature": "chat",
   "features": "shipped",
   "profile": "own",
   "steps": [
-    { "do": "waitFor", "tid": "setup-welcome-start", "timeoutMs": 60000, "shot": "welcome", "expect": "Welcome card, step 1 of 2" },
-    { "do": "click", "tid": "setup-welcome-start" },
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start",
+      "feature": "ai"
+    },
     {
       "do": "waitFor",
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "timeoutMs": 60000,
       "shot": "finder",
-      "expect": "Find your AI card; the Anthropic key row offers to add the key"
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
     },
-    { "do": "wait", "ms": 20000, "shot": "finder-tested", "expect": "rows tested; the key row waits for a key" },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
+    },
     {
       "do": "click",
       "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
-      "note": "Add key on the Anthropic key row: opens the Secret box"
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "feature": "ai"
     },
     {
       "do": "waitFor",
       "tid": "card-secret-field",
       "timeoutMs": 30000,
       "shot": "secret-box",
-      "expect": "Secret box asks for the Anthropic key"
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
     },
-    { "do": "fill", "tid": "card-secret-field", "env": "ANTHROPIC_API_KEY", "note": "the key typed into foo's own Secret box, masked" },
-    { "do": "click", "tid": "card-secret-save" },
-    { "do": "wait", "ms": 30000, "shot": "key-tested", "expect": "the Anthropic key row shows works" },
-    { "do": "clickIf", "tid": "setup-ai-pick-another", "note": "more than one AI works: pick the key, not the Claude app" },
-    { "do": "clickIf", "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]" },
-    { "do": "clickIf", "tid": "setup-ai-use", "note": "only the key works: Use it" },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "note": "the key typed into foo's own Secret box, masked",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "key-tested",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "note": "only the key works: Use it",
+      "feature": "ai"
+    },
     {
       "do": "waitFor",
       "tid": "setup-skip-rest",
       "timeoutMs": 60000,
       "shot": "step2",
-      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key"
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "ai"
     },
     {
       "do": "expectText",
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "re": "Anthropic key",
-      "note": "foo uses the key, not the Claude app"
+      "note": "foo uses the key, not the Claude app",
+      "feature": "ai"
     },
-    { "do": "click", "tid": "setup-skip-rest" },
-    { "do": "wait", "ms": 10000, "shot": "first-chat", "expect": "warm hello with three things to try; composer unlocked" },
+    {
+      "do": "click",
+      "tid": "setup-skip-rest",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "ai"
+    },
     {
       "do": "check",
       "tid": "sidebar-new-helper",
       "count": 0,
-      "note": "batch 1 has no helpers: no New helper button"
+      "note": "batch 1 has no helpers: no New helper button",
+      "feature": "ai"
     },
     {
       "do": "check",
       "css": "[data-testid=\"composer-send\"][data-state=\"send\"]",
-      "note": "batch 1 has no voice: the round button is Send, not the mic"
+      "note": "batch 1 has no voice: the round button is Send, not the mic",
+      "feature": "ai"
     },
-    { "do": "send", "text": "hi foo, kaise ho?" },
-    { "do": "waitReply", "timeoutMs": 120000, "shot": "hinglish", "expect": "a short warm reply in Hinglish, streamed" },
-    { "do": "send", "text": "mujhe ek chhota sa joke sunao" },
-    { "do": "waitReply", "timeoutMs": 120000, "shot": "joke", "expect": "a joke, in the user's mix of Hindi and English" },
-    { "do": "send", "text": "Book a table for 2 tonight at a cafe in Delhi" },
+    {
+      "do": "send",
+      "text": "hi foo, kaise ho?",
+      "feature": "chat"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "hinglish",
+      "expect": "a short warm reply in Hinglish, streamed",
+      "feature": "chat"
+    },
+    {
+      "do": "send",
+      "text": "mujhe ek chhota sa joke sunao",
+      "feature": "chat"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "joke",
+      "expect": "a joke, in the user's mix of Hindi and English",
+      "feature": "chat"
+    },
+    {
+      "do": "send",
+      "text": "Book a table for 2 tonight at a cafe in Delhi",
+      "feature": "refusals"
+    },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "job-off",
       "expect": "the batch-1 line: foo can’t do tasks yet; no checklist, no plan card",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/can.t do tasks/i.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/can.t do tasks/i.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()",
+      "feature": "refusals"
     },
-    { "do": "send", "text": "remember that I am vegetarian" },
+    {
+      "do": "send",
+      "text": "remember that I am vegetarian",
+      "feature": "refusals"
+    },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "memory-off",
       "expect": "the batch-1 memory line, or a plain reply; never a memory chip",
-      "expectJs": "!document.querySelector('[data-testid=\"thread-memory-see\"]')"
+      "expectJs": "!document.querySelector('[data-testid=\"thread-memory-see\"]')",
+      "feature": "refusals"
     },
-    { "do": "send", "text": "Switch to dark mode" },
-    { "do": "waitFor", "css": "html[data-theme=\"dark\"]", "timeoutMs": 120000, "note": "settings by chat is on in batch 1" },
-    { "do": "wait", "ms": 5000, "shot": "dark", "expect": "dark theme; one line Changed: Theme → Dark. Undo" },
-    { "do": "click", "tid": "sidebar-more" },
-    { "do": "wait", "ms": 800, "shot": "more-menu", "expect": "Settings, Keyboard shortcuts and Quit only" },
-    { "do": "check", "tid": "sidebar-menu-memory", "count": 0 },
-    { "do": "key", "key": "Escape" },
-    { "do": "dump", "name": "thread" }
+    {
+      "do": "send",
+      "text": "Switch to dark mode",
+      "feature": "settings"
+    },
+    {
+      "do": "waitFor",
+      "css": "html[data-theme=\"dark\"]",
+      "timeoutMs": 120000,
+      "note": "settings by chat is on in batch 1",
+      "feature": "settings"
+    },
+    {
+      "do": "wait",
+      "ms": 5000,
+      "shot": "dark",
+      "expect": "dark theme; one line Changed: Theme → Dark. Undo",
+      "feature": "settings"
+    },
+    {
+      "do": "click",
+      "tid": "sidebar-more",
+      "feature": "install"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "more-menu",
+      "expect": "Settings, Keyboard shortcuts and Quit only",
+      "feature": "install"
+    },
+    {
+      "do": "check",
+      "tid": "sidebar-menu-memory",
+      "count": 0,
+      "feature": "install"
+    },
+    {
+      "do": "key",
+      "key": "Escape",
+      "feature": "install"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
   ]
 }
