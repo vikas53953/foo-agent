@@ -1,0 +1,19 @@
+{"t":"2026-10-27T14:47:38.097Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T14:47:43.321Z","step":"launch","ok":true}
+{"t":"2026-10-27T14:47:51.393Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8069}
+{"t":"2026-10-27T14:47:51.493Z","i":0,"do":"send","sentAt":1793112471459,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-27T14:47:54.494Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-27T14:47:59.471Z","step":"launch","ok":true}
+{"t":"2026-10-27T14:47:59.472Z","i":2,"do":"relaunch","ok":true,"ms":4977}
+{"t":"2026-10-27T14:48:09.025Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":2516,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is the classic, but Turbo is funnier for an animal that never hurries. Other good ones are Biscuit, Mr Slowpoke, Dosa and Pebble.\n\n2:48 PM","kit":[],"ms":9553}
+{"t":"2026-10-27T14:48:09.090Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-27T14:48:09.092Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n2:47 PM","eyes":false},"ok":true,"ms":1}
+{"t":"2026-10-27T14:48:09.239Z","i":5,"do":"send","sentAt":1793112489200,"sent":true,"before":0,"ok":true,"ms":147}
+{"t":"2026-10-27T14:48:11.241Z","i":6,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-27T14:48:16.248Z","step":"launch","ok":true}
+{"t":"2026-10-27T14:48:16.248Z","i":7,"do":"relaunch","ok":true,"ms":5007}
+{"t":"2026-10-27T14:48:40.468Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":18088,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for top India news story on Tue 27 Oct 2026\nWatch live\nStop\nunder 1 min\n2:48 PM","kit":[],"ms":24220}
+{"t":"2026-10-27T14:48:40.531Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-27T14:48:40.544Z","i":9,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-27T14:48:40.858Z","step":"appLog","lines":18,"dropped":0}
+{"t":"2026-10-27T14:48:40.868Z","step":"aiTurns","turns":4}

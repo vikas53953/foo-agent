@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n2:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Reading your WhatsApp\nlive checklist\nReading your WhatsApp\nLook for unread messages and anything that needs\nStop\n1 min\n2:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:50 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can't read your WhatsApp directly. How should I get to your messages?\n1\nOpen WhatsApp Web\nBEST FIT\nYou sign in once, I only look\n2\nI'll paste the messages\nI'll sort out what needs you\n3\nStop here\nLeave WhatsApp alone for now\nSomething else…\nSkip\n2:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n2:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Ganga, the Godavari and the Yamuna are three major Indian rivers. The Krishna and the Narmada are also worth knowing.\n\n2:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n2:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a tiny hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with python hello.py. 🌿\n\n2:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n2:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three states with their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n2:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n2:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways booking site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry.\n\n2:51 PM"
+  }
+]
