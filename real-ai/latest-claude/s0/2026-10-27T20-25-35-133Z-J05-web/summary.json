@@ -1,0 +1,57 @@
+{
+  "journey": "J05-web",
+  "title": "First real task with the internet (news + sources)",
+  "steps": 6,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-25-35-133Z-J05-web",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793132740964,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7651,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 21 to 27 Oct 2026, with\nCompare reports across sources\nWatch live\nStop\nunder 1 min\n8:25 PM",
+      "kit": [],
+      "ms": 13790
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 7
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 4,
+      "do": "expectText",
+      "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it scrambled, so people in between can't read it.\n\nHere is the flow:\n\nYour device locks your traffic and sends it to the VPN company's computer.\nThat computer unlocks it and visits the website for you.\nThe website sees the VPN's location, not yours.\n\nYour Wi-Fi owner or internet provider only sees scrambled data going to the VPN. It helps on public Wi-Fi and hides your location. It doesn't make you fully anonymous, since the VPN company can still see your traffic, so pick one you trust.\n\n8:21 PM",
+      "ok": true,
+      "ms": 7
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}

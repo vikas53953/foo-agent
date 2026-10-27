@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:30 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n8:30 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:31 PM\n8:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:31 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n8:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three laptops fit best under ₹50,000 for price, performance and screen. All have 16GB RAM and a 512GB SSD.\n\nLaptop\tPrice\tProcessor\tDisplay\tGood for\nLenovo ThinkBook 16\tAbout ₹46,990\tRyzen 5 7535HS\t16-inch WUXGA, 60Hz\tBest performance, big screen\nAcer Aspire 14 AI\tAbout ₹43,999\tSnapdragon X (X1-26-100)\t14-inch WUXGA, 120Hz\tBattery life, lowest price\nASUS Vivobook Go 14 / 15\tAbout ₹48,990\tRyzen 5 7520U\t14 or 15.6-inch FHD\tEveryday use, Office included\n\nMy pick: the ThinkBook 16 if you work mostly at a desk, since its chip is stronger than the ones in cheaper laptops. The Aspire 14 AI is the one to carry around.\n\nKeep in mind: these figures come from one roundup page (updated Fri 23 Oct 2026), which did not test the laptops itself and says prices vary a lot between sellers, by ₹15,000 or more. Check the exact AI number and live price before buying. The Moto Book 60 (OLED, about ₹49,999) and Acer Aspire 3 (about ₹40,990 to ₹49,990) were also on the list.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:34 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:34 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Tue 27 Oct\nReplace\nRemove\n8:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:34 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n8:34 PM"
+  }
+]

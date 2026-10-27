@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n8:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n8:22 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which 2 nights in Goa do you want?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nNext weekend, Friday check-in\n2\nSat 7 Nov to Mon 9 Nov\nNext weekend, Saturday check-in\n3\nSat 31 Oct to Mon 2 Nov\nThis coming weekend\nSomething else…\nSkip\n8:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n8:25 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for ISRO news from 21 to 27 Oct 2026, with\nCompared reports across sources\nStopped by you\n8:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n8:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n8:26 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:26 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because of its huge hosiery and woollen textile industry.\n\nShow earlier answer\nRewritten\n8:26 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n8:28 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:28 PM"
+  }
+]
