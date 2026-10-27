@@ -20,7 +20,19 @@ export async function launch(dirs = testDirs(), extraArgs: string[] = [], env: R
     colorScheme: null,
     env: { ...process.env, FOO_TEST: '1', ...dirs, ...env } as Record<string, string>,
   });
-  if (process.platform === 'win32') watchClose(app, dirs.FOO_DATA_DIR);
+  if (process.platform === 'win32') {
+    // TEMPORARY (round 5): round 4 saw an "Error" window on the stuck main process, Electron's dialog for an uncaught
+    // exception in main. Write each one to a file, so the dump can name it.
+    const file = join(dirs.FOO_DATA_DIR, '..', 'main-uncaught.txt');
+    await app.evaluate((_e, f) => {
+      const fs = process.getBuiltinModule('node:fs');
+      process.on('uncaughtException', (err) => {
+        // Kept going on purpose: the dialog would hold the app, and the dump only needs the stack.
+        fs.appendFileSync(f, `${new Date().toISOString()} ${err instanceof Error ? (err.stack ?? err.message) : String(err)}\n`);
+      });
+    }, file);
+    watchClose(app, dirs.FOO_DATA_DIR);
+  }
   return app;
 }
 
@@ -71,7 +83,7 @@ function watchClose(app: ElectronApplication, dataDir: string): void {
         .filter((l) => !/dbus|gpu|command_buffer|DevTools listening|Debugger|nodejs\.org/.test(l))
         .join('\n');
       console.log(
-        `DIAG close of pid ${pid} still waiting after ${at}; exitCode ${app.process().exitCode}; processes:\n${out}\n${win}\nDIAG stderr tail:\n${err}\nDIAG tech log tail:\n${logTail()}`,
+        `DIAG close of pid ${pid} still waiting after ${at}; exitCode ${app.process().exitCode}; processes:\n${out}\n${win}\nDIAG stderr tail:\n${err}\nDIAG tech log tail:\n${logTail()}\nDIAG uncaught so far:\n${existsSync(join(dataDir, '..', 'main-uncaught.txt')) ? readFileSync(join(dataDir, '..', 'main-uncaught.txt'), 'utf8') : 'none'}`,
       );
     };
     const t1 = setTimeout(() => dump('20 s'), 20_000);
@@ -83,6 +95,8 @@ function watchClose(app: ElectronApplication, dataDir: string): void {
       clearTimeout(t2);
       const ms = Date.now() - started;
       if (ms > 5_000) console.log(`DIAG close of pid ${pid} took ${ms} ms`);
+      const caught = join(dataDir, '..', 'main-uncaught.txt');
+      if (existsSync(caught)) console.log(`DIAG uncaught in main (pid ${pid}):\n${readFileSync(caught, 'utf8')}`);
     }
   };
 }
