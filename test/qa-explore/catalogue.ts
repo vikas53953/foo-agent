@@ -193,6 +193,15 @@ export const DEFECTS: Defect[] = [
     note: 'main 2467a76, run 40595003833, B1-batch1 step 27',
   },
   {
+    id: 'F32',
+    sev: 'S2',
+    kind: 'functional',
+    title: 'A task ask ("Book a table for 2 tonight") gets the AI’s own Hinglish line, not foo’s fixed can’t-do-tasks line',
+    where: 'Chat: ask foo to book something (batch 1, jobs off; real Claude)',
+    test: null,
+    note: 'real Claude decided reply, not job (main 2467a76, run 40595003833, B1-batch1 result 23); same family as F30; the gate journey checks it',
+  },
+  {
     id: 'F01',
     sev: 'S3',
     kind: 'visual',
