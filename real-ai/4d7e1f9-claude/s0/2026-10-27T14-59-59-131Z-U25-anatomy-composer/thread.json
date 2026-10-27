@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n2:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n2:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n2:59 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which electricity bill should I pay?\n1\nFind it in my email\nBEST FIT\nI'll read your latest bill first, then ask before paying\n2\nI'll name the company\nTell me the provider and I'll take it from there\nSomething else…\nSkip\n2:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n2:59 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Booking pizza order\n1\nSign in to Domino's\n2\nLook for pizza menu and offers near you\n3\nWait for you to pick one\n4\nFill in your details on Domino's\n5\nShow you before your pizza order and total\n…and 2 more · Show\nAbout 5 minutes\nGo\nChange plan\n2:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n2:59 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n2:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n3:00 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n3:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:00 PM"
+  }
+]

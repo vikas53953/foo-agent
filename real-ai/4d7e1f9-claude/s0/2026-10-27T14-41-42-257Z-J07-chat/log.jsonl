@@ -1,0 +1,14 @@
+{"t":"2026-10-27T14:41:42.257Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T14:41:47.709Z","step":"launch","ok":true}
+{"t":"2026-10-27T14:41:47.835Z","i":0,"do":"send","sentAt":1793112107796,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-27T14:41:57.971Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2523,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! Good to see you. What shall we sort out today?\n\n2:41 PM","kit":[],"ms":10136}
+{"t":"2026-10-27T14:41:58.044Z","shot":"01-hi.png"}
+{"t":"2026-10-27T14:41:58.132Z","i":2,"do":"send","sentAt":1793112118118,"sent":true,"before":0,"ok":true,"ms":88}
+{"t":"2026-10-27T14:42:08.762Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4044,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can look things up in your apps and on websites, check prices or bills, plan trips, and set up routines that watch things for you. The app shows what works on this PC right now.\n\n2:42 PM","kit":[],"ms":10630}
+{"t":"2026-10-27T14:42:08.823Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-27T14:42:08.938Z","i":4,"do":"send","sentAt":1793112128906,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-27T14:42:20.042Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2517,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it.\n\nNormally, websites and your internet provider can see where your traffic comes from. With a VPN, your data is locked (encrypted) before it leaves your device, travels through the tunnel to the VPN company's computer, and only then goes out to the website. The website sees the VPN's address, not yours. Your internet provider sees only scrambled data going to the VPN.\n\nIt helps on public Wi-Fi and hides your location from websites. It doesn't make you invisible, though: the VPN company can see your traffic, so pick one you trust.\n\n2:42 PM","kit":[],"ms":11103}
+{"t":"2026-10-27T14:42:20.111Z","shot":"03-vpn.png"}
+{"t":"2026-10-27T14:42:20.122Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-27T14:42:20.249Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-27T14:42:20.263Z","step":"aiTurns","turns":3}

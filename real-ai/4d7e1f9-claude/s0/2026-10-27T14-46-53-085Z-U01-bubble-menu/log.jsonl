@@ -1,0 +1,57 @@
+{"t":"2026-10-27T14:46:53.085Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T14:46:59.067Z","step":"launch","ok":true}
+{"t":"2026-10-27T14:47:00.113Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1043}
+{"t":"2026-10-27T14:47:00.251Z","i":1,"do":"send","sentAt":1793112420208,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-27T14:47:16.456Z","i":2,"do":"waitReply","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":10139,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n2:47 PM","kit":[],"ms":16205}
+{"t":"2026-10-27T14:47:16.539Z","shot":"01-fact.png"}
+{"t":"2026-10-27T14:47:16.626Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-27T14:47:16.723Z","i":4,"do":"click","soft":true,"ok":true,"ms":97}
+{"t":"2026-10-27T14:47:17.324Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":601}
+{"t":"2026-10-27T14:47:17.398Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-27T14:47:17.490Z","i":6,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-10-27T14:47:17.571Z","i":7,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-27T14:47:17.647Z","i":8,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-27T14:47:18.249Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":601}
+{"t":"2026-10-27T14:47:18.324Z","shot":"04-react-picker.png"}
+{"t":"2026-10-27T14:47:18.410Z","i":10,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-27T14:47:19.211Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":801}
+{"t":"2026-10-27T14:47:19.279Z","shot":"05-reacted.png"}
+{"t":"2026-10-27T14:47:19.281Z","i":12,"do":"check","note":"reaction chip shows","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-27T14:47:19.368Z","i":13,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-27T14:47:20.169Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":801}
+{"t":"2026-10-27T14:47:20.229Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-27T14:47:20.310Z","i":15,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-27T14:47:20.912Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":601}
+{"t":"2026-10-27T14:47:20.998Z","shot":"07-my-menu.png"}
+{"t":"2026-10-27T14:47:21.103Z","i":17,"do":"click","soft":true,"ok":true,"ms":105}
+{"t":"2026-10-27T14:47:21.607Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":503}
+{"t":"2026-10-27T14:47:21.713Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-27T14:47:21.851Z","i":19,"do":"send","sentAt":1793112441845,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-27T14:47:44.033Z","i":20,"do":"waitReply","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":16137,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n2:47 PM","kit":[],"ms":22181}
+{"t":"2026-10-27T14:47:44.089Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-27T14:47:44.091Z","i":21,"do":"check","note":"quote shows inside my bubble","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-27T14:47:44.162Z","i":22,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-27T14:47:44.241Z","i":23,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-27T14:47:44.741Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":499}
+{"t":"2026-10-27T14:47:44.822Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-27T14:47:44.838Z","i":25,"do":"fill","soft":true,"ok":true,"ms":16}
+{"t":"2026-10-27T14:47:44.851Z","i":26,"do":"key","ok":true,"ms":12}
+{"t":"2026-10-27T14:48:04.853Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20002}
+{"t":"2026-10-27T14:48:04.919Z","shot":"11-edited.png"}
+{"t":"2026-10-27T14:48:04.922Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n2:47 PM","ok":true,"ms":3}
+{"t":"2026-10-27T14:48:04.991Z","i":29,"do":"click","soft":true,"ok":true,"ms":69}
+{"t":"2026-10-27T14:48:05.072Z","i":30,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-27T14:48:05.872Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":800}
+{"t":"2026-10-27T14:48:05.933Z","shot":"12-good.png"}
+{"t":"2026-10-27T14:48:06.004Z","i":32,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-27T14:48:06.086Z","i":33,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-27T14:48:06.886Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":800}
+{"t":"2026-10-27T14:48:06.971Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-27T14:48:06.974Z","i":35,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-27T14:48:07.051Z","i":36,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-27T14:48:07.129Z","i":37,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-27T14:49:42.884Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":89681,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry PIB instead\nTry another way\nTake over\nStop\n2:49 PM","kit":[],"ms":95755}
+{"t":"2026-10-27T14:49:42.949Z","shot":"14-try-again.png"}
+{"t":"2026-10-27T14:49:42.958Z","i":39,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-27T14:49:43.166Z","step":"appLog","lines":39,"dropped":0}
+{"t":"2026-10-27T14:49:43.179Z","step":"aiTurns","turns":30}

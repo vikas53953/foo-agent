@@ -1,0 +1,78 @@
+{
+  "journey": "B02-choice",
+  "title": "Choice card: options, Best fit, typed answer",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T14-42-20-402Z-B02-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793112146009,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6056,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, lightweight daily trainers\n2\nTrails or parks\nMore grip and sturdier soles\n3\nGym or treadmill\nFlatter, breathable and light\n4\nA bit of everything\nVersatile all-rounders\nSomething else…\nSkip\n2:42 PM",
+      "kit": [],
+      "ms": 12144
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 4,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "text",
+      "soft": true,
+      "text": "Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, lightweight daily trainers\n2\nTrails or parks\nMore grip and sturdier soles\n3\nGym or treadmill\nFlatter, breathable and light\n4\nA bit of everything\nVersatile all-rounders\nSomething else…\nSkip\n2:42 PM",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793112158331,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "AT-035: card collapses as if option 2 was tapped",
+      "firstReplyMs": 6564,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Trails or parks, got it. What matters most in the shoe?\n1\nCushioning\nBEST FIT\nSoft and comfy for longer runs\n2\nGrip\nBetter hold on mud, gravel and wet ground\n3\nLight weight\nQuick and easy for short runs\n4\nDurability\nLasts through rough paths\nSomething else…\nSkip\n2:42 PM",
+      "kit": [],
+      "ms": 12656
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

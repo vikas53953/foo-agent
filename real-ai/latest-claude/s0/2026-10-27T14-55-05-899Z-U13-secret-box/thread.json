@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n2:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n2:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n2:51 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:52 PM\n2:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:51 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n2:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "MSI Modern 14 (C7M-062IN) is the best value at ₹43,219: it's the only one under ₹50,000 with a Ryzen 5 and 16 GB RAM.\n\nLaptop\tPrice\tProcessor\tRAM / storage\tScreen\nMSI Modern 14 C7M-062IN\t₹43,219\tRyzen 5 7530U\t16 GB / 512 GB SSD\t14 inch\nAcer Aspire Lite AL15-41\t₹42,990\tRyzen 5 5625U\t8 GB / 512 GB SSD\t15 inch\nAcer Travel Lite TL14-42M\t₹49,999\tRyzen 3 7330U\t16 GB / 512 GB SSD\t14 inch\nThe Acer Aspire Lite is the cheapest, but it has an older chip and only 8 GB RAM.\nThe Acer Travel Lite has 16 GB, but it costs ₹6,780 more than the MSI and has a weaker processor.\nThe MSI first came out in Mar 2023, so it may be hard to find in stock.\n\nPrices are from Smartprix, updated Tue 27 Oct 2026. Screen sizes come from the names. The page doesn't give screen quality, so check that before you buy.\n\n2:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n2:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n2:55 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Tue 27 Oct\nReplace\nRemove\n2:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:55 PM"
+  }
+]
