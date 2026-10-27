@@ -1,0 +1,14 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-41-29-794Z-J01-J02-first-run"}
+{"journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-42-20-580Z-B12-languages"}
+{"journey":"B09-kit","title":"Rich reply pieces: calculator, map, chart, compare, timer, form","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-43-09-808Z-B09-kit"}
+{"journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","steps":13,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-45-08-685Z-J09-J18-booking"}
+{"journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-49-24-375Z-B14-restart-mid-reply"}
+{"journey":"B08-bank","title":"Bank site guard","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-50-09-486Z-B08-bank"}
+{"journey":"B13-no-apps-honesty","title":"Nothing connected: email / WhatsApp asks get a connect offer, no pretending","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-51-46-495Z-B13-no-apps-honesty"}
+{"journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-52-17-986Z-U04-find-in-chat"}
+{"journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-52-36-771Z-U08-rich-text"}
+{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-53-40-422Z-U12-choice-variants"}
+{"journey":"U16-settings-all","title":"Settings: every section","steps":26,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-54-43-074Z-U16-settings-all"}
+{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","steps":22,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-54-59-564Z-U19-screens"}
+{"journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","steps":9,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-57-55-547Z-U23-ai-page-chips"}
+{"journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","steps":34,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-58-22-924Z-B1-batch1"}

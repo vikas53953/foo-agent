@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below: add what you spend, pick a month, and see the total and a split by category. Amounts show in rupees, and it may forget your entries when you close this chat, so note down anything important.\n\nKeep\n3:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n3:45 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Calendar\n\nI need to see your calendar for “Table for 2, Wed 28 Oct, 8:00 PM, near…”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n3:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n3:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Shelly is the classic, but Turbo is funnier for an animal that never hurries. Other good ones are Mr. Slowpoke, Pebble, Biscuit, Gandhi-ji (for the patience) and Dadu, since tortoises can live for decades.\n\nYour table near Connaught Place for tomorrow, Wed 28 Oct, 8:00 PM didn't get an answer from me earlier. Want me to go back to it?\n\n3:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n3:49 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Checking major Indian news sites\nDidn’t finish\nChecking major Indian news sites\nM\nCompare top headlines\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n3:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "Something went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n3:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:51 PM"
+  }
+]

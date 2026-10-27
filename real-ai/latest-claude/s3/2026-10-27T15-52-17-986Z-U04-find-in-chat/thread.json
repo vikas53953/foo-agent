@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Shelly is the classic, but Turbo is funnier for an animal that never hurries. Other good ones are Mr. Slowpoke, Pebble, Biscuit, Gandhi-ji (for the patience) and Dadu, since tortoises can live for decades.\n\nYour table near Connaught Place for tomorrow, Wed 28 Oct, 8:00 PM didn't get an answer from me earlier. Want me to go back to it?\n\n3:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n3:49 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Checking major Indian news sites\nDidn’t finish\nChecking major Indian news sites\nM\nCompare top headlines\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n3:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "Something went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n3:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n3:51 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Check your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n3:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n3:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group do you want to catch up on? Tell me its name and I'll read what's new there.\n\n3:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n3:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: the Ganga, the Yamuna and the Godavari.\n\n3:52 PM"
+  }
+]
