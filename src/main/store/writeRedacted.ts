@@ -28,10 +28,17 @@ export function writeRedacted(text: string): string {
 const FOO_ID =
   /^(?:c|m|k|j|s|h|t|ap|py|dr|cn|tc|r|rr|act|nt|sg|hi|fl|bf|f|att)_[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$/u;
 
+// CR-0064: WhatsApp addresses are record ids too. A leaf that is exactly a jid (a Draft card's `waJid`), or exactly a
+// wa_messages id (0001 `'wa_' + chat_jid + ':' + key.id`, a card's `sentMessageId`), passes unchanged. A phone number of 13
+// or more digits, or the hex of waSendKeyId's key, can pass P12's Luhn check; masked, the send went to "•••• 5678@…" and
+// the late ack and delivery proof could no longer find the card. Inside a longer string they get no exemption.
+const WA_JID = String.raw`\d{5,30}(?:-\d{1,20})?@(?:s\.whatsapp\.net|g\.us|lid)`;
+const WA_ID = new RegExp(`^(?:${WA_JID}|wa_${WA_JID}:[0-9A-Za-z]{1,64})$`, 'u');
+
 /** Every string leaf of a JSON value through {@link writeRedacted} (keys stay); whole foo ids pass unchanged. */
 export function writeRedactedJson<T>(value: T): T {
   const walk = (v: unknown): unknown => {
-    if (typeof v === 'string') return FOO_ID.test(v) ? v : writeRedacted(v);
+    if (typeof v === 'string') return FOO_ID.test(v) || WA_ID.test(v) ? v : writeRedacted(v);
     if (Array.isArray(v)) return v.map(walk);
     if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]));
     return v;

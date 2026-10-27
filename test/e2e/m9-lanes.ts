@@ -102,7 +102,7 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
             .filter((l) => /"evt":"(browser|signin)\./.test(l))
         : [];
       throw new Error(
-        `never: ${what} (fake AI turns ${seen.join()}; sites on [::1]: ${sites.ipv6}, ports skipped: ${sites.v6Collisions})${[...observed, ...engine].map((o) => `\n  ${o}`).join('')}`,
+        `never: ${what} (fake AI turns ${seen.join()}; sites on [::1]: ${sites.ipv6}, ports skipped: ${sites.v6Collisions}; requests: ${sites.requests.map((r) => `${r.ms}ms ${r.host} ${r.family} ${r.path}`).join(', ') || 'none'})${[...observed, ...engine].map((o) => `\n  ${o}`).join('')}`,
       );
     },
     async person(host) {

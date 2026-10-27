@@ -16,6 +16,9 @@ export interface LaneSites {
    * because something else already held [::1] on them. */
   ipv6: boolean;
   v6Collisions: number;
+  /** Every request the sites got, in order: when (ms since the sites started), the Host header and the loopback it came in
+   * on, so a page that never arrived says whether the browser asked at all. */
+  requests: { ms: number; host: string; family: string; path: string }[];
   signin(path?: string): string;
   captcha(path?: string): string;
   close(): Promise<void>;
@@ -33,8 +36,11 @@ function mount<T extends Toggles, D>(site: Site<T, D>, counts: Record<string, nu
 export async function serveLaneSites(): Promise<LaneSites> {
   const counts: Record<string, number> = {};
   const sites = { signin: mount(signinSite, counts), captcha: mount(captchaSite, counts) };
+  const started = Date.now();
+  const requests: LaneSites['requests'] = [];
   const handler = (req: IncomingMessage, res: ServerResponse) => {
     const url = new URL(req.url ?? '/', 'http://127.0.0.1');
+    requests.push({ ms: Date.now() - started, host: req.headers.host ?? '', family: req.socket.remoteFamily ?? '', path: url.pathname });
     const site = (req.headers.host ?? '').startsWith('localhost') ? sites.captcha : sites.signin;
     let body = '';
     req.on('data', (c: Buffer) => (body += c.toString('utf8')));
@@ -89,6 +95,7 @@ export async function serveLaneSites(): Promise<LaneSites> {
     port,
     ipv6,
     v6Collisions,
+    requests,
     toggles: { signin: sites.signin.toggles, captcha: sites.captcha.toggles },
     counts,
     signin: (p = '/login') => `http://127.0.0.1:${port}${p}`,
