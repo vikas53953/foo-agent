@@ -132,6 +132,32 @@
       "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash"
     },
     {
+      "do": "check",
+      "tid": "chatlist-filters",
+      "count": 0,
+      "feature": "refusals",
+      "note": "Vikas 26 Oct: batch 1 has no jobs, so no job filter chips"
+    },
+    {
+      "do": "check",
+      "tid": "sidebar-new-helper",
+      "count": 0,
+      "feature": "refusals",
+      "note": "batch 1 has no helpers"
+    },
+    {
+      "do": "send",
+      "text": "maine kal cab book karne bola tha, ho gaya kya?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "cab-honesty",
+      "feature": "refusals",
+      "expect": "Vikas 26 Oct: honest that foo cannot book cabs or do tasks yet and booked nothing; never \"I have no record\", never a fake booking"
+    },
+    {
       "do": "dump",
       "name": "thread"
     }
