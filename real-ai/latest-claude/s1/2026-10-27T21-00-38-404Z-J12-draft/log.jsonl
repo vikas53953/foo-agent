@@ -1,0 +1,9 @@
+{"t":"2026-10-27T21:00:38.405Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T21:00:43.778Z","step":"launch","ok":true}
+{"t":"2026-10-27T21:00:43.890Z","i":0,"do":"send","sentAt":1793134843864,"sent":true,"before":0,"ok":true,"ms":109}
+{"t":"2026-10-27T21:00:51.946Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2016,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:00 PM","kit":[],"ms":8055}
+{"t":"2026-10-27T21:00:52.008Z","shot":"01-draft.png"}
+{"t":"2026-10-27T21:00:52.010Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T21:00:52.016Z","i":3,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-27T21:00:52.187Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T21:00:52.197Z","step":"aiTurns","turns":1}

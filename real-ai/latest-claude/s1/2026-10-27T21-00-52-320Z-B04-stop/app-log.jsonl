@@ -1,0 +1,4 @@
+{"t":1793134853106,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793134854333,"lvl":"info","mod":"engine","evt":"job.steers_restored"}
+{"t":1793134865682,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793134872207,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"ask"}

@@ -1,0 +1,14 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-56-28-139Z-J01-J02-first-run"}
+{"journey":"J17-memory","title":"Remember, view and forget","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-57-18-976Z-J17-memory"}
+{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","steps":9,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-57-48-157Z-B03-web-local"}
+{"journey":"J12-draft","title":"Draft an email (never sends)","steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-00-38-404Z-J12-draft"}
+{"journey":"B04-stop","title":"Start a job then stop it by typing stop","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-00-52-320Z-B04-stop"}
+{"journey":"J08-choice","title":"Question with choice chips","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-02-04-932Z-J08-choice"}
+{"journey":"J21-J22-settings-search","title":"Settings and search","steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-02-32-333Z-J21-J22-settings-search"}
+{"journey":"U02-reactions-thanks","title":"Reactions: foo thumbs-up on thanks, react and un-react","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-02-43-686Z-U02-reactions-thanks"}
+{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-03-18-361Z-U06-header-panel"}
+{"journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-04-14-099Z-U10-plan-change-stop"}
+{"journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","steps":23,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-05-01-388Z-U14-memory"}
+{"journey":"R-dark-hi","title":"Setting by chat, then hi: foo replies and does not change the setting again","steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-05-38-203Z-R-dark-hi"}
+{"journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-06-13-088Z-U21-window-dialogs"}
+{"journey":"U27-composer-no-dropped-letters","title":"Fast typing and a long paste reach foo letter for letter","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-06-34-592Z-U27-composer-no-dropped-letters"}

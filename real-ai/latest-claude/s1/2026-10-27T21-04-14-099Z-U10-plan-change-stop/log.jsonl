@@ -1,0 +1,25 @@
+{"t":"2026-10-27T21:04:14.099Z","journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","spec":"05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T21:04:19.329Z","step":"launch","ok":true}
+{"t":"2026-10-27T21:04:20.380Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-27T21:04:20.506Z","i":1,"do":"send","sentAt":1793135060474,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-27T21:04:32.646Z","i":2,"do":"waitReply","expect":"plan card","firstReplyMs":6095,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for weekend treks near Pune with difficulty\n3\nKeep 5 treks near Pune that fit easy to reach for a weekend, with\n4\nCompare difficulty and cost of the 5 treks\nAbout 3 minutes\nGo\nChange plan\n9:04 PM","kit":[],"ms":12140}
+{"t":"2026-10-27T21:04:32.708Z","shot":"01-plan.png"}
+{"t":"2026-10-27T21:04:32.787Z","i":3,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-27T21:04:33.588Z","i":4,"do":"wait","expect":"composer prompts for the change","ok":true,"ms":800}
+{"t":"2026-10-27T21:04:33.640Z","shot":"02-change.png"}
+{"t":"2026-10-27T21:04:33.711Z","i":5,"do":"send","sentAt":1793135073699,"sent":true,"before":0,"ok":true,"ms":71}
+{"t":"2026-10-27T21:04:46.840Z","i":6,"do":"waitReply","expect":"a changed plan, the old one marked changed","firstReplyMs":7090,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for easy weekend treks near Pune with\n3\nKeep 5 treks near Pune that fit easy difficulty only, easy to reach for\n4\nCompare difficulty and cost of the 5 easy treks\nAbout 3 minutes\nGo\nChange plan\n9:04 PM","kit":[],"ms":13128}
+{"t":"2026-10-27T21:04:46.894Z","shot":"03-plan-2.png"}
+{"t":"2026-10-27T21:04:46.973Z","i":7,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-27T21:04:54.975Z","i":8,"do":"wait","expect":"checklist running; Doing now shows the job; chat pill Working","ok":true,"ms":8002}
+{"t":"2026-10-27T21:04:55.035Z","shot":"04-running.png"}
+{"t":"2026-10-27T21:04:55.052Z","i":9,"do":"key","ok":true,"ms":17}
+{"t":"2026-10-27T21:04:55.853Z","i":10,"do":"wait","expect":"right panel Doing now row with Stop","ok":true,"ms":801}
+{"t":"2026-10-27T21:04:55.912Z","shot":"05-doing-now.png"}
+{"t":"2026-10-27T21:04:55.990Z","i":11,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-27T21:05:00.991Z","i":12,"do":"wait","expect":"job stopped ⛔, checklist says stopped, no further steps","ok":true,"ms":5001}
+{"t":"2026-10-27T21:05:01.053Z","shot":"06-stopped.png"}
+{"t":"2026-10-27T21:05:01.065Z","i":13,"do":"key","ok":true,"ms":11}
+{"t":"2026-10-27T21:05:01.076Z","i":14,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-27T21:05:01.254Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-27T21:05:01.265Z","step":"aiTurns","turns":4}
