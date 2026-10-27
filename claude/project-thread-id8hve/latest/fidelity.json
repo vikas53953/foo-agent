@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-8f8d497-40408740545",
+  "reportId": "M9-7532886-40419937380",
   "milestone": "M9",
-  "generatedAt": "2026-10-26T22:36:07.012Z",
-  "commit": "cd018efed8e519e2c250dd985f3dbdd0d8cfb3e2",
-  "head": "8f8d497048cdc05350dc85b1cdae10ffdf891a15",
+  "generatedAt": "2026-10-27T00:07:12.978Z",
+  "commit": "929107243cc5d75b37f6519e12e0bed88dea55d5",
+  "head": "75328864957ca59113c939df51ef8fcfeb815ed4",
   "ci": {
-    "runId": "40408740545",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40408740545"
+    "runId": "40419937380",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40419937380"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "08d3127ded51639f9698834d507194f8dd3ea3182c25f61f73e22f160168ef3e"
   },
   "runner": {
-    "recordedAt": "2026-10-26T22:10:15.342Z",
+    "recordedAt": "2026-10-26T23:39:10.853Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006278"
+      "runner": "GitHub Actions 1000006297"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -811,7 +811,7 @@
         "id": "SV-10",
         "ok": true,
         "expected": "height 46 (±0.5)",
-        "measured": "639.9999389648438×46"
+        "measured": "640×46"
       },
       {
         "id": "SV-11",
@@ -896,7 +896,7 @@
         "id": "SV-08",
         "ok": true,
         "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "10 bubbles within"
+        "measured": "15 bubbles within"
       },
       {
         "id": "SV-04",
@@ -967,7 +967,7 @@
         "skipped": 4
       },
       "e2e": {
-        "passed": 251,
+        "passed": 252,
         "failed": 0,
         "skipped": 0
       }
@@ -31974,6 +31974,56 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/withdraw.test.ts"
       },
       {
+        "id": "AT-059",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
+      },
+      {
+        "id": "AT-114a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
+      },
+      {
+        "id": "AT-114a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
+      },
+      {
+        "id": "AT-144",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
+      },
+      {
+        "id": "AT-144",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
+      },
+      {
+        "id": "AT-060",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/signin.test.ts"
+      },
+      {
+        "id": "AT-037",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-037",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-037",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-038",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
         "id": "AT-033",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
@@ -32407,56 +32457,6 @@
         "id": "AT-113",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
-      },
-      {
-        "id": "AT-059",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
-      },
-      {
-        "id": "AT-114a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
-      },
-      {
-        "id": "AT-114a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/proof.test.ts"
-      },
-      {
-        "id": "AT-144",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
-      },
-      {
-        "id": "AT-144",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/recipes.test.ts"
-      },
-      {
-        "id": "AT-060",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/signin.test.ts"
-      },
-      {
-        "id": "AT-037",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-037",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-037",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
-      },
-      {
-        "id": "AT-038",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
       },
       {
         "id": "AT-008",
@@ -35284,7 +35284,7 @@
         "r2": "fail (BP-ANAT-L 0/20 px)",
         "r3": "pass (BP-ANAT-L ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.067892578125,
+        "r5": 0.067875,
         "ref": true,
         "app": true,
         "diff": true
@@ -35596,7 +35596,7 @@
         "r2": "fail (BP-APP-M 0/18 px)",
         "r3": "pass (BP-APP-M ΔE 0)",
         "r4": "skipped: no hl element",
-        "r5": 0.05488782051282051,
+        "r5": 0.0548486273690078,
         "ref": true,
         "app": true,
         "diff": true
@@ -35726,7 +35726,7 @@
         "r2": "fail (BP-CARD-05 0/88.671875 px)",
         "r3": "review (BP-CARD-05 ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.14783767988896193,
+        "r5": 0.14962743808897655,
         "ref": true,
         "app": true,
         "diff": true
@@ -36090,7 +36090,7 @@
         "r2": "fail (BP-SCR-13 0/640.671875 px)",
         "r3": "review (BP-SCR-13 ΔE 3.65)",
         "r4": "skipped: no hl element",
-        "r5": 0.24822985352037882,
+        "r5": 0.24820772668938354,
         "ref": true,
         "app": true,
         "diff": true
@@ -36324,7 +36324,7 @@
         "r2": "fail (hl 78/17.5 px)",
         "r3": "fail (hl ΔE 37.15)",
         "r4": "fail (85.76 %)",
-        "r5": 0.07441015625,
+        "r5": 0.0748662109375,
         "ref": true,
         "app": true,
         "diff": true
@@ -36402,7 +36402,7 @@
         "r2": "fail (hl 26/23.21875 px)",
         "r3": "fail (hl ΔE 35.58)",
         "r4": "fail (84.42 %)",
-        "r5": 0.0772919921875,
+        "r5": 0.0768359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -36428,7 +36428,7 @@
         "r2": "fail (hl 114/85.859375 px)",
         "r3": "fail (hl ΔE 100)",
         "r4": "fail (43.06 %)",
-        "r5": 0.0669765625,
+        "r5": 0.0669853515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -36506,7 +36506,7 @@
         "r2": "fail (hl 74/68 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.43 %)",
-        "r5": 0.084005859375,
+        "r5": 0.0840048828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -36558,7 +36558,7 @@
         "r2": "fail (hl 526/92 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.48 %)",
-        "r5": 0.066029296875,
+        "r5": 0.0660283203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -36623,7 +36623,7 @@
         "r2": "fail (hl 58/18 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.64 %)",
-        "r5": 0.1191552734375,
+        "r5": 0.1191533203125,
         "ref": true,
         "app": true,
         "diff": true
@@ -36805,7 +36805,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (20.42 %)",
-        "r5": 0.1038251953125,
+        "r5": 0.10384375,
         "ref": true,
         "app": true,
         "diff": true
@@ -36818,7 +36818,7 @@
         "r2": "fail (hl 40/19.75 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (23.28 %)",
-        "r5": 0.089021484375,
+        "r5": 0.0890341796875,
         "ref": true,
         "app": true,
         "diff": true
@@ -36831,7 +36831,7 @@
         "r2": "fail (hl 50/4 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.89 %)",
-        "r5": 0.09183203125,
+        "r5": 0.091828125,
         "ref": true,
         "app": true,
         "diff": true
@@ -36870,7 +36870,7 @@
         "r2": "fail (hl 268/156 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.29 %)",
-        "r5": 0.0859892578125,
+        "r5": 0.085998046875,
         "ref": true,
         "app": true,
         "diff": true
@@ -36883,7 +36883,7 @@
         "r2": "fail (hl 495/960 px)",
         "r3": "fail (hl ΔE 85.3)",
         "r4": "fail (38.34 %)",
-        "r5": 0.3842236328125,
+        "r5": 0.3842978515625,
         "ref": true,
         "app": true,
         "diff": true
@@ -36909,7 +36909,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.89 %)",
-        "r5": 0.1130283203125,
+        "r5": 0.1130439453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -36922,7 +36922,7 @@
         "r2": "fail (hl 140/46 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (3.45 %)",
-        "r5": 0.0952685546875,
+        "r5": 0.095291015625,
         "ref": true,
         "app": true,
         "diff": true
@@ -36974,7 +36974,7 @@
         "r2": "fail (hl 194/360.625 px)",
         "r3": "fail (hl ΔE 27.05)",
         "r4": "fail (87.54 %)",
-        "r5": 0.06920703125,
+        "r5": 0.0692060546875,
         "ref": true,
         "app": true,
         "diff": true
@@ -37078,7 +37078,7 @@
         "r2": "fail (hl 18/18.59375 px)",
         "r3": "fail (hl ΔE 35.58)",
         "r4": "fail (87.96 %)",
-        "r5": 0.0658427734375,
+        "r5": 0.065833984375,
         "ref": true,
         "app": true,
         "diff": true
@@ -37091,7 +37091,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.60 %)",
-        "r5": 0.1038251953125,
+        "r5": 0.1013681640625,
         "ref": true,
         "app": true,
         "diff": true
@@ -37104,7 +37104,7 @@
         "r2": "fail (hl 30/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (7.67 %)",
-        "r5": 0.088421875,
+        "r5": 0.0884130859375,
         "ref": true,
         "app": true,
         "diff": true
@@ -37182,7 +37182,7 @@
         "r2": "fail (hl 236/110 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (6.06 %)",
-        "r5": 0.07366796875,
+        "r5": 0.0736689453125,
         "ref": true,
         "app": true,
         "diff": true
@@ -37208,7 +37208,7 @@
         "r2": "fail (hl 186/219.640625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.70 %)",
-        "r5": 0.08280078125,
+        "r5": 0.0828017578125,
         "ref": true,
         "app": true,
         "diff": true
@@ -37286,7 +37286,7 @@
         "r2": "fail (hl 42/155.5625 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (9.04 %)",
-        "r5": 0.0796240234375,
+        "r5": 0.0796220703125,
         "ref": true,
         "app": true,
         "diff": true
@@ -37468,7 +37468,7 @@
         "r2": "fail (hl 272/22.9375 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (24.70 %)",
-        "r5": 0.10468359375,
+        "r5": 0.1046826171875,
         "ref": true,
         "app": true,
         "diff": true
@@ -37871,7 +37871,7 @@
         "r2": "fail (hl 246/56 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "review (8.14 %)",
-        "r5": 0.1195966796875,
+        "r5": 0.11959375,
         "ref": true,
         "app": true,
         "diff": true
@@ -38027,7 +38027,7 @@
         "r2": "fail (hl 186/12 px)",
         "r3": "review (hl ΔE 4.78)",
         "r4": "fail (18.53 %)",
-        "r5": 0.0369482421875,
+        "r5": 0.0369443359375,
         "ref": true,
         "app": true,
         "diff": true
@@ -38040,7 +38040,7 @@
         "r2": "fail (hl 186/12 px)",
         "r3": "pass (hl ΔE 0)",
         "r4": "fail (18.15 %)",
-        "r5": 0.027744140625,
+        "r5": 0.0277451171875,
         "ref": true,
         "app": true,
         "diff": true
