@@ -157,6 +157,15 @@ export const DEFECTS: Defect[] = [
     note: 'found on main 5933f08 while checking the new auto-height composer',
   },
   {
+    id: 'F28',
+    sev: 'S3',
+    kind: 'functional',
+    title: 'After a multi-line paste, a pasted key is masked inside earlier words ("thr••••ee")',
+    where: 'Paste text with line breaks, then paste an API key',
+    test: 'QA-X-F28',
+    note: 'raised by the builder’s reviewer on PR #165 (27 Oct); older than that change',
+  },
+  {
     id: 'F01',
     sev: 'S3',
     kind: 'visual',

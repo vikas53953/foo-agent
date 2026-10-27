@@ -240,3 +240,16 @@ test('QA-X-F27 · a plain chat message never shows 👀 while foo is slow to ans
   expect(seen + (await eyesOnMine()), 'seconds with 👀 on the message, while waiting or after the answer').toBe(0);
   await expect(w.page.getByTestId(TID.bubbleMe).last().getByTestId(TID.bubbleTick)).toBeVisible();
 });
+
+test('QA-X-F28 · after a multi-line paste, a pasted key is masked where it was pasted, not inside earlier words (04 §22.4)', async () => {
+  w = await open([], { firstRun: true });
+  await finishSetup(w.page);
+  const field = w.page.getByTestId(TID.composerField);
+  await w.app.evaluate(({ clipboard }) => clipboard.writeText('one\ntwo\n\nthree '));
+  await field.click();
+  await w.page.keyboard.press('Control+V');
+  await w.app.evaluate(({ clipboard }) => clipboard.writeText('sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJ'));
+  await w.page.keyboard.press('Control+V');
+  // The mask follows "three ", never splits it (main 20c8ba0 showed "thr••••ee").
+  await expect.poll(() => field.innerText(), { message: 'mask lands after "three ", not inside it' }).toMatch(/three\s*•/);
+});
