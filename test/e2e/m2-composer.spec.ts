@@ -218,6 +218,41 @@ test('the field grows a line at a time as text is added, and shrinks back when l
   await app.close();
 });
 
+// The wrap key used to read the field's width while its old height showed a scroll bar (10 px narrower), so it and the key
+// after took the `height: auto` measure: two forced layouts of the window in the key's own input handler (PERF-02 trace,
+// 27 Oct). Each key here is checked in a devtools trace: at most one layout inside its input event, the one its paint needs
+// anyway (the first key's, when the send button and placeholder change in the same commit).
+test("typing that wraps the field to a second line forces at most one layout inside each key's input handler (PERF-02)", async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  await field(page).focus();
+  const height = () => field(page).evaluate((el) => (el as HTMLElement).getBoundingClientRect().height);
+  const one = await height();
+  type TraceEvent = { name: string; ph: string; pid: number; tid: number; ts: number; dur?: number; args?: { data?: { type?: string } } };
+  const events: TraceEvent[] = [];
+  const cdp = await page.context().newCDPSession(page);
+  cdp.on('Tracing.dataCollected', (e) => events.push(...(e.value as unknown as TraceEvent[])));
+  await cdp.send('Tracing.start', { categories: 'devtools.timeline', transferMode: 'ReportEvents' });
+  let typed = 0;
+  for (; typed < 400 && (await height()) <= one; typed++) await page.keyboard.press('KeyA');
+  for (let i = 0; i < 3; i++) await page.keyboard.press('KeyA');
+  const ended = new Promise((r) => cdp.once('Tracing.tracingComplete', r));
+  await cdp.send('Tracing.end');
+  await ended;
+  expect(await height()).toBeGreaterThan(one * 1.5);
+  const inputs = events
+    .filter((e) => e.name === 'EventDispatch' && e.ph === 'X' && e.args?.data?.type === 'input')
+    .sort((a, b) => a.ts - b.ts);
+  expect(inputs).toHaveLength(typed + 3);
+  const forced = inputs.map(
+    (e) =>
+      events.filter((l) => l.name === 'Layout' && l.pid === e.pid && l.tid === e.tid && l.ts >= e.ts && l.ts < e.ts + (e.dur ?? 0)).length,
+  );
+  console.log(`layouts forced inside each key's input handler, the wrap key at ${typed}: ${forced.join(' ')}`);
+  expect(forced.flatMap((n, i) => (n > 1 ? [`key ${i}: ${n}`] : []))).toEqual([]);
+  await app.close();
+});
+
 test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', async () => {
   test.setTimeout(180_000);
   const { app, page } = await start('perf');

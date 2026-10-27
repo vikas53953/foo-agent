@@ -462,6 +462,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
   // grow, so its scroll height is read as it stands: the layout that read forces is the one the next paint needs anyway.
   // Setting `height: auto` first (to let it shrink) costs a second layout of the window on every key (PERF-02), so that
   // happens only when text went away or was replaced, the width changed, recording started or stopped, or on first measure.
+  // The width is the field's box (offsetWidth), not clientWidth: on the key that wraps, the old height shows a scroll bar for
+  // that one read, and clientWidth (10 px narrower) sent that key and the next through the `height: auto` measure.
   const measured = useRef<{ text: string; width: number; recording: typeof recording } | null>(null);
   useLayoutEffect(() => {
     const el = field.current;
@@ -469,7 +471,7 @@ export function Composer({ chat }: { chat: ChatRow }) {
     const before = el.style.height;
     const last = measured.current;
     const text = checkText(segs);
-    const width = el.clientWidth;
+    const width = el.offsetWidth;
     const grewOnly = before !== '' && last !== null && last.recording === recording && last.width === width && onlyAdded(last.text, text);
     measured.current = { text, width, recording };
     if (grewOnly && el.scrollHeight <= parseFloat(before)) return;
