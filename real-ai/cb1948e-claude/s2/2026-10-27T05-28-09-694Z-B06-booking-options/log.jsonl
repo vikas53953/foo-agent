@@ -1,0 +1,13 @@
+{"t":"2026-10-27T05:28:09.694Z","journey":"B06-booking-options","title":"Restaurant options without booking","spec":"AT-036, J9, AT-108, AT-310, AT-311","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T05:28:14.959Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:28:15.070Z","i":0,"do":"send","sentAt":1793078895039,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-27T05:28:34.794Z","i":1,"do":"waitReply","firstReplyMs":13638,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n5:28 AM","kit":[],"ms":19724}
+{"t":"2026-10-27T05:28:34.865Z","shot":"01-italian.png"}
+{"t":"2026-10-27T05:28:34.867Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-27T05:31:34.867Z","i":3,"do":"wait","expect":"options shown; no booking Approval card until I say book","ok":true,"ms":180000}
+{"t":"2026-10-27T05:31:34.932Z","shot":"02-italian-later.png"}
+{"t":"2026-10-27T05:31:34.934Z","i":4,"do":"check","found":0,"ok":true,"ms":2}
+{"t":"2026-10-27T05:31:34.936Z","i":5,"do":"check","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T05:31:34.951Z","i":6,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-27T05:31:35.125Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-10-27T05:31:35.136Z","step":"aiTurns","turns":10}

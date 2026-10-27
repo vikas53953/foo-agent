@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n5:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:23 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n5:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:23 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n5:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:23 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n5:23 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:23 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n5:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying becomes as simple as sending a message. You scan a code or enter a phone number, type your PIN, and the money moves straight from your bank account in seconds, any hour of the day, even on holidays.\n\nThree main reasons:\n\nFree and instant: Most everyday payments cost nothing, and the money reaches the other person right away. Small shops don't need to pay for card machines or wait for settlements.\nWorks almost everywhere: From a chai stall to a big mall, one QR code is enough. A shopkeeper only needs a phone, so even the smallest sellers can take digital payments.\nSimple and flexible: One UPI app can link to almost any bank account, and you can switch apps without changing your bank. There are no wallet top-ups and no card details to share.\n\nHabit does the rest. Once your friends, family and the local vegetable seller all use it, cash starts to feel slow and awkward. Splitting bills, paying rent, sending money home and settling small dues are now a few taps. Every payment also needs your PIN, which adds a layer of safety that many people trust.\n\n5:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n5:24 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:25 AM\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nPicking the best phones under ₹20,000\nStill working, this one takes a while\nCompare price, battery, camera, screen and speed\nWatch live\nStop\n2 min\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  }
+]

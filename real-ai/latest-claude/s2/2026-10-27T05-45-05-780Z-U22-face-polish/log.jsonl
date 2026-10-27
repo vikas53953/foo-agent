@@ -1,0 +1,21 @@
+{"t":"2026-10-27T05:45:05.781Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T05:45:11.112Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:45:19.193Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":0,"ms":8078}
+{"t":"2026-10-27T05:45:20.232Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1039}
+{"t":"2026-10-27T05:45:20.350Z","i":1,"do":"send","sentAt":1793079920314,"sent":true,"before":0,"ok":true,"ms":118}
+{"t":"2026-10-27T05:45:21.850Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1500}
+{"t":"2026-10-27T05:45:21.899Z","shot":"01-thinking.png"}
+{"t":"2026-10-27T05:45:30.953Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":1511,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's one for the rains:\n\nGrey clouds roll in from the Arabian Sea,\nMarine Drive waves leap high and free.\nChai steams up as the streets run wet,\nMumbai's monsoon, you can't forget. 🌧️\n\n5:45 AM","kit":[],"ms":9054}
+{"t":"2026-10-27T05:45:31.010Z","shot":"02-poem.png"}
+{"t":"2026-10-27T05:45:31.081Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-27T05:45:31.124Z","i":5,"do":"key","ok":true,"ms":42}
+{"t":"2026-10-27T05:45:31.207Z","i":6,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-27T05:45:31.277Z","i":7,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-27T05:45:31.879Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":602}
+{"t":"2026-10-27T05:45:31.936Z","shot":"04-face-motion.png"}
+{"t":"2026-10-27T05:45:31.975Z","i":9,"do":"key","ok":true,"ms":38}
+{"t":"2026-10-27T05:45:55.026Z","shot":"05-error-step10.png"}
+{"t":"2026-10-27T05:45:55.026Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23050}
+{"t":"2026-10-27T05:45:55.038Z","i":11,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-27T05:45:55.159Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-27T05:45:55.170Z","step":"aiTurns","turns":2}

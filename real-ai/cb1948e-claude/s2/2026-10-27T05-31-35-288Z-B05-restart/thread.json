@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nKept 3 phones under ₹20,000 that fit best value for money\nCompared price, battery, camera, screen and speed\nStopped by you\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n5:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3-day Jaipur plan for your parents, with short walks, long breaks and a cab for the whole trip.\n\nDay 1, Old city: Late breakfast, then City Palace and Jantar Mantar. Stop at Hawa Mahal for photos, then rest at the hotel. In the evening, a gentle stroll and dinner around Bapu Bazaar.\nDay 2, Forts: Go early to Amber Fort, before the crowds and the heat. Stop at Jal Mahal for photos on the way back and have lunch and a rest. Late afternoon, drive up to Nahargarh Fort for sunset. A cab goes all the way up, so there's no climbing.\nDay 3, Easy day: Visit Albert Hall Museum and shop for block-print fabrics, jewellery and blue pottery. Leave time for a proper Rajasthani thali before heading home.\n\nPick a hotel near the old city, with a lift if possible, so the walking stays short. October to March is the most comfortable time to go.\n\nWhen are they planning to travel?\n\n5:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n5:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n5:28 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n5:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n5:31 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n5:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum in Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays, so today (Tue 27 Oct, 10:00 AM to 6:00 PM) it's open.\n\nEntry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an ID card.\n\nSource: the museum's own Plan Your Visit page. It lists the address as Janpath, New Delhi - 110011.\n\n5:32 AM"
+  }
+]

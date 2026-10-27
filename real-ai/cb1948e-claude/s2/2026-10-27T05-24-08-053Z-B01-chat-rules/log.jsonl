@@ -1,0 +1,14 @@
+{"t":"2026-10-27T05:24:08.054Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T05:24:13.248Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:24:13.347Z","i":0,"do":"send","sentAt":1793078653318,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-27T05:24:33.358Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20010}
+{"t":"2026-10-27T05:24:33.410Z","shot":"01-thanks.png"}
+{"t":"2026-10-27T05:24:33.411Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":1}
+{"t":"2026-10-27T05:24:33.478Z","i":3,"do":"send","sentAt":1793078673467,"sent":true,"before":0,"ok":true,"ms":67}
+{"t":"2026-10-27T05:24:51.125Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":9064,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because paying becomes as simple as sending a message. You scan a code or enter a phone number, type your PIN, and the money moves straight from your bank account in seconds, any hour of the day, even on holidays.\n\nThree main reasons:\n\nFree and instant: Most everyday payments cost nothing, and the money reaches the other person right away. Small shops don't need to pay for card machines or wait for settlements.\nWorks almost everywhere: From a chai stall to a big mall, one QR code is enough. A shopkeeper only needs a phone, so even the smallest sellers can take digital payments.\nSimple and flexible: One UPI app can link to almost any bank account, and you can switch apps without changing your bank. There are no wallet top-ups and no card details to share.\n\nHabit does the rest. Once your friends, family and the local vegetable seller all use it, cash starts to feel slow and awkward. Splitting bills, paying rent, sending money home and settling small dues are now a few taps. Every payment also needs your PIN, which adds a layer of safety that many people trust.\n\n5:24 AM","kit":[],"ms":17646}
+{"t":"2026-10-27T05:24:51.182Z","shot":"02-long.png"}
+{"t":"2026-10-27T05:24:51.184Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T05:24:51.186Z","i":6,"do":"eval","value":0,"ok":true,"ms":2}
+{"t":"2026-10-27T05:24:51.192Z","i":7,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-27T05:24:51.283Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T05:24:51.293Z","step":"aiTurns","turns":2}

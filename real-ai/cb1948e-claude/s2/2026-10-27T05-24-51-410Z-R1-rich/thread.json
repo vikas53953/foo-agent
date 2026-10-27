@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:23 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n5:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying becomes as simple as sending a message. You scan a code or enter a phone number, type your PIN, and the money moves straight from your bank account in seconds, any hour of the day, even on holidays.\n\nThree main reasons:\n\nFree and instant: Most everyday payments cost nothing, and the money reaches the other person right away. Small shops don't need to pay for card machines or wait for settlements.\nWorks almost everywhere: From a chai stall to a big mall, one QR code is enough. A shopkeeper only needs a phone, so even the smallest sellers can take digital payments.\nSimple and flexible: One UPI app can link to almost any bank account, and you can switch apps without changing your bank. There are no wallet top-ups and no card details to share.\n\nHabit does the rest. Once your friends, family and the local vegetable seller all use it, cash starts to feel slow and awkward. Splitting bills, paying rent, sending money home and settling small dues are now a few taps. Every payment also needs your PIN, which adds a layer of safety that many people trust.\n\n5:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n5:24 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:25 AM\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nPicking the best phones under ₹20,000\nStill working, this one takes a while\nCompare price, battery, camera, screen and speed\nWatch live\nStop\n2 min\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n5:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3-day Jaipur plan for your parents, with short walks, long breaks and a cab for the whole trip.\n\nDay 1, Old city: Late breakfast, then City Palace and Jantar Mantar. Stop at Hawa Mahal for photos, then rest at the hotel. In the evening, a gentle stroll and dinner around Bapu Bazaar.\nDay 2, Forts: Go early to Amber Fort, before the crowds and the heat. Stop at Jal Mahal for photos on the way back and have lunch and a rest. Late afternoon, drive up to Nahargarh Fort for sunset. A cab goes all the way up, so there's no climbing.\nDay 3, Easy day: Visit Albert Hall Museum and shop for block-print fabrics, jewellery and blue pottery. Leave time for a proper Rajasthani thali before heading home.\n\nPick a hotel near the old city, with a lift if possible, so the walking stays short. October to March is the most comfortable time to go.\n\nWhen are they planning to travel?\n\n5:27 AM"
+  }
+]
