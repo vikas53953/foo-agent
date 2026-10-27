@@ -3,7 +3,7 @@
 - **Asked by:** Vikas, 27 Oct 18:26Z, on the batch-1 app from main 4d7e1f9: "still showing on eery message 👀". Under his
   26 Oct 06:00Z ask ("fix all the bugs … one baseline of the full app").
 - **Spec sections:** 04 §4.1 rule 4, §4.2 `seen`; DECISIONS X-216 item 4 (CR-0059 row 4).
-- **Status:** Approved on Vikas's behalf under his 26 Oct 06:00Z "fix all the bugs" (independent review + CI green), DECISIONS X-223.
+- **Status:** Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-223 (independent review, every check green; no spec clash).
 
 ## (a) What was wrong
 
@@ -20,7 +20,7 @@ thread, fake AI slowed to 3 s) is red on 4d7e1f9; the CR-0059 sweep (AT-449) now
 
 ## (c) Evidence (local, Electron under Xvfb)
 
-| Test                                                           | main 4d7e1f9 | this change |
-| -------------------------------------------------------------- | ------------ | ----------- |
-| QA-X-F27 (plain message, AI slow 3 s: no 👀 during or after)   | red          | green       |
-| AT-449 QA-B1-080 step 2 (4 s reply: no 👀; quick reply: no 👀) | red          | green       |
+| Test                                                             | main 4d7e1f9 | this change |
+| ---------------------------------------------------------------- | ------------ | ----------- |
+| QA-X-F27 (QA branch `claude/project-thread-gzzs6c`, AI slow 3 s) | red          | green       |
+| AT-449 QA-B1-080 step 2 (4 s reply: no 👀; quick reply: no 👀)   | red          | green       |

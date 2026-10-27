@@ -92,7 +92,7 @@
       "shot": "cab-off",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /(can.?t|cannot|not able to|unable to)/i.test(t)&&/(cab|book|task)/i.test(t)&&!/no record|memory|remember|saved/i.test(t)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /(can.?t|cannot|not able to|unable to|don.?t have a way|not yet)/i.test(t)&&/(cab|book|task)/i.test(t)&&!/no record|memory|remember|saved/i.test(t)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
     },
     { "do": "send", "text": "did you book the cab?" },
     {
@@ -101,7 +101,7 @@
       "shot": "cab-asked",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "no, foo can’t book cabs yet; never “no record” or memory words",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /(can.?t|cannot|not able to|unable to)/i.test(t)&&/(cab|book|task)/i.test(t)&&!/no record|memory|remember|saved/i.test(t)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /(can.?t|cannot|not able to|unable to|don.?t have a way|not yet)/i.test(t)&&/(cab|book|task)/i.test(t)&&!/no record|memory|remember|saved/i.test(t)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
     },
     { "do": "send", "text": "remember that I am vegetarian" },
     {

@@ -170,9 +170,11 @@ test('UX-08 · Just chatting, in your language: steps 1 to 5 live with fake-AI r
       .first();
     await expect(fooRow.getByTestId(TID.chatlistRowPreview)).toContainText(t('chatlist.row.preview.typing'));
     await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'stop');
-    // 👀 on the question (04 §4.2), shown once the badge's 700 ms debounce has passed; the walkthrough draws it.
+    // CR-0066 (X-223): no 👀 on the question while the Thinking row is up, also past CR-0059's 2 s hold (real time).
     const ask = last(TID.bubbleMe, holiday).locator('xpath=ancestor::*[@data-message-id][1]');
-    await expect(ask.getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'seen');
+    await page.waitForTimeout(3_000);
+    await expect(thinking).toBeVisible();
+    await expect(ask.locator(`${byTid(TID.bubbleBadge)}[data-state="seen"]`)).toHaveCount(0);
     await log.evaluate((el) => (el.scrollTop = el.scrollHeight));
     await rest(page);
     for (const theme of THEMES) {
