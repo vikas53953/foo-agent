@@ -23,7 +23,15 @@ window.__qa = {
     return true;
   },
   name(el) {
-    return (el.getAttribute('aria-label') || el.getAttribute('title') || el.innerText || el.value || el.getAttribute('placeholder') || '')
+    return (
+      el.getAttribute('aria-label') ||
+      el.getAttribute('title') ||
+      el.innerText ||
+      el.textContent ||
+      el.value ||
+      el.getAttribute('placeholder') ||
+      ''
+    )
       .trim()
       .replace(/\s+/g, ' ')
       .slice(0, 60);
@@ -55,7 +63,7 @@ window.__qa = {
         hasAccessibleName: !!(
           el.getAttribute('aria-label') ||
           el.getAttribute('aria-labelledby') ||
-          el.innerText.trim() ||
+          (el.innerText ?? el.textContent ?? '').trim() ||
           el.getAttribute('title')
         ),
       });
@@ -144,7 +152,12 @@ window.__qa = {
         cs.webkitLineClamp !== undefined &&
         Number(cs.webkitLineClamp) > 0 === false;
       if (clipsX || clipsY)
-        issues.push({ kind: 'text-clipped', el: this.path(el), text: el.innerText.slice(0, 50), axis: clipsX ? 'x' : 'y' });
+        issues.push({
+          kind: 'text-clipped',
+          el: this.path(el),
+          text: (el.innerText ?? el.textContent ?? '').slice(0, 50),
+          axis: clipsX ? 'x' : 'y',
+        });
     }
     // 4) page horizontal overflow
     if (document.documentElement.scrollWidth > innerWidth + 1)
@@ -269,7 +282,7 @@ window.__qa = {
       .map((e) => ({
         role: e.getAttribute('role'),
         tid: e.getAttribute('data-testid'),
-        text: e.innerText.slice(0, 120),
+        text: (e.innerText ?? e.textContent ?? '').slice(0, 120),
         box: (({ x, y, width, height }) => [x, y, width, height].map(Math.round))(e.getBoundingClientRect()),
       }));
   },

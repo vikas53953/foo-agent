@@ -43,7 +43,8 @@ async function signature(page: Page) {
   return page.evaluate(() => ({
     overlays: window.__qa
       .overlays()
-      .filter((o) => o.role !== 'listbox')
+      // A tooltip is the hover's doing, not the click's; it never counts as an effect.
+      .filter((o) => o.role !== 'listbox' && o.role !== 'tooltip')
       .map((o) => `${o.role}:${o.text.slice(0, 40)}`),
     screens: [...document.querySelectorAll('[data-testid^="screen-"]')].map((e) => (e as HTMLElement).dataset.testid ?? ''),
     emptyScreens: [...document.querySelectorAll('[data-testid^="screen-"][data-page]')]
@@ -51,8 +52,11 @@ async function signature(page: Page) {
       .map((e) => (e as HTMLElement).dataset.testid ?? ''),
     focus: (document.activeElement as HTMLElement | null)?.dataset?.testid ?? document.activeElement?.tagName ?? '',
     theme: document.documentElement.dataset.theme ?? '',
-    textLen: document.body.innerText.length,
-    text: document.body.innerText,
+    ...(() => {
+      const tips = [...document.querySelectorAll('[role=tooltip]')].map((t) => (t as HTMLElement).innerText).filter(Boolean);
+      const text = tips.reduce((acc, t) => acc.replace(t, ''), document.body.innerText);
+      return { textLen: text.length, text };
+    })(),
     pressed: [...document.querySelectorAll('[aria-pressed="true"],[aria-checked="true"],[aria-selected="true"]')]
       .map((e) => `${(e as HTMLElement).dataset.testid ?? ''}:${e.getAttribute('aria-label') ?? (e as HTMLElement).innerText.slice(0, 20)}`)
       .join('|'),
@@ -146,13 +150,15 @@ async function crawl(w: World, place: string, goto: () => Promise<void>, filter:
     } else {
       loc = page.getByRole(c.role as Parameters<Page['getByRole']>[0], { name: c.name, exact: true }).first();
     }
-    const before = await signature(page);
+    // The baseline is taken after the hover, so whatever the hover shows (a tooltip, a toolbar) is not credited to the click.
+    let before = await signature(page);
     try {
       await loc.hover({ timeout: 2_000 });
       await page.waitForTimeout(700);
       e.tooltip = await page.evaluate(() =>
         [...document.querySelectorAll('[role=tooltip]')].filter((t) => window.__qa.visible(t)).map((t) => (t as HTMLElement).innerText),
       );
+      before = await signature(page);
       await loc.click({ timeout: 2_000 });
     } catch (err) {
       e.effect.push(`could not click: ${(err as Error).message.split('\n')[0]}`);

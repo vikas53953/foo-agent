@@ -57,7 +57,8 @@ try {
   process.exit(2);
 }
 const result = (prefix: string) => {
-  const s = specs.find((x) => x.title.startsWith(prefix));
+  // Exact id: "QA-X-F1 ·" must not match "QA-X-F14 ·".
+  const s = specs.find((x) => x.title === prefix || x.title.startsWith(`${prefix} `));
   const r = s?.tests[0]?.results.at(-1);
   if (!r) return { status: 'NOT TESTED', error: '' };
   return {
@@ -112,7 +113,7 @@ table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;pad
 .b{font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px}.ok{background:#dcf5e3;color:#0b6b2c}.bad{background:#fde2e2;color:#a40e0e}.nt{background:#eee;color:#555}
 .k{display:inline-block;margin-right:16px;padding:10px 14px;border:1px solid #ddd;border-radius:8px}.k b{font-size:20px;display:block}img{max-width:220px;border:1px solid #ddd}small{color:#666}</style>
 <h1>foo batch-1 · product QA on the running app</h1>
-<p>Commit <code>${sha}</code> · ${new Date().toISOString()} · ${process.platform} · fake AI (no real AI in this run) · crawl ${badge(crawl.status)}</p>
+<p>Commit <code>${sha}</code> · ${new Date().toISOString()} · ${process.platform} · fake AI (no real AI in this run) · crawl ${badge(crawl.status)} (${count('fail')} controls failed, ${count('not-tested')} not tested)</p>
 <div><span class="k"><b>${registry.length}</b>controls discovered</span><span class="k"><b>${count('pass')}</b>exercised, worked</span><span class="k"><b>${count('fail')}</b>exercised, failed</span><span class="k"><b>${count('not-tested')}</b>not tested</span><span class="k"><b>${open.length}/${defects.length}</b>defects open</span></div>
 <h2>Defects (QA-owned regression per defect; FIXED only when it passes on the real app)</h2>
 <table><tr><th>ID</th><th>Sev</th><th>Kind</th><th>What a user sees</th><th>Where</th><th>Status</th><th>Evidence</th></tr>
@@ -130,4 +131,5 @@ writeFileSync(join(OUT, 'defects.json'), JSON.stringify(defects, null, 2));
 console.log(
   `\nReport: ${join(OUT, 'report.html')}\nControls ${registry.length} (pass ${count('pass')}, fail ${count('fail')}, not tested ${count('not-tested')}). Defects open ${open.length}/${defects.length}.`,
 );
-process.exit(run.status === null || crawl.status === 'NOT TESTED' ? 2 : open.length ? 1 : 0);
+// The crawl must itself pass: a crash after a partial registry.json is never a clean run.
+process.exit(run.status === null || crawl.status !== 'PASS' ? 2 : open.length ? 1 : 0);
