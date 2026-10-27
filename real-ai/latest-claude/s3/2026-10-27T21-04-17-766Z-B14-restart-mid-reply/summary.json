@@ -1,0 +1,91 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-04-17-766Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793135062881,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3008
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4827
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 1022,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Turbo is a good one for a tortoise, because the joke never gets old. Here are a few more:\n\nPickle: small, green and a bit grumpy.\nMango: sweet and slow, like a summer afternoon.\nDadaji: for a tortoise that looks like it has seen everything.\nSprint: another one for the irony fans.\n9:04 PM",
+      "kit": [],
+      "ms": 9089
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n9:04 PM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793135079981,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2000
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4844
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 5563,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for the biggest news story in India today\nWatch live\nStop\nunder 1 min\n9:04 PM",
+      "kit": [],
+      "ms": 11639
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

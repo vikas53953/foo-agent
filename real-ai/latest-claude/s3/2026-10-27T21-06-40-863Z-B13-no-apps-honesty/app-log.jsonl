@@ -1,0 +1,8 @@
+{"t":1793135201550,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793135206031,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793135216227,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"catch_up"}
+{"t":1793135222912,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793135225441,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2742}
+{"t":1793135229434,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793135229456,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793135237182,"lvl":"info","mod":"engine","evt":"job.waiting","kind":"app_quit"}

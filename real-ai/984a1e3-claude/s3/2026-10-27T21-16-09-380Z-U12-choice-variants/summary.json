@@ -1,0 +1,129 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 4,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T21-16-09-380Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1035
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793135775718,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 150196
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": false,
+      "error": "locator.screenshot: Timeout 10000ms exceeded.",
+      "ms": 10061
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793135936121,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 150123
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793136086368,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 150158
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23046
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 600
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793136260352,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 150192
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

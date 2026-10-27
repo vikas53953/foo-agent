@@ -1,0 +1,18 @@
+{"t":"2026-10-27T21:04:17.766Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T21:04:22.801Z","step":"launch","ok":true}
+{"t":"2026-10-27T21:04:22.927Z","i":0,"do":"send","sentAt":1793135062881,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-27T21:04:25.935Z","i":1,"do":"wait","ok":true,"ms":3008}
+{"t":"2026-10-27T21:04:30.762Z","step":"launch","ok":true}
+{"t":"2026-10-27T21:04:30.762Z","i":2,"do":"relaunch","ok":true,"ms":4827}
+{"t":"2026-10-27T21:04:39.851Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":1022,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Turbo is a good one for a tortoise, because the joke never gets old. Here are a few more:\n\nPickle: small, green and a bit grumpy.\nMango: sweet and slow, like a summer afternoon.\nDadaji: for a tortoise that looks like it has seen everything.\nSprint: another one for the irony fans.\n9:04 PM","kit":[],"ms":9089}
+{"t":"2026-10-27T21:04:39.909Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-27T21:04:39.910Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n9:04 PM","eyes":false},"ok":true,"ms":1}
+{"t":"2026-10-27T21:04:40.027Z","i":5,"do":"send","sentAt":1793135079981,"sent":true,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-27T21:04:42.028Z","i":6,"do":"wait","ok":true,"ms":2000}
+{"t":"2026-10-27T21:04:46.872Z","step":"launch","ok":true}
+{"t":"2026-10-27T21:04:46.873Z","i":7,"do":"relaunch","ok":true,"ms":4844}
+{"t":"2026-10-27T21:04:58.512Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":5563,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for the biggest news story in India today\nWatch live\nStop\nunder 1 min\n9:04 PM","kit":[],"ms":11639}
+{"t":"2026-10-27T21:04:58.575Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-27T21:04:58.586Z","i":9,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-27T21:04:58.837Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-10-27T21:04:58.846Z","step":"aiTurns","turns":3}

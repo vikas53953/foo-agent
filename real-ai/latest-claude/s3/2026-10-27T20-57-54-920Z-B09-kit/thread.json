@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's economy grew 6.5% in FY 2024-25, after a 5.8% fall in FY 2020-21 and a sharp rebound since. Figures are rounded official estimates (real GDP, fiscal years) and may have been revised, so check the latest release if you need exact numbers.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n8:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n8:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Pixel 9 looks like the best value of the three: a 120Hz screen, the biggest battery and 7 years of updates, usually at a lower street price. I haven't checked live prices, so compare current offers before you buy. Specs are rounded.\n\niPhone 16\nScreen\n6.1\" OLED, 60Hz\nChip\nApple A18\nMain cameras\n48MP + 12MP\nBattery\nAbout 3,600 mAh\nUpdates\nLong, but Apple gives no fixed number\nBest pick\nPixel 9\nScreen\n6.3\" OLED, 120Hz\nChip\nGoogle Tensor G4\nMain cameras\n50MP + 48MP\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\n\nFastest screen, biggest battery and 7 years of updates, usually at the lowest price of the three.\n\nGalaxy S25\nScreen\n6.2\" AMOLED, 120Hz\nChip\nSnapdragon 8 Elite\nMain cameras\n50MP + 12MP + 10MP\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\nKeep\n8:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n8:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap to start it, and it will count down from 2:00.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n8:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n8:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fill in the three details below and I'll take it from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n8:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n8:59 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add each spend with an amount and category, and the total and category split update as you go. Entries may not be kept once you close this page.\n\nKeep\n8:59 PM"
+  }
+]
