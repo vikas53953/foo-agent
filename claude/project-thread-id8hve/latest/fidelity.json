@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-1cc7216-40584568677",
+  "reportId": "M9-dbe7cc8-40587062468",
   "milestone": "M9",
-  "generatedAt": "2026-10-27T21:29:14.745Z",
-  "commit": "d2efb0fe87deaf6a575fec22aa3be98ceed0c666",
-  "head": "1cc7216af18f56a05abddb0896f1085dd92943f7",
+  "generatedAt": "2026-10-27T21:48:57.552Z",
+  "commit": "8ca7c7fb36df085fdc7ecd7f76d2d9602b038dd4",
+  "head": "dbe7cc813ce77d903e322b92d87825a0a98b692d",
   "ci": {
-    "runId": "40584568677",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40584568677"
+    "runId": "40587062468",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40587062468"
   },
   "spec": {
     "version": "spec-v1.0",
-    "setSha256": "3e6a9b420bc62e8c40a9c551eb7f8dce19619c482689a392fc823522debd2e9c"
+    "setSha256": "7f6ebfbb41e488730ca3f72bd0b57f1e1c50120d9515ca8e324bc48a4703894d"
   },
   "runner": {
-    "recordedAt": "2026-10-27T21:20:57.268Z",
+    "recordedAt": "2026-10-27T21:40:22.730Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006520"
+      "runner": "GitHub Actions 1000006536"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -744,7 +744,7 @@
         "id": "SV-10",
         "ok": true,
         "expected": "height 46 (±0.5)",
-        "measured": "640×46"
+        "measured": "639.9999389648438×46"
       },
       {
         "id": "SV-11",
@@ -895,7 +895,7 @@
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 6979,
+        "passed": 6980,
         "failed": 0,
         "skipped": 4
       },
@@ -33967,6 +33967,11 @@
         "id": "CR-0066",
         "title": "👀 never shows while foo's Thinking row is up",
         "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-223 (independent review, every check green; no spec clash)."
+      },
+      {
+        "id": "CR-0067",
+        "title": "a switched-off feature's line replaces the words foo already showed",
+        "status": "Approved by Vikas's approve-on-my-behalf rule, DECISIONS X-224 (independent review, every check green; no spec clash)."
       }
     ],
     "notes": "Conservative picks and deferrals: implementation-notes.md (the ## M9 sections)."
