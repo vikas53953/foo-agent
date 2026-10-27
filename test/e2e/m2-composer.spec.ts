@@ -218,38 +218,79 @@ test('the field grows a line at a time as text is added, and shrinks back when l
   await app.close();
 });
 
-// The wrap key used to read the field's width while its old height showed a scroll bar (10 px narrower), so it and the key
-// after took the `height: auto` measure: two forced layouts of the window in the key's own input handler (PERF-02 trace,
-// 27 Oct). Each key here is checked in a devtools trace: at most one layout inside its input event, the one its paint needs
-// anyway (the first key's, when the send button and placeholder change in the same commit).
-test("typing that wraps the field to a second line forces at most one layout inside each key's input handler (PERF-02)", async () => {
+// A paste that adds lines is measured at the field's full width. Read while the old height still overflows, the text wraps
+// around a scroll bar (10 px narrower) and can need one line more than it will once the field has grown: 8aecc5e compared
+// offsetWidth to skip that measure and left the field a line too tall (review, 27 Oct).
+// The text is searched for in the page: words added until the two widths give different heights below the 6-line cap.
+test('a paste that adds lines sets the field to the height its text needs at full width (02 §F7.1)', async () => {
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
   await field(page).focus();
-  const height = () => field(page).evaluate((el) => (el as HTMLElement).getBoundingClientRect().height);
-  const one = await height();
-  type TraceEvent = { name: string; ph: string; pid: number; tid: number; ts: number; dur?: number; args?: { data?: { type?: string } } };
-  const events: TraceEvent[] = [];
-  const cdp = await page.context().newCDPSession(page);
-  cdp.on('Tracing.dataCollected', (e) => events.push(...(e.value as unknown as TraceEvent[])));
-  await cdp.send('Tracing.start', { categories: 'devtools.timeline', transferMode: 'ReportEvents' });
-  let typed = 0;
-  for (; typed < 400 && (await height()) <= one; typed++) await page.keyboard.press('KeyA');
-  for (let i = 0; i < 3; i++) await page.keyboard.press('KeyA');
-  const ended = new Promise((r) => cdp.once('Tracing.tracingComplete', r));
-  await cdp.send('Tracing.end');
-  await ended;
-  expect(await height()).toBeGreaterThan(one * 1.5);
-  const inputs = events
-    .filter((e) => e.name === 'EventDispatch' && e.ph === 'X' && e.args?.data?.type === 'input')
-    .sort((a, b) => a.ts - b.ts);
-  expect(inputs).toHaveLength(typed + 3);
-  const forced = inputs.map(
-    (e) =>
-      events.filter((l) => l.name === 'Layout' && l.pid === e.pid && l.tid === e.tid && l.ts >= e.ts && l.ts < e.ts + (e.dur ?? 0)).length,
-  );
-  console.log(`layouts forced inside each key's input handler, the wrap key at ${typed}: ${forced.join(' ')}`);
-  expect(forced.flatMap((n, i) => (n > 1 ? [`key ${i}: ${n}`] : []))).toEqual([]);
+  await page.evaluate(() => document.documentElement.setAttribute('data-motion', 'off'));
+  const text = await field(page).evaluate((el) => {
+    const cs = getComputedStyle(el);
+    const box = document.createElement('div');
+    for (const k of [
+      'font',
+      'letterSpacing',
+      'wordSpacing',
+      'whiteSpace',
+      'overflowWrap',
+      'wordBreak',
+      'paddingLeft',
+      'paddingRight',
+      'boxSizing',
+    ] as const)
+      box.style[k] = cs[k];
+    Object.assign(box.style, { position: 'absolute', visibility: 'hidden', top: '0', left: '0' });
+    document.body.append(box);
+    const bar = document.createElement('div');
+    Object.assign(bar.style, {
+      position: 'absolute',
+      visibility: 'hidden',
+      width: '100px',
+      height: '10px',
+      overflowY: 'scroll',
+      scrollbarWidth: 'thin',
+    });
+    document.body.append(bar);
+    const barPx = bar.offsetWidth - bar.clientWidth;
+    bar.remove();
+    const full = (el as HTMLElement).offsetWidth;
+    const tall = (t: string, w: number) => {
+      box.style.width = `${w}px`;
+      box.textContent = t;
+      return box.scrollHeight;
+    };
+    const cap = parseFloat(cs.maxHeight);
+    let seed = 7;
+    const rnd = () => (seed = (seed * 48271) % 2147483647) / 2147483647;
+    for (let tries = 0; tries < 2000; tries++) {
+      let t = '';
+      while (tall(t, full) <= cap) {
+        t += `${'w'.repeat(2 + Math.floor(rnd() * 9))} `;
+        if (tall(t, full) > parseFloat(cs.lineHeight) && tall(t, full - barPx) > tall(t, full) && tall(t, full - barPx) <= cap) {
+          box.remove();
+          return t;
+        }
+      }
+    }
+    box.remove();
+    return '';
+  });
+  expect(text).not.toBe('');
+  await paste(page, text);
+  await expect(field(page)).toHaveText(text.trim());
+  const heights = await field(page).evaluate((el) => {
+    const f = el as HTMLElement;
+    const shown = f.getBoundingClientRect().height;
+    const set = f.style.height;
+    f.style.height = 'auto';
+    const needs = f.getBoundingClientRect().height;
+    f.style.height = set;
+    return { shown, needs };
+  });
+  expect(heights.shown).toBe(heights.needs);
   await app.close();
 });
 
