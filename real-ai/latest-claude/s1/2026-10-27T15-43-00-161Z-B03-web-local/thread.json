@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already had that saved from earlier today. 🌿\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n3:43 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 21 to 27 Oct 2026, with\nCompare reports across news sites\nWatch live\nStop\n2 min\n3:43 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:43 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What should I pick up?\n1\nRedo my last request\nBEST FIT\nSend it again and I'll start fresh\n2\nStart something new\nTell me what you need\nSomething else…\nSkip\n3:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:44 PM"
+  }
+]

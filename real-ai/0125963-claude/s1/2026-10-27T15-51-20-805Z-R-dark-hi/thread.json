@@ -1,0 +1,97 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "At ₹80,000 aim for a laptop with these and you'll be well covered for programming:\n\nRAM: 16 GB minimum. It matters more than anything else if you run Docker, an emulator or several projects at once.\nStorage: 512 GB SSD. Make sure the RAM or SSD can be upgraded later.\nProcessor: a recent Ryzen 5 or 7, an Intel Core i5 or Ultra 5 (H or P series), or an Apple M-series chip if a MacBook fits your budget.\nScreen: a bright 14 to 15 inch display with a 16:10 shape shows more lines of code. Full HD or better.\nKeyboard and battery: a comfortable keyboard and 8+ hours of battery if you work away from a plug.\n\nSkip a dedicated graphics card unless you do machine learning or games. It adds cost and weight and cuts battery life.\n\nWhat will you mostly code: web or apps, data and ML, or games?\n\n3:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n3:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n3:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n3:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n3:50 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n3:50 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 3:50 PM\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks that fit easy only, doable in a weekend\nCompared difficulty and cost\nStopped by you\n3:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n3:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n3:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n3:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n3:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n3:51 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for Delhi to Mumbai flights on…\n1\nLook for Delhi to Mumbai flights on Fri 30 Oct\n2\nKeep 3 flights that fit lowest fare\n3\nCompare the 3 cheapest flights by fare, timings\nAbout 3 minutes\nGo\nChange plan\n3:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:51 PM"
+  }
+]

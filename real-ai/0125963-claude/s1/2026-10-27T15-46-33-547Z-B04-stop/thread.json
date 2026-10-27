@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already had that saved from earlier today. 🌿\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n3:43 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for ISRO news from 21 to 27 Oct 2026, with\nCompared reports across news sites\nStopped by you\n3:43 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:43 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "What should I pick up? → you changed the plan\n3:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n3:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n3:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n3:46 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for Delhi to Mumbai?\n1\nFri 30 Oct\nBEST FIT\nThis week, 3 days away\n2\nFri 6 Nov\nNext week\nSomething else…\nSkip\n3:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n3:47 PM"
+  }
+]
