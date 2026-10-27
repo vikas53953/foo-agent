@@ -62,7 +62,17 @@ export async function open(lines: FakeLine[], o: { firstRun?: boolean; reuse?: W
     writeFileSync(join(home, 'bin', process.platform === 'win32' ? 'claude.exe' : 'claude'), '');
     writeFileSync(join(home, '.claude', '.credentials.json'), '{}');
     script = join(base, 'fake-ai.jsonl');
-    const all: FakeLine[] = [{ match: { purpose: 'verify' }, reply: 'ready', once: false }, ...lines, say('', 'Theek hai.')];
+    // Real Claude takes seconds per reply; an instant fake hid 👀 on every message (F27). So every scripted reply waits
+    // QA_SLOW_AI_MS (pnpm qa:explore sets 3000) before its first word, unless the line sets its own timing.
+    const slowMs = Number(process.env.QA_SLOW_AI_MS ?? 0);
+    const slowed = (l: FakeLine): FakeLine =>
+      slowMs > 0 && l.reply !== undefined && l.match.purpose === 'intake'
+        ? { match: l.match, once: l.once, chunks: [{ text: l.reply, delayMs: slowMs }] }
+        : l;
+    const all: FakeLine[] = [
+      { match: { purpose: 'verify' }, reply: 'ready', once: false },
+      ...[...lines, say('', 'Theek hai.')].map(slowed),
+    ];
     all[all.length - 1]!.once = false;
     writeFileSync(script, all.map((l) => JSON.stringify(l)).join('\n') + '\n');
   }

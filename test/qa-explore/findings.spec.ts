@@ -208,3 +208,35 @@ test('QA-X-F26 · pasted text with a blank line is sent with one blank line, as 
   await expect(mine).toContainText('delta');
   expect(await mine.innerText()).toMatch(/^gamma\n\ndelta\n/);
 });
+
+test('QA-X-F27 · a plain chat message never shows 👀 while foo is slow to answer, nor after; ✓✓ still shows (Vikas 27 Oct)', async () => {
+  // Real Claude takes several seconds; 6 s here. CR-0059 only delayed 👀 by 2 s, so an instant fake AI never saw it.
+  w = await open(
+    [
+      {
+        match: { purpose: 'intake', promptIncludes: 'QAX-F27' },
+        chunks: [
+          { text: '<say>Slow answer ', delayMs: 6_000 },
+          { text: 'done.</say>', delayMs: 300 },
+        ],
+      },
+    ],
+    { firstRun: true },
+  );
+  await finishSetup(w.page);
+  await w.page.getByTestId(TID.composerField).fill('QAX-F27 a slow question');
+  await w.page.keyboard.press('Enter');
+  const eyesOnMine = () =>
+    w!.page.evaluate(() => {
+      const mine = [...document.querySelectorAll('[data-testid="bubble-me"]')].at(-1);
+      return mine?.parentElement?.parentElement?.querySelector('[data-testid="bubble-badge"]') ? 1 : 0;
+    });
+  let seen = 0;
+  for (let t = 0; t < 10; t++) {
+    seen += await eyesOnMine();
+    await w.page.waitForTimeout(1_000);
+  }
+  await expect(lastFoo(w.page)).toContainText('Slow answer done.');
+  expect(seen + (await eyesOnMine()), 'seconds with 👀 on the message, while waiting or after the answer').toBe(0);
+  await expect(w.page.getByTestId(TID.bubbleMe).last().getByTestId(TID.bubbleTick)).toBeVisible();
+});

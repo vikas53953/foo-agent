@@ -32,6 +32,16 @@ export const DEFECTS: Defect[] = [
     test: 'QA-X-F14',
   },
   {
+    id: 'F27',
+    sev: 'S1',
+    kind: 'functional',
+    title: '👀 shows on every message while foo answers (back after CR-0059, which only delayed it 2 s)',
+    where: 'Any chat message when the AI takes more than 2 s (real Claude always does)',
+    test: 'QA-X-F27',
+    shot: 'F27-eyes-on-every-message.png',
+    note: 'reported again by Vikas 27 Oct on main 4d7e1f9; earlier QA runs used an instant fake AI',
+  },
+  {
     id: 'F07',
     sev: 'S2',
     kind: 'functional',

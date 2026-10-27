@@ -3,7 +3,7 @@
 // regression per defect, test/qa-explore), and writes an acceptance report a person can read: what was discovered, what
 // was exercised, what passed, what is still broken (with screenshots and repro), and what was never tested. A defect is
 // FIXED only when QA's own test for it passes on the real app; a control never exercised is NOT TESTED, never PASS.
-// Usage: pnpm qa:explore [--no-build] [--out <dir>]   Exit: 0 all defect tests pass, 1 open defects, 2 could not run.
+// Usage: pnpm qa:explore [--no-build] [--out <dir>] [--fast-ai]   Exit: 0 all defect tests pass, 1 open defects, 2 could not run.
 import { execFileSync, spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -35,7 +35,8 @@ const cmd = process.platform === 'linux' && !process.env.DISPLAY ? 'xvfb-run' : 
 const args = ['playwright', 'test', '-c', 'playwright.qa-explore.config.ts'];
 const run = spawnSync(cmd, cmd === 'xvfb-run' ? ['-a', '-s', '-screen 0 1920x1080x24', 'npx', ...args] : args, {
   stdio: 'inherit',
-  env: { ...process.env, QA_EXPLORE_DIR: OUT },
+  // Slow AI is the standing condition (real Claude takes seconds); --fast-ai turns it off for a quick local pass.
+  env: { ...process.env, QA_EXPLORE_DIR: OUT, QA_SLOW_AI_MS: argv.includes('--fast-ai') ? '0' : (process.env.QA_SLOW_AI_MS ?? '3000') },
   shell: process.platform === 'win32',
 });
 
