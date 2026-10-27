@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n10:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What shall we sort out tonight?\n\n10:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n10:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check things across your apps, sites and files, set up routines that watch for changes, and catch you up on email or a WhatsApp group.\n\n10:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n10:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer, and everything you send goes through it locked.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) your traffic before it leaves.\nThe scrambled traffic travels to the VPN company's computer.\nThat computer unscrambles it and passes it to the website you wanted.\nThe website sees the VPN's address, not yours.\n\nSo the café Wi-Fi or your internet provider can see that you're connected to a VPN, but not what you're doing. The catch is that the VPN company can see it instead, so pick one you trust. A VPN doesn't make you anonymous, and it won't protect you from a dodgy link or a fake site.\n\n10:32 PM"
+  }
+]

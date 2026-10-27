@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n10:33 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in your trail shoes?\nGrip\nBEST FIT\nBetter hold on mud, rocks and loose ground\nCushioning\nSofter feel for longer runs\nLight weight\nQuicker and less tiring on short runs\nDurability\nLasts longer on rough ground\nSomething else…\nDone\nSkip\n10:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:33 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n10:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n10:33 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dates for the Goa stay?\n1\nFri 30 Oct to Sun 1 Nov\nBEST FIT\nThis coming weekend\n2\nSat 31 Oct to Mon 2 Nov\nThis coming weekend\n3\nFri 6 Nov to Sun 8 Nov\nThe weekend after\n4\nSat 7 Nov to Mon 9 Nov\nThe weekend after\nSomething else…\nSkip\n10:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n10:36 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for ISRO news from the past week\nCompare reports across news sources\nWatch live\nStop\n3 min\n10:37 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n10:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt so many times over the centuries that historians count at least seven earlier \"cities\" under the one name. 🌿\n\n10:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n10:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because its hosiery and woollen mills produce a huge share of the country's knitwear. 🌿\n\nShow earlier answer\nRewritten\n10:37 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n3 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n10:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:40 PM"
+  }
+]

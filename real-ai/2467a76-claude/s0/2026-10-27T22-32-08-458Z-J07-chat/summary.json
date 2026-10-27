@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T22-32-08-458Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793140334547,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 138
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 4044,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good to see you. What shall we sort out tonight?\n\n10:32 PM",
+      "kit": [],
+      "ms": 11088
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793140345816,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 83
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can check things across your apps, sites and files, set up routines that watch for changes, and catch you up on email or a WhatsApp group.\n\n10:32 PM",
+      "kit": [],
+      "ms": 10120
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793140356074,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3579,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer, and everything you send goes through it locked.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) your traffic before it leaves.\nThe scrambled traffic travels to the VPN company's computer.\nThat computer unscrambles it and passes it to the website you wanted.\nThe website sees the VPN's address, not yours.\n\nSo the café Wi-Fi or your internet provider can see that you're connected to a VPN, but not what you're doing. The catch is that the VPN company can see it instead, so pick one you trust. A VPN doesn't make you anonymous, and it won't protect you from a dodgy link or a fake site.\n\n10:32 PM",
+      "kit": [],
+      "ms": 12229
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
