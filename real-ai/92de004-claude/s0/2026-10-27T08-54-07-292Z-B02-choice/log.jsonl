@@ -1,0 +1,14 @@
+{"t":"2026-10-27T08:54:07.292Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T08:54:12.444Z","step":"launch","ok":true}
+{"t":"2026-10-27T08:54:12.556Z","i":0,"do":"send","sentAt":1793091252527,"sent":true,"before":0,"ok":true,"ms":110}
+{"t":"2026-10-27T08:54:24.711Z","i":1,"do":"waitReply","firstReplyMs":6050,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Where will you mostly run in these shoes?\n1\nRoads and pavement\nBEST FIT\nDaily jogs, 5K and 10K practice\n2\nTreadmill or gym\nIndoor runs, light cushioning\n3\nTrails or parks\nGrip for mud and loose ground\n4\nA bit of everything\nAn all-round pair\nSomething else…\nSkip\n8:54 AM","kit":[],"ms":12155}
+{"t":"2026-10-27T08:54:24.765Z","shot":"01-choice.png"}
+{"t":"2026-10-27T08:54:24.767Z","i":2,"do":"check","found":1,"ok":true,"ms":1}
+{"t":"2026-10-27T08:54:24.769Z","i":3,"do":"check","found":4,"ok":true,"ms":2}
+{"t":"2026-10-27T08:54:24.772Z","i":4,"do":"text","soft":true,"text":"Where will you mostly run in these shoes?\n1\nRoads and pavement\nBEST FIT\nDaily jogs, 5K and 10K practice\n2\nTreadmill or gym\nIndoor runs, light cushioning\n3\nTrails or parks\nGrip for mud and loose ground\n4\nA bit of everything\nAn all-round pair\nSomething else…\nSkip\n8:54 AM","ok":true,"ms":3}
+{"t":"2026-10-27T08:54:24.857Z","i":5,"do":"send","sentAt":1793091264827,"sent":true,"before":0,"ok":true,"ms":85}
+{"t":"2026-10-27T08:54:37.509Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","firstReplyMs":6549,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"How do you want the shoes to feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasier on knees for longer runs\n2\nLight and quick\nLess weight, firmer feel\n3\nBalanced all-rounder\nA bit of both\n4\nNot sure yet\nShow me what suits gym running\nSomething else…\nSkip\n8:54 AM","kit":[],"ms":12652}
+{"t":"2026-10-27T08:54:37.585Z","shot":"02-typed-2.png"}
+{"t":"2026-10-27T08:54:37.591Z","i":7,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-27T08:54:37.692Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T08:54:37.702Z","step":"aiTurns","turns":2}

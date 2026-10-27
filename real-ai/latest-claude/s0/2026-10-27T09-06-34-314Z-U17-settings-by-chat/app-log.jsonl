@@ -1,0 +1,4 @@
+{"t":1793091995094,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793092008752,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793092011775,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1793092036844,"lvl":"info","mod":"engine","evt":"memory.provenance_rejected","kind":"VALIDATION"}

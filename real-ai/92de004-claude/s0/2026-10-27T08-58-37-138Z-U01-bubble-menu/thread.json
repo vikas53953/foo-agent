@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n8:54 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "How do you want the shoes to feel on the treadmill?\n1\nSoft and cushioned\nBEST FIT\nEasier on knees for longer runs\n2\nLight and quick\nLess weight, firmer feel\n3\nBalanced all-rounder\nA bit of both\n4\nNot sure yet\nShow me what suits gym running\nSomething else…\nSkip\n8:54 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:54 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n8:54 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:54 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n8:54 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which 2 nights in Goa do you mean by next weekend?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nFriday and Saturday nights\n2\nSat 7 Nov to Mon 9 Nov\nSaturday and Sunday nights\n3\nSat 31 Oct to Mon 2 Nov\nThis coming weekend\nSomething else…\nSkip\n8:55 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:55 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n8:58 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from the last 7 days\nWrite it\nWatch live\nStop\n2 min\n8:58 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n8:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt so many times that it's often said to sit on the remains of seven cities, with New Delhi being the newest.\n\n8:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because of its huge hosiery and woollen textile industry, and it makes most of the country's woollen knitwear.\n\nShow earlier answer\nRewritten\n8:59 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:00 AM"
+  }
+]
