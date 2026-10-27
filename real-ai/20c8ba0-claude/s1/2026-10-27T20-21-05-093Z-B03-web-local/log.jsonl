@@ -1,0 +1,15 @@
+{"t":"2026-10-27T20:21:05.093Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T20:21:10.619Z","step":"launch","ok":true}
+{"t":"2026-10-27T20:21:10.748Z","i":0,"do":"send","sentAt":1793132470706,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-27T20:21:23.905Z","i":1,"do":"waitReply","firstReplyMs":7093,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for ISRO news from Tue 20 Oct to Tue 27 Oct\n3\nCompare reports across news sites and the\n4\nCheck it went through\nAbout 3 minutes\nGo\nChange plan\n8:21 PM","kit":[],"ms":13157}
+{"t":"2026-10-27T20:21:23.966Z","shot":"01-news.png"}
+{"t":"2026-10-27T20:21:24.005Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":38}
+{"t":"2026-10-27T20:23:54.006Z","i":3,"do":"wait","ok":true,"ms":150001}
+{"t":"2026-10-27T20:23:54.095Z","shot":"02-news-later.png"}
+{"t":"2026-10-27T20:23:54.098Z","i":4,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-27T20:23:54.100Z","i":5,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T20:23:54.106Z","i":6,"do":"expectText","text":"Your favourite food is South Indian, and I already had it saved from earlier today, so nothing new to add. 🌿\n\n8:20 PM","ok":true,"ms":6}
+{"t":"2026-10-27T20:23:54.108Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-27T20:23:54.120Z","i":8,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-27T20:23:54.517Z","step":"appLog","lines":30,"dropped":0}
+{"t":"2026-10-27T20:23:54.529Z","step":"aiTurns","turns":26}

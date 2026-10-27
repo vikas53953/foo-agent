@@ -1,0 +1,14 @@
+{"t":"2026-10-27T20:24:20.638Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T20:24:26.191Z","step":"launch","ok":true}
+{"t":"2026-10-27T20:24:26.314Z","i":0,"do":"send","sentAt":1793132666281,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-27T20:24:34.548Z","i":1,"do":"waitReply","firstReplyMs":2071,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:24 PM","kit":[],"ms":8234}
+{"t":"2026-10-27T20:24:34.633Z","shot":"01-flight-plan.png"}
+{"t":"2026-10-27T20:24:34.636Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-10-27T20:25:14.637Z","i":3,"do":"wait","ok":true,"ms":40001}
+{"t":"2026-10-27T20:25:14.699Z","shot":"02-flight-working.png"}
+{"t":"2026-10-27T20:25:14.859Z","i":4,"do":"send","sentAt":1793132714778,"sent":true,"before":0,"ok":true,"ms":159}
+{"t":"2026-10-27T20:25:20.908Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","firstReplyMs":514,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Stopped. Nothing was booked, paid or sent.\n\n8:25 PM","kit":[],"ms":6048}
+{"t":"2026-10-27T20:25:20.963Z","shot":"03-after-stop.png"}
+{"t":"2026-10-27T20:25:20.972Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-27T20:25:21.157Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T20:25:21.169Z","step":"aiTurns","turns":1}

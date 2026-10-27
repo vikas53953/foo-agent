@@ -1,0 +1,5 @@
+{"t":1793132661649,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793132663171,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
+{"t":1793132663193,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793132668196,"lvl":"info","mod":"engine","evt":"job.stuck.budget","kind":"STUCK"}
+{"t":1793132669700,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}

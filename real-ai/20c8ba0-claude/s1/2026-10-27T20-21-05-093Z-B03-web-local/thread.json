@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n8:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:19 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n8:19 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:19 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n8:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n8:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already had it saved from earlier today, so nothing new to add. 🌿\n\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n8:21 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:21 PM\n8:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:21 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for ISRO news from Tue 20 Oct to Tue 27 Oct\nStill working, this one takes a while\nCompare reports across news sites and the\nCheck it went through\nWatch live\nStop\n2 min\n8:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:21 PM"
+  }
+]

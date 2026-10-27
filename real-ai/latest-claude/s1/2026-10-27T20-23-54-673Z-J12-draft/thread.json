@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n8:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already had it saved from earlier today, so nothing new to add. 🌿\n\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n8:21 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:21 PM\n8:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:21 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for ISRO news from Tue 20 Oct to Tue 27 Oct\nStill working, this one takes a while\nCompare reports across news sites and the\nCheck it went through\nWatch live\nStop\n2 min\n8:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n8:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your draft for someone@example.com. I can't send it from here, so it's yours to send.\n\nSubject: Running 15 minutes late tomorrow\n\nHi,\n\nI'll be about 15 minutes late to tomorrow's meeting (Wed 28 Oct). Please start without me if needed, and I'll join as soon as I arrive.\n\nThanks,\n\nWant me to add the meeting time to it?\n\n8:24 PM"
+  }
+]

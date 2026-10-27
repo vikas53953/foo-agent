@@ -1,4 +1,0 @@
-{"t":1793116522171,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793116523800,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
-{"t":1793116523820,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793116536062,"lvl":"info","mod":"composer","evt":"paste catcher shown","ids":{"chatId":"c_01a17e06-2a1a-7e98-a75e-c39f146c3d69"},"kind":"key, choice: move"}
