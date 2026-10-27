@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-58-02-385Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793134688012,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 133
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20007
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1793134708241,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 11632,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because paying becomes as easy as sending a text, and it costs almost nothing.\n\nLaunched in 2016 by NPCI, UPI links your bank account to a phone app. Money moves from one account to another in seconds, at any hour, on any day. You don't need cash, a card or a swipe machine. A printed QR code at a tea stall is enough, which is why even small vendors have joined in.\n\nThree big reasons:\n\nSpeed and ease: Scan, enter your PIN, done. There are no account numbers or IFSC codes to type, and it works across apps, so you can pay anyone from the app you like.\nLow or no cost: For most everyday payments, people and shops pay no fees, so small sellers keep more of what they earn.\nReach and trust: It runs on basic smartphones, it's tied to your own bank, and nearly every shop, from malls to street carts, accepts it.\n\nHabit does the rest. Once your friends, family and local vendor all use it, carrying cash starts to feel like the slower choice. Many people also like having every payment recorded in one place, which makes tracking spending easier.\n\n8:58 PM",
+      "kit": [],
+      "ms": 19280
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

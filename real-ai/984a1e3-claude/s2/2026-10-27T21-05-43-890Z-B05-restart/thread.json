@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3 day Jaipur plan for your parents, with short walks and a cab all three days.\n\nDay 1: Forts and lakes\n\nAmer Fort in the morning, before the crowds and the heat. A jeep ride up saves their knees.\nJal Mahal for a photo stop on the way back.\nHawa Mahal from the outside, then an easy dinner nearby.\n\nDay 2: The old city\n\nCity Palace and Jantar Mantar, with a long lunch break in between.\nJohari Bazaar for jewellery, textiles and sweets, in the late afternoon.\nBirla Mandir at sunset, which is calm and mostly flat.\n\nDay 3: Slow morning, then home\n\nAlbert Hall Museum and a gentle stroll around Ram Niwas Garden.\nGovind Dev Ji temple for the morning aarti, if they like temples.\nPanna Meena ka Kund, or last-minute shopping for blockprint fabrics and lac bangles.\n\nLate October to February is the best weather, so this is a good time to go. Keep days 1 and 2 shorter if either of them tires easily.\n\n9:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n9:02 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:02 PM\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for good Italian restaurants…\nlive checklist\nLooked for good Italian restaurants in Bandra\nChecking restaurant booking sites\nR\nKeep 3 Italian places with a table for 2 on Sat that fit best rated with a free table\nWait for you to pick one\nWatch live\nStop\n6 min\n9:02 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:02 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:03 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for good Italian restaurants… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant booking sites instead\nTry another way\nTake over\nStop\n9:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:05 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for good Italian restaurants…\n3\nBoth\nSomething else…\nSkip\n9:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:05 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n9:05 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n9:06 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:06 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum (Janpath, New Delhi) is open Tue–Sun, 10:00 AM to 6:00 PM, and closed on Mondays and national holidays. Tickets: adults ₹20 foreign nationals ₹500 and students up to class 12 get in free with an I-card. It opens next on Wed 28 Oct, 10:00 AM. The site's notice says the Arms and Armour, Textiles and Jewellery galleries are closed for renovation. That notice is dated 29 May 2023, so it may be out of date.\n\n9:06 PM"
+  }
+]

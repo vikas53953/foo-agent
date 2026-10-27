@@ -1,0 +1,84 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T20-58-47-909Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793134733658,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 139
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 7146,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones that fit best value under ₹20,000\n3\nCompare price, camera, battery, screen\nAbout 3 minutes\nGo\nChange plan\n8:59 PM",
+      "kit": [],
+      "ms": 13202
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 149999
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793134897157,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 16655,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a relaxed 3 day Jaipur plan for your parents, with short walks and a cab all three days.\n\nDay 1: Forts and lakes\n\nAmer Fort in the morning, before the crowds and the heat. A jeep ride up saves their knees.\nJal Mahal for a photo stop on the way back.\nHawa Mahal from the outside, then an easy dinner nearby.\n\nDay 2: The old city\n\nCity Palace and Jantar Mantar, with a long lunch break in between.\nJohari Bazaar for jewellery, textiles and sweets, in the late afternoon.\nBirla Mandir at sunset, which is calm and mostly flat.\n\nDay 3: Slow morning, then home\n\nAlbert Hall Museum and a gentle stroll around Ram Niwas Garden.\nGovind Dev Ji temple for the morning aarti, if they like temples.\nPanna Meena ka Kund, or last-minute shopping for blockprint fabrics and lac bangles.\n\nLate October to February is the best weather, so this is a good time to go. Keep days 1 and 2 shorter if either of them tires easily.\n\n9:01 PM",
+      "kit": [],
+      "ms": 26305
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
