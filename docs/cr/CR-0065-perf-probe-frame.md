@@ -48,19 +48,22 @@ it left a long paste one line too tall (#160), so the app has no per-key cost to
 | Old probe (main), idle, 2 runs         | not run                    | not run     | 28.9 – 31.6 ms        | not run                   |
 
 The old probe also goes red on the keydown work. The new one reads lower on the same keys because it stops at the frame,
-not at a task the browser may hold back. The observer guard read 4.2 ms (green, wrongly) on the review's first draft of
-the probe, which shared one observer made at install; it reads red on the probe above.
+not at a task the browser may hold back. The observer guard read 4.2 ms (green, wrongly) on the first draft of the probe,
+which shared one observer made at install; it reads red on the probe above.
+
+Windows CI on PR #161 (run 40486285672, Full suite shard 1): typing p95 3.6 ms (p50 2.4), control p95 1.9 ms, 20 ms in
+keydown 23.9 ms, 20 ms in an observer 24.4 ms. Main 92de004 on the old probe read 18.1 ms on the same shard.
 
 ## (d) Review
 
 Tier **medium**: one independent reviewer (Fable), read-only, ran both tests and three scratch experiments.
 
-| #   | Finding                                                                                                                 | Outcome                                                                        |
-| --- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 1   | An observer the app makes after the probe runs after the probe's timestamp: 20 ms per key there read p95 4.7 ms (green) | Fixed: a new observer per key; the observer guard added, red before, red after |
-| 2   | The display wait hides a task run between "in the DOM" and the frame                                                    | No change: 20 ms in a `setTimeout(0)` ran after the frame in 80/80 keys        |
-| 3   | The keydown guard does not cover frame-phase work                                                                       | Fixed with 1: the observer guard is frame-phase work                           |
-| 4   | The CR said all of the app's frame work is counted; paint is not                                                        | Fixed: (b)1 says paint is not counted                                          |
+| #   | Finding                                                                                                                 | Outcome                                                                                    |
+| --- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| 1   | An observer the app makes after the probe runs after the probe's timestamp: 20 ms per key there read p95 4.7 ms (green) | Fixed: a new observer per key; the observer guard added, green (wrongly) before, red after |
+| 2   | The display wait hides a task run between "in the DOM" and the frame                                                    | No change: 20 ms in a `setTimeout(0)` ran after the frame in 80/80 keys                    |
+| 3   | The keydown guard does not cover frame-phase work                                                                       | Fixed with 1: the observer guard is frame-phase work                                       |
+| 4   | The CR said all of the app's frame work is counted; paint is not                                                        | Fixed: (b)1 says paint is not counted                                                      |
 
 ## (e) Proposals for the spec keeper
 
