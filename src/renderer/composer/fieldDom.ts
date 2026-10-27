@@ -25,8 +25,10 @@ export function domToSegments(root: HTMLElement): Segment[] {
       return;
     }
     if (node.tagName === 'BR') {
-      // The browser's placeholder <br> at the very end of the field is not a line.
-      if (node.nextSibling || node.parentNode !== root) out.push({ kind: 'text', text: '\n' });
+      // The browser's placeholder <br> at the very end of the field, or at the end of a block (the empty line of a pasted
+      // "a\n\nb" is `<div><br></div>`, and the block already makes the line), is not a line.
+      const blockEnd = !node.nextSibling && node.parentNode instanceof HTMLElement && BLOCK.has(node.parentNode.tagName);
+      if ((node.nextSibling || node.parentNode !== root) && !blockEnd) out.push({ kind: 'text', text: '\n' });
       return;
     }
     if (BLOCK.has(node.tagName) && !first) out.push({ kind: 'text', text: '\n' });

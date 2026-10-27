@@ -168,6 +168,21 @@ test('Enter sends: the bubble shows at once, the field clears and keeps focus, S
   await app.close();
 });
 
+test('a pasted blank line is sent as one blank line, the same as typed with Shift+Enter (04-2 §22.5, QA-X-F26)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  for (const text of ['gamma\n\ndelta', 'one\ntwo', 'first\n\nsecond\nthird']) {
+    await field(page).focus();
+    await paste(page, text);
+    await page.keyboard.press('Enter');
+    const last = text.split('\n').at(-1)!;
+    await expect(mine(page).last()).toContainText(last);
+    expect(await mine(page).last().innerText()).toMatch(new RegExp(`^${text}\n`));
+    await expect(field(page)).toHaveText('');
+  }
+  await app.close();
+});
+
 test('the field grows a line at a time as text is added, and shrinks back when lines go or the message is sent (02 §F7.1)', async () => {
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
