@@ -1,0 +1,13 @@
+{"t":1793141008355,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793141021113,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141028622,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793141032919,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":3025}
+{"t":1793141034899,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141039448,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1793141040362,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141046326,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141054440,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141059088,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141063273,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141072983,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793141077888,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}

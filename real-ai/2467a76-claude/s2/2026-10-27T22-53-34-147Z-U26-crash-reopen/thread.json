@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n10:50 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Your \"yes\" doesn't tell me the trip. Which route and date?\n1\nI'll type route and date\nBEST FIT\nLike: Delhi to Jaipur, Sat 31 Oct\n2\nStop checking trains\nSomething else…\nSkip\n10:50 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:51 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for well-rated Italian…\n3\nChecking IRCTC\n4\nAll of them\nSomething else…\nSkip\n10:51 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n10:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n10:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:52 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for well-rated Italian…\n3\nChecking IRCTC\n4\nAll of them\nSomething else…\nSkip\n10:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n10:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Grey skies break open, the sea roars back,\nMarine Drive shines in silver rain,\nChai steams up on a crowded track,\nAnd Mumbai dances through the lane. 🌧️\n\n10:53 PM"
+  }
+]

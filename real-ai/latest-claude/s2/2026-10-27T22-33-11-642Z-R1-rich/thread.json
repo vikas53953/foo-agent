@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n10:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n10:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as sending a message: instant, usually free, and linked straight to your bank account.\n\nLaunched by NPCI in 2016, UPI has gone from a new idea to the default way to pay. You see it at chai stalls, vegetable carts, petrol pumps and big stores alike. A shopkeeper needs only a phone and a printed QR code to start taking payments, with no card machine and no monthly rent for equipment.\n\nHere are the three main reasons:\n\nFree and instant: Most everyday payments cost nothing, and money moves in seconds, at any hour, even on holidays.\nAccepted everywhere: One QR code works across apps like PhonePe, Google Pay and Paytm, so neither you nor the shop has to worry about which app the other uses.\nSimple and safe: You don't need cash or a card. You confirm with your PIN, and your account number stays hidden behind a UPI ID.\n\nCash still has its place, but for small daily spends, UPI is faster, and everyone around you already uses it.\n\n10:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n10:33 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:33 PM\n10:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nPicking the best phones\nStill working, this one takes a while\nCompare price, battery, camera, screen and speed\nWatch live\nStop\n2 min\n10:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n10:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a gentle 3-day Jaipur plan for your parents, with one main sight a day and a rest in the afternoon.\n\nDay 1, the forts: Amber Fort in the morning, when it's cool and quiet, then a photo stop at Jal Mahal. Hawa Mahal in the late afternoon, and an early dinner.\nDay 2, the old city: City Palace and Jantar Mantar in the morning, then lunch and a rest. In the evening, a slow walk through Johari Bazaar and Bapu Bazaar for jewellery, textiles and juttis.\nDay 3, easy and scenic: Albert Hall Museum and Birla Mandir, then Nahargarh Fort for sunset. Keep the evening free for packing.\n\nHire a car for all three days so they aren't stuck bargaining with autos. Amber Fort has a steep climb, so book a jeep up if walking is hard for them. Late October to March is the best season, with cool, pleasant days.\n\nWhen are they going, and will they stay in the old city or somewhere quieter?\n\n10:36 PM"
+  }
+]
