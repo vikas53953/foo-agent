@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n5:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n5:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways website is indianrailways.gov.in. For booking tickets, use IRCTC.\n\n5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n5:35 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which kind of weekend do you feel like in Bengaluru? → Food and cafés\n5:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n5:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three food-and-café weekend ideas for Bengaluru:\n\nOld-Bengaluru breakfast trail: Do a South Indian breakfast crawl in Malleshwaram and Basavanagudi. Think CTR for benne dosa and Vidyarthi Bhavan, then filter coffee on the way. Best early in the morning.\nVV Puram Food Street evening: Wander through dosas, chaats and sweets at VV Puram. It's casual, lively and easy on the pocket. Go in the evening.\nCafé hop in Indiranagar: Spend a slow afternoon moving between a few cafés for coffee, desserts and people-watching.\n\nWhich one should I plan out for you?\n\n5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n5:36 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good for your Bengaluru weekend?\n1\nMeghana Foods biryani\nBEST FIT\nAndhra-style biryani, casual and busy\n2\nRooftop dinner in Indiranagar\nRelaxed evening with good views and drinks\n3\nDosa and filter coffee at MTR\nLight, classic and easy on the pocket\nSomething else…\nSkip\n5:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n5:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal is a good call, warm and easy on a Tuesday night. 🍲 Want a quick recipe with timings?\n\n5:36 AM"
+  }
+]

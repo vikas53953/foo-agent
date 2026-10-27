@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show the 5 places to visit in Jaipur on a map\n5:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 great places to see in Jaipur, numbered in a sensible order for one day out. Start at Amber Fort early, before the crowds and the heat.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort with mirror-work halls and great views.\n2\nJal Mahal\nPalace in the middle of Man Sagar Lake, best for a quick photo stop.\n3\nHawa Mahal\nThe pink honeycomb facade, loveliest in morning light.\n4\nCity Palace\nRoyal museum and courtyards, right next to Jantar Mantar.\n5\nNahargarh Fort\nGood for sunset over the Pink City.\nOpen in Maps\nKeep\n\nWant me to turn these into a one-day plan with timings?\n\n5:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n5:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth over the last 5 full financial years: a sharp fall of about -5.8% in FY2020-21, then a rebound to 9.7%, 7.6%, 9.2% and 6.5% in FY2024-25. These are rounded figures from memory, so check the official release from the Ministry of Statistics for exact numbers and for FY2025-26.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n5:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n5:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is the best value of the three. It costs about the same as the others but gives you a 120Hz screen, a 3x zoom camera and the fastest chip. The prices are launch prices in India from memory, and what shops charge now will differ, so check current offers before you buy.\n\niPhone 16\nLaunch price\n₹79,900\nScreen\n6.1\" OLED, 60Hz\nChip\nApple A18\nCameras\n48MP main + 12MP ultrawide\nBattery\nSmallest of the three\nUpdates\nLong, about 6 to 7 years of iOS\nPixel 9\nLaunch price\n₹79,999\nScreen\n6.3\" OLED, 120Hz\nChip\nGoogle Tensor G4\nCameras\n50MP main + 48MP ultrawide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999\nScreen\n6.2\" OLED, 120Hz\nChip\nSnapdragon 8 Elite\nCameras\n50MP main + 12MP ultrawide + 10MP 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nSimilar price, but the fastest chip, a smooth 120Hz screen and the only 3x zoom camera.\n\nKeep\n\nPick the Pixel 9 if you care most about the best everyday photos and clean software. Pick the iPhone 16 if you already use Apple things like a Mac or AirPods.\n\n5:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n5:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the tea goes in.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n5:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n5:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your birthday party plan. Fill it in and send it, and I'll take it from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n5:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n5:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an expense with an amount and a category, and it keeps a running total and a split by category. Entries stay on this page only, so they clear when you close it.\n\nKeep\n\nWant a monthly budget limit added, so it warns you when you go over?\n\n5:26 AM"
+  }
+]

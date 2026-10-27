@@ -1,0 +1,91 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T05-31-14-996Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793079088361,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3001
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5002
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 507,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Shelly is a classic, but Sheldon is my pick for a tortoise: slow, steady and very dignified. 🐢\n\nA few more in the same spirit:\n\nTurbo, because the joke never gets old\nBiscuit, for a round little shell\nMr. Slowpoke, a proper gentleman\nPebble, small and calm\n5:31 AM",
+      "kit": [],
+      "ms": 8046
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n5:31 AM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793079104585,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2001
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4997
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 4527,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nCompare top headlines from major news sites\nWatch live\nStop\nunder 1 min\n5:31 AM",
+      "kit": [],
+      "ms": 10633
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

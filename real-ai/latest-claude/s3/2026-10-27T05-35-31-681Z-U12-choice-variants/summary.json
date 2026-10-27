@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T05-35-31-681Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1038
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793079338071,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 5050,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which kind of weekend do you feel like in Bengaluru?\n1\nNature and trails\nBEST FIT\nNandi Hills sunrise or Lalbagh walk\n2\nFood and cafés\nIndiranagar or VV Puram food street\n3\nCulture and indoors\nMuseums, theatre or a bookshop crawl\nSomething else…\nSkip\n5:35 AM",
+      "kit": [],
+      "ms": 11121
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793079349443,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 6550,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are three food-and-café weekend ideas for Bengaluru:\n\nOld-Bengaluru breakfast trail: Do a South Indian breakfast crawl in Malleshwaram and Basavanagudi. Think CTR for benne dosa and Vidyarthi Bhavan, then filter coffee on the way. Best early in the morning.\nVV Puram Food Street evening: Wander through dosas, chaats and sweets at VV Puram. It's casual, lively and easy on the pocket. Go in the evening.\nCafé hop in Indiranagar: Spend a slow afternoon moving between a few cafés for coffee, desserts and people-watching.\n\nWhich one should I plan out for you?\n\n5:35 AM",
+      "kit": [],
+      "ms": 15181
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793079364797,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 6562,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good for your Bengaluru weekend?\n1\nMeghana Foods biryani\nBEST FIT\nAndhra-style biryani, casual and busy\n2\nRooftop dinner in Indiranagar\nRelaxed evening with good views and drinks\n3\nDosa and filter coffee at MTR\nLight, classic and easy on the pocket\nSomething else…\nSkip\n5:36 AM",
+      "kit": [],
+      "ms": 12616
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 614
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793079378322,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 5041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal is a good call, warm and easy on a Tuesday night. 🍲 Want a quick recipe with timings?\n\n5:36 AM",
+      "kit": [],
+      "ms": 12167
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{"t":"2026-10-27T05:31:14.997Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T05:31:20.222Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:31:28.294Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8069}
+{"t":"2026-10-27T05:31:28.387Z","i":0,"do":"send","sentAt":1793079088361,"sent":true,"before":0,"ok":true,"ms":93}
+{"t":"2026-10-27T05:31:31.388Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-27T05:31:36.391Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:31:36.391Z","i":2,"do":"relaunch","ok":true,"ms":5002}
+{"t":"2026-10-27T05:31:44.437Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":507,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Shelly is a classic, but Sheldon is my pick for a tortoise: slow, steady and very dignified. 🐢\n\nA few more in the same spirit:\n\nTurbo, because the joke never gets old\nBiscuit, for a round little shell\nMr. Slowpoke, a proper gentleman\nPebble, small and calm\n5:31 AM","kit":[],"ms":8046}
+{"t":"2026-10-27T05:31:44.501Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-27T05:31:44.503Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n5:31 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-27T05:31:44.634Z","i":5,"do":"send","sentAt":1793079104585,"sent":true,"before":0,"ok":true,"ms":131}
+{"t":"2026-10-27T05:31:46.636Z","i":6,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-27T05:31:51.633Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:31:51.633Z","i":7,"do":"relaunch","ok":true,"ms":4997}
+{"t":"2026-10-27T05:32:02.266Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":4527,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCompare top headlines from major news sites\nWatch live\nStop\nunder 1 min\n5:31 AM","kit":[],"ms":10633}
+{"t":"2026-10-27T05:32:02.344Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-27T05:32:02.356Z","i":9,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-27T05:32:02.702Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-10-27T05:32:02.711Z","step":"aiTurns","turns":3}

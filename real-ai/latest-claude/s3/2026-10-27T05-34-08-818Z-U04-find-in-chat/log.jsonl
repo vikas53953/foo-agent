@@ -1,0 +1,21 @@
+{"t":"2026-10-27T05:34:08.818Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T05:34:14.085Z","step":"launch","ok":true}
+{"t":"2026-10-27T05:34:15.134Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1046}
+{"t":"2026-10-27T05:34:15.246Z","i":1,"do":"send","sentAt":1793079255216,"sent":true,"before":0,"ok":true,"ms":112}
+{"t":"2026-10-27T05:34:25.300Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":3019,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three Indian rivers: Ganga, Yamuna and Godavari. 🌊\n\n5:34 AM","kit":[],"ms":10053}
+{"t":"2026-10-27T05:34:25.363Z","shot":"01-rivers.png"}
+{"t":"2026-10-27T05:34:25.374Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":11}
+{"t":"2026-10-27T05:34:25.432Z","shot":"02-find-open.png"}
+{"t":"2026-10-27T05:34:25.444Z","i":4,"do":"fill","soft":true,"ok":true,"ms":12}
+{"t":"2026-10-27T05:34:26.244Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":800}
+{"t":"2026-10-27T05:34:26.299Z","shot":"03-find-results.png"}
+{"t":"2026-10-27T05:34:26.378Z","i":6,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-27T05:34:26.455Z","i":7,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-27T05:34:26.536Z","i":8,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-27T05:34:26.538Z","i":9,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-27T05:34:27.338Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":799}
+{"t":"2026-10-27T05:34:27.392Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-27T05:34:27.395Z","i":11,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-27T05:34:27.406Z","i":12,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-27T05:34:27.505Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-27T05:34:27.515Z","step":"aiTurns","turns":1}
