@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n3:44 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 3:45 PM\n3:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:45 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooked for well-rated Italian restaurants in\nKept 3 Italian restaurants in Bandra that fit best ratings with a table for 2\nChecked restaurant booking pages for Sat 31 Oct\nR\nCompared which places have a table free\nStopped by you\n3:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:45 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for well-rated Italian… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant booking pages for Sat 31 Oct instead\n3:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n3:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n3:48 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n3:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, New Delhi (Janpath, New Delhi - 110011) is open today, Tue 27 Oct, until 6:00 PM.\n\nHours\n\nTue to Fri: 10:00 AM to 6:00 PM\nSat and Sun: 10:00 AM to 8:00 PM\nClosed on Mondays and national holidays\n\nTickets\n\nAdults: ₹20\nForeign nationals: ₹500\nStudents up to class 12: free, with ID card\nOnline booking: https://www.zoonga.com/national-museum\n\nThis comes from the museum's official Plan Your Visit page. The page doesn't show when it was last updated, so check its Holiday Calendar before you go.\n\n3:49 PM"
+  }
+]

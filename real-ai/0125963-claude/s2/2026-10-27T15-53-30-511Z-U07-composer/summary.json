@@ -1,0 +1,133 @@
+{
+  "journey": "U07-composer",
+  "title": "Composer: multi-line, attach menu, emoji, Esc, draft kept after restart",
+  "steps": 18,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-53-30-511Z-U07-composer",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1037
+    },
+    {
+      "i": 1,
+      "do": "shot",
+      "expect": "composer: + attach, field \"Message foo, or hold Ctrl+Space to talk\", mic/send 36px",
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 3,
+      "do": "key",
+      "ok": true,
+      "ms": 7
+    },
+    {
+      "i": 4,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 19
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "composer grows upward for 3 lines",
+      "ok": true,
+      "ms": 401
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "attach menu: Files, Screenshot, Secret, Emoji",
+      "ok": true,
+      "ms": 501
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "emoji picker",
+      "ok": true,
+      "ms": 501
+    },
+    {
+      "i": 10,
+      "do": "key",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 12,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4999
+    },
+    {
+      "i": 13,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1045
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "the unsent draft is back in the composer",
+      "ok": true,
+      "ms": 1002
+    },
+    {
+      "i": 15,
+      "do": "eval",
+      "note": "draft restored",
+      "soft": true,
+      "value": "a draft I did not send",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 16,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 14
+    },
+    {
+      "i": 17,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

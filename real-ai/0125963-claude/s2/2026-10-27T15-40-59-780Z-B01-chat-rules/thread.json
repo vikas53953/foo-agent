@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n3:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:40 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n3:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:40 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n3:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n3:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n3:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n3:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n3:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying someone now takes a few seconds and costs almost nothing.\n\nNot long ago, you needed cash, a card machine, or a bank transfer with long account details. Now you scan a QR code or type a phone number, enter your PIN, and the money moves straight from your bank account. It works the same way at a roadside chai stall and at a big shopping mall. Since nearly everyone has a smartphone and a bank account, more people try it, and the more people use it, the more shops accept it.\n\nThree reasons stand out:\n\nSpeed and ease: Payments take seconds, work any hour of any day including holidays, and need no change.\nLow or no cost: Sending money to people is free, and most shops pay no fee. Small sellers keep what they earn instead of losing a cut to card charges.\nWorks everywhere: One app can link several banks, and almost every seller, from vegetable carts to malls, shows a QR code.\n\nThere is also a quiet bonus: every payment leaves a record on your phone, so tracking spending gets easier. Trust has grown too, because people see friends, family and local shopkeepers using it daily without trouble.\n\n3:41 PM"
+  }
+]

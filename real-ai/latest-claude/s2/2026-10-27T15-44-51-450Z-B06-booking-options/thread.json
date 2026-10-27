@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n3:41 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 3:42 PM\n3:41 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:41 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n3:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "My top 3 under ₹20,000 best value first:\n\nPhone (price)\tChip\tDisplay\tCamera\tBattery\nPoco X6 5G (₹17,999)\tSnapdragon 7s Gen 2\t6.67\" AMOLED, 120Hz\t64MP with OIS\t5100mAh, 67W\nRedmi Note 13 Pro 5G (₹18,999)\tSnapdragon 7s Gen 2\t6.67\" AMOLED, 120Hz\t200MP with OIS\t5100mAh, 67W\niQOO Neo 9 SE 5G (₹19,999)\tSnapdragon 7 Gen 3\t6.78\" AMOLED, 120Hz\t50MP with OIS\t5000mAh, 120W\nPoco X6: the cheapest of the three with a bright AMOLED screen and a solid chip. Its software comes with extra pre-installed apps.\nRedmi Note 13 Pro: the pick for photos, for ₹1,000 more. It can heat up in long gaming sessions.\niQOO Neo 9 SE: the strongest chip and fastest charging, best for gaming. Low-light photos are average.\n\nAll prices and specs come from one buying guide, updated Thu 22 Oct 2026. Shop prices may differ, so check the final price before you buy.\n\n3:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n3:44 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3 day Jaipur plan for your parents: sights in the morning, a rest after lunch, and a gentle evening.\n\nDay 1: Forts and old city\n\nMorning: Amer Fort. Go early to beat the heat and crowds, and take a jeep up instead of climbing.\nMidday: Photo stop at Jal Mahal, then lunch and rest.\nEvening: Hawa Mahal from a rooftop café, then a slow walk through Johari Bazaar.\n\nDay 2: Palaces and culture\n\nMorning: City Palace and Jantar Mantar, both close together.\nAfternoon: Rest at the hotel.\nEvening: Albert Hall Museum when it's lit up, then dinner with Rajasthani thali.\n\nDay 3: Easy day and shopping\n\nMorning: Birla Mandir, then a visit to Patrika Gate for photos.\nAfternoon: Block-print and jewellery shopping at Bapu Bazaar.\nEvening: Dinner at Chokhi Dhani for folk music and food, if they have energy.\n\nBook a hotel near the old city so the days stay short, and hire one car for all three days. Do your parents find stairs or long walks hard? I can then swap in easier options.\n\n3:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n3:44 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 3:45 PM\n3:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:45 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooking for well-rated Italian restaurants in\nKeep 3 Italian restaurants in Bandra that fit best ratings with a table for 2\nCheck restaurant booking pages for Sat 31 Oct\nCompare which places have a table free\nWatch live\nStop\n2 min\n3:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:45 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for well-rated Italian… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant booking pages for Sat 31 Oct instead\nTry another way\nTake over\nStop\n3:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:47 PM"
+  }
+]
