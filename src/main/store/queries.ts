@@ -129,10 +129,39 @@ export function derivePill(input: PillInput, now: number): { pill: ChatPill | nu
   return { pill: null, pillUntil: null };
 }
 
-/** Markdown stripped, line breaks become spaces (03-shell-1 §3.4.6, last paragraph). */
+/** A markdown table separator row (`|---|:---:|`, `--- | ---`): dashes in cells, with at least one `|`. */
+const TABLE_RULE = /^[ \t]*(?=[^\n]*\|)\|?([ \t]*:?-+:?[ \t]*\|?)+[ \t]*$/;
+const cells = (line: string) =>
+  line
+    .replace(/^[ \t]*\|/, '')
+    .replace(/\|[ \t]*$/, '')
+    .split('|')
+    .map((c) => c.trim())
+    .filter(Boolean)
+    .join(' · ');
+
+/**
+ * CR-0061 (X-218 item 1): a table reads as its cells. The separator row goes; the row above it and the rows under it that
+ * hold a `|` read as their cells joined by " · " (outer pipes or not); any other line with outer pipes reads the same way.
+ */
+function tableAsCells(text: string): string {
+  const lines = text.split('\n');
+  const inTable = new Set<number>();
+  lines.forEach((l, i) => {
+    if (!TABLE_RULE.test(l) || i === 0 || !lines[i - 1]!.includes('|')) return;
+    inTable.add(i - 1);
+    for (let j = i + 1; j < lines.length && lines[j]!.includes('|') && !TABLE_RULE.test(lines[j]!); j++) inTable.add(j);
+    lines[i] = '';
+  });
+  return lines.map((l, i) => (inTable.has(i) || /^[ \t]*\|.*\|[ \t]*$/.test(l) ? cells(l) : l)).join('\n');
+}
+
+/**
+ * Markdown stripped, line breaks become spaces (03-shell-1 §3.4.6, last paragraph). CR-0061: a table is markdown too, so
+ * its `|---|` line goes and its cells read "Plan · Price · Data".
+ */
 export function plainLine(text: string): string {
-  return text
-    .replace(/```[\s\S]*?```/g, ' ')
+  return tableAsCells(text.replace(/```[\s\S]*?```/g, ' '))
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/(\*\*|__)(.+?)\1/g, '$2')
@@ -535,6 +564,41 @@ export function reactMessage(db: Db, messageId: string, emoji: string, on: boole
   return touched(db, messageId);
 }
 
+/** CR-0062 the §17.2 chip ids (`bubble.feedback.chip.*`). */
+export const FEEDBACK_CHIPS = ['wrong', 'not_asked', 'too_long', 'too_short', 'other'] as const;
+export type FeedbackChip = (typeof FEEDBACK_CHIPS)[number];
+
+/**
+ * CR-0062 `message:feedback` (04 §17.1–§17.2): 👍 or 👎 on foo's or a helper's answer, with the 👎 chips and optional
+ * words (redacted), kept on this PC; `null` clears all three. A private chat keeps none (12-2 §12.30.6). The words are not
+ * given to the AI yet: they become a preference note with `memory` (batch 3).
+ */
+// GAP: GAPS.md 2026-10-26 "**Open:** the 👎 " (the words wait for `memory` to become a preference note)
+export function feedbackMessage(
+  db: Db,
+  messageId: string,
+  vote: 'good' | 'bad' | null,
+  chips: readonly FeedbackChip[] = [],
+  note = '',
+): MessageWriteResult {
+  const r = db
+    .prepare(
+      'SELECT m.author_kind, m.kind, c.private FROM messages m JOIN chats c ON c.id = m.chat_id WHERE m.id = ? AND m.deleted_at IS NULL',
+    )
+    .get(messageId) as DbRow | undefined;
+  if (!r) return { ok: false, reason: 'not_found' };
+  if (r.author_kind === 'user' || r.author_kind === 'system' || r.kind !== 'text' || r.private) return { ok: false, reason: 'not_allowed' };
+  const words = vote === 'bad' && note.trim() ? writeRedacted(note.trim()) : null;
+  const picked = vote === 'bad' && chips.length ? JSON.stringify([...new Set(chips)]) : null;
+  db.prepare('UPDATE messages SET feedback = ?, feedback_chips = ?, feedback_note = ?, rev = rev + 1 WHERE id = ?').run(
+    vote,
+    picked,
+    words,
+    messageId,
+  );
+  return touched(db, messageId);
+}
+
 /** message:pin (08-1 §3.2): "Keep this voice note"; only voice messages. */
 export function pinMessage(db: Db, messageId: string, on: boolean): MessageWriteResult {
   const r = db.prepare('SELECT kind FROM messages WHERE id = ? AND deleted_at IS NULL').get(messageId) as DbRow | undefined;
@@ -577,6 +641,9 @@ export function editMessage(db: Db, messageId: string, text: string, now: number
     now,
     messageId,
   );
+  // CR-0059: the chat-list preview shows the last message's words, so its chat row takes a new rev (the window drops a
+  // same-rev chat:upsert as stale).
+  db.prepare('UPDATE chats SET rev = rev + 1 WHERE last_message_id = ?').run(messageId);
   return touched(db, messageId);
 }
 
@@ -593,8 +660,58 @@ export function deleteMessages(db: Db, ids: string[], now: number): { chatIds: s
       chatIds.add(String(r.chat_id));
       done.push(id);
     }
+    // CR-0059 row 5: the chat-list preview moves to the message before (the newest one not deleted), and a new rev lets
+    // the window take it.
+    for (const chatId of chatIds)
+      db.prepare(
+        `UPDATE chats SET rev = rev + 1, last_message_id = COALESCE(
+           (SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1), last_message_id)
+         WHERE id = ?`,
+      ).run(chatId, chatId);
   })();
   return { chatIds: [...chatIds], rows: done.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m) };
+}
+
+/**
+ * CR-0060 (04 §6.2 Edit: "foo receives the new text as a correction … and replies only if the answer changes"): foo's or a
+ * helper's finished text answer right after this message, which an edit writes again in place (CR-0059 rewrite); null when
+ * the next message is anything else (no answer yet: the queued turn reads the new words itself).
+ */
+export function answerAfter(db: Db, messageId: string): string | null {
+  const m = db.prepare('SELECT chat_id, seq FROM messages WHERE id = ?').get(messageId) as DbRow | undefined;
+  if (!m) return null;
+  const next = db
+    .prepare('SELECT id, author_kind, kind, status FROM messages WHERE chat_id = ? AND seq > ? AND deleted_at IS NULL ORDER BY seq LIMIT 1')
+    .get(m.chat_id, m.seq) as DbRow | undefined;
+  return next && (next.author_kind === 'foo' || next.author_kind === 'helper') && next.kind === 'text' && next.status === 'complete'
+    ? String(next.id)
+    : null;
+}
+
+/**
+ * CR-0060 `chat:clear` (06-3 §14 C-1 "Clear messages"): every message and card in the chat gets `deleted_at`, so the chat
+ * shows only the composer; the chat row stays, with no unread count. A private chat ends through C-23 instead, and foo's
+ * chat keeps its setup cards until setup is complete (`keepSetup`), so setup still has its open card. Returns the cleared
+ * message rows for the window, or null for a chat that is not there or is private.
+ */
+export function clearChat(db: Db, chatId: string, now: number, opts: { keepSetup?: boolean } = {}): MessageRow[] | null {
+  const chat = db.prepare('SELECT private FROM chats WHERE id = ? AND deleted_at IS NULL').get(chatId) as DbRow | undefined;
+  if (!chat || chat.private) return null;
+  const setupCard = "(type = 'setup' OR json_extract(payload, '$.setupCard') IS NOT NULL)";
+  const keep = opts.keepSetup ? `AND (card_id IS NULL OR card_id NOT IN (SELECT id FROM cards WHERE ${setupCard}))` : '';
+  const ids = db.prepare(`SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ${keep}`).pluck().all(chatId) as string[];
+  db.transaction(() => {
+    db.prepare(`UPDATE messages SET deleted_at = ?, rev = rev + 1 WHERE chat_id = ? AND deleted_at IS NULL ${keep}`).run(now, chatId);
+    db.prepare(
+      `UPDATE cards SET deleted_at = ? WHERE chat_id = ? AND deleted_at IS NULL ${opts.keepSetup ? `AND NOT ${setupCard}` : ''}`,
+    ).run(now, chatId);
+    db.prepare(
+      `UPDATE chats SET rev = rev + 1, unread_count = 0, last_message_id = COALESCE(
+         (SELECT id FROM messages WHERE chat_id = ? AND deleted_at IS NULL ORDER BY seq DESC LIMIT 1), last_message_id)
+       WHERE id = ?`,
+    ).run(chatId, chatId);
+  })();
+  return ids.map((id) => messageGet(db, id)).filter((m): m is MessageRow => !!m);
 }
 
 // GAP: GAPS.md 2026-10-17 "Try again on foo's answer before the engine"

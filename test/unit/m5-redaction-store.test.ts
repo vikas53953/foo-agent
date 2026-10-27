@@ -14,6 +14,7 @@ import { HIDDEN_FOR_AI, saveDraft, sendMessage } from '../../src/main/store/comp
 import { migrate, type Db } from '../../src/main/store/db';
 import { editMessage } from '../../src/main/store/queries';
 import { REDACTED_COLUMNS, redactRow, writeRedacted } from '../../src/main/store/writeRedacted';
+import { waMessageId, waSendKeyId } from '../../src/shared/waBridge';
 
 const NOW = 1_760_000_000_000;
 const CANARY = 'sk-proj-FAKE0canary0T3redaction00000000';
@@ -44,7 +45,7 @@ beforeEach(() => {
 describe('R2: Store.writeRedacted on every §4.6 rule 2 column', () => {
   it('lists exactly the rule 2 columns', () => {
     expect(REDACTED_COLUMNS).toEqual({
-      messages: ['text', 'text_for_ai', 'transcript'],
+      messages: ['text', 'text_for_ai', 'transcript', 'earlier_text', 'feedback_note'], // earlier_text: CR-0059 (X-216); feedback_note: CR-0062
       drafts: ['text'],
       tool_calls: ['args', 'result'],
       activity: ['summary', 'fields'],
@@ -84,6 +85,24 @@ describe('R2: Store.writeRedacted on every §4.6 rule 2 column', () => {
     expect(JSON.parse(String(redactRow('activity', { fields: JSON.stringify({ ruleId: `${ids.jobId}${CANARY}` }) }).fields))).toEqual({
       ruleId: expect.stringContaining('[hidden]'),
     });
+  });
+
+  it('a JSON leaf that is exactly a WhatsApp jid or message id is kept, though its digits pass the card check; inside more text it is scrubbed (CR-0064)', () => {
+    // From the windows-latest run on PR #159: waSendKeyId's hex held 6499929902078, 13 digits that pass Luhn, so P12 read the
+    // stored id as a card number. A 13-digit German mobile number passes too, in the jid the card sends to and in the id.
+    const sent = waMessageId('919800000011@s.whatsapp.net', 'FOO6499929902078A7F');
+    const waJid = '4915112345678@s.whatsapp.net';
+    const abroad = waMessageId(waJid, waSendKeyId('cd_019a0b1c-2d3e-7f40-8a1b-2c3d4e5f6a7b'));
+    const lid = '4915112345678@lid';
+    for (const id of [sent, waJid, abroad, lid]) expect(writeRedacted(id)).not.toBe(id);
+    const payload = { sentMessageId: sent, waJid, abroad, lid };
+    expect(JSON.parse(String(redactRow('cards', { payload: JSON.stringify(payload) }).payload))).toEqual(payload);
+    // Inside a sentence, or under another domain, the digits are scrubbed as before.
+    const kept = (v: string) => JSON.parse(String(redactRow('cards', { payload: JSON.stringify({ v }) }).payload)).v as string;
+    expect(kept(`${sent} card 4111 1111 1111 1111`)).toContain('•••• 1111');
+    expect(kept(`send to ${waJid}`)).toContain('••••');
+    expect(kept('wa_x@example.com:FOO6499929902078A7F')).toContain('••••');
+    expect(kept('4915112345678@example.com')).toContain('••••');
   });
 
   it('card numbers keep their last 4; ordinary text is unchanged', () => {

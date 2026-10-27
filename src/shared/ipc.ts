@@ -80,6 +80,16 @@ export interface Invokes {
   'message:list': { req: { chatId: string; beforeSeq?: number; limit: number }; res: MessageRow[] };
   'message:get': { req: { messageId: string }; res: MessageRow };
   'message:react': { req: { messageId: string; emoji: string; on: boolean }; res: void };
+  /** CR-0062 (04 §17.1–§17.2): 👍 / 👎 on an answer, kept on this PC; null clears it. */
+  'message:feedback': {
+    req: {
+      messageId: string;
+      vote: 'good' | 'bad' | null;
+      chips?: ('wrong' | 'not_asked' | 'too_long' | 'too_short' | 'other')[];
+      note?: string;
+    };
+    res: void;
+  };
   'message:pin': { req: { messageId: string; on: boolean }; res: void };
   /** M2 builder B: idempotent on `(chatId, clientId)` (AT-225); `SECRET_SUSPECTED` carries the PasteCatch in `error.paste`. */
   'message:send': {
@@ -124,6 +134,9 @@ export interface Invokes {
   'link:open': { req: { url: string }; res: void };
   /** Not in 08-1 §3.2 (gap): 04 §9.3 "+" opens the Windows emoji panel (Electron app.showEmojiPanel). */
   'app:showEmojiPanel': { req: Record<string, never>; res: void };
+  /** CR-0061 (06-3 §18.2, 08-1 §3.2): the exact redacted text Save report writes; saved locally only (X-12). */
+  'app:reportPreview': { req: Record<string, never>; res: { previewId: string; text: string } };
+  'app:reportSave': { req: { previewId: string; note?: string }; res: { zipPath: string } };
   'job:stop': { req: { jobId: string }; res: StopReport };
   'job:watch': { req: { jobId: string; on: boolean }; res: void };
   // M9 (CR-0013; 08-1 §3.2): live window, sign-in and take over, hand-back sites (X-124, X-129, X-135).
@@ -161,14 +174,20 @@ export interface Invokes {
   /** CR-0026 (06-1 §2.1, §2.3, §2.0): Welcome "Let's go", Card 2a name, Card 2b face, "Skip the rest". */
   'setup:welcome': { req: Record<string, never>; res: null };
   'setup:name': { req: { name: string }; res: null };
-  'setup:face': { req: { face: string }; res: null };
+  'setup:face': { req: { face: string; colour?: string }; res: null };
   'setup:skipRest': { req: Record<string, never>; res: null };
+  /** CR-0060 (06-1 §4.2 foo profile "Name and look"): the name, the face, "How I talk" (a setup choice id or the words). */
+  'profile:setName': { req: { name: string }; res: null };
+  'profile:setFace': { req: { face: string; colour?: string }; res: null };
+  'profile:setVibe': { req: { optionId: string } | { words: string }; res: null };
   'notifications:status': { req: Record<string, never>; res: { windowsAllowed: boolean; focusAssist: boolean } };
   // M8 T3: 08-1 §3.2 WhatsApp link and Hide from foo
   'whatsapp:linkStart': { req: Record<string, never>; res: void };
   'whatsapp:linkCancel': { req: Record<string, never>; res: void };
   'whatsapp:unlink': { req: Record<string, never>; res: void };
   'chat:archive': { req: { chatId: string; on: boolean }; res: ChatRow };
+  /** CR-0060 (06-3 §14 C-1 "Clear messages"): every message and card in the chat is removed; the chat stays. */
+  'chat:clear': { req: { chatId: string; confirm: true }; res: void };
   // M8 T2 (08-1 §3.2): Google connections. `outlook` only while flags.outlook (X-41), so v1 accepts 'google' alone.
   'connection:list': { req: Record<string, never>; res: ConnectionRow[] };
   'connection:connect': {
@@ -339,6 +358,7 @@ export const INVOKE_CHANNELS = [
   'app:quit',
   'app:openWindowsSettings',
   'chat:list',
+  'chat:clear',
   'chat:open',
   'chat:markRead',
   'chat:pin',
@@ -346,6 +366,7 @@ export const INVOKE_CHANNELS = [
   'message:list',
   'message:get',
   'message:react',
+  'message:feedback',
   'message:pin',
   'message:send',
   'composer:checkSecret',
@@ -363,6 +384,8 @@ export const INVOKE_CHANNELS = [
   'routine:pause',
   'link:open',
   'app:showEmojiPanel',
+  'app:reportPreview',
+  'app:reportSave',
   'job:stop',
   'job:watch',
   'job:openWindow',
@@ -394,6 +417,9 @@ export const INVOKE_CHANNELS = [
   'setup:name',
   'setup:face',
   'setup:skipRest',
+  'profile:setName',
+  'profile:setFace',
+  'profile:setVibe',
   'notifications:status',
   // M8 T3
   'whatsapp:linkStart',

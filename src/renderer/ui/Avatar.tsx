@@ -53,7 +53,9 @@ export function faceGlyph(face: FaceRef, name: string, kind: AvatarKind): string
 }
 
 function fillStyle(kind: AvatarKind, color: string | null | undefined): CSSProperties | undefined {
-  if ((kind === 'helper' || kind === 'group') && color && /^--h-[a-z]+$/.test(color)) return { background: `var(${color})` };
+  // A glyph face picked for foo keeps its tile's colour (06-1 §2.3 Card 2b, CR-0060), as helpers and groups do.
+  if ((kind === 'helper' || kind === 'group' || kind === 'foo') && color && /^--h-[a-z]+$/.test(color))
+    return { background: `var(${color})` };
   return undefined;
 }
 

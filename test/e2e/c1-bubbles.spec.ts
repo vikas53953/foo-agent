@@ -228,7 +228,7 @@ test('B3 · when the suggestion chips appear under a reply, the newest bubble st
   await app.close();
 });
 
-test('CR-0024 §(e) 5 · an older answer’s action row shows on hover, floating: the next row does not move', async () => {
+test('X-216 · an older answer has no action row: hovering it moves nothing and covers nothing', async () => {
   const text = THREE.join('\n\n');
   const { app, page } = await start([intake('train to Pune', text), intake('thanks, and the return', 'The return is on Sunday at 18:05.')]);
   await openChat(page, 'foo');
@@ -236,16 +236,12 @@ test('CR-0024 §(e) 5 · an older answer’s action row shows on hover, floating
   const { me: next } = await ask(page, 'thanks, and the return', 'The return is on Sunday at 18:05.');
   await page.mouse.move(1, 1);
   const bubble = reply.getByTestId(TID.bubbleFoo);
-  const actions = reply.locator('[data-older]');
-  // At rest: the older row is hidden and reserves no space (04 §1.2: 12px to the next run).
-  await expect(actions).toHaveCSS('opacity', '0');
+  // At rest: 04 §1.2, 12px to the next run.
   const before = await rect(next.getByTestId(TID.bubbleMe));
   expect(Math.round(before.top - (await rect(bubble)).bottom)).toBe(12);
-  // Hover: the row fades in just below the bubble, and the next row stays where it was.
+  // Hover: no action row appears under the older answer, and the next row stays where it was (CR-0059 row 2).
   await bubble.hover();
-  await expect(actions).toHaveCSS('opacity', '1');
-  const row = await rect(actions);
-  expect(Math.round(row.top - (await rect(bubble)).bottom)).toBe(4);
+  await expect(reply.getByTestId(TID.bubbleActionsCopy)).toHaveCount(0);
   const after = await rect(next.getByTestId(TID.bubbleMe));
   expect(after.top).toBe(before.top);
   await app.close();

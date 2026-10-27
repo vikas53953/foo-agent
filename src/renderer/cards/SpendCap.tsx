@@ -17,7 +17,7 @@ import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { nextMonthStart } from './jobCards';
 import { Money } from './parts/Money';
-import { RaiseCapDialog } from './RaiseCapDialog';
+import { RaiseCapDialog } from './lazyCapDialogs';
 import { ctrlEnter, useCardAction } from './useCardAction';
 import styles from './JobCards.module.css';
 

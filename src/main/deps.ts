@@ -14,9 +14,13 @@ export interface Deps {
 
 export const deps: Deps = { clock: systemClock, net: { online: true } };
 
-/** Called once at startup in FOO_TEST runs, before any window opens. */
+/**
+ * Called once at startup in FOO_TEST runs, before any window opens. `FOO_TEST_NOW` (an ISO time) starts the fake clock
+ * elsewhere than X-10's epoch, for tests that need the window's own clock at a given hour from its first paint.
+ */
 export function installTestDeps(): FakeClock {
-  const clock = new FakeClock(TEST_EPOCH_MS);
+  const at = Date.parse(process.env.FOO_TEST_NOW ?? '');
+  const clock = new FakeClock(Number.isNaN(at) ? TEST_EPOCH_MS : at);
   deps.clock = clock;
   deps.net = { online: true };
   return clock;

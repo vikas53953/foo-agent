@@ -16,4 +16,7 @@ export type MenuEntry =
     }
   | { kind: 'separator'; id: string };
 
-export type MenuAnchor = { el: HTMLElement; align?: 'start' | 'end' } | { x: number; y: number };
+export type MenuAnchor =
+  | { el: HTMLElement; align?: 'start' | 'end' }
+  /** `flipX`: a submenu opens left of this x when there is no room on the right, so it never covers its own menu. */
+  | { x: number; y: number; flipX?: number };

@@ -96,6 +96,10 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
     return (id && s.chats.byId[id]?.face) || '';
   });
+  const fooColor = useStore((s) => {
+    const id = s.chats.order.find((x) => s.chats.byId[x]?.kind === 'foo' && !s.chats.byId[x]?.private);
+    return (id && s.chats.byId[id]?.colorToken) || null;
+  });
   const reduced = useReducedMotion();
   const find = useFind();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -148,7 +152,11 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   const flingCheckRef = useRef(flingCheck);
   flingCheckRef.current = flingCheck;
 
-  const messages = useMemo<StoredMessage[]>(() => (slice ? slice.ids.map((id) => slice.byId[id]!) : []), [slice]);
+  // CR-0059 row 5: a deleted message leaves the chat (no "You deleted this message" line), for every row, divider and count.
+  const messages = useMemo<StoredMessage[]>(
+    () => (slice ? slice.ids.map((id) => slice.byId[id]!).filter((m) => m.deletedAt === null) : []),
+    [slice],
+  );
   const isWa = chat.kind === 'wa_mirror';
   const isGroup = chat.kind === 'group';
   // The unread divider is fixed when the chat opens and removed when the user sends a message here (§3.6.5).
@@ -161,6 +169,12 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     if (n > userCount.current) setUnreadFrom(null);
     userCount.current = n;
   }, [messages]);
+  // CR-0063 (X-220 item 2): first-run setup is the user talking with foo step by step, so its messages are never "new"; the
+  // divider is dropped for good while setup runs.
+  const inSetup = useStore((s) => s.settings.value !== null && !s.settings.value.setup.complete);
+  useEffect(() => {
+    if (inSetup) setUnreadFrom(null);
+  }, [inSetup]);
 
   // §14.2 / §14.3: the status line when a working job of this chat reports its step and no answer started; else the
   // Thinking row while a reply is in flight (chat:typing).
@@ -187,7 +201,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       now,
       timeZone: tz,
       hasMore: slice?.hasMore ?? true,
-      unreadFromId: unreadFrom,
+      unreadFromId: inSetup ? null : unreadFrom,
       unreadCount: unread.count,
       chatTitle: chat.title,
       chatCreatedAt: chat.createdAt,
@@ -196,7 +210,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     });
     if (live) r.push(live);
     return r;
-  }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, unread.count, chat, agentName, live]);
+  }, [isWa, waRowsData, mirrorDrafts, messages, now, tz, slice?.hasMore, unreadFrom, inSetup, unread.count, chat, agentName, live]);
   const layouts = useMemo<RowLayout[]>(() => layoutRows(rows, { chatKind: chat.kind }), [rows, chat.kind]);
   const latestUserId = useMemo(() => {
     for (let i = messages.length - 1; i >= 0; i--)
@@ -214,6 +228,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       isGroup,
       agentName,
       fooFace,
+      fooColor,
       timeZone: tz,
       now,
       offline: connection === 'offline',
@@ -232,6 +247,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       isGroup,
       agentName,
       fooFace,
+      fooColor,
       tz,
       now,
       connection,
@@ -836,7 +852,7 @@ function Row({
       return h ? (
         <ThinkingRow face={h.faceRef} name={h.name} kind="helper" color={h.colorToken} label={ctx.isGroup} />
       ) : (
-        <ThinkingRow face={ctx.fooFace} name={ctx.agentName} kind="foo" label={ctx.isGroup} />
+        <ThinkingRow face={ctx.fooFace} name={ctx.agentName} kind="foo" color={ctx.fooColor} label={ctx.isGroup} />
       );
     }
     case 'message': {

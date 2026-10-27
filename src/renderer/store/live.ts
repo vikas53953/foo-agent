@@ -3,9 +3,11 @@
 // §3.4.9 ("Mark as unread" dot). `now` is the renderer's clock, offset to main's injected clock at start.
 // The face: 02-2 §F15.9.3 (moods from real state only, priority order, one-time moods on top, #11 once a day), §F15.9.3c
 // (10 s repeat guard), §F15.9.9 (`selectChatMood`, `playOnce`, `faceQueue` max 3). Quiet hours read
-// `settings.notifications.quiet` directly until M7 exposes `quietHours.isQuiet` (M11 ticket map, LF stub).
+// `settings.notifications.quiet` through `quietHours()` (only while `notify` is on, CR-0063) until M7 exposes
+// `quietHours.isQuiet` (M11 ticket map, LF stub).
 import { FACE_QUEUE_MAX, isOneTime, LISTEN_MS, MOOD_PRIORITY, ONE_TIME_MS, REPEAT_GUARD_MS, type OneTimeMood } from '../../shared/face';
 import type { FeatureId } from '../../shared/features';
+import type { Settings } from '../../shared/settings';
 import type { AiStatus, CardRow, JobRow, MessageRow, Mood } from '../../shared/types';
 import { effectivePill } from '../chatlist/rules';
 import { quietUntil } from '../shell/statusLine';
@@ -38,6 +40,10 @@ export interface LiveState {
   loadFailed: boolean;
   /** CR-0054: the switched-on features (Bootstrap.features); null = every feature (no list sent). */
   features: FeatureId[] | null;
+  /** CR-0060: the app version for Settings → About. */
+  appVersion: string | null;
+  /** CR-0061 (X-44): an unsigned tester build. */
+  testerBuild: boolean;
 }
 
 export function initialLive(now: number): LiveState {
@@ -58,6 +64,8 @@ export function initialLive(now: number): LiveState {
     loaded: false,
     loadFailed: false,
     features: null,
+    appVersion: null,
+    testerBuild: false,
   };
 }
 
@@ -118,11 +126,20 @@ const NO_JOBS: JobRow[] = [];
 
 let quietMemo: { quiet: unknown; tz: string; now: number; on: boolean } | null = null;
 
+/**
+ * CR-0063 (X-220 item 1): quiet hours belong to `notify` (CR-0054). While it is off nothing is held for them and they cannot
+ * be changed, so foo is never asleep and no "Quiet until" shows; null then.
+ */
+export function quietHours(s: RootState): Settings['notifications']['quiet'] | null {
+  const settings = s.settings.value;
+  return settings && selectFeatureOn('notify')(s) ? settings.notifications.quiet : null;
+}
+
 /** Quiet hours are on now (`settings.notifications.quiet`, the renderer clock). Computed once per clock tick, not per row. */
 export function isQuietNow(s: RootState): boolean {
   const settings = s.settings.value;
-  if (!settings) return false;
-  const { quiet } = settings.notifications;
+  const quiet = quietHours(s);
+  if (!settings || !quiet) return false;
   const tz = settings.locale.timeZone;
   const now = s.live.now;
   if (quietMemo && quietMemo.quiet === quiet && quietMemo.tz === tz && quietMemo.now === now) return quietMemo.on;
@@ -223,7 +240,8 @@ export function noteJobForFace(s: RootState, prev: JobRow['state'] | undefined, 
   else if (row.state === 'done' && row.proof != null) {
     const settings = s.settings.value;
     const tz = settings?.locale.timeZone ?? 'Asia/Kolkata';
-    const quiet = settings ? quietUntil(settings.notifications.quiet, now, tz) != null : false;
+    const hours = quietHours(s);
+    const quiet = hours ? quietUntil(hours, now, tz) != null : false;
     const today = localDay(now, tz);
     const approved = Object.values(s.cards.byId).some(
       (c) => c.jobId === row.id && APPROVED_KINDS.includes(c.type) && c.state.toLowerCase() === 'completed',

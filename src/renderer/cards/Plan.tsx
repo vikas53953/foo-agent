@@ -20,7 +20,7 @@ import { Icon } from '../ui/Icon';
 import { CardButton } from './CardButton';
 import { CardFrame, CardTimeLabel, type CardTime } from './CardFrame';
 import { planRows, planWithdrawn } from './jobCards';
-import { RaiseCapDialog } from './RaiseCapDialog';
+import { RaiseCapDialog } from './lazyCapDialogs';
 import { ctrlEnter, useCardAction } from './useCardAction';
 import styles from './JobCards.module.css';
 

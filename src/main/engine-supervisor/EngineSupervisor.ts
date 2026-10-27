@@ -34,6 +34,7 @@ export class EngineSupervisor {
   private child: UtilityProcess | null = null;
   private port: MessagePortMain | null = null;
   private restarts = 0;
+  /** Set by stop() for the quit and never cleared: the start timers (+300 ms, the bridge's +20 s) may fire after it. */
   private stopping = false;
   /** Called after every (re)start once the port is wired: main sends settings and the network state. */
   onStarted: () => void = () => {};
@@ -58,7 +59,7 @@ export class EngineSupervisor {
 
   /** M8 (T3): 08-1 §2.1, only when a whatsapp row exists or on whatsapp:linkStart. */
   startBridge(): void {
-    if (EngineSupervisor.wanted()) this.bridgeLife.start();
+    if (!this.stopping && EngineSupervisor.wanted()) this.bridgeLife.start();
   }
 
   stopBridge(): void {
@@ -97,8 +98,8 @@ export class EngineSupervisor {
   }
 
   start(): void {
-    if (this.child || !EngineSupervisor.wanted()) return;
-    this.stopping = false;
+    // §2.3 step 5: after the quit's stop() the database is closed, so a late timer starts nothing (onStarted reads it).
+    if (this.stopping || this.child || !EngineSupervisor.wanted()) return;
     const entry = join(__dirname, '..', '..', 'engine', 'index.js');
     const env: Record<string, string> = {};
     for (const [k, v] of Object.entries(process.env)) if (v !== undefined) env[k] = v;
@@ -110,6 +111,8 @@ export class EngineSupervisor {
     const { port1, port2 } = new MessageChannelMain();
     child.postMessage({ kind: 'port' }, [port2]);
     port1.on('message', (e) => {
+      // A db.tx or db.query still queued when the quit stopped the engine would run on the closed database.
+      if (this.stopping) return;
       const reply = this.bridge.receive(e.data);
       if (reply) port1.postMessage(reply);
     });
@@ -138,6 +141,8 @@ export class EngineSupervisor {
   stop(): void {
     this.stopping = true;
     this.bridgeLife.stop();
+    this.port?.close();
+    this.port = null;
     this.child?.kill();
   }
 }

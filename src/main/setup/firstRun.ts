@@ -5,7 +5,7 @@
 // vibe (or "Skip the rest") setup is complete and foo says a short warm hello with three things to try. The interview and
 // the first real job (§2.4–§2.6) stay with P2 T4.
 import { newNonce } from '../../shared/canon';
-import { FACE_GLYPHS } from '../../shared/firstRunPools';
+import { FACE_COLOURS, FACE_GLYPHS } from '../../shared/firstRunPools';
 import { t } from '../../shared/copy/t';
 import { newId } from '../../shared/ids';
 import { settingsDefaults } from '../../shared/settingsDefaults';
@@ -36,7 +36,7 @@ export const FACES: ReadonlySet<string> = new Set(['living:default', ...FACE_GLY
 /** "Something else…" words in the vibe line are cut at whole characters to this many UTF-16 units, so the line stays
  * inside `identity.vibeLine` (200). */
 const VIBE_WORDS_MAX = 160;
-function cutWords(words: string): string {
+export function cutWords(words: string): string {
   let out = '';
   for (const { segment } of segmenter.segment(words)) {
     if (out.length + segment.length > VIBE_WORDS_MAX) break;
@@ -178,10 +178,16 @@ function merge(a: FinderWrite, b: FinderWrite | null): FinderWrite {
   return b ? { chatId: a.chatId, cardIds: [...a.cardIds, ...b.cardIds], messageIds: [...a.messageIds, ...b.messageIds] } : a;
 }
 
-function setFooChat(db: Db, chatId: string, set: { title?: string; avatar_ref?: string }) {
+export function setFooChat(db: Db, chatId: string, set: { title?: string; avatar_ref?: string; color_token?: string | null }) {
   if (set.title !== undefined) db.prepare('UPDATE chats SET title = ?, rev = rev + 1 WHERE id = ?').run(set.title, chatId);
   if (set.avatar_ref !== undefined) db.prepare('UPDATE chats SET avatar_ref = ?, rev = rev + 1 WHERE id = ?').run(set.avatar_ref, chatId);
+  if (set.color_token !== undefined)
+    db.prepare('UPDATE chats SET color_token = ?, rev = rev + 1 WHERE id = ?').run(set.color_token, chatId);
 }
+
+/** CR-0060: the tile colour a glyph face keeps (one of the Card 2b palette tokens); the living face has none. */
+export const faceColour = (face: string, colour: string | undefined): string | null =>
+  face.startsWith('glyph:') && colour && FACE_COLOURS.some((c) => c.token === colour) ? colour : null;
 
 /** Card 2a answered (blank = Keep "foo"): writes `identity.agentName`, foo says "{Name} it is.", then the face card. */
 export function nameAnswered(
@@ -215,13 +221,20 @@ export function nameAnswered(
 }
 
 /** Card 2b "Use this face": foo's chat wears the face everywhere (§F15.5.1), then the vibe card. */
-export function faceChosen(db: Db, settings: SettingsPort, face: string, now: number, dataDir?: string): FinderWrite | null {
+export function faceChosen(
+  db: Db,
+  settings: SettingsPort,
+  face: string,
+  now: number,
+  dataDir?: string,
+  colour?: string,
+): FinderWrite | null {
   if (!FACES.has(face)) return null;
   const chatId = fooChatId(db);
   const open = chatId ? openCard(db, chatId, 'face') : undefined;
   if (!chatId || !open) return null;
   if (!insert(db, [collapse(open, 'answered', { payload: { ...open.payload, answer: face } })], now, dataDir)) return null;
-  setFooChat(db, chatId, { avatar_ref: face });
+  setFooChat(db, chatId, { avatar_ref: face, color_token: faceColour(face, colour) });
   return merge({ chatId, cardIds: [open.id], messageIds: [] }, ensureSetupCard(db, settings, now + 1, dataDir));
 }
 
@@ -230,7 +243,7 @@ export function vibeAnswered(db: Db, settings: SettingsPort, card: CardRow, now:
   const chatId = fooChatId(db);
   if (!chatId || card.chatId !== chatId || which(card) !== 'vibe') return null;
   const a = card.answer as { optionId?: string; text?: string; skip?: true } | null;
-  const id = a?.optionId && a.optionId in VIBES ? (a.optionId as VibeId) : null;
+  const id = a?.optionId && Object.hasOwn(VIBES, a.optionId) ? (a.optionId as VibeId) : null;
   const typed = cutWords(a?.text?.trim() ?? '');
   const line = id ? VIBES[id].line() : typed ? t('setup.vibe.line.custom', { words: typed }) : VIBES.o1.line();
   const vibe = id ? VIBES[id].vibe : typed ? 'custom' : VIBES.o1.vibe;

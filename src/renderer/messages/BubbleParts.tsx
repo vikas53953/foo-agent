@@ -21,7 +21,7 @@ import { Menu } from '../ui/Menu';
 import { Spinner } from '../ui/Spinner';
 import { Tooltip } from '../ui/Tooltip';
 import { cx } from '../ui/cx';
-import { BADGE_DEBOUNCE_MS, badgeDelay, tickLabel, type BadgeSlot } from './bubbleState';
+import { BADGE_DEBOUNCE_MS, SEEN_AFTER_MS, badgeDelay, tickLabel, type BadgeSlot } from './bubbleState';
 import { mediaUrl, useBubble } from './bubbleContext';
 import { useOneShot } from './oneShot';
 import type { RetryPhase } from './retry';
@@ -104,6 +104,24 @@ export function useDebounced(value: string): string {
   return shown;
 }
 
+/** CR-0059 row 4 (X-216): true once `on` has held for SEEN_AFTER_MS; false again as soon as it drops. */
+export function useHeldFor(on: boolean): boolean {
+  const [held, setHeld] = useState(false);
+  // Adjusting state while rendering, as in useDebounced: the next 👀 waits its own 2 s again.
+  if (!on && held) setHeld(false);
+  useEffect(() => {
+    if (!on) return;
+    const id = setTimeout(() => setHeld(true), SEEN_AFTER_MS);
+    return () => clearTimeout(id);
+  }, [on]);
+  return on && held;
+}
+
+/** CR-0059 row 4 (X-216): 👀 as Microsoft's Fluent 3D eyes (MIT, src/renderer/public/emoji), blinking slowly. */
+function SeenEyes() {
+  return <img className={styles.eyes} src="./emoji/eyes-3d.webp" alt="" draggable={false} />;
+}
+
 export function BadgeSlotView({ slot, tooltip, onActivate }: { slot: Exclude<BadgeSlot, null>; tooltip: string; onActivate?: () => void }) {
   if (slot.kind === 'reaction')
     return (
@@ -129,7 +147,7 @@ export function BadgeSlotView({ slot, tooltip, onActivate }: { slot: Exclude<Bad
         </button>
       ) : (
         <span className={styles.badge} data-testid={TID.bubbleBadge} data-state={slot.value} aria-hidden="true">
-          {glyph}
+          {slot.value === 'seen' ? <SeenEyes /> : glyph}
         </span>
       )}
     </Tooltip>

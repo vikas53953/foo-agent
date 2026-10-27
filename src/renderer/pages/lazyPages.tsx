@@ -1,6 +1,6 @@
 // Spec: 10-acceptance-2 §C.8 AT-322 (the renderer entry chunk ≤ 500 KB minified; a lazily loaded page shows its skeleton
 // within 150ms), 06 §0.5 Loading (static skeleton rows once data is not ready within 150ms), CR-0021 (P1 T10). Settings and
-// Memory leave the first script: each loads on first open (or earlier, when the window is idle after launch) behind a
+// Memory (and foo's profile, CR-0060) leave the first script: each loads on first open (or earlier, when the window is idle after launch) behind a
 // page frame that turns into the §0.5 skeleton at `delay-loading`.
 import { Component, lazy, Suspense, useEffect, useState, type ComponentProps, type ReactNode } from 'react';
 import { t } from '../../shared/copy/t';
@@ -12,21 +12,30 @@ import { selectAgentName } from '../store/settings';
 import { Button } from '../ui/Button';
 import { preloadKit } from './lazyKit'; // R1 (CR-0022): the kit and page scripts warm up with the pages
 import { loadFirstRun } from '../cards/setup/SetupCard'; // CR-0026: the first-run cards too
+import { loadCapDialogs } from '../cards/lazyCapDialogs'; // CR-0060: and the two cap dialogs
 import { Skeleton } from '../ui/Skeleton';
 import styles from './PageLoading.module.css';
 
 type MemoryModule = typeof import('../screens/Memory');
 type SettingsModule = typeof import('../screens/settings/SettingsPage');
+type DialogsModule = typeof import('../shell/ShellDialogs'); // CR-0060: the Ctrl+/ sheet and C-1
+type ProfileModule = typeof import('../screens/profile/FooProfile'); // CR-0060: foo's profile shares the setup tiles
 
 // A loaded page module is kept here, so once its script has arrived (the idle preload, or an earlier open) the page renders
 // in the same commit as the view change, with no fallback frame between (the shell's cross-fade starts with it).
 let memoryModule: MemoryModule | null = null;
 let settingsModule: SettingsModule | null = null;
+let profileModule: ProfileModule | null = null;
+let dialogsModule: DialogsModule | null = null;
 const loadMemory = () => import('../screens/Memory').then((m) => (memoryModule = m));
 const loadSettings = () => import('../screens/settings/SettingsPage').then((m) => (settingsModule = m));
+const loadDialogs = () => import('../shell/ShellDialogs').then((m) => (dialogsModule = m));
+const loadProfile = () => import('../screens/profile/FooProfile').then((m) => (profileModule = m));
 
 const LazyMemory = lazy(() => loadMemory().then((m) => ({ default: m.MemoryPage })));
 const LazySettings = lazy(() => loadSettings().then((m) => ({ default: m.SettingsPage })));
+const LazyDialogs = lazy(() => loadDialogs().then((m) => ({ default: m.ShellDialogs })));
+const LazyProfile = lazy(() => loadProfile().then((m) => ({ default: m.FooProfile })));
 
 type MemoryProps = ComponentProps<MemoryModule['MemoryPage']>;
 type SettingsProps = ComponentProps<SettingsModule['SettingsPage']>;
@@ -56,13 +65,45 @@ export function SettingsPage(props: SettingsProps) {
   );
 }
 
+export function FooProfile() {
+  const [loaded] = useState(() => profileModule);
+  if (loaded) return <loaded.FooProfile />;
+  return (
+    <PageLoadError>
+      <Suspense fallback={<PageLoading />}>
+        <LazyProfile />
+      </Suspense>
+    </PageLoadError>
+  );
+}
+
+const SHELL_DIALOGS = new Set<string>(['shortcuts', 'c-01', 'privacy', 'whats-new', 'report', 'licences']);
+
+/** The shell's lazily loaded dialogs: nothing until one of them is asked for. */
+export function ShellDialogs() {
+  const wanted = useStore((s) => s.ui.dialog !== null && SHELL_DIALOGS.has(s.ui.dialog));
+  if (!wanted && !dialogsModule) return null;
+  return (
+    <Suspense fallback={null}>
+      <LazyDialogs />
+    </Suspense>
+  );
+}
+
 /** Fetches the page scripts ahead of the first open, once launch work is done. A failed fetch is not retried: Chromium
  * keeps the failed module, so opening the page shows PageLoadError, whose button reloads the window. */
 export function preloadPages(): void {
   void loadMemory().catch(() => undefined);
   void loadSettings().catch(() => undefined);
+  void loadProfile().catch(() => undefined);
+  void loadDialogs().catch(() => undefined);
   preloadKit();
   void loadFirstRun().catch(() => undefined);
+  void loadCapDialogs().catch(() => undefined);
+  // CR-0061: and the 👎 and "Why am I getting this?" popovers and the reaction picker (loaded on first open).
+  void Promise.all([import('../messages/FeedbackPopover'), import('../messages/WhyPopover'), import('../messages/ReactionPicker')]).catch(
+    () => undefined,
+  );
 }
 
 /** The page frame while its script loads: empty at first, the §0.5 skeleton once `delay-loading` (150ms) has passed. */

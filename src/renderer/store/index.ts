@@ -128,6 +128,12 @@ export function setFindOpen(open: boolean): void {
   });
 }
 
+export function setPanelEmpty(empty: boolean): void {
+  update((s) => {
+    if (s.ui.panelEmpty !== empty) s.ui.panelEmpty = empty;
+  });
+}
+
 export function setRightShellOpenOverlay(open: boolean): void {
   update((s) => {
     s.ui.rightShellOpenOverlay = open;

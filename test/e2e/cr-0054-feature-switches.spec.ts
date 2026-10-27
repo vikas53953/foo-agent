@@ -1,12 +1,12 @@
 // Spec: CR-0054 (X-211): a batch-1 build (install, ai, name, chat, settings) shows no entry point of a feature it left off:
 // no New helper, no menu rows for groups, memory, routines, ideas or activity; no Doing now, Using, Know or Spent in the
-// details panel; only the batch-1 settings pages; the + menu keeps Emoji only; an empty composer shows Send, not the mic, and
+// details panel (it does not open at all while it has nothing to show, X-218 item 9); only the batch-1 settings pages; the + menu keeps Emoji only; an empty composer shows Send, not the mic, and
 // its placeholder offers no talk key.
 import { expect, test } from '@playwright/test';
 import { TID } from '../../src/shared/testids';
 import { openPanelChat } from './m4-start';
 import { launch, testDirs } from './launch';
-import { openWorld, windowSize } from '../fidelity/capture';
+import { openChat, openWorld, windowSize } from '../fidelity/capture';
 
 test('CR-0054: a batch-1 build hides every entry point of a feature it left off', async () => {
   const app = await launch(testDirs(), [], { FOO_FEATURES: 'install,ai,name,chat,settings' });
@@ -29,7 +29,11 @@ test('CR-0054: a batch-1 build hides every entry point of a feature it left off'
   await expect(page.getByTestId(TID.sidebarMenuQuit)).toBeVisible();
   await page.keyboard.press('Escape');
 
-  await openPanelChat(page, 'foo');
+  // With every panel section off and nothing kept the details panel has nothing to show, so it stays shut and its toggle is
+  // gone (X-218 item 9).
+  await openChat(page, 'foo');
+  await expect(page.getByTestId(TID.chatHeaderPanel)).toHaveCount(0);
+  await expect(page.getByTestId(TID.appPanel)).toHaveCount(0);
   for (const tid of ['appPanelDoing', 'appPanelUsing', 'appPanelKnow', 'appPanelSpent'] as const)
     await expect(page.getByTestId(TID[tid])).toHaveCount(0);
 

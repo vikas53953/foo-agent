@@ -108,6 +108,8 @@ export function applyBootstrap(b: Bootstrap): void {
     s.live.loaded = true;
     s.live.loadFailed = false;
     s.live.features = b.features ?? null;
+    s.live.appVersion = b.appVersion ?? null;
+    s.live.testerBuild = b.testerBuild ?? false;
     s.live.now = clockNow();
   });
   if (b.openChatId) openFromEvent({ kind: 'chat', chatId: b.openChatId });

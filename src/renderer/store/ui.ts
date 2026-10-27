@@ -25,6 +25,8 @@ export interface UiState {
   dismissed: BannerType[];
   findOpen: boolean;
   rightShellOpenOverlay: boolean;
+  /** CR-0061 (X-218 item 9): the open chat's details panel has no section to show in this build, so it stays shut. */
+  panelEmpty: boolean;
   xsPane: XsPane;
   /** The open shell menu or popover (one at a time; Esc ladder step 1). */
   menu: string | null;
@@ -49,6 +51,7 @@ export function initialUi(): UiState {
     dismissed: [],
     findOpen: false,
     rightShellOpenOverlay: false,
+    panelEmpty: false,
     xsPane: 'chat',
     menu: null,
     chatFilter: 'all',

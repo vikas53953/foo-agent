@@ -113,6 +113,8 @@ export const TID = {
 
   // app: right shell and app-wide parts (03-shell-2 §3.7, 02-3 §F25.2)
   appPanel: 'app-panel',
+  // CR-0061 (X-218 item 7): the details panel's Kept section.
+  appPanelKept: 'app-panel-kept',
   appPanelClose: 'app-panel-close',
   appPanelBack: 'app-panel-back',
   appPanelDoing: 'app-panel-doing',
@@ -143,6 +145,33 @@ export const TID = {
   screenSpend: 'screen-spend',
   screenIdeas: 'screen-ideas',
   screenFooProfile: 'screen-foo-profile',
+  // 06-1 §4.1 / §4.2 profile page rows (CR-0060: the batch-1 part of foo's profile)
+  profileHero: 'profile-hero',
+  profileMessage: 'profile-message',
+  profileRowName: 'profile-row-name',
+  profileRowFace: 'profile-row-face',
+  profileRowVibe: 'profile-row-vibe',
+  profileRunSetup: 'profile-run-setup',
+  // 06-3 §19 keyboard shortcuts sheet, 06-2 §6.10 page rows
+  dialogShortcuts: 'dialog-shortcuts',
+  dialogShortcutsFilter: 'dialog-shortcuts-filter',
+  dialogShortcutsRow: 'dialog-shortcuts-row',
+  settingsRowShortcuts: 'settings-row-shortcuts',
+  settingsRowAboutVersion: 'settings-row-about-version',
+  // CR-0061 (X-218): the batch-1 About rows (06-2 §6.11); update and repair are listed so tests can prove they are absent.
+  settingsRowAboutUpdate: 'settings-row-about-update',
+  settingsRowAboutWhatsNew: 'settings-row-about-whats-new',
+  settingsRowAboutReport: 'settings-row-about-report',
+  settingsRowAboutRepair: 'settings-row-about-repair',
+  settingsRowAboutLeaves: 'settings-row-about-leaves',
+  settingsRowAboutLicences: 'settings-row-about-licences',
+  dialogPrivacy: 'dialog-privacy',
+  dialogWhatsNew: 'dialog-whats-new',
+  dialogReport: 'dialog-report',
+  dialogReportPreview: 'dialog-report-preview',
+  dialogReportNote: 'dialog-report-note',
+  dialogLicences: 'dialog-licences',
+  setupPrivacyDetails: 'setup-privacy-details',
   screenHelperProfile: 'screen-helper-profile',
   screenGroupProfile: 'screen-group-profile',
   // M1 builder B additions
@@ -501,6 +530,7 @@ export const TID = {
   settingsRowConnectionsWHidden: 'settings-row-connections-w-hidden',
   dialogLinkWhatsapp: 'dialog-link-whatsapp',
   dialogC08: 'dialog-c-08',
+  dialogC01: 'dialog-c-01',
   dialogC13: 'dialog-c-13',
   dialogC11: 'dialog-c-11',
   cardSignin: 'card-signin',

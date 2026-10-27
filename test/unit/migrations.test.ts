@@ -28,10 +28,10 @@ const schema = (db: Database.Database) =>
 describe('migrations', () => {
   it('are numbered from 0001 with no gaps', () => expect(listMigrations(DIR)[0]).toEqual({ version: 1, file: '0001_init.sql' }));
 
-  it('build exactly the spec schema, with only the route CHECKs widened by 0002, the 0003 suggestions column and the 0004 rich-replies changes', () => {
+  it('build exactly the spec schema, with only the route CHECKs widened by 0002, the 0003 suggestions column, the 0004 rich-replies changes, the 0006 earlier answer and the 0007 answer feedback', () => {
     const db = new Database(':memory:');
     db.pragma('foreign_keys = ON');
-    expect(migrate(db, DIR)).toEqual([1, 2, 3, 4, 5]);
+    expect(migrate(db, DIR)).toEqual([1, 2, 3, 4, 5, 6, 7]);
     expect(db.pragma('foreign_keys', { simple: true })).toBe(1);
     expect(db.pragma('integrity_check', { simple: true })).toBe('ok');
     expect(db.pragma('foreign_key_check')).toEqual([]);
@@ -43,6 +43,10 @@ describe('migrations', () => {
     ref.exec(readFileSync(join(DIR, '0004_rich_replies.sql'), 'utf8'));
     // 0005 (CR-0057, X-214) rebuilds secrets_index with kind 'user_key'; the reference too.
     ref.exec(readFileSync(join(DIR, '0005_user_key.sql'), 'utf8'));
+    // 0006 (CR-0059, X-216) adds messages.earlier_text for Try again's earlier answer; the reference too.
+    ref.exec(readFileSync(join(DIR, '0006_earlier_answer.sql'), 'utf8'));
+    // 0007 (CR-0062, X-219) adds messages.feedback, feedback_chips and feedback_note; the reference too.
+    ref.exec(readFileSync(join(DIR, '0007_answer_feedback.sql'), 'utf8'));
     type Obj = { type: string; name: string; tbl_name: string; sql: string | null };
     const mine = schema(db) as Obj[];
     const spec = schema(ref) as Obj[];
@@ -70,7 +74,7 @@ describe('migrations', () => {
         .run(target, kind, name);
     row('foo/ai_key/openai-key', 'ai_key', 'openai-key');
     expect(() => row('foo/user_key/github-key', 'user_key', 'github-key')).toThrow(/CHECK/);
-    expect(migrate(db, DIR)).toEqual([5]);
+    expect(migrate(db, DIR)).toEqual([5, 6, 7]);
     row('foo/user_key/github-key', 'user_key', 'github-key');
     expect(db.prepare('SELECT target, kind FROM secrets_index ORDER BY target').all()).toEqual([
       { target: 'foo/ai_key/openai-key', kind: 'ai_key' },
@@ -94,7 +98,7 @@ describe('migrations', () => {
       "INSERT INTO steps (id, job_id, idx, phrase_key, state, route) VALUES ('s_1', 'j_1', 0, 'look_web', 'running', 'browser')",
     ).run();
     expect(() => db.prepare("UPDATE steps SET route = 'email' WHERE id = 's_1'").run()).toThrow(/CHECK/);
-    expect(migrate(db, DIR)).toEqual([2, 3, 4, 5]);
+    expect(migrate(db, DIR)).toEqual([2, 3, 4, 5, 6, 7]);
     expect(db.prepare('SELECT id, route FROM jobs').all()).toEqual([{ id: 'j_1', route: 'api' }]);
     db.prepare("UPDATE jobs SET route = 'handback' WHERE id = 'j_1'").run();
     db.prepare("UPDATE steps SET route = 'email' WHERE id = 's_1'").run();
@@ -113,7 +117,7 @@ describe('migrations', () => {
     const file = join(mkdtempSync(join(tmpdir(), 'foo-db-')), 'data', 'foo.db');
     openDb(file, DIR).close();
     const db = openDb(file, DIR);
-    expect(db.prepare('SELECT version FROM schema_migrations').pluck().all()).toEqual([1, 2, 3, 4, 5]);
+    expect(db.prepare('SELECT version FROM schema_migrations').pluck().all()).toEqual([1, 2, 3, 4, 5, 6, 7]);
     expect(db.pragma('journal_mode', { simple: true })).toBe('wal');
     db.close();
   });

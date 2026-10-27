@@ -24,6 +24,8 @@ const PAINT_P95_MS = 16;
 /** One refresh at 60 Hz: the most PERF-02 takes off for the wait from "ready to paint" to the screen's next refresh (CR-0005). */
 const FRAME_MS = 1000 / 60;
 const KEYS = 80;
+/** CR-0065: the main-thread work per key the probe must catch (more than one frame). */
+const INJECTED_MS = 20;
 
 /**
  * `animations` stands for a settings.json the user already has: a first run on a runner with ≤ 4 logical CPUs stores
@@ -166,11 +168,205 @@ test('Enter sends: the bubble shows at once, the field clears and keeps focus, S
   await app.close();
 });
 
+test('the field grows a line at a time as text is added, and shrinks back when lines go or the message is sent (02 §F7.1)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  await field(page).focus();
+  // At Off the height changes at once, so each read is the settled height.
+  await page.evaluate(() => document.documentElement.setAttribute('data-motion', 'off'));
+  const height = () => field(page).evaluate((el) => (el as HTMLElement).getBoundingClientRect().height);
+  await page.keyboard.type('one');
+  const one = await height();
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('two');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('three');
+  await expect.poll(height).toBeGreaterThan(one * 2.5);
+  for (let i = 0; i < 'three'.length + 1; i++) await page.keyboard.press('Backspace');
+  await expect.poll(height).toBeLessThan(one * 2.5);
+  await expect.poll(height).toBeGreaterThan(one * 1.5);
+  await page.keyboard.press('Enter');
+  await expect(field(page)).toHaveText('');
+  await expect.poll(height).toBeCloseTo(one, 0);
+  // A long line wraps and the field grows with it, with no new line typed.
+  const resize = (width: number) =>
+    app.evaluate(({ BrowserWindow }, w) => {
+      const win = BrowserWindow.getAllWindows()[0]!;
+      win.setSize(w, win.getSize()[1]!);
+    }, width);
+  await resize(800);
+  await page.keyboard.type('a long line that wraps '.repeat(12));
+  await expect.poll(height).toBeGreaterThan(one * 1.5);
+  // Wider, the same text takes fewer lines: the next key shrinks the field to fit.
+  const narrow = await height();
+  const narrowWidth = await field(page).evaluate((el) => (el as HTMLElement).clientWidth);
+  await resize(1300);
+  await expect.poll(() => field(page).evaluate((el) => (el as HTMLElement).clientWidth)).toBeGreaterThan(narrowWidth);
+  await page.keyboard.type('x');
+  await expect.poll(height).toBeLessThan(narrow);
+  // A longer text with fewer lines replaces it all at once (select all, then insert): the field shrinks to one line.
+  await page.keyboard.press('Control+A');
+  await page.keyboard.press('Backspace');
+  await page.keyboard.type('a');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('b');
+  await page.keyboard.press('Shift+Enter');
+  await page.keyboard.type('c');
+  await expect.poll(height).toBeGreaterThan(one * 2.5);
+  await page.keyboard.press('Control+A');
+  await page.keyboard.insertText('abcdefghij');
+  await expect(field(page)).toHaveText('abcdefghij');
+  await expect.poll(height).toBeCloseTo(one, 0);
+  await app.close();
+});
+
+// A paste that adds lines is measured at the field's full width. Read while the old height still overflows, the text wraps
+// around a scroll bar (10 px narrower) and can need one line more than it will once the field has grown: 8aecc5e compared
+// offsetWidth to skip that measure and left the field a line too tall (review, 27 Oct).
+// The text is searched for in the page: words added until the two widths give different heights below the 6-line cap.
+test('a paste that adds lines sets the field to the height its text needs at full width (02 §F7.1)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  await field(page).focus();
+  await page.evaluate(() => document.documentElement.setAttribute('data-motion', 'off'));
+  const text = await field(page).evaluate((el) => {
+    const cs = getComputedStyle(el);
+    const box = document.createElement('div');
+    for (const k of [
+      'font',
+      'letterSpacing',
+      'wordSpacing',
+      'whiteSpace',
+      'overflowWrap',
+      'wordBreak',
+      'paddingLeft',
+      'paddingRight',
+      'boxSizing',
+    ] as const)
+      box.style[k] = cs[k];
+    Object.assign(box.style, { position: 'absolute', visibility: 'hidden', top: '0', left: '0' });
+    document.body.append(box);
+    const bar = document.createElement('div');
+    Object.assign(bar.style, {
+      position: 'absolute',
+      visibility: 'hidden',
+      width: '100px',
+      height: '10px',
+      overflowY: 'scroll',
+      scrollbarWidth: 'thin',
+    });
+    document.body.append(bar);
+    const barPx = bar.offsetWidth - bar.clientWidth;
+    bar.remove();
+    const full = (el as HTMLElement).offsetWidth;
+    const tall = (t: string, w: number) => {
+      box.style.width = `${w}px`;
+      box.textContent = t;
+      return box.scrollHeight;
+    };
+    const cap = parseFloat(cs.maxHeight);
+    let seed = 7;
+    const rnd = () => (seed = (seed * 48271) % 2147483647) / 2147483647;
+    for (let tries = 0; tries < 2000; tries++) {
+      let t = '';
+      while (tall(t, full) <= cap) {
+        t += `${'w'.repeat(2 + Math.floor(rnd() * 9))} `;
+        if (tall(t, full) > parseFloat(cs.lineHeight) && tall(t, full - barPx) > tall(t, full) && tall(t, full - barPx) <= cap) {
+          box.remove();
+          return t;
+        }
+      }
+    }
+    box.remove();
+    return '';
+  });
+  expect(text).not.toBe('');
+  await paste(page, text);
+  await expect(field(page)).toHaveText(text.trim());
+  const heights = await field(page).evaluate((el) => {
+    const f = el as HTMLElement;
+    const shown = f.getBoundingClientRect().height;
+    const set = f.style.height;
+    f.style.height = 'auto';
+    const needs = f.getBoundingClientRect().height;
+    f.style.height = set;
+    return { shown, needs };
+  });
+  expect(heights.shown).toBe(heights.needs);
+  await app.close();
+});
+
 test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', async () => {
   test.setTimeout(180_000);
   const { app, page } = await start('perf');
   await openChat(page, 'foo');
   await field(page).focus();
+  await installPaintProbe(page);
+  await typeKeys(page);
+  const typed = await readProbe(page);
+  console.log(
+    `keydown → paint p95 ${typed.p95.toFixed(1)} ms (p50 ${typed.p50.toFixed(1)}) over ${typed.keys} keys, ` +
+      `less the wait for the next refresh (p50 ${typed.waitP50.toFixed(1)} ms, at most ${FRAME_MS.toFixed(1)}); with the wait, p95 ${typed.rawP95.toFixed(1)} ms`,
+  );
+  // Control, logged and not asserted: the same keys and the same probe with nothing focused, so the app does no work for
+  // them. Its numbers are the floor the machine sets (frames, compositor), for comparing runs.
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  await resetProbe(page);
+  await typeKeys(page);
+  const control = await readProbe(page);
+  console.log(`PERF-02 control, keys with nothing focused: p50 ${control.p50.toFixed(1)} ms, p95 ${control.p95.toFixed(1)} ms`);
+  expect(typed.p95).toBeLessThan(PAINT_P95_MS);
+  await app.close();
+});
+
+for (const where of ['keydown', 'resize observer'] as const) {
+  test(`PERF-02 · the probe goes red when every key costs 20 ms of main-thread work in a ${where} (CR-0065)`, async () => {
+    test.setTimeout(180_000);
+    const { app, page } = await start('perf');
+    await openChat(page, 'foo');
+    await field(page).focus();
+    await installPaintProbe(page);
+    await page.evaluate(
+      ({ ms, where }) => {
+        const spin = () => {
+          const end = performance.now() + ms;
+          while (performance.now() < end);
+        };
+        if (where === 'keydown') {
+          // Before the editor gets the key: the character cannot reach the DOM sooner.
+          window.addEventListener('keydown', spin);
+          return;
+        }
+        // After the character is in the DOM, in the frame that shows it: an observer the app makes after the probe runs
+        // after layout and before paint, like a list that re-measures when the composer grows.
+        const el = document.createElement('div');
+        el.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none';
+        document.querySelector('[contenteditable="true"]')!.parentElement!.append(el);
+        let first = true;
+        new ResizeObserver(() => (first ? (first = false) : spin())).observe(el);
+        window.addEventListener('keydown', () => requestAnimationFrame(() => (el.style.width = el.style.width === '2px' ? '1px' : '2px')));
+      },
+      { ms: INJECTED_MS, where },
+    );
+    await typeKeys(page);
+    const slow = await readProbe(page);
+    console.log(`PERF-02 with ${INJECTED_MS} ms of work per key in a ${where}: p95 ${slow.p95.toFixed(1)} ms (p50 ${slow.p50.toFixed(1)})`);
+    expect(slow.p95).toBeGreaterThanOrEqual(PAINT_P95_MS);
+    expect(slow.p50).toBeGreaterThanOrEqual(INJECTED_MS);
+    await app.close();
+  });
+}
+
+/**
+ * PERF-02's probe (CR-0065, replacing CR-0005 (b)2): keydown → the end of the observer phase of the frame that shows the
+ * character. That frame is the first one to start after the character is in the DOM; a frame that starts before it cannot
+ * show it, so the probe waits for the next and that time counts. In the frame the probe makes a new ResizeObserver on a
+ * 1 px sentinel; its first report runs after that frame's rAF callbacks, style, layout and the observers made before it.
+ * Paint itself is not counted.
+ * The wait from "in the DOM" to the start of the frame is the screen's refresh, not the app's: at most one frame comes off
+ * (CR-0005 (b)3). No task is queued after the frame, so a task the browser holds back for a frame is not counted.
+ */
+async function installPaintProbe(page: Page) {
   await page.evaluate((frame) => {
     type Key = { t0: number; mut: number | null; typed: boolean };
     const w = window as unknown as { __paint: number[]; __raw: number[]; __wait: number[]; __key: Key | null };
@@ -181,50 +377,59 @@ test('PERF-02 · typing in the 5,000-message chat paints within a frame (p95)', 
     new MutationObserver(() => {
       if (w.__key && w.__key.mut === null) w.__key.mut = performance.now();
     }).observe(document.body, { subtree: true, childList: true, characterData: true });
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;contain:strict';
+    document.body.append(sentinel);
     window.addEventListener(
       'keydown',
       (e) => {
-        const key: Key = { t0: e.timeStamp, mut: null, typed: document.activeElement?.getAttribute('contenteditable') === 'true' };
+        const key: Key = {
+          t0: e.timeStamp,
+          mut: null,
+          typed: document.activeElement?.getAttribute('contenteditable') === 'true',
+        };
         w.__key = key;
         const onFrame = (ft: number) => {
           // The character is not in the DOM yet, so this frame cannot show it: the wait goes on and counts in full.
           if (key.typed && key.mut === null) return requestAnimationFrame(onFrame);
-          setTimeout(() => {
-            const ready = key.mut ?? key.t0;
-            // The wait from "ready to paint" to the screen's next refresh is the display's, not the app's: at most one frame.
-            const wait = Math.min(Math.max(ft - ready, 0), frame);
+          // A new observer's first report comes in this frame, after layout, and after every observer made before it:
+          // the app's observers, made at mount, have run their part of the frame by then.
+          const ro = new ResizeObserver(() => {
+            ro.disconnect();
+            const now = performance.now();
+            const wait = Math.min(Math.max(ft - (key.mut ?? key.t0), 0), frame);
             w.__wait.push(wait);
-            w.__raw.push(performance.now() - key.t0);
-            w.__paint.push(performance.now() - key.t0 - wait);
-          }, 0);
+            w.__raw.push(now - key.t0);
+            w.__paint.push(now - key.t0 - wait);
+          });
+          ro.observe(sentinel);
         };
         requestAnimationFrame(onFrame);
       },
       true,
     );
   }, FRAME_MS);
-  await typeKeys(page);
-  const times = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
-  const waits = await page.evaluate(() => (window as unknown as { __wait: number[] }).__wait.slice().sort((a, b) => a - b));
-  const raw = await page.evaluate(() => (window as unknown as { __raw: number[] }).__raw.slice().sort((a, b) => a - b));
-  const q = (xs: number[], p: number) => xs[Math.ceil(xs.length * p) - 1]!;
-  const p95 = q(times, 0.95);
-  console.log(
-    `keydown → paint p95 ${p95.toFixed(1)} ms (p50 ${q(times, 0.5).toFixed(1)}) over ${times.length} keys, ` +
-      `less the wait for the next refresh (p50 ${q(waits, 0.5).toFixed(1)} ms, at most ${FRAME_MS.toFixed(1)}); with the wait, p95 ${q(raw, 0.95).toFixed(1)} ms`,
-  );
-  // Control, logged and not asserted: the same keys and the same probe with nothing focused, so the app does no work for
-  // them. Its numbers are the floor the machine sets (timers, compositor), for comparing runs.
+}
+
+async function resetProbe(page: Page) {
   await page.evaluate(() => {
-    (document.activeElement as HTMLElement | null)?.blur();
-    (window as unknown as { __paint: number[] }).__paint = [];
+    const w = window as unknown as { __paint: number[]; __raw: number[]; __wait: number[] };
+    w.__paint = [];
+    w.__raw = [];
+    w.__wait = [];
   });
-  await typeKeys(page);
-  const control = await page.evaluate(() => (window as unknown as { __paint: number[] }).__paint.slice().sort((a, b) => a - b));
-  console.log(`PERF-02 control, keys with nothing focused: p50 ${q(control, 0.5).toFixed(1)} ms, p95 ${q(control, 0.95).toFixed(1)} ms`);
-  expect(p95).toBeLessThan(PAINT_P95_MS);
-  await app.close();
-});
+}
+
+async function readProbe(page: Page) {
+  const { paint, raw, wait } = await page.evaluate(() => {
+    const w = window as unknown as { __paint: number[]; __raw: number[]; __wait: number[] };
+    const sorted = (xs: number[]) => xs.slice().sort((a, b) => a - b);
+    return { paint: sorted(w.__paint), raw: sorted(w.__raw), wait: sorted(w.__wait) };
+  });
+  const q = (xs: number[], p: number) => xs[Math.ceil(xs.length * p) - 1]!;
+  return { keys: paint.length, p95: q(paint, 0.95), p50: q(paint, 0.5), rawP95: q(raw, 0.95), waitP50: q(wait, 0.5) };
+}
 
 /**
  * One key at a time, each after the last one painted, at a random point in the frame: a person types a few keys a frame at

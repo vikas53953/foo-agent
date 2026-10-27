@@ -15,6 +15,7 @@ import type { MemoryCmdPayload } from '../../engine/protocol';
 import { KitActionMessageSchema } from '../../shared/kit/catalog';
 import { PageIdSchema, PageRpcCallSchema } from '../../shared/kit/page';
 import { runMemoryExport } from '../memory/export';
+import { reportPreview, reportSave, UNSIGNED_BUILD } from '../about/report';
 import { removeForgottenFiles } from '../memory/forgetFiles';
 import { z } from 'zod';
 import { t } from '../../shared/copy/t';
@@ -33,6 +34,11 @@ import {
   bootstrap,
   chatOpen,
   chatRowById,
+  answerAfter,
+  FEEDBACK_CHIPS,
+  feedbackMessage,
+  fooChatId,
+  clearChat,
   deleteMessages,
   editMessage,
   helperList,
@@ -82,6 +88,7 @@ import { keepIpc } from '../keep/keepIpc'; // R1 T7
 import { finderChosen, finderWanted, type FinderWrite } from '../setup/aiFinder';
 import { ensureSetupCard, faceChosen, nameAnswered, skipRest, welcomeStart } from '../setup/firstRun'; // CR-0026
 import { aiFinderIpc, emitFinderWrite } from '../setup/aiFinderIpc';
+import { setFooFace, setFooName, setFooVibe } from '../setup/fooProfile';
 import { shippedFeatures } from '../features'; // CR-0054
 
 const trusted = (e: IpcMainEvent) => !!e.senderFrame && isTrustedUrl(e.senderFrame.url);
@@ -181,6 +188,15 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'message:list': z.object({ chatId, beforeSeq: z.number().int().optional(), limit: z.number().int().min(1).max(200) }).strict(),
   'message:get': z.object({ messageId }).strict(),
   'message:react': z.object({ messageId, emoji, on: z.boolean() }).strict(),
+  // CR-0062: 👍 / 👎 with the §17.2 chips and the optional words (1–3 lines; 500 is the field's own cap).
+  'message:feedback': z
+    .object({
+      messageId,
+      vote: z.enum(['good', 'bad']).nullable(),
+      chips: z.array(z.enum(FEEDBACK_CHIPS)).max(5).optional(),
+      note: z.string().max(500).optional(),
+    })
+    .strict(),
   'message:pin': z.object({ messageId, on: z.boolean() }).strict(),
   'message:send': z
     .object({
@@ -226,6 +242,8 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   'routine:pause': z.object({ routineId: z.string().min(1).max(80), confirm: z.literal(true).optional() }).strict(),
   'link:open': z.object({ url: z.string().min(1).max(2048) }).strict(),
   'app:showEmojiPanel': empty as z.ZodType<Record<string, never>>,
+  'app:reportPreview': empty as z.ZodType<Record<string, never>>,
+  'app:reportSave': z.object({ previewId: z.string().min(1).max(80), note: z.string().max(500).optional() }).strict(),
   'job:stop': z.object({ jobId: z.string().min(1).max(80) }).strict(),
   'job:watch': z.object({ jobId: z.string().min(1).max(80), on: z.boolean() }).strict(),
   // M9 (CR-0013, 08-1 §3.2). Handlers below are stubs until T6 (sign-in, take over) and T8 (hand-back sites); T5's live ones are real.
@@ -273,14 +291,21 @@ export const SCHEMAS: { [C in InvokeChannel]: z.ZodType<InvokeIn[C]> } = {
   }>,
   'setup:welcome': empty as z.ZodType<Record<string, never>>,
   'setup:name': z.object({ name: z.string().max(200) }).strict(),
-  'setup:face': z.object({ face: z.string().max(40) }).strict(),
+  'setup:face': z.object({ face: z.string().max(40), colour: z.string().max(40).optional() }).strict(),
   'setup:skipRest': empty as z.ZodType<Record<string, never>>,
+  'profile:setName': z.object({ name: z.string().max(200) }).strict(),
+  'profile:setFace': z.object({ face: z.string().max(40), colour: z.string().max(40).optional() }).strict(),
+  'profile:setVibe': z.union([
+    z.object({ optionId: z.string().max(10) }).strict(),
+    z.object({ words: z.string().max(400) }).strict(),
+  ]) as z.ZodType<{ optionId: string } | { words: string }>,
   'notifications:status': empty as z.ZodType<Record<string, never>>,
   // M8 T3 (handlers in src/main/whatsapp/waMain.ts)
   'whatsapp:linkStart': empty as z.ZodType<Record<string, never>>,
   'whatsapp:linkCancel': empty as z.ZodType<Record<string, never>>,
   'whatsapp:unlink': empty as z.ZodType<Record<string, never>>,
   'chat:archive': z.object({ chatId, on: z.boolean() }).strict(),
+  'chat:clear': z.object({ chatId, confirm: z.literal(true) }).strict(),
   // M8 T2 (08-1 §3.2)
   'connection:list': empty as z.ZodType<Record<string, never>>,
   'connection:connect': z
@@ -459,7 +484,7 @@ export function registerIpc(ctx: AppContext): void {
       emitFinderWrite(ctx, ensureSetupCard(db, settings, now(), ctx.dataDir));
     const s = settings.get();
     const b = bootstrap(db, { ...listContext(s), settings: s, offline: ctx.net.offline, engineAi: ctx.engine?.aiStatus ?? null });
-    return ok({ ...b, features: shippedFeatures() });
+    return ok({ ...b, features: shippedFeatures(), appVersion: app.getVersion(), testerBuild: UNSIGNED_BUILD });
   });
   handle('app:quit', ({ confirm }) => {
     const runningJobs = db
@@ -511,6 +536,7 @@ export function registerIpc(ctx: AppContext): void {
     return ok(r.row);
   };
   const asVoid = (r: Result<MessageRow>): Result<void> => (r.ok ? ok(undefined) : r);
+  handle('message:feedback', ({ messageId: id, vote, chips, note }) => asVoid(written(feedbackMessage(db, id, vote, chips, note))));
   handle('message:react', ({ messageId: id, emoji: e, on }) => {
     const r = asVoid(written(reactMessage(db, id, e, on, now())));
     // M5 (T5): a reaction on a card's bubble may answer a Choice card or get the G16 line (08-4 §26.6 rule 4, 08-2 §5.2.2).
@@ -528,8 +554,22 @@ export function registerIpc(ctx: AppContext): void {
     if (!e.ok && e.reason === 'secret') return { ok: false, error: { kind: 'SECRET_SUSPECTED', paste: e.paste } };
     if (!e.ok && e.reason === 'too_long') return fail('VALIDATION', 'too_long');
     const r = written(e);
-    if (r.ok) emitChat(r.value.chatId);
+    if (r.ok) {
+      emitChat(r.value.chatId);
+      // CR-0060 (04 §6.2 Edit): the answer under the edited message is written again in place from the new words.
+      const answer = answerAfter(db, id);
+      if (answer && ctx.engine?.live) ctx.engine.send('reply.rewrite', { messageId: answer });
+    }
     return r;
+  });
+  handle('chat:clear', ({ chatId: id }) => {
+    // A reply still being written would land in the emptied chat, so the chat's lane stops first (as message:stopReply).
+    if (ctx.engine?.live) ctx.engine.send('reply.stop', { chatId: id });
+    const rows = clearChat(db, id, now(), { keepSetup: id === fooChatId(db) && !settings.get().setup.complete });
+    if (!rows) return fail('NOT_FOUND');
+    for (const row of rows) emit('message:upsert', row);
+    emitChat(id);
+    return ok(undefined);
   });
   handle('message:delete', ({ messageIds }) => {
     const r = deleteMessages(db, messageIds, now());
@@ -542,6 +582,19 @@ export function registerIpc(ctx: AppContext): void {
     const target = messageGet(db, id);
     if (target && target.authorKind !== 'user' && target.status === 'failed') {
       ctx.engine?.send('reply.retry', { messageId: id });
+      return ok(target);
+    }
+    // CR-0059 row 1 (04 §17.1 "Write this answer again"): a finished text answer is written again in place.
+    // Only an answer of foo's or a helper's; the engine answers as a plain reply, so it never repeats an action.
+    if (
+      target &&
+      (target.authorKind === 'foo' || target.authorKind === 'helper') &&
+      target.kind === 'text' &&
+      target.status === 'complete' &&
+      !target.deletedAt
+    ) {
+      if (!ctx.engine?.live) return { ok: false, error: { kind: 'AI_SERVICE_DOWN' } };
+      ctx.engine.send('reply.rewrite', { messageId: id });
       return ok(target);
     }
     const r = written(retryMessage(db, id));
@@ -678,6 +731,19 @@ export function registerIpc(ctx: AppContext): void {
     await shell.openExternal(parsed.toString());
     return ok(undefined);
   });
+  // CR-0061 (06-3 §18.2): the report is saved on this PC only, in `{OUT}\reports\` (08-0 §E.6: FOO_OUT_DIR in test runs,
+  // which open nothing).
+  handle('app:reportPreview', () =>
+    ok(reportPreview({ dataDir: ctx.dataDir, version: app.getVersion(), now: now(), timeZone: settings.get().locale.timeZone })),
+  );
+  handle('app:reportSave', ({ previewId, note }) => {
+    const test = process.env.FOO_TEST === '1';
+    const folder = join(process.env.FOO_OUT_DIR ?? join(app.getPath('documents'), 'foo'), 'reports');
+    const r = reportSave(previewId, note, folder, now(), settings.get().locale.timeZone);
+    if (!r.ok) return fail(r.error);
+    if (!test) shell.showItemInFolder(r.zipPath);
+    return ok({ zipPath: r.zipPath });
+  });
   handle('app:showEmojiPanel', () => {
     if (app.isEmojiPanelSupported()) app.showEmojiPanel();
     return ok(undefined);
@@ -811,11 +877,21 @@ export function registerIpc(ctx: AppContext): void {
     const r = nameAnswered(db, settings, name, now(), ctx.dataDir);
     return r.ok ? setupDone(r.write) : fail(r.error === 'stale' ? 'CARD_STALE' : 'VALIDATION', r.error);
   });
-  handle('setup:face', ({ face }) => {
-    const w = faceChosen(db, settings, face, now(), ctx.dataDir);
+  handle('setup:face', ({ face, colour }) => {
+    const w = faceChosen(db, settings, face, now(), ctx.dataDir, colour);
     return w ? setupDone(w) : fail('VALIDATION');
   });
   handle('setup:skipRest', () => setupDone(skipRest(db, settings, now(), ctx.dataDir)));
+  // CR-0060: foo profile "Name and look" (06-1 §4.2).
+  handle('profile:setName', ({ name }) => {
+    const r = setFooName(db, settings, name);
+    return r.ok ? setupDone(r.write) : fail('VALIDATION', r.error);
+  });
+  handle('profile:setFace', ({ face, colour }) => {
+    const w = setFooFace(db, face, colour);
+    return w ? setupDone(w) : fail('VALIDATION');
+  });
+  handle('profile:setVibe', (choice) => (setFooVibe(settings, choice) ? setupDone(null) : fail('VALIDATION')));
   handle('notifications:status', () => ok({ windowsAllowed: true, focusAssist: false }));
   // M8
   registerConnectionIpc(ctx);

@@ -4,6 +4,8 @@
 import { useEffect, useState } from 'react';
 import { t } from '../../shared/copy/t';
 import { TID } from '../../shared/testids';
+import { useStore } from '../store/index';
+import { selectFeatureOn } from '../store/live';
 import { ChatList } from './ChatList';
 import { ChatListHeader } from './ChatListHeader';
 import { ChatSearch } from './ChatSearch';
@@ -32,6 +34,8 @@ function useListStatus(): string | null {
 
 export function LeftShell() {
   const status = useListStatus();
+  // CR-0059 row 3 (CR-0054): the Needs you / Working / Done chips sort jobs, so a build without jobs hides them.
+  const jobsOn = useStore(selectFeatureOn('jobs'));
   return (
     <nav className={styles.left} data-testid={TID.sidebar} aria-label={t('sidebar.landmark.label')}>
       <ChatListHeader />
@@ -39,7 +43,7 @@ export function LeftShell() {
         {status}
       </div>
       <ChatSearch />
-      <FilterChips />
+      {jobsOn && <FilterChips />}
       <ChatList />
       <SidebarFooter />
       <ResizeHandle />

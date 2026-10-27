@@ -21,9 +21,10 @@ export interface DialogProps {
   title: string;
   body?: string;
   primary: string;
-  secondary: string;
+  /** Absent: one button (an information sheet such as 06-3 §19). */
+  secondary?: string;
   destructive?: boolean;
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
   primaryDisabled?: boolean;
   /** Shown after the body (a typed-confirm field, a list). */
   children?: ReactNode;
@@ -90,11 +91,11 @@ export function Dialog({
       {primary}
     </Button>
   );
-  const secondaryButton = (
+  const secondaryButton = secondary ? (
     <Button variant="secondary" size="md" data-testid={TID.dialogSecondary} onClick={onClose}>
       {secondary}
     </Button>
-  );
+  ) : null;
 
   return createPortal(
     <div className={styles.scrim}>
@@ -104,7 +105,7 @@ export function Dialog({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={body ? bodyId : undefined}
-        className={size === 'md' ? `${styles.dialog} ${styles.md}` : styles.dialog}
+        className={size === 'sm' ? styles.dialog : `${styles.dialog} ${styles[size]}`}
         data-testid={TID[tid]}
         onKeyDown={trap}
       >

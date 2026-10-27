@@ -118,6 +118,14 @@ const newMaskId = () => `m${++maskSeq.n}`;
 const trimBlankLines = (s: string) => s.replace(/^(?:[^\S\n]*\n)+/, '').replace(/(?:\n[^\S\n]*)+$/, '');
 const secretPart = (m: MaskValue) => secretOnly(m.hit, m.value);
 
+/** True when `next` is `prev` with text inserted at one place: nothing of `prev` was removed or replaced. */
+function onlyAdded(prev: string, next: string): boolean {
+  if (next.length < prev.length) return false;
+  let head = 0;
+  while (head < prev.length && prev[head] === next[head]) head++;
+  return prev.slice(head) === next.slice(next.length - (prev.length - head));
+}
+
 export function Composer({ chat }: { chat: ChatRow }) {
   const chatId = chat.id;
   const agentName = useStore(selectAgentName);
@@ -450,11 +458,22 @@ export function Composer({ chat }: { chat: ChatRow }) {
 
   // P1 T6 (02 §F7.1): the field grows and shrinks smoothly. Its height is set to what the text needs (max-height still caps
   // it at 6 lines) and CSS animates between the two; at Basic and Off the change is instant.
+  // When a key only adds text (everything that was there is still there, in order) at the same width, the field can only
+  // grow, so its scroll height is read as it stands: the layout that read forces is the one the next paint needs anyway.
+  // Setting `height: auto` first (to let it shrink) costs a second layout of the window on every key (PERF-02), so that
+  // happens only when text went away or was replaced, the width changed, recording started or stopped, or on first measure.
+  const measured = useRef<{ text: string; width: number; recording: typeof recording } | null>(null);
   useLayoutEffect(() => {
     const el = field.current;
     if (!el) return;
     const before = el.style.height;
-    el.style.height = 'auto';
+    const last = measured.current;
+    const text = checkText(segs);
+    const width = el.clientWidth;
+    const grewOnly = before !== '' && last !== null && last.recording === recording && last.width === width && onlyAdded(last.text, text);
+    measured.current = { text, width, recording };
+    if (grewOnly && el.scrollHeight <= parseFloat(before)) return;
+    if (!grewOnly) el.style.height = 'auto';
     const next = `${el.scrollHeight}px`;
     el.style.height = before;
     if (before === next) return;
@@ -967,6 +986,8 @@ export function Composer({ chat }: { chat: ChatRow }) {
         strip: strip?.kind ?? null,
         streaming: replying,
         chips: chipsRefState.current.length,
+        // Read only for Ctrl+I, so the other keys pay nothing for it (PERF-02).
+        hasSelection: e.ctrlKey && e.key.toLowerCase() === 'i' && !(window.getSelection()?.isCollapsed ?? true),
       });
       if (!action) return;
       switch (action) {

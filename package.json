@@ -35,6 +35,7 @@
     "closeout": "tsx scripts/closeout.ts",
     "review:tier": "tsx scripts/review-tier.ts",
     "qa": "tsx scripts/qa.ts",
+    "licences:write": "tsx scripts/licences.ts",
     "qa:explore": "tsx scripts/qa-explore.ts"
   },
   "dependencies": {
