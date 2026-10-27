@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T22-36-40-513Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793140614225,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 8116,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent mid-range processor. Those matter far more than a fancy graphics card.\n\nMemory: 16 GB minimum. 8 GB struggles once you run an editor, a browser and Docker together.\nProcessor: Ryzen 5 or 7 (7000 series or newer), Intel Core i5 (13th generation or newer), or Core Ultra 5.\nStorage: 512 GB SSD, ideally with a free slot for an upgrade.\nScreen and keyboard: 14 or 15 inch, full HD IPS, at least 300 nits, with a comfortable keyboard.\nBattery: around 50 Wh or more, since you will code away from a socket.\nGraphics card: only needed for machine learning or games. Skip it otherwise and save money.\n\nIf you like macOS, a MacBook Air with an M-series chip is a strong choice, but at this budget you may need a deal or an older version. Prices change daily, so I haven't quoted any.\n\nDo you want me to check current listings for 3 options? Tell me which system you prefer (Windows, Mac or Linux) and what you mostly code in.\n\n10:37 PM",
+      "kit": [],
+      "ms": 17698
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

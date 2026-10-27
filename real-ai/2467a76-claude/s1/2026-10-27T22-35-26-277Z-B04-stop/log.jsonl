@@ -1,0 +1,15 @@
+{"t":"2026-10-27T22:35:26.277Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T22:35:31.814Z","step":"launch","ok":true}
+{"t":"2026-10-27T22:35:39.900Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8082}
+{"t":"2026-10-27T22:35:40.015Z","i":0,"do":"send","sentAt":1793140539982,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-27T22:35:53.667Z","i":1,"do":"waitReply","firstReplyMs":7609,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking Google Flights, MakeMyTrip,…\n1\nCheck Google Flights, MakeMyTrip, Ixigo\n2\nLook for Delhi to Mumbai flights on Fri 30 Oct\n3\nKeep 3 flights that fit lowest fare\n4\nCompare the 3 flights by fare, timings, airline\nAbout 4 minutes\nGo\nChange plan\n10:35 PM","kit":[],"ms":13652}
+{"t":"2026-10-27T22:35:53.742Z","shot":"01-flight-plan.png"}
+{"t":"2026-10-27T22:35:53.783Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":41}
+{"t":"2026-10-27T22:36:33.785Z","i":3,"do":"wait","ok":true,"ms":40002}
+{"t":"2026-10-27T22:36:33.849Z","shot":"02-flight-working.png"}
+{"t":"2026-10-27T22:36:34.018Z","i":4,"do":"send","sentAt":1793140593928,"sent":true,"before":0,"ok":true,"ms":169}
+{"t":"2026-10-27T22:36:40.064Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","firstReplyMs":514,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Stopped. Nothing was booked, paid or sent.\n\n10:36 PM","kit":[],"ms":6045}
+{"t":"2026-10-27T22:36:40.127Z","shot":"03-after-stop.png"}
+{"t":"2026-10-27T22:36:40.138Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-27T22:36:40.354Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-27T22:36:40.366Z","step":"aiTurns","turns":8}

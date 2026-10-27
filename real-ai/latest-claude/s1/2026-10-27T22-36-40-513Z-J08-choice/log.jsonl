@@ -1,0 +1,11 @@
+{"t":"2026-10-27T22:36:40.513Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T22:36:46.067Z","step":"launch","ok":true}
+{"t":"2026-10-27T22:36:54.149Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":0,"ms":8078}
+{"t":"2026-10-27T22:36:54.254Z","i":0,"do":"send","sentAt":1793140614225,"sent":true,"before":0,"ok":true,"ms":105}
+{"t":"2026-10-27T22:37:11.953Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":8116,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent mid-range processor. Those matter far more than a fancy graphics card.\n\nMemory: 16 GB minimum. 8 GB struggles once you run an editor, a browser and Docker together.\nProcessor: Ryzen 5 or 7 (7000 series or newer), Intel Core i5 (13th generation or newer), or Core Ultra 5.\nStorage: 512 GB SSD, ideally with a free slot for an upgrade.\nScreen and keyboard: 14 or 15 inch, full HD IPS, at least 300 nits, with a comfortable keyboard.\nBattery: around 50 Wh or more, since you will code away from a socket.\nGraphics card: only needed for machine learning or games. Skip it otherwise and save money.\n\nIf you like macOS, a MacBook Air with an M-series chip is a strong choice, but at this budget you may need a deal or an older version. Prices change daily, so I haven't quoted any.\n\nDo you want me to check current listings for 3 options? Tell me which system you prefer (Windows, Mac or Linux) and what you mostly code in.\n\n10:37 PM","kit":[],"ms":17698}
+{"t":"2026-10-27T22:37:12.026Z","shot":"01-laptop.png"}
+{"t":"2026-10-27T22:37:12.028Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T22:37:12.030Z","i":3,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-27T22:37:12.040Z","i":4,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-27T22:37:12.173Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-27T22:37:12.185Z","step":"aiTurns","turns":1}

@@ -1,7 +1,0 @@
-{"t":1793134701649,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793134706216,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793134710300,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
-{"t":1793134716519,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793134722871,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
-{"t":1793134729329,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793134734335,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
