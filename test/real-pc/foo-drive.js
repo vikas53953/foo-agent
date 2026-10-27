@@ -347,6 +347,14 @@ async function main() {
     if (s.openTid) {
       const back = page.locator('[data-testid="screen-back"]');
       if (!(await page.locator(`[data-testid="${s.openTid}"]`).count()) && (await back.count())) await back.click().catch(() => {});
+      // Still not there (a click took the user to another screen): walk the way in again, e.g. ⋯ menu → Settings.
+      if (!(await page.locator(`[data-testid="${s.openTid}"]`).count()))
+        for (const tid of s.openVia || [])
+          await page
+            .locator(`[data-testid="${tid}"]`)
+            .first()
+            .click({ timeout: 5_000 })
+            .catch(() => {});
       await page
         .locator(`[data-testid="${s.openTid}"]`)
         .first()
@@ -379,7 +387,9 @@ async function main() {
     }, scope);
     const controls = [];
     const seen = new Set();
-    for (const c of listed.slice(0, s.max ?? 60)) {
+    const cap = s.max ?? 60;
+    const truncated = listed.length > cap ? listed.length - cap : 0;
+    for (const c of listed.slice(0, cap)) {
       const key = `${c.tid}|${c.name}`;
       if (seen.has(key) || (!c.tid && !c.name)) continue;
       seen.add(key);
@@ -430,7 +440,7 @@ async function main() {
       } else if (e.issues.length) e.status = 'fail';
     }
     await backTo(s);
-    return { controls };
+    return { controls, truncated };
   };
 
   try {
@@ -691,7 +701,10 @@ async function main() {
           // Every visible control in this place, clicked like a user: each must visibly do something and leave the
           // screen whole (QA crawler invariants). The controls list and a picture of each result go to the evidence.
           Object.assign(rec, await sweep(s));
-          rec.ok = !rec.blocked && rec.controls.every((c) => c.status !== 'fail');
+          // No controls found (a wrong scope) or a control that could not be clicked is a failure, not a pass.
+          if (!rec.blocked && !rec.controls.some((c) => c.status === 'pass' || c.status === 'fail'))
+            rec.blocked = 'no control found to click';
+          rec.ok = !rec.blocked && rec.controls.every((c) => c.status !== 'fail' && c.status !== 'not-tested');
           break;
         }
         case 'dump':
@@ -792,7 +805,8 @@ async function main() {
   // look again at the end state it names; a late pass is kept as ok with late: true.
   for (const r of results) {
     const s = journey.steps[r.i];
-    if (r.ok !== false || r.didntGetThat || r.refused) continue;
+    // A measured failure (👀 seen, foo still writing, a dropped kit piece) is never undone by a late end state.
+    if (r.ok !== false || r.didntGetThat || r.refused || r.forbidden || r.stillWorking || r.kitDropped) continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
     const now = await endState(named).catch(() => false);

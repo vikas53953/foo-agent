@@ -109,6 +109,19 @@ jobs:
           file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
           drive() { echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; return $s; }
           list=$(tr -d '\r' < "$kit/gate.txt")
+          # What the report must find: each journey's rounds and the features its steps cover. A round with no record
+          # (the driver crashed) then counts as broken instead of silently shrinking pass^k.
+          node -e '
+            const fs = require("fs"), path = require("path");
+            const [kit, rounds, ...ids] = process.argv.slice(1);
+            const out = ids.map((id, k) => {
+              const f = fs.existsSync(path.join(kit, "gate", id + ".json")) ? path.join(kit, "gate", id + ".json") : path.join(kit, "journeys", id + ".json");
+              const j = JSON.parse(fs.readFileSync(f, "utf8"));
+              const features = [...new Set(j.steps.map((s) => s.feature || j.feature).filter(Boolean))];
+              return { journey: j.id, features, count: k === 0 || j.once ? 1 : Number(rounds) };
+            });
+            fs.writeFileSync(path.join(process.env.FOO_REAL_TEST_DIR, "runs", "expected.json"), JSON.stringify(out, null, 2));
+          ' "$kit" "$ROUNDS" $list
           cd "$kit"
           # The first run sets up the shared profile; every later shared-profile journey needs its AI. No retry.
           first=$(echo $list | cut -d' ' -f1)
@@ -133,8 +146,9 @@ jobs:
           runs="$RUNNER_TEMP/foo-gate/runs"
           [ -d "$runs" ] || exit 0
           if [ -n "$KEY_A" ] && grep -rlF -- "$KEY_A" "$runs" > "$RUNNER_TEMP/leak.txt"; then
-            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted."
+            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted and the gate fails."
             xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
+            exit 1
           fi
       - name: Keep the runs
         if: always()
@@ -183,12 +197,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SHA: ${{ needs.drive.outputs.sha }}
         run: |
+          # Required: Fast lane, the 4 Full suite shards and the Golden lane (scripts/release-gate.ts REQUIRED_CHECKS).
           for i in $(seq 1 90); do
             gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs?per_page=100" \
               --jq '[.check_runs[] | select(.name | test("^(Fast lane|Screen change|Full suite|Golden lane)")) | {name, conclusion, url: .html_url}]' > checks.json
-            n=$(jq length checks.json); open=$(jq '[.[] | select(.conclusion == null)] | length' checks.json)
-            echo "checks: $n found, $open still running"
-            [ "$n" -gt 0 ] && [ "$open" -eq 0 ] && break
+            fast=$(jq '[.[] | select(.name | startswith("Fast lane"))] | length' checks.json)
+            full=$(jq '[.[] | select(.name | startswith("Full suite"))] | length' checks.json)
+            gold=$(jq '[.[] | select(.name | startswith("Golden lane"))] | length' checks.json)
+            open=$(jq '[.[] | select(.conclusion == null)] | length' checks.json)
+            echo "checks: fast $fast/1, full suite $full/4, golden $gold/1, $open still running"
+            [ "$fast" -ge 1 ] && [ "$full" -ge 4 ] && [ "$gold" -ge 1 ] && [ "$open" -eq 0 ] && break
             sleep 60
           done
       - name: Separate reviewer looks at every picture
@@ -201,7 +219,7 @@ jobs:
           SHA: ${{ needs.drive.outputs.sha }}
         run: |
           set +e
-          pnpm exec tsx scripts/release-gate.ts report --runs gate-runs --refs gate-refs --out gate-report --checks checks.json --sha "$SHA"
+          pnpm exec tsx scripts/release-gate.ts report --runs gate-runs --refs gate-refs --out gate-report --checks checks.json --expect gate-runs/expected.json --sha "$SHA"
           code=$?
           echo "status=$(jq -r .status gate-report/verdict.json)" >> "$GITHUB_OUTPUT"
           {

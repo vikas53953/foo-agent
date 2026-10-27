@@ -49,6 +49,7 @@ interface StepResult {
   stillWorking?: boolean;
   timeline?: { at: number; badges: string[]; reactions: string[]; thinking: boolean; streaming: number }[];
   watchShots?: { at: number; mark: number; shot: string; badges: string[]; thinking: boolean }[];
+  truncated?: number;
   controls?: { tid: string; name: string; status: string; effect: string[]; issues: unknown[]; shot?: string; reason?: string }[];
   blocked?: string;
 }
@@ -120,7 +121,7 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
       if (r.typed) facts.push(`The user typed: "${r.typed}"`);
       if (r.firstReplyMs != null) facts.push(`First reply after ${sec(r.firstReplyMs)}`);
       if (r.lastReply) facts.push(`foo's reply, as text: "${r.lastReply.slice(0, 600)}"`);
-      const failed = r.ok === false && !r.soft;
+      const failed = (r.ok === false && !r.soft) || !!r.forbidden;
       let measured: string | undefined;
       if (failed) {
         if (r.forbidden)
@@ -128,7 +129,8 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
         else if (r.blocked) measured = `could not run: ${r.blocked}`;
         else if (r.didntGetThat) measured = 'foo answered "I didn\'t get that" to a clear message';
         else if (r.stillWorking) measured = 'foo was still writing when the step gave up';
-        else if (r.do === 'sweep') measured = 'a control did nothing visible or broke the screen (see the sweep table)';
+        else if (r.do === 'sweep')
+          measured = 'a control did nothing visible, could not be clicked, or broke the screen (see the sweep table)';
         else measured = r.error ? `step failed: ${r.error}` : `step "${r.do}" did not reach its end state`;
       }
       if (r.do === 'sweep') {
@@ -198,10 +200,61 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
 }
 
 /** Per feature: broken beats wrong-design beats works; a feature with no checkpoint is not tested. */
+/** A journey round the run was meant to have but has no record of (the driver crashed before writing it) is broken
+ * for every feature it covers: pass^k counts the rounds that should have run, not the ones that happened to finish. */
+export function missingRuns(
+  runs: { dir: string; s: Summary }[],
+  expected: { journey: string; features: string[]; count: number }[],
+): Checkpoint[] {
+  const out: Checkpoint[] = [];
+  for (const e of expected) {
+    const found = runs.filter((r) => r.s.journey === e.journey).length;
+    for (let k = found; k < e.count; k++)
+      for (const feature of e.features)
+        out.push({
+          id: `${e.journey}·${k + 1}#missing`,
+          journey: e.journey,
+          dir: '',
+          feature,
+          kind: 'step',
+          expect: `${e.journey} round ${k + 1} runs to the end`,
+          facts: [],
+          measured: `${e.journey} round ${k + 1} left no record: it crashed or never ran`,
+        });
+  }
+  return out;
+}
+
+/** The other checks a release needs green on the same commit; one that is missing or skipped is not green. */
+export const REQUIRED_CHECKS = [
+  { prefix: 'Fast lane', count: 1 },
+  { prefix: 'Full suite', count: 4 },
+  { prefix: 'Golden lane', count: 1 },
+];
+export function checkRows(checks: { name: string; conclusion: string | null; url?: string }[]) {
+  const rows = checks.map((c) => ({
+    ...c,
+    green: c.conclusion === 'success' || (c.conclusion === 'skipped' && c.name.startsWith('Screen change')),
+  }));
+  for (const r of REQUIRED_CHECKS) {
+    const n = checks.filter((c) => c.name.startsWith(r.prefix)).length;
+    for (let k = n; k < r.count; k++) rows.push({ name: `${r.prefix} (missing on this commit)`, conclusion: null, green: false });
+  }
+  return rows;
+}
+
+/** Measured beats reviewed; a sweep is judged by what it measured (every control did something), not by a reviewer. */
+export function verdictOf(c: Checkpoint, reviews: Map<string, Review>): Verdict | 'not-reviewed' {
+  if (c.measured) return 'broken';
+  if (c.kind === 'sweep' || (!c.shot && c.kind === 'step')) return 'works';
+  const v = reviews.get(c.id)?.verdict;
+  return v === 'works' || v === 'wrong-design' || v === 'broken' ? v : 'not-reviewed';
+}
+
 export function featureVerdicts(cps: Checkpoint[], reviews: Map<string, Review>) {
   return GATE_FEATURES.map((f) => {
     const mine = cps.filter((c) => c.feature === f);
-    const v = mine.map((c) => (c.measured ? 'broken' : (reviews.get(c.id)?.verdict ?? 'not-reviewed')));
+    const v = mine.map((c) => verdictOf(c, reviews));
     const verdict = !mine.length
       ? 'not-tested'
       : v.includes('broken')
@@ -290,10 +343,10 @@ async function review() {
           : 'No reference frame for this step: judge against the expected outcome and general polish.',
         'Image 1 is the real app. ' + (ref ? 'Image 2 is the reference design.' : ''),
       ].join('\n');
-      const content: Anthropic.Beta.BetaContentBlockParam[] = [png(join(c.dir, c.shot!))];
-      if (ref) content.push(png(ref));
-      content.push({ type: 'text', text });
       try {
+        const content: Anthropic.Beta.BetaContentBlockParam[] = [png(join(c.dir, c.shot!))];
+        if (ref) content.push(png(ref));
+        content.push({ type: 'text', text });
         const res = await client.beta.messages.create({
           model,
           max_tokens: 4000,
@@ -335,7 +388,8 @@ function report() {
   const sha = opt('--sha') ?? '';
   mkdirSync(join(out, 'shots'), { recursive: true });
   const runs = loadRuns(runsDir);
-  const cps = checkpoints(runs);
+  const expected = opt('--expect') && existsSync(opt('--expect')!) ? JSON.parse(readFileSync(opt('--expect')!, 'utf8')) : [];
+  const cps = [...checkpoints(runs), ...missingRuns(runs, expected)];
   const reviewFile = join(out, 'review.json');
   const reviews = new Map<string, Review>(
     existsSync(reviewFile) ? (JSON.parse(readFileSync(reviewFile, 'utf8')) as Review[]).map((r) => [r.id, r]) : [],
@@ -343,11 +397,11 @@ function report() {
   const checks: { name: string; conclusion: string | null; url?: string }[] =
     opt('--checks') && existsSync(opt('--checks')!) ? JSON.parse(readFileSync(opt('--checks')!, 'utf8')) : [];
   const feats = featureVerdicts(cps, reviews);
-  const redChecks = checks.filter((c) => c.conclusion !== 'success' && c.conclusion !== 'skipped');
+  const rows = checkRows(checks);
   const status =
     !runs.length || feats.some((f) => f.verdict === 'not-reviewed')
       ? 'BLOCKED'
-      : feats.every((f) => f.verdict === 'works') && !redChecks.length && checks.length
+      : feats.every((f) => f.verdict === 'works') && rows.every((c) => c.green)
         ? 'PASS'
         : 'FAIL';
 
@@ -364,7 +418,6 @@ function report() {
     copyFileSync(f, join(out, 'refs', basename(f)));
     return `refs/${basename(f)}`;
   };
-  const verdictOf = (c: Checkpoint) => (c.measured ? 'broken' : (reviews.get(c.id)?.verdict ?? 'not-reviewed'));
 
   const featureRows = feats
     .map(
@@ -378,10 +431,10 @@ function report() {
       return `<section><h2>${esc(FEATURE_NAMES[f])}</h2><p class="muted">No journey reached this feature: not tested, so the gate fails.</p></section>`;
     const items = mine
       .map((c) => {
-        const v = verdictOf(c);
+        const v = verdictOf(c, reviews);
         const r = reviews.get(c.id);
-        const run = runs.find((x) => x.dir === c.dir)!;
-        const step = run.s.results.find((x) => `${runTag(runs, c.dir)}#${x.i}` === c.id.split('@')[0]);
+        const run = runs.find((x) => x.dir === c.dir);
+        const step = run?.s.results.find((x) => `${runTag(runs, c.dir)}#${x.i}` === c.id.split('@')[0]);
         const shot = copy(c.dir, c.shot);
         const ref = refCopy(c.ref);
         const timeline = step?.timeline?.length
@@ -393,7 +446,7 @@ function report() {
               .join('')}</table></details>`
           : '';
         const sweep = step?.controls?.length
-          ? `<table class="small"><tr><th>control</th><th>result</th><th>what happened</th></tr>${step.controls
+          ? `${step.truncated ? `<p class="bad">${step.truncated} more controls on this screen were not clicked (cap reached).</p>` : ''}<table class="small"><tr><th>control</th><th>result</th><th>what happened</th></tr>${step.controls
               .map(
                 (k) =>
                   `<tr class="${k.status}"><td>${esc(k.name || k.tid)}<br><code>${esc(k.tid)}</code></td><td>${esc(k.status)}</td><td>${esc([...k.effect, k.reason ?? '', ...k.issues.map((i) => JSON.stringify(i).slice(0, 160))].filter(Boolean).join(' · '))}${k.shot ? ` <a href="${copy(c.dir, k.shot)}">picture</a>` : ''}</td></tr>`,
@@ -421,10 +474,10 @@ ${timeline}${sweep}</article>`;
       ),
     )
     .join('');
-  const checkRows = checks
+  const checkHtml = rows
     .map(
       (c) =>
-        `<tr><td>${esc(c.name)}</td><td><span class="v ${c.conclusion === 'success' ? 'works' : 'broken'}">${esc(c.conclusion ?? 'not finished')}</span></td></tr>`,
+        `<tr><td>${esc(c.name)}</td><td><span class="v ${c.green ? 'works' : 'broken'}">${esc(c.conclusion ?? 'missing or not finished')}</span></td></tr>`,
     )
     .join('');
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>foo release gate</title>
@@ -442,7 +495,7 @@ h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:32px 0 8px}.muted{colo
 <p class="muted">Commit ${esc(sha)} · the packaged app (the same files Vikas downloads) driven like a user with a real AI · pictures checked by a separate reviewer · ${new Date().toISOString()}</p>
 <p>${status === 'PASS' ? 'Every batch-1 feature works and every other check on this commit is green: this build may go to Vikas.' : 'This build must not go to Vikas until every row below says Works.'}</p>
 <h2>Features</h2><table><tr><th>Feature</th><th>Verdict</th><th>Checkpoints</th><th>Broken</th><th>Wrong vs design</th></tr>${featureRows}</table>
-<h2>Other checks on this commit</h2>${checkRows ? `<table>${checkRows}</table>` : '<p class="bad">No other checks found for this commit: the gate cannot pass without them.</p>'}
+<h2>Other checks on this commit</h2><table>${checkHtml}</table>
 ${videos ? `<h2>Videos</h2><p class="muted">In the run's release-gate-report download.</p><ul>${videos}</ul>` : ''}
 ${cards}
 </main></body></html>`;

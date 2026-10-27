@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { checkpoints, featureVerdicts, GATE_FEATURES } from '../../scripts/release-gate';
+import { checkpoints, checkRows, featureVerdicts, GATE_FEATURES, missingRuns } from '../../scripts/release-gate';
 
 const run = (journey: string, dir: string, results: object[]) => ({
   dir,
@@ -64,6 +64,41 @@ describe('release gate verdicts', () => {
       ]),
     ]);
     expect(featureVerdicts(cps, new Map()).find((f) => f.feature === 'settings')!.verdict).toBe('broken');
+  });
+  it('a sweep where every control did something counts as works without a reviewer', () => {
+    const cps = checkpoints([
+      run('G4', '/r/1-G4', [
+        {
+          i: 0,
+          do: 'sweep',
+          ok: true,
+          feature: 'settings',
+          controls: [{ tid: 'x', name: 'Dark', status: 'pass', effect: ['theme: dark'], issues: [] }],
+        },
+      ]),
+    ]);
+    expect(featureVerdicts(cps, new Map()).find((f) => f.feature === 'settings')!.verdict).toBe('works');
+  });
+
+  it('a round that left no record is broken for every feature it covers', () => {
+    const runs = [run('G2-chat', '/r/1-G2', [sent, reply({})])];
+    const missing = missingRuns(runs, [{ journey: 'G2-chat', features: ['chat', 'refusals'], count: 3 }]);
+    expect(missing).toHaveLength(4);
+    expect(featureVerdicts(missing, new Map()).find((f) => f.feature === 'refusals')!.verdict).toBe('broken');
+  });
+
+  it('a missing Windows shard or a skipped golden lane is not green', () => {
+    const rows = checkRows([
+      { name: 'Fast lane (ubuntu-latest)', conclusion: 'success' },
+      { name: 'Full suite (windows-latest, shard 1/4)', conclusion: 'success' },
+      { name: 'Golden lane (windows-latest)', conclusion: 'skipped' },
+    ]);
+    expect(rows.filter((r) => !r.green).map((r) => r.name)).toEqual([
+      'Golden lane (windows-latest)',
+      'Full suite (missing on this commit)',
+      'Full suite (missing on this commit)',
+      'Full suite (missing on this commit)',
+    ]);
   });
 });
 
