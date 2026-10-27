@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-27T08:16:01.043Z",
+  "os": {
+    "platform": "win32",
+    "release": "10.0.26100",
+    "version": "Windows Server 2025 Datacenter",
+    "arch": "x64",
+    "windows": {
+      "productName": "Windows Server 2025 Datacenter",
+      "displayVersion": "24H2",
+      "currentBuild": "26100",
+      "ubr": "33650"
+    }
+  },
+  "image": {
+    "os": "win25-vs2026",
+    "version": "20261021.278.1",
+    "runner": "GitHub Actions 1000006386"
+  },
+  "fonts": {
+    "segoeUIVariable": true,
+    "segoeUIEmoji": true,
+    "nirmalaUI": true,
+    "method": "font files in C:\\Windows\\Fonts, C:\\Users\\runneradmin\\AppData\\Local\\Microsoft\\Windows\\Fonts"
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "electron": "44.9.0",
+  "render": {
+    "viewport": "1440x900",
+    "deviceScaleFactor": 1,
+    "gpu": "disabled",
+    "network": "blocked"
+  },
+  "pinned": null,
+  "matchesPinned": null
+}
