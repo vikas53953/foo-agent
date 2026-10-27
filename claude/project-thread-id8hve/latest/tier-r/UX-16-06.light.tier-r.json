@@ -553,18 +553,18 @@
         "replies",
         "show",
         "here.",
-        "Waiting",
-        "for",
-        "your",
-        "OK:",
+        "foo",
+        "sent",
+        "Approval",
+        "needed:",
         "Send",
         "this",
         "email",
         "to",
         "Priya",
-        "Nair?.",
-        "Show",
-        "button."
+        "Nair?,",
+        "needs",
+        "you"
       ]
     },
     "hl": {
@@ -679,8 +679,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.10801171875,
-    "diffPixels": 110604,
+    "ratio": 0.1068681640625,
+    "diffPixels": 109433,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-16-06.light.diff.png"
