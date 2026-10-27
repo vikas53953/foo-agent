@@ -48,7 +48,7 @@ export interface LaneRun {
   person(host: string): Promise<Page>;
   /** The fake AI's turns since the warm-up job ended (all of them without `warm`). */
   turns(): { purpose: string; prompt: string }[];
-  /** With `warm`: ms from the warm-up ask to the site seeing foo's browser's first request. */
+  /** With `warm`: ms from the warm-up ask to the site seeing foo's browser's first request (unset when it never arrived). */
   coldOpenMs?: number;
   close(): Promise<void>;
 }
@@ -58,6 +58,7 @@ export interface LaneRun {
 const WARM_ASK = 'open the warm-up page';
 const WARM_TITLE = 'Warm-up page';
 const warmLines = (sites: LaneSites): FakeLine[] => [
+  { match: { purpose: 'verify' }, reply: 'ready', once: false },
   {
     match: { purpose: 'intake', promptIncludes: WARM_ASK },
     reply: act({
@@ -73,7 +74,7 @@ const warmLines = (sites: LaneSites): FakeLine[] => [
   done('Warmed up.'),
 ];
 /** The 1-based script lines of the warm-up job's two steps. */
-const WARM_STEPS = [2, 3];
+const WARM_STEPS = [3, 4];
 
 /**
  * `warm` (default): before the test's ask, a warm-up job in the Money chat opens one page in foo's browser. Each run starts a
@@ -165,15 +166,19 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[], o: { war
     await run.ask(WARM_ASK);
     const go = page.getByTestId(TID.cardPlanGo);
     const seen = () => sites.requests.find((r) => r.path === '/warm');
+    const warmed = () => WARM_STEPS.every((n) => fakeTurns(dirs).some((t) => t.matchedLine === n));
+    // Done when both warm-up steps ran, whether or not the page arrived: a first page past 15 s ends the warm-up with
+    // SITE_TIMEOUT, and the test's own page then meets a browser that is up.
     await run.until(async () => {
-      if (!seen() && (await go.count()))
+      if (!warmed() && (await go.count()))
         await go
           .last()
           .click()
           .catch(() => undefined);
-      return !!seen() && WARM_STEPS.every((n) => fakeTurns(dirs).some((t) => t.matchedLine === n));
-    }, "foo's browser opens its first page (the warm-up job)");
-    run.coldOpenMs = seen()!.ms - askedAt;
+      return warmed();
+    }, 'the warm-up job runs both its steps');
+    const first = seen();
+    if (first) run.coldOpenMs = first.ms - askedAt;
     warmTurns = fakeTurns(dirs).length;
   }
   // Home has no live job, so the ask makes a new one (the seeded "Goa stay" in foo's chat would take it as a steer).
