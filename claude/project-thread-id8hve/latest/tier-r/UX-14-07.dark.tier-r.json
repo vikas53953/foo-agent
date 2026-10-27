@@ -176,7 +176,6 @@
         "Pune",
         "train…",
         "Working",
-        "2",
         "B",
         "Building",
         "society",
@@ -534,13 +533,13 @@
   "r4": {
     "verdict": "review",
     "skipped": null,
-    "ratio": 0.05892166344294004,
-    "diffPixels": 4874,
+    "ratio": 0.058909574468085105,
+    "diffPixels": 4873,
     "total": 82720
   },
   "r5": {
-    "ratio": 0.08444921875,
-    "diffPixels": 86476,
+    "ratio": 0.0842841796875,
+    "diffPixels": 86307,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-07.dark.diff.png"
