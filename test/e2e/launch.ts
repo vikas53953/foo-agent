@@ -67,7 +67,8 @@ function watchClose(app: ElectronApplication, dataDir: string): void {
       } catch (e) {
         out = `(process list failed: ${e instanceof Error ? e.message.split('\n')[0] : String(e)})`;
       }
-      const titles = `Get-CimInstance Win32_Process -Filter "ParentProcessId=${pid}" | ForEach-Object { Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue | ForEach-Object { 'window of {0}: "{1}" responding {2}' -f $_.Id, $_.MainWindowTitle, $_.Responding } }`;
+      // Each child's main window title, and every text in its windows read through UI Automation (a dialog's message).
+      const titles = `Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes; Get-CimInstance Win32_Process -Filter "ParentProcessId=${pid}" | ForEach-Object { $id = $_.ProcessId; Get-Process -Id $id -ErrorAction SilentlyContinue | ForEach-Object { 'window of {0}: "{1}" responding {2}' -f $_.Id, $_.MainWindowTitle, $_.Responding }; $cond = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, [int]$id); [System.Windows.Automation.AutomationElement]::RootElement.FindAll([System.Windows.Automation.TreeScope]::Children, $cond) | ForEach-Object { $_.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition) | ForEach-Object { $n = $_.Current.Name; if ($n) { '  text: ' + $n } } } }`;
       let win: string;
       try {
         win = execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', titles], {
