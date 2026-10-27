@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n5:35 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:35 AM\n5:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:35 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n5:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The best value under ₹50,000 is the MSI Modern 14 at ₹43,219 because it is the only one here with 16GB RAM. The other two are the Acer Aspire Lite 15 at ₹42,990 and the Dell DC15255 at ₹47,990.\n\nLaptop\tPrice\tProcessor\tRAM / Storage\tScreen\nMSI Modern 14 C7M-062IN\t₹43,219\tRyzen 5 7530U\t16GB / 512GB SSD\t14 inch\nAcer Aspire Lite 15 AL15-41\t₹42,990\tRyzen 5 5625U\t8GB / 512GB SSD\t15 inch\nDell DC15255\t₹47,990\tRyzen 5 7520U\t8GB / 512GB SSD\t15 inch\nMSI: Most RAM for the money and a newer chip. It was listed in Mar 2023, so check that stock is still new.\nAcer: Cheapest of the three and a good pick if 8GB is enough for you.\nDell: The newest, listed in Sep 2025, but you pay about ₹4,800 more than the Acer for the same RAM.\n\nPrices come from one list on Smartprix, updated on Tue 27 Oct 2026, so shop prices may differ. Screen sizes come from the AI names; the page gave no screen quality details.\n\n5:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:38 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Tue 27 Oct\nReplace\nRemove\n5:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:39 AM"
+  }
+]

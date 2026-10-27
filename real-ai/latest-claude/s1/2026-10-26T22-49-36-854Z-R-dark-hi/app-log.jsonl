@@ -1,6 +1,0 @@
-{"t":1793054977504,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793054981955,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793054984958,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
-{"t":1793054995438,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793054999331,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
-{"t":1793055001545,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2986}

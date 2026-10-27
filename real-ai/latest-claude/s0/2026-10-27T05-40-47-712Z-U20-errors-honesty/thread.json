@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n5:39 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n5:40 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which electricity company should I pay?\n1\nFind it from my email\nBEST FIT\nI read your bills, then ask before paying\n2\nI'll type the company name\nSomething else…\nSkip\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n5:41 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to dominos.co.in\n2\nLook for Domino's menu and offers near you\n3\nWait for you to pick one\n4\nFill in your details on dominos.co.in\n5\nShow you before your pizza order and total\n…and 2 more · Show\nAbout 6 minutes\nGo\nChange plan\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n5:41 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n5:41 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:41 AM"
+  }
+]
