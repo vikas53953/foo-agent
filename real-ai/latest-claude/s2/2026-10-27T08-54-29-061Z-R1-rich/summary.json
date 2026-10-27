@@ -1,0 +1,84 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T08-54-29-061Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793091274698,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 132
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 18113,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones under ₹20,000 that fit best value for price, camera and battery\n3\nCompare price, display, camera, battery and\nAbout 3 minutes\nGo\nChange plan\n8:54 AM",
+      "kit": [],
+      "ms": 24153
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 4
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 13
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793091449160,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 13644,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:57 AM",
+      "kit": [],
+      "ms": 19683
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

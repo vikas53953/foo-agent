@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hello in Hindi is नमस्ते (namaste). 🌿\n\n9:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n9:06 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:07 AM\n9:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 31 Oct, 8:00 PM\nlive checklist\nLooked for vegetarian restaurants in Connaught\nPicking the best vegetarian restaurants\nWait for you to pick one\nShow you before the table booking for 2 on Sat 31 Oct\nShow you before doing anything\nBook table for 2, Sat 31 Oct, 8:00 PM\nWatch live\nStop\n4 min\n9:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which city are you leaving from on Wed 28 Oct? → Another city\n9:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "superseded",
+    "text": "Which city are you leaving from for New Delhi? → you changed the plan\n9:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:09 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 31 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n9:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n9:11 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city are you leaving from on Wed 28 Oct?\n1\nMumbai\nBEST FIT\n2\nBengaluru\n3\nKolkata\n4\nChennai\nSomething else…\nSkip\n9:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:11 AM"
+  }
+]

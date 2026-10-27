@@ -1,0 +1,106 @@
+{
+  "journey": "B07-live",
+  "title": "Watch live, take over, hand back, stop",
+  "steps": 14,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T09-04-37-397Z-B07-live",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793091883197,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 174
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 5037,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Comparing morning trains on Wed 28…\n1\nWait for IRCTC\n2\nFind trains on IRCTC\n3\nCompare morning trains on Wed 28 Oct, New Delhi\nAbout 3 minutes\nGo\nChange plan\n9:04 AM",
+      "kit": [],
+      "ms": 11075
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 41
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 45000
+    },
+    {
+      "i": 4,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "ok": true,
+      "ms": 4001
+    },
+    {
+      "i": 6,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "ok": true,
+      "ms": 3001
+    },
+    {
+      "i": 8,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "ok": true,
+      "ms": 3002
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "ok": true,
+      "ms": 8000
+    },
+    {
+      "i": 12,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

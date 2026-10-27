@@ -1,0 +1,98 @@
+{
+  "journey": "U22-face-polish",
+  "title": "Living face: thinking while working, resting; motion off in settings",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T09-13-40-078Z-U22-face-polish",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1049
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793092434895,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "26px Thinking face only while the request is in flight (C.7.4)",
+      "ok": true,
+      "ms": 1501
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "poem; face back to resting, blinks",
+      "firstReplyMs": 9056,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Grey clouds roll in over the Arabian Sea,\nMarine Drive shimmers as the rain runs free.\nChai steams on stalls, the local trains hum,\nMumbai sways to the monsoon drum. 🌧️\n\n9:14 AM",
+      "kit": [],
+      "ms": 16103
+    },
+    {
+      "i": 4,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "face motion setting",
+      "ok": true,
+      "ms": 604
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23065
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

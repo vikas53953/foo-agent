@@ -1,0 +1,14 @@
+{"t":"2026-10-27T08:53:43.777Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T08:53:49.242Z","step":"launch","ok":true}
+{"t":"2026-10-27T08:53:49.362Z","i":0,"do":"send","sentAt":1793091229327,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-27T08:54:09.363Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20001}
+{"t":"2026-10-27T08:54:09.425Z","shot":"01-thanks.png"}
+{"t":"2026-10-27T08:54:09.427Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":2}
+{"t":"2026-10-27T08:54:09.525Z","i":3,"do":"send","sentAt":1793091249504,"sent":true,"before":0,"ok":true,"ms":98}
+{"t":"2026-10-27T08:54:28.702Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":10084,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying faster, cheaper and easier than cash or cards, and it works on almost any smartphone.\n\nBefore UPI, paying a small shop or a friend meant carrying change, finding a cash machine or waiting for a card swipe. Now you scan a code or type a mobile number, enter your PIN, and the money moves from your bank account in seconds. Even a tea stall or a vegetable seller can accept it with a printed QR code.\n\nThe three big reasons:\n\nFree and instant. Most everyday payments cost the user nothing, and the money arrives at once, at any hour, even on holidays.\nWorks across banks. You can pay anyone, whichever bank or app they use, without any long setup.\nEasy for small sellers. They need no card machine or contract, just a QR code, so more shops take it every year.\n\nTrust helps too. Every payment needs your PIN, and banks, apps and the government all pushed it until it felt normal. Once most of your local shops accept UPI, carrying cash starts to feel like the odd choice.\n\n8:54 AM","kit":[],"ms":19177}
+{"t":"2026-10-27T08:54:28.777Z","shot":"02-long.png"}
+{"t":"2026-10-27T08:54:28.779Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T08:54:28.780Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-27T08:54:28.788Z","i":7,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-27T08:54:28.909Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T08:54:28.921Z","step":"aiTurns","turns":2}
