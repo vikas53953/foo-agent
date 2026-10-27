@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What shall we sort out today?\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can check things in your apps and on websites, set up routines, catch you up on chats or email, and remember what matters to you.\n\n3:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n3:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet: it scrambles your traffic, then sends it through another computer that makes the request for you.\n\nThink of posting a letter inside a locked box to a friend, who then posts it onward from their address. Here is what that means in practice:\n\nYour internet provider and public Wi-Fi can't read what you send, because it's locked.\nWebsites see the VPN computer's address, not yours, so your location looks different.\nWhat it doesn't do: it won't stop you being tracked if you sign in to accounts, and the VPN company itself can see your traffic, so pick one you trust.\n3:42 PM"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi's Qutub Minar, built around 1200, is still the tallest brick minaret in the world at about 72.5 metres. 🌿\n\n3:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n3:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because its hosiery and woollen industry makes a huge share of the country's knitwear. 🌿\n\nShow earlier answer\nRewritten\n3:48 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for ISRO news from Tue 20 Oct… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry major news sites instead\n3:49 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:50 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n3:50 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:51 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n3:51 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n3:52 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 3:52 PM\n3:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:52 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nStill working, this one takes a while\nLook for laptops under ₹50,000 in India, with\nKeep 3 laptops that fit best value under ₹50,000\nCompare price, processor, RAM, storage, screen\nWatch live\nStop\n2 min\n3:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:52 PM"
+  }
+]

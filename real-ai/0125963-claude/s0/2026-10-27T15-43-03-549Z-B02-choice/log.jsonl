@@ -1,0 +1,14 @@
+{"t":"2026-10-27T15:43:03.550Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T15:43:09.005Z","step":"launch","ok":true}
+{"t":"2026-10-27T15:43:09.176Z","i":0,"do":"send","sentAt":1793115789109,"sent":true,"before":0,"ok":true,"ms":168}
+{"t":"2026-10-27T15:43:21.347Z","i":1,"do":"waitReply","firstReplyMs":6051,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Where will you mostly run in these ₹5,000 shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday road shoes\n2\nTrails or uneven ground\nMore grip and sturdier build\n3\nGym or treadmill\nLight and breathable\n4\nBit of everything\nA comfortable all-rounder\nSomething else…\nSkip\n3:43 PM","kit":[],"ms":12170}
+{"t":"2026-10-27T15:43:21.417Z","shot":"01-choice.png"}
+{"t":"2026-10-27T15:43:21.419Z","i":2,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-10-27T15:43:21.421Z","i":3,"do":"check","found":4,"ok":true,"ms":2}
+{"t":"2026-10-27T15:43:21.425Z","i":4,"do":"text","soft":true,"text":"Where will you mostly run in these ₹5,000 shoes?\n1\nRoads and pavements\nBEST FIT\nCushioned, everyday road shoes\n2\nTrails or uneven ground\nMore grip and sturdier build\n3\nGym or treadmill\nLight and breathable\n4\nBit of everything\nA comfortable all-rounder\nSomething else…\nSkip\n3:43 PM","ok":true,"ms":4}
+{"t":"2026-10-27T15:43:21.551Z","i":5,"do":"send","sentAt":1793115801500,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-27T15:43:34.157Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","firstReplyMs":6569,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Trail shoes it is. What matters most to you in a pair?\n1\nGrip on loose ground\nBEST FIT\nDeeper studs for mud, gravel and slopes\n2\nSoft cushioning\nEasier on knees for longer runs\n3\nLight weight\nFaster and less tiring\n4\nLasts a long time\nTougher build for rough use\nSomething else…\nSkip\n3:43 PM","kit":[],"ms":12605}
+{"t":"2026-10-27T15:43:34.221Z","shot":"02-typed-2.png"}
+{"t":"2026-10-27T15:43:34.230Z","i":7,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-27T15:43:34.361Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T15:43:34.374Z","step":"aiTurns","turns":2}

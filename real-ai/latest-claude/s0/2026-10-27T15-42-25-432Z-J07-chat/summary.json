@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T15-42-25-432Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793115750959,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2534,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good to see you. What shall we sort out today?\n\n3:42 PM",
+      "kit": [],
+      "ms": 9632
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793115760765,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper: I can check things in your apps and on websites, set up routines, catch you up on chats or email, and remember what matters to you.\n\n3:42 PM",
+      "kit": [],
+      "ms": 9636
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793115770559,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 99
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 4044,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet: it scrambles your traffic, then sends it through another computer that makes the request for you.\n\nThink of posting a letter inside a locked box to a friend, who then posts it onward from their address. Here is what that means in practice:\n\nYour internet provider and public Wi-Fi can't read what you send, because it's locked.\nWebsites see the VPN computer's address, not yours, so your location looks different.\nWhat it doesn't do: it won't stop you being tracked if you sign in to accounts, and the VPN company itself can see your traffic, so pick one you trust.\n3:42 PM",
+      "kit": [],
+      "ms": 12640
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
