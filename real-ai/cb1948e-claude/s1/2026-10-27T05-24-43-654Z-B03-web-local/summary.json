@@ -1,0 +1,77 @@
+{
+  "journey": "B03-web-local",
+  "title": "Web without keys: news read locally, sources",
+  "steps": 9,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T05-24-43-654Z-B03-web-local",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793078688939,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6035,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nCheck isro.gov.in, pib.gov.in, The Hindu\n3\nCompare reports on each ISRO story\n4\nWrite it\nAbout 3 minutes\nGo\nChange plan\n5:24 AM",
+      "kit": [],
+      "ms": 12068
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "expectText",
+      "text": "Your favourite food is South Indian. I already had that noted, so there's nothing new to save. 🌿\n\n5:24 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}
