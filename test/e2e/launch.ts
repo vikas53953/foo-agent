@@ -2,7 +2,7 @@
 // FOO_FAKE_AI (08-3 §22.3: the fake AI's JSON Lines script; without it a FOO_TEST run starts no engine).
 import { _electron as electron, type ElectronApplication } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -20,7 +20,7 @@ export async function launch(dirs = testDirs(), extraArgs: string[] = [], env: R
     colorScheme: null,
     env: { ...process.env, FOO_TEST: '1', ...dirs, ...env } as Record<string, string>,
   });
-  if (process.platform === 'win32') watchClose(app);
+  if (process.platform === 'win32') watchClose(app, dirs.FOO_DATA_DIR);
   return app;
 }
 
@@ -29,8 +29,17 @@ export async function launch(dirs = testDirs(), extraArgs: string[] = [], env: R
  * to close, which needs every process holding its stdout/stderr pipes to end. When a close runs over 20 s, log whether the
  * main process is still alive and which electron / node / Edge processes are left, with their parents. It changes nothing.
  */
-function watchClose(app: ElectronApplication): void {
+function watchClose(app: ElectronApplication, dataDir: string): void {
   const real = app.close.bind(app);
+  let stderr = '';
+  app.process().stderr?.on('data', (b: Buffer) => (stderr = (stderr + b.toString('utf8')).slice(-6_000)));
+  const logTail = () => {
+    const dir = join(dataDir, 'logs');
+    if (!existsSync(dir)) return '(no logs folder)';
+    return readdirSync(dir)
+      .map((f) => readFileSync(join(dir, f), 'utf8').trim().split('\n').slice(-25).join('\n'))
+      .join('\n');
+  };
   app.close = async () => {
     const pid = app.process().pid;
     const started = Date.now();
@@ -46,7 +55,24 @@ function watchClose(app: ElectronApplication): void {
       } catch (e) {
         out = `(process list failed: ${e instanceof Error ? e.message.split('\n')[0] : String(e)})`;
       }
-      console.log(`DIAG close of pid ${pid} still waiting after ${at}; exitCode ${app.process().exitCode}; processes:\n${out}`);
+      const titles = `Get-CimInstance Win32_Process -Filter "ParentProcessId=${pid}" | ForEach-Object { Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue | ForEach-Object { 'window of {0}: "{1}" responding {2}' -f $_.Id, $_.MainWindowTitle, $_.Responding } }`;
+      let win: string;
+      try {
+        win = execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', titles], {
+          encoding: 'utf8',
+          timeout: 20_000,
+          windowsHide: true,
+        });
+      } catch (e) {
+        win = `(window list failed: ${e instanceof Error ? e.message.split('\n')[0] : String(e)})`;
+      }
+      const err = stderr
+        .split('\n')
+        .filter((l) => !/dbus|gpu|command_buffer|DevTools listening|Debugger|nodejs\.org/.test(l))
+        .join('\n');
+      console.log(
+        `DIAG close of pid ${pid} still waiting after ${at}; exitCode ${app.process().exitCode}; processes:\n${out}\n${win}\nDIAG stderr tail:\n${err}\nDIAG tech log tail:\n${logTail()}`,
+      );
     };
     const t1 = setTimeout(() => dump('20 s'), 20_000);
     const t2 = setTimeout(() => dump('90 s'), 90_000);
