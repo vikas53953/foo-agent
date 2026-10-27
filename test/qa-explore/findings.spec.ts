@@ -253,3 +253,21 @@ test('QA-X-F28 · after a multi-line paste, a pasted key is masked where it was 
   // The mask follows "three ", never splits it (main 20c8ba0 showed "thr••••ee").
   await expect.poll(() => field.innerText(), { message: 'mask lands after "three ", not inside it' }).toMatch(/three\s*•/);
 });
+
+test('QA-X-F29 · with memory off, "remember that…" gets only the can’t-remember line, never "Noted:" before it (real AI 20c8ba0)', async () => {
+  // Real Claude said "Noted: Vegetarian." and then foo added "I can’t remember things for you yet…": the two contradict.
+  w = await open([say('QAX-F29', 'Noted: Vegetarian.', { kind: 'memory', op: 'remember', text: 'Vegetarian' })], { firstRun: true });
+  await finishSetup(w.page);
+  await w.page.getByTestId(TID.composerField).fill('QAX-F29 remember that I am vegetarian');
+  await w.page.keyboard.press('Enter');
+  await expect(lastFoo(w.page)).toContainText('can’t remember things', { timeout: 20_000 });
+  const answers = await w.page.evaluate(() => {
+    const mine = [...document.querySelectorAll('[data-testid="bubble-me"]')].at(-1)!;
+    return [...document.querySelectorAll('[data-testid="bubble-foo"]')]
+      .filter((b) => mine.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .map((b) => (b as HTMLElement).innerText.split('\n')[0]);
+  });
+  expect(answers, 'foo’s bubbles after the message: one honest line, no "Noted:"').toEqual([
+    expect.stringContaining('can’t remember things'),
+  ]);
+});

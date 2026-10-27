@@ -166,6 +166,15 @@ export const DEFECTS: Defect[] = [
     note: 'raised by the builder’s reviewer on PR #165 (27 Oct); older than that change',
   },
   {
+    id: 'F29',
+    sev: 'S2',
+    kind: 'functional',
+    title: 'With memory off, "remember that…" says "Noted: Vegetarian." then "I can’t remember things for you yet"',
+    where: 'Chat: ask foo to remember something (batch 1, memory off)',
+    test: 'QA-X-F29',
+    note: 'seen with real Claude on main 20c8ba0, run 40576511670 (B1-batch1 step 29)',
+  },
+  {
     id: 'F01',
     sev: 'S3',
     kind: 'visual',
