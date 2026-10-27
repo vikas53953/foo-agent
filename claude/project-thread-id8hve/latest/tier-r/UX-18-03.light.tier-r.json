@@ -104,6 +104,7 @@
         "to",
         "peanuts",
         "Done",
+        "1",
         "T",
         "11:58",
         "AM",
@@ -111,6 +112,7 @@
         "window",
         "seats",
         "Done",
+        "1",
         "B",
         "Building",
         "society",
@@ -354,6 +356,9 @@
         "it",
         "9:38",
         "AM",
+        "1",
+        "new",
+        "message",
         "Pay",
         "Taj",
         "Holiday",
@@ -477,8 +482,8 @@
     "total": 87801
   },
   "r5": {
-    "ratio": 0.0742890625,
-    "diffPixels": 76072,
+    "ratio": 0.0750615234375,
+    "diffPixels": 76863,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-03.light.diff.png"

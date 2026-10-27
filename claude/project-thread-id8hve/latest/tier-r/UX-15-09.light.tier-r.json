@@ -390,7 +390,7 @@
         "the",
         "beach",
         "9:36",
-        "⏳",
+        "⛔",
         "Goa",
         "stay",
         "live",
@@ -554,8 +554,8 @@
     "total": 30966
   },
   "r5": {
-    "ratio": 0.0796240234375,
-    "diffPixels": 81535,
+    "ratio": 0.079673828125,
+    "diffPixels": 81586,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-09.light.diff.png"
