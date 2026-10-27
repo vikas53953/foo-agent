@@ -203,6 +203,23 @@ test('a key pasted after a multi-line paste is masked where the caret is, not li
   await app.close();
 });
 
+test('a mention picked after a multi-line paste replaces just the "@" words (04-2 §22.8)', async () => {
+  const { app, page } = await start('ux-world');
+  // The helpers load at start-up, before the seed wrote them; a reload lists them in the mention menu.
+  await page.reload();
+  await page.getByTestId(TID.titlebarStrip).waitFor();
+  await openChat(page, 'foo');
+  await field(page).focus();
+  await paste(page, 'one\ntwo\n\nthree');
+  await page.keyboard.type(' @');
+  const row = page.getByTestId(TID.composerMentionRow).first();
+  await expect(row).toBeVisible();
+  const name = await row.locator('span').filter({ hasNotText: /^.$/ }).first().innerText();
+  await row.click();
+  expect(await field(page).innerText()).toBe(`one\ntwo\n\nthree @${name} `);
+  await app.close();
+});
+
 test('the field grows a line at a time as text is added, and shrinks back when lines go or the message is sent (02 §F7.1)', async () => {
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');
