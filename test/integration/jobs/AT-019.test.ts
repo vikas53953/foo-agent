@@ -3,7 +3,7 @@
 // the proof is checked against recorded tool results; the result text posted as one message), 08-1 §4.1.2 (state.json and
 // plan.md mirrors after every step), 08-0 §F (badges 👀 → 🛠 → ✅). Fake AI + fake gmail tools (M8 brings the connector).
 import { afterEach, describe, expect, it } from 'vitest';
-import { BILLS_PLAN, jobHarness, jobIntake, stepDone, step, tool, badgeSets, type JobHarness } from './jobHarness';
+import { BILLS_PLAN, jobHarness, jobIntake, stepDone, step, tool, badgeSets, untilStill, type JobHarness } from './jobHarness';
 
 let h: JobHarness | null = null;
 afterEach(() => {
@@ -29,6 +29,9 @@ describe('AT-019 · Find bills due this week', () => {
     h = jobHarness({ script: billsScript() });
     const sentAt = h.clock.now() + 1_000;
     const userId = h.userSays('Find bills due this week');
+    // The intake reply has no delay, so the job starts with the clock still. settle() moves the clock while the engine is
+    // still busy, so on a loaded Windows runner (main cb1948e) intake took 20 rounds and the job started 2 s late.
+    await untilStill(() => h!.jobs().length > 0, 'the job is made');
     await h.settle(100);
 
     const job = h.job();
