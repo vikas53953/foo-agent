@@ -1,0 +1,234 @@
+{
+  "id": "UX-04-04",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-04-04.light.png",
+      "sha256": "c1c2f95d8f434366cb7155746cf00daaf9418e3cbf59d266e60665192613961a"
+    },
+    "dark": {
+      "png": "UX-04-04.dark.png",
+      "sha256": "f41e94f67225121d9661a5e3382c629b1098fc596a2c09b15dbb73848acc07e6"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "7:45 PM",
+    "Calm, a bit funny. Got it. 🌿",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "Setting up foo",
+    "⚙",
+    "foo",
+    "Setting up",
+    "Step 3 of 4 · A quick interview",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Thu 15 Oct",
+    "✓ Using Claude (your AI) · foo · Calm, a bit funny",
+    "What should I call you? →",
+    "Vikas",
+    "Hi Vikas.",
+    "7:46 PM",
+    "Can I peek at which apps you have installed? →",
+    "Yes, have a look",
+    "Which apps do you use most? →",
+    "WhatsApp, Gmail + Calendar, X",
+    "Want me to read your Gmail so I know your bills and trips?",
+    "7:46 PM",
+    "✉ Connect Gmail and Calendar",
+    "4 of 8",
+    "I'll read emails and your calendar to spot bills, trips and plans. I'll write drafts, but I never send without your tap.",
+    "Connect",
+    "Not now",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "What I know about you",
+    "Nothing yet. Tell me about you any time.",
+    "Spent this month",
+    "Your AI",
+    "₹0 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "Connect"
+  ],
+  "hl": {
+    "id": "connect",
+    "box": {
+      "x": 379,
+      "y": 678,
+      "width": 70.734375,
+      "height": 28
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 379,
+      "y": 678,
+      "width": 70.734375,
+      "height": 28
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M12",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 4,
+    "step": 4,
+    "anchor": "interview-4",
+    "title": "Quick interview and connections",
+    "part": "Day 0 · Thu 15 Oct, evening",
+    "j": "J4",
+    "r": "R18 · R9",
+    "c": "Gmail and Calendar: a Connect card says exactly what foo will and won't do.",
+    "s": "\"Connect Gmail and Calendar. I'll read emails and your calendar to spot bills, trips and plans. I'll write drafts, but I never send without your tap.\"",
+    "f": "Nothing yet. Connect opens Google's own sign-in in your normal browser.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "7:45 PM",
+            "prev": "Calm, a bit funny. Got it. 🌿"
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "f",
+              "h": "<div class=\"card okc\"><div class=\"hd\">✓ Using Claude (your AI) · foo · Calm, a bit funny</div></div>",
+              "g": 12
+            },
+            {
+              "id": "A",
+              "h": "<div class=\"card\"><div class=\"ans\">What should I call you? → <b>Vikas</b></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Hi Vikas.<span class=\"meta\">7:46 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "B",
+              "h": "<div class=\"card\"><div class=\"ans\">Can I peek at which apps you have installed? → <b>Yes, have a look</b></div></div>",
+              "g": 12
+            },
+            {
+              "id": "C",
+              "h": "<div class=\"card\"><div class=\"ans\">Which apps do you use most? → <b>WhatsApp, Gmail + Calendar, X</b></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Want me to read your Gmail so I know your bills and trips?<span class=\"meta\">7:46 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "D",
+              "h": "<div class=\"card\" data-hl=\"dcard\"><div class=\"hd\">✉ Connect Gmail and Calendar<span class=\"lbl\">4 of 8</span></div><div class=\"sm\">I'll read emails and your calendar to spot bills, trips and plans. I'll write drafts, but I never send without your tap.</div><div class=\"row2\"><span class=\"pillbtn sm dark\" data-hl=\"connect\">Connect</span><span class=\"pillbtn sm \">Not now</span></div></div>",
+              "g": 4
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Setting up",
+          "pill": "Step 3 of 4 · A quick interview"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)"
+          ],
+          "mem": [],
+          "ai": 0,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "setup": 1,
+        "ai": "Claude ready",
+        "aiTone": null,
+        "foot2": "Setting up foo"
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "7:41 PM",
+        "date": "15-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest"
+        },
+        "still": {
+          "foo": true
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "7:41 PM",
+    "superseded": null
+  }
+}
