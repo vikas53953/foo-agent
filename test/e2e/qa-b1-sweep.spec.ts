@@ -1,8 +1,8 @@
-// Spec: AT-449, CR-0059 (X-216, the batch-1 baseline fixes) rows 1–6; CR-0054 (X-211, batch 1 = install, ai, name, chat, settings);
+// Spec: AT-449, CR-0059 (X-216, the batch-1 baseline fixes) rows 1–6, row 4 as CR-0066 changes it; CR-0054 (X-211, batch 1 = install, ai, name, chat, settings);
 // 04 §5 (hover toolbar and More menu), §17.1 (Try again rewrites in place: "Rewritten", "Show earlier answer"), §10.4 (delete);
 // Vikas's QA ask of 2026-10-26 ("a framework that finds these bugs rather than me telling you"). The bug-finder sweep on the
 // batch-1 build: every action in a bubble's menu and action row must visibly do something, no hover control may cover
-// another bubble's words, switched-off features leave no trace on screen, and the 👀 only shows when foo takes a while.
+// another bubble's words, switched-off features leave no trace on screen, and a plain message never shows 👀 (CR-0066).
 // Each finding is listed by name in the failure message, with a screenshot per step for `pnpm qa`.
 import { expect, test, type ElectronApplication, type Locator, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -153,7 +153,8 @@ test('AT-449 QA-B1-080 · bug-finder sweep: every bubble action does something, 
   if (/₹/.test(footer)) findings.push(`off feature on screen: the sidebar shows a spend line ("${footer.trim()}")`);
   await shot(page, '1-home');
 
-  // 2. 👀 only when foo takes a while (CR-0059 row 4): never on a quick answer, shown on a slow one.
+  // 2. No 👀 on a plain message, quick or slow (CR-0066): foo's Thinking row already says foo is on it, and a real AI takes
+  // more than CR-0059's 2 s on every message, so 👀 showed on all of them (Vikas, 27 Oct).
   const log = page.getByTestId(TID.threadLog);
   const eyesSeen: string[] = [];
   await page.exposeFunction('__qaEyes', (s: string) => eyesSeen.push(s));
@@ -172,12 +173,14 @@ test('AT-449 QA-B1-080 · bug-finder sweep: every bubble action does something, 
   if (eyesSeen.length) findings.push(`👀 shown on a quick answer: ${eyesSeen[0]}`);
   await page.getByTestId(TID.composerField).fill('slow one');
   await page.keyboard.press('Enter');
-  const seen = log.locator(`${byTid(TID.bubbleBadge)}[data-state="seen"]`);
-  await seen.waitFor({ timeout: 5_000 }).catch(() => findings.push('👀 never showed while foo took 4 s'));
-  if ((await seen.count()) && !(await seen.locator('img').count())) findings.push('👀 is the flat glyph, not the 3D eyes picture');
+  // Past CR-0059's 2 s hold while foo still thinks (the scripted answer waits 4 s of the fake clock).
+  await page.getByTestId(TID.threadThinking).waitFor();
+  await page.waitForTimeout(3_000);
+  if (eyesSeen.length) findings.push(`👀 shown while foo took 4 s: ${eyesSeen[0]}`);
   await shot(page, '2-eyes');
   await advance(page, 5_000);
-  await expect(seen).toHaveCount(0, { timeout: 5_000 });
+  await expect(log.getByText('That took a while.')).toBeVisible({ timeout: 10_000 });
+  if (eyesSeen.length) findings.push(`👀 shown on a slow answer: ${eyesSeen[0]}`);
 
   await send(page, 'long one');
   await send(page, 'short one');

@@ -460,13 +460,17 @@ async function main() {
             await page.waitForTimeout(500);
             const now = await afterMe();
             if (now.n > before && first === null) first = Date.now() - start;
+            // neverCss: something that must not show at any point while foo answers (CR-0066: 👀 on a plain message).
+            if (s.neverCss && rec.neverSeenMs === undefined && (await page.locator(s.neverCss).count()) > 0) {
+              rec.neverSeenMs = Date.now() - start;
+            }
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
             if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
-          rec.ok = cur.n > before;
+          rec.ok = cur.n > before && rec.neverSeenMs === undefined;
           // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
           if (stillWorking(cur.items.slice(before))) {
             rec.stillWorking = true;
