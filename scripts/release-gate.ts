@@ -388,7 +388,13 @@ function report() {
   const sha = opt('--sha') ?? '';
   mkdirSync(join(out, 'shots'), { recursive: true });
   const runs = loadRuns(runsDir);
-  const expected = opt('--expect') && existsSync(opt('--expect')!) ? JSON.parse(readFileSync(opt('--expect')!, 'utf8')) : [];
+  // --expect given but the file is gone (a lost upload) must not quietly drop the every-round check.
+  const expectFile = opt('--expect');
+  if (expectFile && !existsSync(expectFile)) {
+    console.error(`release gate: BLOCKED · ${expectFile} is missing, so the rounds that should have run are unknown`);
+    process.exit(2);
+  }
+  const expected = expectFile ? JSON.parse(readFileSync(expectFile, 'utf8')) : [];
   const cps = [...checkpoints(runs), ...missingRuns(runs, expected)];
   const reviewFile = join(out, 'review.json');
   const reviews = new Map<string, Review>(

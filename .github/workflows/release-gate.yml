@@ -276,8 +276,9 @@ jobs:
 
   release:
     name: Release the tested app (only on PASS)
-    needs: review
-    if: needs.review.outputs.status == 'PASS'
+    needs: [drive, review]
+    # A drive that failed (the first run, or a key found in the evidence) never releases, whatever the report says.
+    if: needs.drive.result == 'success' && needs.review.result == 'success' && needs.review.outputs.status == 'PASS'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
