@@ -31,6 +31,7 @@ import { titleOfCard } from '../cards/registry';
 import { CardView, hasCardView } from '../cards/renderCard';
 import { clockNow } from '../store/apply';
 import { openDialog, update, useStore } from '../store/index';
+import { selectTypingChatId } from '../store/live';
 import {
   keepVoice,
   react,
@@ -393,8 +394,11 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
   const offlineQueued = ctx.offline;
   const rawSlot = badgeSlot(m, { offline: offlineQueued });
   // CR-0059 row 4 (X-216): 👀 waits until foo has been on the message for 2 s; a quick answer never shows it.
+  // CR-0066: and never while foo's Thinking row is up in this chat, which says the same thing; a real AI takes over 2 s on
+  // every message, so a plain message never shows 👀 (a queued job or a steer still does).
+  const thinking = useStore(selectTypingChatId) === m.chatId;
   const seenNow = rawSlot?.kind === 'badge' && rawSlot.value === 'seen';
-  const seenHeld = useHeldFor(seenNow);
+  const seenHeld = useHeldFor(seenNow && !thinking);
   const slot = seenNow && !seenHeld ? null : rawSlot;
   const shownSlot = useDebounced(slot ? JSON.stringify(slot) : '');
   const parsedSlot = shownSlot ? (JSON.parse(shownSlot) as Exclude<typeof slot, null>) : null;
