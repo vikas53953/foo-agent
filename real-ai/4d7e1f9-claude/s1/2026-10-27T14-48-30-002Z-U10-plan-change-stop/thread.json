@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n2:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. You don't need a gaming graphics card unless you'll train AI projects or build games.\n\nWhat matters most:\n\nRAM: 16 GB is the floor. 8 GB gets tight with a code editor, browser tabs and a few running apps.\nKeyboard and screen: You'll look at both all day, so pick a good keyboard and a bright Full HD screen (14 or 15 inch).\nBattery: Look for 8+ hours of real use if you work away from a plug.\nMac option: A discounted MacBook Air with an M-series chip can fit near this budget and lasts long on battery. Check current prices, since they move often.\n\nI haven't checked today's prices. What kind of programming will you do: web and apps, or AI and games?\n\n2:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is 12 times 12?\n2:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "12 times 12 is 144.\n\n2:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n2:48 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n2:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n2:48 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:49 PM\n2:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:48 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks that fit easy only, doable in a weekend\nCompared difficulty and cost\nStopped by you\n2:49 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n2:49 PM"
+  }
+]

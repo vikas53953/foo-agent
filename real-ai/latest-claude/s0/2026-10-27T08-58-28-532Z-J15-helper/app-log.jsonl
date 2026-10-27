@@ -1,5 +1,0 @@
-{"t":1793091509362,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793091510708,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
-{"t":1793091510728,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793091516623,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
-{"t":1793091516825,"lvl":"info","mod":"engine","evt":"job.waiting","kind":"app_quit"}
