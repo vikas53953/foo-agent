@@ -19,6 +19,8 @@ export interface LaneSites {
   /** Every request the sites got, in order: when (ms since the sites started), the Host header and the loopback it came in
    * on, so a page that never arrived says whether the browser asked at all. */
   requests: { ms: number; host: string; family: string; path: string }[];
+  /** `Date.now()` when the sites started (the zero of `requests[].ms`). */
+  started: number;
   signin(path?: string): string;
   captcha(path?: string): string;
   close(): Promise<void>;
@@ -96,6 +98,7 @@ export async function serveLaneSites(): Promise<LaneSites> {
     ipv6,
     v6Collisions,
     requests,
+    started,
     toggles: { signin: sites.signin.toggles, captcha: sites.captcha.toggles },
     counts,
     signin: (p = '/login') => `http://127.0.0.1:${port}${p}`,
