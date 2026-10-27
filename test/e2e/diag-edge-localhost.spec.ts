@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { EDGE_ARGS } from '../../src/engine/tools/browser/browser';
 import { serveLaneSites } from '../integration/browser/laneSites';
+import { browserJob, done, laneRun, signinCard, tool } from './m9-lanes';
 
 const ROUNDS = 6;
 
@@ -57,5 +58,38 @@ test('DIAG · first navigation to localhost and 127.0.0.1 in a fresh Edge, with 
       await ctx.close();
       await sites.close();
     }
+  }
+});
+
+test('DIAG · browser.open through foo, localhost and 127.0.0.1, fresh app each time', async () => {
+  test.skip(process.platform !== 'win32', 'Edge on Windows only');
+  test.setTimeout(900_000);
+  for (let i = 0; i < 16; i++) {
+    const host = i % 2 === 0 ? 'localhost' : '127.0.0.1';
+    const run = await laneRun((sites) => [
+      ...browserJob(`diag open ${i}`, 'Diag page'),
+      tool('browser.open', { url: host === 'localhost' ? sites.captcha() : sites.signin('/') }),
+      tool('browser.snapshot', {}),
+      done('done'),
+    ]);
+    const t0 = Date.now();
+    let obs = '';
+    try {
+      await run.ask(`diag open ${i}`);
+      // localhost serves the CAPTCHA page, so the lane pauses the job with a waiting Sign-in card (as UX-14-09); 127.0.0.1/
+      // is a plain page, so the next step sees the open's observation.
+      await run.until(async () => {
+        const o = run.turns().find((x) => x.purpose === 'step' && x.prompt.includes('Last observation'));
+        if (o) obs = o.prompt.slice(o.prompt.indexOf('Last observation')).split('\n').slice(0, 2).join(' ').slice(0, 160);
+        const card = signinCard(run.page);
+        if (!o && (await card.count())) obs = `sign-in card ${await card.getAttribute('data-state').catch(() => '?')}`;
+        return obs !== '';
+      }, 'the first observation or a Sign-in card');
+    } catch (e) {
+      obs = `never: ${e instanceof Error ? e.message.split('\n')[0]!.slice(0, 200) : String(e)}`;
+    }
+    const reqs = run.sites.requests.map((q) => `${q.ms}ms ${q.host.split(':')[0]} ${q.family} ${q.path}`).join('; ');
+    console.log(`DIAG foo open ${host} #${i + 1}: ${Date.now() - t0}ms real; ${obs}; sites got: ${reqs || 'nothing'}`);
+    await run.close();
   }
 });
