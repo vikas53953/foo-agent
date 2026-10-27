@@ -144,7 +144,6 @@
         "T",
         "9:41",
         "Checklist:",
-        "1",
         "B",
         "Building",
         "society",
@@ -531,8 +530,8 @@
     "total": 51200
   },
   "r5": {
-    "ratio": 0.105736328125,
-    "diffPixels": 108274,
+    "ratio": 0.1054951171875,
+    "diffPixels": 108027,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-01.dark.diff.png"
