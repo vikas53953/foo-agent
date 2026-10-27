@@ -192,6 +192,17 @@ test('a pasted blank line is sent as one blank line, the same as typed with Shif
   await app.close();
 });
 
+test('a key pasted after a multi-line paste is masked where the caret is, not lines early (04-2 §22.4, QA-X-F28)', async () => {
+  const { app, page } = await start('ux-world');
+  await openChat(page, 'foo');
+  await field(page).focus();
+  await paste(page, 'one\ntwo\n\nthree ');
+  await paste(page, 'sk-proj-AbCdEfGhIjKlMnOpQrStUvWx1234');
+  await expect(page.getByTestId(TID.composerPaste)).toBeVisible();
+  expect(await field(page).innerText()).toMatch(/three ••••$/);
+  await app.close();
+});
+
 test('the field grows a line at a time as text is added, and shrinks back when lines go or the message is sent (02 §F7.1)', async () => {
   const { app, page } = await start('ux-world');
   await openChat(page, 'foo');

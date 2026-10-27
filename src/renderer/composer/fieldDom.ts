@@ -3,40 +3,60 @@
 // read the field into segments, write segments back, and move the caret by check-text offset. Masks and mentions are
 // `contenteditable="false"` spans, so Chromium deletes each as one unit.
 import { MASK } from '../../shared/redactor';
-import { MASK_CHAR, tidy, type Segment } from './fieldModel';
+import { checkText, MASK_CHAR, tidy, type Segment } from './fieldModel';
 
 const BLOCK = new Set(['DIV', 'P', 'LI']);
 
 /** Reads the field. Line breaks are "\n" text (white-space: pre-wrap); a stray <br> or block from the browser is a line. */
 export function domToSegments(root: HTMLElement): Segment[] {
+  return walkField(root);
+}
+
+/**
+ * The field's segments, or with `upTo` only the part before that DOM point. The caret and selection offsets come from the
+ * same walk as the text, so a pasted `<div><br></div>` line counts the same in both (QA-X-F28: a mask pasted after a
+ * multi-line paste landed characters early).
+ */
+function walkField(root: HTMLElement, upTo?: { node: Node; offset: number }): Segment[] {
   const out: Segment[] = [];
+  const edge = upTo ? root.ownerDocument.createRange() : null;
+  edge?.setStart(upTo!.node, upTo!.offset);
+  edge?.collapse(true);
+  /** The DOM point is at or before the edge (always, with no edge). */
+  const within = (node: Node, offset: number) => !edge || edge.comparePoint(node, offset) <= 0;
+  const passed = (node: Node) => within(node.parentNode!, Array.prototype.indexOf.call(node.parentNode!.childNodes, node) + 1);
   const walk = (node: Node, first: boolean) => {
     if (node.nodeType === Node.TEXT_NODE) {
-      out.push({ kind: 'text', text: node.nodeValue ?? '' });
+      const text = node.nodeValue ?? '';
+      if (passed(node)) out.push({ kind: 'text', text });
+      else if (upTo?.node === node) out.push({ kind: 'text', text: text.slice(0, upTo.offset) });
       return;
     }
     if (!(node instanceof HTMLElement)) return;
     if (node.dataset.mask) {
-      out.push({ kind: 'mask', id: node.dataset.mask });
+      if (passed(node)) out.push({ kind: 'mask', id: node.dataset.mask });
       return;
     }
     if (node.dataset.mention) {
-      out.push({ kind: 'mention', helperId: node.dataset.mention, name: node.dataset.name ?? '' });
+      if (passed(node)) out.push({ kind: 'mention', helperId: node.dataset.mention, name: node.dataset.name ?? '' });
       return;
     }
     if (node.tagName === 'BR') {
       // The browser's placeholder <br> at the very end of the field, or at the end of a block (the empty line of a pasted
       // "a\n\nb" is `<div><br></div>`, and the block already makes the line), is not a line.
       const blockEnd = !node.nextSibling && node.parentNode instanceof HTMLElement && BLOCK.has(node.parentNode.tagName);
-      if ((node.nextSibling || node.parentNode !== root) && !blockEnd) out.push({ kind: 'text', text: '\n' });
+      if ((node.nextSibling || node.parentNode !== root) && !blockEnd && passed(node)) out.push({ kind: 'text', text: '\n' });
       return;
     }
-    if (BLOCK.has(node.tagName) && !first) out.push({ kind: 'text', text: '\n' });
+    if (BLOCK.has(node.tagName) && !first && within(node, 0)) out.push({ kind: 'text', text: '\n' });
     node.childNodes.forEach((c, i) => walk(c, i === 0 && first));
   };
   root.childNodes.forEach((c, i) => walk(c, i === 0));
   return tidy(out);
 }
+
+/** The check-text offset of a DOM point in the field. */
+const offsetAt = (root: HTMLElement, node: Node, offset: number) => checkText(walkField(root, { node, offset })).length;
 
 export interface SegmentLook {
   maskClass: string;
@@ -81,11 +101,8 @@ const lengthOf = (n: Node): number => {
 /** The caret (selection focus) as a check-text offset, or the end when the field has no selection. */
 export function caretOffset(root: HTMLElement): number {
   const sel = root.ownerDocument.getSelection();
-  if (!sel || !sel.rangeCount || !root.contains(sel.focusNode)) return lengthOf(root);
-  const r = document.createRange();
-  r.selectNodeContents(root);
-  r.setEnd(sel.focusNode!, sel.focusOffset);
-  return lengthOf(r.cloneContents());
+  if (!sel || !sel.rangeCount || !root.contains(sel.focusNode)) return checkText(walkField(root)).length;
+  return offsetAt(root, sel.focusNode!, sel.focusOffset);
 }
 
 /** The selection as check-text offsets (start ≤ end), or null when it is not in the field. */
@@ -94,13 +111,7 @@ export function selectionOffsets(root: HTMLElement): { start: number; end: numbe
   if (!sel || !sel.rangeCount) return null;
   const range = sel.getRangeAt(0);
   if (!root.contains(range.startContainer) || !root.contains(range.endContainer)) return null;
-  const a = document.createRange();
-  a.selectNodeContents(root);
-  a.setEnd(range.startContainer, range.startOffset);
-  const b = document.createRange();
-  b.selectNodeContents(root);
-  b.setEnd(range.endContainer, range.endOffset);
-  return { start: lengthOf(a.cloneContents()), end: lengthOf(b.cloneContents()) };
+  return { start: offsetAt(root, range.startContainer, range.startOffset), end: offsetAt(root, range.endContainer, range.endOffset) };
 }
 
 /** Puts the caret at a check-text offset (after an atomic token when the offset lands on it). */
