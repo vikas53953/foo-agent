@@ -202,9 +202,10 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "memory-off",
-      "expect": "the batch-1 memory line, or a plain reply; never a memory chip",
-      "expectJs": "!document.querySelector('[data-testid=\"thread-memory-see\"]')",
-      "feature": "refusals"
+      "expect": "only the batch-1 line that foo can’t remember things yet; never “Noted:” before it (QA-X-F29), never a memory chip",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me)return false;const after=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].filter(b=>me.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING).map(b=>b.innerText);return after.length>0&&!after.some(t=>/^\\s*noted\\b/i.test(t))&&!document.querySelector('[data-testid=\"thread-memory-see\"]')})()",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]"
     },
     {
       "do": "send",
