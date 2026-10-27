@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is an expense tracker for October: add each spend with a category, and it totals the month and shows where the money went. Entries stay only while this page is open.\n\nKeep\n10:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n10:33 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:34 PM\n10:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:34 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Booking table for 2, Wed 28 Oct, 8:00 PM\nlive checklist\n2 steps done · Show\nYou picked\nShowed you before booking a table for 2, Wed 28 Oct, 8:00\nYou said yes\nBooked table for 2, Wed 28 Oct, 8:00 PM\nStopped by you\n10:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:34 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Wed 28 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n10:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n10:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n10:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Try Sheldon, Turbo or Shellby; slow and steady suits a tortoise, and \"Dheeru\" is a fun Hindi pick too.\n\nI can't see live news from here, so I can't tell you today's biggest India story without making it up. Want me to look at a news site for you?\n\n10:38 PM"
+  }
+]

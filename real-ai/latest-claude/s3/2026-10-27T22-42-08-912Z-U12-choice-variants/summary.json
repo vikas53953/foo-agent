@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T22-42-08-912Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1020
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793140935138,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 5566,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, about 2 hours' drive\n2\nLalbagh and Cubbon Park walk\nRelaxed, green, easy on the pocket\n3\nCafe and brewery hop\nIndiranagar or Koramangala, easy evening\nSomething else…\nSkip\n10:42 PM",
+      "kit": [],
+      "ms": 11635
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793140947015,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 5056,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Lalbagh and Cubbon Park it is. Go to Lalbagh first thing, before the crowds and the heat, then head to Cubbon Park for a slower second half. Want me to put it in your calendar for Sat 31 Oct, 8:00 AM?\n\n10:42 PM",
+      "kit": [],
+      "ms": 12630
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793140959839,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 3546,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nNorth Indian thali\nDal, paneer, rotis\n3\nBiryani and raita\nHearty and easy to order\nSomething else…\nSkip\n10:42 PM",
+      "kit": [],
+      "ms": 9648
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793140970384,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 6568,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is. Comfort food, and it's hard to beat at 10:42 PM. 🌿\n\n10:42 PM",
+      "kit": [],
+      "ms": 13159
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise hain? Kuch kaam hai?\n\n10:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n10:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi doctor ke paas gaya aur bola, \"Doctor sahab, mujhe lagta hai main invisible ho gaya hoon.\"\n\nDoctor ne kaha, \"Sorry, main aapko abhi nahi dekh sakta.\" 😄\n\n10:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n10:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi tasks nahi kar sakta—booking, buying, sending ya paying ka kaam is build mein nahi hai. Lekin jab yeh ready hoga, tab main aapke liye table book kar sakta hoon.\n\n10:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a cab to the airport at 6 am tomorrow\n10:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi tasks nahi kar sakta—cab booking is build mein nahi hai. Jab yeh ready hoga, tab main aapke liye cab book kar sakta hoon.\n\n10:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the cab?\n10:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, maine cab book nahi ki. Main abhi tasks nahi kar sakta—booking, buying, sending ya paying ka kaam is build mein nahi hai.\n\n<say>Nahi, maine cab book nahi ki. Main abhi tasks nahi kar sakta—booking, buying, sending ya paying ka kaam is build mein nahi hai.</say>\n\n10:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n10:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n10:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n10:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n10:48 PM"
+  }
+]

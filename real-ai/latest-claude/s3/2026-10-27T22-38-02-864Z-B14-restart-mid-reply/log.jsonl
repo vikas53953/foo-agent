@@ -1,0 +1,19 @@
+{"t":"2026-10-27T22:38:02.864Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T22:38:07.898Z","step":"launch","ok":true}
+{"t":"2026-10-27T22:38:15.959Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8059}
+{"t":"2026-10-27T22:38:16.053Z","i":0,"do":"send","sentAt":1793140696024,"sent":true,"before":0,"ok":true,"ms":94}
+{"t":"2026-10-27T22:38:19.056Z","i":1,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-27T22:38:23.854Z","step":"launch","ok":true}
+{"t":"2026-10-27T22:38:23.855Z","i":2,"do":"relaunch","ok":true,"ms":4798}
+{"t":"2026-10-27T22:38:29.890Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":507,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"That reply got cut off.\nTry again\n10:38 PM","kit":[],"ms":6035}
+{"t":"2026-10-27T22:38:29.949Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-27T22:38:29.951Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n10:38 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-27T22:38:30.092Z","i":5,"do":"send","sentAt":1793140710041,"sent":true,"before":0,"ok":true,"ms":141}
+{"t":"2026-10-27T22:38:32.101Z","i":6,"do":"wait","ok":true,"ms":2009}
+{"t":"2026-10-27T22:38:37.038Z","step":"launch","ok":true}
+{"t":"2026-10-27T22:38:37.039Z","i":7,"do":"relaunch","ok":true,"ms":4938}
+{"t":"2026-10-27T22:38:46.091Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":2016,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Try Sheldon, Turbo or Shellby; slow and steady suits a tortoise, and \"Dheeru\" is a fun Hindi pick too.\n\nI can't see live news from here, so I can't tell you today's biggest India story without making it up. Want me to look at a news site for you?\n\n10:38 PM","kit":[],"ms":9052}
+{"t":"2026-10-27T22:38:46.137Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-27T22:38:46.145Z","i":9,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-27T22:38:46.248Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-27T22:38:46.256Z","step":"aiTurns","turns":1}

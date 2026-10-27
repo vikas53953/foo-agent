@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Wed 28 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n10:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n10:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is a good name for a pet tortoise?\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n10:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Which news story is biggest in India today? One line.\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Try Sheldon, Turbo or Shellby; slow and steady suits a tortoise, and \"Dheeru\" is a fun Hindi pick too.\n\nI can't see live news from here, so I can't tell you today's biggest India story without making it up. Want me to look at a news site for you?\n\n10:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n10:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n10:38 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:39 PM\n10:39 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:39 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n10:39 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:39 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n10:39 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:39 PM"
+  }
+]
