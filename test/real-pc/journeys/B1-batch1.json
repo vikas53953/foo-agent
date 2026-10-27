@@ -1,8 +1,8 @@
 {
   "id": "B1-batch1",
   "title": "Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so",
-  "spec": "CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b",
-  "covers": ["CR-0054"],
+  "spec": "CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b; CR-0066 (X-223, no 👀 on a plain message)",
+  "covers": ["CR-0054", "CR-0066"],
   "feature": "chat",
   "features": "shipped",
   "profile": "own",
@@ -134,6 +134,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "hinglish",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "a short warm reply in Hinglish, streamed",
       "feature": "chat"
     },
@@ -146,6 +147,7 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "joke",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "a joke, in the user's mix of Hindi and English",
       "feature": "chat"
     },
@@ -158,8 +160,37 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "job-off",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "the batch-1 line: foo can’t do tasks yet; no checklist, no plan card",
       "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/can.t do tasks/i.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()",
+      "feature": "refusals"
+    },
+    {
+      "do": "send",
+      "text": "Book me a cab to the airport at 6 am tomorrow",
+      "feature": "refusals"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "cab-off",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /(can.?t|cannot|not able to|unable to|don.?t have a way|not yet)/i.test(t)&&/(cab|book|task)/i.test(t)&&!/no record|memory|remember|saved/i.test(t)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()",
+      "feature": "refusals"
+    },
+    {
+      "do": "send",
+      "text": "did you book the cab?",
+      "feature": "refusals"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "cab-asked",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "no, foo can’t book cabs yet; never “no record” or memory words",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /(can.?t|cannot|not able to|unable to|don.?t have a way|not yet)/i.test(t)&&/(cab|book|task)/i.test(t)&&!/no record|memory|remember|saved/i.test(t)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()",
       "feature": "refusals"
     },
     {

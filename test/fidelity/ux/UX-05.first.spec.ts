@@ -103,8 +103,11 @@ test('UX-05 · First real job, inside a minute: steps UX-05-02, UX-05-03 and UX-
     await page.keyboard.type(ask);
     await page.keyboard.press('Enter');
     await expect(mine).toBeVisible();
-    // 👀 comes from the real job's intake (it is set before the AI has answered), not from the AI.
-    await expect(badge).toHaveAttribute('data-state', 'seen');
+    // CR-0066 (X-223): while foo's Thinking row is up the bubble shows no 👀, also past CR-0059's 2 s hold (real time).
+    await expect(page.getByTestId(TID.threadThinking)).toBeVisible();
+    await page.waitForTimeout(3_000);
+    await expect(page.getByTestId(TID.threadThinking)).toBeVisible();
+    await expect(badge.and(page.locator('[data-state="seen"]'))).toHaveCount(0);
     await expect(page.getByTestId(TID.composerSend)).toHaveAttribute('data-state', 'stop');
     await shoot('UX-05-02', `${rowOf(await rowId(mine))} ${byTid(TID.bubbleMe)}`);
   });

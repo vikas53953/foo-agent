@@ -45,6 +45,7 @@ interface StepResult {
   lastReply?: string;
   firstReplyMs?: number | null;
   forbidden?: { badge: string; at: number };
+  neverSeenMs?: number;
   didntGetThat?: boolean;
   stillWorking?: boolean;
   timeline?: { at: number; badges: string[]; reactions: string[]; thinking: boolean; streaming: number }[];
@@ -121,11 +122,13 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
       if (r.typed) facts.push(`The user typed: "${r.typed}"`);
       if (r.firstReplyMs != null) facts.push(`First reply after ${sec(r.firstReplyMs)}`);
       if (r.lastReply) facts.push(`foo's reply, as text: "${r.lastReply.slice(0, 600)}"`);
-      const failed = (r.ok === false && !r.soft) || !!r.forbidden;
+      // The journey's own neverCss (CR-0066): what must never show while foo answers, here 👀.
+      const forbidden = r.forbidden ?? (r.neverSeenMs !== undefined ? { badge: 'seen', at: r.neverSeenMs } : undefined);
+      const failed = (r.ok === false && !r.soft) || !!forbidden;
       let measured: string | undefined;
       if (failed) {
-        if (r.forbidden)
-          measured = `${r.forbidden.badge === 'seen' ? '👀' : r.forbidden.badge} showed on the user's message ${sec(r.forbidden.at)} after sending`;
+        if (forbidden)
+          measured = `${forbidden.badge === 'seen' ? '👀' : forbidden.badge} showed on the user's message ${sec(forbidden.at)} after sending`;
         else if (r.blocked) measured = `could not run: ${r.blocked}`;
         else if (r.didntGetThat) measured = 'foo answered "I didn\'t get that" to a clear message';
         else if (r.stillWorking) measured = 'foo was still writing when the step gave up';
@@ -163,7 +166,7 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
             `Badges on the user's message at this moment: ${w.badges.join(', ') || 'none'}`,
             `Thinking row: ${w.thinking ? 'shown' : 'not shown'}`,
           ],
-          measured: r.forbidden && r.forbidden.at <= w.at + 300 ? `👀 on the user's message at ${sec(r.forbidden.at)}` : undefined,
+          measured: forbidden && forbidden.at <= w.at + 300 ? `👀 on the user's message at ${sec(forbidden.at)}` : undefined,
         });
       }
       const shot = r.shot ?? r.errorShot;

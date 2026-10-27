@@ -688,13 +688,17 @@ async function main() {
             const now = await afterMe();
             await watch(settled({ n: now.n, before, items: now.items.slice(before), quietFor: 0, quietMs: 0 }));
             if (now.n > before && first === null) first = Date.now() - start;
+            // neverCss: something that must not show at any point while foo answers (CR-0066: 👀 on a plain message).
+            if (s.neverCss && rec.neverSeenMs === undefined && (await page.locator(s.neverCss).count()) > 0) {
+              rec.neverSeenMs = Date.now() - start;
+            }
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
             if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
-          rec.ok = cur.n > before;
+          rec.ok = cur.n > before && rec.neverSeenMs === undefined;
           for (const t of rec.timeline) delete t.key;
           if (rec.forbidden) rec.ok = false;
           // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
@@ -838,7 +842,8 @@ async function main() {
   for (const r of results) {
     const s = journey.steps[r.i];
     // A measured failure (👀 seen, foo still writing, a dropped kit piece) is never undone by a late end state.
-    if (r.ok !== false || r.didntGetThat || r.refused || r.forbidden || r.stillWorking || r.kitDropped) continue;
+    if (r.ok !== false || r.didntGetThat || r.refused || r.forbidden || r.neverSeenMs !== undefined || r.stillWorking || r.kitDropped)
+      continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
     const now = await endState(named).catch(() => false);

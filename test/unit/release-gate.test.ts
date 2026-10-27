@@ -34,6 +34,11 @@ describe('release gate verdicts', () => {
     expect(cps.find((c) => c.kind === 'waiting')!.expect).toContain('"hi"');
   });
 
+  it("the journey's own neverCss 👀 (CR-0066) is broken too", () => {
+    const cps = checkpoints([run('B1-batch1', '/r/1-B1', [sent, reply({ ok: false, neverSeenMs: 2600 })])]);
+    expect(cps.find((c) => c.kind === 'answer')!.measured).toMatch(/👀 showed on the user's message 2\.6 s/);
+  });
+
   it('a feature with no journey is not tested, and an unreviewed picture is not a pass', () => {
     const cps = checkpoints([run('G2-chat', '/r/1-G2', [sent, reply({})])]);
     const v = featureVerdicts(cps, new Map());

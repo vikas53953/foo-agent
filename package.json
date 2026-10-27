@@ -35,7 +35,8 @@
     "closeout": "tsx scripts/closeout.ts",
     "review:tier": "tsx scripts/review-tier.ts",
     "qa": "tsx scripts/qa.ts",
-    "licences:write": "tsx scripts/licences.ts"
+    "licences:write": "tsx scripts/licences.ts",
+    "qa:explore": "tsx scripts/qa-explore.ts"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",

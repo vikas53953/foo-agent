@@ -149,12 +149,16 @@ test('UX-12 · Booking a restaurant (M9): steps UX-12-01, UX-12-02, UX-12-03, UX
 
     await test.step('UX-12-01 · the ask, seen (👀); "book" means do it', async () => {
       const s = step('UX-12-01');
+      // The walkthrough draws 👀; CR-0066 (X-223) supersedes it while foo's Thinking row is up.
       expect(s.s).toContain('👀');
       await say(page, ask);
       const mine = log.locator(byTid(TID.bubbleMe), { hasText: ask }).last();
       await mine.waitFor();
       const row = await rowSelOf(page, `${byTid(TID.threadLog)} ${byTid(TID.bubbleMe)}:has-text("${ask}")`);
-      await expect(page.locator(row).getByTestId(TID.bubbleBadge)).toHaveAttribute('data-state', 'seen', { timeout: 10_000 });
+      await expect(page.getByTestId(TID.threadThinking)).toBeVisible();
+      await page.waitForTimeout(3_000);
+      await expect(page.getByTestId(TID.threadThinking)).toBeVisible();
+      await expect(page.locator(`${row} ${byTid(TID.bubbleBadge)}[data-state="seen"]`)).toHaveCount(0);
       await shoot(page, 'UX-12-01', row);
     });
 

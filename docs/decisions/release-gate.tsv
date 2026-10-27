@@ -1,0 +1,4 @@
+ts	phase	decision	why	evidence	result
+2026-10-27T20:46:25Z	approve	Merged QA harness #156 (pnpm qa:explore) on Vikas's behalf	Independent Sonnet review: no blockers, 4 should-fix false-green or crash items; QA fixed all in 63c5721; all 7 checks green; standing approve-on-behalf rule 2026-10-18 14:56Z	PR #156 head 63c5721; merge 984a1e3	approved on Vikas's behalf
+2026-10-27T20:46:25Z	review	Gate sweep: a hover tooltip no longer counts as a click's effect	Same false-green the #156 review found was in the gate's own sweep	ff62522	fixed; local sweep re-run
+2026-10-27T20:46:25Z	merge	Brought main into the gate (CR-0066 👀 fix, #156); the gate counts the journeys' neverCss 👀 as a measured failure	Builder added neverCss to B1 for the same 👀 check; one rule, two spellings must both fail the gate	test/unit/release-gate.test.ts; scripts/release-gate.ts	tests green
