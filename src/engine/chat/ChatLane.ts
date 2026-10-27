@@ -900,9 +900,23 @@ export class ChatLane {
     } else {
       // Kinds built in later milestones (see the header). CR-0042 (08-4 §25.5 item 5a): one honest line per kind, after any
       // text already released (item 5).
-      if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       this.d.log(offFeature ? 'chat.kind_feature_off' : 'chat.kind_not_built', offFeature ?? undefined, { chatId });
-      await this.post(chatId, messageId, offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind), helper, providerNote);
+      if (fooId && offFeature) {
+        // CR-0067 (X-224): words already shown for a switched-off feature ("Noted: Vegetarian.") claim what foo did not do,
+        // so the feature's line replaces them in the same bubble instead of following them (QA-X-F29).
+        await this.tx([
+          {
+            op: 'update',
+            table: 'messages',
+            id: fooId,
+            set: { text: featureOffLine(offFeature), status: 'complete', provider_note: providerNote },
+          },
+          { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
+        ]);
+      } else {
+        if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+        await this.post(chatId, messageId, offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind), helper, providerNote);
+      }
     }
     // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.
     if (!retryEmpty) {

@@ -108,8 +108,8 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "memory-off",
-      "expect": "the batch-1 memory line, or a plain reply; never a memory chip",
-      "expectJs": "!document.querySelector('[data-testid=\"thread-memory-see\"]')"
+      "expect": "one bubble: the batch-1 memory line, or a plain reply; never a memory chip, never “Noted” (CR-0067)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"thread-memory-see\"]'))return false;const all=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"], [data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')];const me=all.map(b=>b.dataset.testid).lastIndexOf('bubble-me');const after=all.slice(me+1);return after.length===1&&!/noted|saved|i.ll remember|got it/i.test(after[0].innerText)})()"
     },
     { "do": "send", "text": "Switch to dark mode" },
     { "do": "waitFor", "css": "html[data-theme=\"dark\"]", "timeoutMs": 120000, "note": "settings by chat is on in batch 1" },
