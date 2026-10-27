@@ -21,16 +21,6 @@ export async function launch(dirs = testDirs(), extraArgs: string[] = [], env: R
     env: { ...process.env, FOO_TEST: '1', ...dirs, ...env } as Record<string, string>,
   });
   if (process.platform === 'win32') {
-    // TEMPORARY (round 5): round 4 saw an "Error" window on the stuck main process, Electron's dialog for an uncaught
-    // exception in main. Write each one to a file, so the dump can name it.
-    const file = join(dirs.FOO_DATA_DIR, '..', 'main-uncaught.txt');
-    await app.evaluate((_e, f) => {
-      const fs = process.getBuiltinModule('node:fs');
-      process.on('uncaughtException', (err) => {
-        // Kept going on purpose: the dialog would hold the app, and the dump only needs the stack.
-        fs.appendFileSync(f, `${new Date().toISOString()} ${err instanceof Error ? (err.stack ?? err.message) : String(err)}\n`);
-      });
-    }, file);
     watchClose(app, dirs.FOO_DATA_DIR);
   }
   return app;
