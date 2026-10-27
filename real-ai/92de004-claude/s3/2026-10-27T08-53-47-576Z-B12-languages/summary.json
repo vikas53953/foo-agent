@@ -1,0 +1,78 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T08-53-47-576Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793091233181,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 7054,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Thu 29 Oct) ke liye ye teen cakes safe aur pasand aane wale hain:\n\nButterscotch ya pineapple: classic hai, sabko pasand aata hai.\nChocolate truffle: agar mummy ko meetha rich pasand hai.\nRasmalai ya mango cake: thoda desi twist, aur special bhi lagta hai.\n\nParso ke liye aaj ya kal order kar dena theek rahega, warna delivery slot mushkil se milte hain. Mummy eggless khati hain ya normal chalega?\n\n8:53 AM",
+      "kit": [],
+      "ms": 15186
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793091248578,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 139
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 6566,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਸਭ ਤੋਂ ਸੌਖਾ ਤੇ ਸੁਰੱਖਿਅਤ ਚੋਣ ਬਟਰਸਕੌਚ ਹੈ, ਇਹ ਲਗਭਗ ਹਰ ਕਿਸੇ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। ਜੇ ਮੰਮੀ ਨੂੰ ਗਾੜ੍ਹਾ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਚਾਕਲੇਟ ਟ੍ਰਫਲ ਲੈ ਲਓ, ਤੇ ਕੁਝ ਖ਼ਾਸ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ।\n\nਵੀਰਵਾਰ 29 ਅਕਤੂਬਰ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਐੱਗਲੈੱਸ ਖਾਂਦੇ ਹਨ ਜਾਂ ਆਮ ਚੱਲੇਗਾ?\n\n8:54 AM",
+      "kit": [],
+      "ms": 15710
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793091264475,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 5556,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know. It's a normal working day for banks and offices. Diwali falls later this year, around Sun 8 Nov, so the holiday cluster comes after that. I can't check the official Maharashtra list from here, so confirm with your bank or office if it matters.\n\n8:54 AM",
+      "kit": [],
+      "ms": 12701
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
