@@ -7,7 +7,7 @@
   DECISIONS X-158 ("keydown → paint … less the wait for the next display refresh"); CR-0005; `spec/trace.csv` PERF-02
   (`test/e2e/m2-composer.spec.ts`).
 - **Status:** Approved by Vikas, 2026-10-27 14:35Z ("A", relayed by the coordinator), DECISIONS X-222. It replaces CR-0005 (b)2;
-  `spec/` is unchanged (the spec row and X-158 already say "keydown → paint"). Merged in #161 as 4d7e1f9.
+  The spec row (10-acceptance-2 PERF-02, "keydown → character painted") is unchanged. Merged in #161 as 4d7e1f9.
 
 ## (a) What was wrong
 
