@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n8:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A relaxed 3 day Jaipur plan for your parents, with one main sight in the morning, a long lunch break and an easy evening each day.\n\nDay 1, Amber Fort and the old city: Amber Fort early, before the crowds and heat, with a jeep up to the gate so there's less climbing. Stop at Jal Mahal for photos, then see Hawa Mahal and stroll Johari Bazaar in the evening.\nDay 2, palaces and culture: City Palace and Jantar Mantar in the morning, then lunch and a rest at the hotel. Visit Albert Hall Museum around sunset when it's lit up, and have dinner with a Rajasthani thali and folk show at Chokhi Dhani.\nDay 3, slow morning and shopping: Nahargarh Fort for the city view, then Birla Mandir. Spend the afternoon at Bapu Bazaar for block prints, jootis and sweets before heading home.\n\nA hotel near the old city or C-Scheme with a lift and an in-house car keeps things comfortable. When are they travelling, and from which city? I can adjust the plan and timings.\n\n8:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n8:24 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:24 PM\n8:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:24 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for Italian restaurants in…\nlive checklist\nLooked for Italian restaurants in Bandra, Mumbai\nChecked restaurant booking sites\nR\nKept 3 Italian places with a table for 2 on Sat that fit open table at that time, best rated\nStopped by you\n8:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:24 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for Italian restaurants in… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant booking sites instead\n8:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n8:27 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n8:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:27 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum, Janpath, New Delhi: open Tue to Sun, 10:00 AM to 6:00 PM; closed Mondays and national holidays. Entry: adults ₹20 foreign nationals ₹500 students up to class 12 free with ID card. Note: the site's last gallery notice (29 May 2023) says Arms and Armour, Textiles and Jewellery galleries were closed for renovation until further notice.\n\n8:28 PM"
+  }
+]

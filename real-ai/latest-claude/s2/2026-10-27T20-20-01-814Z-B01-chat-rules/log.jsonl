@@ -1,0 +1,14 @@
+{"t":"2026-10-27T20:20:01.815Z","journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","spec":"AT-027, AT-030, AT-031, AT-308, AT-307","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T20:20:06.927Z","step":"launch","ok":true}
+{"t":"2026-10-27T20:20:07.028Z","i":0,"do":"send","sentAt":1793132406999,"sent":true,"before":0,"ok":true,"ms":98}
+{"t":"2026-10-27T20:20:27.031Z","i":1,"do":"wait","expect":"AT-027: 👍 reaction on my message, no foo message","ok":true,"ms":20002}
+{"t":"2026-10-27T20:20:27.083Z","shot":"01-thanks.png"}
+{"t":"2026-10-27T20:20:27.085Z","i":2,"do":"eval","value":{"reaction":true,"lastKind":"bubble-me"},"ok":true,"ms":2}
+{"t":"2026-10-27T20:20:27.152Z","i":3,"do":"send","sentAt":1793132427140,"sent":true,"before":0,"ok":true,"ms":67}
+{"t":"2026-10-27T20:20:45.452Z","i":4,"do":"waitReply","expect":"AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler","firstReplyMs":9669,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"People in India are switching to UPI because it makes paying as easy as sending a message, and it costs almost nothing to use.\n\nBefore UPI, you needed cash, a card machine or a separate wallet for each shop. Now one bank-linked app works almost everywhere, from a chai stall to a large online store. You scan a code or type a phone number, enter your PIN, and the money moves between bank accounts in seconds.\n\nThree main reasons:\n\nSimple and fast: Scan, tap, enter your PIN, done. No cards, no change to hand back, and it works at any hour, including holidays.\nFree for most people: Everyday payments to friends and to most shops usually carry no charge, so small sellers can accept it without buying a machine.\nWorks across banks: One app can link several accounts, and you can pay someone who uses a different app or bank without any fuss.\n\nTogether, these made UPI feel safer than carrying cash and easier than cards. Once your neighbourhood shop, your vegetable seller and your friends all use it, it becomes the default way to pay. Smartphones and cheap mobile data helped too, since most people could start with what they already had.\n\n8:20 PM","kit":[],"ms":18288}
+{"t":"2026-10-27T20:20:45.510Z","shot":"02-long.png"}
+{"t":"2026-10-27T20:20:45.512Z","i":5,"do":"check","note":"AT-308 suggestion chips (≤3)","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T20:20:45.513Z","i":6,"do":"eval","value":0,"ok":true,"ms":1}
+{"t":"2026-10-27T20:20:45.520Z","i":7,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-27T20:20:45.610Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-27T20:20:45.620Z","step":"aiTurns","turns":2}
