@@ -315,11 +315,16 @@ async function main() {
     page.evaluate(() => ({
       overlays: window.__qa
         .overlays()
-        .filter((o) => o.role !== 'listbox')
+        .filter((o) => o.role !== 'listbox' && o.role !== 'tooltip')
         .map((o) => `${o.role}:${o.text.slice(0, 40)}`),
       screens: [...document.querySelectorAll('[data-testid^="screen-"]')].map((e) => e.dataset.testid || ''),
       theme: document.documentElement.dataset.theme || '',
-      text: document.body.innerText,
+      // A hover tooltip is not an effect of the click: leave its words out, or a dead button with a tooltip passes.
+      text: [...document.querySelectorAll('[role=tooltip]')].reduce((t, tip) => t.split(tip.innerText).join(''), document.body.innerText),
+      focus: (() => {
+        const f = document.activeElement;
+        return f && /^(INPUT|TEXTAREA)$/.test(f.tagName) ? f.getAttribute('aria-label') || f.getAttribute('placeholder') || f.tagName : '';
+      })(),
       pressed: [...document.querySelectorAll('[aria-pressed="true"],[aria-checked="true"],[aria-selected="true"]')]
         .map((e) => `${e.dataset.testid || ''}:${e.getAttribute('aria-label') || e.innerText.slice(0, 20)}`)
         .join('|'),
@@ -331,6 +336,7 @@ async function main() {
     if (b.screens.join() !== a.screens.join()) fx.push(`screen: ${b.screens.join(',') || 'chat'}`);
     if (b.theme !== a.theme) fx.push(`theme: ${b.theme}`);
     if (b.pressed !== a.pressed) fx.push('selection changed');
+    if (b.focus && b.focus !== a.focus) fx.push(`typing in ${b.focus}`);
     if (b.text !== a.text) {
       const was = new Set(a.text.split('\n'));
       const added = b.text.split('\n').filter((l) => l.trim() && !was.has(l));
@@ -339,6 +345,9 @@ async function main() {
     return fx;
   };
   const backTo = async (s) => {
+    // A suggestion chip fills the message box and hides the other chips; empty it so the next control is on screen again.
+    const box = page.locator('[data-testid="composer-field"]');
+    if ((await box.count()) && (await box.inputValue().catch(() => ''))) await box.fill('').catch(() => {});
     for (let k = 0; k < 6; k++) {
       await page.keyboard.press('Escape');
       await page.waitForTimeout(150);
@@ -406,17 +415,40 @@ async function main() {
         continue;
       }
       await backTo(s);
+      // Clicking the tab or option that is already chosen correctly does nothing (the QA crawler skips it the same way).
+      if (
+        /radio|checkbox|switch|tab/.test(c.role) &&
+        (await page.evaluate((b) => {
+          const el = document.elementFromPoint(b[0] + b[2] / 2, b[1] + b[3] / 2)?.closest('[role]');
+          return el?.getAttribute('aria-checked') === 'true' || el?.getAttribute('aria-selected') === 'true';
+        }, c.box))
+      ) {
+        e.status = 'skipped';
+        e.reason = 'already chosen';
+        continue;
+      }
       const loc = c.tid
         ? page.locator(`[data-testid="${c.tid}"]`).filter({ hasText: c.name.length < 40 ? c.name : '' })
         : page.getByRole(c.role, { name: c.name, exact: true });
       const target = (await loc.count()) ? loc.first() : page.locator(`[data-testid="${c.tid}"]`).first();
-      const before = await signature();
+      let before;
       try {
         await target.hover({ timeout: 2_000 });
         await page.waitForTimeout(500);
+        before = await signature();
         await target.click({ timeout: 3_000 });
       } catch (err) {
         e.status = 'not-tested';
+        // Say why: gone from the screen after an earlier click, or something else sits on top of it.
+        const why = await target
+          .evaluate((el) => {
+            const r = el.getBoundingClientRect();
+            if (!r.width || !r.height) return 'no longer on screen';
+            const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+            return top && !el.contains(top) ? `covered by ${top.getAttribute('data-testid') || top.tagName.toLowerCase()}` : '';
+          })
+          .catch(() => 'no longer on screen');
+        if (why) e.effect.push(why);
         e.effect.push(
           `could not click: ${String(err && err.message ? err.message : err)
             .split('\n')[0]
