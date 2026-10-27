@@ -6,8 +6,8 @@
 - **Spec sections:** 10-acceptance-2 §E PERF-02 ("keydown in composer → character painted", p95 < 16 ms); 02-2 §F13.3;
   DECISIONS X-158 ("keydown → paint … less the wait for the next display refresh"); CR-0005; `spec/trace.csv` PERF-02
   (`test/e2e/m2-composer.spec.ts`).
-- **Status:** Proposed. It replaces how CR-0005 (b)2 times a key, a measurement Vikas approved on 18 Oct, so it waits for
-  his choice. `spec/` is unchanged: the spec row and X-158 already say "keydown → paint".
+- **Status:** Approved by Vikas, 2026-10-27 14:35Z ("A", relayed by the coordinator), DECISIONS X-222. It replaces CR-0005 (b)2;
+  The spec row (10-acceptance-2 PERF-02, "keydown → character painted") is unchanged. Merged in #161 as 4d7e1f9.
 
 ## (a) What was wrong
 
