@@ -1,78 +1,93 @@
 {
   "status": "FAIL",
-  "sha": "1329ef863e918f118d866c9913d083d1d8e12e52",
+  "sha": "4e11747febda4f4a513e0e4f38350f38a258eb9a",
   "features": [
     {
       "feature": "install",
       "name": "Install and open foo (the app as downloaded, restart, quit)",
       "verdict": "broken",
-      "checkpoints": 14,
+      "checkpoints": 29,
       "broken": 8,
-      "wrong": 1
+      "wrong": 0
     },
     {
       "feature": "ai",
       "name": "Connect your AI (find it, your own key, a wrong key)",
       "verdict": "broken",
-      "checkpoints": 27,
-      "broken": 3,
-      "wrong": 9
+      "checkpoints": 97,
+      "broken": 15,
+      "wrong": 26
     },
     {
       "feature": "name",
       "name": "Name, face and vibe",
       "verdict": "broken",
-      "checkpoints": 9,
-      "broken": 6,
-      "wrong": 2
+      "checkpoints": 49,
+      "broken": 9,
+      "wrong": 17
     },
     {
       "feature": "chat",
       "name": "Just chatting, in your language",
       "verdict": "broken",
-      "checkpoints": 118,
-      "broken": 57,
-      "wrong": 4
+      "checkpoints": 213,
+      "broken": 72,
+      "wrong": 5
     },
     {
       "feature": "settings",
       "name": "Settings, by page or by asking",
       "verdict": "broken",
-      "checkpoints": 27,
-      "broken": 19,
-      "wrong": 1
+      "checkpoints": 58,
+      "broken": 23,
+      "wrong": 9
     },
     {
       "feature": "refusals",
       "name": "What batch 1 must refuse plainly (tasks, memory)",
       "verdict": "broken",
-      "checkpoints": 38,
-      "broken": 12,
-      "wrong": 2
+      "checkpoints": 65,
+      "broken": 7,
+      "wrong": 7
     }
   ],
   "checks": [
     {
-      "conclusion": "skipped",
-      "name": "Golden lane (windows-latest)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40630416066/job/122626086329"
-    },
-    {
-      "conclusion": "skipped",
-      "name": "Full suite (windows-latest, shard ${{ matrix.shard }}/4)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40630416066/job/122625455483"
-    },
-    {
       "conclusion": "success",
-      "name": "Fast lane (ubuntu-latest)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40630416066/job/122625454185"
+      "name": "Golden lane (windows-latest)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122683875985"
     },
     {
       "conclusion": "success",
       "name": "Screen change check",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40630416066/job/122625453901"
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122682792622"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full suite (windows-latest, shard 2/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122682792556"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full suite (windows-latest, shard 3/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122682792520"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full suite (windows-latest, shard 1/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122682792466"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full suite (windows-latest, shard 4/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122682792412"
+    },
+    {
+      "conclusion": "success",
+      "name": "Fast lane (ubuntu-latest)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40648494113/job/122682792288"
     }
   ],
-  "reviewed": 214,
-  "checkpoints": 233
+  "reviewed": 488,
+  "checkpoints": 511
 }

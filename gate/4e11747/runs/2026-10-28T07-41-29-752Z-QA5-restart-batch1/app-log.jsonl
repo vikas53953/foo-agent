@@ -1,0 +1,10 @@
+{"t":1793173290701,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793173316932,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":832}
+{"t":1793173356733,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793173359910,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1793173360502,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793173371241,"lvl":"info","mod":"engine","evt":"chat.rewrite_skipped","kind":"no_question"}
+{"t":1793173393377,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793173406085,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793173409036,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1793173415516,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

@@ -1,0 +1,47 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n8:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "5 tips to sleep better:\n\nKeep your room cool and dark.\nAvoid screens an hour before bed.\nGo to bed at the same time every night.\nSkip caffeine after 3 PM.\nTry deep breathing or light stretching before lying down.\n8:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "dark mode kar do please\n8:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dark mode on ho gaya.\n\n8:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "nahi, wapas light kar do\n8:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Light mode on ho gaya.\n\n8:12 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "shown",
+    "text": "I’m looking for the AI you already use…\n\nClaude\nnot found\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\nworks\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI’ll use Anthropic key. It works. You can change this any time in Settings.\n\nUse Anthropic key\n\nThis uses your Anthropic key, so each job costs a little. I’ll show the cost and stop at your monthly cap (₹1,000 to start). Change cap"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "make the text bigger\n8:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Text size badha diya.\n\n8:13 AM"
+  }
+]

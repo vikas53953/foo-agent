@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi mein aaj mostly clear rahega, 28°C ke aas-paas. Shaam ko thoda cool ho sakta hai. Bahar nikalne mein koi dikkat nahi.\n\n8:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ\n8:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਇੱਕ ਆਦਮੀ ਨੇ ਆਪਣੇ ਦੋਸਤ ਨੂੰ ਪੁੱਛਿਆ, \"ਤੂੰ ਰੋਜ਼ ਜਿਮ ਜਾਂਦਾ ਐਂ, ਫਿਰ ਵੀ ਕੁਝ ਬਦਲਿਆ ਨਹੀਂ?\" ਦੋਸਤ ਬੋਲਿਆ, \"ਹਾਂ ਜੀ, ਮੈਂ ਜਿਮ ਦੇ ਬਾਹਰ ਖੜਾ ਹੋ ਕੇ ਸੋਚਦਾ ਹਾਂ ਕਿ ਅੰਦਰ ਜਾਵਾਂ ਜਾਂ ਨਾ ਜਾਵਾਂ!\"\n\n8:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "wat is teh capitl of austrlia??\n8:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Canberra is the capital of Australia.\n\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n8:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Sheru lived alone in the forest and ate the same raw meat every day. One evening, he smelled something incredible drifting from a village nearby—spices, rice, and something he had never tasted. Curious, he crept close and watched through a window as a grandmother stirred a huge pot of biryani, layering rice and meat with care.\n\nThe next night, Sheru returned and watched again, memorising every step. He gathered rice from a broken sack near the market, borrowed spices from a spice merchant's cart when no one was looking, and found a large clay pot by a stream. Back in his cave, he lit a fire, layered everything the way he had seen, and waited. The smell filled the forest, and for the first time, Sheru felt like a chef.\n\nWhen he opened the pot, the biryani was perfect—fragrant, golden, and rich. He took one bite and roared with joy. Soon, other animals came asking for a taste, and Sheru realised he had found something better than hunting: sharing a meal he had made himself. From that day on, he cooked biryani every week, and his cave became the warmest spot in the forest.\n\nShow earlier answer\nRewritten\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n8:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Sheru sounds like he found his calling! 🐅🍚\n\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n8:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n8:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I have not booked any cab. This build cannot do tasks like booking yet.\n\n8:11 AM"
+  }
+]

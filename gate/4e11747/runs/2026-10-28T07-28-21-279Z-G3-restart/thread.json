@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n7:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Sheru lived alone in the forest and grew tired of hunting every day. One evening, he smelled biryani from a nearby village and followed the scent to a kind grandmother's kitchen. She saw him at the window, not scared but curious, and invited him in to watch.\n\nSheru learned to chop onions with his claws, fry them golden, layer rice and marinated meat, and seal the pot with dough. The grandmother taught him patience: \"Biryani needs time on low heat, just like trust.\" He practised every week, and soon his biryani was so good that the forest animals would gather at his den for Sunday lunch.\n\nOne day, the grandmother fell ill. Sheru cooked a pot of biryani, carried it carefully through the forest, and left it at her door with a note that said, \"Thank you for teaching me more than cooking.\" She smiled when she read it, knowing the tiger had learned kindness too.\n\nShow earlier answer\nRewritten\n7:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n7:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Sheru lived alone in the forest and grew tired of hunting every day. One evening, he smelled biryani from a nearby village and followed the scent to a kind grandmother's kitchen. She saw him at the window, not scared but curious, and invited him in to watch.\n\nSheru learned to chop onions with his claws, fry them golden, layer rice and marinated meat, and seal the pot with dough. The grandmother taught him patience: \"Biryani needs time on low heat, just like trust.\" He practised every week, and soon his biryani was so good that the forest animals would gather at his den for Sunday lunch.\n\nOne day, the grandmother fell ill. Sheru cooked a pot of biryani, carried it carefully through the forest, and left it at her door with a note that said, \"Thank you for teaching me more than cooking.\" She smiled when she read it, knowing the tiger had learned kindness too.\n\n7:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n7:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n7:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I haven't booked any cab. I can't do tasks like booking yet. When did you need it and where to?\n\n7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Keep your room cool and dark.\nStop screens an hour before bed.\nGo to bed at the same time every night.\nSkip caffeine after 3 PM.\nTry deep breathing or light stretching before lying down.\n7:28 AM"
+  }
+]

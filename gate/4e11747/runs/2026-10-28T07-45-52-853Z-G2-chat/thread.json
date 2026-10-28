@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi mein aaj mostly clear rahega, 28°C ke aas-paas. Shaam tak thoda hawa chal sakti hai. Office jaate waqt light jacket rakh lena agar subah nikle toh.\n\n7:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ\n7:46 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਇੱਕ ਆਦਮੀ ਨੇ ਆਪਣੇ ਦੋਸਤ ਨੂੰ ਪੁੱਛਿਆ, \"ਤੂੰ ਹਮੇਸ਼ਾ ਖੁਸ਼ ਕਿਉਂ ਰਹਿੰਦਾ ਹੈਂ?\"\n\nਦੋਸਤ ਬੋਲਿਆ, \"ਮੈਂ ਹਰ ਰੋਜ਼ ਸਵੇਰੇ ਆਪਣੇ ਆਪ ਨੂੰ ਦੋ ਚੋਇਸ ਦਿੰਦਾ ਹਾਂ—ਖੁਸ਼ ਰਹਿਣਾ ਜਾਂ ਉਦਾਸ ਰਹਿਣਾ। ਮੈਂ ਖੁਸ਼ ਰਹਿਣਾ ਚੁਣ ਲੈਂਦਾ ਹਾਂ।\"\n\nਪਹਿਲਾ ਬੋਲਿਆ, \"ਵਾਹ! ਤੇਰੀ ਜ਼ਿੰਦਗੀ ਬੜੀ ਸਿੰਪਲ ਹੈ।\"\n\nਦੋਸਤ ਹੱਸਿਆ, \"ਹਾਂ ਜੀ, ਪਰ ਮੇਰੀ ਵਾਈਫ ਨੇ ਮੇਰੇ ਲਈ ਚੋਇਸ ਪਹਿਲਾਂ ਹੀ ਚੁਣ ਲਈ ਹੈ!\" 😄\n\n7:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "wat is teh capitl of austrlia??\n7:46 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n7:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Raja lived deep in the forest, where he hunted every day but grew tired of the same meals. One evening, he smelled something magical drifting from a village nearby—spices, rice and saffron mixing in the air. Curious, he crept close and watched an old cook layer rice and meat in a heavy pot, sealing it with dough. Raja decided he had to learn this art.\n\nHe practised in secret, gathering rice from the fields at dawn, trading forest honey for spices with a kind shopkeeper, and watching cooking videos on a phone he found by the road. His first attempts were disasters—burnt rice, raw meat, too much salt—but he kept trying. Slowly, his paws learned to be gentle, his nose learned to judge the spices, and his patience learned to wait for the dum to work its magic.\n\nOne monsoon night, Raja invited the whole forest to a feast. The animals arrived doubtful, but when he opened the pot, the fragrance silenced everyone. They ate until they could barely move, and from that day, Raja became the forest's beloved chef. He still hunted when he needed to, but now he cooked with pride, proving that even a tiger could master the perfect biryani. 🐅🍛\n\nShow earlier answer\nRewritten\n7:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n7:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n7:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n7:48 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n7:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I haven't booked any cab. This build can't do tasks like booking yet. Want me to show you how when it's ready?\n\n7:50 AM"
+  }
+]

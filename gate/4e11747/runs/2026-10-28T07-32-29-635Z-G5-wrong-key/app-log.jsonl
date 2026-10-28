@@ -1,0 +1,2 @@
+{"t":1793172750580,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172770786,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":128}

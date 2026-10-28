@@ -1,0 +1,328 @@
+{
+  "journey": "QA5-restart-batch1",
+  "title": "Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build",
+  "videos": [
+    "video/page@0ccf6269fd6b3de2b771b6d22532776a.webm",
+    "video/page@34a91585f9d57165f4ea2d5874b34ad9.webm",
+    "video/page@773c607d30a5f284c51e734bf61e2729.webm"
+  ],
+  "steps": 28,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-10-28T08-21-38-943Z-QA5-restart-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 4,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 163
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 32,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20000,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 11,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 18
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 171
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "ms": 30007,
+      "shot": "05-key-tested.png"
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 1,
+      "ok": true,
+      "ms": 128
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name",
+      "ok": true,
+      "ms": 8,
+      "shot": "06-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Anthropic key (your AI)\n8:21 AM",
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10002,
+      "shot": "07-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "typed": "Ek kachhua (tortoise) ke liye 3 achhe naam batao.",
+      "sentAt": 1793175766080,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 132
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "ok": true,
+      "ms": 3002
+    },
+    {
+      "i": 18,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5246
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "after closing mid-reply and reopening: the question is still there, it gets an answer or a clear Try again, and no 👀 is left behind",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 8284,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 8284,
+          "mark": 1500,
+          "shot": "08-q5-after-reopen-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8284,
+          "mark": 3000,
+          "shot": "09-q5-after-reopen-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8284,
+          "mark": 6000,
+          "shot": "10-q5-after-reopen-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 452,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "That reply got cut off.\nTry again\n8:22 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 6136,
+      "shot": "11-q5-after-reopen.png"
+    },
+    {
+      "i": 20,
+      "do": "clickIf",
+      "note": "if the reply was cut, Try again once",
+      "found": 1,
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "expect": "the tortoise question has a real answer",
+      "feature": "chat",
+      "ok": true,
+      "ms": 20001,
+      "shot": "12-q5-answered.png"
+    },
+    {
+      "i": 22,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 6659
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "ok": true,
+      "ms": 8002
+    },
+    {
+      "i": 24,
+      "do": "expectText",
+      "expect": "after a second quit and reopen the chat history is all there",
+      "feature": "chat",
+      "text": "Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n8:21 AM\nUsing Anthropic key (your AI)\n8:21 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n8:22 AM\nWhat should I call myself? → Skipped\n8:22 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:22 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:22 AM\nEk kachhua (tortoise) ke liye 3 achhe naam batao.\n8:22 AM\nfoo\nThat reply got cut off.\nTry again\n8:22 AM",
+      "ok": true,
+      "ms": 3,
+      "shot": "13-q5-history.png"
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "typed": "7 aur 8 ka jod kitna hai? sirf number",
+      "sentAt": 1793175815534,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 195
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "expect": "after two restarts the stored key still works with real Claude",
+      "feature": "ai",
+      "timeline": [
+        {
+          "at": 62,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1615,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4861,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1615,
+          "mark": 1500,
+          "shot": "14-q5-key-after-reopen-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3238,
+          "mark": 3000,
+          "shot": "15-q5-key-after-reopen-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1640,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "15.\n\nतीन अच्छे नाम:\n\nShelly – classic and sweet\nMoti – means pearl, fits the shell\nGolu – round and cute\n8:23 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 10968,
+      "shot": "16-q5-key-after-reopen.png"
+    },
+    {
+      "i": 27,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n7:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n7:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n7:48 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n7:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I haven't booked any cab. This build can't do tasks like booking yet. Want me to show you how when it's ready?\n\n7:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n7:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n7:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n7:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Yes, I'm here. Five tips for better sleep:\n\nKeep your room cool and dark; even a little light can disturb deep sleep.\nStop screens an hour before bed; the blue light keeps your brain awake.\nGo to bed and wake up at the same time every day, even weekends.\nAvoid heavy meals and caffeine after 6:00 PM; your body needs time to settle.\nTry deep breathing or a short walk if your mind is racing; it calms you down faster than lying still.\n7:50 AM"
+  }
+]

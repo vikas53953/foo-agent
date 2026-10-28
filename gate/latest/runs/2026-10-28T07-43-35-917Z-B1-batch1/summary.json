@@ -1,0 +1,616 @@
+{
+  "journey": "B1-batch1",
+  "title": "Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so",
+  "feature": "chat",
+  "videos": [
+    "video/page@c3baa9b0df2d9bf437dd44e90d8acee2.webm"
+  ],
+  "steps": 38,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-10-28T07-43-35-917Z-B1-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "ai",
+      "ok": true,
+      "ms": 3,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "feature": "ai",
+      "ok": true,
+      "ms": 176
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 24,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20002,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "feature": "ai",
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 9,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "feature": "ai",
+      "ok": true,
+      "ms": 26
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "feature": "ai",
+      "ok": true,
+      "ms": 165
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "ms": 30002,
+      "shot": "05-key-tested.png"
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "feature": "ai",
+      "found": 1,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 7,
+      "shot": "06-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "feature": "ai",
+      "text": "Using Anthropic key (your AI)\n7:43 AM",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "feature": "ai",
+      "ok": true,
+      "ms": 151
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "ai",
+      "ok": true,
+      "ms": 10001,
+      "shot": "07-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "check",
+      "note": "batch 1 has no helpers: no New helper button",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 17,
+      "do": "check",
+      "note": "batch 1 has no voice: the round button is Send, not the mic",
+      "feature": "ai",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "feature": "chat",
+      "typed": "hi foo, kaise ho?",
+      "sentAt": 1793173482969,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "a short warm reply in Hinglish, streamed",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 39,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 296,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1897,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3502,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1574,
+          "mark": 1500,
+          "shot": "08-hinglish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3181,
+          "mark": 3000,
+          "shot": "09-hinglish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1874,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Main bilkul theek hoon, shukriya! Aap kaise hain? Kuch kaam hai aaj?\n\n7:44 AM",
+      "kit": [],
+      "ms": 9726,
+      "shot": "10-hinglish.png"
+    },
+    {
+      "i": 20,
+      "do": "send",
+      "feature": "chat",
+      "typed": "mujhe ek chhota sa joke sunao",
+      "sentAt": 1793173492864,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 132
+    },
+    {
+      "i": 21,
+      "do": "waitReply",
+      "expect": "a joke, in the user's mix of Hindi and English",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 56,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3032,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3687,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1633,
+          "mark": 1500,
+          "shot": "11-joke-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3032,
+          "mark": 3000,
+          "shot": "12-joke-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 3097,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Ek aadmi doctor ke paas gaya aur bola, \"Doctor sahab, mujhe lagta hai main invisible ho raha hoon.\" Doctor ne kaha, \"Sorry, main aapko abhi nahi dekh sakta.\" 😄\n\n7:44 AM",
+      "kit": [],
+      "ms": 9845,
+      "shot": "13-joke.png"
+    },
+    {
+      "i": 22,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "Book a table for 2 tonight at a cafe in Delhi",
+      "sentAt": 1793173502912,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 23,
+      "do": "waitReply",
+      "expect": "the batch-1 line: foo can’t do tasks yet; no checklist, no plan card",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 55,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1919,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4794,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1593,
+          "mark": 1500,
+          "shot": "14-job-off-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3200,
+          "mark": 3000,
+          "shot": "15-job-off-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1884,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Main abhi tasks nahi kar sakta, jaise booking ya payment. Yeh feature jald aa raha hai.\n\nFilhaal main aapko cafes dhoondhne mein madad kar sakta hoon, ya aap khud book kar sakte hain aur main yaad dila sakta hoon.\n\n7:45 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 10980,
+      "shot": "16-job-off.png"
+    },
+    {
+      "i": 24,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "Book me a cab to the airport at 6 am tomorrow",
+      "sentAt": 1793173514079,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 25,
+      "do": "waitReply",
+      "expect": "says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 54,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1601,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3257,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1601,
+          "mark": 1500,
+          "shot": "17-cab-off-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1660,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Main abhi tasks nahi kar sakta, jaise cab booking. Yeh feature jald aa raha hai.\n\nFilhaal aap khud book kar lijiye aur main kal subah 5:30 AM ko yaad dila sakta hoon?\n\n7:45 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 9413,
+      "shot": "18-cab-off.png"
+    },
+    {
+      "i": 26,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "did you book the cab?",
+      "sentAt": 1793173523672,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 27,
+      "do": "waitReply",
+      "expect": "no, foo can’t book cabs yet; never “no record” or memory words",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 63,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1616,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3329,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1616,
+          "mark": 1500,
+          "shot": "19-cab-asked-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3016,
+          "mark": 3000,
+          "shot": "20-cab-asked-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1670,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Nahi, maine cab book nahi ki. Main abhi tasks nahi kar sakta, jaise booking ya payment. Aapko khud book karni hogi.\n\n7:45 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 9490,
+      "shot": "21-cab-asked.png"
+    },
+    {
+      "i": 28,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "remember that I am vegetarian",
+      "sentAt": 1793173533387,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 29,
+      "do": "waitReply",
+      "expect": "one bubble: the batch-1 memory line, or a plain reply; never a memory chip, never “Noted” (CR-0067)",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 18,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1573,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 1561,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can’t remember things for you yet, so tell me again when it matters.\n\n7:45 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 8810,
+      "shot": "22-memory-off.png"
+    },
+    {
+      "i": 30,
+      "do": "send",
+      "feature": "settings",
+      "typed": "Switch to dark mode",
+      "sentAt": 1793173542360,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 31,
+      "do": "waitFor",
+      "note": "settings by chat is on in batch 1",
+      "feature": "settings",
+      "ok": true,
+      "ms": 3863
+    },
+    {
+      "i": 32,
+      "do": "wait",
+      "expect": "dark theme; one line Changed: Theme → Dark. Undo",
+      "feature": "settings",
+      "ok": true,
+      "ms": 5001,
+      "shot": "23-dark.png"
+    },
+    {
+      "i": 33,
+      "do": "click",
+      "feature": "install",
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "expect": "Settings, Keyboard shortcuts and Quit only",
+      "feature": "install",
+      "ok": true,
+      "ms": 804,
+      "shot": "24-more-menu.png"
+    },
+    {
+      "i": 35,
+      "do": "check",
+      "feature": "install",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 36,
+      "do": "key",
+      "feature": "install",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 37,
+      "do": "dump",
+      "feature": null,
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n8:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:20 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Anthropic key (your AI)\n8:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:20 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Anthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n8:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:20 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n8:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:21 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n8:21 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dark mode on. Your screen will stay dark until you change it back or pick \"match system\" in settings.\n\n8:21 AM"
+  }
+]

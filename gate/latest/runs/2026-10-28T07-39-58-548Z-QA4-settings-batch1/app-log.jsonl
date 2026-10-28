@@ -1,0 +1,5 @@
+{"t":1793173199498,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793173225892,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":823}
+{"t":1793173272947,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793173274805,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1793173276111,"lvl":"info","mod":"main","evt":"APP_STARTED"}

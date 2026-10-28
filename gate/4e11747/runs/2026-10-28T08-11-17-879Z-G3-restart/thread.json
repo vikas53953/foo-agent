@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Sheru lived alone in the forest and ate the same raw meat every day. One evening, he smelled something incredible drifting from a village nearby—spices, rice, and something he had never tasted. Curious, he crept close and watched through a window as a grandmother stirred a huge pot of biryani, layering rice and meat with care.\n\nThe next night, Sheru returned and watched again, memorising every step. He gathered rice from a broken sack near the market, borrowed spices from a spice merchant's cart when no one was looking, and found a large clay pot by a stream. Back in his cave, he lit a fire, layered everything the way he had seen, and waited. The smell filled the forest, and for the first time, Sheru felt like a chef.\n\nWhen he opened the pot, the biryani was perfect—fragrant, golden, and rich. He took one bite and roared with joy. Soon, other animals came asking for a taste, and Sheru realised he had found something better than hunting: sharing a meal he had made himself. From that day on, he cooked biryani every week, and his cave became the warmest spot in the forest.\n\nShow earlier answer\nRewritten\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n8:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Sheru sounds like he found his calling! 🐅🍚\n\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n8:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n8:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n8:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I have not booked any cab. This build cannot do tasks like booking yet.\n\n8:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n8:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n8:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n8:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "5 tips to sleep better:\n\nKeep your room cool and dark.\nAvoid screens an hour before bed.\nGo to bed at the same time every night.\nSkip caffeine after 3 PM.\nTry deep breathing or light stretching before lying down.\n8:11 AM"
+  }
+]

@@ -1,0 +1,16 @@
+{"t":1793172542572,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172547339,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172550106,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1793172554411,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172556800,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1793172565328,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":1095}
+{"t":1793172580513,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":893}
+{"t":1793172583212,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":1117}
+{"t":1793172588860,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":792}
+{"t":1793172595348,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":2738}
+{"t":1793172596367,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":785}
+{"t":1793172619934,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":781}
+{"t":1793172628113,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":817}
+{"t":1793172628728,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172629553,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":741}
+{"t":1793172631325,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}

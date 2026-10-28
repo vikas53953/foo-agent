@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise hain? Kuch kaam hai aaj?\n\n7:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n7:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi doctor ke paas gaya aur bola, \"Doctor sahab, mujhe lagta hai main invisible ho raha hoon.\" Doctor ne kaha, \"Sorry, main aapko abhi nahi dekh sakta.\" 😄\n\n7:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi tasks nahi kar sakta, jaise booking ya payment. Yeh feature jald aa raha hai.\n\nFilhaal main aapko cafes dhoondhne mein madad kar sakta hoon, ya aap khud book kar sakte hain aur main yaad dila sakta hoon.\n\n7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a cab to the airport at 6 am tomorrow\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi tasks nahi kar sakta, jaise cab booking. Yeh feature jald aa raha hai.\n\nFilhaal aap khud book kar lijiye aur main kal subah 5:30 AM ko yaad dila sakta hoon?\n\n7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the cab?\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, maine cab book nahi ki. Main abhi tasks nahi kar sakta, jaise booking ya payment. Aapko khud book karni hogi.\n\n7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n7:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n7:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi dark mode nahi badal sakta. Aap khud badal sakte hain: mere face pe click karke Settings mein jaayein.\n\n7:45 AM"
+  }
+]

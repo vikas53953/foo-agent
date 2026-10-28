@@ -1,0 +1,216 @@
+{
+  "journey": "G3-restart",
+  "title": "Release gate: close foo while it is answering, and reopen; quit from the menu and reopen",
+  "feature": "chat",
+  "videos": [
+    "video/page@24d2c417cf9d9b6cc74c5c0435829897.webm",
+    "video/page@ce53d3c8aeb8ea2d381cab83d8f8c54a.webm",
+    "video/page@ea30e2da48612231d95a7e63e93fbf16.webm"
+  ],
+  "steps": 14,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-10-28T07-28-21-279Z-G3-restart",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Give me 5 tips to sleep better, one line each",
+      "sentAt": 1793172506999,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 204
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "foo is answering (Thinking row or words streaming)",
+      "ok": true,
+      "ms": 3000,
+      "shot": "01-mid-reply.png"
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "feature": "install",
+      "ok": true,
+      "ms": 5418
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "after reopening, the question is answered, or the cut-off reply shows Try again; never 👀 or the Thinking row left forever",
+      "timeline": [
+        {
+          "at": 8600,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 8600,
+          "mark": 1500,
+          "shot": "02-after-reopen-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8600,
+          "mark": 3000,
+          "shot": "03-after-reopen-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8600,
+          "mark": 6000,
+          "shot": "04-after-reopen-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 458,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I haven't booked any cab. I can't do tasks like booking yet. When did you need it and where to?\n\n7:28 AM",
+      "kit": [],
+      "ms": 6126,
+      "shot": "05-after-reopen.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "no Thinking row stuck after the reopen",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "feature": "install",
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "the menu shows Settings, Keyboard shortcuts and Quit only (batch 1)",
+      "feature": "install",
+      "ok": true,
+      "ms": 802,
+      "shot": "06-more-menu.png"
+    },
+    {
+      "i": 7,
+      "do": "key",
+      "ok": true,
+      "ms": 7
+    },
+    {
+      "i": 8,
+      "do": "quit",
+      "feature": "install",
+      "ok": true,
+      "ms": 225
+    },
+    {
+      "i": 9,
+      "do": "relaunch",
+      "feature": "install",
+      "ok": true,
+      "ms": 5223
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "reopens on the same chat with all earlier messages; no error card",
+      "feature": "install",
+      "ok": true,
+      "ms": 3002,
+      "shot": "07-after-quit-reopen.png"
+    },
+    {
+      "i": 11,
+      "do": "send",
+      "typed": "are you still there?",
+      "sentAt": 1793172531496,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 246
+    },
+    {
+      "i": 12,
+      "do": "waitReply",
+      "expect": "a normal short reply after the restart",
+      "timeline": [
+        {
+          "at": 69,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1627,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3346,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1627,
+          "mark": 1500,
+          "shot": "08-still-there-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3017,
+          "mark": 3000,
+          "shot": "09-still-there-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1681,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Keep your room cool and dark.\nStop screens an hour before bed.\nGo to bed at the same time every night.\nSkip caffeine after 3 PM.\nTry deep breathing or light stretching before lying down.\n7:28 AM",
+      "kit": [],
+      "ms": 9482,
+      "shot": "10-still-there.png"
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}
