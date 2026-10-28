@@ -1,0 +1,14 @@
+{"t":1793182002125,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793182007808,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793182021074,"lvl":"info","mod":"engine","evt":"chat.second_look","kind":"job"}
+{"t":1793182021075,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793182024660,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793182024660,"lvl":"info","mod":"engine","evt":"chat.kind_feature_off","kind":"jobs"}
+{"t":1793182031286,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793182034806,"lvl":"info","mod":"engine","evt":"chat.second_look","kind":"job"}
+{"t":1793182034807,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793182038608,"lvl":"info","mod":"engine","evt":"chat.say_leak","kind":"PROTOCOL_SAY_LEAK"}
+{"t":1793182038609,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793182038609,"lvl":"info","mod":"engine","evt":"chat.kind_feature_off","kind":"jobs"}
+{"t":1793182045194,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793182051396,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
