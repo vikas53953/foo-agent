@@ -77,7 +77,6 @@
         "10:04",
         "✓",
         "✓",
-        "⏳",
         "train",
         "24",
         "Step",
@@ -324,7 +323,6 @@
         "your",
         "AI",
         "9:41",
-        "🛠",
         "foo",
         "read:",
         "17",
@@ -509,8 +507,8 @@
     "total": 2128
   },
   "r5": {
-    "ratio": 0.0990205078125,
-    "diffPixels": 101397,
+    "ratio": 0.0990478515625,
+    "diffPixels": 101425,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-08.dark.diff.png"

@@ -209,7 +209,6 @@
         "Sunday?",
         "Needs",
         "you",
-        "1",
         "T",
         "9:38",
         "AM",
@@ -592,8 +591,8 @@
     "total": 19650
   },
   "r5": {
-    "ratio": 0.1163857421875,
-    "diffPixels": 119179,
+    "ratio": 0.1162529296875,
+    "diffPixels": 119043,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-03.dark.diff.png"
