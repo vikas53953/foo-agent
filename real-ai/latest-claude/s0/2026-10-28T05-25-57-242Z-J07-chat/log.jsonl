@@ -1,0 +1,14 @@
+{"t":"2026-10-28T05:25:57.242Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T05:26:02.677Z","step":"launch","ok":true}
+{"t":"2026-10-28T05:26:02.798Z","i":0,"do":"send","sentAt":1793165162764,"sent":true,"before":0,"ok":true,"ms":118}
+{"t":"2026-10-28T05:26:13.428Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3548,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! It's early, 5:26 AM on Wed 28 Oct. What can I do for you?\n\n5:26 AM","kit":[],"ms":10629}
+{"t":"2026-10-28T05:26:13.489Z","shot":"01-hi.png"}
+{"t":"2026-10-28T05:26:13.563Z","i":2,"do":"send","sentAt":1793165173559,"sent":true,"before":0,"ok":true,"ms":74}
+{"t":"2026-10-28T05:26:23.211Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3058,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can read your email and calendar, watch prices and pages for you, set up routines, and draft and send messages once you say go. The app shows what works on this PC.\n\n5:26 AM","kit":[],"ms":9647}
+{"t":"2026-10-28T05:26:23.268Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-28T05:26:23.374Z","i":4,"do":"send","sentAt":1793165183346,"sent":true,"before":0,"ok":true,"ms":106}
+{"t":"2026-10-28T05:26:34.535Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3558,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it scrambled.\n\nWithout one, your internet provider and the Wi-Fi owner can see which sites you visit. With one, your device locks (encrypts) your traffic and sends it to the VPN company's computer first. That computer unlocks it and passes it on to the website. The site sees the VPN's address, not yours.\n\nGood for: safer public Wi-Fi, hiding your browsing from your provider, and getting around location blocks. It doesn't make you anonymous, though. The VPN company can see your traffic instead, so pick one you trust.\n\n5:26 AM","kit":[],"ms":11160}
+{"t":"2026-10-28T05:26:34.601Z","shot":"03-vpn.png"}
+{"t":"2026-10-28T05:26:34.609Z","i":6,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T05:26:34.732Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T05:26:34.744Z","step":"aiTurns","turns":3}

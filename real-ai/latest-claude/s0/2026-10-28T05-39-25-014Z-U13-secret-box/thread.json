@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n5:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n5:36 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:36 AM\n5:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:36 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 1 min\nDetails\n5:36 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value under ₹50,000 is the MSI Modern 14 with 16GB, at ₹43,219. These are the three I'd keep (prices from Smartprix, updated Wed 28 Oct 2026):\n\nMSI Modern 14 C7M-062IN: ₹43,219. Ryzen 5 7530U, 16GB, 512GB SSD. Screen: 14-inch going by the name. The strongest speed for the price, and 16GB is rare at this level.\nMSI Modern 14 C7M-063IN: ₹42,799. Ryzen 5 7530U, 8GB, 512GB SSD. Screen: 14-inch going by the name. Same speed as the first, ₹420 cheaper, but half the memory.\nDell DC15255: ₹47,990. Ryzen 5 7520U, 8GB, 512GB SSD. Screen: 15-inch class going by the name. A newer AI (Sep 2025) and a bigger screen, but it costs more for similar speed.\n\nThe page doesn't list screen details such as resolution or panel type, so I only know the sizes from the names. The two MSI AI came out in Mar 2023, so they are older designs. Check the screen on the seller's page before buying.\n\n5:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:39 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n5:39 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Wed 28 Oct\nReplace\nRemove\n5:39 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:39 AM"
+  }
+]

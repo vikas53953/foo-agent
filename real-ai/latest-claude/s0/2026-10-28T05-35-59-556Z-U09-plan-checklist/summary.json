@@ -1,0 +1,105 @@
+{
+  "journey": "U09-plan-checklist",
+  "title": "Plan card: pending, Change plan, Go, checklist steps, details, done with proof",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-35-59-556Z-U09-plan-checklist",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793165774315,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 129
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan",
+      "firstReplyMs": 4553,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for budget laptops under ₹50,000 in India\n3\nKeep 3 laptops that fit best value under ₹50,000\n4\nCompare the 3 laptops on price, speed, screen\nAbout 4 minutes\nGo\nChange plan\n5:36 AM",
+      "kit": [],
+      "ms": 10594
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "checklist appears with the current step spinning",
+      "ok": true,
+      "ms": 5015
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23075,
+      "late": true
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "details expanded",
+      "ok": true,
+      "ms": 1001
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer",
+      "ok": true,
+      "ms": 150003
+    },
+    {
+      "i": 9,
+      "do": "check",
+      "note": "receipt footer",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "note": "sources",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

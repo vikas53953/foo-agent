@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n5:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:43 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, ek line mein batao: chai ya coffee?\n5:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n5:43 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n5:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "gamma\n\ndelta. Please just reply OK.\n5:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n5:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n5:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't book tables yet—this build only reads and checks things. I can find cafes with availability if you'd like, then you can book directly.\n\n5:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that my sister's birthday is on 5 March\n5:44 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n5:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n5:44 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the table?\n5:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I haven't booked anything. This build can't do tasks like booking, buying or sending yet—it only reads and checks things.\n\n5:45 AM"
+  }
+]

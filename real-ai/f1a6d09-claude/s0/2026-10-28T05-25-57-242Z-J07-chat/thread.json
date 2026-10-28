@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n5:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n5:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n5:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! It's early, 5:26 AM on Wed 28 Oct. What can I do for you?\n\n5:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n5:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can read your email and calendar, watch prices and pages for you, set up routines, and draft and send messages once you say go. The app shows what works on this PC.\n\n5:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n5:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it scrambled.\n\nWithout one, your internet provider and the Wi-Fi owner can see which sites you visit. With one, your device locks (encrypts) your traffic and sends it to the VPN company's computer first. That computer unlocks it and passes it on to the website. The site sees the VPN's address, not yours.\n\nGood for: safer public Wi-Fi, hiding your browsing from your provider, and getting around location blocks. It doesn't make you anonymous, though. The VPN company can see your traffic instead, so pick one you trust.\n\n5:26 AM"
+  }
+]
