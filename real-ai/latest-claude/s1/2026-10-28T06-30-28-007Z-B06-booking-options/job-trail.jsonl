@@ -1,0 +1,4 @@
+{"kind":"step","job_id":"j_01a18134-22fb-7178-a269-944a675c8cff","idx":0,"phrase_key":"look_for","state":"waiting_user","attempts":0,"route":"browser","started_at":1793169046366,"finished_at":null}
+{"kind":"step","job_id":"j_01a18134-22fb-7178-a269-944a675c8cff","idx":1,"phrase_key":"check_sites","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a18134-22fb-7178-a269-944a675c8cff","idx":2,"phrase_key":"shortlist","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"call","job_id":"j_01a18134-22fb-7178-a269-944a675c8cff","step_idx":0,"tool":"memory.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793169050272,"finished_at":1793169050277}

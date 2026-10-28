@@ -1,0 +1,2 @@
+{"kind":"call","job_id":"j_01a18134-22fb-7178-a269-944a675c8cff","step_idx":0,"tool":"memory.propose","action_class":"prepare","gate":"auto","outcome":"error","error_kind":"VALIDATION","started_at":1793169697402,"finished_at":1793169697408}
+{"kind":"call","job_id":"j_01a18134-22fb-7178-a269-944a675c8cff","step_idx":0,"tool":"memory.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793169701628,"finished_at":1793169701635}

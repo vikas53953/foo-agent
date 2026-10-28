@@ -1,0 +1,157 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n6:29 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mostly use these running shoes for? → Trail running\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n6:30 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trail running, what matters most in the shoe?\n1\nStrong grip\nBEST FIT\nGood for mud, loose stones and wet paths\n2\nSoft cushioning\nEasier on the knees over long runs\n3\nLight weight\nFeels quick, better for short runs\n4\nLasts long\nTough build for rough ground\nSomething else…\nSkip\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n6:30 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:30 AM\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooking for well-rated Italian restaurants in\nCheck restaurant booking sites for Sat 31 Oct\nKeep 3 Italian places with a free table that fit best rated with a table at 8:00 PM\nWatch live\nStop\n10 min\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I look for Italian restaurants in?\n1\nMumbai\nBEST FIT\n2\nDelhi\n3\nBengaluru\n4\nAnother city\nTell me which one\nSomething else…\nSkip\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n6:33 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 1 min\nDetails\n6:34 AM\nLooked on the web\nLooked for National Museum Delhi opening hours and"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, Delhi (Janpath) is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. Today is Wed 28 Oct, so it opens at 10:00 AM and closes at 6:00 PM. Entry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an I-card. The museum's own page says tickets can be booked online at zoonga.com/national-museum. This comes from the museum's official page, which does not show when it was last updated, so check before a special day or festival.\n\n6:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n6:37 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:37 AM\n6:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:37 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n6:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:37 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n6:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:37 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n6:38 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:38 AM\n6:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:38 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 2 min\nDetails\n6:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Best value for you is the MSI Modern 14 C7M at around ₹43,219. The Acer Aspire 14 AI wins on battery and the Lenovo ThinkBook 16 Gen 7 on power.\n\nLaptop (price)\tProcessor\tRAM / storage\tScreen\tBattery\nMSI Modern 14 C7M (₹43,219)\tRyzen 5 7530U\t16GB / 512GB\t14\" FHD IPS\tSmaller battery, no hours given\nAcer Aspire 14 AI, Snapdragon X (₹43,999)\tSnapdragon X\t16GB / 512GB\t14\" WUXGA 120Hz\tAbout 15 hours in testing\nLenovo ThinkBook 16 Gen 7 (₹46,990)\tRyzen 5 7535HS\t16GB DDR5 / 512GB\t16\" 16:10 FHD+\tAbout 9 hours in 91mobiles' test\nMSI: light at about 1.4kg, but stock can be patchy.\nAcer: some apps may not run on Windows on Arm.\nLenovo: upgradeable RAM and SSD, but about 1.7kg and a dim screen.\n\nThese prices and specs come from one buying guide (October 2026) based on maker claims and other sites' reviews, not hands-on testing. Check today's price at the shop before you decide. Want me to compare shop prices for one of them?\n\n6:41 AM"
+  }
+]

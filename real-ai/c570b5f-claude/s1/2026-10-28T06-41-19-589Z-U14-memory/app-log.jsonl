@@ -1,0 +1,7 @@
+{"t":1793169680572,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793169689635,"lvl":"info","mod":"engine","evt":"job.steer_check","kind":"job"}
+{"t":1793169689674,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793169697373,"lvl":"info","mod":"engine","evt":"job.steer_effect","kind":"folded"}
+{"t":1793169697424,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793169701645,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793169704990,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2870}
