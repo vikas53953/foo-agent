@@ -1,0 +1,171 @@
+{
+  "id": "QA5-restart-batch1",
+  "title": "Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build",
+  "spec": "QA audit 28 Oct: batch-1 items not yet proven with real Claude",
+  "covers": ["batch-1 chat", "batch-1 ai"],
+  "features": "shipped",
+  "profile": "own",
+  "gate": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "finder",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "Add key on the Anthropic key row: opens the Secret box"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000,
+      "shot": "secret-box",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "note": "the key typed into foo's own Secret box, masked"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "key-tested",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "note": "more than one AI works: pick the key, not the Claude app"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "note": "only the key works: Use it"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-skip-rest",
+      "timeoutMs": 60000,
+      "shot": "step2",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name"
+    },
+    {
+      "do": "expectText",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "re": "Anthropic key",
+      "note": "foo uses the key, not the Claude app"
+    },
+    {
+      "do": "click",
+      "tid": "setup-skip-rest"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat"
+    },
+    {
+      "do": "send",
+      "text": "Ek kachhua (tortoise) ke liye 3 achhe naam batao."
+    },
+    {
+      "do": "wait",
+      "ms": 3000
+    },
+    {
+      "do": "relaunch"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "q5-after-reopen",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "after closing mid-reply and reopening: the question is still there, it gets an answer or a clear Try again, and no 👀 is left behind",
+      "expectJs": "(()=>{const all=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"], [data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')];const me=all.map(b=>b.dataset.testid).lastIndexOf('bubble-me');return me>=0&&/kachhua/i.test(all[me].innerText)&&!document.querySelector('[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]')})()"
+    },
+    {
+      "do": "clickIf",
+      "tid": "bubble-actions-retry",
+      "note": "if the reply was cut, Try again once"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "q5-answered",
+      "feature": "chat",
+      "expect": "the tortoise question has a real answer"
+    },
+    {
+      "do": "relaunch"
+    },
+    {
+      "do": "wait",
+      "ms": 8000
+    },
+    {
+      "do": "expectText",
+      "tid": "thread-log",
+      "re": "kachhua",
+      "shot": "q5-history",
+      "feature": "chat",
+      "expect": "after a second quit and reopen the chat history is all there"
+    },
+    {
+      "do": "send",
+      "text": "7 aur 8 ka jod kitna hai? sirf number"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q5-key-after-reopen",
+      "feature": "ai",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "after two restarts the stored key still works with real Claude",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)})()"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
