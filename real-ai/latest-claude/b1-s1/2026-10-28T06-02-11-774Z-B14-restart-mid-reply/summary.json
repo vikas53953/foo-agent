@@ -1,0 +1,91 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-02-11-774Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793167337514,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 138
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3002
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5708
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "firstReplyMs": 509,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Shelly is a good one, simple and a bit funny. Other ideas: Turbo (because he'll never live up to it), Dosa, Pickle or Mr. Slow.\n\nWant names that suit a boy or a girl tortoise, or a more Indian-style name?\n\n6:02 AM",
+      "kit": [],
+      "ms": 8049
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n6:02 AM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793167354494,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 158
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2001
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5476
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "expect": "the news question is answered after reopening",
+      "firstReplyMs": 5555,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Checking major Indian news sites\nlive checklist\nChecking major Indian news sites\nM\nLook for the top story in India today\nCompare headlines across sites\nWatch live\nStop\nunder 1 min\n6:02 AM",
+      "kit": [],
+      "ms": 11639
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
