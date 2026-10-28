@@ -1,7 +1,8 @@
 {
   "id": "R1-rich",
-  "title": "Rich replies: table, steps, numbers",
-  "spec": "CR-0022 R1",
+  "title": "Rich replies: table, steps, numbers (batch 1 build: jobs are off)",
+  "spec": "CR-0022 R1; CR-0054 (switched-off features)",
+  "features": "shipped",
   "steps": [
     {
       "do": "send",
@@ -10,22 +11,15 @@
     {
       "do": "waitReply",
       "timeoutMs": 180000,
-      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "table"
-    },
-    {
-      "do": "clickIf",
-      "tid": "card-plan-go",
-      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)"
-    },
-    {
-      "do": "wait",
-      "ms": 150000,
-      "shot": "table-after-go"
+      "shot": "table",
+      "expect": "one reply: a table in chat, or the honest jobs-off line; never a plan card or a job (jobs are off in batch 1)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]'))return false;const f=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!f&&(!!f.querySelector('[data-testid=\"bubble-table\"]')||f.innerText.includes('I can’t do tasks for you yet'))})()"
     },
     {
       "do": "check",
-      "tid": "bubble-table"
+      "tid": "card-plan",
+      "count": 0,
+      "note": "no plan card with jobs off"
     },
     {
       "do": "dump",
@@ -38,8 +32,15 @@
     {
       "do": "waitReply",
       "timeoutMs": 240000,
-      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "trip"
+      "shot": "trip",
+      "expect": "one reply: a day-by-day plan in chat, or the honest jobs-off line; never a plan card or a job",
+      "expectJs": "(()=>!document.querySelector('[data-testid=\"card-plan\"]')&&!![...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1))()"
+    },
+    {
+      "do": "check",
+      "tid": "card-plan",
+      "count": 0,
+      "note": "no plan card with jobs off"
     },
     {
       "do": "dump",

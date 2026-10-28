@@ -7,6 +7,7 @@ B11-zoom-appearance
 B13-no-apps-honesty
 B14-restart-mid-reply
 R-dark-hi
+R1-rich
 U01-bubble-menu
 U02-reactions-thanks
 U03-select-delete
@@ -19,7 +20,6 @@ U16-settings-all
 U17-settings-by-chat
 U20-errors-honesty
 U22-face-polish
-U23-ai-page-chips
 U25-anatomy-composer
 U26-crash-reopen
 U27-composer-no-dropped-letters
