@@ -1,0 +1,229 @@
+{
+  "id": "QA7-who-said-what",
+  "title": "Who said what with real Claude on the batch-1 build: no user name, a name told in chat, then changed in Hindi and in Punjabi; foo never mixes its own lines and name with the user's",
+  "spec": "QA audit 28 Oct: batch-1 items not yet proven with real Claude",
+  "covers": ["batch-1 chat", "batch-1 name"],
+  "features": "shipped",
+  "profile": "own",
+  "gate": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "finder",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "Add key on the Anthropic key row: opens the Secret box"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000,
+      "shot": "secret-box",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "note": "the key typed into foo's own Secret box, masked"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "key-tested",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "note": "more than one AI works: pick the key, not the Claude app"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "note": "only the key works: Use it"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-skip-rest",
+      "timeoutMs": 60000,
+      "shot": "step2",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name"
+    },
+    {
+      "do": "expectText",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "re": "Anthropic key",
+      "note": "foo uses the key, not the Claude app"
+    },
+    {
+      "do": "click",
+      "tid": "setup-skip-rest"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat"
+    },
+    {
+      "do": "send",
+      "text": "tumhara naam kya hai? sirf naam batao"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-no-name-foo",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "no user name set (the batch-1 path): foo gives its own name, and never asks the question back",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\bfoo\\b/i.test(t)&&!/aapka naam kya|tumhara naam kya|what.s your name|what is your name|ਤੁਹਾਡਾ ਨਾਮ ਕੀ|आपका नाम क्या/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "aur mera naam kya hai?"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-no-name-mine",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "foo says it doesn't know the user's name yet (or asks for it); it never says the user is foo",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /pata nahi|nahi pata|nahin pata|don.t know|do not know|haven.t told|didn.t tell|not told|bataya nahi|nahi bataya|bata(o|iye|denge)|tell me/i.test(t)&&!/(aapka|tumhara|your) naam (hai )?foo|you are foo|you.re foo/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Mera naam Gurpreet hai."
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]"
+    },
+    {
+      "do": "send",
+      "text": "mera naam kya hai? sirf naam"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-name-gurpreet",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "after the user says their name in chat, foo answers with it",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /gurpreet/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "aur tumhara? sirf naam"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-own-after-gurpreet",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "foo still knows its own name and never takes the user's name as its own",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\bfoo\\b/i.test(t)&&!/(mera|my) naam (hai )?gurpreet|i.?m gurpreet|i am gurpreet|main gurpreet/i.test(t)&&!/aapka naam kya|tumhara naam kya|what.s your name|what is your name|ਤੁਹਾਡਾ ਨਾਮ ਕੀ|आपका नाम क्या/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "मेरा नाम अब अर्जुन है।"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]"
+    },
+    {
+      "do": "send",
+      "text": "मेरा नाम क्या है? सिर्फ़ नाम बताओ"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-name-hindi",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "name changed mid-chat, in Hindi: foo answers with the new name",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /अर्जुन|arjun/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "ਮੇਰਾ ਨਾਮ ਹੁਣ ਸਿਮਰਨ ਹੈ।"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]"
+    },
+    {
+      "do": "send",
+      "text": "ਮੇਰਾ ਨਾਮ ਕੀ ਹੈ? ਸਿਰਫ਼ ਨਾਮ ਦੱਸੋ"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-name-punjabi",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "name changed again, in Punjabi: foo answers with the newest name",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /ਸਿਮਰਨ|सिमरन|simran/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "ਤੇ ਤੁਹਾਡਾ ਨਾਮ? ਸਿਰਫ਼ ਨਾਮ"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-own-punjabi",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "asked its own name in Punjabi, foo gives its own name, not the user's",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\bfoo\\b|ਫੂ/i.test(t)&&!/ਸਿਮਰਨ|simran/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
