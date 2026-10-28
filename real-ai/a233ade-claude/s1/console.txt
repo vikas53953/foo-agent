@@ -1,0 +1,8 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-00-51-617Z-J01-J02-first-run"}
+{"journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","videos":[],"steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-01-42-783Z-B02-choice"}
+{"journey":"B06-booking-options","title":"Restaurant options without booking","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-02-11-364Z-B06-booking-options"}
+{"journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","videos":[],"steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-05-44-472Z-B05-restart"}
+{"journey":"B08-bank","title":"Bank site guard","videos":[],"steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-08-59-011Z-B08-bank"}
+{"journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","videos":[],"steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-10-12-256Z-U09-plan-checklist"}
+{"journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","videos":[],"steps":23,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-13-48-495Z-U14-memory"}
+{"journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-16-12-205Z-U21-window-dialogs"}

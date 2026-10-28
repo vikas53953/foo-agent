@@ -1,0 +1,41 @@
+{"t":"2026-10-28T10:13:48.496Z","journey":"U14-memory","title":"Memory: chip with Undo, memory page search, edit, forget with Undo","spec":"05-3 §5.17 Memory chip, 06 Memory page, 10-2 §C.4 / §C.5","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:13:53.998Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:14:02.089Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8087}
+{"t":"2026-10-28T10:14:03.130Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1041}
+{"t":"2026-10-28T10:14:03.243Z","i":1,"do":"send","typed":"Remember that I am vegetarian on Tuesdays","sentAt":1793182443212,"sent":true,"before":0,"ok":true,"ms":113}
+{"t":"2026-10-28T10:14:19.960Z","shot":"01-chip.png"}
+{"t":"2026-10-28T10:14:19.960Z","i":2,"do":"waitReply","expect":"memory chip \"I'll remember · Undo\"","ref":"BP-CARD-15","timeline":[{"at":37,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":3576,"badges":["working"],"reactions":[],"thinking":false,"streaming":0},{"at":11140,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":10604,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Got it, you're vegetarian on Tuesdays. I'm saving that as a note for you to confirm.\n\n10:14 AM","kit":[],"ms":16656,"shot":"01-chip.png"}
+{"t":"2026-10-28T10:14:19.962Z","i":3,"do":"check","note":"Undo on the chip","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-28T10:14:20.059Z","i":4,"do":"send","typed":"Remember my favourite cricket team is Punjab Kings","sentAt":1793182460040,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-28T10:14:33.237Z","shot":"02-chip-2.png"}
+{"t":"2026-10-28T10:14:33.237Z","i":5,"do":"waitReply","expect":"second memory chip","timeline":[{"at":23,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2051,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0},{"at":8099,"badges":["waiting"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7071,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which city should I look for Italian restaurants in?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nTell me which one\nSomething else…\nSkip\n10:14 AM","kit":[],"ms":13121,"shot":"02-chip-2.png"}
+{"t":"2026-10-28T10:14:56.301Z","shot":"03-error-step6.png"}
+{"t":"2026-10-28T10:14:56.301Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"03-error-step6.png","ms":23063}
+{"t":"2026-10-28T10:14:57.863Z","shot":"04-undone.png"}
+{"t":"2026-10-28T10:14:57.864Z","i":7,"do":"wait","expect":"chip says forgotten / undone","ok":true,"ms":1502,"shot":"04-undone.png"}
+{"t":"2026-10-28T10:14:57.941Z","i":8,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-10-28T10:14:58.051Z","i":9,"do":"click","soft":true,"ok":true,"ms":110}
+{"t":"2026-10-28T10:14:59.310Z","shot":"05-memory-page.png"}
+{"t":"2026-10-28T10:14:59.311Z","i":10,"do":"wait","expect":"Memory page: rows with source and date, search, filters","ref":"UX-16-01","ok":true,"ms":1201,"shot":"05-memory-page.png"}
+{"t":"2026-10-28T10:14:59.313Z","i":11,"do":"expectText","note":"no empty-measure guesses","soft":true,"text":"What I know about you\n+ Add something\nNothing yet\n\nTell me things like “I’m vegetarian on Tuesdays” and I’ll remember them here.\n\n+ Add something","ok":true,"ms":2}
+{"t":"2026-10-28T10:14:59.323Z","i":12,"do":"fill","soft":true,"ok":true,"ms":10}
+{"t":"2026-10-28T10:15:00.187Z","shot":"06-memory-search.png"}
+{"t":"2026-10-28T10:15:00.187Z","i":13,"do":"wait","expect":"row found","ok":true,"ms":801,"shot":"06-memory-search.png"}
+{"t":"2026-10-28T10:15:23.250Z","shot":"07-error-step14.png"}
+{"t":"2026-10-28T10:15:23.250Z","i":14,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"07-error-step14.png","ms":23063}
+{"t":"2026-10-28T10:15:23.908Z","shot":"08-memory-edit.png"}
+{"t":"2026-10-28T10:15:23.908Z","i":15,"do":"wait","expect":"inline edit","ok":true,"ms":600,"shot":"08-memory-edit.png"}
+{"t":"2026-10-28T10:15:23.912Z","i":16,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-28T10:15:46.969Z","shot":"09-error-step17.png"}
+{"t":"2026-10-28T10:15:46.969Z","i":17,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"09-error-step17.png","ms":23056}
+{"t":"2026-10-28T10:15:47.828Z","shot":"10-forgot.png"}
+{"t":"2026-10-28T10:15:47.828Z","i":18,"do":"wait","expect":"row gone, 5 s Undo bar","ref":"UX-16-04","ok":true,"ms":805,"shot":"10-forgot.png"}
+{"t":"2026-10-28T10:16:10.892Z","shot":"11-error-step19.png"}
+{"t":"2026-10-28T10:16:10.893Z","i":19,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"11-error-step19.png","ms":23065}
+{"t":"2026-10-28T10:16:11.749Z","shot":"12-undo.png"}
+{"t":"2026-10-28T10:16:11.750Z","i":20,"do":"wait","expect":"row back","ok":true,"ms":801,"shot":"12-undo.png"}
+{"t":"2026-10-28T10:16:11.876Z","i":21,"do":"click","soft":true,"ok":true,"ms":126}
+{"t":"2026-10-28T10:16:11.889Z","i":22,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-28T10:16:12.043Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T10:16:12.056Z","step":"aiTurns","turns":4}
+{"t":"2026-10-28T10:16:12.059Z","step":"jobTrail","steps":0,"calls":2}

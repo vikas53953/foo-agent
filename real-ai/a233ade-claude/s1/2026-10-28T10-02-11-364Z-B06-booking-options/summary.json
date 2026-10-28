@@ -1,0 +1,101 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-02-11-364Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?",
+      "sentAt": 1793181736999,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 144
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 58,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 562,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 20911,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 22934,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 20868,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for well-reviewed Italian…\n1\nLook for well-reviewed Italian restaurants in\n2\nCheck restaurant booking pages for Sat 31 Oct\n3\nKeep 3 Italian restaurants with a free table that fit best rated with a table at 8:00 PM\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n10:02 AM",
+      "kit": [],
+      "ms": 26926,
+      "shot": "01-italian.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180002,
+      "shot": "02-italian-later.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "soft": true,
+      "found": 3,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

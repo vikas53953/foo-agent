@@ -1,0 +1,17 @@
+{"t":"2026-10-28T10:05:44.473Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:05:49.991Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:05:50.133Z","i":0,"do":"send","typed":"Find the opening hours of the National Museum in Delhi and the ticket price","sentAt":1793181950090,"sent":true,"before":0,"ok":true,"ms":138}
+{"t":"2026-10-28T10:06:06.976Z","shot":"01-museum-start.png"}
+{"t":"2026-10-28T10:06:06.976Z","i":1,"do":"waitReply","timeline":[{"at":49,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":3604,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9197,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":10680,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking nationalmuseumindia.gov.in\nlive checklist\nChecking nationalmuseumindia.gov.in\nN\nLook for opening hours and ticket prices\nCompare official page against a second source\nWatch live\nStop\nunder 1 min\n10:06 AM","kit":[],"ms":16769,"shot":"01-museum-start.png"}
+{"t":"2026-10-28T10:06:06.979Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T10:06:14.980Z","i":3,"do":"wait","ok":true,"ms":8000}
+{"t":"2026-10-28T10:06:20.354Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:06:20.355Z","i":4,"do":"relaunch","ok":true,"ms":5375}
+{"t":"2026-10-28T10:06:28.442Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-28T10:06:28.443Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8000,"shot":"02-after-reopen.png"}
+{"t":"2026-10-28T10:08:58.508Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-28T10:08:58.509Z","i":6,"do":"wait","ok":true,"ms":150003,"shot":"03-after-reopen-later.png"}
+{"t":"2026-10-28T10:08:58.521Z","i":7,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-28T10:08:58.796Z","step":"appLog","lines":23,"dropped":0}
+{"t":"2026-10-28T10:08:58.811Z","step":"aiTurns","turns":14}
+{"t":"2026-10-28T10:08:58.814Z","step":"jobTrail","steps":3,"calls":10}

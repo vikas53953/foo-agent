@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n10:01 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mostly use the running shoes for? → Trail running\n10:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n10:01 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Trail running noted. What matters most in the shoe?\n1\nGrip\nBEST FIT\nMuddy or loose, uneven trails\n2\nCushioning\nComfort on long runs\n3\nLight weight\nFast, short runs\n4\nDurability\nRough, rocky ground\nSomething else…\nSkip\n10:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n10:02 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:02 AM\n10:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:02 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-reviewed Italian…\nlive checklist\nLooking for well-reviewed Italian restaurants in\nCheck restaurant booking pages for Sat 31 Oct\nKeep 3 Italian restaurants with a free table that fit best rated with a table at 8:00 PM\nWait for you to pick one\nWatch live\nStop\n6 min\n10:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:02 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I look for Italian restaurants in?\n1\nMumbai\nBEST FIT\n2\nDelhi\n3\nBengaluru\n4\nAnother city\nType it in your reply\nSomething else…\nSkip\n10:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n10:05 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking nationalmuseumindia.gov.in\nlive checklist\nChecked nationalmuseumindia.gov.in\nN\nLooked for opening hours and ticket prices\nComparing official page against a second source\nStill working, this one takes a while\nWatch live\nStop\n2 min\n10:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:06 AM"
+  }
+]

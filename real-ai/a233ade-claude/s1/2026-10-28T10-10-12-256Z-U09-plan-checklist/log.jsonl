@@ -1,0 +1,23 @@
+{"t":"2026-10-28T10:10:12.257Z","journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","spec":"05-3 §5.24 Plan, §5.5 Checklist, §5.18 Proof, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:10:17.799Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:10:18.850Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-28T10:10:19.017Z","i":1,"do":"send","typed":"Research the 3 best budget laptops under ₹50,000 in India right now and compare them","sentAt":1793182218952,"sent":true,"before":0,"ok":true,"ms":166}
+{"t":"2026-10-28T10:10:25.526Z","shot":"01-plan.png"}
+{"t":"2026-10-28T10:10:25.526Z","i":2,"do":"waitReply","expect":"a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan","ref":"BP-CARD-11","timeline":[{"at":72,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2124,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":511,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Fold this into which job?\n1\nLooking for well-reviewed Italian…\nBEST FIT\n2\nChecking nationalmuseumindia.gov.in\nSomething else…\nSkip\n10:10 AM","kit":[],"ms":6437,"shot":"01-plan.png"}
+{"t":"2026-10-28T10:10:25.619Z","i":3,"do":"shotEl","soft":true,"ref":"BP-CARD-11","ok":true,"ms":89}
+{"t":"2026-10-28T10:10:48.710Z","shot":"03-error-step4.png"}
+{"t":"2026-10-28T10:10:48.710Z","i":4,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"03-error-step4.png","ms":23091}
+{"t":"2026-10-28T10:10:53.770Z","shot":"04-checklist.png"}
+{"t":"2026-10-28T10:10:53.770Z","i":5,"do":"wait","expect":"checklist appears with the current step spinning","ref":"BP-CARD-02","ok":true,"ms":5001,"shot":"04-checklist.png"}
+{"t":"2026-10-28T10:11:16.862Z","shot":"05-error-step6.png"}
+{"t":"2026-10-28T10:11:16.862Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"05-error-step6.png","ms":23092}
+{"t":"2026-10-28T10:11:17.951Z","shot":"06-checklist-details.png"}
+{"t":"2026-10-28T10:11:17.951Z","i":7,"do":"wait","expect":"details expanded","ok":true,"ms":1005,"shot":"06-checklist-details.png"}
+{"t":"2026-10-28T10:13:48.023Z","shot":"07-done.png"}
+{"t":"2026-10-28T10:13:48.024Z","i":8,"do":"wait","expect":"job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer","ok":true,"ms":150002,"shot":"07-done.png"}
+{"t":"2026-10-28T10:13:48.026Z","i":9,"do":"check","note":"receipt footer","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T10:13:48.028Z","i":10,"do":"check","note":"sources","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T10:13:48.042Z","i":11,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-28T10:13:48.279Z","step":"appLog","lines":12,"dropped":0}
+{"t":"2026-10-28T10:13:48.293Z","step":"aiTurns","turns":8}
+{"t":"2026-10-28T10:13:48.296Z","step":"jobTrail","steps":0,"calls":8}
