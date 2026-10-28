@@ -1,0 +1,252 @@
+{
+  "id": "QA2-setup-key-name-face-vibe",
+  "title": "Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart",
+  "spec": "QA audit 28 Oct: batch-1 items not yet proven with real Claude",
+  "covers": ["batch-1 ai", "batch-1 name"],
+  "features": "shipped",
+  "profile": "own",
+  "gate": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "finder",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "Add key on the Anthropic key row: opens the Secret box"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000,
+      "shot": "secret-box",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "value": "sk-ant-api03-qaWRONGkeyNOTrealABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-AAAA",
+      "note": "a made-up wrong key first"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000
+    },
+    {
+      "do": "expectText",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"]",
+      "re": "didn.t work",
+      "shot": "q2-wrong-key",
+      "feature": "ai",
+      "expect": "a wrong key is tested and the row says it didn't work, in plain words"
+    },
+    {
+      "do": "check",
+      "tid": "setup-ai-use",
+      "count": 0,
+      "note": "a wrong key is never offered as Use"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "Replace key opens the Secret box again"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "note": "now the real key"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "q2-right-key",
+      "feature": "ai",
+      "expect": "the real key row shows works"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "note": "more than one AI works: pick the key, not the Claude app"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "note": "only the key works: Use it"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-name-field",
+      "timeoutMs": 60000,
+      "shot": "q2-name-card",
+      "feature": "name",
+      "expect": "name card: What should I call myself?"
+    },
+    {
+      "do": "fill",
+      "tid": "setup-name-field",
+      "value": "😊!!"
+    },
+    {
+      "do": "click",
+      "tid": "setup-name-done"
+    },
+    {
+      "do": "wait",
+      "ms": 1000
+    },
+    {
+      "do": "expectText",
+      "tid": "setup-name-error",
+      "re": "at least one letter",
+      "shot": "q2-name-no-letter",
+      "feature": "name",
+      "expect": "a name with no letter or number (only an emoji and !!) is refused in plain words"
+    },
+    {
+      "do": "fill",
+      "tid": "setup-name-field",
+      "value": "Chotu 😊"
+    },
+    {
+      "do": "click",
+      "tid": "setup-name-done"
+    },
+    {
+      "do": "wait",
+      "ms": 3000
+    },
+    {
+      "do": "expectText",
+      "tid": "thread-log",
+      "re": "Chotu",
+      "shot": "q2-named",
+      "feature": "name",
+      "expect": "\"Chotu 😊 it is.\" and the face card follows"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"thread-log\"] [role=radio]",
+      "nth": 2,
+      "timeoutMs": 30000,
+      "note": "pick the third face"
+    },
+    {
+      "do": "click",
+      "text": "Use this face"
+    },
+    {
+      "do": "wait",
+      "ms": 2000,
+      "shot": "q2-face",
+      "feature": "name",
+      "expect": "face chosen; the talk-style (vibe) choice follows"
+    },
+    {
+      "do": "click",
+      "tid": "card-choice-option",
+      "nth": 1,
+      "timeoutMs": 30000,
+      "note": "pick the second vibe"
+    },
+    {
+      "do": "waitFor",
+      "tid": "composer-field",
+      "timeoutMs": 60000
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "q2-first-chat",
+      "feature": "chat",
+      "expect": "first chat as Chotu, composer unlocked"
+    },
+    {
+      "do": "send",
+      "text": "tumhara naam kya hai? ek line mein"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q2-says-name",
+      "feature": "name",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "the real AI answers as Chotu",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /chotu/i.test(t)})()"
+    },
+    {
+      "do": "relaunch"
+    },
+    {
+      "do": "wait",
+      "ms": 8000
+    },
+    {
+      "do": "expectText",
+      "tid": "thread-log",
+      "re": "Chotu",
+      "shot": "q2-after-reopen",
+      "feature": "name",
+      "expect": "after quit and reopen the chat and the name Chotu are still there"
+    },
+    {
+      "do": "send",
+      "text": "aur tumhara naam? sirf naam batao"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q2-name-after-reopen",
+      "feature": "name",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "after reopening, the real AI still answers as Chotu (name and key survived the restart)",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /chotu/i.test(t)})()"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

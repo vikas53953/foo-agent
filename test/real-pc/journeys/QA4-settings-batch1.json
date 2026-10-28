@@ -1,0 +1,252 @@
+{
+  "id": "QA4-settings-batch1",
+  "title": "Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart",
+  "spec": "QA audit 28 Oct: batch-1 items not yet proven with real Claude",
+  "covers": ["batch-1 settings"],
+  "features": "shipped",
+  "profile": "own",
+  "gate": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "finder",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "Add key on the Anthropic key row: opens the Secret box"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000,
+      "shot": "secret-box",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "note": "the key typed into foo's own Secret box, masked"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "key-tested",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "note": "more than one AI works: pick the key, not the Claude app"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "note": "only the key works: Use it"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-skip-rest",
+      "timeoutMs": 60000,
+      "shot": "step2",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name"
+    },
+    {
+      "do": "expectText",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "re": "Anthropic key",
+      "note": "foo uses the key, not the Claude app"
+    },
+    {
+      "do": "click",
+      "tid": "setup-skip-rest"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat"
+    },
+    {
+      "do": "key",
+      "key": "Control+,"
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "q4-settings",
+      "feature": "settings",
+      "expect": "Settings opens with Ctrl+,"
+    },
+    {
+      "do": "check",
+      "tid": "screen-settings",
+      "note": "the Settings screen is open"
+    },
+    {
+      "do": "check",
+      "tid": "settings-nav-money",
+      "count": 0,
+      "note": "batch 1 has no money settings"
+    },
+    {
+      "do": "check",
+      "tid": "settings-nav-connections",
+      "count": 0,
+      "note": "batch 1 has no connections"
+    },
+    {
+      "do": "check",
+      "tid": "settings-nav-routines-settings",
+      "count": 0,
+      "note": "batch 1 has no routines"
+    },
+    {
+      "do": "click",
+      "tid": "settings-nav-appearance"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "q4-appearance",
+      "feature": "settings",
+      "expect": "Appearance: theme and text size rows"
+    },
+    {
+      "do": "check",
+      "tid": "settings-row-appearance-theme"
+    },
+    {
+      "do": "clickIf",
+      "tid": "settings-nav-account"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "q4-account",
+      "feature": "settings",
+      "expect": "Account: your AI shows the Anthropic key in use"
+    },
+    {
+      "do": "clickIf",
+      "tid": "settings-nav-chat"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "q4-chat",
+      "feature": "settings",
+      "expect": "Chat settings page has real rows, not empty"
+    },
+    {
+      "do": "clickIf",
+      "tid": "settings-nav-shortcuts"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "q4-shortcuts",
+      "feature": "settings",
+      "expect": "Keyboard shortcuts page lists keys"
+    },
+    {
+      "do": "clickIf",
+      "tid": "settings-nav-about"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "q4-about",
+      "feature": "settings",
+      "expect": "About page has version and What leaves this PC"
+    },
+    {
+      "do": "key",
+      "key": "Escape"
+    },
+    {
+      "do": "wait",
+      "ms": 1000
+    },
+    {
+      "do": "check",
+      "tid": "screen-settings",
+      "count": 0,
+      "note": "Esc closes Settings"
+    },
+    {
+      "do": "send",
+      "text": "Switch to dark mode"
+    },
+    {
+      "do": "waitFor",
+      "css": "html[data-theme=\"dark\"]",
+      "timeoutMs": 120000,
+      "shot": "q4-dark",
+      "feature": "settings",
+      "expect": "dark theme by chat, one Changed line with Undo"
+    },
+    {
+      "do": "expectText",
+      "tid": "thread-log",
+      "re": "can.t remember|can.t do tasks",
+      "not": true,
+      "note": "a settings ask is never answered with an off-feature line"
+    },
+    {
+      "do": "relaunch"
+    },
+    {
+      "do": "wait",
+      "ms": 8000
+    },
+    {
+      "do": "waitFor",
+      "css": "html[data-theme=\"dark\"]",
+      "timeoutMs": 30000,
+      "shot": "q4-dark-after-reopen",
+      "feature": "settings",
+      "expect": "dark theme survives quit and reopen"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
