@@ -1,0 +1,94 @@
+{
+  "journey": "J10-hotel",
+  "title": "Hotel search with payment approval (never approves)",
+  "videos": [],
+  "steps": 6,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-02-08-103Z-J10-hotel",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night",
+      "sentAt": 1793181733410,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 148
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 28,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 531,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7657,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 9686,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 7634,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for Goa hotels for 2 nights,…\n1\nLook for Goa hotels for 2 nights, Sat 7 Nov to\n2\nCheck hotel booking sites\n3\nKeep 5 hotels that fit under ₹6,000 a night\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n10:02 AM",
+      "kit": [],
+      "ms": 13689,
+      "shot": "01-hotel.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 180005,
+      "shot": "02-hotel-working.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

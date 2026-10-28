@@ -1,0 +1,8 @@
+{"t":1793181928313,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793181929473,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
+{"t":1793181929484,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793181933990,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1793181936085,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793181944141,"lvl":"info","mod":"engine","evt":"job.steer_effect","kind":"new_job"}
+{"t":1793181944162,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793181944185,"lvl":"info","mod":"engine","evt":"job.stuck.budget","kind":"STUCK"}

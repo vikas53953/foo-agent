@@ -1,0 +1,13 @@
+{"t":"2026-10-28T10:02:08.104Z","journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","spec":"07-1 J10; 05 approval card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:02:13.282Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:02:13.433Z","i":0,"do":"send","typed":"Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night","sentAt":1793181733410,"sent":true,"before":0,"ok":true,"ms":148}
+{"t":"2026-10-28T10:02:27.187Z","shot":"01-hotel.png"}
+{"t":"2026-10-28T10:02:27.187Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":28,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":531,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7657,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":9686,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7634,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for Goa hotels for 2 nights,…\n1\nLook for Goa hotels for 2 nights, Sat 7 Nov to\n2\nCheck hotel booking sites\n3\nKeep 5 hotels that fit under ₹6,000 a night\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n10:02 AM","kit":[],"ms":13689,"shot":"01-hotel.png"}
+{"t":"2026-10-28T10:02:27.221Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":34}
+{"t":"2026-10-28T10:05:27.283Z","shot":"02-hotel-working.png"}
+{"t":"2026-10-28T10:05:27.283Z","i":3,"do":"wait","ok":true,"ms":180005,"shot":"02-hotel-working.png"}
+{"t":"2026-10-28T10:05:27.285Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T10:05:27.293Z","i":5,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T10:05:27.556Z","step":"appLog","lines":34,"dropped":0}
+{"t":"2026-10-28T10:05:27.565Z","step":"aiTurns","turns":30}
+{"t":"2026-10-28T10:05:27.566Z","step":"jobTrail","steps":4,"calls":24}

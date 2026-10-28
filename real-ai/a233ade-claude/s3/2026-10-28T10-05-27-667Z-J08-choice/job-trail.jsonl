@@ -1,0 +1,2 @@
+{"kind":"call","job_id":"j_01a181f5-eeae-79a7-8fb2-d448aa7391ec","step_idx":1,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793181933357,"finished_at":1793181936048}
+{"kind":"call","job_id":"j_01a181f5-eeae-79a7-8fb2-d448aa7391ec","step_idx":1,"tool":"web.browseCloud","action_class":"read","gate":"auto","outcome":"error","error_kind":"USE_EDGE","started_at":1793181944160,"finished_at":1793181944175}
