@@ -1,0 +1,218 @@
+{
+  "journey": "QA5-restart-batch1",
+  "title": "Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build",
+  "steps": 28,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-12-14-674Z-QA5-restart-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "ok": true,
+      "ms": 20014
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 84
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "ok": true,
+      "ms": 30002
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 1,
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Anthropic key (your AI)\n7:12 AM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "ok": true,
+      "ms": 10003
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "sentAt": 1793171601028,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "ok": true,
+      "ms": 3012
+    },
+    {
+      "i": 18,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4996
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "after closing mid-reply and reopening: the question is still there, it gets an answer or a clear Try again, and no 👀 is left behind",
+      "firstReplyMs": 512,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "That reply got cut off.\nTry again\n7:13 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 6064
+    },
+    {
+      "i": 20,
+      "do": "clickIf",
+      "note": "if the reply was cut, Try again once",
+      "found": 1,
+      "ok": true,
+      "ms": 32
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "expect": "the tortoise question has a real answer",
+      "ok": true,
+      "ms": 20006
+    },
+    {
+      "i": 22,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4977
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "ok": true,
+      "ms": 8003
+    },
+    {
+      "i": 24,
+      "do": "expectText",
+      "expect": "after a second quit and reopen the chat history is all there",
+      "text": "Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n7:12 AM\nUsing Anthropic key (your AI)\n7:12 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:12 AM\nWhat should I call myself? → Skipped\n7:13 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:13 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:13 AM\nEk kachhua (tortoise) ke liye 3 achhe naam batao.\n7:13 AM\nfoo\nThat reply got cut off.\nTry again\n7:13 AM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "sentAt": 1793171648367,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "expect": "after two restarts the stored key still works with real Claude",
+      "firstReplyMs": 2017,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "15.\n\nKachhua ke naam:\n\nShelly\nMoti\nDhruv\n7:14 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 9114
+    },
+    {
+      "i": 27,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

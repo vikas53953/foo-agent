@@ -1,0 +1,55 @@
+{"t":"2026-10-28T07:08:18.018Z","journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","spec":"03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:08:23.292Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:08:24.318Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1023}
+{"t":"2026-10-28T07:08:25.125Z","i":1,"do":"resize","soft":true,"ok":true,"ms":807}
+{"t":"2026-10-28T07:08:25.184Z","shot":"01-L-1280.png"}
+{"t":"2026-10-28T07:08:25.184Z","i":2,"do":"shot","expect":"window at 1280x800","ok":true,"ms":59}
+{"t":"2026-10-28T07:08:25.279Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":94}
+{"t":"2026-10-28T07:08:25.378Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":98}
+{"t":"2026-10-28T07:08:25.451Z","i":5,"do":"shotEl","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-28T07:08:35.510Z","shot":"06-error-step6.png"}
+{"t":"2026-10-28T07:08:35.510Z","i":6,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10059}
+{"t":"2026-10-28T07:08:35.576Z","i":7,"do":"shotEl","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-28T07:08:35.638Z","i":8,"do":"shotEl","soft":true,"ok":true,"ms":62}
+{"t":"2026-10-28T07:08:35.701Z","i":9,"do":"shotEl","soft":true,"ok":true,"ms":63}
+{"t":"2026-10-28T07:08:45.759Z","shot":"11-error-step10.png"}
+{"t":"2026-10-28T07:08:45.759Z","i":10,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10058}
+{"t":"2026-10-28T07:08:55.823Z","shot":"13-error-step11.png"}
+{"t":"2026-10-28T07:08:55.824Z","i":11,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10065}
+{"t":"2026-10-28T07:09:05.885Z","shot":"15-error-step12.png"}
+{"t":"2026-10-28T07:09:05.885Z","i":12,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10061}
+{"t":"2026-10-28T07:09:15.962Z","shot":"17-error-step13.png"}
+{"t":"2026-10-28T07:09:15.963Z","i":13,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10077}
+{"t":"2026-10-28T07:09:26.028Z","shot":"19-error-step14.png"}
+{"t":"2026-10-28T07:09:26.028Z","i":14,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10065}
+{"t":"2026-10-28T07:09:26.094Z","i":15,"do":"shotEl","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-28T07:09:26.108Z","i":16,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-28T07:09:26.189Z","i":17,"do":"shotEl","soft":true,"ok":true,"ms":81}
+{"t":"2026-10-28T07:09:26.204Z","i":18,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-28T07:09:26.313Z","i":19,"do":"shotEl","soft":true,"ok":true,"ms":108}
+{"t":"2026-10-28T07:09:26.328Z","i":20,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-28T07:09:26.413Z","i":21,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-28T07:09:26.914Z","i":22,"do":"wait","expect":"attach menu","ok":true,"ms":501}
+{"t":"2026-10-28T07:09:26.982Z","shot":"23-comp-attach-menu.png"}
+{"t":"2026-10-28T07:09:26.986Z","i":23,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-28T07:09:27.797Z","i":24,"do":"resize","soft":true,"ok":true,"ms":811}
+{"t":"2026-10-28T07:09:27.850Z","shot":"24-M-1000.png"}
+{"t":"2026-10-28T07:09:27.850Z","i":25,"do":"shot","expect":"window at 1000x760","ok":true,"ms":53}
+{"t":"2026-10-28T07:09:28.659Z","i":26,"do":"resize","soft":true,"ok":true,"ms":809}
+{"t":"2026-10-28T07:09:28.704Z","shot":"25-S-760.png"}
+{"t":"2026-10-28T07:09:28.704Z","i":27,"do":"shot","expect":"window at 760x700","ok":true,"ms":44}
+{"t":"2026-10-28T07:09:29.510Z","i":28,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-28T07:09:29.557Z","shot":"26-XS-520.png"}
+{"t":"2026-10-28T07:09:29.557Z","i":29,"do":"shot","expect":"window at 520x640","ok":true,"ms":47}
+{"t":"2026-10-28T07:09:30.370Z","i":30,"do":"resize","soft":true,"ok":true,"ms":813}
+{"t":"2026-10-28T07:09:30.434Z","shot":"27-L-again.png"}
+{"t":"2026-10-28T07:09:30.434Z","i":31,"do":"shot","expect":"window at 1280x800","ok":true,"ms":64}
+{"t":"2026-10-28T07:09:30.550Z","i":32,"do":"send","sentAt":1793171370517,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-10-28T07:09:36.596Z","i":33,"do":"waitReply","expect":"AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later","firstReplyMs":506,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n7:09 AM","kit":[],"ms":6046}
+{"t":"2026-10-28T07:09:36.650Z","shot":"28-flights.png"}
+{"t":"2026-10-28T07:09:36.653Z","i":34,"do":"expectText","note":"AT-157 honest flights scope","soft":true,"text":"12 times 12 is 144.\n\n7:04 AM","ok":false,"ms":2}
+{"t":"2026-10-28T07:09:36.662Z","i":35,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T07:09:36.671Z","step":"recheck","i":34,"do":"expectText","late":true}
+{"t":"2026-10-28T07:09:36.769Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-28T07:09:36.779Z","step":"aiTurns","turns":0}
+{"t":"2026-10-28T07:09:36.781Z","step":"jobTrail","steps":0,"calls":0}

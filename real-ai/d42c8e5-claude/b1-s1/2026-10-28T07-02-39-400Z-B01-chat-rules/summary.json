@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-02-39-400Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793170964694,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20001
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1793170984842,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 3049,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying as easy as sending a message. You open any payment app, scan a code or type a phone number, enter your PIN, and the money moves from your bank account in seconds. No cash to carry, no change to count, no card machine needed.\n\nIt also works for everyone. A street vendor with a printed QR code can accept payments just like a big shop, and a student can split a bill with friends in a few taps. Because it connects directly to bank accounts, you do not need to top up a wallet first. Payments are free for most everyday use, which matters a lot when you are paying ₹20 for chai.\n\nTrust has helped too. Every payment needs your PIN, you get an instant confirmation, and the money goes straight between bank accounts. Over time, more shops, bills and apps have started accepting it, so using it has become the normal thing to do.\n\nThe three main reasons:\n\nSpeed and ease: Pay in seconds with a scan or a phone number, any time of day.\nLow or no cost: Free for most people and shops, so even tiny payments make sense.\nWorks everywhere: One system links all banks and apps, from street stalls to online bills.\n7:03 AM",
+      "kit": [],
+      "ms": 13674
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

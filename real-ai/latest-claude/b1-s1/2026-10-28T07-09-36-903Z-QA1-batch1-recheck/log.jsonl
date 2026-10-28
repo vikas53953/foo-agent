@@ -1,0 +1,75 @@
+{"t":"2026-10-28T07:09:36.904Z","journey":"QA1-batch1-recheck","title":"QA re-check with real Claude: Vikas's batch-1 bugs and QA-X-F26 to F32 on the shipped build","spec":"QA catalogue test/qa-explore/catalogue.ts (F26-F32); Vikas 26-27 Oct bug list; CR-0059, CR-0066, CR-0067, CR-0068","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:09:42.106Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:09:42.111Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":3}
+{"t":"2026-10-28T07:09:42.155Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T07:09:42.290Z","i":1,"do":"click","ok":true,"ms":135}
+{"t":"2026-10-28T07:09:42.305Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":15}
+{"t":"2026-10-28T07:09:42.396Z","shot":"02-finder.png"}
+{"t":"2026-10-28T07:10:02.399Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20003}
+{"t":"2026-10-28T07:10:02.454Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T07:10:02.547Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":93}
+{"t":"2026-10-28T07:10:02.550Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":2}
+{"t":"2026-10-28T07:10:02.626Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T07:10:02.635Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":9}
+{"t":"2026-10-28T07:10:02.728Z","i":7,"do":"click","ok":true,"ms":93}
+{"t":"2026-10-28T07:10:32.730Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","ok":true,"ms":30002}
+{"t":"2026-10-28T07:10:32.784Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T07:10:32.816Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":32}
+{"t":"2026-10-28T07:10:32.928Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":112}
+{"t":"2026-10-28T07:10:32.936Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":7}
+{"t":"2026-10-28T07:10:32.939Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T07:10:33.016Z","shot":"06-step2.png"}
+{"t":"2026-10-28T07:10:33.019Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n7:09 AM","ok":true,"ms":3}
+{"t":"2026-10-28T07:10:33.133Z","i":14,"do":"click","ok":true,"ms":114}
+{"t":"2026-10-28T07:10:43.136Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","ok":true,"ms":10003}
+{"t":"2026-10-28T07:10:43.189Z","shot":"07-first-chat.png"}
+{"t":"2026-10-28T07:10:43.267Z","i":16,"do":"send","sentAt":1793171443263,"sent":true,"before":0,"ok":true,"ms":78}
+{"t":"2026-10-28T07:10:52.921Z","i":17,"do":"waitReply","expect":"a reply; 👀 never shows while foo answers (Vikas 27 Oct, QA-X-F27)","firstReplyMs":2024,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Chai, always. ☕\n\n7:10 AM","kit":[],"ms":9653}
+{"t":"2026-10-28T07:10:52.972Z","shot":"08-q1-chat.png"}
+{"t":"2026-10-28T07:10:52.974Z","i":18,"do":"check","note":"QA (Vikas bug 3): jobs off, so no job filter chips","expect":"QA (Vikas bug 3): jobs off, so no job filter chips","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T07:10:53.018Z","shot":"09-q2-no-job-filters.png"}
+{"t":"2026-10-28T07:10:53.060Z","i":19,"do":"hover","ok":true,"ms":42}
+{"t":"2026-10-28T07:10:53.130Z","i":20,"do":"click","note":"QA (Vikas bug 1): Try again on the finished answer","ok":true,"ms":69}
+{"t":"2026-10-28T07:11:13.131Z","i":21,"do":"wait","ok":true,"ms":20001}
+{"t":"2026-10-28T07:11:13.138Z","i":22,"do":"expectText","expect":"Try again rewrites the answer in place and says Rewritten","text":"Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n7:09 AM\nUsing Anthropic key (your AI)\n7:09 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:10 AM\nWhat should I call myself? → Skipped\n7:10 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:10 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:10 AM\nhi foo, ek line mein batao: chai ya coffee?\n7:10 AM\nfoo\n\nChai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n7:10 AM","ok":true,"ms":5}
+{"t":"2026-10-28T07:11:13.197Z","shot":"10-q3-try-again.png"}
+{"t":"2026-10-28T07:11:13.273Z","i":23,"do":"send","sentAt":1793171473261,"sent":true,"before":0,"ok":true,"ms":76}
+{"t":"2026-10-28T07:11:20.908Z","i":24,"do":"waitReply","expect":"foo replies OK","firstReplyMs":1537,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"OK\n\n7:11 AM","kit":[],"ms":7634}
+{"t":"2026-10-28T07:11:20.955Z","shot":"11-q4-ok.png"}
+{"t":"2026-10-28T07:11:21.023Z","i":25,"do":"click","ok":true,"ms":68}
+{"t":"2026-10-28T07:11:21.100Z","i":26,"do":"click","ok":true,"ms":77}
+{"t":"2026-10-28T07:11:21.187Z","i":27,"do":"click","note":"QA (Vikas bug 5): confirm the delete","ok":true,"ms":87}
+{"t":"2026-10-28T07:11:22.690Z","i":28,"do":"wait","ok":true,"ms":1502}
+{"t":"2026-10-28T07:11:22.693Z","i":29,"do":"expectText","expect":"the message leaves the chat; no 'You deleted this message' line","text":"Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n7:09 AM\nUsing Anthropic key (your AI)\n7:09 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:10 AM\nWhat should I call myself? → Skipped\n7:10 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:10 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:10 AM\nhi foo, ek line mein batao: chai ya coffee?\n7:10 AM\nfoo\n\nChai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n7:10 AM\n\nOK\n\n7:11 AM","ok":true,"ms":3}
+{"t":"2026-10-28T07:11:22.737Z","shot":"12-q5-deleted.png"}
+{"t":"2026-10-28T07:11:23.611Z","i":30,"do":"pasteSend","expect":"QA-X-F26: a pasted blank line is sent once, exactly as pasted","inField":"gamma\n\n\ndelta. Please just reply OK.","ok":true,"ms":874}
+{"t":"2026-10-28T07:11:23.655Z","shot":"13-q6-paste-blank-line.png"}
+{"t":"2026-10-28T07:11:30.761Z","i":31,"do":"waitReply","expect":"foo replies","firstReplyMs":1024,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"OK\n\n7:11 AM","kit":[],"ms":7105}
+{"t":"2026-10-28T07:11:30.812Z","shot":"14-q6-reply.png"}
+{"t":"2026-10-28T07:11:30.862Z","i":32,"do":"paste","ok":true,"ms":50}
+{"t":"2026-10-28T07:11:30.907Z","i":33,"do":"paste","ok":true,"ms":45}
+{"t":"2026-10-28T07:11:31.908Z","i":34,"do":"wait","ok":true,"ms":1001}
+{"t":"2026-10-28T07:11:31.910Z","i":35,"do":"expectText","expect":"QA-X-F28: the key's mask lands after \"three \", never inside it (a made-up key, never sent)","text":"one\ntwo\n••••\nthree ","ok":false,"ms":2}
+{"t":"2026-10-28T07:11:31.955Z","shot":"15-q7-key-mask.png"}
+{"t":"2026-10-28T07:11:31.962Z","i":36,"do":"key","ok":true,"ms":7}
+{"t":"2026-10-28T07:11:31.966Z","i":37,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-28T07:11:31.975Z","i":38,"do":"key","ok":true,"ms":9}
+{"t":"2026-10-28T07:11:31.977Z","i":39,"do":"check","note":"field cleared; the made-up key is never sent","found":1,"ok":true,"ms":1}
+{"t":"2026-10-28T07:11:32.054Z","i":40,"do":"send","sentAt":1793171492046,"sent":true,"before":0,"ok":true,"ms":77}
+{"t":"2026-10-28T07:11:47.804Z","i":41,"do":"waitReply","expect":"QA-X-F32: foo's own fixed line that it can't do tasks yet","firstReplyMs":1525,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:11 AM","kit":[],"endState":true,"ms":15750}
+{"t":"2026-10-28T07:11:47.862Z","shot":"16-q8-job-off.png"}
+{"t":"2026-10-28T07:11:47.931Z","i":42,"do":"send","sentAt":1793171507918,"sent":true,"before":0,"ok":true,"ms":69}
+{"t":"2026-10-28T07:11:56.551Z","i":43,"do":"waitReply","expect":"QA-X-F29: exactly one bubble, foo can't remember yet; never 'Noted'","firstReplyMs":2550,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t remember things for you yet, so tell me again when it matters.\n\n7:11 AM","kit":[],"endState":true,"ms":8619}
+{"t":"2026-10-28T07:11:56.598Z","shot":"17-q9-memory-off.png"}
+{"t":"2026-10-28T07:11:56.666Z","i":44,"do":"send","sentAt":1793171516657,"sent":true,"before":0,"ok":true,"ms":68}
+{"t":"2026-10-28T07:11:59.004Z","i":45,"do":"waitFor","note":"QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)","expect":"QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)","ok":true,"ms":2338}
+{"t":"2026-10-28T07:11:59.070Z","shot":"18-q10-dark.png"}
+{"t":"2026-10-28T07:12:03.070Z","i":46,"do":"wait","ok":true,"ms":4000}
+{"t":"2026-10-28T07:12:03.144Z","i":47,"do":"send","sentAt":1793171523122,"sent":true,"before":0,"ok":true,"ms":73}
+{"t":"2026-10-28T07:12:14.343Z","i":48,"do":"waitReply","expect":"QA-X-F31: an honest no, shown once, never raw <say> tags","firstReplyMs":2023,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"No, I haven't booked anything. I can't do tasks yet, like booking, buying or sending things.\n\n7:12 AM","kit":[],"endState":true,"ms":11199}
+{"t":"2026-10-28T07:12:14.394Z","shot":"19-q11-no-tags.png"}
+{"t":"2026-10-28T07:12:14.401Z","i":49,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T07:12:14.404Z","step":"recheck","i":35,"do":"expectText","late":true}
+{"t":"2026-10-28T07:12:14.506Z","step":"appLog","lines":26,"dropped":0}
+{"t":"2026-10-28T07:12:14.517Z","step":"aiTurns","turns":10}
+{"t":"2026-10-28T07:12:14.519Z","step":"jobTrail","steps":0,"calls":0}
