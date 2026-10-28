@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying now takes a few seconds and a phone, with no cash, no card and no waiting. Launched in 2016, it links straight to your bank account, so money moves between accounts instantly, any day and any hour, even on holidays.\n\nThree reasons stand out:\n\nIt's quick and simple. Scan a QR code or type a mobile number, enter your PIN, done. There are no account numbers or bank details to copy.\nIt's free for most people. Sending money to friends and paying small shops usually costs nothing, while cards and wallets often carry fees.\nIt works everywhere. From big shops to chai stalls and vegetable carts, a printed QR code is all a seller needs. No card machine is required.\n\nTrust matters too. Your PIN protects every payment, and you get an instant message for each one. Many people also like that one app can pay bills, split costs with friends and send money across different banks. Once the sellers in your neighbourhood accept it, going back to cash feels slow.\n\n4:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n4:25 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for popular phones under ₹20,000\nKept 3 phones that fit best value for price, camera, battery\nComparing price, screen, battery, camera, memory\nWatch live\nStop\n6 min\n4:25 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n4:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's an easy-paced 3 days in Jaipur for your parents, with a slow start each morning and a rest after lunch.\n\nDay 1: Forts and old city. Amer Fort early, before the crowds (a jeep up saves the steps). Stop for photos at Jal Mahal. In the evening, Hawa Mahal and a gentle walk through Johari Bazaar.\nDay 2: Palaces. City Palace and Jantar Mantar in the morning. After a rest, visit Albert Hall Museum when the light is soft, then Birla Mandir at dusk.\nDay 3: Relaxed day. Patrika Gate for photos, then shopping at Bapu Bazaar for bangles, textiles and sweets. Finish with a Rajasthani thali dinner.\n\nLate October to February is the most comfortable time to go, since afternoons are warm but not harsh. Want me to check hotels or trains once you pick dates?\n\n4:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n4:28 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:29 AM\n4:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:29 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n4:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:29 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooking for well-rated Italian restaurants in\nCheck restaurant booking sites for Sat 31 Oct\nKeep 3 Italian places that fit good ratings and a free table for 2\nWait for you to pick one\nWatch live\nStop\n2 min\n4:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:29 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I look for Italian places in?\n1\nDelhi NCR\nBEST FIT\n2\nMumbai\n3\nBengaluru\n4\nAnother city\nType the name in chat\nSomething else…\nSkip\n4:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:29 AM"
+  }
+]

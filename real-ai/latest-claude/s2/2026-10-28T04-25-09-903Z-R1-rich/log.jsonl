@@ -1,0 +1,17 @@
+{"t":"2026-10-28T04:25:09.904Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T04:25:15.393Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:25:15.517Z","i":0,"do":"send","sentAt":1793161515482,"sent":true,"before":0,"ok":true,"ms":121}
+{"t":"2026-10-28T04:25:29.242Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7612,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for popular phones under ₹20,000\nKeep 3 phones that fit best value for price, camera, battery\nCompare price, screen, battery, camera, memory\nWatch live\nStop\nunder 1 min\n4:25 AM","kit":[],"ms":13725}
+{"t":"2026-10-28T04:25:29.315Z","shot":"01-table.png"}
+{"t":"2026-10-28T04:25:29.317Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T04:27:59.314Z","i":3,"do":"wait","ok":true,"ms":149997}
+{"t":"2026-10-28T04:27:59.380Z","shot":"02-table-after-go.png"}
+{"t":"2026-10-28T04:27:59.384Z","i":4,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-28T04:27:59.398Z","i":5,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-28T04:27:59.482Z","i":6,"do":"send","sentAt":1793161679471,"sent":true,"before":0,"ok":true,"ms":83}
+{"t":"2026-10-28T04:28:26.699Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":18134,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's an easy-paced 3 days in Jaipur for your parents, with a slow start each morning and a rest after lunch.\n\nDay 1: Forts and old city. Amer Fort early, before the crowds (a jeep up saves the steps). Stop for photos at Jal Mahal. In the evening, Hawa Mahal and a gentle walk through Johari Bazaar.\nDay 2: Palaces. City Palace and Jantar Mantar in the morning. After a rest, visit Albert Hall Museum when the light is soft, then Birla Mandir at dusk.\nDay 3: Relaxed day. Patrika Gate for photos, then shopping at Bapu Bazaar for bangles, textiles and sweets. Finish with a Rajasthani thali dinner.\n\nLate October to February is the most comfortable time to go, since afternoons are warm but not harsh. Want me to check hotels or trains once you pick dates?\n\n4:28 AM","kit":[],"ms":27217}
+{"t":"2026-10-28T04:28:26.774Z","shot":"03-trip.png"}
+{"t":"2026-10-28T04:28:26.782Z","i":8,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T04:28:27.091Z","step":"appLog","lines":34,"dropped":0}
+{"t":"2026-10-28T04:28:27.105Z","step":"aiTurns","turns":28}
+{"t":"2026-10-28T04:28:27.109Z","step":"jobTrail","steps":4,"calls":22}

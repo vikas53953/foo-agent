@@ -1,0 +1,21 @@
+{"t":"2026-10-28T04:44:28.769Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T04:44:34.288Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:44:35.344Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1053}
+{"t":"2026-10-28T04:44:35.502Z","i":1,"do":"send","sentAt":1793162675443,"sent":true,"before":0,"ok":true,"ms":158}
+{"t":"2026-10-28T04:44:37.004Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1501}
+{"t":"2026-10-28T04:44:37.077Z","shot":"01-thinking.png"}
+{"t":"2026-10-28T04:44:43.122Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":508,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Fold this into which job?\n1\nLooking for well-rated Italian…\nBEST FIT\n2\nLooking for morning departures before…\nSomething else…\nSkip\n4:44 AM","kit":[],"ms":6045}
+{"t":"2026-10-28T04:44:43.182Z","shot":"02-poem.png"}
+{"t":"2026-10-28T04:44:43.254Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-28T04:44:43.300Z","i":5,"do":"key","ok":true,"ms":46}
+{"t":"2026-10-28T04:44:43.395Z","i":6,"do":"click","soft":true,"ok":true,"ms":95}
+{"t":"2026-10-28T04:44:43.478Z","i":7,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-28T04:44:44.079Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":601}
+{"t":"2026-10-28T04:44:44.143Z","shot":"04-face-motion.png"}
+{"t":"2026-10-28T04:44:44.187Z","i":9,"do":"key","ok":true,"ms":44}
+{"t":"2026-10-28T04:45:07.255Z","shot":"05-error-step10.png"}
+{"t":"2026-10-28T04:45:07.255Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23068}
+{"t":"2026-10-28T04:45:07.267Z","i":11,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-28T04:45:07.564Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T04:45:07.575Z","step":"aiTurns","turns":3}
+{"t":"2026-10-28T04:45:07.578Z","step":"jobTrail","steps":0,"calls":3}
