@@ -57,7 +57,7 @@ export const REASK_MEMORY_LINE =
   'Your first answer for this message was "memory", but it does not ask to remember, note or forget anything. Decide again from the message itself: a change to how foo looks or works is "setting"; a question or small talk is "reply".';
 /** CR-0069: the second look at a `reply` to a message that asks for a task while jobs are off (QA-X-F32). */
 export const REASK_JOB_LINE =
-  'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though this build cannot do tasks yet; when it only asks a question, such as whether you already did one, or asks foo for words (a joke, an answer, an explanation, a draft to read here), "reply".';
+  'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though foo cannot do tasks yet; when it only asks a question, such as whether you already did one, or asks foo for words (a joke, an answer, an explanation, a draft to read here), "reply".';
 
 /** CR-0069 item 9: the retried turn after a `reply` with an empty <say> (CR-0041; real Claude, run 40643760745). */
 export const REASK_EMPTY_LINE =

@@ -45,6 +45,8 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
    40643760745, real Claude answered "Make a table comparing 3 budget phones…" (R1) and "aur tumhara naam? sirf naam
    batao" (QA2) with `<say></say>` and kind `reply` twice in a row (the tech log's `chat.reply_empty.shape` showed
    `say_empty_before_act`), so foo said "I didn't get that". The retry is still the only one, and nothing new is shown.
+   The line goes only after an empty `<say>`, not after one whose every sentence the filters dropped, and only to that
+   retry: a later Try again on the same message is a new ask without it.
 
 ## (c) Evidence
 

@@ -282,6 +282,8 @@ export class ChatLane {
   private violationRetried = new Set<string>();
   /** CR-0041: user messages whose intake turn already ran once more after an empty answer. */
   private emptyRetried = new Set<string>();
+  /** CR-0069 item 9: messages whose CR-0041 retry follows an empty say (not a filtered one); read once by the retry's intake. */
+  private emptySay = new Set<string>();
   /** CR-0069: user messages whose intake already had its one second look at the kind. */
   private looked = new Set<string>();
   /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
@@ -572,7 +574,8 @@ export class ChatLane {
         ...(oldPlan ? { oldPlan } : {}),
         ...(answers?.length ? { answers } : {}),
         // CR-0069 item 9: the CR-0041 retry after a reply with an empty say names it (run 40643760745: the same empty twice).
-        ...(this.emptyRetried.has(messageId) ? { reask: 'empty' as const } : {}),
+        // Read once, and never by a rewrite (Try again later on the same message is a new ask).
+        ...(this.emptySay.delete(messageId) && !rewrite ? { reask: 'empty' as const } : {}),
       };
       built = this.d.protocol.buildIntake(intakeInput);
     } catch {
@@ -916,6 +919,7 @@ export class ChatLane {
         if (!this.emptyRetried.has(messageId)) {
           // CR-0041 (08-4 §25.5 item 6, F-092 as amended): nothing passed the filters; the turn runs once more, nothing shown.
           this.emptyRetried.add(messageId);
+          if (!parsed.say.trim()) this.emptySay.add(messageId);
           retryEmpty = true;
         } else {
           await this.emptyReply(chatId, messageId, helper, who, providerNote);

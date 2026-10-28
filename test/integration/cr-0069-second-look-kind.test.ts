@@ -39,6 +39,7 @@ async function run(
   script: {
     match: { purpose: string; promptIncludes?: string };
     reply?: string;
+    error?: string;
     once?: boolean;
     chunks?: { text: string; delayMs?: number }[];
   }[],
@@ -223,6 +224,7 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     // Real Claude on f1a6d09 answered "did you book the table?" with "this build only reads and checks things. I can find
     // cafes…": jargon, and an offer batch 1 cannot keep.
     const x = await run([{ match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'No, I haven’t.') }], 'Did you book my table?');
+    expect(intakes(x).length).toBeGreaterThan(0);
     expect(asked(x, JOBS_OFF_LINE)).toBe(intakes(x).length);
     expect(JOBS_OFF_LINE).not.toMatch(/^This build/);
     expect(JOBS_OFF_LINE).toContain('never mention a build or a version');
@@ -245,6 +247,38 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(String(intakes(x)[0]!.system)).not.toContain(REASK_EMPTY_LINE);
     expect(fooTexts(x)).toHaveLength(1);
     expect(fooTexts(x)[0]).toContain('₹15,999');
+  });
+
+  it('a reply whose every sentence was dropped is run again without the empty-say line (review on CR-0069 item 9)', async () => {
+    // "webhook" is a banned word with no plain word: the sentence waits for a rewrite turn, which fails, so it is dropped.
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'The webhook failed.'), once: true },
+        { match: { purpose: 'rewrite' }, error: 'AI_TIMEOUT' },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'All good now.') },
+      ],
+      'Is it working?',
+    );
+    expect(intakes(x)).toHaveLength(2);
+    expect(asked(x, REASK_EMPTY_LINE)).toBe(0);
+  });
+
+  it('Try again after an empty-say retry is a new ask, without the empty-say line (review on CR-0069 item 9)', async () => {
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }), once: true },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'First words.'), once: true },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Second words.') },
+      ],
+      'Tell me something',
+    );
+    const first = x.db.prepare("SELECT id FROM messages WHERE author_kind = 'foo' AND kind = 'text'").get() as { id: string };
+    x.send('reply.rewrite', { messageId: first.id });
+    await x.settle();
+    expect(intakes(x)).toHaveLength(3);
+    expect(String(intakes(x)[1]!.system)).toContain(REASK_EMPTY_LINE);
+    expect(String(intakes(x)[2]!.system)).not.toContain(REASK_EMPTY_LINE);
+    expect(fooTexts(x)).toEqual(['Second words.']);
   });
 
   it('a memory answer on a later run of the same message still never gets the memory line (review on CR-0069)', async () => {

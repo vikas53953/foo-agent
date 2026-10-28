@@ -12,6 +12,8 @@ describe('envelopeShape · the tag order of an empty-say reply', () => {
     [ACT, 'act_only'],
     ['| a | b |', 'no_tags'],
     ['<say>| a | b |</say>', 'say_no_act'],
+    [`| a | b |\n${ACT}`, 'act_with_untagged_words'],
+    ['<act>{"decision":{"kind":"reply"},<say>| a | b |</say>"usedMemoryIds":[]}</act>', 'say_inside_act'],
   ])('%j is %s', (text, shape) => {
     expect(envelopeShape(text)).toBe(shape);
   });
