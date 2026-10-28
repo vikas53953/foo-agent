@@ -1,0 +1,64 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-30-41-891Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793172646877,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 7081,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for well-reviewed Italian…\n1\nLook for well-reviewed Italian restaurants in\n2\nCheck restaurant booking sites\n3\nLook for tables for 2 on Sat 31 Oct, 8:00 PM\n4\nKeep 3 Italian places with a free table that fit best rated first\n5\nWait for you to pick one\nAbout 4 minutes\nGo\nChange plan\n7:30 AM",
+      "kit": [],
+      "ms": 13105
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180016
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "soft": true,
+      "found": 3,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

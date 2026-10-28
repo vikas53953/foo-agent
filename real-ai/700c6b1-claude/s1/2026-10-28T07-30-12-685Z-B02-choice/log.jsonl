@@ -1,0 +1,15 @@
+{"t":"2026-10-28T07:30:12.685Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:30:17.589Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:30:17.688Z","i":0,"do":"send","sentAt":1793172617655,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-28T07:30:28.849Z","i":1,"do":"waitReply","firstReplyMs":5110,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What will you mostly use the running shoes for?\n1\nRoad running\nBEST FIT\nPavements, parks, daily jogs\n2\nTrail running\nMud, grass, uneven paths\n3\nGym or treadmill\nIndoor workouts\n4\nWalking and light jogs\nCasual, everyday comfort\nSomething else…\nSkip\n7:30 AM","kit":[],"ms":11161}
+{"t":"2026-10-28T07:30:28.902Z","shot":"01-choice.png"}
+{"t":"2026-10-28T07:30:28.904Z","i":2,"do":"check","found":1,"ok":true,"ms":1}
+{"t":"2026-10-28T07:30:28.905Z","i":3,"do":"check","found":4,"ok":true,"ms":1}
+{"t":"2026-10-28T07:30:28.908Z","i":4,"do":"text","soft":true,"text":"What will you mostly use the running shoes for?\n1\nRoad running\nBEST FIT\nPavements, parks, daily jogs\n2\nTrail running\nMud, grass, uneven paths\n3\nGym or treadmill\nIndoor workouts\n4\nWalking and light jogs\nCasual, everyday comfort\nSomething else…\nSkip\n7:30 AM","ok":true,"ms":2}
+{"t":"2026-10-28T07:30:28.968Z","i":5,"do":"send","sentAt":1793172628950,"sent":true,"before":0,"ok":true,"ms":60}
+{"t":"2026-10-28T07:30:41.613Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","firstReplyMs":6584,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For trail running under ₹5,000, what matters most?\n1\nStrong grip\nBEST FIT\nMud, loose dirt, wet rocks\n2\nSoft cushioning\nComfort on long runs\n3\nLight weight\nFaster, more nimble feel\n4\nWater resistance\nWet trails and puddles\nSomething else…\nSkip\n7:30 AM","kit":[],"ms":12645}
+{"t":"2026-10-28T07:30:41.661Z","shot":"02-typed-2.png"}
+{"t":"2026-10-28T07:30:41.667Z","i":7,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-28T07:30:41.788Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-28T07:30:41.796Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T07:30:41.797Z","step":"jobTrail","steps":0,"calls":0}

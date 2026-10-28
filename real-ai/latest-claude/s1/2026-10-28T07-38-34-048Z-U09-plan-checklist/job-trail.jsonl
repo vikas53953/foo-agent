@@ -1,0 +1,10 @@
+{"kind":"step","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","idx":0,"phrase_key":"look_web","state":"done","attempts":0,"route":"browser","started_at":1793173133398,"finished_at":1793173176535}
+{"kind":"step","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","idx":1,"phrase_key":"look_for","state":"done","attempts":0,"route":"browser","started_at":1793173176535,"finished_at":1793173180615}
+{"kind":"step","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","idx":2,"phrase_key":"shortlist","state":"done","attempts":0,"route":"browser","started_at":1793173180615,"finished_at":1793173184620}
+{"kind":"step","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","idx":3,"phrase_key":"compare","state":"done","attempts":0,"route":"browser","started_at":1793173184620,"finished_at":1793173191552}
+{"kind":"call","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793173138487,"finished_at":1793173140502}
+{"kind":"call","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","step_idx":0,"tool":"web.fetch","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793173144819,"finished_at":1793173148422}
+{"kind":"call","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793173154403,"finished_at":1793173156204}
+{"kind":"call","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","step_idx":0,"tool":"web.fetch","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793173159726,"finished_at":1793173159730}
+{"kind":"call","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793173165727,"finished_at":1793173167251}
+{"kind":"call","job_id":"j_01a18172-7ff7-7a13-a9e3-5741f3ab84a2","step_idx":0,"tool":"web.fetch","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793173170698,"finished_at":1793173172428}

@@ -1,0 +1,14 @@
+{"t":"2026-10-28T07:30:41.891Z","journey":"B06-booking-options","title":"Restaurant options without booking","spec":"AT-036, J9, AT-108, AT-310, AT-311","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:30:46.823Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:30:46.900Z","i":0,"do":"send","sentAt":1793172646877,"sent":true,"before":0,"ok":true,"ms":75}
+{"t":"2026-10-28T07:31:00.005Z","i":1,"do":"waitReply","firstReplyMs":7081,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for well-reviewed Italian…\n1\nLook for well-reviewed Italian restaurants in\n2\nCheck restaurant booking sites\n3\nLook for tables for 2 on Sat 31 Oct, 8:00 PM\n4\nKeep 3 Italian places with a free table that fit best rated first\n5\nWait for you to pick one\nAbout 4 minutes\nGo\nChange plan\n7:30 AM","kit":[],"ms":13105}
+{"t":"2026-10-28T07:31:00.058Z","shot":"01-italian.png"}
+{"t":"2026-10-28T07:31:00.092Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":33}
+{"t":"2026-10-28T07:34:00.109Z","i":3,"do":"wait","expect":"options shown; no booking Approval card until I say book","ok":true,"ms":180016}
+{"t":"2026-10-28T07:34:00.167Z","shot":"02-italian-later.png"}
+{"t":"2026-10-28T07:34:00.169Z","i":4,"do":"check","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T07:34:00.170Z","i":5,"do":"check","soft":true,"found":3,"ok":true,"ms":1}
+{"t":"2026-10-28T07:34:00.182Z","i":6,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-28T07:34:00.308Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-28T07:34:00.316Z","step":"aiTurns","turns":4}
+{"t":"2026-10-28T07:34:00.318Z","step":"jobTrail","steps":5,"calls":1}

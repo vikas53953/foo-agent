@@ -1,0 +1,14 @@
+{"t":"2026-10-28T07:43:45.727Z","journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","spec":"09 §9.2 close to tray, 06 dialogs, 10-2 §C.5 Dialogs / §C.6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:43:50.643Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:43:51.676Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1031}
+{"t":"2026-10-28T07:43:51.758Z","i":1,"do":"send","sentAt":1793173431738,"sent":true,"before":0,"ok":true,"ms":81}
+{"t":"2026-10-28T07:43:55.759Z","i":2,"do":"wait","ok":true,"ms":4001}
+{"t":"2026-10-28T07:43:55.762Z","i":3,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-28T07:43:57.276Z","i":4,"do":"wait","expect":"first-close dialog: foo keeps running in the tray","ok":true,"ms":1514}
+{"t":"2026-10-28T07:43:57.336Z","shot":"01-first-close.png"}
+{"t":"2026-10-28T07:44:08.470Z","i":5,"do":"waitReply","expect":"job still finishes after the dialog","firstReplyMs":5053,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nKeep 3 India news headlines that fit top stories today, Wed 28 Oct\nWork on it\nWatch live\nStop\nunder 1 min\n7:44 AM","kit":[],"ms":11134}
+{"t":"2026-10-28T07:44:08.532Z","shot":"02-news.png"}
+{"t":"2026-10-28T07:44:08.542Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-28T07:44:08.820Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-28T07:44:08.828Z","step":"aiTurns","turns":3}
+{"t":"2026-10-28T07:44:08.830Z","step":"jobTrail","steps":3,"calls":1}

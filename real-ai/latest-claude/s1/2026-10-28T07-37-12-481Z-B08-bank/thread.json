@@ -1,0 +1,102 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For trail running under ₹5,000, what matters most?\n1\nStrong grip\nBEST FIT\nMud, loose dirt, wet rocks\n2\nSoft cushioning\nComfort on long runs\n3\nLight weight\nFaster, more nimble feel\n4\nWater resistance\nWet trails and puddles\nSomething else…\nSkip\n7:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n7:30 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:31 AM\n7:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:30 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-reviewed Italian…\nlive checklist\nLooking for well-reviewed Italian restaurants in\nCheck restaurant booking sites\nLook for tables for 2 on Sat 31 Oct, 8:00 PM\nKeep 3 Italian places with a free table that fit best rated first\nWait for you to pick one\nWatch live\nStop\n7 min\n7:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:31 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which city should I look for Italian restaurants in?\n1\nMumbai\nBEST FIT\n2\nDelhi NCR\n3\nBengaluru\n4\nAnother city\nType the name in your reply\nSomething else…\nSkip\n7:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n7:34 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum in New Delhi (Janpath, New Delhi - 110011) is open today, Wed 28 Oct, 10:00 AM to 6:00 PM, according to its official site.\n\nOpening hours\n\nTue to Fri: 10:00 AM to 6:00 PM\nSat and Sun: 10:00 AM to 8:00 PM\nClosed on Mondays and national holidays\n\nEntry fee\n\nAdults: ₹20\nForeign nationals: ₹500\nStudents up to class 12: free, with an I-card\n\nThe site lists online booking at zoonga.com/national-museum. I have not booked anything. The page may not be up to date, so check the holiday calendar on the site before you go.\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n7:37 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:37 AM\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  }
+]
