@@ -240,3 +240,55 @@ test('QA-X-F27 · a plain chat message never shows 👀 while foo is slow to ans
   expect(seen + (await eyesOnMine()), 'seconds with 👀 on the message, while waiting or after the answer').toBe(0);
   await expect(w.page.getByTestId(TID.bubbleMe).last().getByTestId(TID.bubbleTick)).toBeVisible();
 });
+
+test('QA-X-F28 · after a multi-line paste, a pasted key is masked where it was pasted, not inside earlier words (04 §22.4)', async () => {
+  w = await open([], { firstRun: true });
+  await finishSetup(w.page);
+  const field = w.page.getByTestId(TID.composerField);
+  await w.app.evaluate(({ clipboard }) => clipboard.writeText('one\ntwo\n\nthree '));
+  await field.click();
+  await w.page.keyboard.press('Control+V');
+  await w.app.evaluate(({ clipboard }) => clipboard.writeText('sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJ'));
+  await w.page.keyboard.press('Control+V');
+  // The mask follows "three ", never splits it (main 20c8ba0 showed "thr••••ee").
+  await expect.poll(() => field.innerText(), { message: 'mask lands after "three ", not inside it' }).toMatch(/three\s*•/);
+});
+
+test('QA-X-F29 · with memory off, "remember that…" gets only the can’t-remember line, never "Noted:" before it (real AI 20c8ba0)', async () => {
+  // Real Claude said "Noted: Vegetarian." and then foo added "I can’t remember things for you yet…": the two contradict.
+  w = await open([say('QAX-F29', 'Noted: Vegetarian.', { kind: 'memory', op: 'remember', text: 'Vegetarian' })], { firstRun: true });
+  await finishSetup(w.page);
+  await w.page.getByTestId(TID.composerField).fill('QAX-F29 remember that I am vegetarian');
+  await w.page.keyboard.press('Enter');
+  await expect(lastFoo(w.page)).toContainText('can’t remember things', { timeout: 20_000 });
+  const answers = await w.page.evaluate(() => {
+    const mine = [...document.querySelectorAll('[data-testid="bubble-me"]')].at(-1)!;
+    return [...document.querySelectorAll('[data-testid="bubble-foo"]')]
+      .filter((b) => mine.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)
+      .map((b) => (b as HTMLElement).innerText.split('\n')[0]);
+  });
+  expect(answers, 'foo’s bubbles after the message: one honest line, no "Noted:"').toEqual([
+    expect.stringContaining('can’t remember things'),
+  ]);
+});
+
+test('QA-X-F31 · a reply that also carries a <say> block shows the answer once, never the raw tags (real AI 2467a76)', async () => {
+  // Real Claude wrote the answer as plain text and again inside <say>…</say>; the bubble showed both, tags included.
+  const text = 'Nahi, maine cab book nahi ki.';
+  w = await open(
+    [
+      {
+        match: { purpose: 'intake', promptIncludes: 'QAX-F31' },
+        reply: `${text}\n\n<say>${text}</say>\n<act>${JSON.stringify({ decision: { kind: 'reply' }, usedMemoryIds: [] })}</act>`,
+      },
+    ],
+    { firstRun: true },
+  );
+  await finishSetup(w.page);
+  await w.page.getByTestId(TID.composerField).fill('QAX-F31 did you book the cab?');
+  await w.page.keyboard.press('Enter');
+  await expect(lastFoo(w.page)).toContainText(text, { timeout: 20_000 });
+  const shown = await lastFoo(w.page).innerText();
+  expect(shown, 'no raw <say> tags in the bubble').not.toMatch(/<\/?say>/);
+  expect(shown.split(text).length - 1, 'the answer shows once').toBe(1);
+});

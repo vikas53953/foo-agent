@@ -125,6 +125,51 @@ describe('m3 ReleaseGate', () => {
     expect(gate.releasedText).toBe('Hello there. More');
   });
 
+  // CR-0068 (QA-X-F31): real Claude wrote the answer, then the same answer in a <say> block.
+  const ANSWER = 'Nahi, maine cab book nahi ki.';
+  const LATE = `${ANSWER}\n\n<say>${ANSWER}</say>\n<act>{"decision":{"kind":"reply"},"usedMemoryIds":[]}</act>`;
+
+  it('untagged text then a <say> block, whole: the block is the say, shown once, no tags', async () => {
+    const { out, gate } = setup();
+    gate.feed(LATE);
+    await gate.done;
+    expect(out.map((o) => [o.text, o.mode])).toEqual([[ANSWER, 'whole']]);
+  });
+
+  it('untagged text then a <say> block, streamed in small pieces: the say is the block, shown once, no tags', async () => {
+    const { clock, gate } = setup();
+    for (let i = 0; i < LATE.length; i += 3) gate.feed(LATE.slice(i, i + 3));
+    clock.advance(1_500);
+    gate.end();
+    await gate.done;
+    expect(gate.releasedText).toBe(ANSWER);
+  });
+
+  it('untagged sentences already out, then the same answer in a <say> block: shown once, never the tags', async () => {
+    const { clock, out, gate } = setup();
+    gate.feed(`${ANSWER} `);
+    clock.advance(1_500);
+    expect(out.map((o) => o.text)).toEqual([`${ANSWER} `]);
+    gate.feed('\n\n<sa');
+    expect(gate.releasedText).toBe(`${ANSWER} `);
+    gate.feed(`y>${ANSWER}</say>\n<act>{}</act>`);
+    await gate.done;
+    expect(gate.releasedText.trim()).toBe(ANSWER);
+    expect(gate.releasedText).not.toMatch(/<\/?say>|<sa/);
+  });
+
+  it('a preamble already out, then the answer in a <say> block: the answer still shows after it, without the tags', async () => {
+    // Review on #168: the first token comes after the 1.5 s hold and "\n\n" arrives on its own, so the preamble is out first.
+    const { clock, gate } = setup();
+    clock.advance(1_500);
+    gate.feed('Let me check. ');
+    gate.feed('\n\n');
+    gate.feed('<say>Let me check. No, I cannot book cabs yet.\nSuggestions: What can you do?</say>');
+    gate.feed('<act>{}</act>');
+    await gate.done;
+    expect(gate.releasedText.replace(/\s+/g, ' ').trim()).toBe('Let me check. No, I cannot book cabs yet.');
+  });
+
   it('end() closes an unclosed say; nothing is released for an empty say', async () => {
     const a = setup();
     a.gate.feed('<say>Half a reply');

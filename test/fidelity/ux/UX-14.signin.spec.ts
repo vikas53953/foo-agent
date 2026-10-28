@@ -27,7 +27,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test';
 import { t } from '../../../src/shared/copy/t';
 import { TID } from '../../../src/shared/testids';
 import type { FakeLine } from '../../e2e/fakeAi';
-import { act, done, fooSaid, laneRun, signinCard, tool, type LaneRun } from '../../e2e/m9-lanes';
+import { act, checklistUp, done, fooSaid, laneRun, signinCard, tool, type LaneRun } from '../../e2e/m9-lanes';
 import { byTid, captureUx, quoted, rest, setTheme, settle, step, THEMES } from '../capture';
 
 /** The walkthrough types straight apostrophes; the copy file has the typographic one. */
@@ -134,6 +134,7 @@ test('UX-14 · Sign in here (M9): steps UX-14-01, UX-14-05, UX-14-06 and UX-14-0
         t('cards.signin.button.take_over'),
         t('cards.signin.button.skip'),
       ]);
+      await checklistUp(run);
       await expect(checklist(page)).toContainText(t('cards.checklist.wait_signin.running'));
       // f: the job moves to "needs you"; the ask's badge is ⏳.
       expect(s.f).toContain('needs you');

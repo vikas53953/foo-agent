@@ -843,8 +843,11 @@ export function Composer({ chat }: { chat: ChatRow }) {
       const el = field.current;
       if (!el || !mention) return;
       const caret = caretOffset(el);
-      const [a, rest] = splitAt(segsRef.current, mention.at);
-      const [, b] = splitAt(rest, caret - mention.at);
+      // The "@query" ends at the caret. Counted back from it, not from `mention.at`: textBeforeCaret counts a mention as one
+      // character and a line block as none, so after a multi-line paste or a first mention its offset is not the field's.
+      const at = caret - mention.query.length - 1;
+      const [a, rest] = splitAt(segsRef.current, at);
+      const [, b] = splitAt(rest, caret - at);
       const head: Segment[] = [...a, { kind: 'mention', helperId: h.id, name: h.name }, { kind: 'text', text: ' ' }];
       writeField(tidy([...head, ...b]), checkText(tidy(head)).length);
       setMention(null);

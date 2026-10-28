@@ -35,6 +35,19 @@ describe('CR-0054 · feature switches', () => {
     expect(count(h, 'memory_index')).toBe(0);
   });
 
+  it('memory off: words the AI already showed ("Noted: Vegetarian.") give way to the memory line in one bubble (CR-0067)', async () => {
+    // QA-X-F29 (real-AI run on 20c8ba0): "Noted: Vegetarian." and then "I can't remember things…", two bubbles that disagree.
+    const act = `<act>${JSON.stringify({ decision: { kind: 'memory', op: 'remember', text: 'Vegetarian' }, usedMemoryIds: [] })}</act>`;
+    h = jobHarness({
+      script: [{ match: { purpose: 'intake' }, chunks: [{ text: '<say>Noted: Vegetarian.</say>\n' }, { text: act, delayMs: 5_000 }] }],
+      features: BATCH_1,
+    });
+    h.userSays('remember that I am vegetarian');
+    await h.settle();
+    expect(fooTexts(h)).toEqual([t('thread.feature_off.memory')]);
+    expect(count(h, 'memory_index')).toBe(0);
+  });
+
   it('jobs off: "Book a table for 2 tonight" answered with kind ask gets the jobs line and no Choice card', async () => {
     // B1-batch1 on 1d498c0: the real AI asked "Kaunsa area?" on a Choice card instead of planning the job.
     const ask = `<say></say>\n<act>${JSON.stringify({ decision: { kind: 'ask', card: { question: 'Which area?', options: [{ label: 'Connaught Place' }, { label: 'Khan Market' }] } }, usedMemoryIds: [] })}</act>`;

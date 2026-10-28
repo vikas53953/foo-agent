@@ -15,6 +15,7 @@ qa-evidence/*/fidelity.json
 !.claude/skills/
 !.claude/agents/
 qa-evidence/verify/
+qa-evidence/cold-open/
 
 # M8: the real Google OAuth client is owner-provided and never committed (public repo)
 resources/google-oauth.json

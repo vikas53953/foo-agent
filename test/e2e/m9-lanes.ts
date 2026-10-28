@@ -46,21 +46,50 @@ export interface LaneRun {
   until(cond: () => Promise<boolean>, what: string, steps?: number): Promise<void>;
   /** foo's own browser, as the person sees it, and the job's page on `host`. */
   person(host: string): Promise<Page>;
+  /** The fake AI's turns since the warm-up job ended (all of them without `warm`). */
   turns(): { purpose: string; prompt: string }[];
+  /** With `warm`: ms from the warm-up ask to the site seeing foo's browser's first request (unset when it never arrived). */
+  coldOpenMs?: number;
   close(): Promise<void>;
 }
 
-export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise<LaneRun> {
+/** The warm-up job (laneRun): its own intake and two steps. They are the script's first lines and each is used once, so the
+ * warm-up job's steps (the first steps of the run) take them and the test's job gets its own. */
+const WARM_ASK = 'open the warm-up page';
+const WARM_TITLE = 'Warm-up page';
+const warmLines = (sites: LaneSites): FakeLine[] => [
+  { match: { purpose: 'verify' }, reply: 'ready', once: false },
+  {
+    match: { purpose: 'intake', promptIncludes: WARM_ASK },
+    reply: act({
+      kind: 'job',
+      title: WARM_TITLE,
+      plan: [{ phraseKey: 'check_site', slots: { site: 'the site' }, route: 'browser' }],
+      estimate: { minutes: 1 },
+      routeHint: ['browser'],
+      needsApps: [],
+    }),
+  },
+  tool('browser.open', { url: sites.signin('/warm') }),
+  done('Warmed up.'),
+];
+/** The 1-based script lines of the warm-up job's two steps. */
+const WARM_STEPS = [3, 4];
+
+/**
+ * `warm` (default): before the test's ask, a warm-up job in the Money chat opens one page in foo's browser. Each run starts a
+ * fresh browser profile, and on windows-latest its first page has taken longer than browser.open's 15 s (08-2 §8.3.5), so
+ * the test's own open failed with SITE_TIMEOUT and the next step met a blank page ("this site wants you to sign in",
+ * UX-14-01; UX-14-09). `coldOpenMs` is that first page's time, from the ask to the site seeing the request. The cold time
+ * itself is measured, never hidden, by m9-cold-open.spec.ts.
+ */
+export async function laneRun(script: (sites: LaneSites) => FakeLine[], o: { warm?: boolean } = {}): Promise<LaneRun> {
+  const warm = o.warm ?? true;
   const sites = await serveLaneSites();
   const dirs = testDirs();
   const file = join(dirname(dirs.FOO_DATA_DIR), 'fake-ai.jsonl');
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(
-    file,
-    script(sites)
-      .map((l) => JSON.stringify(l))
-      .join('\n') + '\n',
-  );
+  writeFileSync(file, [...(warm ? warmLines(sites) : []), ...script(sites)].map((l) => JSON.stringify(l)).join('\n') + '\n');
   const app = await launch(dirs, [], {
     FOO_FAKE_AI: file,
     FOO_TEST_ALLOW_HOSTS: '127.0.0.1,localhost',
@@ -68,11 +97,8 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
   });
   const page = await app.firstWindow();
   await openWorld(app, page);
-  // Home has no live job, so the ask makes a new one (the seeded "Goa stay" in foo's chat would take it as a steer).
-  await openChat(page, 'Home');
-  await rest(page);
-  await settle(page);
   let cdp: Browser | null = null;
+  let warmTurns = 0;
   const run: LaneRun = {
     app,
     page,
@@ -127,15 +153,53 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[]): Promise
         .toBe(true);
       return found!;
     },
-    turns: () => fakeTurns(dirs),
+    turns: () => fakeTurns(dirs).slice(warmTurns),
     async close() {
       await cdp?.close().catch(() => undefined);
       await app.close();
       await sites.close();
     },
   };
+  if (warm) {
+    await openChat(page, 'Money');
+    const askedAt = Date.now() - sites.started;
+    await run.ask(WARM_ASK);
+    const go = page.getByTestId(TID.cardPlanGo);
+    const seen = () => sites.requests.find((r) => r.path === '/warm');
+    const warmed = () => WARM_STEPS.every((n) => fakeTurns(dirs).some((t) => t.matchedLine === n));
+    // Done when both warm-up steps ran, whether or not the page arrived: a first page past 15 s ends the warm-up with
+    // SITE_TIMEOUT, and the test's own page then meets a browser that is up.
+    await run.until(async () => {
+      if (!warmed() && (await go.count()))
+        await go
+          .last()
+          .click()
+          .catch(() => undefined);
+      return warmed();
+    }, 'the warm-up job runs both its steps');
+    const first = seen();
+    if (first) run.coldOpenMs = first.ms - askedAt;
+    warmTurns = fakeTurns(dirs).length;
+  }
+  // Home has no live job, so the ask makes a new one (the seeded "Goa stay" in foo's chat would take it as a steer).
+  await openChat(page, 'Home');
+  await rest(page);
+  await settle(page);
   return run;
 }
+
+/** The job checklist posts 1.5 s of fake time after the job starts (CHECKLIST_AFTER_MS). With the browser warm (the warm-up
+ * above) a job can reach a held step or a Sign-in card before the clock has moved that far, so move it on until the
+ * checklist is up: at most 5 s, far short of any hold or sign-in timeout. */
+export const checklistUp = (run: LaneRun, title?: string): Promise<void> =>
+  run.until(
+    async () => {
+      const all = run.page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist));
+      return (await (title ? all.filter({ hasText: title }) : all).count()) > 0;
+    },
+    'the checklist is up',
+    10,
+  );
 
 /** The newest Sign-in card in the open chat. */
 export const signinCard = (page: Page) => page.locator(byTid(TID.cardSignin)).last();
