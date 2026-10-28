@@ -1,0 +1,521 @@
+{
+  "journey": "QA1-batch1-recheck",
+  "title": "QA re-check with real Claude: Vikas's batch-1 bugs and QA-X-F26 to F32 on the shipped build",
+  "videos": [],
+  "steps": 50,
+  "failed": 23,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-37-34-181Z-QA1-batch1-recheck",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 4,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 9,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20000,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 779
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 8,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 13
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "ms": 30004,
+      "shot": "05-key-tested.png"
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 60000ms exceeded.",
+      "errorShot": "06-error-step12.png",
+      "ms": 60066,
+      "shot": "07-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "I’m looking for the AI you already use…\n\nClaude\nsigned in\nslow to answer.\nTest again\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI couldn’t find an AI on this PC yet. Which one do you use?\n\n1\nChatGPT · sign in with your account\nBEST FIT\n2\nClaude · sign in with your account\n3\nGemini · sign in\n4\nI have a key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "08-error-step14.png",
+      "ms": 23075
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10000,
+      "shot": "09-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "typed": "hi foo, ek line mein batao: chai ya coffee?",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "10-error-step16.png",
+      "ms": 30063
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "expect": "a reply; 👀 never shows while foo answers (Vikas 27 Oct, QA-X-F27)",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 7,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120496,
+      "shot": "11-q1-chat.png"
+    },
+    {
+      "i": 18,
+      "do": "check",
+      "note": "QA (Vikas bug 3): jobs off, so no job filter chips",
+      "expect": "QA (Vikas bug 3): jobs off, so no job filter chips",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 2,
+      "shot": "12-q2-no-job-filters.png"
+    },
+    {
+      "i": 19,
+      "do": "hover",
+      "ok": false,
+      "error": "locator.hover: Timeout 10000ms exceeded.",
+      "errorShot": "13-error-step19.png",
+      "ms": 10073
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "note": "QA (Vikas bug 1): Try again on the finished answer",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "14-error-step20.png",
+      "ms": 23062
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "ok": true,
+      "ms": 20000
+    },
+    {
+      "i": 22,
+      "do": "expectText",
+      "expect": "Try again rewrites the answer in place and says Rewritten",
+      "feature": "chat",
+      "text": "Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n10:37 AM\n\nI’m looking for the AI you already use…\n\nClaude\nsigned in\nslow to answer.\nTest again\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI couldn’t find an AI on this PC yet. Which one do you use?\n\n1\nChatGPT · sign in with your account\nBEST FIT\n2\nClaude · sign in with your account\n3\nGemini · sign in\n4\nI have a key\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n10:38 AM",
+      "ok": true,
+      "ms": 3,
+      "shot": "15-q3-try-again.png",
+      "late": true
+    },
+    {
+      "i": 23,
+      "do": "send",
+      "typed": "Please just reply OK.",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "16-error-step23.png",
+      "ms": 30062
+    },
+    {
+      "i": 24,
+      "do": "waitReply",
+      "expect": "foo replies OK",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 5,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120443,
+      "shot": "17-q4-ok.png"
+    },
+    {
+      "i": 25,
+      "do": "click",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "18-error-step25.png",
+      "ms": 23061
+    },
+    {
+      "i": 26,
+      "do": "click",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "19-error-step26.png",
+      "ms": 23064
+    },
+    {
+      "i": 27,
+      "do": "click",
+      "note": "QA (Vikas bug 5): confirm the delete",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "20-error-step27.png",
+      "ms": 23062
+    },
+    {
+      "i": 28,
+      "do": "wait",
+      "ok": true,
+      "ms": 1501
+    },
+    {
+      "i": 29,
+      "do": "expectText",
+      "expect": "the message leaves the chat; no 'You deleted this message' line",
+      "feature": "chat",
+      "text": "Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n10:37 AM\n\nI’m looking for the AI you already use…\n\nClaude\nsigned in\nslow to answer.\nTest again\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI couldn’t find an AI on this PC yet. Which one do you use?\n\n1\nChatGPT · sign in with your account\nBEST FIT\n2\nClaude · sign in with your account\n3\nGemini · sign in\n4\nI have a key\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n10:38 AM",
+      "ok": true,
+      "ms": 3,
+      "shot": "21-q5-deleted.png"
+    },
+    {
+      "i": 30,
+      "do": "pasteSend",
+      "expect": "QA-X-F26: a pasted blank line is sent once, exactly as pasted",
+      "feature": "chat",
+      "typed": "gamma\n\ndelta. Please just reply OK.",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "22-error-step30.png",
+      "ms": 30064,
+      "shot": "23-q6-paste-blank-line.png"
+    },
+    {
+      "i": 31,
+      "do": "waitReply",
+      "expect": "foo replies",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 5,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120467,
+      "shot": "24-q6-reply.png"
+    },
+    {
+      "i": 32,
+      "do": "paste",
+      "typed": "one\ntwo\n\nthree ",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "25-error-step32.png",
+      "ms": 30063
+    },
+    {
+      "i": 33,
+      "do": "paste",
+      "typed": "sk-ant-api03-qaFAKEkeyNOTrealABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "26-error-step33.png",
+      "ms": 30062
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "ok": true,
+      "ms": 1001
+    },
+    {
+      "i": 35,
+      "do": "expectText",
+      "expect": "QA-X-F28: the key's mask lands after \"three \", never inside it (a made-up key, never sent)",
+      "feature": "chat",
+      "text": "",
+      "ok": true,
+      "ms": 3,
+      "shot": "27-q7-key-mask.png",
+      "late": true
+    },
+    {
+      "i": 36,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 37,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 38,
+      "do": "key",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 39,
+      "do": "check",
+      "note": "field cleared; the made-up key is never sent",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 40,
+      "do": "send",
+      "typed": "Book a table for 2 tonight at a cafe in Delhi",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "28-error-step40.png",
+      "ms": 30067
+    },
+    {
+      "i": 41,
+      "do": "waitReply",
+      "expect": "QA-X-F32: foo's own fixed line that it can't do tasks yet",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 4,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120453,
+      "shot": "29-q8-job-off.png"
+    },
+    {
+      "i": 42,
+      "do": "send",
+      "typed": "remember that my sister's birthday is on 5 March",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "30-error-step42.png",
+      "ms": 30061
+    },
+    {
+      "i": 43,
+      "do": "waitReply",
+      "expect": "QA-X-F29: exactly one bubble, foo can't remember yet; never 'Noted'",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 5,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120456,
+      "shot": "31-q9-memory-off.png"
+    },
+    {
+      "i": 44,
+      "do": "send",
+      "typed": "Switch to dark mode",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "32-error-step44.png",
+      "ms": 30062
+    },
+    {
+      "i": 45,
+      "do": "waitFor",
+      "note": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
+      "expect": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
+      "feature": "settings",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 120000ms exceeded.",
+      "errorShot": "33-error-step45.png",
+      "ms": 120062,
+      "shot": "34-q10-dark.png"
+    },
+    {
+      "i": 46,
+      "do": "wait",
+      "ok": true,
+      "ms": 4005
+    },
+    {
+      "i": 47,
+      "do": "send",
+      "typed": "did you book the table?",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "35-error-step47.png",
+      "ms": 30073
+    },
+    {
+      "i": 48,
+      "do": "waitReply",
+      "expect": "QA-X-F31: an honest no, shown once, never raw <say> tags",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 5,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120452,
+      "shot": "36-q11-no-tags.png"
+    },
+    {
+      "i": 49,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

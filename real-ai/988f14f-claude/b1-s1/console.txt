@@ -1,0 +1,4 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-32-07-444Z-J01-J02-first-run"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-34-50-866Z-J01-J02-first-run"}
+{"journey":"QA1-batch1-recheck","title":"QA re-check with real Claude: Vikas's batch-1 bugs and QA-X-F26 to F32 on the shipped build","videos":[],"steps":50,"failed":23,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-37-34-181Z-QA1-batch1-recheck"}
+{"journey":"QA5-restart-batch1","title":"Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build","videos":[],"steps":28,"failed":6,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T11-00-48-032Z-QA5-restart-batch1"}
