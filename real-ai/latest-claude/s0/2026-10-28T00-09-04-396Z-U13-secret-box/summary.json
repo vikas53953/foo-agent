@@ -1,0 +1,120 @@
+{
+  "journey": "U13-secret-box",
+  "title": "Secret box: type a fake key, show/hide, save, replace",
+  "steps": 16,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T00-09-04-396Z-U13-secret-box",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1040
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "Secret box card: Name field, masked key field, eye toggle, Save (CR-0057)",
+      "ok": true,
+      "ms": 1500
+    },
+    {
+      "i": 4,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 11
+    },
+    {
+      "i": 5,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 13
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "value masked",
+      "ok": true,
+      "ms": 301
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "value shown after eye",
+      "ok": true,
+      "ms": 301
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 111
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "\"Test key · saved {date}\", only Replace offered; value never shown again",
+      "ok": true,
+      "ms": 2002
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "empty field to replace",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 73
+    },
+    {
+      "i": 15,
+      "do": "dump",
+      "ok": true,
+      "ms": 13
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n12:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n12:05 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:06 AM\n12:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:05 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 4 steps · 0 min\nDetails\n12:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three laptops fit best under ₹50,000 all with 16GB RAM and a 512GB SSD:\n\nLaptop\tPrice\tProcessor\tRAM\nAcer Aspire 14 AI\tAbout ₹43,999\tSnapdragon X (X1-26-100)\t16GB\nLenovo ThinkBook 16\tAbout ₹46,990\tRyzen 5 7535HS\t16GB\nAcer Aspire 3 (A324-53)\tAbout ₹40,990 to ₹49,990\tCore i5-1334U\t16GB\nBest for speed: the ThinkBook 16. Its chip is a stronger type than the one in most cheaper laptops, but the 16-inch body is big.\nBest for battery: the Aspire 14 AI, and it is the cheapest of the strong options.\nBest on a tight budget: the Aspire 3, if you find it near ₹40,990.\n\nThese prices come from one guide (last updated Fri 23 Oct) that did not test the laptops itself. The same laptop can differ by ₹15,000 or more between sellers, so check the live price and exact AI number before buying. Nothing was booked or bought.\n\n12:06 AM"
+  }
+]

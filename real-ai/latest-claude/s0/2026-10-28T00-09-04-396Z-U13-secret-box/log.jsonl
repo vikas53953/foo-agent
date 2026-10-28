@@ -1,0 +1,26 @@
+{"t":"2026-10-28T00:09:04.396Z","journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","spec":"05-2 §5.8 Secret box, 10-2 §C.4 Secret box (C7), ART-08a","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T00:09:09.902Z","step":"launch","ok":true}
+{"t":"2026-10-28T00:09:17.999Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8094}
+{"t":"2026-10-28T00:09:19.040Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1040}
+{"t":"2026-10-28T00:09:19.148Z","i":1,"do":"click","soft":true,"ok":true,"ms":107}
+{"t":"2026-10-28T00:09:19.268Z","i":2,"do":"click","soft":true,"ok":true,"ms":120}
+{"t":"2026-10-28T00:09:20.768Z","i":3,"do":"wait","expect":"Secret box card: Name field, masked key field, eye toggle, Save (CR-0057)","ok":true,"ms":1500}
+{"t":"2026-10-28T00:09:20.839Z","shot":"01-secret.png"}
+{"t":"2026-10-28T00:09:20.851Z","i":4,"do":"fill","soft":true,"ok":true,"ms":11}
+{"t":"2026-10-28T00:09:20.864Z","i":5,"do":"fill","soft":true,"ok":true,"ms":13}
+{"t":"2026-10-28T00:09:21.165Z","i":6,"do":"wait","expect":"value masked","ok":true,"ms":301}
+{"t":"2026-10-28T00:09:21.228Z","shot":"02-typed.png"}
+{"t":"2026-10-28T00:09:21.301Z","i":7,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-28T00:09:21.603Z","i":8,"do":"wait","expect":"value shown after eye","ok":true,"ms":301}
+{"t":"2026-10-28T00:09:21.666Z","shot":"03-shown.png"}
+{"t":"2026-10-28T00:09:21.736Z","i":9,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-28T00:09:21.848Z","i":10,"do":"click","soft":true,"ok":true,"ms":111}
+{"t":"2026-10-28T00:09:23.850Z","i":11,"do":"wait","expect":"\"Test key · saved {date}\", only Replace offered; value never shown again","ok":true,"ms":2002}
+{"t":"2026-10-28T00:09:23.914Z","shot":"04-saved.png"}
+{"t":"2026-10-28T00:09:23.989Z","i":12,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-28T00:09:24.791Z","i":13,"do":"wait","expect":"empty field to replace","ok":true,"ms":802}
+{"t":"2026-10-28T00:09:24.852Z","shot":"05-replace.png"}
+{"t":"2026-10-28T00:09:24.925Z","i":14,"do":"click","soft":true,"ok":true,"ms":73}
+{"t":"2026-10-28T00:09:24.938Z","i":15,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-28T00:09:25.059Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-28T00:09:25.071Z","step":"aiTurns","turns":0}
