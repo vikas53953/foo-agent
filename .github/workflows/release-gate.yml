@@ -225,6 +225,12 @@ jobs:
             open=$(jq '[.[] | select(.conclusion == null)] | length' checks.json)
             echo "checks: fast $fast/1, full suite $full/4, golden $gold/1, $open still running"
             [ "$fast" -ge 1 ] && [ "$full" -ge 4 ] && [ "$gold" -ge 1 ] && [ "$open" -eq 0 ] && break
+            # CI chose not to run the Windows lanes on this commit (a draft PR skips them): they will not come, and the
+            # report counts them red. Five quiet minutes with nothing running also ends the wait.
+            skipped=$(jq '[.[] | select((.name | test("^(Full suite|Golden lane)")) and .conclusion == "skipped")] | length' checks.json)
+            [ "$open" -eq 0 ] && [ "$fast" -ge 1 ] && [ "$skipped" -gt 0 ] && break
+            if [ "$open" -eq 0 ]; then quiet=$((${quiet:-0} + 1)); else quiet=0; fi
+            [ "${quiet:-0}" -ge 5 ] && break
             sleep 60
           done
       - name: Separate reviewer looks at every picture
