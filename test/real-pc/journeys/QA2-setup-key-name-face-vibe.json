@@ -233,7 +233,8 @@
     },
     {
       "do": "send",
-      "text": "aur tumhara naam? sirf naam batao"
+      "text": "tumhara naam kya hai? sirf naam batao",
+      "note": "a plain re-ask after the restart; \"aur tumhara naam?\" with no user name given reads as \"and yours?\" and moved to QA7, where it follows the user giving their name"
     },
     {
       "do": "waitReply",
