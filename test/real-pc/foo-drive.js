@@ -446,8 +446,9 @@ async function main() {
       // same way): a settings section marked aria-current, the open chat's row (aria-selected).
       if (
         await page.evaluate((b) => {
+          // The control itself, never a chosen row or tab around it: a button inside the open chat row is still clicked.
           const hit = document.elementFromPoint(b[0] + b[2] / 2, b[1] + b[3] / 2);
-          const el = hit?.closest('[aria-current]:not([aria-current="false"]), [role]');
+          const el = hit?.closest('button, a, input, select, textarea, [role]');
           return (
             (!!el?.getAttribute('aria-current') && el.getAttribute('aria-current') !== 'false') ||
             el?.getAttribute('aria-checked') === 'true' ||
@@ -784,6 +785,11 @@ async function main() {
           // No controls found (a wrong scope) or a control that could not be clicked is a failure, not a pass.
           if (!rec.blocked && !rec.controls.some((c) => c.status === 'pass' || c.status === 'fail'))
             rec.blocked = 'no control found to click';
+          // Controls gone after an earlier click are skipped one by one, but a screen where most of them vanished was not
+          // really tested.
+          const gone = rec.controls.filter((c) => c.reason === 'no longer on screen after an earlier click').length;
+          const tried = rec.controls.filter((c) => c.status === 'pass' || c.status === 'fail').length;
+          if (!rec.blocked && gone > tried) rec.blocked = `${gone} controls were gone after an earlier click, only ${tried} tried`;
           rec.ok = !rec.blocked && rec.controls.every((c) => c.status !== 'fail' && c.status !== 'not-tested');
           break;
         }
