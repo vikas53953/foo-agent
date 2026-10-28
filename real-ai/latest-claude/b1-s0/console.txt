@@ -1,9 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-24-45-680Z-J01-J02-first-run"}
-{"journey":"J07-chat","title":"Casual chat","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-25-36-396Z-J07-chat"}
-{"journey":"B10-paste-secret","title":"Paste bands and secret guard","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-26-15-337Z-B10-paste-secret"}
-{"journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","videos":[],"steps":42,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-26-26-665Z-U01-bubble-menu"}
-{"journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","videos":[],"steps":34,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-27-33-443Z-U05-chat-list"}
-{"journey":"U16-settings-all","title":"Settings: every section","videos":[],"steps":26,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-30-52-589Z-U16-settings-all"}
-{"journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","videos":[],"steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-33-50-107Z-U22-face-polish"}
-{"journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","feature":"chat","videos":[],"steps":38,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-34-32-856Z-B1-batch1"}
-{"journey":"QA4-settings-batch1","title":"Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart","videos":[],"steps":43,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-39-01-784Z-QA4-settings-batch1"}

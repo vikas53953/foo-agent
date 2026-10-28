@@ -1,0 +1,29 @@
+{"t":"2026-10-28T10:02:13.999Z","journey":"U07-composer","title":"Composer: multi-line, attach menu, emoji, Esc, draft kept after restart","spec":"04 §13–§16, 10-2 §C.3 Composer","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:02:19.074Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:02:20.098Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1021}
+{"t":"2026-10-28T10:02:20.140Z","shot":"01-composer.png"}
+{"t":"2026-10-28T10:02:20.140Z","i":1,"do":"shot","expect":"composer: + attach, field \"Message foo, or hold Ctrl+Space to talk\", mic/send 36px","ref":"BP-COMP-01","ok":true,"ms":41}
+{"t":"2026-10-28T10:02:20.206Z","i":2,"do":"click","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-28T10:02:20.215Z","i":3,"do":"key","ok":true,"ms":9}
+{"t":"2026-10-28T10:02:20.232Z","i":4,"do":"fill","soft":true,"ok":true,"ms":17}
+{"t":"2026-10-28T10:02:20.684Z","shot":"02-multiline.png"}
+{"t":"2026-10-28T10:02:20.685Z","i":5,"do":"wait","expect":"composer grows upward for 3 lines","ref":"BP-COMP-02","ok":true,"ms":401,"shot":"02-multiline.png"}
+{"t":"2026-10-28T10:02:20.756Z","i":6,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-28T10:02:21.295Z","shot":"03-attach-menu.png"}
+{"t":"2026-10-28T10:02:21.295Z","i":7,"do":"wait","expect":"attach menu: Files, Screenshot, Secret, Emoji","ref":"BP-COMP-05","ok":true,"ms":500,"shot":"03-attach-menu.png"}
+{"t":"2026-10-28T10:02:21.379Z","i":8,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-28T10:02:21.934Z","shot":"04-emoji.png"}
+{"t":"2026-10-28T10:02:21.935Z","i":9,"do":"wait","expect":"emoji picker","ok":true,"ms":508,"shot":"04-emoji.png"}
+{"t":"2026-10-28T10:02:21.937Z","i":10,"do":"key","ok":true,"ms":2}
+{"t":"2026-10-28T10:02:21.946Z","i":11,"do":"fill","soft":true,"ok":true,"ms":9}
+{"t":"2026-10-28T10:02:27.263Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:02:27.263Z","i":12,"do":"relaunch","ok":true,"ms":5316}
+{"t":"2026-10-28T10:02:28.297Z","i":13,"do":"openChat","soft":true,"ok":true,"ms":1034}
+{"t":"2026-10-28T10:02:29.357Z","shot":"05-draft-restored.png"}
+{"t":"2026-10-28T10:02:29.357Z","i":14,"do":"wait","expect":"the unsent draft is back in the composer","ok":true,"ms":1014,"shot":"05-draft-restored.png"}
+{"t":"2026-10-28T10:02:29.360Z","i":15,"do":"eval","note":"draft restored","soft":true,"value":"a draft I did not send","ok":true,"ms":3}
+{"t":"2026-10-28T10:02:29.378Z","i":16,"do":"fill","soft":true,"ok":true,"ms":18}
+{"t":"2026-10-28T10:02:29.384Z","i":17,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-28T10:02:29.538Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-28T10:02:29.546Z","step":"aiTurns","turns":0}
+{"t":"2026-10-28T10:02:29.547Z","step":"jobTrail","steps":0,"calls":0}

@@ -1,8 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-24-58-695Z-J01-J02-first-run"}
-{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","videos":[],"steps":9,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-25-49-545Z-B03-web-local"}
-{"journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","videos":[],"steps":13,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-28-40-525Z-J09-J18-booking"}
-{"journey":"J05-web","title":"First real task with the internet (news + sources)","videos":[],"steps":6,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-33-16-673Z-J05-web"}
-{"journey":"J15-helper","title":"Create a helper","videos":[],"steps":4,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-33-45-990Z-J15-helper"}
-{"journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","videos":[],"steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-34-02-577Z-U10-plan-change-stop"}
-{"journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","videos":[],"steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-35-00-393Z-U15-routines"}
-{"journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","videos":[],"steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-35-46-494Z-U23-ai-page-chips"}

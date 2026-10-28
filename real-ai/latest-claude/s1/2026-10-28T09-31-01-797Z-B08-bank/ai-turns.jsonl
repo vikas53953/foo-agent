@@ -1,4 +1,0 @@
-{"started_at":1793179867002,"purpose":"classify","outcome":"ok","error_kind":null,"duration_ms":3203,"chat_id":"c_01a181d2-13b3-747c-82f5-7126d34b8475","job_id":"j_01a181d3-7caf-7e78-b8b5-9dc242387cb4","provider_id":"claude-cli","billing":"plan"}
-{"started_at":1793179870227,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":5337,"chat_id":"c_01a181d2-13b3-747c-82f5-7126d34b8475","job_id":null,"provider_id":"claude-cli","billing":"plan"}
-{"started_at":1793179875570,"purpose":"step","outcome":"ok","error_kind":null,"duration_ms":3276,"chat_id":"c_01a181d2-13b3-747c-82f5-7126d34b8475","job_id":"j_01a181d9-78df-747b-834b-6bdbe5310e83","provider_id":"claude-cli","billing":"plan"}
-{"started_at":1793179895571,"purpose":"memory_review","outcome":"ok","error_kind":null,"duration_ms":3246,"chat_id":"c_01a181d2-13b3-747c-82f5-7126d34b8475","job_id":null,"provider_id":"claude-cli","billing":"plan"}

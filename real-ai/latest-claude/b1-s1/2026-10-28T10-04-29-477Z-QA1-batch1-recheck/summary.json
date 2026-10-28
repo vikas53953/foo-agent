@@ -1,0 +1,585 @@
+{
+  "journey": "QA1-batch1-recheck",
+  "title": "QA re-check with real Claude: Vikas's batch-1 bugs and QA-X-F26 to F32 on the shipped build",
+  "videos": [],
+  "steps": 50,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-04-29-477Z-QA1-batch1-recheck",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 2,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 10,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20001,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 3,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "ms": 30000,
+      "shot": "05-key-tested.png"
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 1,
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name",
+      "ok": true,
+      "ms": 2,
+      "shot": "06-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Anthropic key (your AI)\n10:04 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10002,
+      "shot": "07-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "typed": "hi foo, ek line mein batao: chai ya coffee?",
+      "sentAt": 1793181935477,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "expect": "a reply; 👀 never shows while foo answers (Vikas 27 Oct, QA-X-F27)",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 9,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 512,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2399,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2396,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Chai, हमेशा। ☕\n\n10:05 AM",
+      "kit": [],
+      "ms": 9070,
+      "shot": "08-q1-chat.png"
+    },
+    {
+      "i": 18,
+      "do": "check",
+      "note": "QA (Vikas bug 3): jobs off, so no job filter chips",
+      "expect": "QA (Vikas bug 3): jobs off, so no job filter chips",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 2,
+      "shot": "09-q2-no-job-filters.png"
+    },
+    {
+      "i": 19,
+      "do": "hover",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "note": "QA (Vikas bug 1): Try again on the finished answer",
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "ok": true,
+      "ms": 20002
+    },
+    {
+      "i": 22,
+      "do": "expectText",
+      "expect": "Try again rewrites the answer in place and says Rewritten",
+      "feature": "chat",
+      "text": "Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n10:04 AM\nUsing Anthropic key (your AI)\n10:04 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n10:04 AM\nWhat should I call myself? → Skipped\n10:05 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:05 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:05 AM\nhi foo, ek line mein batao: chai ya coffee?\n10:05 AM\nfoo\n\nChai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n10:05 AM",
+      "ok": true,
+      "ms": 2,
+      "shot": "10-q3-try-again.png"
+    },
+    {
+      "i": 23,
+      "do": "send",
+      "typed": "Please just reply OK.",
+      "sentAt": 1793181964877,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 24,
+      "do": "waitReply",
+      "expect": "foo replies OK",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 12,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1534,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 1523,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "OK\n\n10:06 AM",
+      "kit": [],
+      "ms": 7615,
+      "shot": "11-q4-ok.png"
+    },
+    {
+      "i": 25,
+      "do": "click",
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 26,
+      "do": "click",
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 27,
+      "do": "click",
+      "note": "QA (Vikas bug 5): confirm the delete",
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 28,
+      "do": "wait",
+      "ok": true,
+      "ms": 1502
+    },
+    {
+      "i": 29,
+      "do": "expectText",
+      "expect": "the message leaves the chat; no 'You deleted this message' line",
+      "feature": "chat",
+      "text": "Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n10:04 AM\nUsing Anthropic key (your AI)\n10:04 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n10:04 AM\nWhat should I call myself? → Skipped\n10:05 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:05 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:05 AM\nhi foo, ek line mein batao: chai ya coffee?\n10:05 AM\nfoo\n\nChai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n10:05 AM\n\nOK\n\n10:06 AM",
+      "ok": true,
+      "ms": 3,
+      "shot": "12-q5-deleted.png"
+    },
+    {
+      "i": 30,
+      "do": "pasteSend",
+      "expect": "QA-X-F26: a pasted blank line is sent once, exactly as pasted",
+      "feature": "chat",
+      "typed": "gamma\n\ndelta. Please just reply OK.",
+      "inField": "gamma\n\n\ndelta. Please just reply OK.",
+      "ok": true,
+      "ms": 894,
+      "shot": "13-q6-paste-blank-line.png"
+    },
+    {
+      "i": 31,
+      "do": "waitReply",
+      "expect": "foo replies",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 4,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1548,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 2064,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 1548,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "OK\n\n10:06 AM",
+      "kit": [],
+      "ms": 8135,
+      "shot": "14-q6-reply.png"
+    },
+    {
+      "i": 32,
+      "do": "paste",
+      "typed": "one\ntwo\n\nthree ",
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "i": 33,
+      "do": "paste",
+      "typed": "sk-ant-api03-qaFAKEkeyNOTrealABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "ok": true,
+      "ms": 1011
+    },
+    {
+      "i": 35,
+      "do": "expectText",
+      "expect": "QA-X-F28: the key's mask lands after \"three \", never inside it (a made-up key, never sent)",
+      "feature": "chat",
+      "text": "one\ntwo\n••••\nthree ",
+      "ok": true,
+      "ms": 2,
+      "shot": "15-q7-key-mask.png",
+      "late": true
+    },
+    {
+      "i": 36,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 37,
+      "do": "key",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 38,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 39,
+      "do": "check",
+      "note": "field cleared; the made-up key is never sent",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 40,
+      "do": "send",
+      "typed": "Book a table for 2 tonight at a cafe in Delhi",
+      "sentAt": 1793181984682,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 41,
+      "do": "waitReply",
+      "expect": "QA-X-F32: foo's own fixed line that it can't do tasks yet",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 12,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 516,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2553,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 9139,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2549,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n10:06 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 15210,
+      "shot": "16-q8-job-off.png"
+    },
+    {
+      "i": 42,
+      "do": "send",
+      "typed": "remember that my sister's birthday is on 5 March",
+      "sentAt": 1793181999996,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 43,
+      "do": "waitReply",
+      "expect": "QA-X-F29: exactly one bubble, foo can't remember yet; never 'Noted'",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 17,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3087,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3075,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can’t remember things for you yet, so tell me again when it matters.\n\n10:06 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 9146,
+      "shot": "17-q9-memory-off.png"
+    },
+    {
+      "i": 44,
+      "do": "send",
+      "typed": "Switch to dark mode",
+      "sentAt": 1793182009262,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 45,
+      "do": "waitFor",
+      "note": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
+      "expect": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
+      "feature": "settings",
+      "ok": true,
+      "ms": 2327,
+      "shot": "18-q10-dark.png"
+    },
+    {
+      "i": 46,
+      "do": "wait",
+      "ok": true,
+      "ms": 4002
+    },
+    {
+      "i": 47,
+      "do": "send",
+      "typed": "did you book the table?",
+      "sentAt": 1793182015697,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 67
+    },
+    {
+      "i": 48,
+      "do": "waitReply",
+      "expect": "QA-X-F31: an honest no, shown once, never raw <say> tags",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 15,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2050,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6095,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2036,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, I haven't booked anything. I can't do tasks yet, like booking, buying or sending things.\n\n10:06 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 12171,
+      "shot": "19-q11-no-tags.png"
+    },
+    {
+      "i": 49,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}
