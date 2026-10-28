@@ -1,0 +1,17 @@
+{"t":"2026-10-28T02:58:32.322Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T02:58:37.838Z","step":"launch","ok":true}
+{"t":"2026-10-28T02:58:45.931Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8090}
+{"t":"2026-10-28T02:58:46.053Z","i":0,"do":"send","sentAt":1793156326014,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-10-28T02:58:58.711Z","i":1,"do":"waitReply","firstReplyMs":6605,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking nationalmuseumindia.gov.in\nlive checklist\nChecking nationalmuseumindia.gov.in\nN\nLook for opening hours and ticket price\nWatch live\nStop\nunder 1 min\n2:58 AM","kit":[],"ms":12657}
+{"t":"2026-10-28T02:58:58.875Z","shot":"01-museum-start.png"}
+{"t":"2026-10-28T02:58:58.877Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T02:59:06.879Z","i":3,"do":"wait","ok":true,"ms":8002}
+{"t":"2026-10-28T02:59:12.305Z","step":"launch","ok":true}
+{"t":"2026-10-28T02:59:12.305Z","i":4,"do":"relaunch","ok":true,"ms":5426}
+{"t":"2026-10-28T02:59:20.306Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8001}
+{"t":"2026-10-28T02:59:20.377Z","shot":"02-after-reopen.png"}
+{"t":"2026-10-28T03:01:50.379Z","i":6,"do":"wait","ok":true,"ms":150002}
+{"t":"2026-10-28T03:01:50.449Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-10-28T03:01:50.461Z","i":7,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T03:01:50.654Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-10-28T03:01:50.666Z","step":"aiTurns","turns":5}

@@ -1,0 +1,72 @@
+{
+  "journey": "U15-routines",
+  "title": "Routine: create by chat, routines screen, pause, run once",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T03-10-16-077Z-U15-routines",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1048
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793157030840,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 122
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Routine card: created, next run time with weekday and date",
+      "firstReplyMs": 6084,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n3:10 AM",
+      "kit": [],
+      "ms": 12135
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Routines screen with the new routine row",
+      "ok": true,
+      "ms": 1200
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23061
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

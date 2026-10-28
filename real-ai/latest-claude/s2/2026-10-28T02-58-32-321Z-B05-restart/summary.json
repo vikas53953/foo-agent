@@ -1,0 +1,67 @@
+{
+  "journey": "B05-restart",
+  "title": "Quit mid-job and reopen: job resumes",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T02-58-32-321Z-B05-restart",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793156326014,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 122
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "firstReplyMs": 6605,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Checking nationalmuseumindia.gov.in\nlive checklist\nChecking nationalmuseumindia.gov.in\nN\nLook for opening hours and ticket price\nWatch live\nStop\nunder 1 min\n2:58 AM",
+      "kit": [],
+      "ms": 12657
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 8002
+    },
+    {
+      "i": 4,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5426
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "AT-118: recovery card; job resumes (WAITING → WORKING)",
+      "ok": true,
+      "ms": 8001
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

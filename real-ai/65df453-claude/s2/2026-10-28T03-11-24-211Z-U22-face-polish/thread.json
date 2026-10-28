@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:10 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 31 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n3:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n3:10 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n3:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:11 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 31 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n3:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n3:11 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nBooking table for 2, Sat 31 Oct, 8:00 PM\nBEST FIT\n2\nLooking for vegetarian restaurants in…\n3\nBoth\nSomething else…\nSkip\n3:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n3:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Grey clouds roll in from the Arabian Sea,\nMarine Drive hums with chai and rain-soaked glee.\nLocal trains splash through streets turned to streams,\nMumbai bends, but never breaks, in monsoon dreams. 🌧️\n\n3:11 AM"
+  }
+]

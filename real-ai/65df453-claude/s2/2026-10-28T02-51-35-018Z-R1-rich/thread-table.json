@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n2:49 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:49 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n2:50 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:50 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n2:50 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n2:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n2:51 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because paying someone is as easy as sending a text, and it costs almost nothing. Launched in 2016, it now handles billions of payments every month, from chai stalls to rent and school fees.\n\nThree main reasons:\n\nSpeed and simplicity: Scan a QR code or type a phone number, enter your PIN, and the money moves between banks in seconds. No card machine, no cash, no hunting for change.\nLow cost: For most people and small shops there are no charges. A shopkeeper only needs a printed QR code, which is why even street vendors joined in.\nOne system, many apps: You can pay anyone from any bank through PhonePe, Google Pay, Paytm or your bank's own app. Nobody is locked into one company, which built trust and made it easy to start.\n\nA few other things helped. Cheap smartphones and data brought it within reach, and the 2016 note ban nudged people to try digital payments. Once friends and shops all used it, sticking with cash became the harder choice.\n\nOne tip: never share your PIN, and never approve a payment request you don't recognise.\n\n2:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n2:51 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:51 AM\n2:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:51 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nKept 3 budget phones that fit price under ₹20,000\nComparing price, screen, battery, camera\nStill working, this one takes a while\nWatch live\nStop\n2 min\n2:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:51 AM"
+  }
+]
