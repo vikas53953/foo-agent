@@ -37,16 +37,20 @@ name, chat, settings.
 22-thread parallel fan-out (18 Oct); Codex lanes (11 drafts, nothing merged); per-milestone memory
 files; rules without enforcers; green lane that did not gate failures (fixed by #168, #169).
 
-## Unresolved questions (cards pending)
+## Decisions taken (28 Oct 19:07Z, Vikas: "ok do it then")
 
-1. Full reset now? (this thread, 18:40Z)  2. One definition of "proven" and rewrite rule 6.
-3. Daily or weekly real-Claude sentinel (gate thread 05:31Z).  4. Close the Codex drafts?
+1. Full reset approved and executed: 18 stale PRs closed (branches kept), memory archived to
+   `/mnt/project-files/foo/memory-archive/2026-10-28/` and rewritten to 8 files plus index, coordinator
+   asked to resolve stale threads, rewrite rule 6 and set caps (3 threads, 5 PRs, 10 memory files).
+2. "Proven" = gate verdict on main with the record line and the picture; anything less is "pre-check only".
+3. Weekly real-Claude sentinel on Mondays.
+4. The 11 Codex drafts are closed; their branches stay.
 
 ## Next actions in order
 
-1. Vikas fixes the key secret. 2. Reset (resolve stale threads, close stale PRs, memory to 8 files,
-rules to one page). 3. One lead thread from `/mnt/project-files/handoff/foo-lead-2026-10-29.md`.
-4. #169 real-Claude green → merge → #172 merge → gate on main → first gated installer.
+1. Vikas fixes the key secret (the only step that is his).
+2. One lead thread starts from `/mnt/project-files/handoff/foo-lead-2026-10-29.md`.
+3. #169 real-Claude green → merge → #172 merge → gate on main → first gated installer.
 
 ## Evidence pointers
 

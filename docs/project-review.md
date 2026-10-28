@@ -19,16 +19,16 @@ notes become tests, fix, next batch.
 
 **Current state (verified live, 28 Oct 18:30Z).**
 
-| Item | State | Evidence |
-| --- | --- | --- |
-| main | `4e11747` (release gate, #163, merged 07:11Z) | GitHub |
-| Review baseline | branch `claude/project-thread-serr0j` at `4e11747`, clean tree, shallow clone (depth 21) | `git status`, `.git/shallow` |
-| Batch 1 (install, ai, name, chat, settings) | built; 👀, say tags, memory line proven fixed on real Claude; no installer has passed the gate | memory `foo-qa-explore`, gate thread 08:36Z |
-| Release gate, first main run | FAIL: 5 of 11 journeys clean; 5 app bugs listed | gate thread 09:16Z, run 40648494242 |
-| Live PRs | #169 (builder, CI 7/7 green, real-AI red), #171 (QA, red until CR-0070), #172 (gate fixes, shard 4 node-gyp hang) | PR list, runs 886/100, 885, 878/879 |
-| Stale PRs | 18 open since 21 to 23 Oct (11 Codex lane drafts, 7 Claude) | PR list |
-| Blocker | `ANTHROPIC_API_KEY` secret refused since ~10:30Z; last good 10:14Z; nothing has run since 12:13Z | builder thread 11:47Z; all 8 journey jobs of run 40672497167 failed |
-| Repo size | 86k lines TS/TSX in `src/`, 674 test files, 51 CRs, 533 decision-log rows, 6 workflows, 1,015 CI runs | local counts, GitHub |
+| Item                                        | State                                                                                                             | Evidence                                                            |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| main                                        | `4e11747` (release gate, #163, merged 07:11Z)                                                                     | GitHub                                                              |
+| Review baseline                             | branch `claude/project-thread-serr0j` at `4e11747`, clean tree, shallow clone (depth 21)                          | `git status`, `.git/shallow`                                        |
+| Batch 1 (install, ai, name, chat, settings) | built; 👀, say tags, memory line proven fixed on real Claude; no installer has passed the gate                    | memory `foo-qa-explore`, gate thread 08:36Z                         |
+| Release gate, first main run                | FAIL: 5 of 11 journeys clean; 5 app bugs listed                                                                   | gate thread 09:16Z, run 40648494242                                 |
+| Live PRs                                    | #169 (builder, CI 7/7 green, real-AI red), #171 (QA, red until CR-0070), #172 (gate fixes, shard 4 node-gyp hang) | PR list, runs 886/100, 885, 878/879                                 |
+| Stale PRs                                   | 18 open since 21 to 23 Oct (11 Codex lane drafts, 7 Claude)                                                       | PR list                                                             |
+| Blocker                                     | `ANTHROPIC_API_KEY` secret refused since ~10:30Z; last good 10:14Z; nothing has run since 12:13Z                  | builder thread 11:47Z; all 8 journey jobs of run 40672497167 failed |
+| Repo size                                   | 86k lines TS/TSX in `src/`, 674 test files, 51 CRs, 533 decision-log rows, 6 workflows, 1,015 CI runs             | local counts, GitHub                                                |
 
 **Coverage map.**
 
@@ -218,16 +218,16 @@ Each item maps to a finding.
 
 ## G. Prioritized next steps
 
-| # | Action | Purpose | Owner | Depends on | Done when |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Check and update the `ANTHROPIC_API_KEY` secret | unblocks every real-Claude run | Vikas | none | a real-AI run on #169 passes its first key check |
-| 2 | Decide F1 to F4 | authorizes the reset and the proof rule | Vikas | none | cards answered |
-| 3 | Resolve stale threads, close stale PRs, archive memory to 8 files | remove stale state (C3) | coordinator | F1 | counts under caps; archive folder written |
-| 4 | Rewrite project rule 6 and merge the standing rules into one page | remove the clash (C1, C9) | coordinator, with Vikas's yes | F2 | one rules page; old copies deleted |
-| 5 | Write `/mnt/project-files/handoff/foo-lead-2026-10-29.md`; start one lead thread | lean restart | coordinator | 3 | thread open, reads GitHub first |
-| 6 | #169 real-Claude green, merge; #172 merge; gate run on main | batch-1 fixes land | lead | 1 | gate verdict posted with sha |
-| 7 | First gated installer to Vikas | human in the loop | lead | 6 | `foo-windows-app-gated` link sent |
-| 8 | Add the key pre-check to the real-AI lane | D3 | lead | 6 | lane fails fast with "key refused" |
+| #   | Action                                                                           | Purpose                                 | Owner                         | Depends on | Done when                                        |
+| --- | -------------------------------------------------------------------------------- | --------------------------------------- | ----------------------------- | ---------- | ------------------------------------------------ |
+| 1   | Check and update the `ANTHROPIC_API_KEY` secret                                  | unblocks every real-Claude run          | Vikas                         | none       | a real-AI run on #169 passes its first key check |
+| 2   | Decide F1 to F4                                                                  | authorizes the reset and the proof rule | Vikas                         | none       | cards answered                                   |
+| 3   | Resolve stale threads, close stale PRs, archive memory to 8 files                | remove stale state (C3)                 | coordinator                   | F1         | counts under caps; archive folder written        |
+| 4   | Rewrite project rule 6 and merge the standing rules into one page                | remove the clash (C1, C9)               | coordinator, with Vikas's yes | F2         | one rules page; old copies deleted               |
+| 5   | Write `/mnt/project-files/handoff/foo-lead-2026-10-29.md`; start one lead thread | lean restart                            | coordinator                   | 3          | thread open, reads GitHub first                  |
+| 6   | #169 real-Claude green, merge; #172 merge; gate run on main                      | batch-1 fixes land                      | lead                          | 1          | gate verdict posted with sha                     |
+| 7   | First gated installer to Vikas                                                   | human in the loop                       | lead                          | 6          | `foo-windows-app-gated` link sent                |
+| 8   | Add the key pre-check to the real-AI lane                                        | D3                                      | lead                          | 6          | lane fails fast with "key refused"               |
 
 Work actually performed in this review: investigation, this document, `docs/project-lessons.md`,
 `docs/project-review-handoff.md`, a review page, one decision card. Nothing else changed. Results verified:
