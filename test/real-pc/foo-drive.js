@@ -124,6 +124,41 @@ function copyTechLog(from, out) {
 
 // foo's AI turn log (ai_turns, 0001_init.sql) from the test profile's database, for this journey only. Only ids and enum
 // columns are kept (no text, no tokens of content), so it is safe for the public evidence branch.
+// The job's own trail for the same window: each step's state and each tool call's name, gate and outcome (tool_calls and
+// steps, 0001_init.sql). Enum columns only (no args, results or slots), so it is safe for the public evidence branch; it
+// shows what a job's step turns actually did (J09: 26 step turns with no checklist progress).
+function copyJobTrail(from, out) {
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { calls: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  const safe = (rows) =>
+    rows.map((r) =>
+      Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      ),
+    );
+  try {
+    const steps = db
+      .prepare(
+        `SELECT s.job_id, s.idx, s.phrase_key, s.state, s.attempts, s.route, s.started_at, s.finished_at FROM steps s
+         JOIN jobs j ON j.id = s.job_id WHERE j.created_at >= ? ORDER BY s.job_id, s.idx`,
+      )
+      .all(from);
+    const calls = db
+      .prepare(
+        `SELECT c.job_id, s.idx AS step_idx, c.tool, c.action_class, c.gate, c.outcome, c.error_kind, c.started_at, c.finished_at
+         FROM tool_calls c LEFT JOIN steps s ON s.id = c.step_id WHERE c.started_at >= ? ORDER BY c.started_at`,
+      )
+      .all(from);
+    const lines = [...safe(steps).map((r) => ({ kind: 'step', ...r })), ...safe(calls).map((r) => ({ kind: 'call', ...r }))];
+    fs.writeFileSync(path.join(out, 'job-trail.jsonl'), lines.map((r) => JSON.stringify(r)).join('\n') + (lines.length ? '\n' : ''));
+    return { steps: steps.length, calls: calls.length };
+  } finally {
+    db.close();
+  }
+}
+
 const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
 function copyAiTurns(from, out) {
   const file = path.join(PROFILE, 'data', 'data', 'foo.db');
@@ -621,6 +656,11 @@ async function main() {
     log({ step: 'aiTurns', ...copyAiTurns(journeyStart, out) });
   } catch (e) {
     log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
+  }
+  try {
+    log({ step: 'jobTrail', ...copyJobTrail(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'jobTrail', ok: false, error: String(e).slice(0, 300) });
   }
   const summary = {
     journey: journey.id,
