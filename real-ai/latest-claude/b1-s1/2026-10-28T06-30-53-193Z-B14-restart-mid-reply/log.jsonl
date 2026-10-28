@@ -1,0 +1,19 @@
+{"t":"2026-10-28T06:30:53.194Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:30:59.208Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:30:59.344Z","i":0,"do":"send","sentAt":1793169059303,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-10-28T06:31:02.345Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-28T06:31:07.785Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:31:07.785Z","i":2,"do":"relaunch","ok":true,"ms":5439}
+{"t":"2026-10-28T06:31:18.908Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":3554,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Turbo is a good name for a pet tortoise, because the joke never gets old. 🐢\n\nA few more:\n\nDheere (Hindi for \"slowly\")\nGulab Jamun, round and a bit sticky-sweet\nShelly, a classic\n\nWant names that suit a boy or a girl tortoise, or ones from a theme like food or cricket?\n\n6:31 AM","kit":[],"ms":11123}
+{"t":"2026-10-28T06:31:18.976Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-28T06:31:18.978Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n6:30 AM","eyes":false},"ok":true,"ms":1}
+{"t":"2026-10-28T06:31:19.151Z","i":5,"do":"send","sentAt":1793169079093,"sent":true,"before":0,"ok":true,"ms":172}
+{"t":"2026-10-28T06:31:21.151Z","i":6,"do":"wait","ok":true,"ms":2000}
+{"t":"2026-10-28T06:31:26.593Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:31:26.593Z","i":7,"do":"relaunch","ok":true,"ms":5441}
+{"t":"2026-10-28T06:31:37.722Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":5063,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for the biggest India news story on Wed 28\nCompare top headlines from a few news sites\nWatch live\nStop\nunder 1 min\n6:31 AM","kit":[],"ms":11129}
+{"t":"2026-10-28T06:31:37.809Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-28T06:31:37.819Z","i":9,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:31:38.124Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-10-28T06:31:38.136Z","step":"aiTurns","turns":3}
+{"t":"2026-10-28T06:31:38.138Z","step":"jobTrail","steps":3,"calls":1}

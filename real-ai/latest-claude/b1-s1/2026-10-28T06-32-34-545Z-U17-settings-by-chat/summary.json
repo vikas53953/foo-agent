@@ -1,0 +1,100 @@
+{
+  "journey": "U17-settings-by-chat",
+  "title": "Change a setting by chat: mini line with Undo; theme and accent rows",
+  "steps": 12,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-32-34-545Z-U17-settings-by-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1037
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793169161455,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 401
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
+      "firstReplyMs": 7559,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can't change the look of the app from here, so dark mode is best switched in the app's own settings.\n\n6:32 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 13684
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23085
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "back to light",
+      "ok": true,
+      "ms": 1501
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "theme options",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23069
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

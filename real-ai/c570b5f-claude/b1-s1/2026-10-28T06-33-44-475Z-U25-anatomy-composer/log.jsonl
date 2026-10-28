@@ -1,0 +1,49 @@
+{"t":"2026-10-28T06:33:44.476Z","journey":"U25-anatomy-composer","title":"Shell anatomy at every width, composer states, honest flights reply","spec":"03-shell-1 §3.1-§3.5, 03-shell-2 §3.6-§3.7, 04-2 §20-§23, AT-157","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:33:49.987Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:33:51.029Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1039}
+{"t":"2026-10-28T06:33:51.837Z","i":1,"do":"resize","soft":true,"ok":true,"ms":807}
+{"t":"2026-10-28T06:33:51.936Z","shot":"01-L-1280.png"}
+{"t":"2026-10-28T06:33:51.937Z","i":2,"do":"shot","expect":"window at 1280x800","ok":true,"ms":99}
+{"t":"2026-10-28T06:33:52.146Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":209}
+{"t":"2026-10-28T06:33:52.425Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":278}
+{"t":"2026-10-28T06:33:52.508Z","i":5,"do":"shotEl","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-28T06:33:52.599Z","i":6,"do":"shotEl","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-28T06:33:52.677Z","i":7,"do":"shotEl","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-28T06:33:52.763Z","i":8,"do":"shotEl","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-28T06:33:52.879Z","i":9,"do":"shotEl","soft":true,"ok":true,"ms":116}
+{"t":"2026-10-28T06:33:52.966Z","i":10,"do":"shotEl","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-28T06:33:53.053Z","i":11,"do":"shotEl","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-28T06:33:53.137Z","i":12,"do":"shotEl","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-28T06:33:53.257Z","i":13,"do":"shotEl","soft":true,"ok":true,"ms":120}
+{"t":"2026-10-28T06:33:53.336Z","i":14,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-28T06:33:53.465Z","i":15,"do":"shotEl","soft":true,"ok":true,"ms":128}
+{"t":"2026-10-28T06:33:53.510Z","i":16,"do":"fill","soft":true,"ok":true,"ms":45}
+{"t":"2026-10-28T06:33:53.719Z","i":17,"do":"shotEl","soft":true,"ok":true,"ms":209}
+{"t":"2026-10-28T06:33:53.791Z","i":18,"do":"fill","soft":true,"ok":true,"ms":72}
+{"t":"2026-10-28T06:33:53.927Z","i":19,"do":"shotEl","soft":true,"ok":true,"ms":136}
+{"t":"2026-10-28T06:33:53.976Z","i":20,"do":"fill","soft":true,"ok":true,"ms":49}
+{"t":"2026-10-28T06:33:54.131Z","i":21,"do":"click","soft":true,"ok":true,"ms":155}
+{"t":"2026-10-28T06:33:54.631Z","i":22,"do":"wait","expect":"attach menu","ok":true,"ms":500}
+{"t":"2026-10-28T06:33:54.804Z","shot":"17-comp-attach-menu.png"}
+{"t":"2026-10-28T06:33:54.817Z","i":23,"do":"key","ok":true,"ms":13}
+{"t":"2026-10-28T06:33:55.625Z","i":24,"do":"resize","soft":true,"ok":true,"ms":807}
+{"t":"2026-10-28T06:33:55.701Z","shot":"18-M-1000.png"}
+{"t":"2026-10-28T06:33:55.701Z","i":25,"do":"shot","expect":"window at 1000x760","ok":true,"ms":75}
+{"t":"2026-10-28T06:33:56.506Z","i":26,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-28T06:33:56.560Z","shot":"19-S-760.png"}
+{"t":"2026-10-28T06:33:56.561Z","i":27,"do":"shot","expect":"window at 760x700","ok":true,"ms":55}
+{"t":"2026-10-28T06:33:57.379Z","i":28,"do":"resize","soft":true,"ok":true,"ms":818}
+{"t":"2026-10-28T06:33:57.427Z","shot":"20-XS-520.png"}
+{"t":"2026-10-28T06:33:57.427Z","i":29,"do":"shot","expect":"window at 520x640","ok":true,"ms":48}
+{"t":"2026-10-28T06:33:58.232Z","i":30,"do":"resize","soft":true,"ok":true,"ms":805}
+{"t":"2026-10-28T06:33:58.326Z","shot":"21-L-again.png"}
+{"t":"2026-10-28T06:33:58.327Z","i":31,"do":"shot","expect":"window at 1280x800","ok":true,"ms":95}
+{"t":"2026-10-28T06:33:58.456Z","i":32,"do":"send","sentAt":1793169238408,"sent":true,"before":0,"ok":true,"ms":129}
+{"t":"2026-10-28T06:34:04.501Z","i":33,"do":"waitReply","expect":"AT-157: says it can find and compare flights and open the booking page; filling passengers and paying comes later","firstReplyMs":505,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n6:33 AM","kit":[],"ms":6044}
+{"t":"2026-10-28T06:34:04.580Z","shot":"22-flights.png"}
+{"t":"2026-10-28T06:34:04.583Z","i":34,"do":"expectText","note":"AT-157 honest flights scope","soft":true,"text":"I can't change the look of the app from here, so dark mode is best switched in the app's own settings.\n\n6:32 AM","ok":false,"ms":3}
+{"t":"2026-10-28T06:34:04.591Z","i":35,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T06:34:04.596Z","step":"recheck","i":34,"do":"expectText","late":true}
+{"t":"2026-10-28T06:34:04.939Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T06:34:04.953Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T06:34:04.957Z","step":"jobTrail","steps":0,"calls":2}
