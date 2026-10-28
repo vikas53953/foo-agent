@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n6:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group should I catch you up on? Tell me its name and I'll read it.\n\n6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n6:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three Indian rivers: Ganga, Yamuna and Godavari.\n\n6:31 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Wed 28 Oct\nReplace\nRemove\n6:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n6:31 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Pay electricity bill”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n6:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n6:31 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for Domino's pizza menu and offers\n3\nKeep 3 pizzas that fit best value\n4\nWait for you to pick one\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 6 minutes\nGo\nChange plan\n6:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n6:31 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n6:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:32 AM"
+  }
+]

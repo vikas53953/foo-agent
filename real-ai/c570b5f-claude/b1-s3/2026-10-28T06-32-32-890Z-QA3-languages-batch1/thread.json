@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:32 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Anthropic key (your AI)\n6:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:32 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Anthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n6:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:32 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।\n6:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "आलू गोभी बना लो। गोभी और आलू को हल्दी, जीरा और धनिया पाउडर के साथ भून लो, नमक डालो और ढककर पका लो—बस 20 मिनट में तैयार।\n\n6:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।\n6:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਬਟਰਸਕੌਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਵਧੀਆ ਰਹੇਗਾ। ਦੋਵੇਂ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਨੇ, ਅਤੇ ਹਰ ਬੇਕਰੀ ਵਿੱਚ ਮਿਲ ਜਾਂਦੇ ਨੇ।\n\n6:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?\n6:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "8:15 AM बजे लगा लो। 45 मिनट रास्ता, फिर थोड़ा टाइम तैयार होने का—बन जाएगा।\n\n6:34 AM"
+  }
+]
