@@ -1,3 +1,0 @@
-{"kind":"step","job_id":"j_01a180cb-3678-7dc2-89c5-0af78578d3c7","idx":0,"phrase_key":"find_trains","state":"waiting_user","attempts":0,"route":"browser","started_at":1793162166417,"finished_at":null}
-{"kind":"step","job_id":"j_01a180cb-3678-7dc2-89c5-0af78578d3c7","idx":1,"phrase_key":"look_for","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
-{"kind":"call","job_id":"j_01a180cb-3678-7dc2-89c5-0af78578d3c7","step_idx":0,"tool":"memory.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793162170932,"finished_at":1793162170937}

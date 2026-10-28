@@ -1,0 +1,2 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-25-04-526Z-J01-J02-first-run"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-28-15-640Z-J01-J02-first-run"}

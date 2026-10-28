@@ -1,6 +1,0 @@
-{"kind":"step","job_id":"j_01a180ca-8777-7d1a-b0d3-8f8a4c66b554","idx":0,"phrase_key":"read_app","state":"waiting_user","attempts":0,"route":"api","started_at":1793162119043,"finished_at":null}
-{"kind":"call","job_id":"j_01a180ca-8777-7d1a-b0d3-8f8a4c66b554","step_idx":0,"tool":"browser.open","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793162125240,"finished_at":1793162127454}
-{"kind":"call","job_id":"j_01a180ca-8777-7d1a-b0d3-8f8a4c66b554","step_idx":0,"tool":"browser.snapshot","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793162131756,"finished_at":1793162131898}
-{"kind":"call","job_id":"j_01a180ca-8777-7d1a-b0d3-8f8a4c66b554","step_idx":0,"tool":"browser.wait","action_class":"prepare","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793162136490,"finished_at":1793162141499}
-{"kind":"call","job_id":"j_01a180ca-8777-7d1a-b0d3-8f8a4c66b554","step_idx":0,"tool":"browser.snapshot","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793162145222,"finished_at":1793162145237}
-{"kind":"call","job_id":"j_01a180ca-8777-7d1a-b0d3-8f8a4c66b554","step_idx":0,"tool":"job.needSignIn","action_class":"prepare","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793162153468,"finished_at":1793162153472}
