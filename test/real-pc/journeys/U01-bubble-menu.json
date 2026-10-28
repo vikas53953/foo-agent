@@ -220,7 +220,7 @@
     },
     {
       "do": "eval",
-      "js": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];window.__tryAgain={n:b.length,t:(b.at(-1)?.innerText||'')};return b.length})()"
+      "js": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];window.__tryAgain={n:b.length,t:(b.at(-1)?.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim()};return b.length})()"
     },
     {
       "do": "click",
@@ -237,8 +237,8 @@
     {
       "do": "waitJs",
       "timeoutMs": 150000,
-      "js": "(()=>{const w=window.__tryAgain;if(!w)return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const t=b.at(-1)?.innerText||'';return b.length===w.n+1||(b.length===w.n&&t!==w.t&&t.trim()!=='')})()",
-      "expect": "Try again writes the answer again: the last answer's text changes in place (CR-0059), or a fresh answer follows; no duplicate bubbles"
+      "js": "(()=>{const w=window.__tryAgain;if(!w)return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();if(!t)return false;return b.length===w.n+1||(b.length===w.n&&t!==w.t&&f.innerText.includes('Rewritten'))})()",
+      "expect": "Try again writes the answer again: a finished, non-error answer whose text changed in place and is marked Rewritten (CR-0059), or a fresh finished answer follows; no duplicate bubbles"
     },
     {
       "do": "wait",

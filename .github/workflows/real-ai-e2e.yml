@@ -22,7 +22,7 @@ on:
         default: all
         required: true
       max_journeys:
-        description: Stop after this many journeys per AI (cost cap)
+        description: Stop after this many journeys per AI in each set, batch1 and other (cost cap)
         default: '80'
         required: true
       shards:
@@ -166,7 +166,7 @@ jobs:
               case "$b1" in *" $j "*) [ "$SET" = "batch1" ] && list="$list $j" ;; *) [ "$SET" = "other" ] && list="$list $j" ;; esac
             done
           elif [ "$SET" = "batch1" ]; then list="$JOURNEYS"
-          else echo "journeys named by hand run in the batch1 set only"; exit 0
+          else echo "journeys named by hand run in the batch1 set only"; rm -rf "$FOO_REAL_TEST_DIR/runs"; exit 0 # no runs, so no push: the evidence of an earlier full run stays
           fi
           list=$(echo $list) # one line, single spaces, so the J01 check below sees " J01-J02-first-run "
           # The first run must pick the AI; every other journey needs it, so it always goes first.

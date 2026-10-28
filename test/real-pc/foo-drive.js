@@ -645,6 +645,8 @@ async function main() {
   for (const r of results) {
     const s = journey.steps[r.i];
     if (r.ok !== false || r.didntGetThat || r.refused) continue;
+    // A reply that never came (or never settled, or showed what it must not) stays failed; a late look can't stand in for it.
+    if (r.do === 'waitReply' && (!(r.newBubbles > 0) || r.stillWorking || r.neverSeenMs !== undefined)) continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
     const now = await endState(named).catch(() => false);

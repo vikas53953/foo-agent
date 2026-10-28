@@ -5,6 +5,11 @@
   "features": "shipped",
   "steps": [
     {
+      "do": "eval",
+      "js": "(()=>{window.__r1n=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__r1n})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
       "do": "send",
       "text": "Make a table comparing 3 budget phones under 20000 rupees"
     },
@@ -12,8 +17,8 @@
       "do": "waitReply",
       "timeoutMs": 180000,
       "shot": "table",
-      "expect": "one reply: a table in chat, or the honest jobs-off line; never a plan card or a job (jobs are off in batch 1)",
-      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]'))return false;const f=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!f&&(!!f.querySelector('[data-testid=\"bubble-table\"]')||f.innerText.includes('I can’t do tasks for you yet'))})()"
+      "expect": "a new, finished answer with a table in chat; never a plan card or a job (jobs are off in batch 1, and a table is words, so it is a chat answer)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__r1n===undefined||b.length<=window.__r1n||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&!!f.querySelector('[data-testid=\"bubble-table\"]')})()"
     },
     {
       "do": "check",
@@ -26,6 +31,11 @@
       "name": "thread-table"
     },
     {
+      "do": "eval",
+      "js": "(()=>{window.__r1n=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__r1n})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
       "do": "send",
       "text": "Plan a 3 day trip to Jaipur for my parents"
     },
@@ -34,7 +44,7 @@
       "timeoutMs": 240000,
       "shot": "trip",
       "expect": "one reply: a day-by-day plan in chat, or the honest jobs-off line; never a plan card or a job",
-      "expectJs": "(()=>!document.querySelector('[data-testid=\"card-plan\"]')&&!![...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1))()"
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__r1n===undefined||b.length<=window.__r1n||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return t.length>40||t.includes('I can’t do tasks for you yet')})()"
     },
     {
       "do": "check",
