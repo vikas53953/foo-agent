@@ -1,0 +1,57 @@
+{
+  "journey": "J10-hotel",
+  "title": "Hotel search with payment approval (never approves)",
+  "steps": 6,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T04-26-02-380Z-J10-hotel",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793161568074,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 137
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 8123,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for Goa hotels for Fri 6 Nov to Sun 8 Nov\n3\nKeep 3 hotels that fit best rated under ₹6,000 a night\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n4:26 AM",
+      "kit": [],
+      "ms": 14180
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 42
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 180007
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

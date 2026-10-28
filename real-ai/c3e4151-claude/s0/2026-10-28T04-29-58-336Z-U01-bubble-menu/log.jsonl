@@ -1,0 +1,59 @@
+{"t":"2026-10-28T04:29:58.337Z","journey":"U01-bubble-menu","title":"Bubble menu: copy, react, reply, edit, try again, good and bad","spec":"04 §1–§8, 10-2 §C.3 Your bubble / foo bubble / Reactions","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T04:30:04.140Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:30:12.258Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8114}
+{"t":"2026-10-28T04:30:13.320Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1062}
+{"t":"2026-10-28T04:30:13.498Z","i":1,"do":"send","sentAt":1793161813431,"sent":true,"before":0,"ok":true,"ms":178}
+{"t":"2026-10-28T04:30:25.125Z","i":2,"do":"waitReply","expect":"one short reply; my bubble shows a tick and a badge, never ⚠","firstReplyMs":5078,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Delhi has more than 1,000 years of history layered in one city, and Delhi's Sultanate-era Qutub Minar, built from 1199 onwards, is still among the tallest brick minarets in the world.\n\n4:30 AM","kit":[],"ms":11626}
+{"t":"2026-10-28T04:30:25.199Z","shot":"01-fact.png"}
+{"t":"2026-10-28T04:30:25.279Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-28T04:30:25.366Z","i":4,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-10-28T04:30:25.967Z","i":5,"do":"wait","expect":"menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select","ok":true,"ms":601}
+{"t":"2026-10-28T04:30:26.033Z","shot":"03-foo-menu.png"}
+{"t":"2026-10-28T04:30:26.112Z","i":6,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-28T04:30:26.192Z","i":7,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-28T04:30:26.268Z","i":8,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-28T04:30:26.869Z","i":9,"do":"wait","expect":"reaction picker with emoji options","ok":true,"ms":601}
+{"t":"2026-10-28T04:30:28.127Z","shot":"04-react-picker.png"}
+{"t":"2026-10-28T04:30:28.225Z","i":10,"do":"click","soft":true,"ok":true,"ms":98}
+{"t":"2026-10-28T04:30:29.026Z","i":11,"do":"wait","expect":"reaction chip under foo bubble","ok":true,"ms":801}
+{"t":"2026-10-28T04:30:29.094Z","shot":"05-reacted.png"}
+{"t":"2026-10-28T04:30:29.096Z","i":12,"do":"check","note":"reaction chip shows","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T04:30:29.191Z","i":13,"do":"click","soft":true,"ok":true,"ms":95}
+{"t":"2026-10-28T04:30:29.991Z","i":14,"do":"wait","expect":"clicking my reaction again removes it","ok":true,"ms":800}
+{"t":"2026-10-28T04:30:30.059Z","shot":"06-reaction-removed.png"}
+{"t":"2026-10-28T04:30:30.147Z","i":15,"do":"click","soft":true,"ok":true,"ms":88}
+{"t":"2026-10-28T04:30:30.748Z","i":16,"do":"wait","expect":"menu on my bubble: Reply, Copy, React, Edit, Select, Delete","ok":true,"ms":601}
+{"t":"2026-10-28T04:30:30.810Z","shot":"07-my-menu.png"}
+{"t":"2026-10-28T04:30:30.904Z","i":17,"do":"click","soft":true,"ok":true,"ms":94}
+{"t":"2026-10-28T04:30:31.412Z","i":18,"do":"wait","expect":"reply quote above the composer with a close X","ok":true,"ms":507}
+{"t":"2026-10-28T04:30:31.495Z","shot":"08-reply-quote.png"}
+{"t":"2026-10-28T04:30:31.612Z","i":19,"do":"send","sentAt":1793161831608,"sent":true,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-28T04:30:42.718Z","i":20,"do":"waitReply","expect":"my bubble shows the quoted message; foo answers about Amritsar","firstReplyMs":4063,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Golden Temple in Amritsar runs one of the world's largest free kitchens, serving langar to around 1,00,000 people every day, whoever they are.\n\n4:30 AM","kit":[],"ms":11106}
+{"t":"2026-10-28T04:30:42.774Z","shot":"09-reply-sent.png"}
+{"t":"2026-10-28T04:30:42.776Z","i":21,"do":"check","note":"quote shows inside my bubble","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T04:30:42.847Z","i":22,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-10-28T04:30:42.926Z","i":23,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-28T04:30:43.427Z","i":24,"do":"wait","expect":"composer in edit mode with my text","ok":true,"ms":501}
+{"t":"2026-10-28T04:30:43.494Z","shot":"10-edit-mode.png"}
+{"t":"2026-10-28T04:30:43.508Z","i":25,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-10-28T04:30:43.532Z","i":26,"do":"key","ok":true,"ms":24}
+{"t":"2026-10-28T04:31:03.535Z","i":27,"do":"wait","expect":"my bubble says edited; foo answers the edited question","ok":true,"ms":20003}
+{"t":"2026-10-28T04:31:03.608Z","shot":"11-edited.png"}
+{"t":"2026-10-28T04:31:03.612Z","i":28,"do":"expectText","note":"edited label","soft":true,"text":"You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n4:30 AM","ok":true,"ms":4}
+{"t":"2026-10-28T04:31:03.709Z","i":29,"do":"click","soft":true,"ok":true,"ms":97}
+{"t":"2026-10-28T04:31:03.867Z","i":30,"do":"click","soft":true,"ok":true,"ms":157}
+{"t":"2026-10-28T04:31:04.669Z","i":31,"do":"wait","expect":"thumbs up feedback recorded quietly","ok":true,"ms":801}
+{"t":"2026-10-28T04:31:04.731Z","shot":"12-good.png"}
+{"t":"2026-10-28T04:31:04.805Z","i":32,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-28T04:31:04.881Z","i":33,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-28T04:31:05.683Z","i":34,"do":"wait","expect":"feedback chips / field after thumbs down","ok":true,"ms":802}
+{"t":"2026-10-28T04:31:05.741Z","shot":"13-bad-feedback.png"}
+{"t":"2026-10-28T04:31:05.745Z","i":35,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-28T04:31:05.815Z","i":36,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-28T04:31:05.894Z","i":37,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-28T04:33:36.229Z","i":38,"do":"waitReply","expect":"a fresh answer replaces or follows; no duplicate bubbles","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150335}
+{"t":"2026-10-28T04:33:36.288Z","shot":"14-try-again.png"}
+{"t":"2026-10-28T04:33:36.299Z","i":39,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T04:33:36.448Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T04:33:36.461Z","step":"aiTurns","turns":5}
+{"t":"2026-10-28T04:33:36.463Z","step":"jobTrail","steps":0,"calls":0}

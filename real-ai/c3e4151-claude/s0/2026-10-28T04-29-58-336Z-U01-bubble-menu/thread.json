@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:26 AM\n4:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:26 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for Goa hotels for Fri 6 Nov to Sun 8 Nov\nKept 3 hotels that fit best rated under ₹6,000 a night\nYou picked\nStopped by you\n4:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n4:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n4:29 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n4:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n4:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 years of history layered in one city, and Delhi's Sultanate-era Qutub Minar, built from 1199 onwards, is still among the tallest brick minarets in the world.\n\n4:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n4:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is nicknamed the \"Manchester of India\" because its hosiery and woollen factories make a huge share of the country's winter wear.\n\nShow earlier answer\nRewritten\n4:30 AM"
+  }
+]
