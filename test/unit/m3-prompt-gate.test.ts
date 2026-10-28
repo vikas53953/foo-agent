@@ -145,7 +145,7 @@ describe('m3 ReleaseGate', () => {
     expect(gate.releasedText).toBe(ANSWER);
   });
 
-  it('untagged sentences already out, then a <say> block: the say ends at the tag, the block never shows', async () => {
+  it('untagged sentences already out, then the same answer in a <say> block: shown once, never the tags', async () => {
     const { clock, out, gate } = setup();
     gate.feed(`${ANSWER} `);
     clock.advance(1_500);
@@ -156,6 +156,18 @@ describe('m3 ReleaseGate', () => {
     await gate.done;
     expect(gate.releasedText.trim()).toBe(ANSWER);
     expect(gate.releasedText).not.toMatch(/<\/?say>|<sa/);
+  });
+
+  it('a preamble already out, then the answer in a <say> block: the answer still shows after it, without the tags', async () => {
+    // Review on #168: the first token comes after the 1.5 s hold and "\n\n" arrives on its own, so the preamble is out first.
+    const { clock, gate } = setup();
+    clock.advance(1_500);
+    gate.feed('Let me check. ');
+    gate.feed('\n\n');
+    gate.feed('<say>Let me check. No, I cannot book cabs yet.\nSuggestions: What can you do?</say>');
+    gate.feed('<act>{}</act>');
+    await gate.done;
+    expect(gate.releasedText.replace(/\s+/g, ' ').trim()).toBe('Let me check. No, I cannot book cabs yet.');
   });
 
   it('end() closes an unclosed say; nothing is released for an empty say', async () => {

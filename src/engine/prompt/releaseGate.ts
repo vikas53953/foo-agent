@@ -51,6 +51,18 @@ const BOUNDARY = /[.?!।\n]\s+|\n/gu;
 /** A ``` fence line start (the bubble's fence rule, renderer/messages/markdownParse.ts). */
 const FENCE_LINE = /^[ \t]*```/gmu; // [ \t] not \s: \s would swallow blank lines before a fence
 
+/** CR-0068: the sentences of a late `<say>` block that the text already shown does not hold, joined back; '' when none. */
+function newSentences(block: string, shown: string): string {
+  const norm = (x: string) => x.replace(/\s+/gu, ' ').trim().toLowerCase();
+  const seen = norm(shown);
+  // The Suggestions: and Actions: lines never reach the bubble (04-2 §21.7); the chips come from the parsed say.
+  return splitActions(splitSuggestions(block).text)
+    .text.split(/(?<=[.?!।])\s+|\n+/u)
+    .filter((x) => norm(x) && !seen.includes(norm(x)))
+    .join(' ')
+    .trim();
+}
+
 /**
  * Streaming release gate for one chat-lane turn. Feed every raw delta of the reply with {@link feed}; call {@link end} when
  * the AI's reply is finished. Releases come only through `onRelease`, never a partial sentence.
@@ -128,17 +140,33 @@ export class ReleaseGate {
     }
     const raw = this.buf.slice(this.bodyStart);
     // CR-0068 (QA-X-F31): untagged text that a <say> block follows. Nothing queued yet: the reply is tagged after all and
-    // the text before the tag is stray (item 1, as parseEnvelope reads it). Sentences already queued: the say ends at the
-    // tag, so the block (the same answer again) is never shown, tags and all.
+    // the text before the tag is stray (item 1, as parseEnvelope reads it). Sentences already queued cannot be taken back:
+    // the say is that text, then the block's sentences it does not already hold (the same answer again adds nothing; a
+    // block after a preamble like "Let me check." is still shown), never the tags.
     const lateSay = this.tagged ? -1 : raw.indexOf(SAY_OPEN);
     const act = raw.indexOf(ACT_OPEN);
-    if (lateSay !== -1 && (act === -1 || lateSay < act) && this.consumed === 0) {
-      this.tagged = true;
-      this.bodyStart += lateSay + SAY_OPEN.length;
-      this.parse(final);
+    if (lateSay !== -1 && (act === -1 || lateSay < act)) {
+      if (this.consumed === 0) {
+        this.tagged = true;
+        this.bodyStart += lateSay + SAY_OPEN.length;
+        this.parse(final);
+        return;
+      }
+      const before = raw.slice(0, lateSay).trimStart();
+      const rest = raw.slice(lateSay + SAY_OPEN.length);
+      const blockEnds = [rest.indexOf(SAY_CLOSE), rest.indexOf(ACT_OPEN)].filter((i) => i !== -1);
+      if (!blockEnds.length && !final) {
+        this.body = before;
+        if (this.streaming) this.queueSentences(this.body.length);
+        return;
+      }
+      const extra = newSentences(blockEnds.length ? rest.slice(0, Math.min(...blockEnds)) : rest, before);
+      this.body = extra ? `${before}${/\s$/.test(before) ? '' : ' '}${extra}` : before;
+      this.body = splitActions(splitSuggestions(this.body).text).text;
+      this.close();
       return;
     }
-    const ends = [act, this.tagged ? raw.indexOf(SAY_CLOSE) : lateSay].filter((i) => i !== -1);
+    const ends = [act, this.tagged ? raw.indexOf(SAY_CLOSE) : -1].filter((i) => i !== -1);
     if (ends.length || final) {
       this.body = ends.length ? raw.slice(0, Math.min(...ends)) : raw;
       if (!this.tagged) this.body = this.body.trimStart();

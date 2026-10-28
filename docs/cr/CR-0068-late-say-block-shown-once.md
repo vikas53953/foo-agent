@@ -16,13 +16,16 @@ text before the tag is stray. The spec does not say what the gate does when a `<
 
 1. Before any untagged sentence was queued for release, a `<say>` tag that comes before `<act>` makes the reply tagged:
    the block's text is the say, and the text before the tag is stray (item 1, as parseEnvelope reads it).
-2. Once untagged sentences were already released (item 2's sentence mode), they cannot be taken back, so the say ends
-   at the `<say>` tag and the block is not shown.
-3. While untagged text streams, a partial `<say` at its end is held like a partial `</say>` or `<act>`.
+2. Once untagged sentences were queued (item 2's sentence mode), they cannot be taken back. The say is that text, then
+   the sentences of the block it does not already hold: the same answer again adds nothing, and an answer after a
+   preamble ("Let me check.") still shows. The tags never show.
+3. While streaming untagged text, a partial `<say` at its end is held like a partial `</say>` or `<act>`.
+4. Known limit: an untagged reply that quotes a literal `<say>` (say, in a code sample) is read as tagged from that tag,
+   as parseEnvelope already reads it.
 
 ## (c) Evidence
 
-| Test                                                                                    | main 2467a76 | this change |
-| --------------------------------------------------------------------------------------- | ------------ | ----------- |
-| `m3-prompt-gate.test.ts`: three late-`<say>` cases (whole, small pieces, sentence mode) | red          | green       |
-| QA-X-F31 (QA's PR #166, fake AI)                                                        | red          | green       |
+| Test                                                                                           | main 2467a76 | this change |
+| ---------------------------------------------------------------------------------------------- | ------------ | ----------- |
+| `m3-prompt-gate.test.ts`: four late-`<say>` cases (whole, small pieces, same answer, preamble) | red          | green       |
+| QA-X-F31 (QA's PR #166, fake AI)                                                               | red          | green       |
