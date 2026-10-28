@@ -1,0 +1,214 @@
+{
+  "id": "QA6-refusals-batch1",
+  "title": "Batch-1 refusals with real Claude: flight, table, pay and order asks get the fixed jobs-off line; email and WhatsApp asks are honest, with no invented messages and no Connect card",
+  "spec": "QA audit 28 Oct: batch-1 items not yet proven with real Claude",
+  "covers": ["batch-1 refusals"],
+  "features": "shipped",
+  "profile": "own",
+  "gate": true,
+  "steps": [
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "finder",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "note": "Add key on the Anthropic key row: opens the Secret box"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000,
+      "shot": "secret-box",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "note": "the key typed into foo's own Secret box, masked"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "key-tested",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "note": "more than one AI works: pick the key, not the Claude app"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "note": "only the key works: Use it"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-skip-rest",
+      "timeoutMs": 60000,
+      "shot": "step2",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name"
+    },
+    {
+      "do": "expectText",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "re": "Anthropic key",
+      "note": "foo uses the key, not the Claude app"
+    },
+    {
+      "do": "click",
+      "tid": "setup-skip-rest"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat"
+    },
+    {
+      "do": "send",
+      "text": "Book me a flight to Goa on Sat 12 Dec"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-flight",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "a flight booking with jobs off gets the app's fixed line, no plan card, never 'booked'",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.t do tasks for you yet/i.test(t)&&!/booked|confirmed|PNR/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Book a table for 2 tonight at a cafe in Delhi"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-table",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "a table booking with jobs off gets the app's fixed line, never 'booked'",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.t do tasks for you yet/i.test(t)&&!/booked|reserved|confirmed/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Pay my electricity bill now"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-pay",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "a payment ask with jobs off gets the app's fixed line, never 'paid'",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.t do tasks for you yet/i.test(t)&&!/\\bpaid\\b|payment (is )?(done|successful)/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Order me a pizza from Dominos"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-order",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "an order with jobs off gets the app's fixed line, never 'ordered'",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.t do tasks for you yet/i.test(t)&&!/\\bordered\\b|on its way|order (is )?placed/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "check my email"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-email",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "no apps are connected in batch 1: says plainly it can't read email, invents no inbox, shows no Connect card, never promises to 'look'",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.?t|cannot|not (yet )?(connected|linked|able)|no access|don.t have access|isn.t connected/i.test(t)&&!/new emails? from|your inbox (has|shows)/i.test(t)&&!/I.ll look/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "what did I miss on WhatsApp"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-whatsapp",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "says plainly it can't see WhatsApp, invents no messages, no Connect card",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.?t|cannot|not (yet )?(connected|linked|able)|no access|don.t have access|isn.t connected/i.test(t)&&!/messaged you|sent you|missed \\d/i.test(t)&&!/I.ll look/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Read my latest Gmail"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q6-gmail",
+      "feature": "refusals",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "says plainly it can't read Gmail, invents no email, no Connect card",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /can.?t|cannot|not (yet )?(connected|linked|able)|no access|don.t have access|isn.t connected/i.test(t)&&!/subject:|from:|your latest email (is|says)/i.test(t)&&!/I.ll look/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"thread-log\"] [data-testid=\"card-connect\"]",
+      "count": 0,
+      "note": "batch 1 has connections off: no Connect card anywhere"
+    },
+    {
+      "do": "check",
+      "css": "[data-testid=\"thread-log\"] [data-testid=\"card-checklist\"]",
+      "count": 0,
+      "note": "batch 1 has jobs off: no plan card anywhere"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
