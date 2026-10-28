@@ -32,7 +32,7 @@ import type { FakeLine } from '../../e2e/fakeAi';
 import { advance, jobState } from '../../e2e/m4-start';
 import { ASK_LANDLORD, draftsGoogle, LANDLORD, LANDLORD_BODY, waitForDraft } from '../../e2e/m8-drafts-world';
 import { say } from '../../e2e/m9-booking-world';
-import { fooSaid, laneRun, tool } from '../../e2e/m9-lanes';
+import { checklistUp, fooSaid, laneRun, tool } from '../../e2e/m9-lanes';
 import { openLive, sendLiveState, setThemeBoth, sizeWindow, startLive } from '../../e2e/m9-live-world';
 import { byTid, captureUx, openChat, quoted, rest, setTheme, settle, step, THEMES } from '../capture';
 
@@ -361,10 +361,7 @@ test('UX-15 · Watch live, take over, stop: step UX-15-05 (take over and hand ba
       });
     expect(job.state, seen()).toBe('working');
     const checklist = page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist)).filter({ hasText: job.title });
-    // The checklist posts 1.5 s of fake time after the job starts (CHECKLIST_AFTER_MS). With the browser already warm
-    // (laneRun's warm-up) the job can reach its held step before the clock has moved that far, so move it on here: a few
-    // seconds, far short of the hold.
-    await run.until(async () => (await checklist.count()) === 1, 'the checklist is up', 10);
+    await checklistUp(run, job.title);
     await expect(checklist, `the checklist is up: ${seen()}`).toHaveCount(1, { timeout: 15_000 });
 
     await test.step('UX-15-05 · Take over, then hand back: the checklist says "You took over", foo says "Carrying on from here."', async () => {
