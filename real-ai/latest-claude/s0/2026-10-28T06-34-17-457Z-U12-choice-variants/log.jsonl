@@ -1,0 +1,25 @@
+{"t":"2026-10-28T06:34:17.457Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:34:23.011Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:34:24.062Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1047}
+{"t":"2026-10-28T06:34:24.200Z","i":1,"do":"send","sentAt":1793169264168,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-28T06:34:50.445Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":20199,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three ideas for this weekend:\n\nSouth Indian breakfast crawl: dosa and filter coffee at classics like CTR, MTR and Vidyarthi Bhavan, since you love South Indian food.\nSunrise at Nandi Hills: an early start, cool views, and back by lunch.\nLalbagh and a slow stroll: gardens in the morning, then coffee nearby.\n\nWhich one sounds like you?\n\n6:34 AM","kit":[],"ms":26244}
+{"t":"2026-10-28T06:34:50.523Z","shot":"01-choice.png"}
+{"t":"2026-10-28T06:35:00.604Z","shot":"03-error-step3.png"}
+{"t":"2026-10-28T06:35:00.604Z","i":3,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10080}
+{"t":"2026-10-28T06:35:00.728Z","i":4,"do":"send","sentAt":1793169300721,"sent":true,"before":0,"ok":true,"ms":124}
+{"t":"2026-10-28T06:35:21.388Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":14119,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Got it, I’ll fold that in.\n\n6:35 AM\n---\nWhich train did you mean by the second one?\n1\nShatabdi Express (12002)\nBEST FIT\n6:00 AM to 7:50 AM, 1 hr 50 min\n2\nPunjab Mail (12138)\n5:10 AM to 8:10 AM, 3 hr\n3\nTaj Express (12280)\n6:55 AM to 9:25 AM, 2 hr 30 min\nSomething else…\nSkip\n6:35 AM","kit":[],"ms":20660}
+{"t":"2026-10-28T06:35:21.466Z","shot":"04-typed-pick.png"}
+{"t":"2026-10-28T06:35:21.562Z","i":6,"do":"send","sentAt":1793169321551,"sent":true,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-28T06:35:42.863Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":12749,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three dinner ideas, with your South Indian love in mind:\n\nDosa and idli dinner: crisp ghee roast, soft idlis and filter coffee at a classic spot like MTR.\nAndhra-style meal: spicy curries and rice on a banana leaf, at a place like Nagarjuna.\nLight home-style dinner: curd rice, rasam and a veg curry, easy on the stomach before your early Nandi Hills start.\n\nWhich one sounds right?\n\n6:35 AM","kit":[],"ms":21300}
+{"t":"2026-10-28T06:35:42.932Z","shot":"05-choice-2.png"}
+{"t":"2026-10-28T06:35:43.025Z","i":8,"do":"click","soft":true,"ok":true,"ms":93}
+{"t":"2026-10-28T06:35:43.627Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":601}
+{"t":"2026-10-28T06:35:43.693Z","shot":"06-something-else.png"}
+{"t":"2026-10-28T06:35:43.790Z","i":10,"do":"send","sentAt":1793169343771,"sent":true,"before":0,"ok":true,"ms":97}
+{"t":"2026-10-28T06:36:06.917Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":17095,"newBubbles":2,"ok":true,"duplicates":0,"lastReply":"Dal chawal sounds lovely. Is that for something I should look up, like a recipe or a meal plan?\n\n6:36 AM\n---\nMorning trains from New Delhi to Agra Cantt:\n\nShatabdi 12002: 6:00 AM to 7:50 AM, 1:50 hrs, fastest\nPunjab Mail 12138: 5:10 AM to 8:10 AM, 3:00 hrs\nTaj Express 12280: 6:55 AM to 9:25 AM, 2:30 hrs\n\nLowest fares on this route by class: 1A ₹1,190 2A ₹725 3A ₹520 SL ₹150. Fares for each train were not listed, so check the exact price on ixigo or ConfirmTkt for your date. Nothing was booked.\n\n6:36 AM","kit":[],"ms":23127}
+{"t":"2026-10-28T06:36:06.994Z","shot":"07-own-answer.png"}
+{"t":"2026-10-28T06:36:07.008Z","i":12,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-28T06:36:07.013Z","step":"recheck","i":3,"do":"shotEl","late":true}
+{"t":"2026-10-28T06:36:07.244Z","step":"appLog","lines":18,"dropped":0}
+{"t":"2026-10-28T06:36:07.258Z","step":"aiTurns","turns":11}
+{"t":"2026-10-28T06:36:07.261Z","step":"jobTrail","steps":0,"calls":2}

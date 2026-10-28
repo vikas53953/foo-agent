@@ -1,0 +1,24 @@
+{"t":"2026-10-28T06:31:55.147Z","journey":"B07-live","title":"Watch live, take over, hand back, stop","spec":"AT-058, AT-272, AT-078, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:32:00.764Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:32:00.916Z","i":0,"do":"send","sentAt":1793169120878,"sent":true,"before":0,"ok":true,"ms":148}
+{"t":"2026-10-28T06:32:14.035Z","i":1,"do":"waitReply","firstReplyMs":7077,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking IRCTC\n1\nCheck IRCTC\n2\nFind trains on IRCTC\n3\nLook for Morning trains from New Delhi to Agra on\nAbout 3 minutes\nGo\nChange plan\n6:32 AM","kit":[],"ms":13118}
+{"t":"2026-10-28T06:32:14.098Z","shot":"01-irctc.png"}
+{"t":"2026-10-28T06:32:14.138Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":39}
+{"t":"2026-10-28T06:32:59.140Z","i":3,"do":"wait","ok":true,"ms":45001}
+{"t":"2026-10-28T06:32:59.209Z","i":4,"do":"clickIf","found":1,"ok":true,"ms":69}
+{"t":"2026-10-28T06:33:03.211Z","i":5,"do":"wait","ok":true,"ms":4001}
+{"t":"2026-10-28T06:33:03.285Z","shot":"02-live.png"}
+{"t":"2026-10-28T06:33:03.287Z","i":6,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:33:06.288Z","i":7,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-10-28T06:33:06.348Z","shot":"03-taken-over.png"}
+{"t":"2026-10-28T06:33:06.350Z","i":8,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:33:09.360Z","i":9,"do":"wait","ok":true,"ms":3010}
+{"t":"2026-10-28T06:33:09.440Z","shot":"04-handed-back.png"}
+{"t":"2026-10-28T06:33:09.442Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:33:17.443Z","i":11,"do":"wait","ok":true,"ms":8001}
+{"t":"2026-10-28T06:33:17.502Z","shot":"05-stopped.png"}
+{"t":"2026-10-28T06:33:17.505Z","i":12,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-28T06:33:17.514Z","i":13,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:33:21.149Z","step":"appLog","lines":18,"dropped":0}
+{"t":"2026-10-28T06:33:21.162Z","step":"aiTurns","turns":12}
+{"t":"2026-10-28T06:33:21.165Z","step":"jobTrail","steps":3,"calls":9}

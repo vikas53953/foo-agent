@@ -1,0 +1,129 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-34-17-457Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1047
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793169264168,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 137
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 20199,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Three ideas for this weekend:\n\nSouth Indian breakfast crawl: dosa and filter coffee at classics like CTR, MTR and Vidyarthi Bhavan, since you love South Indian food.\nSunrise at Nandi Hills: an early start, cool views, and back by lunch.\nLalbagh and a slow stroll: gardens in the morning, then coffee nearby.\n\nWhich one sounds like you?\n\n6:34 AM",
+      "kit": [],
+      "ms": 26244
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "error": "locator.screenshot: Timeout 10000ms exceeded.",
+      "ms": 10080,
+      "late": true
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793169300721,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 14119,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got it, I’ll fold that in.\n\n6:35 AM\n---\nWhich train did you mean by the second one?\n1\nShatabdi Express (12002)\nBEST FIT\n6:00 AM to 7:50 AM, 1 hr 50 min\n2\nPunjab Mail (12138)\n5:10 AM to 8:10 AM, 3 hr\n3\nTaj Express (12280)\n6:55 AM to 9:25 AM, 2 hr 30 min\nSomething else…\nSkip\n6:35 AM",
+      "kit": [],
+      "ms": 20660
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793169321551,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 12749,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Three dinner ideas, with your South Indian love in mind:\n\nDosa and idli dinner: crisp ghee roast, soft idlis and filter coffee at a classic spot like MTR.\nAndhra-style meal: spicy curries and rice on a banana leaf, at a place like Nagarjuna.\nLight home-style dinner: curd rice, rasam and a veg curry, easy on the stomach before your early Nandi Hills start.\n\nWhich one sounds right?\n\n6:35 AM",
+      "kit": [],
+      "ms": 21300
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793169343771,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 17095,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal sounds lovely. Is that for something I should look up, like a recipe or a meal plan?\n\n6:36 AM\n---\nMorning trains from New Delhi to Agra Cantt:\n\nShatabdi 12002: 6:00 AM to 7:50 AM, 1:50 hrs, fastest\nPunjab Mail 12138: 5:10 AM to 8:10 AM, 3:00 hrs\nTaj Express 12280: 6:55 AM to 9:25 AM, 2:30 hrs\n\nLowest fares on this route by class: 1A ₹1,190 2A ₹725 3A ₹520 SL ₹150. Fares for each train were not listed, so check the exact price on ixigo or ConfirmTkt for your date. Nothing was booked.\n\n6:36 AM",
+      "kit": [],
+      "ms": 23127
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}
