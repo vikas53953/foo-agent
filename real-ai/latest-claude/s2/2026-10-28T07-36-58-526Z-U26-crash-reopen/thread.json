@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Stop which one? → Both\n7:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n7:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n7:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n7:34 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Restart the table for 2, Sat 31 Oct, 8:00 PM, Connaught Place?\n1\nYes, show options first\nBEST FIT\nVegetarian places, you pick before I book\n2\nNo, leave it\nSomething else…\nSkip\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n7:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here you go:\n\nGrey clouds gather over the Arabian Sea,\nMarine Drive hums with chai and rain.\nLocal trains splash through streets set free,\nAnd Mumbai dances in the monsoon again. 🌧️\n\n7:36 AM"
+  }
+]

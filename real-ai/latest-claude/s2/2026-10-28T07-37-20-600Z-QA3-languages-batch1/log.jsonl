@@ -1,0 +1,37 @@
+{"t":"2026-10-28T07:37:20.600Z","journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:37:26.043Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:37:26.111Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T07:37:26.111Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":4,"shot":"01-welcome.png"}
+{"t":"2026-10-28T07:37:26.251Z","i":1,"do":"click","ok":true,"ms":140}
+{"t":"2026-10-28T07:37:26.345Z","shot":"02-finder.png"}
+{"t":"2026-10-28T07:37:26.345Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":12,"shot":"02-finder.png"}
+{"t":"2026-10-28T07:37:46.411Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T07:37:46.411Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":20001,"shot":"03-finder-tested.png"}
+{"t":"2026-10-28T07:37:46.525Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":113}
+{"t":"2026-10-28T07:37:46.613Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T07:37:46.614Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"ms":3,"shot":"04-secret-box.png"}
+{"t":"2026-10-28T07:37:46.626Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":12}
+{"t":"2026-10-28T07:37:46.734Z","i":7,"do":"click","ok":true,"ms":108}
+{"t":"2026-10-28T07:38:16.804Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T07:38:16.804Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"ms":30002,"shot":"05-key-tested.png"}
+{"t":"2026-10-28T07:38:16.844Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":40}
+{"t":"2026-10-28T07:38:16.952Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":108}
+{"t":"2026-10-28T07:38:16.954Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T07:38:17.053Z","shot":"06-step2.png"}
+{"t":"2026-10-28T07:38:17.053Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"name","ok":true,"ms":3,"shot":"06-step2.png"}
+{"t":"2026-10-28T07:38:17.056Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n7:37 AM","ok":true,"ms":3}
+{"t":"2026-10-28T07:38:17.174Z","i":14,"do":"click","ok":true,"ms":118}
+{"t":"2026-10-28T07:38:27.246Z","shot":"07-first-chat.png"}
+{"t":"2026-10-28T07:38:27.246Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"chat","ok":true,"ms":10003,"shot":"07-first-chat.png"}
+{"t":"2026-10-28T07:38:27.388Z","i":16,"do":"send","typed":"नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।","sentAt":1793173107372,"sent":true,"before":0,"ok":true,"ms":141}
+{"t":"2026-10-28T07:38:38.130Z","shot":"08-q3-hindi.png"}
+{"t":"2026-10-28T07:38:38.130Z","i":17,"do":"waitReply","expect":"Hindi in Devanagari is answered in Devanagari","feature":"chat","timeline":[{"at":21,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":526,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3068,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":4606,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":3052,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"शाम के लिए आलू गोभी बनाओ: कटी गोभी और आलू को जीरा, हल्दी और नमक के साथ धीमी आंच पर ढककर पकाओ। 15 मिनट में तैयार, रोटी के साथ परफेक्ट।\n\n7:38 AM","kit":[],"endState":true,"ms":10677,"shot":"08-q3-hindi.png"}
+{"t":"2026-10-28T07:38:38.237Z","i":18,"do":"send","typed":"ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।","sentAt":1793173118217,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-10-28T07:38:56.646Z","shot":"09-q3-punjabi.png"}
+{"t":"2026-10-28T07:38:56.646Z","i":19,"do":"waitReply","expect":"Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly","feature":"chat","timeline":[{"at":31,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5158,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":12273,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":5648,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਬਟਰਸਕੌਚ ਕੇਕ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਵਧੀਆ ਰਹੇਗਾ: ਦੋਵੇਂ ਮਿੱਠੇ ਤੇ ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਨੇ। ਜੇ ਉਹ ਫਲ ਪਸੰਦ ਕਰਦੀਆਂ ਨੇ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਵੀ ਚੰਗਾ ਆਪਸ਼ਨ ਹੈ।\n\n7:38 AM","kit":[],"endState":true,"ms":18353,"shot":"09-q3-punjabi.png"}
+{"t":"2026-10-28T07:38:56.751Z","i":20,"do":"send","typed":"yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?","sentAt":1793173136740,"sent":true,"before":0,"ok":true,"ms":104}
+{"t":"2026-10-28T07:39:08.021Z","shot":"10-q3-hinglish.png"}
+{"t":"2026-10-28T07:39:08.021Z","i":21,"do":"waitReply","expect":"Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)","feature":"chat","timeline":[{"at":16,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":522,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2575,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":5107,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2563,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"अलार्म सुबह 7:45 बजे लगाओ: तैयार होने के लिए एक घंटा और रास्ते के 45 मिनट, 15 मिनट एक्स्ट्रा। 9 बजे आराम से पहुंच जाओगे।\n\n7:38 AM","kit":[],"endState":true,"ms":11211,"shot":"10-q3-hinglish.png"}
+{"t":"2026-10-28T07:39:08.030Z","i":22,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T07:39:08.165Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T07:39:08.179Z","step":"aiTurns","turns":3}

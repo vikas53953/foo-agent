@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n7:23 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for National Museum Delhi opening hours and\nComparing official site against a second source\nWatch live\nStop\n5 min\n7:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:23 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n7:26 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:27 AM\n7:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:27 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The 3 earliest morning trains from New Delhi station to Agra Cantt:\n\nNDLS-DHO EMU 64074: leaves 4:15 AM, arrives 9:05 AM (4 hr 50 min), runs daily\nPunjab Mail 12138: leaves 5:10 AM, arrives 8:10 AM (3 hr), runs daily, has 1A, 2A, 3A and SL\nShatabdi Express 12002: leaves 6:00 AM, arrives 7:50 AM (1 hr 50 min), runs daily, has CC and EC\n\nEarlier trains, such as Sushasan 22200 at 1:00 AM, leave from Hazrat Nizamuddin, not New Delhi. IRCTC blocked me, so this list comes from another site. Fares and seat availability are not included, so check those before you book.\n\n7:28 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:28 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for well-rated Italian…\nBEST FIT\n2\nLooking on the web\n3\nBoth\nSomething else…\nSkip\n7:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🌿\n\n7:28 AM"
+  }
+]

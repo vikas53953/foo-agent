@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🌿\n\n7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:29 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking for well-rated Italian…\nBEST FIT\n2\nLooking on the web\n3\nBoth\nSomething else…\nSkip\n7:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:29 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Stop which one? → Both\n7:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n7:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n7:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n7:34 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Restart the table for 2, Sat 31 Oct, 8:00 PM, Connaught Place?\n1\nYes, show options first\nBEST FIT\nVegetarian places, you pick before I book\n2\nNo, leave it\nSomething else…\nSkip\n7:34 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:34 AM"
+  }
+]

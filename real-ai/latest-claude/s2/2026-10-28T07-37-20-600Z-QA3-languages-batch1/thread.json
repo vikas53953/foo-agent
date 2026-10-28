@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Anthropic key (your AI)\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Anthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:37 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:37 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:38 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।\n7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "शाम के लिए आलू गोभी बनाओ: कटी गोभी और आलू को जीरा, हल्दी और नमक के साथ धीमी आंच पर ढककर पकाओ। 15 मिनट में तैयार, रोटी के साथ परफेक्ट।\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।\n7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਬਟਰਸਕੌਚ ਕੇਕ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਵਧੀਆ ਰਹੇਗਾ: ਦੋਵੇਂ ਮਿੱਠੇ ਤੇ ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਨੇ। ਜੇ ਉਹ ਫਲ ਪਸੰਦ ਕਰਦੀਆਂ ਨੇ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਵੀ ਚੰਗਾ ਆਪਸ਼ਨ ਹੈ।\n\n7:38 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?\n7:38 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "अलार्म सुबह 7:45 बजे लगाओ: तैयार होने के लिए एक घंटा और रास्ते के 45 मिनट, 15 मिनट एक्स्ट्रा। 9 बजे आराम से पहुंच जाओगे।\n\n7:38 AM"
+  }
+]

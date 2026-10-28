@@ -1,0 +1,13 @@
+{"t":"2026-10-28T07:20:10.273Z","journey":"B06-booking-options","title":"Restaurant options without booking","spec":"AT-036, J9, AT-108, AT-310, AT-311","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:20:15.796Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:20:15.943Z","i":0,"do":"send","typed":"Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?","sentAt":1793172015903,"sent":true,"before":0,"ok":true,"ms":144}
+{"t":"2026-10-28T07:20:29.190Z","shot":"01-italian.png"}
+{"t":"2026-10-28T07:20:29.190Z","i":1,"do":"waitReply","timeline":[{"at":45,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":549,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7159,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":9180,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7118,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for well-rated Italian…\n1\nLook for well-rated Italian restaurants in\n2\nCheck restaurant booking sites for Sat 31 Oct\n3\nKeep 3 restaurants that fit good ratings with a table free\nAbout 3 minutes\nGo\nChange plan\n7:20 AM","kit":[],"ms":13172,"shot":"01-italian.png"}
+{"t":"2026-10-28T07:20:29.227Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":37}
+{"t":"2026-10-28T07:23:29.291Z","shot":"02-italian-later.png"}
+{"t":"2026-10-28T07:23:29.292Z","i":3,"do":"wait","expect":"options shown; no booking Approval card until I say book","ok":true,"ms":180000,"shot":"02-italian-later.png"}
+{"t":"2026-10-28T07:23:29.295Z","i":4,"do":"check","found":0,"ok":true,"ms":3}
+{"t":"2026-10-28T07:23:29.296Z","i":5,"do":"check","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-10-28T07:23:29.311Z","i":6,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-28T07:23:29.439Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-28T07:23:29.452Z","step":"aiTurns","turns":4}
