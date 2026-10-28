@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n9:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! 🌿 Good to see you this Wed 28 Oct morning. What are we sorting out today?\n\n9:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n9:25 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper. The app shows what works on this PC, so just ask and I'll say if I can do it.\n\n9:25 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n9:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it in scrambled form, so nobody in between can read it.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) your data and sends it to the VPN company's machine.\nThat machine unscrambles it and talks to the website for you.\nThe website sees the VPN's address instead of yours, so your location looks different.\nThe reply comes back the same way, scrambled again on the last leg.\n\nIt helps on public Wi-Fi, since strangers on the same network can't read your traffic. It also hides what you browse from your internet provider. It does not make you anonymous: the VPN company can see your activity, and sites can still know you by your logins.\n\n9:26 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n9:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n9:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has a 1,500-year-old iron pillar near the Qutub Minar that has barely rusted, even after all this time.\n\n9:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n9:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because its hosiery and woollen mills produce a huge share of the country's knitwear.\n\nShow earlier answer\nRewritten\n9:26 AM"
+  }
+]
