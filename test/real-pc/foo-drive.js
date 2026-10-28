@@ -278,8 +278,10 @@ async function main() {
     page.evaluate(() => {
       const log = document.querySelector('[data-testid="thread-log"]');
       if (!log) return { n: 0, texts: [], items: [] };
+      // A memory chip or a settings line ("Changed: Zoom → 110%. Undo") is foo's answer too, drawn as a line, not a bubble.
       const memoryChip = (el) =>
-        el.getAttribute('data-testid') === 'thread-marker' && !!el.querySelector('[data-testid="thread-memory-undo"]');
+        el.getAttribute('data-testid') === 'thread-marker' &&
+        (!!el.querySelector('[data-testid="thread-memory-undo"]') || el.hasAttribute('data-setting'));
       // Only top-level rows: a card's own parts (card-connect-allow-send inside card-connect) are not extra replies.
       const nested = (el) => !!el.parentElement?.closest('[data-testid^="bubble-"], [data-testid^="card-"]');
       const all = [...log.querySelectorAll('[data-testid^="bubble-"], [data-testid^="card-"], [data-testid="thread-marker"]')].filter(
@@ -392,6 +394,11 @@ async function main() {
     }
     return -1;
   };
+  // Layouts the design draws on purpose, which the crawler's geometry rules flag (05-2 §5.8.1, §5.8.6): the 40×40 Show
+  // secret eye sits inside the masked field, and "{n} characters" is for Narrator only, never painted.
+  const designed = (i) =>
+    (i.kind === 'controls-overlap' && /card-secret-field\]/.test(i.a) && /card-secret-eye\]/.test(i.b)) ||
+    (i.kind === 'text-clipped' && /^\d+ characters?$/.test(i.text) && /card-secret|dialog-replace-key/.test(i.el));
   const sweep = async (s) => {
     if (!fs.existsSync(INPAGE_FILE)) return { blocked: `crawler helpers not found at ${INPAGE_FILE}`, controls: [] };
     await page.evaluate(fs.readFileSync(INPAGE_FILE, 'utf8'));
@@ -435,13 +442,19 @@ async function main() {
         continue;
       }
       await backTo(s);
-      // Clicking the tab or option that is already chosen correctly does nothing (the QA crawler skips it the same way).
+      // Clicking the tab, option or page link that is already chosen correctly does nothing (the QA crawler skips it the
+      // same way): a settings section marked aria-current, the open chat's row (aria-selected).
       if (
-        /radio|checkbox|switch|tab/.test(c.role) &&
-        (await page.evaluate((b) => {
-          const el = document.elementFromPoint(b[0] + b[2] / 2, b[1] + b[3] / 2)?.closest('[role]');
-          return el?.getAttribute('aria-checked') === 'true' || el?.getAttribute('aria-selected') === 'true';
-        }, c.box))
+        await page.evaluate((b) => {
+          // The control itself, never a chosen row or tab around it: a button inside the open chat row is still clicked.
+          const hit = document.elementFromPoint(b[0] + b[2] / 2, b[1] + b[3] / 2);
+          const el = hit?.closest('button, a, input, select, textarea, [role]');
+          return (
+            (!!el?.getAttribute('aria-current') && el.getAttribute('aria-current') !== 'false') ||
+            el?.getAttribute('aria-checked') === 'true' ||
+            el?.getAttribute('aria-selected') === 'true'
+          );
+        }, c.box)
       ) {
         e.status = 'skipped';
         e.reason = 'already chosen';
@@ -469,6 +482,12 @@ async function main() {
           })
           .catch(() => 'no longer on screen');
         if (why) e.effect.push(why);
+        // Gone after an earlier click (a menu that closed, a chip that went away) is not this control's failure; covered
+        // by something else is.
+        if (why === 'no longer on screen') {
+          e.status = 'skipped';
+          e.reason = 'no longer on screen after an earlier click';
+        }
         e.effect.push(
           `could not click: ${String(err && err.message ? err.message : err)
             .split('\n')[0]
@@ -484,7 +503,7 @@ async function main() {
         after = await signature();
       }
       e.effect = effectOf(before, after);
-      e.issues = await page.evaluate(() => window.__qa.invariants()).catch(() => []);
+      e.issues = (await page.evaluate(() => window.__qa.invariants()).catch(() => [])).filter((i) => !designed(i));
       e.shot = await shot(`sweep-${(c.tid || c.name).replace(/[^a-z0-9-]+/gi, '_').slice(0, 40)}`).catch(() => undefined);
       if (!e.effect.length) {
         e.effect.push('NO VISIBLE EFFECT');
@@ -766,6 +785,11 @@ async function main() {
           // No controls found (a wrong scope) or a control that could not be clicked is a failure, not a pass.
           if (!rec.blocked && !rec.controls.some((c) => c.status === 'pass' || c.status === 'fail'))
             rec.blocked = 'no control found to click';
+          // Controls gone after an earlier click are skipped one by one, but a screen where most of them vanished was not
+          // really tested.
+          const gone = rec.controls.filter((c) => c.reason === 'no longer on screen after an earlier click').length;
+          const tried = rec.controls.filter((c) => c.status === 'pass' || c.status === 'fail').length;
+          if (!rec.blocked && gone > tried) rec.blocked = `${gone} controls were gone after an earlier click, only ${tried} tried`;
           rec.ok = !rec.blocked && rec.controls.every((c) => c.status !== 'fail' && c.status !== 'not-tested');
           break;
         }
