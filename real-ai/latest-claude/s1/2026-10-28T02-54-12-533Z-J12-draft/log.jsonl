@@ -1,9 +1,0 @@
-{"t":"2026-10-28T02:54:12.533Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
-{"t":"2026-10-28T02:54:18.025Z","step":"launch","ok":true}
-{"t":"2026-10-28T02:54:18.157Z","i":0,"do":"send","sentAt":1793156058123,"sent":true,"before":0,"ok":true,"ms":129}
-{"t":"2026-10-28T02:54:49.059Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":24827,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I didn’t get that. Say it another way?\n\n2:54 AM","didntGetThat":true,"kit":[],"ms":30902}
-{"t":"2026-10-28T02:54:49.133Z","shot":"01-draft.png"}
-{"t":"2026-10-28T02:54:49.135Z","i":2,"do":"check","found":0,"ok":false,"ms":1}
-{"t":"2026-10-28T02:54:49.144Z","i":3,"do":"dump","ok":true,"ms":8}
-{"t":"2026-10-28T02:54:49.263Z","step":"appLog","lines":9,"dropped":0}
-{"t":"2026-10-28T02:54:49.276Z","step":"aiTurns","turns":4}

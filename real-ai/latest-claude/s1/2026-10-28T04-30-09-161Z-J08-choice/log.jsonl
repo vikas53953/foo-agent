@@ -1,0 +1,12 @@
+{"t":"2026-10-28T04:30:09.161Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T04:30:14.676Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:30:22.766Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8086}
+{"t":"2026-10-28T04:30:22.903Z","i":0,"do":"send","sentAt":1793161822855,"sent":true,"before":0,"ok":true,"ms":136}
+{"t":"2026-10-28T04:30:41.085Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":10635,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For programming under ₹80,000 go for 16 GB RAM, a 512 GB SSD and a recent mid-range processor. A good screen and keyboard matter more than a strong graphics card.\n\nMemory: 16 GB is the floor. Pick 32 GB if you run many apps, virtual machines or phone emulators at once.\nProcessor: a recent Ryzen 5 or 7, or Intel Core i5 or i7. Choose an \"H\" series chip for heavier work and a \"U\" series chip for longer battery.\nScreen and keyboard: full HD or better at 14 to 15.6 inches, with a keyboard you like typing on for hours.\nExtras: a graphics card only matters for AI training or games. Battery life matters if you work away from a plug.\n\nWhat kind of programming will you do: web, apps, data and AI, or games? I can narrow it down and look up current options for you.\n\n4:30 AM","kit":[],"ms":18182}
+{"t":"2026-10-28T04:30:41.152Z","shot":"01-laptop.png"}
+{"t":"2026-10-28T04:30:41.154Z","i":2,"do":"check","found":1,"ok":true,"ms":1}
+{"t":"2026-10-28T04:30:41.156Z","i":3,"do":"check","found":2,"ok":true,"ms":1}
+{"t":"2026-10-28T04:30:41.167Z","i":4,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T04:30:41.297Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-28T04:30:41.309Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T04:30:41.312Z","step":"jobTrail","steps":0,"calls":0}

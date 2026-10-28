@@ -1,0 +1,4 @@
+{"kind":"step","job_id":"j_01a180c9-9abf-7e6f-b8ca-aa3ef3f948c5","idx":0,"phrase_key":"check_sites","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a180c9-9abf-7e6f-b8ca-aa3ef3f948c5","idx":1,"phrase_key":"look_for","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a180c9-9abf-7e6f-b8ca-aa3ef3f948c5","idx":2,"phrase_key":"shortlist","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a180c9-9abf-7e6f-b8ca-aa3ef3f948c5","idx":3,"phrase_key":"compare","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}

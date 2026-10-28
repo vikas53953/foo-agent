@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T04-30-09-161Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793161822855,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 10635,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 go for 16 GB RAM, a 512 GB SSD and a recent mid-range processor. A good screen and keyboard matter more than a strong graphics card.\n\nMemory: 16 GB is the floor. Pick 32 GB if you run many apps, virtual machines or phone emulators at once.\nProcessor: a recent Ryzen 5 or 7, or Intel Core i5 or i7. Choose an \"H\" series chip for heavier work and a \"U\" series chip for longer battery.\nScreen and keyboard: full HD or better at 14 to 15.6 inches, with a keyboard you like typing on for hours.\nExtras: a graphics card only matters for AI training or games. Battery life matters if you work away from a plug.\n\nWhat kind of programming will you do: web, apps, data and AI, or games? I can narrow it down and look up current options for you.\n\n4:30 AM",
+      "kit": [],
+      "ms": 18182
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 2,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}
