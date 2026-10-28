@@ -126,6 +126,7 @@ jobs:
         env:
           DIR: ${{ steps.install.outputs.dir }}
         run: |
+          [ -f "$DIR/resources/app.asar" ] || { echo "::error::app.asar is missing from the installed app."; exit 1; }
           for needle in "__fooTest" "test:clock" "test:seed"; do
             if grep -a -q "$needle" "$DIR/resources/app.asar"; then echo "$needle found in app.asar"; exit 1; fi
           done
@@ -153,8 +154,7 @@ jobs:
             node -e '
               const fs = require("fs"), path = require("path"), d = path.join(process.env.FOO_REAL_TEST_DIR, "runs");
               const last = fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, "summary.json"))).sort().pop();
-              if (!last) return;
-              const s = JSON.parse(fs.readFileSync(path.join(d, last, "summary.json"), "utf8"));
+              const s = last ? JSON.parse(fs.readFileSync(path.join(d, last, "summary.json"), "utf8")) : { results: [] };
               for (const r of s.results.filter((r) => r.ok === false && !r.soft))
                 console.log(`  failed step ${r.i} ${r.do}${r.tid ? " " + r.tid : ""}: ${String(r.error || r.blocked || (r.forbidden ? "👀 at " + r.forbidden.at + " ms" : "") || "end state not reached").slice(0, 200)}`);
             ' || true
@@ -394,10 +394,11 @@ jobs:
           kit="$RUNNER_TEMP/kit/test/real-pc"
           export FOO_QA_INPAGE="$RUNNER_TEMP/kit/test/qa-explore/inpage.js"
           file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
-          failed() { node -e '
+          # Failed steps in the newest record of journey $1 only; -1 when it left none (another journey's record never counts).
+          failed() { J="$1" node -e '
             const fs = require("fs"), path = require("path"), d = path.join(process.env.FOO_REAL_TEST_DIR, "runs");
-            const last = fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, "summary.json"))).sort().pop();
-            const s = last ? JSON.parse(fs.readFileSync(path.join(d, last, "summary.json"), "utf8")) : null;
+            const read = (x) => { try { return JSON.parse(fs.readFileSync(path.join(d, x, "summary.json"), "utf8")); } catch { return null; } };
+            const s = fs.readdirSync(d).sort().reverse().map(read).find((r) => r && r.journey === process.env.J);
             console.log(s ? s.results.filter((r) => r.ok === false && !r.soft).length : -1);'; }
           echo "| Journey | Commit before the fix | Failed steps there | Red first |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
@@ -414,7 +415,7 @@ jobs:
             first=$(tr -d '\r' < "$kit/gate.txt" | head -n 1)
             (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$first")" > /dev/null 2>&1) || true; taskkill //IM foo.exe //F > /dev/null 2>&1 || true
             if [ "$j" != "$first" ]; then (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$j")" > /dev/null 2>&1) || true; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; fi
-            n=$(failed)
+            n=$(failed "$j")
             if [ "$n" -gt 0 ]; then verdict="yes"; else verdict="**no: the journey passes without the fix**"; bad=1; fi
             if [ "$n" -lt 0 ]; then verdict="**no record: the journey did not run**"; bad=1; fi
             echo "$j on ${at:0:7}: $n failed step(s)"

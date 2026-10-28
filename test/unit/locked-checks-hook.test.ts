@@ -34,6 +34,13 @@ describe('locked-checks hook', () => {
     expect(hook.verdict('Bash', { command: 'rm -rf dist && pnpm exec vitest run test/unit/a.test.ts' }, root, '')).toBeNull();
   });
 
+  it('deleting a whole test or golden folder needs a CR too', async () => {
+    const hook = await load();
+    for (const command of ['rm -rf test', 'rm -rf test/unit/', 'git rm -rf test', 'rm -r golden'])
+      expect(hook.verdict('Bash', { command }, root, '')).toMatch(/removes a check/);
+    expect(hook.verdict('Bash', { command: 'rm test/real-pc/out.log' }, root, '')).toBeNull();
+  });
+
   it('fix mode locks every test, journey and golden file, and the lock file itself', async () => {
     const hook = await load();
     const fix = (tool: string, input: Record<string, string>) => hook.verdict(tool, input, root, '', 'F30');
@@ -42,6 +49,7 @@ describe('locked-checks hook', () => {
     expect(fix('Edit', { file_path: '/repo/golden/app/chat.png' })).toMatch(/F30/);
     expect(fix('Bash', { command: "sed -i 's/ok/fine/' test/real-pc/gate/G1-first-run.json" })).toMatch(/G1-first-run/);
     expect(fix('Bash', { command: 'echo {} > test/real-pc/journeys/B1-batch1.json' })).toMatch(/B1-batch1/);
+    expect(fix('Bash', { command: 'git checkout -- test/unit/a.test.ts' })).toMatch(/a\.test\.ts/);
     expect(fix('Bash', { command: `rm ${hook.FIX_LOCK}` })).toMatch(/fix\.lock/);
     expect(fix('Edit', { file_path: `/repo/${hook.FIX_LOCK}` })).toMatch(/fix\.lock/);
   });

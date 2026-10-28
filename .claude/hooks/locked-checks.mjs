@@ -24,6 +24,9 @@ export const FIX_LOCK = '.claude/fix.lock';
 /** What fix mode locks: every test, the real-PC journeys, the golden pictures, the mutation floor. */
 const TEST_PATH = /^(?:test\/|golden\/|stryker\.config\.json$)/;
 const TEST_FILE = /^test\/\S*\.(?:test|spec)\.tsx?$/;
+/** What a delete or move may not touch without a CR: a test file, the golden pictures, or a folder that holds tests. */
+const removesChecks = (p) =>
+  TEST_FILE.test(p) || /^(?:test|golden)$/.test(p) || p.startsWith('golden/') || (p.startsWith('test/') && !/\.[^/]+$/.test(p));
 const DELETE_VERBS = ['rm', 'unlink', 'mv'];
 /** The files a shell command part writes in place: redirect targets, tee and truncate arguments, sed -i / perl -i files, cp's target. */
 function shellWrites(part) {
@@ -33,6 +36,7 @@ function shellWrites(part) {
   if (words[0] === 'tee' || words[0] === 'truncate') out.push(...args(1));
   if ((words[0] === 'sed' || words[0] === 'perl') && words.some((w) => /^-\w*i/.test(w))) out.push(...args(1).slice(1));
   if (words[0] === 'cp' && args(1).length > 1) out.push(args(1).at(-1));
+  if (words[0] === 'git' && (words[1] === 'checkout' || words[1] === 'restore')) out.push(...args(2));
   return out;
 }
 
@@ -41,7 +45,8 @@ const norm = (root, w) => {
     .replace(/^['"]|['"]$/g, '')
     .split('\\')
     .join('/');
-  return raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) ? relative(root, raw).split('\\').join('/') : raw.replace(/^\.\//, '');
+  const rel = raw.startsWith('/') || /^[A-Za-z]:\//.test(raw) ? relative(root, raw).split('\\').join('/') : raw.replace(/^\.\//, '');
+  return rel.replace(/\/+$/, '');
 };
 
 /**
@@ -50,7 +55,7 @@ const norm = (root, w) => {
  */
 export function verdict(tool, input, root, crText, fixing = null) {
   const named = (p) => crText.includes(p);
-  const fixLocked = (p) => fixing !== null && (TEST_PATH.test(p) || p === FIX_LOCK);
+  const fixLocked = (p) => fixing !== null && (TEST_PATH.test(p) || /^(?:test|golden)$/.test(p) || p === FIX_LOCK);
   if (['Edit', 'Write', 'MultiEdit', 'NotebookEdit'].includes(tool)) {
     const file = input.file_path ?? input.notebook_path;
     if (!file) return null;
@@ -69,7 +74,7 @@ export function verdict(tool, input, root, crText, fixing = null) {
       if (at >= 0) {
         for (const w of words.slice(at)) {
           const rel = norm(root, w);
-          if (LOCKED.includes(rel) || TEST_FILE.test(rel)) hits.push(rel);
+          if (LOCKED.includes(rel) || removesChecks(rel)) hits.push(rel);
           if (fixLocked(rel)) fixHits.push(rel);
         }
       } else if (fixing !== null) {
