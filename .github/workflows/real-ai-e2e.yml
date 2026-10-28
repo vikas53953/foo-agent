@@ -4,7 +4,7 @@
 # Codex CLI signed in with the OPENAI_API_KEY secret. "auto" runs every AI whose secret exists, Claude first, one at a
 # time. Evidence (screenshots, logs, thread dumps) goes to the `evidence` branch under real-ai/<short-sha>-<ai>/ and
 # real-ai/latest-<ai>/, since agents cannot read CI artifacts.
-# Spend guards: owner-started runs only (a tap or a merge into main), one run at a time, a journey cap, a Sonnet-class model for Claude,
+# Spend guards: owner-started runs only (a tap, a ready PR into main or a merge into main), one run at a time, a journey cap, a Sonnet-class model for Claude,
 # --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
 # Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
 # before anything is pushed.
@@ -41,6 +41,11 @@ on:
   # Vikas picked "On every merge to main" (2026-10-21): each merge runs the defaults on that commit, no tap needed.
   push:
     branches: [main]
+  # Vikas 2026-10-28: "test with real AI only". Every ready PR into main runs the real-AI journeys on its own merge commit
+  # before it merges; drafts wait until marked ready.
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
   group: real-ai-e2e
@@ -53,8 +58,8 @@ jobs:
   # Which AIs to run: the asked one, or with "auto" every AI whose secret exists. Fails fast when none can run.
   plan:
     name: Pick the AIs
-    # Only the owner may spend the keys. Neither trigger fires for forks, and fork PRs never see secrets.
-    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    # Only the owner may spend the keys. No trigger fires for forks: a fork PR never sees secrets, and its actor is not the owner.
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent' && !github.event.pull_request.draft
     runs-on: ubuntu-latest
     outputs:
       ais: ${{ steps.pick.outputs.ais }}
