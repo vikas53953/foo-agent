@@ -1,0 +1,8 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-24-50-887Z-J01-J02-first-run"}
+{"journey":"R1-rich","title":"Rich replies: table, steps, numbers (batch 1 build: jobs are off)","videos":[],"steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-25-41-817Z-R1-rich"}
+{"journey":"B13-no-apps-honesty","title":"Nothing connected: email / WhatsApp asks get a connect offer, no pretending","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-26-20-024Z-B13-no-apps-honesty"}
+{"journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","videos":[],"steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-26-48-621Z-U04-find-in-chat"}
+{"journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","videos":[],"steps":16,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-27-08-915Z-U13-secret-box"}
+{"journey":"U20-errors-honesty","title":"Things foo cannot do: honest error/connect, no fake success","videos":[],"steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-30-40-004Z-U20-errors-honesty"}
+{"journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","videos":[],"steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-31-50-887Z-U26-crash-reopen"}
+{"journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","videos":[],"steps":23,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-32-12-939Z-QA3-languages-batch1"}
