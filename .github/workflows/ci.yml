@@ -97,8 +97,8 @@ jobs:
         shell: bash
         run: |
           for i in 1 2 3; do
-            timeout 600 pnpm rebuild:node && exit 0 # a stalled download can hang without exiting
-            echo "rebuild:node failed (try $i of 3)"; rm -rf "$LOCALAPPDATA/node-gyp/Cache"; [ "$i" -lt 3 ] && sleep 15
+            /usr/bin/timeout 600 pnpm rebuild:node && exit 0 # a stalled download can hang without exiting
+            echo "rebuild:node failed (try $i of 3)"; rm -rf "$LOCALAPPDATA/node-gyp/Cache" || true; [ "$i" -lt 3 ] && sleep 15
           done
           exit 1
       - run: pnpm typecheck
@@ -176,8 +176,8 @@ jobs:
         shell: bash
         run: |
           for i in 1 2 3; do
-            timeout 600 pnpm rebuild:node && exit 0 # a stalled download can hang without exiting
-            echo "rebuild:node failed (try $i of 3)"; rm -rf "$LOCALAPPDATA/node-gyp/Cache"; [ "$i" -lt 3 ] && sleep 15
+            /usr/bin/timeout 600 pnpm rebuild:node && exit 0 # a stalled download can hang without exiting
+            echo "rebuild:node failed (try $i of 3)"; rm -rf "$LOCALAPPDATA/node-gyp/Cache" || true; [ "$i" -lt 3 ] && sleep 15
           done
           exit 1
       - name: Unit, article and fidelity tests (JSON for the report)
