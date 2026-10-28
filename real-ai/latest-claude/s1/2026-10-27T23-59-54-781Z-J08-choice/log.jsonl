@@ -1,0 +1,11 @@
+{"t":"2026-10-27T23:59:54.781Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T00:00:00.020Z","step":"launch","ok":true}
+{"t":"2026-10-28T00:00:08.093Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8070}
+{"t":"2026-10-28T00:00:08.213Z","i":0,"do":"send","sentAt":1793145608176,"sent":true,"before":0,"ok":true,"ms":120}
+{"t":"2026-10-28T00:00:25.906Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":9135,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For programming under ₹80,000 go for 16 GB memory, a 512 GB fast drive and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. A graphics card isn't needed unless you do AI work or games.\n\nMemory: 16 GB is the minimum, and 32 GB is better if you run Docker or phone emulators.\nScreen and keyboard: A bright 1080p screen (14 to 15.6 inch) and a keyboard you like typing on matter more than extra speed.\nBattery and weight: Look for 8+ hours and under 1.8 kg if you carry it daily. A Mac with an M-series chip is also worth a look if one fits the budget.\n\nWhat will you mostly build: web or app projects, or AI and games? I can then look up current options and prices for you.\n\n12:00 AM","kit":[],"ms":17693}
+{"t":"2026-10-28T00:00:25.983Z","shot":"01-laptop.png"}
+{"t":"2026-10-28T00:00:25.985Z","i":2,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T00:00:25.986Z","i":3,"do":"check","found":2,"ok":true,"ms":1}
+{"t":"2026-10-28T00:00:25.994Z","i":4,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T00:00:26.097Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T00:00:26.107Z","step":"aiTurns","turns":1}

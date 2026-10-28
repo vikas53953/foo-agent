@@ -1,0 +1,10 @@
+{"t":"2026-10-27T23:58:18.140Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-27T23:58:23.434Z","step":"launch","ok":true}
+{"t":"2026-10-27T23:58:31.510Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8074}
+{"t":"2026-10-27T23:58:31.625Z","i":0,"do":"send","sentAt":1793145511589,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-10-27T23:58:41.726Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4064,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Connect Gmail\n\nI need to read your email for “Email about running late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n11:58 PM","kit":[],"ms":10100}
+{"t":"2026-10-27T23:58:41.786Z","shot":"01-draft.png"}
+{"t":"2026-10-27T23:58:41.788Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-27T23:58:41.797Z","i":3,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-27T23:58:41.914Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-27T23:58:41.924Z","step":"aiTurns","turns":1}
