@@ -1,0 +1,97 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking major Indian news sites\nlive checklist\nChecked major Indian news sites\nM\nCompared top headlines to pick the biggest story\nStopped by you\n4:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n4:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n4:33 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 4:33 AM\n4:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:33 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nLook for account balance\n4:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:33 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n4:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n4:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n4:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n4:34 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Read your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n4:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n4:35 AM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "live",
+    "text": "web.whatsapp.com sent an approval to your phone. Approve it there, then tap I’m done.\nweb.whatsapp.com\nLIVE\nI’m done\nSkip\n4:35 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:35 AM"
+  }
+]

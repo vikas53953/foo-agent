@@ -1,0 +1,17 @@
+{"t":"2026-10-28T05:01:00.785Z","journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","spec":"10-2 §C.9 Rich replies (X-180)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T05:01:06.391Z","step":"launch","ok":true}
+{"t":"2026-10-28T05:01:07.444Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1049}
+{"t":"2026-10-28T05:01:07.591Z","i":1,"do":"send","sentAt":1793163667552,"sent":true,"before":0,"ok":true,"ms":147}
+{"t":"2026-10-28T05:05:07.819Z","i":2,"do":"waitReply","expect":"an AI page / kit card opens with the tracker","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":240228}
+{"t":"2026-10-28T05:05:07.889Z","shot":"01-ai-page.png"}
+{"t":"2026-10-28T05:05:07.893Z","i":3,"do":"check","note":"AI page card","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-10-28T05:05:07.894Z","i":4,"do":"check","note":"action chips under the reply","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-10-28T05:05:30.964Z","shot":"02-error-step5.png"}
+{"t":"2026-10-28T05:05:30.964Z","i":5,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23070}
+{"t":"2026-10-28T05:05:31.765Z","i":6,"do":"wait","expect":"reply chip fills the composer","ok":true,"ms":801}
+{"t":"2026-10-28T05:05:31.839Z","shot":"03-chip-fills.png"}
+{"t":"2026-10-28T05:05:31.850Z","i":7,"do":"fill","soft":true,"ok":true,"ms":11}
+{"t":"2026-10-28T05:05:31.866Z","i":8,"do":"dump","ok":true,"ms":15}
+{"t":"2026-10-28T05:05:32.013Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-28T05:05:32.027Z","step":"aiTurns","turns":0}
+{"t":"2026-10-28T05:05:32.030Z","step":"jobTrail","steps":0,"calls":0}

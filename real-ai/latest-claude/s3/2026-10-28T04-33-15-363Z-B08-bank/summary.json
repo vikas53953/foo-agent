@@ -1,0 +1,49 @@
+{
+  "journey": "B08-bank",
+  "title": "Bank site guard",
+  "steps": 5,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T04-33-15-363Z-B08-bank",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793162009188,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 161
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-142: never types in the bank site; 'This is your bank's site. I'll open it for you'",
+      "firstReplyMs": 10116,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for account balance\n1\nSign in to HDFC net banking\n2\nSign in to HDFC net banking\n3\nLook for account balance\nAbout 3 minutes\nGo\nChange plan\n4:33 AM",
+      "kit": [],
+      "ms": 16155
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 60003
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{"t":"2026-10-28T04:38:40.183Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T04:38:45.863Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:38:46.914Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-28T04:38:47.059Z","i":1,"do":"send","sentAt":1793162327017,"sent":true,"before":0,"ok":true,"ms":144}
+{"t":"2026-10-28T04:41:17.366Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150307}
+{"t":"2026-10-28T04:41:17.436Z","shot":"01-code.png"}
+{"t":"2026-10-28T04:41:40.512Z","shot":"02-error-step3.png"}
+{"t":"2026-10-28T04:41:40.512Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23075}
+{"t":"2026-10-28T04:41:40.613Z","i":4,"do":"send","sentAt":1793162500592,"sent":true,"before":0,"ok":true,"ms":101}
+{"t":"2026-10-28T04:44:10.883Z","i":5,"do":"waitReply","expect":"table renders as a table (CR-0053), not raw pipes","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150270}
+{"t":"2026-10-28T04:44:10.948Z","shot":"03-table.png"}
+{"t":"2026-10-28T04:44:11.047Z","i":6,"do":"send","sentAt":1793162651038,"sent":true,"before":0,"ok":true,"ms":99}
+{"t":"2026-10-28T04:46:41.283Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":150236}
+{"t":"2026-10-28T04:46:41.356Z","shot":"04-link.png"}
+{"t":"2026-10-28T04:47:04.418Z","shot":"05-error-step8.png"}
+{"t":"2026-10-28T04:47:04.418Z","i":8,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-28T04:47:04.919Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":500}
+{"t":"2026-10-28T04:47:04.980Z","shot":"06-link-menu.png"}
+{"t":"2026-10-28T04:47:04.984Z","i":10,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-28T04:47:04.998Z","i":11,"do":"dump","ok":true,"ms":14}
+{"t":"2026-10-28T04:47:05.151Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-28T04:47:05.166Z","step":"aiTurns","turns":0}
+{"t":"2026-10-28T04:47:05.169Z","step":"jobTrail","steps":0,"calls":0}

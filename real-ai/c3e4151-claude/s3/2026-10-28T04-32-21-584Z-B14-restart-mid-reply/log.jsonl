@@ -1,0 +1,20 @@
+{"t":"2026-10-28T04:32:21.585Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T04:32:27.185Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:32:35.285Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8096}
+{"t":"2026-10-28T04:32:35.417Z","i":0,"do":"send","sentAt":1793161955380,"sent":true,"before":0,"ok":true,"ms":132}
+{"t":"2026-10-28T04:32:38.419Z","i":1,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-28T04:32:43.764Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:32:43.764Z","i":2,"do":"relaunch","ok":true,"ms":5344}
+{"t":"2026-10-28T04:32:51.823Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":509,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Try Shelly, Turbo (for the irony) or Pickle. For something grander, Methuselah suits a pet that may outlive you.\n\n4:32 AM","kit":[],"ms":8058}
+{"t":"2026-10-28T04:32:51.890Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-28T04:32:51.892Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n4:32 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-28T04:32:52.078Z","i":5,"do":"send","sentAt":1793161972009,"sent":true,"before":0,"ok":true,"ms":186}
+{"t":"2026-10-28T04:32:54.079Z","i":6,"do":"wait","ok":true,"ms":2001}
+{"t":"2026-10-28T04:32:59.430Z","step":"launch","ok":true}
+{"t":"2026-10-28T04:32:59.430Z","i":7,"do":"relaunch","ok":true,"ms":5350}
+{"t":"2026-10-28T04:33:14.614Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":5567,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking major Indian news sites\nlive checklist\nChecking major Indian news sites\nM\nSlow here, trying another way\nCompare top headlines to pick the biggest story\nWatch live\nStop\nunder 1 min\n4:33 AM","kit":[],"ms":15184}
+{"t":"2026-10-28T04:33:14.764Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-28T04:33:14.797Z","i":9,"do":"dump","ok":true,"ms":33}
+{"t":"2026-10-28T04:33:15.187Z","step":"appLog","lines":17,"dropped":0}
+{"t":"2026-10-28T04:33:15.199Z","step":"aiTurns","turns":4}
+{"t":"2026-10-28T04:33:15.202Z","step":"jobTrail","steps":2,"calls":2}
