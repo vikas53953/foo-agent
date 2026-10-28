@@ -112,7 +112,18 @@ jobs:
           rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
           [ -n "$ANTHROPIC_API_KEY" ] || { echo "::error::ANTHROPIC_API_KEY is not set: the gate needs a real AI."; exit 1; }
           file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
-          drive() { echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; return $s; }
+          # Each journey's failed steps go to this log too, so a failure can be read without downloading the evidence.
+          failed_steps() {
+            node -e '
+              const fs = require("fs"), path = require("path"), d = path.join(process.env.FOO_REAL_TEST_DIR, "runs");
+              const last = fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, "summary.json"))).sort().pop();
+              if (!last) return;
+              const s = JSON.parse(fs.readFileSync(path.join(d, last, "summary.json"), "utf8"));
+              for (const r of s.results.filter((r) => r.ok === false && !r.soft))
+                console.log(`  failed step ${r.i} ${r.do}${r.tid ? " " + r.tid : ""}: ${String(r.error || r.blocked || (r.forbidden ? "👀 at " + r.forbidden.at + " ms" : "") || "end state not reached").slice(0, 200)}`);
+            ' || true
+          }
+          drive() { echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; failed_steps; return $s; }
           list=$(tr -d '\r' < "$kit/gate.txt")
           # What the report must find: each journey's rounds and the features its steps cover. A round with no record
           # (the driver crashed) then counts as broken instead of silently shrinking pass^k.
@@ -130,7 +141,9 @@ jobs:
           cd "$kit"
           # The first run sets up the shared profile; every later shared-profile journey needs its AI. No retry.
           first=$(echo $list | cut -d' ' -f1)
-          drive "$first" || { echo "::error::$first failed; the journeys after it need its setup, stopping."; exit 1; }
+          # Exit 3: setup finished but some first-run steps failed; they are judged in the report and the rest still runs.
+          rc=0; drive "$first" || rc=$?
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then echo "::error::$first could not finish setup; the journeys after it need it, stopping."; exit 1; fi
           for round in $(seq 1 "$ROUNDS"); do
             for j in $list; do
               [ "$j" = "$first" ] && continue

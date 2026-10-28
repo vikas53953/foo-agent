@@ -888,6 +888,10 @@ async function main() {
   // A required journey (first run: picking the AI) stops the batch, since every later journey needs it. A gate journey (a
   // batch's acceptance journey, like B1-batch1) does not stop it, but any failed step turns the run red: the workflow ends
   // the part with the exit status, so a batch is never reported green with its own acceptance steps failing.
+  // A first-run journey that marks its setup step (`"setupDone": true`) and got past it exits 3, not 1: the shared profile
+  // is ready, so the release gate goes on with the other journeys and judges the failed steps in its report.
+  const setup = results.filter((r) => journey.steps[r.i]?.setupDone);
+  if (journey.required && summary.failed > 0 && setup.length && setup.every((r) => r.ok !== false)) process.exit(3);
   if ((journey.required || journey.gate) && summary.failed > 0) process.exit(1);
 }
 

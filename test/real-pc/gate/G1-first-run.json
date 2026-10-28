@@ -201,7 +201,9 @@
       "do": "expectText",
       "tid": "chat-header-name",
       "re": "Chotu",
-      "feature": "name"
+      "feature": "name",
+      "setupDone": true,
+      "note": "setup is done here: the key is in and the chat opened under the new name; later failures are judged, not fatal"
     },
     {
       "do": "sweep",
