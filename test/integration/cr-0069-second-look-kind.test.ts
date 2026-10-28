@@ -4,7 +4,7 @@
 // `reply`, so the jobs line never showed. A memory answer to a message with no remember, note or forget word never shows
 // the memory line; a reply to a task ask with jobs off is asked once more.
 import { afterEach, describe, expect, it } from 'vitest';
-import { JOBS_OFF_LINE, MEMORY_OFF_LINE, REASK_JOB_LINE, REASK_MEMORY_LINE } from '../../src/engine/prompt/PromptBuilder';
+import { JOBS_OFF_LINE, MEMORY_OFF_LINE, REASK_EMPTY_LINE, REASK_JOB_LINE, REASK_MEMORY_LINE } from '../../src/engine/prompt/PromptBuilder';
 import { t } from '../../src/shared/copy/t';
 import { jobHarness, type JobHarness } from './jobs/jobHarness';
 
@@ -227,6 +227,24 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(JOBS_OFF_LINE).not.toMatch(/^This build/);
     expect(JOBS_OFF_LINE).toContain('never mention a build or a version');
     expect(JOBS_OFF_LINE).toContain('never offer to search, find or check something');
+  });
+
+  it('a reply with an empty say is asked once more with a line naming it, and the words show (R1, QA2 on run 40643760745)', async () => {
+    // Real Claude answered "Make a table comparing 3 budget phones…" and "aur tumhara naam? sirf naam batao" with
+    // `<say></say>` and kind reply, twice in a row (shape say_empty_before_act), so foo said "I didn't get that".
+    const words = '| Phone | Price |\n|---|---|\n| A | ₹15,999 |';
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }), once: true },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, words) },
+      ],
+      'Make a table comparing 3 budget phones under 20000 rupees',
+    );
+    expect(intakes(x)).toHaveLength(2);
+    expect(asked(x, REASK_EMPTY_LINE)).toBe(1);
+    expect(String(intakes(x)[0]!.system)).not.toContain(REASK_EMPTY_LINE);
+    expect(fooTexts(x)).toHaveLength(1);
+    expect(fooTexts(x)[0]).toContain('₹15,999');
   });
 
   it('a memory answer on a later run of the same message still never gets the memory line (review on CR-0069)', async () => {

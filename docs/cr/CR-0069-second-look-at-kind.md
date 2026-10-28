@@ -40,6 +40,11 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
    "this build only reads and checks things. I can find cafes…", which is jargon plus an offer batch 1 can't keep. The
    line now says foo can't do tasks yet (looking things up on the web included), and asks the AI never to mention a
    build or a version and never to offer to search, find or check something.
+9. A `reply` with an empty `<say>` gets its CR-0041 retry with one more line, REASK_EMPTY_LINE: "Your first answer for
+   this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>." On run
+   40643760745, real Claude answered "Make a table comparing 3 budget phones…" (R1) and "aur tumhara naam? sirf naam
+   batao" (QA2) with `<say></say>` and kind `reply` twice in a row (the tech log's `chat.reply_empty.shape` showed
+   `say_empty_before_act`), so foo said "I didn't get that". The retry is still the only one, and nothing new is shown.
 
 ## (c) Evidence
 

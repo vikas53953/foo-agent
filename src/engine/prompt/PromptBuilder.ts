@@ -59,6 +59,12 @@ export const REASK_MEMORY_LINE =
 export const REASK_JOB_LINE =
   'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though this build cannot do tasks yet; when it only asks a question, such as whether you already did one, or asks foo for words (a joke, an answer, an explanation, a draft to read here), "reply".';
 
+/** CR-0069 item 9: the retried turn after a `reply` with an empty <say> (CR-0041; real Claude, run 40643760745). */
+export const REASK_EMPTY_LINE =
+  'Your first answer for this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>.';
+
+const REASK_LINES = { memory: REASK_MEMORY_LINE, job: REASK_JOB_LINE, empty: REASK_EMPTY_LINE } as const;
+
 /** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
  * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
 export const ACTIONS_ASK =
@@ -132,8 +138,9 @@ export interface IntakeInput {
   jobsOff?: boolean;
   /** CR-0069 (X-226): memory is switched off in this build (MEMORY_OFF_LINE goes with part 4). */
   memoryOff?: boolean;
-  /** CR-0069: this turn is the second look at a likely wrong kind (REASK_MEMORY_LINE or REASK_JOB_LINE goes with part 4). */
-  reask?: 'memory' | 'job';
+  /** CR-0069: this turn is the second look at a likely wrong kind (REASK_MEMORY_LINE or REASK_JOB_LINE goes with part 4), or
+   * (item 9) the retry after a reply with an empty <say> (REASK_EMPTY_LINE). */
+  reask?: 'memory' | 'job' | 'empty';
   /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
   visuals?: Visuals;
 }
@@ -336,7 +343,7 @@ export class PromptBuilder {
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
     const protocolWith = (kit: string) =>
       gate(
-        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}${input.memoryOff ? `\n${MEMORY_OFF_LINE}` : ''}${input.reask ? `\n${input.reask === 'memory' ? REASK_MEMORY_LINE : REASK_JOB_LINE}` : ''}`,
+        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}${input.memoryOff ? `\n${MEMORY_OFF_LINE}` : ''}${input.reask ? `\n${REASK_LINES[input.reask]}` : ''}`,
         '4',
       );
     let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;

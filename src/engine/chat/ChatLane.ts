@@ -104,8 +104,9 @@ export interface IntakeInput {
   oldPlan?: { title: string; steps: string[] };
   /** CR-0028: the intake questions this message already got answers to, as "- Q: … → A: …" lines. */
   answers?: string[];
-  /** CR-0069: the second look at a likely wrong `memory` or `reply` answer while that feature is off. */
-  reask?: 'memory' | 'job';
+  /** CR-0069: the second look at a likely wrong `memory` or `reply` answer while that feature is off, or (item 9) the retry
+   * after a reply with an empty say. */
+  reask?: 'memory' | 'job' | 'empty';
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -570,6 +571,8 @@ export class ChatLane {
         memory,
         ...(oldPlan ? { oldPlan } : {}),
         ...(answers?.length ? { answers } : {}),
+        // CR-0069 item 9: the CR-0041 retry after a reply with an empty say names it (run 40643760745: the same empty twice).
+        ...(this.emptyRetried.has(messageId) ? { reask: 'empty' as const } : {}),
       };
       built = this.d.protocol.buildIntake(intakeInput);
     } catch {
