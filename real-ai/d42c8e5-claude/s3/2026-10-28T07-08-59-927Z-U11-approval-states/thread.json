@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:05 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dates for your Goa stay?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nNext weekend, 2 nights\n2\nSat 7 Nov to Mon 9 Nov\nNext weekend, 2 nights\n3\nSat 31 Oct to Mon 2 Nov\nThis coming weekend, 2 nights\nSomething else…\nSkip\n7:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n7:08 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What kind of programming will you do most on it? → Mostly on the go\n7:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n7:09 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:09 AM\n7:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 31 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit best rated with a table free\nWait for you to pick one\nShow you before the booking\nShow you before doing anything\nBook table for 2, Sat 31 Oct, 8:00 PM\nWatch live\nStop\n4 min\n7:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 31 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For coding on the go, go for a light laptop (under 1.5 kg) with 16 GB of memory, a 512 GB drive and 10+ hours of battery, and ignore gaming laptops at this price. Their weight and short battery life work against you.\n\nThin Windows laptop: the Lenovo IdeaPad Slim 5, ASUS Zenbook 14 and Acer Swift Go 14 usually fit under ₹80,000 with a recent Ryzen 7 or Core Ultra 5 chip and 16 GB.\nMacBook Air (M-series): the best battery and a great screen, and it's fine for web, Python and app work. Older ones can dip near your limit during sales, but the 8 GB versions feel tight for heavy coding.\nSkip: 8 GB memory, 256 GB storage and screens dimmer than about 300 nits, since you'll be working in bright places.\n\nThese are from memory, so check current prices and the exact version before you buy.\n\n7:11 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n7:13 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which one is your yes for?\n1\nCheck current laptop prices\nBEST FIT\nShortlist 3 under ₹80,000\n2\nFind Goa hotels\n2 nights, under ₹6,000 a night\n3\nDelhi vegetarian table for 2\nConnaught Place, Sat 31 Oct, 8:00 PM\n4\nJaipur one-day plan\nWith timings\nSomething else…\nSkip\n7:13 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 AM"
+  }
+]

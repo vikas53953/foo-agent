@@ -1,0 +1,31 @@
+{"t":"2026-10-28T07:08:59.928Z","journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","spec":"05-1 §5.7 Approval, 10-2 §C.4 Approval (C4), Article 6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:09:05.833Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:09:06.876Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1039}
+{"t":"2026-10-28T07:09:07.022Z","i":1,"do":"send","sentAt":1793171346981,"sent":true,"before":0,"ok":true,"ms":145}
+{"t":"2026-10-28T07:09:21.179Z","i":2,"do":"waitReply","expect":"options or a plan; never books without an Approval card","firstReplyMs":8117,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Booking table for 2, Sat 31 Oct, 8:00 PM\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 restaurants that fit best rated with a table free\n3\nWait for you to pick one\n4\nShow you before the booking\n5\nShow you before doing anything\n6\nBook table for 2, Sat 31 Oct, 8:00 PM\nAbout 4 minutes\nGo\nChange plan\n7:09 AM","kit":[],"ms":14157}
+{"t":"2026-10-28T07:09:21.261Z","shot":"01-ask.png"}
+{"t":"2026-10-28T07:09:21.347Z","i":3,"do":"click","soft":true,"ok":true,"ms":86}
+{"t":"2026-10-28T07:11:21.349Z","i":4,"do":"wait","expect":"restaurant options as a Choice/tiles card","ok":true,"ms":120002}
+{"t":"2026-10-28T07:11:21.414Z","shot":"02-options.png"}
+{"t":"2026-10-28T07:11:44.476Z","shot":"03-error-step5.png"}
+{"t":"2026-10-28T07:11:44.476Z","i":5,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-28T07:11:44.566Z","i":6,"do":"click","soft":true,"ok":true,"ms":90}
+{"t":"2026-10-28T07:13:14.567Z","i":7,"do":"wait","expect":"Approval card PENDING: accent top edge, lock, impact line, Book table / Change / Not now","ok":true,"ms":90001}
+{"t":"2026-10-28T07:13:14.635Z","shot":"04-approval.png"}
+{"t":"2026-10-28T07:13:24.714Z","shot":"06-error-step8.png"}
+{"t":"2026-10-28T07:13:24.715Z","i":8,"do":"shotEl","soft":true,"ok":false,"error":"locator.screenshot: Timeout 10000ms exceeded.","ms":10080}
+{"t":"2026-10-28T07:13:24.817Z","i":9,"do":"send","sentAt":1793171604800,"sent":true,"before":0,"ok":true,"ms":102}
+{"t":"2026-10-28T07:13:32.818Z","i":10,"do":"wait","expect":"typed \"yes\" never approves (ART-06a): card still pending","ok":true,"ms":8000}
+{"t":"2026-10-28T07:13:32.885Z","shot":"07-typed-yes.png"}
+{"t":"2026-10-28T07:13:55.964Z","shot":"08-error-step11.png"}
+{"t":"2026-10-28T07:13:55.964Z","i":11,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23079}
+{"t":"2026-10-28T07:13:58.977Z","i":12,"do":"wait","expect":"card DECLINED; nothing booked","ok":true,"ms":3013}
+{"t":"2026-10-28T07:13:59.041Z","shot":"09-declined.png"}
+{"t":"2026-10-28T07:14:22.121Z","shot":"10-error-step13.png"}
+{"t":"2026-10-28T07:14:22.121Z","i":13,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23080}
+{"t":"2026-10-28T07:14:24.122Z","i":14,"do":"wait","expect":"Ask me again shows a fresh pending card or note","ok":true,"ms":2001}
+{"t":"2026-10-28T07:14:24.197Z","shot":"11-ask-again.png"}
+{"t":"2026-10-28T07:14:24.208Z","i":15,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T07:14:24.454Z","step":"appLog","lines":35,"dropped":0}
+{"t":"2026-10-28T07:14:24.467Z","step":"aiTurns","turns":30}
+{"t":"2026-10-28T07:14:24.470Z","step":"jobTrail","steps":6,"calls":25}
