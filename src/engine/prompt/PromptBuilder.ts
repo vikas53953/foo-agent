@@ -57,7 +57,7 @@ export const REASK_MEMORY_LINE =
   'Your first answer for this message was "memory", but it does not ask to remember, note or forget anything. Decide again from the message itself: a change to how foo looks or works is "setting"; a question or small talk is "reply".';
 /** CR-0069: the second look at a `reply` to a message that asks for a task while jobs are off (QA-X-F32). */
 export const REASK_JOB_LINE =
-  'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though this build cannot do tasks yet; when it only asks a question, such as whether you already did one, "reply".';
+  'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though this build cannot do tasks yet; when it only asks a question, such as whether you already did one, or asks foo for words (a joke, an answer, an explanation, a draft to read here), "reply".';
 
 /** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
  * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */

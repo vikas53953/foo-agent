@@ -205,6 +205,20 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(fooTexts(x)).toEqual([t('thread.reply.empty')]);
   });
 
+  it('"Send me a joke" with jobs off: the second look is told that asking for words is a reply, and the joke stays (review on CR-0069)', async () => {
+    const joke = 'Why did the router break up? Too many bad connections.';
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, joke) },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }) },
+      ],
+      'Send me a joke',
+    );
+    expect(asked(x, REASK_JOB_LINE)).toBe(1);
+    expect(REASK_JOB_LINE).toContain('asks foo for words (a joke');
+    expect(fooTexts(x)).toEqual([joke]);
+  });
+
   it('a memory answer on a later run of the same message still never gets the memory line (review on CR-0069)', async () => {
     const x = await run(
       [
