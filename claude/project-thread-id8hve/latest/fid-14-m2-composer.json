@@ -3,7 +3,7 @@
     "id": "SV-10",
     "ok": true,
     "expected": "height 46 (±0.5)",
-    "measured": "640×46"
+    "measured": "640.0000610351562×46"
   },
   {
     "id": "SV-11",
@@ -15,7 +15,7 @@
     "id": "SV-12",
     "ok": true,
     "expected": "width 36 × height 36 (±0.5)",
-    "measured": "36×36, 36×36"
+    "measured": "36.000030517578125×36, 36×36"
   },
   {
     "id": "SV-26",
