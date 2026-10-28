@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so it should be a normal working day. I can't look up the official list right now, so check it before you plan anything around it. Diwali falls the following weekend, around Sun 8 Nov.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n7:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते (Namaste) is hello in Hindi. For a warmer, casual hello, you can say \"Namaste ji\" or just \"Hello ji\".\n\n7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n7:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here it is, just one line:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with Python, and it prints the greeting.\n\n7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways booking site is IRCTC. For train running status and enquiries, there is also Indian Railways.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! 🌿 Want to pick up the cake for mummy's birthday on Fri 30 Oct, or is there something else on your mind?\n\n7:34 AM"
+  }
+]
