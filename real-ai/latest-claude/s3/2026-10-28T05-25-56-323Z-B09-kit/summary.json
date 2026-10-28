@@ -1,0 +1,190 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-25-56-323Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793165161792,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 8129,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,391 a month for ₹50,00,000 at 8.5% over 20 years. Change the amount, rate or years below to see the numbers update.\n\nLoan amount (₹)\nInterest rate per year (%)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n5:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 16730
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793165178672,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 6084,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 places to visit in Jaipur, numbered in a sensible order for one day: start at Amber Fort in the morning, then work your way through the old city.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort with mirror work. Go early to beat the crowds.\n2\nNahargarh Fort\nBest city views, especially near sunset.\n3\nCity Palace\nRoyal palace and museum in the old city.\n4\nJantar Mantar\nGiant stone sundials and astronomy tools, right next to the palace.\n5\nHawa Mahal\nThe pink palace front. Best photographed in the morning light.\nOpen in Maps\nKeep\n5:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "ms": 15228
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793165194052,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 6040,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's economy grew between 6.5% and 9.7% in four of the last five years, with a fall of 5.8% in FY 2020-21 because of Covid. These are approximate real GDP growth figures by financial year. I couldn't confirm the latest year (FY 2025-26), so it isn't included.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n5:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "ms": 14105
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793165208316,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 10101,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three: launch prices are close, but it gives you the fastest chip, a 3x zoom camera and 256GB storage. Prices and specs are approximate launch figures, so check the current price before you buy.\n\niPhone 16\nLaunch price\n₹79,900 (128GB)\nScreen\n6.1 inch OLED, 60Hz\nChip\nApple A18\nCameras\n48MP main + 12MP ultra-wide\nBattery\nAbout 3,600 mAh\nUpdates\nAround 6 years or more\nPixel 9\nLaunch price\n₹79,999 (256GB)\nScreen\n6.3 inch OLED, 120Hz\nChip\nGoogle Tensor G4\nCameras\n50MP main + 48MP ultra-wide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999 (256GB)\nScreen\n6.2 inch AMOLED, 120Hz\nChip\nSnapdragon 8 Elite\nCameras\n50MP main + 12MP ultra-wide + 10MP 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest chip, a 3x zoom camera and 256GB for almost the same price.\n\nKeep\n5:26 AM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "ms": 19715
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1793165228206,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 7100,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is ready, tap start below. 🍵\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n5:27 AM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "ms": 14184
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793165242538,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 3062,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for your party plan: fill in the date, guest count and budget, then submit.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n5:27 AM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "ms": 11179
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1793165253854,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 6567,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a simple expense tracker: add what you spent, pick a category, and it shows your total and a split by category for the month. Your entries stay in this page, and are saved on this device if your app allows it.\n\nKeep\n5:27 AM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 24938
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}
