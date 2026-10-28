@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth went from -5.8% in 2020-21 to 9.7% in 2021-22, then settled at 6.5% in 2024-25. These are the latest figures I know for the five years up to 2024-25 and may have been revised since. I don't have a reliable number for 2025-26 yet.\n\nIndia's real GDP growth (% a year)\n−10%\n0%\n10%\n2020-21\n2021-22\n2022-23\n2023-24\n2024-25\nKeep\n6:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n6:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 looks like the best value of the three: it has the fastest chip and the only zoom camera, at about the same launch price as the others. Prices are the India launch prices for the base AI, and shops often sell below them, so check today's price before you buy.\n\niPhone 16\nLaunch price (128 GB)\n₹79,900\nScreen\n6.1 inch, 60 Hz\nChip\nApple A18\nCameras\n48 MP main + 12 MP wide\nBattery\nAbout 3,561 mAh\nSoftware updates\nAround 6 to 7 years in practice\nPixel 9\nLaunch price (128 GB)\n₹79,999\nScreen\n6.3 inch, 120 Hz\nChip\nGoogle Tensor G4\nCameras\n50 MP main + 48 MP wide\nBattery\nAbout 4,700 mAh\nSoftware updates\n7 years\nBest pick\nGalaxy S25\nLaunch price (128 GB)\n₹80,999\nScreen\n6.2 inch, 120 Hz\nChip\nSnapdragon 8 Elite\nCameras\n50 MP main + 12 MP wide + 10 MP 3x zoom\nBattery\nAbout 4,000 mAh\nSoftware updates\n7 years\n\nFastest chip, a 3x zoom camera and a smooth 120 Hz screen for almost the same price.\n\nKeep\n\nIf battery life matters most, the Pixel 9 is the one to look at. Want me to check today's prices for all three?\n\n6:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n6:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the water is ready. It only counts down while this chat is open.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n6:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a short form for your party plan. Fill it in and send it back.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an item with its amount, category and date, set a monthly budget, and it shows your total, what is left and a split by category. Pick a month to look at earlier ones. It keeps your entries on this device when the chat allows it, and otherwise only while the page is open.\n\nKeep\n6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n6:30 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dates should I search for your Goa stay?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nNext weekend, 2 nights\n2\nSat 7 Nov to Mon 9 Nov\nNext weekend, 2 nights\n3\nFri 30 Oct to Sun 1 Nov\nThis coming weekend, 2 nights\nSomething else…\nSkip\n6:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:30 AM"
+  }
+]

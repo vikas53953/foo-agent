@@ -1,0 +1,11 @@
+{"t":"2026-10-28T06:33:52.396Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:33:57.517Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:33:57.637Z","i":0,"do":"send","sentAt":1793169237599,"sent":true,"before":0,"ok":true,"ms":117}
+{"t":"2026-10-28T06:34:10.797Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7078,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What matters most for your programming laptop under ₹80,000?\n1\nLong battery and light weight\nBEST FIT\nGood for college, travel, cafés\n2\nSpeed for heavy work\nBig projects, Docker, many tabs\n3\nBest screen and build\nComfortable for long hours\n4\nLowest price that works\nSolid basics, no extras\nSomething else…\nSkip\n6:34 AM","kit":[],"ms":13160}
+{"t":"2026-10-28T06:34:10.856Z","shot":"01-laptop.png"}
+{"t":"2026-10-28T06:34:10.857Z","i":2,"do":"check","found":2,"ok":true,"ms":1}
+{"t":"2026-10-28T06:34:10.859Z","i":3,"do":"check","found":7,"ok":true,"ms":1}
+{"t":"2026-10-28T06:34:10.868Z","i":4,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:34:10.982Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T06:34:10.991Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T06:34:10.992Z","step":"jobTrail","steps":0,"calls":0}
