@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n2:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check things, keep an eye on prices or bills, and handle the busywork of email, calendar and bookings, always asking before I send or pay anything.\n\n2:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n2:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and another computer on the internet, which then goes online for you.\n\nNormally, websites and your internet provider can see where your traffic comes from. With a VPN, everything you send is scrambled before it leaves your device, so your provider or the café Wi-Fi only sees unreadable data going to the VPN. The VPN then passes your request on, and websites see the VPN's address instead of yours.\n\nIt's good for safer public Wi-Fi and for hiding your location. It won't make you anonymous, though, since the VPN company can still see your traffic, so pick one you trust.\n\n2:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n2:04 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you mostly run in these shoes? → Trails or parks\n2:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n2:04 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What matters most in these shoes?\n1\nGrip on uneven ground\nBEST FIT\nBetter for muddy or loose trails\n2\nSoft cushioning\nComfort over longer runs\n3\nLight and fast\nLess weight, more speed\n4\nLasts a long time\nTougher build for daily use\nSomething else…\nSkip\n2:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:04 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n20 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n2:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:05 AM"
+  }
+]

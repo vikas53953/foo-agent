@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Three good-value picks under ₹50,000 all with 16GB RAM and a 512GB SSD:\n\nAcer Aspire 3 (A324-53): about ₹40,990 to ₹49,990 Core i5-1334U, 16GB. Cheapest, good for students.\nAcer Aspire 14 AI: about ₹43,999 Snapdragon X (X1-26-100), 16GB. Best battery life.\nLenovo ThinkBook 16: about ₹46,990 Ryzen 5 7535HS, 16GB. Strongest processor and a big 16-inch screen.\n\nIf you want the most performance, take the ThinkBook 16. If you want the lowest price, take the Aspire 3.\n\nThese prices are rough. They come from one roundup that did not test the laptops itself, last updated Fri 23 Oct 2026. The same laptop can differ by ₹15,000 or more between listings, so check the exact version and live price before buying.\n\n2:15 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Key\nsecret\nTest key saved securely. foo’s AI never sees it.\nTest key · saved Wed 28 Oct\nReplace\nRemove\n2:18 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n2:18 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n2:20 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Pay electricity bill”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n2:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n2:20 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for pizzas on the Domino's menu near you\n3\nKeep 3 pizzas that fit popular and good value\n4\nWait for you to pick one\n5\nFill in your details on Domino's\n…and 3 more · Show\nAbout 6 minutes\nGo\nChange plan\n2:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:20 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n2:20 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n2:20 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:20 AM"
+  }
+]

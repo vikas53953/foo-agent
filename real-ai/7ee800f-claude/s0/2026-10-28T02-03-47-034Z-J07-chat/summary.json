@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T02-03-47-034Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793153032569,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2557,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! It's 2:03 AM, so you're up late. What do you need?\n\n2:03 AM",
+      "kit": [],
+      "ms": 9667
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793153042405,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3548,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can check things, keep an eye on prices or bills, and handle the busywork of email, calendar and bookings, always asking before I send or pay anything.\n\n2:04 AM",
+      "kit": [],
+      "ms": 10651
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793153053209,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3043,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer on the internet, which then goes online for you.\n\nNormally, websites and your internet provider can see where your traffic comes from. With a VPN, everything you send is scrambled before it leaves your device, so your provider or the café Wi-Fi only sees unreadable data going to the VPN. The VPN then passes your request on, and websites see the VPN's address instead of yours.\n\nIt's good for safer public Wi-Fi and for hiding your location. It won't make you anonymous, though, since the VPN company can still see your traffic, so pick one you trust.\n\n2:04 AM",
+      "kit": [],
+      "ms": 11164
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
