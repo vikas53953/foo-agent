@@ -36,7 +36,8 @@
     "review:tier": "tsx scripts/review-tier.ts",
     "qa": "tsx scripts/qa.ts",
     "licences:write": "tsx scripts/licences.ts",
-    "qa:explore": "tsx scripts/qa-explore.ts"
+    "qa:explore": "tsx scripts/qa-explore.ts",
+    "test:mutation": "stryker run"
   },
   "dependencies": {
     "@fluentui/react-icons": "2.0.343",
@@ -64,6 +65,7 @@
     "@electron/rebuild": "4.2.1",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.64.1",
+    "@stryker-mutator/core": "10.0.0",
     "@types/better-sqlite3": "9.6.0",
     "@types/jsdom": "28.0.0",
     "@types/node": "22.20.5",

@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { checkpoints, checkRows, featureVerdicts, GATE_FEATURES, missingRuns } from '../../scripts/release-gate';
+import { checkpoints, checkRows, featureVerdicts, GATE_FEATURES, knownRedFor, missingRuns } from '../../scripts/release-gate';
 
 const run = (journey: string, dir: string, results: object[]) => ({
   dir,
@@ -44,6 +44,27 @@ describe('release gate verdicts', () => {
     const v = featureVerdicts(cps, new Map());
     expect(v.find((f) => f.feature === 'chat')!.verdict).toBe('not-reviewed');
     expect(v.find((f) => f.feature === 'settings')!.verdict).toBe('not-tested');
+  });
+
+  it('any failed journey turns the gate red: a step no feature claims gets its own broken row', () => {
+    const untagged = {
+      dir: '/r/1-QA1',
+      s: { journey: 'QA1', title: 'QA1', results: [{ i: 3, do: 'click', ok: false, error: 'gone' }] } as never,
+    };
+    const v = featureVerdicts(checkpoints([untagged]), new Map());
+    expect(v.find((f) => f.feature === 'unassigned')).toMatchObject({ verdict: 'broken', broken: 1 });
+    // No such row when every step has a feature.
+    expect(featureVerdicts(checkpoints([run('G2-chat', '/r/1-G2', [sent])]), new Map()).map((f) => f.feature)).toEqual([...GATE_FEATURES]);
+  });
+
+  it('a known-red failure is named with its owner and fix on every round, and only for its own step', () => {
+    const cps = checkpoints([
+      run('B1-batch1', '/r/1-B1', [sent, reply({ ok: false, error: 'x' })]),
+      run('B1-batch1', '/r/2-B1', [sent, reply({ ok: false, error: 'x' })]),
+    ]);
+    const known = [{ journey: 'B1-batch1', step: 1, bug: 'F30', owner: 'builder', fix: '#169' }];
+    expect(cps.filter((c) => c.measured).map((c) => knownRedFor(c, known)?.bug)).toEqual(['F30', 'F30']);
+    expect(knownRedFor(cps[0]!, [{ ...known[0]!, step: 7 }])).toBeUndefined();
   });
 
   it('each round of a repeated journey is judged on its own (pass^k)', () => {
@@ -149,5 +170,17 @@ describe('gate journeys', () => {
       }),
     );
     for (const f of GATE_FEATURES) expect([...reached], f).toContain(f);
+  });
+
+  it('the release needs the installed app, red-first and mutation, and every known-red entry names a real journey and owner', () => {
+    const wf = readFileSync(join('.github', 'workflows', 'release-gate.yml'), 'utf8');
+    expect(wf).toMatch(/needs: \[drive, review, red-first, mutation\]/);
+    expect(wf).toMatch(/FOO_EXE="\$\{\{ steps\.install\.outputs\.exe \}\}"/);
+    expect(wf).toMatch(/Uninstall foo and check it is gone/);
+    const known = JSON.parse(readFileSync(join('test', 'real-pc', 'known-red.json'), 'utf8')) as Record<string, unknown>[];
+    for (const k of known) {
+      expect(() => load(String(k.journey)), JSON.stringify(k)).not.toThrow();
+      for (const f of ['bug', 'owner', 'fix']) expect(k[f], `${f} in ${JSON.stringify(k)}`).toBeTruthy();
+    }
   });
 });

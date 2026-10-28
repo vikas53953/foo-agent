@@ -26,6 +26,7 @@ const FEATURE_NAMES: Record<string, string> = {
   chat: 'Just chatting, in your language',
   settings: 'Settings, by page or by asking',
   refusals: 'What batch 1 must refuse plainly (tasks, memory)',
+  unassigned: 'Steps no feature claims (a failure here still turns the gate red)',
 };
 export type Verdict = 'works' | 'wrong-design' | 'broken';
 
@@ -228,6 +229,21 @@ export function missingRuns(
   return out;
 }
 
+/** A failure the team already knows about (test/real-pc/known-red.json). It is named on the report with its owner and fix,
+ * and it still turns the gate red: there are no known-red waivers. */
+export interface KnownRed {
+  journey: string;
+  /** The step number in the journey; left out, every step of the journey matches. */
+  step?: number;
+  bug: string;
+  owner: string;
+  fix: string;
+}
+export function knownRedFor(c: Checkpoint, known: KnownRed[]): KnownRed | undefined {
+  const step = Number(c.id.split('#')[1]?.split('@')[0]);
+  return known.find((k) => k.journey === c.journey.split('·')[0] && (k.step === undefined || k.step === step));
+}
+
 /** The other checks a release needs green on the same commit; one that is missing or skipped is not green. */
 export const REQUIRED_CHECKS = [
   { prefix: 'Fast lane', count: 1 },
@@ -255,7 +271,9 @@ export function verdictOf(c: Checkpoint, reviews: Map<string, Review>): Verdict 
 }
 
 export function featureVerdicts(cps: Checkpoint[], reviews: Map<string, Review>) {
-  return GATE_FEATURES.map((f) => {
+  // Any failed journey turns the gate red: a checkpoint outside the batch-1 features gets its own row, never dropped.
+  const extra = [...new Set(cps.map((c) => c.feature))].filter((f) => !(GATE_FEATURES as readonly string[]).includes(f));
+  return [...GATE_FEATURES, ...extra].map((f) => {
     const mine = cps.filter((c) => c.feature === f);
     const v = mine.map((c) => verdictOf(c, reviews));
     const verdict = !mine.length
@@ -393,6 +411,7 @@ function report() {
   const runs = loadRuns(runsDir);
   // --expect given but the file is gone (a lost upload) must not quietly drop the every-round check.
   const expectFile = opt('--expect');
+  const known: KnownRed[] = opt('--known') && existsSync(opt('--known')!) ? JSON.parse(readFileSync(opt('--known')!, 'utf8')) : [];
   if (expectFile && !existsSync(expectFile)) {
     console.error(`release gate: BLOCKED · ${expectFile} is missing, so the rounds that should have run are unknown`);
     process.exit(2);
@@ -428,54 +447,69 @@ function report() {
     return `refs/${basename(f)}`;
   };
 
+  const knownLine = (c: Checkpoint) => {
+    const k = knownRedFor(c, known);
+    return k
+      ? `<p><b>Known red:</b> ${esc(k.bug)} · owner ${esc(k.owner)} · fix ${esc(k.fix)} (still blocks the release)</p>`
+      : '<p class="bad"><b>New failure:</b> not on the known-red list.</p>';
+  };
+  const failures = cps.filter((c) => verdictOf(c, reviews) === 'broken');
+  const failureRows = failures
+    .map((c) => {
+      const k = knownRedFor(c, known);
+      return `<tr><td><code>${esc(c.id)}</code></td><td>${esc(c.measured ?? 'the reviewer found it broken')}</td><td>${k ? `known: ${esc(k.bug)}, ${esc(k.owner)}, fix ${esc(k.fix)}` : '<b class="bad">new</b>'}</td></tr>`;
+    })
+    .join('');
   const featureRows = feats
     .map(
       (f) =>
         `<tr><td>${esc(f.name)}</td><td><span class="v ${f.verdict}">${LABEL[f.verdict]}</span></td><td>${f.checkpoints}</td><td>${f.broken}</td><td>${f.wrong}</td></tr>`,
     )
     .join('');
-  const cards = GATE_FEATURES.map((f) => {
-    const mine = cps.filter((c) => c.feature === f);
-    if (!mine.length)
-      return `<section><h2>${esc(FEATURE_NAMES[f])}</h2><p class="muted">No journey reached this feature: not tested, so the gate fails.</p></section>`;
-    const items = mine
-      .map((c) => {
-        const v = verdictOf(c, reviews);
-        const r = reviews.get(c.id);
-        const run = runs.find((x) => x.dir === c.dir);
-        const step = run?.s.results.find((x) => `${runTag(runs, c.dir)}#${x.i}` === c.id.split('@')[0]);
-        const shot = copy(c.dir, c.shot);
-        const ref = refCopy(c.ref);
-        const timeline = step?.timeline?.length
-          ? `<details><summary>What the user saw while waiting</summary><table class="small"><tr><th>after</th><th>badge on my message</th><th>Thinking row</th><th>foo writing</th></tr>${step.timeline
-              .map(
-                (t) =>
-                  `<tr><td>${sec(t.at)}</td><td>${esc(t.badges.map((b) => (b === 'seen' ? '👀' : b)).join(' ') || '—')}</td><td>${t.thinking ? 'yes' : '—'}</td><td>${t.streaming ? 'yes' : '—'}</td></tr>`,
-              )
-              .join('')}</table></details>`
-          : '';
-        const sweep = step?.controls?.length
-          ? `${step.truncated ? `<p class="bad">${step.truncated} more controls on this screen were not clicked (cap reached).</p>` : ''}<table class="small"><tr><th>control</th><th>result</th><th>what happened</th></tr>${step.controls
-              .map(
-                (k) =>
-                  `<tr class="${k.status}"><td>${esc(k.name || k.tid)}<br><code>${esc(k.tid)}</code></td><td>${esc(k.status)}</td><td>${esc([...k.effect, k.reason ?? '', ...k.issues.map((i) => JSON.stringify(i).slice(0, 160))].filter(Boolean).join(' · '))}${k.shot ? ` <a href="${copy(c.dir, k.shot)}">picture</a>` : ''}</td></tr>`,
-              )
-              .join('')}</table>`
-          : step?.blocked
-            ? `<p class="muted">${esc(step.blocked)}</p>`
+  const cards = feats
+    .map(({ feature: f }) => {
+      const mine = cps.filter((c) => c.feature === f);
+      if (!mine.length)
+        return `<section><h2>${esc(FEATURE_NAMES[f] ?? f)}</h2><p class="muted">No journey reached this feature: not tested, so the gate fails.</p></section>`;
+      const items = mine
+        .map((c) => {
+          const v = verdictOf(c, reviews);
+          const r = reviews.get(c.id);
+          const run = runs.find((x) => x.dir === c.dir);
+          const step = run?.s.results.find((x) => `${runTag(runs, c.dir)}#${x.i}` === c.id.split('@')[0]);
+          const shot = copy(c.dir, c.shot);
+          const ref = refCopy(c.ref);
+          const timeline = step?.timeline?.length
+            ? `<details><summary>What the user saw while waiting</summary><table class="small"><tr><th>after</th><th>badge on my message</th><th>Thinking row</th><th>foo writing</th></tr>${step.timeline
+                .map(
+                  (t) =>
+                    `<tr><td>${sec(t.at)}</td><td>${esc(t.badges.map((b) => (b === 'seen' ? '👀' : b)).join(' ') || '—')}</td><td>${t.thinking ? 'yes' : '—'}</td><td>${t.streaming ? 'yes' : '—'}</td></tr>`,
+                )
+                .join('')}</table></details>`
             : '';
-        return `<article class="cp"><header><span class="v ${v}">${LABEL[v]}</span> <b>${esc(c.kind === 'waiting' ? 'While waiting' : c.kind === 'sweep' ? 'Every control clicked' : 'Step')}</b> <code>${esc(c.id)}</code></header>
+          const sweep = step?.controls?.length
+            ? `${step.truncated ? `<p class="bad">${step.truncated} more controls on this screen were not clicked (cap reached).</p>` : ''}<table class="small"><tr><th>control</th><th>result</th><th>what happened</th></tr>${step.controls
+                .map(
+                  (k) =>
+                    `<tr class="${k.status}"><td>${esc(k.name || k.tid)}<br><code>${esc(k.tid)}</code></td><td>${esc(k.status)}</td><td>${esc([...k.effect, k.reason ?? '', ...k.issues.map((i) => JSON.stringify(i).slice(0, 160))].filter(Boolean).join(' · '))}${k.shot ? ` <a href="${copy(c.dir, k.shot)}">picture</a>` : ''}</td></tr>`,
+                )
+                .join('')}</table>`
+            : step?.blocked
+              ? `<p class="muted">${esc(step.blocked)}</p>`
+              : '';
+          return `<article class="cp"><header><span class="v ${v}">${LABEL[v]}</span> <b>${esc(c.kind === 'waiting' ? 'While waiting' : c.kind === 'sweep' ? 'Every control clicked' : 'Step')}</b> <code>${esc(c.id)}</code></header>
 <p><b>Expected:</b> ${esc(c.expect)}</p>
-${c.measured ? `<p class="bad"><b>Measured:</b> ${esc(c.measured)}</p>` : ''}
+${c.measured ? `<p class="bad"><b>Measured:</b> ${esc(c.measured)}</p>${knownLine(c)}` : ''}
 ${r ? `<p><b>Reviewer:</b> ${esc(r.summary)}</p>${r.problems.length ? `<ul>${r.problems.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}` : ''}
 ${c.facts.length ? `<p class="muted">${c.facts.map(esc).join('<br>')}</p>` : ''}
 <div class="pics">${shot ? `<figure><a href="${shot}"><img src="${shot}" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure>` : ''}${ref ? `<figure><a href="${ref}"><img src="${ref}" loading="lazy" alt=""></a><figcaption>Design ${esc(c.ref)}</figcaption></figure>` : ''}</div>
 ${timeline}${sweep}</article>`;
-      })
-      .join('');
-    const fv = feats.find((x) => x.feature === f)!;
-    return `<section><h2>${esc(FEATURE_NAMES[f])} <span class="v ${fv.verdict}">${LABEL[fv.verdict]}</span></h2>${items}</section>`;
-  }).join('');
+        })
+        .join('');
+      const fv = feats.find((x) => x.feature === f)!;
+      return `<section><h2>${esc(FEATURE_NAMES[f] ?? f)} <span class="v ${fv.verdict}">${LABEL[fv.verdict]}</span></h2>${items}</section>`;
+    })
+    .join('');
   const videos = runs
     .flatMap(({ dir, s }) =>
       (s.videos ?? []).map(
@@ -504,6 +538,7 @@ h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:32px 0 8px}.muted{colo
 <p class="muted">Commit ${esc(sha)} · the packaged app (the same files Vikas downloads) driven like a user with a real AI · pictures checked by a separate reviewer · ${new Date().toISOString()}</p>
 <p>${status === 'PASS' ? 'Every batch-1 feature works and every other check on this commit is green: this build may go to Vikas.' : 'This build must not go to Vikas until every row below says Works.'}</p>
 <h2>Features</h2><table><tr><th>Feature</th><th>Verdict</th><th>Checkpoints</th><th>Broken</th><th>Wrong vs design</th></tr>${featureRows}</table>
+${failures.length ? `<h2>Every failure (${failures.length})</h2><table><tr><th>Where</th><th>What went wrong</th><th>Known red or new</th></tr>${failureRows}</table>` : ''}
 <h2>Other checks on this commit</h2><table>${checkHtml}</table>
 ${videos ? `<h2>Videos</h2><p class="muted">In the run's release-gate-report download.</p><ul>${videos}</ul>` : ''}
 ${cards}
