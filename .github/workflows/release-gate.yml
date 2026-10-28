@@ -93,7 +93,7 @@ jobs:
       - name: Rebuild native modules for Electron
         run: pnpm rebuild:electron
       - name: Package the installer (NSIS, the file Vikas downloads)
-        run: pnpm exec electron-builder --win nsis
+        run: pnpm exec electron-builder --win nsis --publish never
       # Installer smoke test: a silent per-user install (09-windows §9.3: no admin) on this clean runner, then every journey
       # drives the INSTALLED foo.exe, not the build folder.
       - name: Install foo with the installer
