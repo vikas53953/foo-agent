@@ -5,7 +5,7 @@
 // decides the kind both times.
 
 const REMEMBER =
-  /\b(remember\w*|note|noted|forget\w*|forgot|save|store|keep in mind|memori[sz]e|what you know about me)\b|yaad|bhool|bhul|dhyan rakh|याद|भूल|नोट|ध्यान|ਯਾਦ|ਭੁੱਲ|ਨੋਟ|ਧਿਆਨ/iu;
+  /\b(rem(?:em|e)?be?r\w*|notes?|noted|jot|forget\w*|forgot|save|store|memory|memori[sz]e|keep (that |this |it )?in mind|erase|delete|wipe)\b|yaa?d|bhool|bhul|dhyan rakh|याद|भूल|नोट|ध्यान|मिटा|ਯਾਦ|ਭੁੱਲ|ਨੋਟ|ਧਿਆਨ|ਮਿਟਾ/iu;
 const TASK =
   /\b(book|booking|order|buy|purchase|pay|send|email|message|call|reserve|reservation|cancel|schedule|transfer|recharge|get me|find me)\b|bhej|mangwa|kharid|बुक|भेज|खरीद|मंगवा|ऑर्डर|ਬੁੱਕ|ਭੇਜ|ਖਰੀਦ/iu;
 

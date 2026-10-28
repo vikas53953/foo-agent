@@ -87,6 +87,12 @@ describe('CR-0069 · memory off: a setting ask labelled memory gets a second loo
     'dhyan rakhna main vegetarian hoon',
     "don't store my address",
     'delete what you know about me',
+    'I am vegetarian, keep that in mind',
+    'remeber that I am vegetarian',
+    'yad rakhna main vegetarian hoon',
+    'erase my address',
+    'take notes: my PIN changes monthly',
+    'मेरा पता मिटा दो',
   ])('a real memory ask ("%s") gets the memory line at once, with no second look', async (text) => {
     const x = await run([{ match: { purpose: 'intake' }, reply: MEMORY }], text);
     expect(intakes(x)).toHaveLength(1);
@@ -196,6 +202,19 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     const x = await run([{ match: { purpose: 'intake' }, reply: act({ kind: 'reply' }), once: false }], 'Send me a joke');
     expect(asked(x, REASK_JOB_LINE)).toBe(1);
     expect(intakes(x).length).toBeLessThanOrEqual(3);
+    expect(fooTexts(x)).toEqual([t('thread.reply.empty')]);
+  });
+
+  it('a memory answer on a later run of the same message still never gets the memory line (review on CR-0069)', async () => {
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: MEMORY },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }) },
+        { match: { purpose: 'intake' }, reply: MEMORY },
+      ],
+      'Switch to dark mode',
+    );
+    expect(fooTexts(x)).not.toContain(t('thread.feature_off.memory'));
     expect(fooTexts(x)).toEqual([t('thread.reply.empty')]);
   });
 

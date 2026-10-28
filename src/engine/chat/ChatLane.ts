@@ -795,6 +795,7 @@ export class ChatLane {
             ? 'job'
             : null;
     let lookSay = '';
+    let lookTrailer: string | null = null;
     if (look && intakeInput) {
       this.looked.add(messageId);
       this.d.log('chat.second_look', look, { chatId });
@@ -805,19 +806,24 @@ export class ChatLane {
           await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: shown, status: 'complete', badge: 'stopped' } }]);
         else await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: null } }]);
         this.typing(chatId, false, who);
-        await this.turnRow(turnId, chatId, pick, startedAt, result, 'cancelled');
+        // The first look finished; the second look's own row says it was cancelled.
+        await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
         return;
       }
       if (second?.act) {
+        // A reply that stays a reply keeps the first look's words, so the facts they used stay its own.
+        if (!(firstKind === 'reply' && second.act.kind === 'reply')) {
+          usedMemoryIds = second.usedMemoryIds;
+          tags = second.tags;
+          lookTrailer = second.rawSay;
+        }
         act = second.act;
-        usedMemoryIds = second.usedMemoryIds;
-        tags = second.tags;
         lookSay = second.say;
       }
     }
     const kind = act?.kind ?? 'reply';
     // CR-0069: after the second look a `memory` answer with no remember word never gets the memory line.
-    const noMemoryLine = look === 'memory' && kind === 'memory';
+    const noMemoryLine = kind === 'memory' && this.d.featureOn?.('memory') === false && !asksToRemember(asked);
     let retryEmpty = false;
     let released = gate.released().trimEnd();
     // CR-0069: a `memory` first look turned `reply` answers with the second look's words (the first look's were not a reply).
@@ -879,7 +885,7 @@ export class ChatLane {
     ) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
-        const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
+        const trailer = kind === 'reply' ? splitSuggestions(lookTrailer ?? parsed.say) : null;
         const suggestions = trailer?.suggestions ?? null;
         // R1 T7: the action chips the reply's own `Actions:` line held (04-2 §21.7; the gate kept it out of the bubble too).
         const actions = trailer ? splitActions(trailer.text).actions : null;
@@ -1003,7 +1009,7 @@ export class ChatLane {
     chatId: string,
     pick: NonNullable<ReturnType<LaneDeps['ai']['pick']>>,
     input: IntakeInput,
-  ): Promise<{ act: IntakeDecisionView; usedMemoryIds: string[]; tags: IntakeTag[]; say: string } | 'stopped' | null> {
+  ): Promise<{ act: IntakeDecisionView; usedMemoryIds: string[]; tags: IntakeTag[]; say: string; rawSay: string } | 'stopped' | null> {
     let built: { system: string; prompt: string };
     try {
       built = this.d.protocol.buildIntake(input);
@@ -1043,7 +1049,13 @@ export class ChatLane {
     const gate = this.d.protocol.gate(() => {}, new AbortController().signal);
     gate.push(result.text);
     await gate.end();
-    return { act: parsed.act, usedMemoryIds: parsed.usedMemoryIds ?? [], tags: parsed.tags ?? [], say: gate.released().trimEnd() };
+    return {
+      act: parsed.act,
+      usedMemoryIds: parsed.usedMemoryIds ?? [],
+      tags: parsed.tags ?? [],
+      say: gate.released().trimEnd(),
+      rawSay: parsed.say,
+    };
   }
 
   /**
