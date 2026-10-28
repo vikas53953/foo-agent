@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n9:26 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:27 AM\n9:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for Delhi to Mumbai flights on Fri 6 Nov\nKept 3 flights that fit lowest fare\nCompared the 3 flights on fare, times and airline\nStopped by you\n9:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n9:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n9:27 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:28 AM\n9:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:28 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n9:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The fastest morning train from New Delhi is the Shatabdi 12002, leaving 6:00 AM and reaching Agra Cantt at 7:50 AM (1 hr 50 min).\n\nFrom New Delhi station:\n\nTrain\tLeaves\tArrives Agra Cantt\tTime taken\tRuns\nShatabdi 12002\t6:00 AM\t7:50 AM\t1 hr 50 min\tDaily\nTaj Express 12280\t6:55 AM\t9:25 AM\t2 hr 30 min\tDaily\nHirakund Exp 20808\t8:15 AM\t10:35 AM\t2 hr 20 min\tDaily except some days\nPunjab Mail 12138\t5:10 AM\t8:10 AM\t3 hr\tDaily\nHSX AGC Exp 11906\t7:20 AM\t11:00 AM\t3 hr 40 min\tDaily\n\nIf Hazrat Nizamuddin station works for you, two are quicker still: Vande Bharat 22470 (6:00 AM to 7:40 AM, 1 hr 40 min) and Gatimaan 12050 (8:10 AM to 9:50 AM, 1 hr 40 min). Both have chair car seats only.\n\nThe page did not show fares or seat availability, and it cut off after about 11:15 AM. Days of running for some trains were also unclear, so check the day you plan to travel.\n\n9:29 AM"
+  }
+]

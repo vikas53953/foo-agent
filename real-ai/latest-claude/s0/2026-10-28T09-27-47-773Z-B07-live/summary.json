@@ -1,0 +1,139 @@
+{
+  "journey": "B07-live",
+  "title": "Watch live, take over, hand back, stop",
+  "videos": [],
+  "steps": 14,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-27-47-773Z-B07-live",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning",
+      "sentAt": 1793179673465,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 154
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 66,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 19381,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 21400,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 19341,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for morning trains from New…\n1\nFind trains on IRCTC\n2\nLook for morning trains from New Delhi to Agra on\nAbout 3 minutes\nGo\nChange plan\n9:28 AM",
+      "kit": [],
+      "ms": 25398,
+      "shot": "01-irctc.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 45
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 45003
+    },
+    {
+      "i": 4,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "ok": true,
+      "ms": 4001,
+      "shot": "02-live.png"
+    },
+    {
+      "i": 6,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "ok": true,
+      "ms": 3000,
+      "shot": "03-taken-over.png"
+    },
+    {
+      "i": 8,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "ok": true,
+      "ms": 3000,
+      "shot": "04-handed-back.png"
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "ok": true,
+      "ms": 8001,
+      "shot": "05-stopped.png"
+    },
+    {
+      "i": 12,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 13,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

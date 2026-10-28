@@ -1,0 +1,232 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "videos": [],
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-30-18-942Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1051
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from",
+      "sentAt": 1793179825607,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 144
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "ref": "BP-CARD-03",
+      "timeline": [
+        {
+          "at": 44,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 548,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8669,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8633,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Bengaluru?\n1\nLalbagh walk and dosa breakfast\nBEST FIT\nEasy morning, then South Indian tiffin and filter coffee\n2\nNandi Hills sunrise\nEarly start, back home by noon\n3\nBookshop and cafe crawl\nSlow afternoon, no rush, mostly indoors\nSomething else…\nSkip\n9:30 AM",
+      "kit": [],
+      "ms": 14694,
+      "shot": "01-choice.png"
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ref": "BP-CARD-03",
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "the second one",
+      "sentAt": 1793179840579,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "timeline": [
+        {
+          "at": 57,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8165,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 10708,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8125,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Nandi Hills sunrise it is, a good pick. It's about 60 km from Bengaluru, so leave around 3:30 AM on Sat 31 Oct to catch the sky turning orange around 6:00 AM. Carry a light jacket, since the top is chilly and often misty. 🌿\n\nSince you love South Indian food, a dosa and filter coffee on the way back makes a fine reward. Want me to put it in your calendar for Sat 31 Oct?\n\n9:30 AM",
+      "kit": [],
+      "ms": 16716,
+      "shot": "03-typed-pick.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Now give me 3 dinner options to choose from",
+      "sentAt": 1793179857487,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "timeline": [
+        {
+          "at": 43,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6129,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6107,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nGhee podi dosa with sambar\nBEST FIT\nCrisp, spicy and quick to make\n2\nBisi bele bath with papad\nOne warm bowl, comforting and filling\n3\nAppam with veg stew\nSoft Kerala-style, mild and creamy\nSomething else…\nSkip\n9:31 AM",
+      "kit": [],
+      "ms": 12159,
+      "shot": "04-choice-2.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 115
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 613,
+      "shot": "05-something-else.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Actually just a home-cooked dal chawal",
+      "sentAt": 1793179870616,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "timeline": [
+        {
+          "at": 35,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4589,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5599,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4557,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal tonight it is, simple and hard to beat. 🌿 Want a quick tadka dal recipe, or a reminder to start the cooker around 7:00 PM?\n\n9:31 AM",
+      "kit": [],
+      "ms": 11714,
+      "shot": "06-own-answer.png"
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
