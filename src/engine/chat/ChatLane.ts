@@ -28,6 +28,7 @@
 // [ Undo ]" line; anything else gets "That's one for you to change. [ Open Settings ]".
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
+import { asksToRemember, namesTask } from './secondLook';
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -103,6 +104,8 @@ export interface IntakeInput {
   oldPlan?: { title: string; steps: string[] };
   /** CR-0028: the intake questions this message already got answers to, as "- Q: … → A: …" lines. */
   answers?: string[];
+  /** CR-0069: this turn is the second look at a likely wrong `memory` or `reply` answer while that feature is off. */
+  reask?: 'memory' | 'job';
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -278,6 +281,8 @@ export class ChatLane {
   private violationRetried = new Set<string>();
   /** CR-0041: user messages whose intake turn already ran once more after an empty answer. */
   private emptyRetried = new Set<string>();
+  /** CR-0069: user messages due a second look at their kind, and the bubble the first look already showed words in. */
+  private reasks = new Map<string, { kind: 'memory' | 'job'; fooId: string | null }>();
   /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
   private drained = new Set<string>();
   /** Messages a steer sent back to intake (`new_job`): they skip the runner's branches. */
@@ -505,6 +510,8 @@ export class ChatLane {
     const intakeOnly = this.intakeOnly.delete(messageId) || side;
     const rewrite = this.rewrites.get(messageId) ?? null;
     this.rewrites.delete(messageId);
+    const reask = this.reasks.get(messageId) ?? null;
+    this.reasks.delete(messageId);
     // The turn runs once more with what it was given: its intake-only mark and (CR-0059 row 1) its rewrite (the protocol
     // retry; a rewrite with an empty reply keeps the old answer instead).
     const again = () => {
@@ -564,6 +571,7 @@ export class ChatLane {
         memory,
         ...(oldPlan ? { oldPlan } : {}),
         ...(answers?.length ? { answers } : {}),
+        ...(reask ? { reask: reask.kind } : {}),
       });
     } catch {
       built = null;
@@ -595,7 +603,11 @@ export class ChatLane {
         table: 'messages',
         id: messageId,
         // CR-0059 row 1: a rewrite's message was answered already; the Thinking row is the sign (no 👀 to leave behind on a restart).
-        set: { status: 'complete', badge: rewrite ? null : 'seen', understood: understood.length ? JSON.stringify(understood) : null },
+        set: {
+          status: 'complete',
+          badge: rewrite || reask ? null : 'seen',
+          understood: understood.length ? JSON.stringify(understood) : null,
+        },
       },
     ]);
     this.typing(chatId, true, who);
@@ -624,7 +636,8 @@ export class ChatLane {
     const live = { abort, stopped: false };
     this.chatTurns.set(chatId, live);
 
-    let fooId: string | null = null;
+    // CR-0069: a second look keeps the bubble the first one showed words in; it streams nothing into it.
+    let fooId: string | null = reask?.fooId ?? null;
     let deltaSeq = 0;
     let pending = Promise.resolve();
     const later = (fn: () => Promise<unknown>) => {
@@ -635,8 +648,9 @@ export class ChatLane {
       later(async () => {
         // Nothing reaches the bubble after Stop or a cut-off (08-4 §30.7), not even a held sentence's late rewrite.
         if (abort.signal.aborted) return;
-        // CR-0059 row 1: a rewrite streams nothing; the old answer stays until the new one is complete.
-        if (rewrite) return;
+        // CR-0059 row 1: a rewrite streams nothing; the old answer stays until the new one is complete (CR-0069: so does a
+        // second look at words already shown).
+        if (rewrite || reask?.fooId) return;
         if (!fooId) {
           fooId = this.d.newId('m');
           this.answered.set(fooId, messageId);
@@ -712,7 +726,11 @@ export class ChatLane {
       abort.abort();
       await pending;
       if (rewrite) await this.rewriteKept(chatId, messageId, who, result.errorKind ?? 'UNKNOWN', helper);
-      else await this.cutOff(chatId, messageId, fooId, who, gate.released().trimEnd(), helper, providerNote);
+      else if (reask?.fooId) {
+        // CR-0069: a second look that failed leaves the first look's words as its answer.
+        this.typing(chatId, false, who);
+        await this.tx([{ op: 'update', table: 'messages', id: reask.fooId, set: { status: 'complete' } }]);
+      } else await this.cutOff(chatId, messageId, fooId, who, gate.released().trimEnd(), helper, providerNote);
       this.d.ai.reportError(pick.providerId, result.errorKind ?? 'UNKNOWN', result.resetAt);
       await this.turnRow(turnId, chatId, pick, startedAt, result, result.errorKind === 'AI_TIMEOUT' ? 'timeout' : 'error');
       return;
@@ -780,6 +798,28 @@ export class ChatLane {
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
     // CR-0044: the decided kind goes to the tech log (an enum, no words), so a real-AI run shows why a message got its answer.
     this.d.log('chat.intake_kind', act ? kind : 'none', { chatId });
+    // CR-0069 (X-226): with a feature off, a likely wrong kind gets one second look before foo answers: `memory` for a
+    // message with no remember word (QA-X-F30), `reply` to a message naming a task (QA-X-F32).
+    const asked = message.textForAi ?? message.text;
+    const memoryOff = this.d.featureOn?.('memory') === false;
+    const look =
+      kind === 'memory' && memoryOff && !asksToRemember(asked)
+        ? 'memory'
+        : kind === 'reply' && this.d.featureOn?.('jobs') === false && namesTask(asked)
+          ? 'job'
+          : null;
+    if (look && !reask && !rewrite && !side) {
+      // The words already shown stay in the bubble while the second look runs (it streams nothing into it).
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released } }]);
+      this.reasks.set(messageId, { kind: look, fooId });
+      this.d.log('chat.second_look', look, { chatId });
+      await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+      return again();
+    }
+    // CR-0069: after the second look a `memory` answer with no remember word never gets the memory line.
+    const noMemoryLine = look === 'memory';
+    // CR-0069: a second look that agrees it is a reply keeps the words the first one showed (the person has read them).
+    const keepShown = !!reask?.fooId;
 
     if (rewrite) {
       // CR-0059 row 1: only a plain answer replaces the old one, in one write; any other decision keeps it as it was.
@@ -843,7 +883,12 @@ export class ChatLane {
             op: 'update',
             table: 'messages',
             id: fooId,
-            set: { text: released, status: 'complete', ...(suggestions ? { suggestions } : {}), ...(actions ? { actions } : {}) },
+            set: {
+              ...(keepShown ? {} : { text: released }),
+              status: 'complete',
+              ...(suggestions ? { suggestions } : {}),
+              ...(actions ? { actions } : {}),
+            },
           },
         ]);
         // C1 T2 (04 §13.7): the one-sentence reply, then the app-built Capabilities card.
@@ -909,13 +954,18 @@ export class ChatLane {
             op: 'update',
             table: 'messages',
             id: fooId,
-            set: { text: featureOffLine(offFeature), status: 'complete', provider_note: providerNote },
+            set: {
+              text: noMemoryLine ? t('thread.reply.empty') : featureOffLine(offFeature),
+              status: 'complete',
+              provider_note: providerNote,
+            },
           },
           { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
         ]);
       } else {
         if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
-        await this.post(chatId, messageId, offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind), helper, providerNote);
+        const line = noMemoryLine ? t('thread.reply.empty') : offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind);
+        await this.post(chatId, messageId, line, helper, providerNote);
       }
     }
     // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.

@@ -396,7 +396,7 @@ export class Engine {
       newId: (p) => newId(p, o.clock.now()),
       settings: () => this.settings,
       ai: this.ai,
-      protocol: this.protocol(features.has('jobs')),
+      protocol: this.protocol(features.has('jobs'), features.has('memory')),
       log: (evt, kind) => log(evt, kind),
       jobs: this.jobs,
       // M5 T10: the cap check covers chat-lane turns (08-2 §5.10 item 4, CR-0008 (j) row 5).
@@ -688,7 +688,7 @@ export class Engine {
   }
 
   /** The reply protocol for the chat lane, from the prompt modules. */
-  private protocol(jobsOn = true): LaneProtocol {
+  private protocol(jobsOn = true, memoryOn = true): LaneProtocol {
     const redactor = this.redactor;
     const decision = (act: unknown): IntakeDecisionView | null => {
       const v = validateAct('intake', act);
@@ -742,6 +742,8 @@ export class Engine {
           ...(i.oldPlan ? { oldPlan: i.oldPlan } : {}),
           ...(i.answers ? { answers: i.answers } : {}),
           ...(jobsOn ? {} : { jobsOff: true }),
+          ...(memoryOn ? {} : { memoryOff: true }),
+          ...(i.reask ? { reask: i.reask } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
