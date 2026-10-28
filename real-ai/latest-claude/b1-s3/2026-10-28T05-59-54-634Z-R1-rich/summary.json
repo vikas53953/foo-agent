@@ -1,0 +1,97 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers (batch 1 build: jobs are off)",
+  "steps": 10,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-59-54-634Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "eval",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts",
+      "value": 2,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793167199670,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "a new, finished answer with a table in chat; never a plan card or a job (jobs are off in batch 1, and a table is words, so it is a chat answer)",
+      "firstReplyMs": 25847,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n6:00 AM",
+      "didntGetThat": true,
+      "kit": [],
+      "ms": 31909
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "no plan card with jobs off",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 5,
+      "do": "eval",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts",
+      "value": 3,
+      "ok": true,
+      "ms": 0
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793167231718,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 40
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply: a day-by-day plan in chat, or the honest jobs-off line; never a plan card or a job",
+      "firstReplyMs": 7098,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a gentle 3 day Jaipur plan for your parents, with mornings for sightseeing and a rest after lunch each day:\n\nDay 1, the old city: Amber Fort in the morning (a jeep takes you up the steep part), a photo stop at Jal Mahal, Hawa Mahal in the afternoon, and Johari Bazaar in the evening.\nDay 2, palaces and views: City Palace and Jantar Mantar in the morning, a long lunch and rest, then Albert Hall Museum. End with dinner at Chokhi Dhani for food and folk music.\nDay 3, easy and slow: Panna Meena ka Kund stepwell, Birla Mandir, then shopping for blockprint fabrics and jewellery before they head home.\n\nLate Oct to Feb is the best time to go, since days are mild. Want me to fit this to travel dates and a budget?\n\n6:00 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 16238
+    },
+    {
+      "i": 8,
+      "do": "check",
+      "note": "no plan card with jobs off",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 5
+    }
+  ]
+}

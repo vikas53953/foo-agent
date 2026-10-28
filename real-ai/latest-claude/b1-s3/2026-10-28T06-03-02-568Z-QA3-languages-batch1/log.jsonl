@@ -1,0 +1,38 @@
+{"t":"2026-10-28T06:03:02.568Z","journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:03:07.504Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:03:07.509Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":2}
+{"t":"2026-10-28T06:03:07.555Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T06:03:07.657Z","i":1,"do":"click","ok":true,"ms":102}
+{"t":"2026-10-28T06:03:07.669Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":11}
+{"t":"2026-10-28T06:03:07.735Z","shot":"02-finder.png"}
+{"t":"2026-10-28T06:03:27.738Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20003}
+{"t":"2026-10-28T06:03:27.791Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T06:03:27.874Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":82}
+{"t":"2026-10-28T06:03:27.877Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T06:03:27.932Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T06:03:27.940Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":8}
+{"t":"2026-10-28T06:03:28.020Z","i":7,"do":"click","ok":true,"ms":80}
+{"t":"2026-10-28T06:03:58.025Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","ok":true,"ms":30004}
+{"t":"2026-10-28T06:03:58.084Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T06:03:58.109Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":25}
+{"t":"2026-10-28T06:03:58.209Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":100}
+{"t":"2026-10-28T06:03:58.211Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:03:58.214Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T06:03:58.291Z","shot":"06-step2.png"}
+{"t":"2026-10-28T06:03:58.293Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n6:03 AM","ok":true,"ms":2}
+{"t":"2026-10-28T06:03:58.389Z","i":14,"do":"click","ok":true,"ms":96}
+{"t":"2026-10-28T06:04:08.403Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","ok":true,"ms":10014}
+{"t":"2026-10-28T06:04:08.458Z","shot":"07-first-chat.png"}
+{"t":"2026-10-28T06:04:08.549Z","i":16,"do":"send","sentAt":1793167448543,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-28T06:04:19.171Z","i":17,"do":"waitReply","expect":"Hindi in Devanagari is answered in Devanagari","firstReplyMs":3557,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"शाम के लिए आलू गोभी बना लो: कटी गोभी और आलू को जीरा, हल्दी, धनिया पाउडर और नमक के साथ ढककर 15 मिनट भून लो। हरी मिर्च और धनिया पत्ती डालकर परोसो।\n\n6:04 AM","kit":[],"endState":true,"ms":10622}
+{"t":"2026-10-28T06:04:19.215Z","shot":"08-q3-hindi.png"}
+{"t":"2026-10-28T06:04:19.288Z","i":18,"do":"send","sentAt":1793167459281,"sent":true,"before":0,"ok":true,"ms":73}
+{"t":"2026-10-28T06:04:35.997Z","i":19,"do":"waitReply","expect":"Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly","firstReplyMs":5070,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਬਟਰਸਕੌਚ ਕੇਕ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਵਧੀਆ ਰਹੇਗਾ: ਦੋਵੇਂ ਹਲਕੇ ਮਿੱਠੇ ਹਨ ਅਤੇ ਹਰ ਕਿਸੇ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਹਨ। ਜੇ ਉਹ ਫਲ ਪਸੰਦ ਕਰਦੀ ਹੈ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਵੀ ਚੰਗਾ ਆਪਸ਼ਨ ਹੈ।\n\n6:04 AM","kit":[],"endState":true,"ms":16709}
+{"t":"2026-10-28T06:04:36.042Z","shot":"09-q3-punjabi.png"}
+{"t":"2026-10-28T06:04:36.110Z","i":20,"do":"send","sentAt":1793167476102,"sent":true,"before":0,"ok":true,"ms":68}
+{"t":"2026-10-28T06:04:48.299Z","i":21,"do":"waitReply","expect":"Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)","firstReplyMs":3057,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"8:15 AM बजे अलार्म लगा लो: तैयार होने के लिए 30 मिनट और रास्ते के 45 मिनट मिलाकर 9 बजे तक पहुंच जाओगे। 10 मिनट एक्स्ट्रा रख लो तो 8:05 AM भी ठीक रहेगा।\n\n6:04 AM","kit":[],"endState":true,"ms":12189}
+{"t":"2026-10-28T06:04:48.339Z","shot":"10-q3-hinglish.png"}
+{"t":"2026-10-28T06:04:48.345Z","i":22,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-28T06:04:48.453Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T06:04:48.461Z","step":"aiTurns","turns":3}
+{"t":"2026-10-28T06:04:48.463Z","step":"jobTrail","steps":0,"calls":0}

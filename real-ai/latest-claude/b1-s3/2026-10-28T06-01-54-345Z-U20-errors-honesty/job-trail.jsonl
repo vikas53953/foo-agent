@@ -1,0 +1,13 @@
+{"kind":"step","job_id":"j_01a1811a-0925-7293-8109-4a2da05bce46","idx":0,"phrase_key":"read_bill","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-0925-7293-8109-4a2da05bce46","idx":1,"phrase_key":"wait_signin","state":"pending","attempts":0,"route":"handback","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-0925-7293-8109-4a2da05bce46","idx":2,"phrase_key":"show_before","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-0925-7293-8109-4a2da05bce46","idx":3,"phrase_key":"wait_approve","state":"pending","attempts":0,"route":"handback","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-0925-7293-8109-4a2da05bce46","idx":4,"phrase_key":"pay","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":0,"phrase_key":"check_site","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":1,"phrase_key":"wait_signin","state":"pending","attempts":0,"route":"handback","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":2,"phrase_key":"look_for","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":3,"phrase_key":"wait_pick","state":"pending","attempts":0,"route":"handback","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":4,"phrase_key":"fill_details","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":5,"phrase_key":"show_before","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":6,"phrase_key":"wait_approve","state":"pending","attempts":0,"route":"handback","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1811a-3f32-79ac-a71d-213c61b0bda0","idx":7,"phrase_key":"pay","state":"pending","attempts":0,"route":"handback","started_at":null,"finished_at":null}
