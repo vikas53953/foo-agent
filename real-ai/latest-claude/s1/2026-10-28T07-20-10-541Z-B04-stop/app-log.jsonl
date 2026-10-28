@@ -1,0 +1,10 @@
+{"t":1793172011547,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172021780,"lvl":"info","mod":"engine","evt":"job.steer_check","kind":"job"}
+{"t":1793172021814,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172028439,"lvl":"info","mod":"engine","evt":"job.steer_effect","kind":"folded"}
+{"t":1793172041838,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1793172043947,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172048924,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172054444,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172064679,"lvl":"info","mod":"engine","evt":"job.done_without_proof","kind":"PROOF_INVALID"}
+{"t":1793172064689,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}

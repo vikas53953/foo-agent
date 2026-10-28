@@ -1,0 +1,10 @@
+{"t":1793172408232,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172419437,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6338}
+{"t":1793172433522,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":110}
+{"t":1793172464443,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":749}
+{"t":1793172511026,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172513034,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1793172519375,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172532107,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172535210,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"ask"}
+{"t":1793172535211,"lvl":"info","mod":"engine","evt":"chat.kind_feature_off","kind":"jobs"}

@@ -1,0 +1,107 @@
+{
+  "journey": "B03-web-local",
+  "title": "Web without keys: news read locally, sources",
+  "videos": [],
+  "steps": 9,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-16-45-794Z-B03-web-local",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "What's the latest news about ISRO this week? Give me sources.",
+      "sentAt": 1793171811328,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 51,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 556,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8690,
+          "badges": [
+            "working"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 10181,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nCheck it went through\nWrite it\nWatch live\nStop\nunder 1 min\n7:17 AM",
+      "kit": [],
+      "ms": 16294,
+      "shot": "01-news.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002,
+      "shot": "02-news-later.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "expectText",
+      "text": "Your favourite food is South Indian, and I already have that saved from earlier today.\n\n7:16 AM",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 7,
+      "do": "check",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

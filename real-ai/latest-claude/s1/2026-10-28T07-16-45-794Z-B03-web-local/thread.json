@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n7:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n7:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I already have that saved from earlier today.\n\n7:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n7:16 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nCheck it went through\nWrite it\nWatch live\nStop\n2 min\n7:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:17 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What should I look up on the web?\n1\nFood or places\nBEST FIT\nLike South Indian spots near you\n2\nPrices or deals\nCompare costs for something\n3\nNews or facts\nFind and sum up an answer\n4\nSomething else\nTell me in your own words\nSomething else…\nSkip\n7:17 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:17 AM"
+  }
+]

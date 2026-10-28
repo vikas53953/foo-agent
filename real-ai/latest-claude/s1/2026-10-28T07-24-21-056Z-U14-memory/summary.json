@@ -1,0 +1,245 @@
+{
+  "journey": "U14-memory",
+  "title": "Memory: chip with Undo, memory page search, edit, forget with Undo",
+  "videos": [],
+  "steps": 23,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-24-21-056Z-U14-memory",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1049
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Remember that I am vegetarian on Tuesdays",
+      "sentAt": 1793172267691,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "memory chip \"I'll remember · Undo\"",
+      "ref": "BP-CARD-15",
+      "timeline": [
+        {
+          "at": 42,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 546,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4619,
+          "badges": [],
+          "reactions": [
+            "👍"
+          ],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4582,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I’ll remember: Vegetarian on Tuesdays\nUndo",
+      "kit": [],
+      "ms": 10659,
+      "shot": "01-chip.png"
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "Undo on the chip",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Remember my favourite cricket team is Punjab Kings",
+      "sentAt": 1793172278532,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "second memory chip",
+      "timeline": [
+        {
+          "at": 34,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5096,
+          "badges": [],
+          "reactions": [
+            "👍"
+          ],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5076,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I’ll remember: Favourite cricket team: Punjab Kings\nUndo",
+      "kit": [],
+      "ms": 11198,
+      "shot": "02-chip-2.png"
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "chip says forgotten / undone",
+      "ok": true,
+      "ms": 1502,
+      "shot": "03-undone.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "Memory page: rows with source and date, search, filters",
+      "ref": "UX-16-01",
+      "ok": true,
+      "ms": 1202,
+      "shot": "04-memory-page.png"
+    },
+    {
+      "i": 11,
+      "do": "expectText",
+      "note": "no empty-measure guesses",
+      "soft": true,
+      "text": "What I know about you\n+ Add something\nAll\nYou said\nI guessed\nFrom chats\nThis week I learned 2 new things.\nSee them\nFACTS · 2\nVegetarian on Tuesdays\nYou said · 28 Oct\nEdit\n·\nForget\nFavourite food: South Indian\nYou said · 28 Oct\nEdit\n·\nForget",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 12,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 15
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "row found",
+      "ok": true,
+      "ms": 804,
+      "shot": "05-memory-search.png"
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "inline edit",
+      "ok": true,
+      "ms": 614,
+      "shot": "06-memory-edit.png"
+    },
+    {
+      "i": 16,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 18,
+      "do": "wait",
+      "expect": "row gone, 5 s Undo bar",
+      "ref": "UX-16-04",
+      "ok": true,
+      "ms": 801,
+      "shot": "07-forgot.png"
+    },
+    {
+      "i": 19,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 20,
+      "do": "wait",
+      "expect": "row back",
+      "ok": true,
+      "ms": 800,
+      "shot": "08-undo.png"
+    },
+    {
+      "i": 21,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 22,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}

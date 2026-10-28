@@ -1,0 +1,107 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:26 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Anthropic key (your AI)\n7:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:26 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Anthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:27 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "saved",
+    "text": "Anthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:27 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:27 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "What should I call myself? → Chotu 😊\n7:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chotu 😊 it is.\n\n7:28 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Pick a face. → Face ◐ (half moon)\n7:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:28 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "How should I talk to you? → Straight to the point\n7:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Straight to the point. Got it. 🎯\n\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm Chotu 😊, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "tumhara naam kya hai? ek line mein\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chotu 😊.\n\n7:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "aur tumhara naam? sirf naam batao\n7:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:28 AM"
+  }
+]
