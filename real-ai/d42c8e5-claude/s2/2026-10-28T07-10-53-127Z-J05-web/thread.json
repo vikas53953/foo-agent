@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n7:03 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for ISRO news from this week, with links\nWrite it\nWatch live\nStop\n7 min\n7:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n7:06 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:06 AM\n7:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:06 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Thu 29 Oct, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants near Connaught\nKeep 3 restaurants that fit best rated, fully vegetarian, table free\nWait for you to pick one\nShow you before the booking details\nShow you before doing anything\nBook table for 2, Thu 29 Oct, 8:00 PM\nWatch live\nStop\n4 min\n7:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:06 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:08 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Thu 29 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:09 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:09 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:10 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nBooking table for 2, Thu 29 Oct, 8:00 PM\n3\nBoth\nSomething else…\nSkip\n7:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n7:11 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nCheck isro.gov.in, pib.gov.in, The Hindu\nLook for ISRO news from Mon 26 Oct to Wed 28 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n7:11 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:11 AM"
+  }
+]
