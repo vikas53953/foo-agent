@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-ebe7d37-40601909363",
+  "reportId": "M9-77b0e2e-40603229239",
   "milestone": "M9",
-  "generatedAt": "2026-10-27T23:37:12.869Z",
-  "commit": "7736ee1f13140168aff3e3f48deb6c6dae3550ed",
-  "head": "ebe7d379c4e1203d99b929ccdd4ef0fb6899fe9d",
+  "generatedAt": "2026-10-28T00:00:29.079Z",
+  "commit": "ab551eadc281727c09cf67da3ea4c5406ef690c4",
+  "head": "77b0e2e4081af79880191a5785a3b2fdf1a26a85",
   "ci": {
-    "runId": "40601909363",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40601909363"
+    "runId": "40603229239",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40603229239"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "7f6ebfbb41e488730ca3f72bd0b57f1e1c50120d9515ca8e324bc48a4703894d"
   },
   "runner": {
-    "recordedAt": "2026-10-27T23:31:13.664Z",
+    "recordedAt": "2026-10-27T23:48:05.152Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006576"
+      "runner": "GitHub Actions 1000006583"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -823,7 +823,7 @@
         "id": "SV-01",
         "ok": true,
         "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "10 bubbles, all equal"
+        "measured": "15 bubbles, all equal"
       },
       {
         "id": "SV-08",
@@ -900,9 +900,9 @@
         "skipped": 4
       },
       "e2e": {
-        "passed": 76,
+        "passed": 117,
         "failed": 0,
-        "skipped": 181
+        "skipped": 140
       }
     },
     "ids": [
@@ -32392,6 +32392,11 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
       },
       {
+        "id": "AT-008",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
+      },
+      {
         "id": "AT-141",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/web/cloud.test.ts"
@@ -32450,11 +32455,6 @@
         "id": "AT-138",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/web/search.test.ts"
-      },
-      {
-        "id": "AT-008",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
       },
       {
         "id": "AT-121",
@@ -32723,107 +32723,107 @@
       },
       {
         "id": "PERF-08",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-11",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "AT-287",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-286",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-282",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-notices.spec.ts"
       },
       {
         "id": "AT-081",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-offline.spec.ts"
       },
       {
         "id": "AT-281",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-panel.spec.ts"
       },
       {
         "id": "AT-122",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-126",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-127",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-280",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-032",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-035",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-288",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-009",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m5-secret.spec.ts"
       },
       {
         "id": "AT-072",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m6-page.spec.ts"
       },
       {
         "id": "AT-073",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m6-page.spec.ts"
       },
       {
         "id": "AT-014",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m8-connectors.spec.ts"
       },
       {
         "id": "AT-093",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m8-connectors.spec.ts"
       },
       {
         "id": "AT-051",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m8-drafts.spec.ts"
       },
       {
         "id": "AT-052",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m8-drafts.spec.ts"
       },
       {
