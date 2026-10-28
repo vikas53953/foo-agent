@@ -1,0 +1,8 @@
+[
+  {
+    "chatId": "c_01a18151-35dc-79e8-b602-e17b83384b44",
+    "messageId": "m_01a18153-a2b3-7561-b96d-3388b4556b07",
+    "status": "complete",
+    "text": "Here's a tiny hello world in Python:\n\n```python\nprint(\"Hello, world!\")\n```\n\nSave it as `hello.py` and run it with `python hello.py`."
+  }
+]

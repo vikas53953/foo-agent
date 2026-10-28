@@ -1,0 +1,63 @@
+{"t":"2026-10-28T07:06:54.090Z","journey":"QA2-setup-key-name-face-vibe","title":"Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:06:59.514Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:06:59.521Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":4}
+{"t":"2026-10-28T07:06:59.585Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T07:06:59.724Z","i":1,"do":"click","ok":true,"ms":139}
+{"t":"2026-10-28T07:06:59.748Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":23}
+{"t":"2026-10-28T07:06:59.868Z","shot":"02-finder.png"}
+{"t":"2026-10-28T07:07:19.871Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20003}
+{"t":"2026-10-28T07:07:19.932Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T07:07:20.031Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":99}
+{"t":"2026-10-28T07:07:20.036Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":4}
+{"t":"2026-10-28T07:07:20.135Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T07:07:20.147Z","i":6,"do":"fill","note":"a made-up wrong key first","ok":true,"ms":12}
+{"t":"2026-10-28T07:07:20.253Z","i":7,"do":"click","ok":true,"ms":106}
+{"t":"2026-10-28T07:07:50.257Z","i":8,"do":"wait","ok":true,"ms":30003}
+{"t":"2026-10-28T07:07:50.261Z","i":9,"do":"expectText","expect":"a wrong key is tested and the row says it didn't work, in plain words","text":"Anthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box","ok":true,"ms":3}
+{"t":"2026-10-28T07:07:50.325Z","shot":"05-q2-wrong-key.png"}
+{"t":"2026-10-28T07:07:50.328Z","i":10,"do":"check","note":"a wrong key is never offered as Use","found":1,"ok":false,"ms":3}
+{"t":"2026-10-28T07:07:50.416Z","i":11,"do":"click","note":"Replace key opens the Secret box again","ok":true,"ms":88}
+{"t":"2026-10-28T07:07:50.424Z","i":12,"do":"waitFor","ok":true,"ms":7}
+{"t":"2026-10-28T07:07:50.438Z","i":13,"do":"fill","note":"now the real key","ok":true,"ms":14}
+{"t":"2026-10-28T07:07:50.556Z","i":14,"do":"click","ok":true,"ms":118}
+{"t":"2026-10-28T07:08:20.560Z","i":15,"do":"wait","expect":"the real key row shows works","ok":true,"ms":30004}
+{"t":"2026-10-28T07:08:20.626Z","shot":"06-q2-right-key.png"}
+{"t":"2026-10-28T07:08:20.665Z","i":16,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":39}
+{"t":"2026-10-28T07:08:20.774Z","i":17,"do":"clickIf","found":1,"ok":true,"ms":109}
+{"t":"2026-10-28T07:08:20.789Z","i":18,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":15}
+{"t":"2026-10-28T07:08:20.793Z","i":19,"do":"waitFor","expect":"name card: What should I call myself?","ok":true,"ms":3}
+{"t":"2026-10-28T07:08:20.879Z","shot":"07-q2-name-card.png"}
+{"t":"2026-10-28T07:08:20.970Z","i":20,"do":"fill","ok":true,"ms":91}
+{"t":"2026-10-28T07:08:21.054Z","i":21,"do":"click","ok":true,"ms":84}
+{"t":"2026-10-28T07:08:22.069Z","i":22,"do":"wait","ok":true,"ms":1014}
+{"t":"2026-10-28T07:08:22.072Z","i":23,"do":"expectText","expect":"a name with no letter or number (only an emoji and !!) is refused in plain words","text":"Use at least one letter.","ok":true,"ms":3}
+{"t":"2026-10-28T07:08:22.138Z","shot":"08-q2-name-no-letter.png"}
+{"t":"2026-10-28T07:08:22.148Z","i":24,"do":"fill","ok":true,"ms":10}
+{"t":"2026-10-28T07:08:22.454Z","i":25,"do":"click","ok":true,"ms":306}
+{"t":"2026-10-28T07:08:25.457Z","i":26,"do":"wait","ok":true,"ms":3003}
+{"t":"2026-10-28T07:08:25.461Z","i":27,"do":"expectText","expect":"\"Chotu 😊 it is.\" and the face card follows","text":"Start of your chat with Chotu 😊\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n7:06 AM\nUsing Anthropic key (your AI)\n7:06 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:07 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:07 AM\nWhat should I call myself? → Chotu 😊\n7:08 AM\nChotu 😊\n\nChotu 😊 it is.\n\n7:08 AM\n\nPick a face.\n\n1\nLiving face\nDefault\n✿\n2\n◐\n3\n★\n4\nUse this face\n🎲 Surprise me","ok":true,"ms":3}
+{"t":"2026-10-28T07:08:25.527Z","shot":"09-q2-named.png"}
+{"t":"2026-10-28T07:08:25.599Z","i":28,"do":"click","note":"pick the third face","ok":true,"ms":72}
+{"t":"2026-10-28T07:08:25.743Z","i":29,"do":"click","ok":true,"ms":144}
+{"t":"2026-10-28T07:08:27.746Z","i":30,"do":"wait","expect":"face chosen; the talk-style (vibe) choice follows","ok":true,"ms":2002}
+{"t":"2026-10-28T07:08:27.806Z","shot":"10-q2-face.png"}
+{"t":"2026-10-28T07:08:28.053Z","i":31,"do":"click","note":"pick the second vibe","ok":true,"ms":247}
+{"t":"2026-10-28T07:08:28.136Z","i":32,"do":"waitFor","ok":true,"ms":82}
+{"t":"2026-10-28T07:08:38.142Z","i":33,"do":"wait","expect":"first chat as Chotu, composer unlocked","ok":true,"ms":10006}
+{"t":"2026-10-28T07:08:38.215Z","shot":"11-q2-first-chat.png"}
+{"t":"2026-10-28T07:08:38.324Z","i":34,"do":"send","sentAt":1793171318314,"sent":true,"before":0,"ok":true,"ms":109}
+{"t":"2026-10-28T07:08:46.454Z","i":35,"do":"waitReply","expect":"the real AI answers as Chotu","firstReplyMs":2043,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Chotu 😊.\n\n7:08 AM","kit":[],"endState":true,"ms":8130}
+{"t":"2026-10-28T07:08:46.511Z","shot":"12-q2-says-name.png"}
+{"t":"2026-10-28T07:08:51.803Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:08:51.803Z","i":36,"do":"relaunch","ok":true,"ms":5291}
+{"t":"2026-10-28T07:08:59.804Z","i":37,"do":"wait","ok":true,"ms":8001}
+{"t":"2026-10-28T07:08:59.807Z","i":38,"do":"expectText","expect":"after quit and reopen the chat and the name Chotu are still there","text":"Start of your chat with Chotu 😊\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n7:06 AM\nUsing Anthropic key (your AI)\n7:06 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:07 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n7:07 AM\nWhat should I call myself? → Chotu 😊\n7:08 AM\n◐︎\nChotu 😊\n\nChotu 😊 it is.\n\n7:08 AM\nPick a face. → Face ◐ (half moon)\n7:08 AM\nHow should I talk to you? → Straight to the point\n7:08 AM\n◐︎\nChotu 😊\n\nStraight to the point. Got it. 🎯\n\n7:08 AM\n\nAll set. I'm Chotu 😊, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:08 AM\ntumhara naam kya hai? ek line mein\n7:08 AM\n◐︎\nChotu 😊\n\nChotu 😊.\n\n7:08 AM","ok":true,"ms":3}
+{"t":"2026-10-28T07:08:59.871Z","shot":"13-q2-after-reopen.png"}
+{"t":"2026-10-28T07:09:00.001Z","i":39,"do":"send","sentAt":1793171339967,"sent":true,"before":0,"ok":true,"ms":130}
+{"t":"2026-10-28T07:09:07.607Z","i":40,"do":"waitReply","expect":"after reopening, the real AI still answers as Chotu (name and key survived the restart)","firstReplyMs":1517,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Aapka naam kya hai?\n\n7:09 AM","kit":[],"endState":false,"ms":7605}
+{"t":"2026-10-28T07:09:07.685Z","shot":"14-q2-name-after-reopen.png"}
+{"t":"2026-10-28T07:09:07.696Z","i":41,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T07:09:07.701Z","step":"recheck","i":10,"do":"check","late":true}
+{"t":"2026-10-28T07:09:07.854Z","step":"appLog","lines":10,"dropped":0}
+{"t":"2026-10-28T07:09:07.868Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T07:09:07.870Z","step":"jobTrail","steps":0,"calls":0}
