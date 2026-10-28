@@ -1,0 +1,50 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "steps": 5,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-37-29-495Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793173055701,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 233
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 10658,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 get 16 GB memory, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/i7 chip. Those matter more than a gaming graphics card.\n\nMemory: 16 GB is the floor. 8 GB gets slow with a code editor, a browser and Docker open.\nScreen and keyboard: Pick a bright full HD screen and a keyboard you like typing on, since you will use them all day.\nApple option: A MacBook Air with an M-series chip can sometimes fit near this budget on sale. It runs cool, lasts long on battery and is great for most coding.\n\nI have not checked today's prices, so this is general guidance. Do you want me to look up specific laptops in India? Your Goa hotel search also came back empty earlier, so I can retry that too.\n\n7:37 AM",
+      "kit": [],
+      "ms": 19250
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 3,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

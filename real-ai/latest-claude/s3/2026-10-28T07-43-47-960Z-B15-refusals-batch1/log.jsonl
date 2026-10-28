@@ -1,0 +1,36 @@
+{"t":"2026-10-28T07:43:47.961Z","journey":"B15-refusals-batch1","title":"Batch 1 build: asks foo cannot do yet (email, WhatsApp, pay, order, flights) get an honest answer, never a fake one","spec":"CR-0054 (switched-off features); the batch-1 refusal steps of B13, U20 and U25","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:43:53.588Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:44:01.676Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8085}
+{"t":"2026-10-28T07:44:01.680Z","i":0,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":0,"ok":true,"ms":3}
+{"t":"2026-10-28T07:44:01.789Z","i":1,"do":"send","sentAt":1793173441758,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-28T07:44:13.416Z","i":2,"do":"waitReply","expect":"an honest answer that foo cannot read email yet (connections are off in batch 1); no connect card, never a made-up inbox (B13)","firstReplyMs":5583,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:44 AM","kit":[],"endState":false,"ms":11627}
+{"t":"2026-10-28T07:44:13.478Z","shot":"01-email.png"}
+{"t":"2026-10-28T07:44:13.480Z","i":3,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":1,"ok":true,"ms":1}
+{"t":"2026-10-28T07:44:13.599Z","i":4,"do":"send","sentAt":1793173453558,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-28T07:44:25.710Z","i":5,"do":"waitReply","expect":"an honest answer that foo cannot see WhatsApp yet; no connect card, never made-up messages (B13)","firstReplyMs":5569,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"Which WhatsApp group should I catch you up on? Tell me its name and I'll read what you missed.\n\n7:44 AM","kit":[],"endState":false,"ms":12111}
+{"t":"2026-10-28T07:44:25.790Z","shot":"02-whatsapp.png"}
+{"t":"2026-10-28T07:44:25.792Z","i":6,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":2,"ok":true,"ms":2}
+{"t":"2026-10-28T07:44:25.882Z","i":7,"do":"send","sentAt":1793173465869,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-28T07:44:52.730Z","i":8,"do":"waitReply","expect":"an honest answer that foo cannot pay yet; never claims it paid (U20)","firstReplyMs":20805,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:44 AM","kit":[],"endState":false,"ms":26847}
+{"t":"2026-10-28T07:44:52.790Z","shot":"03-pay-bill.png"}
+{"t":"2026-10-28T07:44:52.792Z","i":9,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":3,"ok":true,"ms":2}
+{"t":"2026-10-28T07:44:52.906Z","i":10,"do":"send","sentAt":1793173492871,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-28T07:45:06.074Z","i":11,"do":"waitReply","expect":"an honest answer that foo cannot order yet; never a fake success (U20)","firstReplyMs":7125,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:44 AM","kit":[],"endState":true,"ms":13168}
+{"t":"2026-10-28T07:45:06.134Z","shot":"04-order.png"}
+{"t":"2026-10-28T07:45:06.136Z","i":12,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":4,"ok":true,"ms":2}
+{"t":"2026-10-28T07:45:06.219Z","i":13,"do":"send","sentAt":1793173506210,"sent":true,"before":0,"ok":true,"ms":83}
+{"t":"2026-10-28T07:45:17.323Z","i":14,"do":"waitReply","expect":"an honest answer that foo cannot read Gmail yet; no connect card, not a made-up inbox (U20)","firstReplyMs":5063,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n7:45 AM","kit":[],"endState":true,"ms":11104}
+{"t":"2026-10-28T07:45:17.385Z","shot":"05-gmail.png"}
+{"t":"2026-10-28T07:45:17.387Z","i":15,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":5,"ok":true,"ms":2}
+{"t":"2026-10-28T07:45:17.490Z","i":16,"do":"send","sentAt":1793173517459,"sent":true,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-28T07:45:23.541Z","i":17,"do":"waitReply","expect":"the jobs-off answer: foo cannot book yet; no plan card, never a booking (U25 with jobs off)","firstReplyMs":505,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n7:45 AM","kit":[],"endState":false,"ms":6051}
+{"t":"2026-10-28T07:45:23.601Z","shot":"06-flights.png"}
+{"t":"2026-10-28T07:45:23.604Z","i":18,"do":"check","note":"no plan card with jobs off","found":0,"ok":true,"ms":3}
+{"t":"2026-10-28T07:45:23.605Z","i":19,"do":"check","note":"no connect card with connections off","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T07:45:23.616Z","i":20,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T07:45:23.619Z","step":"recheck","i":2,"do":"waitReply","late":true}
+{"t":"2026-10-28T07:45:23.620Z","step":"recheck","i":5,"do":"waitReply","late":true}
+{"t":"2026-10-28T07:45:23.621Z","step":"recheck","i":8,"do":"waitReply","late":true}
+{"t":"2026-10-28T07:45:23.750Z","step":"appLog","lines":18,"dropped":0}
+{"t":"2026-10-28T07:45:23.764Z","step":"aiTurns","turns":6}
+{"t":"2026-10-28T07:45:23.767Z","step":"jobTrail","steps":0,"calls":0}
