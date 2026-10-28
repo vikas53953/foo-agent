@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Press start on it and it will be done at about Wed 28 Oct, 6:03 AM if you start now. 🍵\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill in the date, guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an item with its amount, category and date, set a monthly budget, and see the total and a split by category. Entries are saved on this device if your app allows it.\n\nKeep\n6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n6:02 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which 2 nights in Goa should I look at?\n1\nFri 6 Nov to Sun 8 Nov\nBEST FIT\nNext weekend, Friday check-in\n2\nSat 7 Nov to Mon 9 Nov\nNext weekend, Saturday check-in\n3\nFri 30 Oct to Sun 1 Nov\nThis coming weekend\nSomething else…\nSkip\n6:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n6:06 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What kind of programming will you do most on it?\n1\nWeb and general coding\nBEST FIT\nLight on power, long battery matters\n2\nData science or AI work\nNeeds more RAM and a stronger chip\n3\nAndroid or app development\nNeeds 16GB RAM to run smoothly\n4\niPhone apps\nNeeds a Mac, which is tight at this budget\nSomething else…\nSkip\n6:06 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:06 AM"
+  }
+]

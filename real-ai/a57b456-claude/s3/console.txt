@@ -1,0 +1,7 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-59-52-671Z-J01-J02-first-run"}
+{"journey":"B09-kit","title":"Rich reply pieces: calculator, map, chart, compare, timer, form","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-00-43-207Z-B09-kit"}
+{"journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","steps":6,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-02-45-945Z-J10-hotel"}
+{"journey":"J08-choice","title":"Question with choice chips","steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-06-05-979Z-J08-choice"}
+{"journey":"J21-J22-settings-search","title":"Settings and search","steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-06-24-923Z-J21-J22-settings-search"}
+{"journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","steps":16,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-06-36-288Z-U11-approval-states"}
+{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-12-00-331Z-U18-new-helper-group"}

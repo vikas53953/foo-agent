@@ -1,0 +1,11 @@
+{"t":"2026-10-28T06:06:05.980Z","journey":"J08-choice","title":"Question with choice chips","spec":"07-1 J8; 05 choice card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:06:11.206Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:06:11.356Z","i":0,"do":"send","sentAt":1793167571312,"sent":true,"before":0,"ok":true,"ms":146}
+{"t":"2026-10-28T06:06:24.588Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7120,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What kind of programming will you do most on it?\n1\nWeb and general coding\nBEST FIT\nLight on power, long battery matters\n2\nData science or AI work\nNeeds more RAM and a stronger chip\n3\nAndroid or app development\nNeeds 16GB RAM to run smoothly\n4\niPhone apps\nNeeds a Mac, which is tight at this budget\nSomething else…\nSkip\n6:06 AM","kit":[],"ms":13231}
+{"t":"2026-10-28T06:06:24.658Z","shot":"01-laptop.png"}
+{"t":"2026-10-28T06:06:24.661Z","i":2,"do":"check","found":2,"ok":true,"ms":3}
+{"t":"2026-10-28T06:06:24.663Z","i":3,"do":"check","found":7,"ok":true,"ms":2}
+{"t":"2026-10-28T06:06:24.672Z","i":4,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:06:24.789Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T06:06:24.799Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T06:06:24.801Z","step":"jobTrail","steps":0,"calls":0}
