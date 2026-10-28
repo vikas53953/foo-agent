@@ -136,7 +136,7 @@
         "₹0"
       ],
       "extra": [
-        "2",
+        "1",
         "T",
         "Trips",
         "9:41",
@@ -150,8 +150,7 @@
         "Taj",
         "Holiday",
         "Village",
-        "Needs",
-        "you",
+        "Done",
         "H",
         "Home",
         "11:41",
@@ -526,8 +525,8 @@
     "total": 23820
   },
   "r5": {
-    "ratio": 0.101056640625,
-    "diffPixels": 103482,
+    "ratio": 0.10346484375,
+    "diffPixels": 105948,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-10.dark.diff.png"

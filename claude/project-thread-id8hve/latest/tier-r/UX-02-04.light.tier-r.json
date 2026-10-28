@@ -82,6 +82,7 @@
         "3:30",
         "AM",
         "up…",
+        "2",
         "Uses",
         "your",
         "plan",
@@ -157,8 +158,8 @@
         "replies",
         "show",
         "here.",
-        "ChatGPT",
-        "works"
+        "Claude",
+        "Testing…"
       ]
     },
     "hl": {
@@ -209,8 +210,8 @@
     "total": 2464
   },
   "r5": {
-    "ratio": 0.0381162109375,
-    "diffPixels": 39031,
+    "ratio": 0.03834375,
+    "diffPixels": 39264,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-02-04.light.diff.png"
