@@ -1,0 +1,439 @@
+{
+  "journey": "B1-batch1",
+  "title": "Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so",
+  "feature": "chat",
+  "videos": [],
+  "steps": 38,
+  "failed": 17,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T11-30-16-397Z-B1-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "ai",
+      "ok": true,
+      "ms": 3,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "feature": "ai",
+      "ok": true,
+      "ms": 143
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 11,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20012,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "feature": "ai",
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 3,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "feature": "ai",
+      "ok": true,
+      "ms": 11
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "feature": "ai",
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "ms": 30001,
+      "shot": "05-key-tested.png"
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "ai",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 60000ms exceeded.",
+      "errorShot": "06-error-step12.png",
+      "ms": 60059,
+      "shot": "07-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "feature": "ai",
+      "text": "I’m looking for the AI you already use…\n\nClaude\nsigned in\nslow to answer.\nTest again\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI couldn’t find an AI on this PC yet. Which one do you use?\n\n1\nChatGPT · sign in with your account\nBEST FIT\n2\nClaude · sign in with your account\n3\nGemini · sign in\n4\nI have a key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "feature": "ai",
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "08-error-step14.png",
+      "ms": 23075
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "ai",
+      "ok": true,
+      "ms": 10002,
+      "shot": "09-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "check",
+      "note": "batch 1 has no helpers: no New helper button",
+      "feature": "ai",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 17,
+      "do": "check",
+      "note": "batch 1 has no voice: the round button is Send, not the mic",
+      "feature": "ai",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "feature": "chat",
+      "typed": "hi foo, kaise ho?",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "10-error-step18.png",
+      "ms": 30060
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "a short warm reply in Hinglish, streamed",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 6,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120481,
+      "shot": "11-hinglish.png"
+    },
+    {
+      "i": 20,
+      "do": "send",
+      "feature": "chat",
+      "typed": "mujhe ek chhota sa joke sunao",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "12-error-step20.png",
+      "ms": 30062
+    },
+    {
+      "i": 21,
+      "do": "waitReply",
+      "expect": "a joke, in the user's mix of Hindi and English",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 4,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120035,
+      "shot": "13-joke.png"
+    },
+    {
+      "i": 22,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "Book a table for 2 tonight at a cafe in Delhi",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "14-error-step22.png",
+      "ms": 30062
+    },
+    {
+      "i": 23,
+      "do": "waitReply",
+      "expect": "the batch-1 line: foo can’t do tasks yet; no checklist, no plan card",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 5,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120002,
+      "shot": "15-job-off.png"
+    },
+    {
+      "i": 24,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "Book me a cab to the airport at 6 am tomorrow",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "16-error-step24.png",
+      "ms": 30063
+    },
+    {
+      "i": 25,
+      "do": "waitReply",
+      "expect": "says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 4,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120455,
+      "shot": "17-cab-off.png"
+    },
+    {
+      "i": 26,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "did you book the cab?",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "18-error-step26.png",
+      "ms": 30062
+    },
+    {
+      "i": 27,
+      "do": "waitReply",
+      "expect": "no, foo can’t book cabs yet; never “no record” or memory words",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 4,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120444,
+      "shot": "19-cab-asked.png"
+    },
+    {
+      "i": 28,
+      "do": "send",
+      "feature": "refusals",
+      "typed": "remember that I am vegetarian",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "20-error-step28.png",
+      "ms": 30062
+    },
+    {
+      "i": 29,
+      "do": "waitReply",
+      "expect": "one bubble: the batch-1 memory line, or a plain reply; never a memory chip, never “Noted” (CR-0067)",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 4,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120455,
+      "shot": "21-memory-off.png"
+    },
+    {
+      "i": 30,
+      "do": "send",
+      "feature": "settings",
+      "typed": "Switch to dark mode",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "22-error-step30.png",
+      "ms": 30064
+    },
+    {
+      "i": 31,
+      "do": "waitFor",
+      "note": "settings by chat is on in batch 1",
+      "feature": "settings",
+      "ok": false,
+      "error": "locator.waitFor: Timeout 120000ms exceeded.",
+      "errorShot": "23-error-step31.png",
+      "ms": 120064
+    },
+    {
+      "i": 32,
+      "do": "wait",
+      "expect": "dark theme; one line Changed: Theme → Dark. Undo",
+      "feature": "settings",
+      "ok": true,
+      "ms": 5000,
+      "shot": "24-dark.png"
+    },
+    {
+      "i": 33,
+      "do": "click",
+      "feature": "install",
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "expect": "Settings, Keyboard shortcuts and Quit only",
+      "feature": "install",
+      "ok": true,
+      "ms": 804,
+      "shot": "25-more-menu.png"
+    },
+    {
+      "i": 35,
+      "do": "check",
+      "feature": "install",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 36,
+      "do": "key",
+      "feature": "install",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 37,
+      "do": "dump",
+      "feature": null,
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
