@@ -1,3 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-30-47-599Z-J01-J02-first-run"}
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-33-30-452Z-J01-J02-first-run"}
-{"journey":"QA2-setup-key-name-face-vibe","title":"Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart","videos":[],"steps":42,"failed":11,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-36-13-012Z-QA2-setup-key-name-face-vibe"}
