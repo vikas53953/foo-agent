@@ -4,7 +4,7 @@
 // `reply`, so the jobs line never showed. A memory answer to a message with no remember, note or forget word never shows
 // the memory line; a reply to a task ask with jobs off is asked once more.
 import { afterEach, describe, expect, it } from 'vitest';
-import { MEMORY_OFF_LINE, REASK_JOB_LINE, REASK_MEMORY_LINE } from '../../src/engine/prompt/PromptBuilder';
+import { JOBS_OFF_LINE, MEMORY_OFF_LINE, REASK_JOB_LINE, REASK_MEMORY_LINE } from '../../src/engine/prompt/PromptBuilder';
 import { t } from '../../src/shared/copy/t';
 import { jobHarness, type JobHarness } from './jobs/jobHarness';
 
@@ -217,6 +217,16 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(asked(x, REASK_JOB_LINE)).toBe(1);
     expect(REASK_JOB_LINE).toContain('asks foo for words (a joke');
     expect(fooTexts(x)).toEqual([joke]);
+  });
+
+  it('the jobs-off line goes with every intake on batch 1 and asks for everyday words, no offer to look things up (QA on f1a6d09)', async () => {
+    // Real Claude on f1a6d09 answered "did you book the table?" with "this build only reads and checks things. I can find
+    // cafes…": jargon, and an offer batch 1 cannot keep.
+    const x = await run([{ match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'No, I haven’t.') }], 'Did you book my table?');
+    expect(asked(x, JOBS_OFF_LINE)).toBe(intakes(x).length);
+    expect(JOBS_OFF_LINE).not.toMatch(/^This build/);
+    expect(JOBS_OFF_LINE).toContain('never mention a build or a version');
+    expect(JOBS_OFF_LINE).toContain('never offer to search, find or check something');
   });
 
   it('a memory answer on a later run of the same message still never gets the memory line (review on CR-0069)', async () => {

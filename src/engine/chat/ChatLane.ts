@@ -907,6 +907,9 @@ export class ChatLane {
       } else {
         // Run 21 B14: which empty it was (the AI said nothing, or every sentence it said was dropped), never the words.
         this.d.log(parsed.say.trim() ? 'chat.reply_empty.filtered' : 'chat.reply_empty.no_say', undefined, { chatId });
+        // R1 on real Claude (run 40638245705): a table ask came back `reply` with no say, twice. Where the words went, by tag
+        // order only, never the words.
+        if (!parsed.say.trim()) this.d.log('chat.reply_empty.shape', envelopeShape(result.text), { chatId });
         if (!this.emptyRetried.has(messageId)) {
           // CR-0041 (08-4 §25.5 item 6, F-092 as amended): nothing passed the filters; the turn runs once more, nothing shown.
           this.emptyRetried.add(messageId);
@@ -1499,4 +1502,21 @@ export class ChatLane {
 
 export function emptyUsage(): AiUsage {
   return { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null };
+}
+
+/** Run 40638245705: the tag order of a reply whose say came out empty, as one enum for the tech log (never its words). */
+export function envelopeShape(text: string): string {
+  const at = (tag: string) => text.indexOf(tag);
+  const say = at('<say>');
+  const act = at('<act>');
+  const actEnd = at('</act>');
+  const words =
+    text
+      .replace(/<\/?(say|act)>/g, '')
+      .replace(/\{[\s\S]*\}/, '')
+      .trim().length > 0;
+  if (act === -1) return say === -1 ? 'no_tags' : 'say_no_act';
+  if (say === -1) return words ? 'act_with_untagged_words' : 'act_only';
+  if (say > act) return actEnd !== -1 && say > actEnd ? 'say_after_act' : 'say_inside_act';
+  return 'say_empty_before_act';
 }

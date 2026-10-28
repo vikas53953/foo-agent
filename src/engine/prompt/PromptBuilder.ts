@@ -47,7 +47,7 @@ export const SUGGESTIONS_ASK =
  * had "no record" of one instead of saying it cannot book yet (judge run 40269932734, off-already-done).
  */
 export const JOBS_OFF_LINE =
-  'This build cannot do tasks yet (booking, buying, sending, paying). Asked to do one, decide "job" as usual. Asked whether you already did one, say plainly that you have not and cannot do tasks yet; never say you have "no record" of it.';
+  'foo cannot do tasks yet (booking, buying, sending, paying, or looking things up on the web). Asked to do one, decide "job" as usual. Asked whether you already did one, say plainly, in everyday words, that you have not and cannot do tasks yet: never mention a build or a version, never say you have "no record" of it, and never offer to search, find or check something.';
 
 /** CR-0069 (X-226): a build with memory switched off tells the AI so (QA-X-F30: "Switch to dark mode" came back `memory`). */
 export const MEMORY_OFF_LINE =

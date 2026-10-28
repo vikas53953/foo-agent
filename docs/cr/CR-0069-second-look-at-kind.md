@@ -36,6 +36,10 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
    it stops the reply like any other (the shown words stay, with "Stopped."). Cost: one more intake turn, only in these cases.
 7. Known limit: words a first look showed for a wrong `memory` answer stay when the second look picks another non-reply
    kind (the prompt asks for an empty `<say>` on every non-reply kind, so this is rare).
+8. JOBS_OFF_LINE (CR-0059 row 6) asks for everyday words. Real Claude on f1a6d09 answered "did you book the table?" with
+   "this build only reads and checks things. I can find cafes…", which is jargon plus an offer batch 1 can't keep. The
+   line now says foo can't do tasks yet (looking things up on the web included), and asks the AI never to mention a
+   build or a version and never to offer to search, find or check something.
 
 ## (c) Evidence
 
