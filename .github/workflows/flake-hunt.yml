@@ -47,7 +47,15 @@ jobs:
       - name: Download the Electron binary
         run: node node_modules/electron/install.js
       - name: Build better-sqlite3 for Node (unit tests)
-        run: pnpm rebuild:node
+        # nodejs.org downloads sometimes stall on the Windows runner ("Completion callback never invoked"). Try 3 times,
+        # dropping node-gyp's half-written header cache between tries.
+        shell: bash
+        run: |
+          for i in 1 2 3; do
+            pnpm rebuild:node && exit 0
+            echo "rebuild:node failed (try $i of 3)"; rm -rf "$LOCALAPPDATA/node-gyp/Cache"; sleep 15
+          done
+          exit 1
       - name: Unit tests, repeated
         if: env.UNIT != ''
         shell: bash
