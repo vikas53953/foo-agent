@@ -1,0 +1,120 @@
+{
+  "id": "B15-refusals-batch1",
+  "title": "Batch 1 build: asks foo cannot do yet (email, WhatsApp, pay, order, flights) get an honest answer, never a fake one",
+  "spec": "CR-0054 (switched-off features); the batch-1 refusal steps of B13, U20 and U25",
+  "features": "shipped",
+  "steps": [
+    {
+      "do": "eval",
+      "js": "(()=>{window.__b15n0=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__b15n0})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
+      "do": "send",
+      "text": "check my email"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "email",
+      "expect": "an honest answer that foo cannot read email yet (connections are off in batch 1); no connect card, never a made-up inbox (B13)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]')||document.querySelector('[data-testid=\"card-connect\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__b15n0===undefined||b.length<=window.__b15n0||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{window.__b15n1=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__b15n1})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
+      "do": "send",
+      "text": "what did I miss on WhatsApp"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "whatsapp",
+      "expect": "an honest answer that foo cannot see WhatsApp yet; no connect card, never made-up messages (B13)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]')||document.querySelector('[data-testid=\"card-connect\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__b15n1===undefined||b.length<=window.__b15n1||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{window.__b15n2=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__b15n2})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
+      "do": "send",
+      "text": "Pay my electricity bill now"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "pay-bill",
+      "expect": "an honest answer that foo cannot pay yet; never claims it paid (U20)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]')||document.querySelector('[data-testid=\"card-connect\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__b15n2===undefined||b.length<=window.__b15n2||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{window.__b15n3=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__b15n3})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
+      "do": "send",
+      "text": "Order me a pizza from Dominos"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "order",
+      "expect": "an honest answer that foo cannot order yet; never a fake success (U20)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]')||document.querySelector('[data-testid=\"card-connect\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__b15n3===undefined||b.length<=window.__b15n3||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{window.__b15n4=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__b15n4})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
+      "do": "send",
+      "text": "Read my latest Gmail"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "gmail",
+      "expect": "an honest answer that foo cannot read Gmail yet; no connect card, not a made-up inbox (U20)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]')||document.querySelector('[data-testid=\"card-connect\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__b15n4===undefined||b.length<=window.__b15n4||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{window.__b15n5=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__b15n5})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
+    {
+      "do": "send",
+      "text": "book me a flight to Goa on Sat 12 Dec"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "flights",
+      "expect": "the jobs-off answer: foo cannot book yet; no plan card, never a booking (U25 with jobs off)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]')||document.querySelector('[data-testid=\"card-connect\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__b15n5===undefined||b.length<=window.__b15n5||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "check",
+      "tid": "card-plan",
+      "count": 0,
+      "note": "no plan card with jobs off"
+    },
+    {
+      "do": "check",
+      "tid": "card-connect",
+      "count": 0,
+      "note": "no connect card with connections off"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

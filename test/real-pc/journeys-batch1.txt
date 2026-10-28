@@ -4,6 +4,7 @@ B01-chat-rules
 B12-languages
 B10-paste-secret
 B11-zoom-appearance
+B13-no-apps-honesty
 B14-restart-mid-reply
 R-dark-hi
 R1-rich
@@ -15,8 +16,11 @@ U05-chat-list
 U07-composer
 U08-rich-text
 U13-secret-box
+U16-settings-all
 U17-settings-by-chat
+U20-errors-honesty
 U22-face-polish
+U25-anatomy-composer
 U26-crash-reopen
 U27-composer-no-dropped-letters
 B1-batch1

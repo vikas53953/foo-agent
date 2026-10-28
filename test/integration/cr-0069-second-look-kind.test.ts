@@ -263,6 +263,19 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(asked(x, REASK_EMPTY_LINE)).toBe(0);
   });
 
+  it('a protocol rerun of the empty-say retry still carries the line (review on CR-0069 item 9)', async () => {
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }), once: true },
+        { match: { purpose: 'intake' }, error: 'AI_PROTOCOL_VIOLATION', once: true },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Here it is.') },
+      ],
+      'Make a table comparing 3 budget phones under 20000 rupees',
+    );
+    expect(intakes(x).map((turn) => String(turn.system).includes(REASK_EMPTY_LINE))).toEqual([false, true, true]);
+    expect(fooTexts(x)).toEqual(['Here it is.']);
+  });
+
   it('Try again after an empty-say retry is a new ask, without the empty-say line (review on CR-0069 item 9)', async () => {
     const x = await run(
       [

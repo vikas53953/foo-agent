@@ -513,10 +513,14 @@ export class ChatLane {
     const intakeOnly = this.intakeOnly.delete(messageId) || side;
     const rewrite = this.rewrites.get(messageId) ?? null;
     this.rewrites.delete(messageId);
+    // CR-0069 item 9: this run is the CR-0041 retry after an empty say. Read once, here, so no later run of the message (a
+    // rewrite, a card answer) gets the line; a rerun of this same retry (protocol retry, a wait to send) keeps it.
+    const emptySay = this.emptySay.delete(messageId) && !rewrite;
     // The turn runs once more with what it was given: its intake-only mark and (CR-0059 row 1) its rewrite (the protocol
     // retry; a rewrite with an empty reply keeps the old answer instead).
     const again = () => {
       if (rewrite) this.rewrites.set(messageId, rewrite);
+      if (emptySay) this.emptySay.add(messageId);
       if (rewrite || (intakeOnly && !side)) this.intakeOnly.add(messageId);
       return this.turn(chatId, messageId);
     };
@@ -531,6 +535,7 @@ export class ChatLane {
     }
     if (!pick) {
       // 04 §3.3 Waiting to send: foo cannot hand it on now; drained when the AI is back (Engine.drainQueued).
+      if (emptySay) this.emptySay.add(messageId);
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
       return;
     }
@@ -574,8 +579,7 @@ export class ChatLane {
         ...(oldPlan ? { oldPlan } : {}),
         ...(answers?.length ? { answers } : {}),
         // CR-0069 item 9: the CR-0041 retry after a reply with an empty say names it (run 40643760745: the same empty twice).
-        // Read once, and never by a rewrite (Try again later on the same message is a new ask).
-        ...(this.emptySay.delete(messageId) && !rewrite ? { reask: 'empty' as const } : {}),
+        ...(emptySay ? { reask: 'empty' as const } : {}),
       };
       built = this.d.protocol.buildIntake(intakeInput);
     } catch {
@@ -588,6 +592,7 @@ export class ChatLane {
         await this.rewriteKept(chatId, messageId, who, 'cap', helper);
         return;
       }
+      if (emptySay) this.emptySay.add(messageId);
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
       return;
     }
