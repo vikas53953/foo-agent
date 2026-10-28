@@ -1,0 +1,21 @@
+{"t":"2026-10-28T06:03:18.709Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:03:24.226Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:03:25.272Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1043}
+{"t":"2026-10-28T06:03:25.444Z","i":1,"do":"send","sentAt":1793167405374,"sent":true,"before":0,"ok":true,"ms":172}
+{"t":"2026-10-28T06:03:40.138Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","firstReplyMs":7616,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's a tiny Python hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it to see the greeting.\n\n6:03 AM","kit":[],"ms":14694}
+{"t":"2026-10-28T06:03:40.210Z","shot":"01-code.png"}
+{"t":"2026-10-28T06:03:40.280Z","i":3,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-28T06:03:40.422Z","i":4,"do":"send","sentAt":1793167420379,"sent":true,"before":0,"ok":true,"ms":142}
+{"t":"2026-10-28T06:03:51.582Z","i":5,"do":"waitReply","expect":"table renders as a table (CR-0053), not raw pipes","firstReplyMs":3528,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are three Indian states with their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n\nWant a few more rows?\n\n6:03 AM","kit":[],"ms":11159}
+{"t":"2026-10-28T06:03:51.643Z","shot":"02-table.png"}
+{"t":"2026-10-28T06:03:51.764Z","i":6,"do":"send","sentAt":1793167431729,"sent":true,"before":0,"ok":true,"ms":121}
+{"t":"2026-10-28T06:04:02.429Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","firstReplyMs":3043,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Indian Railways ticket booking site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry.\n\n6:03 AM","kit":[],"ms":10665}
+{"t":"2026-10-28T06:04:02.489Z","shot":"03-link.png"}
+{"t":"2026-10-28T06:04:02.571Z","i":8,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-28T06:04:03.073Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":502}
+{"t":"2026-10-28T06:04:03.149Z","shot":"04-link-menu.png"}
+{"t":"2026-10-28T06:04:03.153Z","i":10,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-28T06:04:03.166Z","i":11,"do":"dump","ok":true,"ms":13}
+{"t":"2026-10-28T06:04:03.299Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T06:04:03.311Z","step":"aiTurns","turns":3}
+{"t":"2026-10-28T06:04:03.314Z","step":"jobTrail","steps":0,"calls":0}

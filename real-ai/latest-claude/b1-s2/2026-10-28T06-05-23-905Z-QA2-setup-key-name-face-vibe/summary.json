@@ -1,0 +1,311 @@
+{
+  "journey": "QA2-setup-key-name-face-vibe",
+  "title": "Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart",
+  "steps": 42,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-05-23-905Z-QA2-setup-key-name-face-vibe",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 145
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "ok": true,
+      "ms": 11
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "ok": true,
+      "ms": 20000
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 118
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "a made-up wrong key first",
+      "ok": true,
+      "ms": 16
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "ok": true,
+      "ms": 30002
+    },
+    {
+      "i": 9,
+      "do": "expectText",
+      "expect": "a wrong key is tested and the row says it didn't work, in plain words",
+      "text": "Anthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "note": "a wrong key is never offered as Use",
+      "found": 1,
+      "ok": true,
+      "ms": 2,
+      "late": true
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "note": "Replace key opens the Secret box again",
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 13,
+      "do": "fill",
+      "note": "now the real key",
+      "ok": true,
+      "ms": 9
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "the real key row shows works",
+      "ok": true,
+      "ms": 30002
+    },
+    {
+      "i": 16,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 1,
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "i": 17,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 18,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 19,
+      "do": "waitFor",
+      "expect": "name card: What should I call myself?",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 20,
+      "do": "fill",
+      "ok": true,
+      "ms": 331
+    },
+    {
+      "i": 21,
+      "do": "click",
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 22,
+      "do": "wait",
+      "ok": true,
+      "ms": 1011
+    },
+    {
+      "i": 23,
+      "do": "expectText",
+      "expect": "a name with no letter or number (only an emoji and !!) is refused in plain words",
+      "text": "Use at least one letter.",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 24,
+      "do": "fill",
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 25,
+      "do": "click",
+      "ok": true,
+      "ms": 496
+    },
+    {
+      "i": 26,
+      "do": "wait",
+      "ok": true,
+      "ms": 3003
+    },
+    {
+      "i": 27,
+      "do": "expectText",
+      "expect": "\"Chotu 😊 it is.\" and the face card follows",
+      "text": "Start of your chat with Chotu 😊\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n6:05 AM\nUsing Anthropic key (your AI)\n6:05 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n6:05 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n6:06 AM\nWhat should I call myself? → Chotu 😊\n6:06 AM\nChotu 😊\n\nChotu 😊 it is.\n\n6:06 AM\n\nPick a face.\n\n1\nLiving face\nDefault\n✿\n2\n◐\n3\n★\n4\nUse this face\n🎲 Surprise me",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 28,
+      "do": "click",
+      "note": "pick the third face",
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "ok": true,
+      "ms": 157
+    },
+    {
+      "i": 30,
+      "do": "wait",
+      "expect": "face chosen; the talk-style (vibe) choice follows",
+      "ok": true,
+      "ms": 2001
+    },
+    {
+      "i": 31,
+      "do": "click",
+      "note": "pick the second vibe",
+      "ok": true,
+      "ms": 192
+    },
+    {
+      "i": 32,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 17
+    },
+    {
+      "i": 33,
+      "do": "wait",
+      "expect": "first chat as Chotu, composer unlocked",
+      "ok": true,
+      "ms": 10003
+    },
+    {
+      "i": 34,
+      "do": "send",
+      "sentAt": 1793167628641,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 35,
+      "do": "waitReply",
+      "expect": "the real AI answers as Chotu",
+      "firstReplyMs": 2031,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Chotu 😊.\n\n6:07 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 9167
+    },
+    {
+      "i": 36,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5313
+    },
+    {
+      "i": 37,
+      "do": "wait",
+      "ok": true,
+      "ms": 8002
+    },
+    {
+      "i": 38,
+      "do": "expectText",
+      "expect": "after quit and reopen the chat and the name Chotu are still there",
+      "text": "Start of your chat with Chotu 😊\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n6:05 AM\nUsing Anthropic key (your AI)\n6:05 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n6:05 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n6:06 AM\nWhat should I call myself? → Chotu 😊\n6:06 AM\n◐︎\nChotu 😊\n\nChotu 😊 it is.\n\n6:06 AM\nPick a face. → Face ◐ (half moon)\n6:06 AM\nHow should I talk to you? → Straight to the point\n6:06 AM\n◐︎\nChotu 😊\n\nStraight to the point. Got it. 🎯\n\n6:06 AM\n\nAll set. I'm Chotu 😊, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:06 AM\ntumhara naam kya hai? ek line mein\n6:07 AM\n◐︎\nChotu 😊\n\nChotu 😊.\n\n6:07 AM",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 39,
+      "do": "send",
+      "sentAt": 1793167651373,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 152
+    },
+    {
+      "i": 40,
+      "do": "waitReply",
+      "expect": "after reopening, the real AI still answers as Chotu (name and key survived the restart)",
+      "firstReplyMs": 7121,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n6:07 AM",
+      "didntGetThat": true,
+      "kit": [],
+      "ms": 13235
+    },
+    {
+      "i": 41,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

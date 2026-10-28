@@ -1,0 +1,97 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n6:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Fri 30 Oct ko mummy ka birthday hai, to ye cakes achhe rahenge:\n\nRasmalai cake: halka, thoda desi, aur jyada tar logon ko pasand aata hai\nChocolate truffle: sabse safe choice, sab khush\nButterscotch ya pineapple: purana classic, mummy ke zamane ka favourite\nFresh fruit cake: kam meetha, agar mummy halka khaati hain\n\nMummy ko kaunsa flavour sabse zyada pasand hai? Bata do, main wahi dhundh dungi/dunga aur options dikhaunga, order tabhi hoga jab aap bologe.\n\n6:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n6:02 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Mummy ko kaunsa cake sabse zyada pasand hai?\n1\nChocolate truffle\nBEST FIT\nSabse safe choice\n2\nRasmalai cake\nHalka aur desi\n3\nButterscotch ya pineapple\nPurana classic\n4\nFresh fruit cake\nKam meetha\nSomething else…\nSkip\n6:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n6:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਸਭ ਤੋਂ ਸੌਖਾ ਤੇ ਸੁਰੱਖਿਅਤ ਚੋਣ ਚਾਕਲੇਟ ਟਰਫਲ ਹੈ। ਜੇ ਉਹ ਦੇਸੀ ਸੁਆਦ ਪਸੰਦ ਕਰਦੇ ਨੇ, ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਵੀ ਬਹੁਤ ਵਧੀਆ ਰਹੇਗਾ।\n\nਚਾਕਲੇਟ ਟਰਫਲ: ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ\nਰਸਮਲਾਈ ਕੇਕ: ਹਲਕਾ ਤੇ ਦੇਸੀ ਸੁਆਦ\nਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ: ਪੁਰਾਣਾ ਕਲਾਸਿਕ\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਘੱਟ ਮਿੱਠਾ, ਜੇ ਉਹ ਹਲਕਾ ਖਾਂਦੇ ਨੇ\n\nਜਨਮ ਦਿਨ Fri 30 Oct ਨੂੰ ਹੈ। ਕੀ ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਜ਼ਿਆਦਾ ਪਸੰਦ ਹੈ ਜਾਂ ਹਲਕਾ?\n\n6:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n6:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hello in Hindi is नमस्ते (namaste). A casual version is \"हैलो\" or \"अरे, क्या हाल है?\" (how are you?).\n\n6:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n6:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a tiny Python hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it to see the greeting.\n\n6:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n6:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states with their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n\nWant a few more rows?\n\n6:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n6:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket booking site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry.\n\n6:03 AM"
+  }
+]
