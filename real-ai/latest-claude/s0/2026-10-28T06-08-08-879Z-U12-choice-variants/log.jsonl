@@ -1,0 +1,23 @@
+{"t":"2026-10-28T06:08:08.879Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:08:14.131Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:08:15.173Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1039}
+{"t":"2026-10-28T06:08:15.295Z","i":1,"do":"send","sentAt":1793167695265,"sent":true,"before":0,"ok":true,"ms":121}
+{"t":"2026-10-28T06:08:27.951Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":6590,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best for Bengaluru?\n1\nSouth Indian breakfast crawl\nBEST FIT\nDosa, idli and filter coffee at a few classic spots\n2\nNandi Hills sunrise\nEarly start, cool views, back by brunch\n3\nLalbagh and Cubbon Park stroll\nEasy green walk, relaxed and low cost\nSomething else…\nSkip\n6:08 AM","kit":[],"ms":12655}
+{"t":"2026-10-28T06:08:28.015Z","shot":"01-choice.png"}
+{"t":"2026-10-28T06:08:28.091Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-28T06:08:28.214Z","i":4,"do":"send","sentAt":1793167708166,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-10-28T06:08:42.823Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":7068,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Nandi Hills sunrise is a good pick. It's about 60 km from Bengaluru, so leave by 4:00 AM to be up there before sunrise, around 6:00 AM. Take a jacket, because it's cold and misty at the top. Early on Sat 31 Oct or Sun 1 Nov both work. Weekends get crowded, so the earlier you go, the better. Want me to add it to your calendar for Sat 31 Oct, 4:00 AM?\n\n6:08 AM","kit":[],"ms":14609}
+{"t":"2026-10-28T06:08:42.875Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-28T06:08:42.978Z","i":6,"do":"send","sentAt":1793167722957,"sent":true,"before":0,"ok":true,"ms":103}
+{"t":"2026-10-28T06:08:55.094Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":6062,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nMasala dosa with filter coffee\nBEST FIT\nCrisp, filling and quick to find\n2\nAppam with vegetable stew\nSoft and light, easy on the stomach\n3\nBisi bele bath with curd\nOne warm bowl, very Bengaluru\nSomething else…\nSkip\n6:08 AM","kit":[],"ms":12116}
+{"t":"2026-10-28T06:08:55.156Z","shot":"04-choice-2.png"}
+{"t":"2026-10-28T06:08:55.235Z","i":8,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-28T06:08:55.837Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":602}
+{"t":"2026-10-28T06:08:55.887Z","shot":"05-something-else.png"}
+{"t":"2026-10-28T06:08:55.964Z","i":10,"do":"send","sentAt":1793167735946,"sent":true,"before":0,"ok":true,"ms":77}
+{"t":"2026-10-28T06:09:08.629Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":5576,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, a good easy dinner. Since you love South Indian food, try a tadka with curry leaves, mustard seeds and a dried red chilli on top. 🌿\n\n6:09 AM","kit":[],"ms":12665}
+{"t":"2026-10-28T06:09:08.699Z","shot":"06-own-answer.png"}
+{"t":"2026-10-28T06:09:08.708Z","i":12,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T06:09:08.818Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T06:09:08.828Z","step":"aiTurns","turns":4}
+{"t":"2026-10-28T06:09:08.830Z","step":"jobTrail","steps":0,"calls":0}

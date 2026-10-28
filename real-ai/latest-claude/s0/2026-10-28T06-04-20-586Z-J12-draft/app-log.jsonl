@@ -1,0 +1,6 @@
+{"t":1793167461394,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793167465943,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793167476088,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1793167476089,"lvl":"info","mod":"engine","evt":"chat.reply_empty.no_say"}
+{"t":1793167476095,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793167479736,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
