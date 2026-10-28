@@ -1,0 +1,89 @@
+{
+  "journey": "R-dark-hi",
+  "title": "Setting by chat, then hi: foo replies and does not change the setting again",
+  "videos": [],
+  "steps": 6,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-04-23-345Z-R-dark-hi",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Switch to dark mode",
+      "sentAt": 1793181868950,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 1,
+      "do": "waitFor",
+      "note": "a setting answer is a line, not a bubble, so waitReply would never see it (real-AI run 62d419e R-dark-hi step 1)",
+      "ok": true,
+      "ms": 4368
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "the theme is dark and foo shows one line \"Changed: Theme → Dark. Undo\"",
+      "ok": true,
+      "ms": 10001,
+      "shot": "01-dark.png"
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1793181883493,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)",
+      "timeline": [
+        {
+          "at": 36,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3594,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4624,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3563,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Mummy ke birthday cake ka kuch decide hua, ya kuch aur dekhna hai?\n\n10:04 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 10694,
+      "shot": "02-hi-after-dark.png"
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

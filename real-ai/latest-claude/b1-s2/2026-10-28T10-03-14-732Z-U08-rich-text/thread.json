@@ -1,0 +1,112 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n10:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n10:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n10:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n10:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday (Fri 30 Oct) ke liye ye teen safe aur pasandida options hain:\n\nChocolate truffle: rich aur sabko pasand aane wala, kabhi galat nahi jaata.\nFresh fruit ya pineapple: halka aur taaza, agar mummy ko kam meetha pasand hai.\nPhoto cake: unki pasandida photo ke saath, personal touch ke liye.\n\nCake Fri 30 Oct ko chahiye, to aaj ya kal (Thu 29 Oct) tak order kar dena theek rahega, khaas kar photo cake ke liye. Mummy eggless leti hain ya egg wala chalega?\n\n10:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n10:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਚਾਕਲੇਟ ਟਰਫ਼ਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਲਗਭਗ ਸਾਰਿਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਜੇ ਉਨ੍ਹਾਂ ਨੂੰ ਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਤਾਂ ਤਾਜ਼ੇ ਫਲਾਂ ਜਾਂ ਪਾਈਨਐਪਲ ਵਾਲਾ ਕੇਕ ਲਓ। ਖ਼ਾਸ ਛੋਹ ਲਈ ਉਨ੍ਹਾਂ ਦੀ ਮਨਪਸੰਦ ਫੋਟੋ ਵਾਲਾ ਕੇਕ ਵੀ ਵਧੀਆ ਰਹੇਗਾ।\n\nਕੇਕ Fri 30 Oct ਨੂੰ ਚਾਹੀਦਾ ਹੈ, ਇਸ ਲਈ ਅੱਜ ਜਾਂ ਕੱਲ੍ਹ (Thu 29 Oct) ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਮੰਮੀ ਐਗਲੈੱਸ ਲੈਂਦੇ ਹਨ ਜਾਂ ਆਂਡੇ ਵਾਲਾ ਚੱਲੇਗਾ?\n\n10:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n10:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mon 2 Nov isn't a public holiday in Mumbai as far as I know. Diwali falls just before it, around Sun 8 Nov, so offices and banks should be open that Monday. I can't check live holiday lists, so confirm with your bank or office if it matters.\n\n10:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n10:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hello in Hindi is नमस्ते (namaste). A casual version is हेलो or राम राम, and \"how are you?\" is आप कैसे हैं? (aap kaise hain).\n\n10:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n10:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your tiny Python hello world, just one line: print(\"Hello, world!\"). Run it and it shows Hello, world! on screen.\n\n10:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n10:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n10:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n10:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket booking site is IRCTC. For train running status and PNR checks, use Indian Railways Enquiry.\n\n10:04 AM"
+  }
+]
