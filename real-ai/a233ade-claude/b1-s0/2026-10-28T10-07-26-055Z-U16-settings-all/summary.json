@@ -1,0 +1,229 @@
+{
+  "journey": "U16-settings-all",
+  "title": "Settings: every section",
+  "videos": [],
+  "steps": 26,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-07-26-055Z-U16-settings-all",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1048
+    },
+    {
+      "i": 1,
+      "do": "key",
+      "expect": "Settings opens (Ctrl+,) on Account",
+      "ref": "UX-12-01",
+      "ok": true,
+      "ms": 43,
+      "shot": "01-settings.png"
+    },
+    {
+      "i": 2,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "Settings · account: rows match the spec section",
+      "ref": "UX-12-01",
+      "ok": true,
+      "ms": 714,
+      "shot": "02-settings-account.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "Settings · appearance: rows match the spec section",
+      "ref": "UX-12-02",
+      "ok": true,
+      "ms": 703,
+      "shot": "03-settings-appearance.png"
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "04-error-step6.png",
+      "ms": 23063
+    },
+    {
+      "i": 7,
+      "do": "wait",
+      "expect": "Settings · notifications: rows match the spec section",
+      "ref": "UX-12-03",
+      "ok": true,
+      "ms": 709,
+      "shot": "05-settings-notifications.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "06-error-step8.png",
+      "ms": 23077
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "Settings · permissions: rows match the spec section",
+      "ref": "UX-12-04",
+      "ok": true,
+      "ms": 701,
+      "shot": "07-settings-permissions.png"
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "08-error-step10.png",
+      "ms": 23081
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "Settings · money: rows match the spec section",
+      "ref": "UX-12-05",
+      "ok": true,
+      "ms": 701,
+      "shot": "09-settings-money.png"
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "10-error-step12.png",
+      "ms": 23062
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "Settings · privacy: rows match the spec section",
+      "ref": "UX-12-06",
+      "ok": true,
+      "ms": 710,
+      "shot": "11-settings-privacy.png"
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "12-error-step14.png",
+      "ms": 23063
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "Settings · routines-settings: rows match the spec section",
+      "ref": "UX-12-07",
+      "ok": true,
+      "ms": 703,
+      "shot": "13-settings-routines-settings.png"
+    },
+    {
+      "i": 16,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "14-error-step16.png",
+      "ms": 23064
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "expect": "Settings · connections: rows match the spec section",
+      "ref": "UX-12-08",
+      "ok": true,
+      "ms": 701,
+      "shot": "15-settings-connections.png"
+    },
+    {
+      "i": 18,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "16-error-step18.png",
+      "ms": 23063
+    },
+    {
+      "i": 19,
+      "do": "wait",
+      "expect": "Settings · chat: rows match the spec section",
+      "ref": "UX-12-09",
+      "ok": true,
+      "ms": 702,
+      "shot": "17-settings-chat.png"
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 21,
+      "do": "wait",
+      "expect": "Settings · shortcuts: rows match the spec section",
+      "ref": "UX-12-10",
+      "ok": true,
+      "ms": 700,
+      "shot": "18-settings-shortcuts.png"
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 58
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "expect": "Settings · about: rows match the spec section",
+      "ref": "UX-12-11",
+      "ok": true,
+      "ms": 701,
+      "shot": "19-settings-about.png"
+    },
+    {
+      "i": 24,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 112
+    },
+    {
+      "i": 25,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n10:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n10:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What are we getting done today? 🌿\n\n10:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n10:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can answer questions, write things like plans, tables and comparisons, and set up checks or routines for you. The app shows what works on this PC right now.\n\n10:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n10:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet, so nobody in between can see what you send.\n\nNormally, your data travels through your Wi-Fi and your internet company, and they can see which sites you visit. With a VPN, your device locks (encrypts) everything first and sends it to the VPN company's computer. That computer unlocks it and talks to the website for you.\n\nWhat that means for you:\n\nOn public Wi-Fi: strangers on the same network can't read your traffic.\nYour location: websites see the VPN computer's address, not yours.\nThe catch: the VPN company can now see your traffic instead, so pick one you trust. It also doesn't protect you from fake sites or bad downloads.\n10:02 AM"
+  }
+]

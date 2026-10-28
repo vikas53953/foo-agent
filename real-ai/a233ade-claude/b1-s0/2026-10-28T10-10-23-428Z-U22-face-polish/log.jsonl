@@ -1,0 +1,21 @@
+{"t":"2026-10-28T10:10:23.428Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:10:28.964Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:10:30.018Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1050}
+{"t":"2026-10-28T10:10:30.178Z","i":1,"do":"send","typed":"Write a 4-line poem about monsoon in Mumbai","sentAt":1793182230112,"sent":true,"before":0,"ok":true,"ms":160}
+{"t":"2026-10-28T10:10:31.759Z","shot":"01-thinking.png"}
+{"t":"2026-10-28T10:10:31.760Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1500,"shot":"01-thinking.png"}
+{"t":"2026-10-28T10:10:42.426Z","shot":"02-poem.png"}
+{"t":"2026-10-28T10:10:42.426Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","timeline":[{"at":1652,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4172,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":6186,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2524,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your monsoon poem:\n\nGrey clouds roll in over Marine Drive's wall,\nThe sea and the sky blur into one.\nChai steams on stalls as the first drops fall,\nAnd the whole city smiles at the rain-washed sun. 🌿\n\n10:10 AM","kit":[],"ms":10609,"shot":"02-poem.png"}
+{"t":"2026-10-28T10:10:42.493Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":67}
+{"t":"2026-10-28T10:10:42.542Z","i":5,"do":"key","ok":true,"ms":49}
+{"t":"2026-10-28T10:10:42.632Z","i":6,"do":"click","soft":true,"ok":true,"ms":90}
+{"t":"2026-10-28T10:10:42.700Z","i":7,"do":"click","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-28T10:10:43.366Z","shot":"04-face-motion.png"}
+{"t":"2026-10-28T10:10:43.367Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":607,"shot":"04-face-motion.png"}
+{"t":"2026-10-28T10:10:43.411Z","i":9,"do":"key","ok":true,"ms":44}
+{"t":"2026-10-28T10:11:06.487Z","shot":"05-error-step10.png"}
+{"t":"2026-10-28T10:11:06.487Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"05-error-step10.png","ms":23076}
+{"t":"2026-10-28T10:11:06.496Z","i":11,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T10:11:06.622Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T10:11:06.634Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T10:11:06.636Z","step":"jobTrail","steps":0,"calls":0}
