@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-c8a05ea-40667520721",
+  "reportId": "M9-6e8f80c-40668819001",
   "milestone": "M9",
-  "generatedAt": "2026-10-28T10:02:51.451Z",
-  "commit": "a233adef58e395355d5903ea863ea88b5f921b61",
-  "head": "c8a05eab70eb2ccaa8170e63ed420398ba0b502c",
+  "generatedAt": "2026-10-28T10:29:20.745Z",
+  "commit": "988f14f8875c24da6b59cfd19635758e304da98e",
+  "head": "6e8f80cfff8dc5950f0690be4cbf6f37bb8e1002",
   "ci": {
-    "runId": "40667520721",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40667520721"
+    "runId": "40668819001",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40668819001"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "026cfa54320431755cf7df6e15da8128dc13469d90b3ed3a624058777ee256f7"
   },
   "runner": {
-    "recordedAt": "2026-10-28T10:02:32.698Z",
+    "recordedAt": "2026-10-28T10:13:49.637Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006957"
+      "runner": "GitHub Actions 1000006980"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,13 +59,10 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "missing evidence: E2E results (Playwright JSON); FID-14 results",
-    "20 audit item(s) not DONE (the milestone is not complete)"
+    "1 test(s) failed",
+    "12 audit item(s) not DONE (the milestone is not complete)"
   ],
-  "missingInputs": [
-    "E2E results (Playwright JSON)",
-    "FID-14 results"
-  ],
+  "missingInputs": [],
   "forVikas": {
     "tryNow": [
       "Nothing new to try yet: none of the 36 M9 drawings is built in the app. This run shows that the checking machinery works."
@@ -89,7 +86,7 @@
       ],
       "covers": "part",
       "manual": "demo against the sandbox on Vikas's PC (plan §5 M9 Demo); the calendar entry and three photo options are M7/M8 seams (G-M9-05) and Choice cards per 08-4 §25; carry items in docs/decisions/M9.tsv",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "PARTIAL"
     },
     {
       "group": "M9 Constitution",
@@ -440,7 +437,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-036",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -480,7 +477,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-056",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -488,7 +485,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-057",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -496,7 +493,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-058",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -520,7 +517,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-078",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -536,7 +533,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-080",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -586,7 +583,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-142",
       "covers": "whole",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Must pass",
@@ -641,7 +638,7 @@
       ],
       "covers": "whole",
       "manual": "golden lane on the M9 PR",
-      "resolved": "UNVERIFIABLE"
+      "resolved": "DONE"
     },
     {
       "group": "M9 Fidelity exit",
@@ -676,19 +673,237 @@
     "stylelint": "not installed yet (FID-13 Stylelint half; ART-24a scans styles today)",
     "fid11": "DONE",
     "fid12": "DONE",
-    "fid14": []
+    "fid14": [
+      {
+        "id": "SV-13",
+        "ok": true,
+        "expected": "height 72 (±0.5)",
+        "measured": "323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72"
+      },
+      {
+        "id": "SV-14",
+        "ok": true,
+        "expected": "width 48 × height 48 (±0.5)",
+        "measured": "48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48"
+      },
+      {
+        "id": "SV-17",
+        "ok": true,
+        "expected": "width 340 (±0.5)",
+        "measured": "340×868"
+      },
+      {
+        "id": "SV-23",
+        "ok": true,
+        "expected": "min-height: 40px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-24",
+        "ok": true,
+        "expected": "height 36 (±0.5)",
+        "measured": "307×36"
+      },
+      {
+        "id": "SV-25",
+        "ok": true,
+        "expected": "≥ width 40 × height 40 (±0.5)",
+        "measured": "122.125×40, 40×40, 40×40, 91.078125×40, 79.140625×40, 52.515625×40, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 271×42, 40×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40"
+      },
+      {
+        "id": "SV-15",
+        "ok": true,
+        "expected": "60px",
+        "measured": "60px"
+      },
+      {
+        "id": "SV-15",
+        "ok": true,
+        "expected": "60px; aligned",
+        "measured": "chat header 32+60; left header 32+60"
+      },
+      {
+        "id": "SV-18",
+        "ok": true,
+        "expected": "width 340 (±0.5)",
+        "measured": "340×868"
+      },
+      {
+        "id": "SV-29",
+        "ok": true,
+        "expected": "background-color: rgb(255, 255, 255)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-29",
+        "ok": true,
+        "expected": "background-color: rgb(13, 13, 17)",
+        "measured": "all equal",
+        "note": "dark"
+      },
+      {
+        "id": "SV-10",
+        "ok": true,
+        "expected": "height 46 (±0.5)",
+        "measured": "640×46"
+      },
+      {
+        "id": "SV-11",
+        "ok": true,
+        "expected": "border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-12",
+        "ok": true,
+        "expected": "width 36 × height 36 (±0.5)",
+        "measured": "36×36, 36×36"
+      },
+      {
+        "id": "SV-26",
+        "ok": true,
+        "expected": "color: rgb(105, 105, 117)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-30",
+        "ok": true,
+        "expected": "transition-duration: 0.083s (background-color)",
+        "measured": "background-color, transform 0.083s, 0.083s; background-color, transform 0.083s, 0.083s"
+      },
+      {
+        "id": "SV-26",
+        "ok": true,
+        "expected": "color: rgb(142, 142, 154)",
+        "measured": "all equal",
+        "note": "dark"
+      },
+      {
+        "id": "SV-03",
+        "ok": true,
+        "expected": "border-bottom-left-radius: 6px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-04",
+        "ok": true,
+        "expected": "background-color: rgb(11, 11, 16)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-05",
+        "ok": true,
+        "expected": "background-color: rgb(240, 240, 244)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-06",
+        "ok": true,
+        "expected": "font-size: 15px; line-height: 22px; font-weight: 400",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-07",
+        "ok": true,
+        "expected": "line-height: 24px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-09",
+        "ok": true,
+        "expected": "max-width: 760px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-26",
+        "ok": true,
+        "expected": "color: rgb(105, 105, 117)",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-01",
+        "ok": true,
+        "expected": "18px non-tail corners (tail corners 6px)",
+        "measured": "15 bubbles, all equal"
+      },
+      {
+        "id": "SV-08",
+        "ok": true,
+        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
+        "measured": "15 bubbles within"
+      },
+      {
+        "id": "SV-04",
+        "ok": true,
+        "expected": "background-color: rgb(44, 53, 154)",
+        "measured": "all equal",
+        "note": "dark"
+      },
+      {
+        "id": "SV-05",
+        "ok": true,
+        "expected": "background-color: rgb(32, 32, 40)",
+        "measured": "all equal",
+        "note": "dark"
+      },
+      {
+        "id": "SV-26",
+        "ok": true,
+        "expected": "color: rgb(142, 142, 154)",
+        "measured": "all equal",
+        "note": "dark"
+      },
+      {
+        "id": "SV-02",
+        "ok": true,
+        "expected": "border-bottom-right-radius: 6px",
+        "measured": "all equal"
+      },
+      {
+        "id": "SV-01",
+        "ok": true,
+        "expected": "18px non-tail corners (tail corners 6px)",
+        "measured": "14 bubbles, all equal",
+        "note": "Trips"
+      },
+      {
+        "id": "SV-08",
+        "ok": true,
+        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
+        "measured": "14 bubbles within",
+        "note": "Trips"
+      },
+      {
+        "id": "SV-16",
+        "ok": true,
+        "expected": "height 32 (±0.5)",
+        "measured": "922×32"
+      },
+      {
+        "id": "SV-37",
+        "ok": true,
+        "expected": "922×648 (work area 1024×720)",
+        "measured": "922×648"
+      },
+      {
+        "id": "SV-38",
+        "ok": true,
+        "expected": "font-synthesis: none",
+        "measured": "all equal"
+      }
+    ]
   },
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 7044,
-        "failed": 0,
+        "passed": 7043,
+        "failed": 1,
         "skipped": 4
       },
       "e2e": {
-        "passed": 0,
+        "passed": 180,
         "failed": 0,
-        "skipped": 0
+        "skipped": 78
       }
     },
     "ids": [
@@ -32351,9 +32566,1156 @@
         "id": "AT-447",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/vault/secretIpc.test.ts"
+      },
+      {
+        "id": "AT-005",
+        "status": "passed",
+        "file": "test/e2e/ai-step.spec.ts"
+      },
+      {
+        "id": "AT-006",
+        "status": "passed",
+        "file": "test/e2e/ai-step.spec.ts"
+      },
+      {
+        "id": "AT-155",
+        "status": "passed",
+        "file": "test/e2e/ai-step.spec.ts"
+      },
+      {
+        "id": "AT-155a",
+        "status": "passed",
+        "file": "test/e2e/ai-step.spec.ts"
+      },
+      {
+        "id": "AT-009",
+        "status": "passed",
+        "file": "test/e2e/ai-step.spec.ts"
+      },
+      {
+        "id": "AT-431",
+        "status": "passed",
+        "file": "test/e2e/c1-actions-chips.spec.ts"
+      },
+      {
+        "id": "AT-430",
+        "status": "passed",
+        "file": "test/e2e/c1-actions-chips.spec.ts"
+      },
+      {
+        "id": "AT-427",
+        "status": "passed",
+        "file": "test/e2e/c1-bubbles.spec.ts"
+      },
+      {
+        "id": "AT-428",
+        "status": "passed",
+        "file": "test/e2e/c1-bubbles.spec.ts"
+      },
+      {
+        "id": "AT-421",
+        "status": "passed",
+        "file": "test/e2e/c1-bubbles.spec.ts"
+      },
+      {
+        "id": "AT-429",
+        "status": "passed",
+        "file": "test/e2e/c1-bubbles.spec.ts"
+      },
+      {
+        "id": "AT-425",
+        "status": "passed",
+        "file": "test/e2e/c1-capabilities.spec.ts"
+      },
+      {
+        "id": "AT-426",
+        "status": "passed",
+        "file": "test/e2e/c1-capabilities.spec.ts"
+      },
+      {
+        "id": "PERF-01",
+        "status": "passed",
+        "file": "test/e2e/m0-window.spec.ts"
+      },
+      {
+        "id": "ART-26a",
+        "status": "passed",
+        "file": "test/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "ART-29",
+        "status": "passed",
+        "file": "test/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "PERF-03",
+        "status": "passed",
+        "file": "test/e2e/m1-shell.spec.ts"
+      },
+      {
+        "id": "AT-007",
+        "status": "passed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "PERF-02",
+        "status": "passed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "PERF-02",
+        "status": "passed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "PERF-02",
+        "status": "passed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "ART-26a",
+        "status": "passed",
+        "file": "test/e2e/m2-composer.spec.ts"
+      },
+      {
+        "id": "PERF-04",
+        "status": "passed",
+        "file": "test/e2e/m2-messages.spec.ts"
+      },
+      {
+        "id": "ART-26a",
+        "status": "passed",
+        "file": "test/e2e/m2-messages.spec.ts"
+      },
+      {
+        "id": "ART-21a",
+        "status": "passed",
+        "file": "test/e2e/m2-messages.spec.ts"
+      },
+      {
+        "id": "AT-027",
+        "status": "passed",
+        "file": "test/e2e/m3-replies.spec.ts"
+      },
+      {
+        "id": "ART-23a",
+        "status": "passed",
+        "file": "test/e2e/m3-replies.spec.ts"
+      },
+      {
+        "id": "AT-030",
+        "status": "passed",
+        "file": "test/e2e/m3-replies.spec.ts"
+      },
+      {
+        "id": "AT-006",
+        "status": "passed",
+        "file": "test/e2e/m3-replies.spec.ts"
+      },
+      {
+        "id": "AT-006",
+        "status": "passed",
+        "file": "test/e2e/m3-replies.spec.ts"
+      },
+      {
+        "id": "PERF-07",
+        "status": "passed",
+        "file": "test/e2e/m4-jobs.spec.ts"
+      },
+      {
+        "id": "PERF-08",
+        "status": "passed",
+        "file": "test/e2e/m4-jobs.spec.ts"
+      },
+      {
+        "id": "PERF-11",
+        "status": "passed",
+        "file": "test/e2e/m4-jobs.spec.ts"
+      },
+      {
+        "id": "AT-287",
+        "status": "passed",
+        "file": "test/e2e/m4-list.spec.ts"
+      },
+      {
+        "id": "AT-286",
+        "status": "passed",
+        "file": "test/e2e/m4-list.spec.ts"
+      },
+      {
+        "id": "AT-282",
+        "status": "passed",
+        "file": "test/e2e/m4-notices.spec.ts"
+      },
+      {
+        "id": "AT-081",
+        "status": "passed",
+        "file": "test/e2e/m4-offline.spec.ts"
+      },
+      {
+        "id": "AT-281",
+        "status": "passed",
+        "file": "test/e2e/m4-panel.spec.ts"
+      },
+      {
+        "id": "AT-122",
+        "status": "passed",
+        "file": "test/e2e/m5-approval.spec.ts"
+      },
+      {
+        "id": "AT-126",
+        "status": "passed",
+        "file": "test/e2e/m5-approval.spec.ts"
+      },
+      {
+        "id": "AT-127",
+        "status": "passed",
+        "file": "test/e2e/m5-approval.spec.ts"
+      },
+      {
+        "id": "AT-280",
+        "status": "passed",
+        "file": "test/e2e/m5-approval.spec.ts"
+      },
+      {
+        "id": "AT-032",
+        "status": "passed",
+        "file": "test/e2e/m5-choice.spec.ts"
+      },
+      {
+        "id": "AT-035",
+        "status": "passed",
+        "file": "test/e2e/m5-choice.spec.ts"
+      },
+      {
+        "id": "AT-288",
+        "status": "passed",
+        "file": "test/e2e/m5-choice.spec.ts"
+      },
+      {
+        "id": "AT-009",
+        "status": "passed",
+        "file": "test/e2e/m5-secret.spec.ts"
+      },
+      {
+        "id": "AT-072",
+        "status": "passed",
+        "file": "test/e2e/m6-page.spec.ts"
+      },
+      {
+        "id": "AT-073",
+        "status": "passed",
+        "file": "test/e2e/m6-page.spec.ts"
+      },
+      {
+        "id": "AT-014",
+        "status": "passed",
+        "file": "test/e2e/m8-connectors.spec.ts"
+      },
+      {
+        "id": "AT-093",
+        "status": "passed",
+        "file": "test/e2e/m8-connectors.spec.ts"
+      },
+      {
+        "id": "AT-051",
+        "status": "passed",
+        "file": "test/e2e/m8-drafts.spec.ts"
+      },
+      {
+        "id": "AT-052",
+        "status": "passed",
+        "file": "test/e2e/m8-drafts.spec.ts"
+      },
+      {
+        "id": "AT-270",
+        "status": "passed",
+        "file": "test/e2e/m8-whatsapp.spec.ts"
+      },
+      {
+        "id": "AT-269",
+        "status": "passed",
+        "file": "test/e2e/m8-whatsapp.spec.ts"
+      },
+      {
+        "id": "AT-269",
+        "status": "passed",
+        "file": "test/e2e/m8-whatsapp.spec.ts"
+      },
+      {
+        "id": "AT-036",
+        "status": "passed",
+        "file": "test/e2e/m9-booking.spec.ts"
+      },
+      {
+        "id": "AT-157",
+        "status": "passed",
+        "file": "test/e2e/m9-flights.spec.ts"
+      },
+      {
+        "id": "AT-157",
+        "status": "passed",
+        "file": "test/e2e/m9-flights.spec.ts"
+      },
+      {
+        "id": "AT-142",
+        "status": "passed",
+        "file": "test/e2e/m9-handback.spec.ts"
+      },
+      {
+        "id": "AT-079",
+        "status": "passed",
+        "file": "test/e2e/m9-live.spec.ts"
+      },
+      {
+        "id": "AT-272",
+        "status": "passed",
+        "file": "test/e2e/m9-live.spec.ts"
+      },
+      {
+        "id": "AT-056",
+        "status": "passed",
+        "file": "test/e2e/m9-signin.spec.ts"
+      },
+      {
+        "id": "AT-057",
+        "status": "passed",
+        "file": "test/e2e/m9-signin.spec.ts"
+      },
+      {
+        "id": "AT-211",
+        "status": "passed",
+        "file": "test/e2e/m9-signin.spec.ts"
+      },
+      {
+        "id": "AT-080",
+        "status": "passed",
+        "file": "test/e2e/m9-stop.spec.ts"
+      },
+      {
+        "id": "AT-058",
+        "status": "passed",
+        "file": "test/e2e/m9-takeover.spec.ts"
+      },
+      {
+        "id": "AT-078",
+        "status": "passed",
+        "file": "test/e2e/m9-takeover.spec.ts"
+      },
+      {
+        "id": "AT-320",
+        "status": "passed",
+        "file": "test/e2e/p1-appearance.spec.ts"
+      },
+      {
+        "id": "AT-321",
+        "status": "passed",
+        "file": "test/e2e/p1-appearance.spec.ts"
+      },
+      {
+        "id": "AT-319",
+        "status": "passed",
+        "file": "test/e2e/p1-appearance.spec.ts"
+      },
+      {
+        "id": "AT-318",
+        "status": "passed",
+        "file": "test/e2e/p1-appearance.spec.ts"
+      },
+      {
+        "id": "AT-310",
+        "status": "passed",
+        "file": "test/e2e/p1-cards.spec.ts"
+      },
+      {
+        "id": "AT-311",
+        "status": "passed",
+        "file": "test/e2e/p1-cards.spec.ts"
+      },
+      {
+        "id": "AT-312",
+        "status": "passed",
+        "file": "test/e2e/p1-cards.spec.ts"
+      },
+      {
+        "id": "AT-312",
+        "status": "passed",
+        "file": "test/e2e/p1-cards.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-323",
+        "status": "passed",
+        "file": "test/e2e/p1-chatlist.spec.ts"
+      },
+      {
+        "id": "AT-307",
+        "status": "passed",
+        "file": "test/e2e/p1-composer.spec.ts"
+      },
+      {
+        "id": "AT-325",
+        "status": "passed",
+        "file": "test/e2e/p1-composer.spec.ts"
+      },
+      {
+        "id": "AT-308",
+        "status": "passed",
+        "file": "test/e2e/p1-composer.spec.ts"
+      },
+      {
+        "id": "AT-309",
+        "status": "passed",
+        "file": "test/e2e/p1-composer.spec.ts"
+      },
+      {
+        "id": "AT-309",
+        "status": "passed",
+        "file": "test/e2e/p1-composer.spec.ts"
+      },
+      {
+        "id": "AT-304",
+        "status": "passed",
+        "file": "test/e2e/p1-face.spec.ts"
+      },
+      {
+        "id": "AT-305",
+        "status": "passed",
+        "file": "test/e2e/p1-face.spec.ts"
+      },
+      {
+        "id": "AT-306",
+        "status": "passed",
+        "file": "test/e2e/p1-face.spec.ts"
+      },
+      {
+        "id": "AT-313",
+        "status": "passed",
+        "file": "test/e2e/p1-first-run.spec.ts"
+      },
+      {
+        "id": "AT-313",
+        "status": "passed",
+        "file": "test/e2e/p1-first-run.spec.ts"
+      },
+      {
+        "id": "AT-314",
+        "status": "passed",
+        "file": "test/e2e/p1-first-run.spec.ts"
+      },
+      {
+        "id": "AT-324",
+        "status": "passed",
+        "file": "test/e2e/p1-messages.spec.ts"
+      },
+      {
+        "id": "AT-324",
+        "status": "passed",
+        "file": "test/e2e/p1-messages.spec.ts"
+      },
+      {
+        "id": "AT-324",
+        "status": "passed",
+        "file": "test/e2e/p1-messages.spec.ts"
+      },
+      {
+        "id": "AT-324",
+        "status": "passed",
+        "file": "test/e2e/p1-messages.spec.ts"
+      },
+      {
+        "id": "AT-324",
+        "status": "passed",
+        "file": "test/e2e/p1-messages.spec.ts"
+      },
+      {
+        "id": "AT-302",
+        "status": "passed",
+        "file": "test/e2e/p1-motion.spec.ts"
+      },
+      {
+        "id": "AT-303",
+        "status": "passed",
+        "file": "test/e2e/p1-motion.spec.ts"
+      },
+      {
+        "id": "AT-301",
+        "status": "passed",
+        "file": "test/e2e/p1-motion.spec.ts"
+      },
+      {
+        "id": "AT-326",
+        "status": "skipped",
+        "file": "test/e2e/p1-motion.spec.ts"
+      },
+      {
+        "id": "AT-327",
+        "status": "skipped",
+        "file": "test/e2e/p1-motion.spec.ts"
+      },
+      {
+        "id": "AT-451",
+        "status": "skipped",
+        "file": "test/e2e/qa-b1-about.spec.ts"
+      },
+      {
+        "id": "AT-453",
+        "status": "skipped",
+        "file": "test/e2e/qa-b1-dayone.spec.ts"
+      },
+      {
+        "id": "AT-450",
+        "status": "skipped",
+        "file": "test/e2e/qa-b1-pages.spec.ts"
+      },
+      {
+        "id": "AT-449",
+        "status": "skipped",
+        "file": "test/e2e/qa-b1-sweep.spec.ts"
+      },
+      {
+        "id": "AT-362",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-358",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-359",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-360",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-361",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-361",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-357",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-359",
+        "status": "skipped",
+        "file": "test/e2e/r1-ai-page.spec.ts"
+      },
+      {
+        "id": "AT-363",
+        "status": "skipped",
+        "file": "test/e2e/r1-input.spec.ts"
+      },
+      {
+        "id": "AT-364",
+        "status": "skipped",
+        "file": "test/e2e/r1-input.spec.ts"
+      },
+      {
+        "id": "AT-365",
+        "status": "skipped",
+        "file": "test/e2e/r1-input.spec.ts"
+      },
+      {
+        "id": "AT-340",
+        "status": "skipped",
+        "file": "test/e2e/r1-kit.spec.ts"
+      },
+      {
+        "id": "AT-353",
+        "status": "skipped",
+        "file": "test/e2e/r1-kit.spec.ts"
+      },
+      {
+        "id": "AT-354",
+        "status": "skipped",
+        "file": "test/e2e/r1-kit.spec.ts"
+      },
+      {
+        "id": "AT-355",
+        "status": "skipped",
+        "file": "test/e2e/r1-kit.spec.ts"
+      },
+      {
+        "id": "AT-356",
+        "status": "skipped",
+        "file": "test/e2e/r1-kit.spec.ts"
+      },
+      {
+        "id": "AT-342",
+        "status": "skipped",
+        "file": "test/e2e/r1-numbers-forms.spec.ts"
+      },
+      {
+        "id": "AT-347",
+        "status": "skipped",
+        "file": "test/e2e/r1-numbers-forms.spec.ts"
+      },
+      {
+        "id": "AT-343",
+        "status": "skipped",
+        "file": "test/e2e/r1-numbers-forms.spec.ts"
+      },
+      {
+        "id": "AT-348",
+        "status": "skipped",
+        "file": "test/e2e/r1-numbers-forms.spec.ts"
+      },
+      {
+        "id": "AT-346",
+        "status": "skipped",
+        "file": "test/e2e/r1-numbers-forms.spec.ts"
+      },
+      {
+        "id": "AT-351",
+        "status": "skipped",
+        "file": "test/e2e/r1-numbers-forms.spec.ts"
+      },
+      {
+        "id": "AT-366",
+        "status": "skipped",
+        "file": "test/e2e/r1-output.spec.ts"
+      },
+      {
+        "id": "AT-352",
+        "status": "skipped",
+        "file": "test/e2e/r1-output.spec.ts"
+      },
+      {
+        "id": "AT-368",
+        "status": "skipped",
+        "file": "test/e2e/r1-output.spec.ts"
+      },
+      {
+        "id": "AT-367",
+        "status": "skipped",
+        "file": "test/e2e/r1-output.spec.ts"
+      },
+      {
+        "id": "AT-369",
+        "status": "skipped",
+        "file": "test/e2e/r1-output.spec.ts"
+      },
+      {
+        "id": "AT-341",
+        "status": "skipped",
+        "file": "test/e2e/r1-places-time.spec.ts"
+      },
+      {
+        "id": "AT-344",
+        "status": "skipped",
+        "file": "test/e2e/r1-places-time.spec.ts"
+      },
+      {
+        "id": "AT-345",
+        "status": "skipped",
+        "file": "test/e2e/r1-places-time.spec.ts"
+      },
+      {
+        "id": "AT-349",
+        "status": "skipped",
+        "file": "test/e2e/r1-places-time.spec.ts"
+      },
+      {
+        "id": "AT-350",
+        "status": "skipped",
+        "file": "test/e2e/r1-places-time.spec.ts"
+      },
+      {
+        "id": "BP-CARD-02",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
+      },
+      {
+        "id": "BP-CARD-12",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
+      },
+      {
+        "id": "BP-CARD-15",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
+      },
+      {
+        "id": "BP-CARD-18",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
+      },
+      {
+        "id": "BP-CARD-19",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
+      },
+      {
+        "id": "BP-CARD-20",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m4.spec.ts"
+      },
+      {
+        "id": "BP-CARD-05",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m5-approval.spec.ts"
+      },
+      {
+        "id": "BP-CARD-03",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m5-choice.spec.ts"
+      },
+      {
+        "id": "BP-CARD-04",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m5-choice.spec.ts"
+      },
+      {
+        "id": "BP-CARD-07",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m5-draft.spec.ts"
+      },
+      {
+        "id": "BP-CARD-08",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m5-secret.spec.ts"
+      },
+      {
+        "id": "BP-CARD-09",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m5-secret.spec.ts"
+      },
+      {
+        "id": "BP-CARD-11",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m8.spec.ts"
+      },
+      {
+        "id": "BP-CARD-10",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m9.spec.ts"
+      },
+      {
+        "id": "BP-CARD-17",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-cards-m9.spec.ts"
+      },
+      {
+        "id": "BP-CARD-16",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-m6.spec.ts"
+      },
+      {
+        "id": "BP-SCR-09",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-m6.spec.ts"
+      },
+      {
+        "id": "BP-MSG-01",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-MSG-03",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-MSG-04",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-01",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-02",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-04",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-05",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-06",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-07",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-08",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-09",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-MSG-02",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-COMP-03",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-messages.spec.ts"
+      },
+      {
+        "id": "BP-SCR-13",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-screens-m9.spec.ts"
+      },
+      {
+        "id": "BP-SCR-14",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-screens-m9.spec.ts"
+      },
+      {
+        "id": "BP-APP-L",
+        "status": "skipped",
+        "file": "test/fidelity/bp/BP-shell.spec.ts"
+      },
+      {
+        "id": "UX-02-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-02.ai.spec.ts"
+      },
+      {
+        "id": "UX-02-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-02.ai.spec.ts"
+      },
+      {
+        "id": "UX-04-04",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-04.connect.spec.ts"
+      },
+      {
+        "id": "UX-04-05",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-04.connect.spec.ts"
+      },
+      {
+        "id": "UX-04-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-04.connect.spec.ts"
+      },
+      {
+        "id": "UX-04-07",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-04.connect.spec.ts"
+      },
+      {
+        "id": "UX-04-08",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-04.connect.spec.ts"
+      },
+      {
+        "id": "UX-04-09",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-04.connect.spec.ts"
+      },
+      {
+        "id": "UX-05-02",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-05.first.spec.ts"
+      },
+      {
+        "id": "UX-05-03",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-05.first.spec.ts"
+      },
+      {
+        "id": "UX-05-04",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-05.first.spec.ts"
+      },
+      {
+        "id": "UX-08-02",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-08.chat.spec.ts"
+      },
+      {
+        "id": "UX-10-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-10.choice.spec.ts"
+      },
+      {
+        "id": "UX-10-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-10.choice.spec.ts"
+      },
+      {
+        "id": "UX-12-05",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.booking.spec.ts"
+      },
+      {
+        "id": "UX-12-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.booking.spec.ts"
+      },
+      {
+        "id": "UX-12-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-02",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-03",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-04",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-05",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-07",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-09",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-12-12",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-12.restaurant.spec.ts"
+      },
+      {
+        "id": "UX-14-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-14-05",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-14-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-14-07",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-14-08",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-14-09",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-14-10",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-14.signin.spec.ts"
+      },
+      {
+        "id": "UX-15-03",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-15-04",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-15-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-15-08",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-15-09",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-15-07",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-15-05",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-15.live.spec.ts"
+      },
+      {
+        "id": "UX-16-02",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-04",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-03",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-05",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-07",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-08",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-09",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-16-10",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-16.drafts.spec.ts"
+      },
+      {
+        "id": "UX-18-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-18.spec.ts"
+      },
+      {
+        "id": "UX-18-10",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-18.spec.ts"
+      },
+      {
+        "id": "UX-23-01",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
+      },
+      {
+        "id": "UX-23-06",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
+      },
+      {
+        "id": "UX-23-09",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
+      },
+      {
+        "id": "UX-23-11",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-23.errors.spec.ts"
+      },
+      {
+        "id": "UX-24-02",
+        "status": "skipped",
+        "file": "test/fidelity/ux/UX-24.settings.spec.ts"
       }
     ],
-    "failed": [],
+    "failed": [
+      {
+        "suite": "unit",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/browser/takeover.test.ts",
+        "title": "06-3 §11.2 take over a running job Take over stops the loop and every foo click until Hand back; Hand back re-reads the page and carries on",
+        "status": "failed"
+      }
+    ],
     "trace": {
       "live": 342,
       "pending": 65,
@@ -33796,7 +35158,13 @@
         ]
       }
     ],
-    "determinism": null,
+    "determinism": {
+      "fid": "FID-03",
+      "compared": 284,
+      "identical": 284,
+      "differing": [],
+      "engine": "electron"
+    },
     "rows": [
       {
         "id": "BP-CARD-10",
