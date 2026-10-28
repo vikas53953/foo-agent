@@ -177,6 +177,10 @@ describe('gate journeys', () => {
     expect(wf).toMatch(/needs: \[drive, review, red-first, mutation\]/);
     expect(wf).toMatch(/FOO_EXE="\$\{\{ steps\.install\.outputs\.exe \}\}"/);
     expect(wf).toMatch(/Uninstall foo and check it is gone/);
+    // One queue per branch: a branch run never cancels main's waiting run, in either real-AI workflow.
+    expect(wf).toMatch(/group: release-gate-\$\{\{ github\.ref_name \}\}/);
+    const e2e = readFileSync(join('.github', 'workflows', 'real-ai-e2e.yml'), 'utf8');
+    expect(e2e).toMatch(/group: real-ai-e2e-\$\{\{ github\.head_ref \|\| github\.ref_name \}\}/);
     const known = JSON.parse(readFileSync(join('test', 'real-pc', 'known-red.json'), 'utf8')) as Record<string, unknown>[];
     for (const k of known) {
       expect(() => load(String(k.journey)), JSON.stringify(k)).not.toThrow();

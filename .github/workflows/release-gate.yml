@@ -43,8 +43,8 @@ on:
         required: true
 
 concurrency:
-  # One gate at a time. Renamed from release-gate so this run is not queued behind a stuck old one (28 Oct).
-  group: release-gate-v2
+  # One gate at a time per branch, so a branch run never cancels main's waiting run (28 Oct).
+  group: release-gate-${{ github.ref_name }}
   cancel-in-progress: false
 
 permissions:

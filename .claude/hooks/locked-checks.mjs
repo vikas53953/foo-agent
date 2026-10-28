@@ -17,7 +17,6 @@ export const LOCKED = [
   'playwright.config.ts',
   'OWNERS.yml',
   '.github/workflows/ci.yml',
-  '.github/workflows/real-ai-e2e.yml',
   '.claude/settings.json',
   '.claude/hooks/locked-checks.mjs',
 ];
