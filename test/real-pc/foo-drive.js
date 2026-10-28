@@ -443,6 +443,14 @@ async function main() {
         case 'eval':
           rec.value = await page.evaluate(s.js);
           break;
+        // Waits until s.js is true in the page (a change no new bubble shows, like an answer written again in place).
+        case 'waitJs': {
+          const until = Date.now() + (s.timeoutMs ?? 120_000);
+          let v = false;
+          while (!(v = await page.evaluate(s.js).catch(() => false)) && Date.now() < until) await page.waitForTimeout(500);
+          rec.ok = !!v;
+          break;
+        }
         case 'fill':
           // "env" names a variable whose value is typed (a real key into the Secret box); only the name is logged.
           // pick() honours nth / last; .first() ignored them, so U13 typed the key into the Name box (real-AI run 47fea16).

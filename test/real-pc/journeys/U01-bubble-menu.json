@@ -219,6 +219,10 @@
       "key": "Escape"
     },
     {
+      "do": "eval",
+      "js": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];window.__tryAgain={n:b.length,t:(b.at(-1)?.innerText||'')};return b.length})()"
+    },
+    {
       "do": "click",
       "soft": true,
       "tid": "bubble-foo",
@@ -231,10 +235,16 @@
       "tid": "bubble-menu-try-again"
     },
     {
-      "do": "waitReply",
+      "do": "waitJs",
       "timeoutMs": 150000,
+      "js": "(()=>{const w=window.__tryAgain;if(!w)return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const t=b.at(-1)?.innerText||'';return b.length===w.n+1||(b.length===w.n&&t!==w.t&&t.trim()!=='')})()",
+      "expect": "Try again writes the answer again: the last answer's text changes in place (CR-0059), or a fresh answer follows; no duplicate bubbles"
+    },
+    {
+      "do": "wait",
+      "ms": 6000,
       "shot": "try-again",
-      "expect": "a fresh answer replaces or follows; no duplicate bubbles"
+      "expect": "the rewritten answer, marked Rewritten"
     },
     {
       "do": "dump",

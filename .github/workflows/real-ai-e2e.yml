@@ -82,15 +82,20 @@ jobs:
           echo "ais=[$(IFS=,; echo "${ais[*]}")]" >> "$GITHUB_OUTPUT"
           echo "shards=[$(seq -s, 0 $((SHARDS - 1)))]" >> "$GITHUB_OUTPUT"
 
+  # Two sets (coordinator, 28 Oct): "batch1" is every journey for a feature switched on in the batch being shipped
+  # (test/real-pc/journeys-batch1.txt) and must be green to merge; "other" runs the rest, and its reds stay visible on its
+  # own check without failing the run, until that feature's batch comes.
   real-ai:
-    name: Real-AI journeys on ${{ matrix.ai }}, part ${{ matrix.shard }} (windows-latest)
+    name: Real-AI journeys on ${{ matrix.ai }}, ${{ matrix.set == 'batch1' && 'batch 1 (required)' || 'other features (not required)' }}, part ${{ matrix.shard }} (windows-latest)
     needs: plan
     runs-on: windows-latest
+    continue-on-error: ${{ matrix.set == 'other' }}
     timeout-minutes: 180 # ~20 journeys per part at 2–5 min each, plus a ~4 min build
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix:
+        set: [batch1, other]
         ai: ${{ fromJSON(needs.plan.outputs.ais) }}
         shard: ${{ fromJSON(needs.plan.outputs.shards) }}
     steps:
@@ -148,12 +153,21 @@ jobs:
           MAX_JOURNEYS: ${{ inputs.max_journeys || '80' }}
           SHARD: ${{ matrix.shard }}
           SHARDS: ${{ inputs.shards || '4' }}
+          SET: ${{ matrix.set }}
         run: |
           export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
           kit="$RUNNER_TEMP/kit/test/real-pc"
           rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
-          if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
+          if [ "$JOURNEYS" = "all" ]; then
+            b1=" $(tr -d '\r' < "$kit/journeys-batch1.txt" | tr '\n' ' ') "
+            list=""
+            for j in $(tr -d '\r' < "$kit/journeys.txt"); do
+              case "$b1" in *" $j "*) [ "$SET" = "batch1" ] && list="$list $j" ;; *) [ "$SET" = "other" ] && list="$list $j" ;; esac
+            done
+          elif [ "$SET" = "batch1" ]; then list="$JOURNEYS"
+          else echo "journeys named by hand run in the batch1 set only"; exit 0
+          fi
           list=$(echo $list) # one line, single spaces, so the J01 check below sees " J01-J02-first-run "
           # The first run must pick the AI; every other journey needs it, so it always goes first.
           # Every part needs its own first run (a fresh profile picks the AI); the rest of the list is dealt round-robin.
@@ -191,7 +205,7 @@ jobs:
         shell: bash
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
+            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, set ${{ matrix.set }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue
@@ -222,12 +236,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI: ${{ matrix.ai }}
           SHARD: ${{ matrix.shard }}
+          SET: ${{ matrix.set }}
         run: |
           [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           runs="$RUNNER_TEMP/foo-real-test/runs"
           [ -d "$runs" ] || { echo "no runs"; exit 0; }
           short="$(git rev-parse --short=7 HEAD)-$AI"
-          part="s$SHARD"
+          # batch 1 parts are b1-s0…, the other set keeps s0… (QA reads both).
+          part="s$SHARD"; [ "$SET" = "batch1" ] && part="b1-s$SHARD"
           printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref || github.sha }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false
