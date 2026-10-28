@@ -1,2 +1,0 @@
-{"kind":"call","job_id":"j_01a181f6-3194-78c8-b8a7-282f95401615","step_idx":0,"tool":"memory.propose","action_class":"prepare","gate":"auto","outcome":"error","error_kind":"VALIDATION","started_at":1793182453467,"finished_at":1793182453474}
-{"kind":"call","job_id":"j_01a181f6-3194-78c8-b8a7-282f95401615","step_idx":0,"tool":"memory.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793182458286,"finished_at":1793182458291}

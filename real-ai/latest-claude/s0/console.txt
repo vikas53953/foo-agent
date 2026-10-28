@@ -1,8 +1,2 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-00-52-867Z-J01-J02-first-run"}
-{"journey":"J17-memory","title":"Remember, view and forget","videos":[],"steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-01-43-695Z-J17-memory"}
-{"journey":"J12-draft","title":"Draft an email (never sends)","videos":[],"steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-02-15-057Z-J12-draft"}
-{"journey":"B04-stop","title":"Start a job then stop it by typing stop","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-02-30-762Z-B04-stop"}
-{"journey":"B07-live","title":"Watch live, take over, hand back, stop","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-03-35-992Z-B07-live"}
-{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","videos":[],"steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-04-58-232Z-U06-header-panel"}
-{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","videos":[],"steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-05-54-273Z-U12-choice-variants"}
-{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","videos":[],"steps":22,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-06-56-487Z-U19-screens"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-32-10-146Z-J01-J02-first-run"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-34-53-977Z-J01-J02-first-run"}
