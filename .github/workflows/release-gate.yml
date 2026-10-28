@@ -11,12 +11,16 @@
 #   release only on PASS, re-uploads the exact app that was tested as foo-windows-app-gated: the one artifact to send.
 # Evidence (report, pictures, step records; no videos) goes to the `evidence` branch under gate/<short-sha>/ and
 # gate/latest/, since agents cannot read CI artifacts. The videos are in the release-gate-report download.
-# Spend guards: owner-started runs only, one run at a time, Sonnet for the reviewer, a hard timeout.
+# Spend guards: owner-started runs only (dispatch or a push to main), one run at a time, Sonnet for the reviewer, a hard timeout.
 # The driver never clicks Approve, Pay, Book or Send. The key reaches only the steps that need it and the evidence is
 # scanned for it before anything is kept.
 name: Release gate
 
 on:
+  # Vikas 2026-10-28 (decision card): every merge to main, and before any app is sent (only foo-windows-app-gated goes out).
+  # TEMPORARY: the gate branch is listed once to prove the run on Windows with the real key; removed before the PR leaves draft.
+  push:
+    branches: [main, claude/project-thread-gfja4p]
   workflow_dispatch:
     inputs:
       ref:
