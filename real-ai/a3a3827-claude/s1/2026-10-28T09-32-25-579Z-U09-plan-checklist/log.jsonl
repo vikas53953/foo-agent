@@ -1,0 +1,21 @@
+{"t":"2026-10-28T09:32:25.579Z","journey":"U09-plan-checklist","title":"Plan card: pending, Change plan, Go, checklist steps, details, done with proof","spec":"05-3 §5.24 Plan, §5.5 Checklist, §5.18 Proof, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T09:32:30.582Z","step":"launch","ok":true}
+{"t":"2026-10-28T09:32:31.618Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1034}
+{"t":"2026-10-28T09:32:31.699Z","i":1,"do":"send","typed":"Research the 3 best budget laptops under ₹50,000 in India right now and compare them","sentAt":1793179951678,"sent":true,"before":0,"ok":true,"ms":80}
+{"t":"2026-10-28T09:32:46.933Z","shot":"01-plan.png"}
+{"t":"2026-10-28T09:32:46.933Z","i":2,"do":"waitReply","expect":"a Plan card with real step names (never \"Work on it\"), estimate, Go and Change plan","ref":"BP-CARD-11","timeline":[{"at":26,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2551,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9162,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":11181,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":9140,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for top laptops under ₹50,000 in India\n3\nCheck Amazon.in, Flipkart, Croma\n4\nKeep 3 laptops that fit best value under ₹50,000\n5\nCompare price, processor, RAM, storage, screen\nAbout 4 minutes\nGo\nChange plan\n9:32 AM","kit":[],"ms":15185,"shot":"01-plan.png"}
+{"t":"2026-10-28T09:32:46.997Z","i":3,"do":"shotEl","soft":true,"ref":"BP-CARD-11","ok":true,"ms":63}
+{"t":"2026-10-28T09:32:47.058Z","i":4,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-10-28T09:32:52.178Z","shot":"03-checklist.png"}
+{"t":"2026-10-28T09:32:52.178Z","i":5,"do":"wait","expect":"checklist appears with the current step spinning","ref":"BP-CARD-02","ok":true,"ms":5032,"shot":"03-checklist.png"}
+{"t":"2026-10-28T09:32:52.270Z","i":6,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-10-28T09:32:53.326Z","shot":"04-checklist-details.png"}
+{"t":"2026-10-28T09:32:53.326Z","i":7,"do":"wait","expect":"details expanded","ok":true,"ms":1002,"shot":"04-checklist-details.png"}
+{"t":"2026-10-28T09:35:23.387Z","shot":"05-done.png"}
+{"t":"2026-10-28T09:35:23.387Z","i":8,"do":"wait","expect":"job done: checklist collapsed \"Done · n steps · m min\", answer, sources/proof footer","ok":true,"ms":150010,"shot":"05-done.png"}
+{"t":"2026-10-28T09:35:23.389Z","i":9,"do":"check","note":"receipt footer","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T09:35:23.390Z","i":10,"do":"check","note":"sources","soft":true,"found":2,"ok":true,"ms":1}
+{"t":"2026-10-28T09:35:23.397Z","i":11,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T09:35:23.579Z","step":"appLog","lines":30,"dropped":0}
+{"t":"2026-10-28T09:35:23.589Z","step":"aiTurns","turns":26}
+{"t":"2026-10-28T09:35:23.591Z","step":"jobTrail","steps":5,"calls":21}

@@ -1,0 +1,15 @@
+{"t":"2026-10-28T09:24:00.172Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T09:24:05.116Z","step":"launch","ok":true}
+{"t":"2026-10-28T09:24:05.212Z","i":0,"do":"send","typed":"I want to buy running shoes under 5000 rupees. Ask me what you need to know first.","sentAt":1793179445189,"sent":true,"before":0,"ok":true,"ms":93}
+{"t":"2026-10-28T09:24:17.491Z","shot":"01-choice.png"}
+{"t":"2026-10-28T09:24:17.492Z","i":1,"do":"waitReply","timeline":[{"at":35,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":538,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6131,"badges":["waiting"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":6108,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nDaily jogs, 5K and 10K\n2\nTrails or muddy paths\nExtra grip needed\n3\nTreadmill or gym\nLight and well cushioned\n4\nA bit of everything\nAll-rounder pair\nSomething else…\nSkip\n9:24 AM","kit":[],"ms":12229,"shot":"01-choice.png"}
+{"t":"2026-10-28T09:24:17.493Z","i":2,"do":"check","found":1,"ok":true,"ms":1}
+{"t":"2026-10-28T09:24:17.495Z","i":3,"do":"check","found":4,"ok":true,"ms":1}
+{"t":"2026-10-28T09:24:17.497Z","i":4,"do":"text","soft":true,"text":"Where will you mostly run in these shoes?\n1\nRoads and pavements\nBEST FIT\nDaily jogs, 5K and 10K\n2\nTrails or muddy paths\nExtra grip needed\n3\nTreadmill or gym\nLight and well cushioned\n4\nA bit of everything\nAll-rounder pair\nSomething else…\nSkip\n9:24 AM","ok":true,"ms":2}
+{"t":"2026-10-28T09:24:17.558Z","i":5,"do":"send","typed":"2","sentAt":1793179457541,"sent":true,"before":0,"ok":true,"ms":61}
+{"t":"2026-10-28T09:24:30.254Z","shot":"02-typed-2.png"}
+{"t":"2026-10-28T09:24:30.254Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","timeline":[{"at":19,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":527,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6091,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":6578,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What matters most in a trail shoe for you?\nStrong grip\nBEST FIT\nDeep lugs for mud and loose ground\nSoft cushioning\nComfort on longer runs\nLight weight\nFaster and less tiring\nWater resistance\nDrier feet on wet paths\nSomething else…\nDone\nSkip\n9:24 AM","kit":[],"ms":12651,"shot":"02-typed-2.png"}
+{"t":"2026-10-28T09:24:30.260Z","i":7,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-28T09:24:30.351Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-28T09:24:30.360Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T09:24:30.362Z","step":"jobTrail","steps":0,"calls":0}

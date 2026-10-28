@@ -1,0 +1,98 @@
+{
+  "journey": "B05-restart",
+  "title": "Quit mid-job and reopen: job resumes",
+  "videos": [],
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-27-50-062Z-B05-restart",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Find the opening hours of the National Museum in Delhi and the ticket price",
+      "sentAt": 1793179675186,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 25,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3069,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7618,
+          "badges": [
+            "working"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 9117,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Checking nationalmuseumindia.gov.in\nlive checklist\nChecking nationalmuseumindia.gov.in\nN\nLook for opening hours and ticket price\nWatch live\nStop\nunder 1 min\n9:28 AM",
+      "kit": [],
+      "ms": 15199,
+      "shot": "01-museum-start.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 8001
+    },
+    {
+      "i": 4,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 4906
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "AT-118: recovery card; job resumes (WAITING → WORKING)",
+      "ok": true,
+      "ms": 8000,
+      "shot": "02-after-reopen.png"
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 150004,
+      "shot": "03-after-reopen-later.png"
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
