@@ -1,0 +1,82 @@
+{
+  "journey": "U27-composer-no-dropped-letters",
+  "title": "Fast typing and a long paste reach foo letter for letter",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T03-00-13-716Z-U27-composer-no-dropped-letters",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1026
+    },
+    {
+      "i": 1,
+      "do": "typeSend",
+      "expect": "typed at full speed with no retry: the sent text matches exactly",
+      "inField": "Please just reply OK. Testing fast typing: The quick brown fox jumps over the lazy dog 1234567890, then Priya said \"meet at 7:45 PM near Bandra station?\" & Rahul replied (maybe) - ok! Mera naam Asha hai, kal Pune jaana hai; sat sri akal ji. Ending with symbols: @#%=+ [brackets] {braces} ~ done.",
+      "ok": true,
+      "ms": 2503
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "foo replies",
+      "firstReplyMs": 7116,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "OK.\n\n3:00 AM",
+      "kit": [],
+      "ms": 13188
+    },
+    {
+      "i": 3,
+      "do": "typeSend",
+      "expect": "typed with 5 ms between keys: exact match",
+      "inField": "Please just reply OK. Testing fast typing: The quick brown fox jumps over the lazy dog 1234567890, then Priya said \"meet at 7:45 PM near Bandra station?\" & Rahul replied (maybe) - ok! Mera naam Asha hai, kal Pune jaana hai; sat sri akal ji. Ending with symbols: @#%=+ [brackets] {braces} ~ done.",
+      "ok": true,
+      "ms": 3393
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "foo replies",
+      "firstReplyMs": 4037,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Top 3 India headlines on NDTV, Wed 28 Oct:\n\nGurugram biker Sia was hit on purpose, probe finds. The investigation says the accused, Kalyan Baisla, rammed his car into her motorcycle after misbehaving with her (Wed 28 Oct, 8:11 AM IST).\nGadkari says the rage against E20 fuel is over. He called it a \"paid campaign\" and said India can save foreign exchange by importing less fossil fuel (Wed 28 Oct, 8:09 AM IST).\nElection Commission issues transfer and posting rules for officers. They apply ahead of the 2027 Uttar Pradesh polls (Wed 28 Oct, 8:04 AM IST).\n\nWant me to draft these as a WhatsApp message?\n\n3:00 AM",
+      "kit": [],
+      "ms": 10106
+    },
+    {
+      "i": 5,
+      "do": "pasteSend",
+      "expect": "18-line paste (inline band, under 2,000 chars) is sent exactly, line breaks kept",
+      "inField": "Line 01: Please just reply OK. Paste check row 1 with numbers 37 and words alpha beta gamma delta.\nLine 02: Please just reply OK. Paste check row 2 with numbers 74 and words alpha beta gamma delta.\nLine 03: Please just reply OK. Paste check row 3 with numbers 111 and words alpha beta gamma delta.\nLine 04: Please just reply OK. Paste check row 4 with numbers 148 and words alpha beta gamma delta.\nLine 05: Please just reply OK. Paste check row 5 with numbers 185 and words alpha beta gamma delta.\nLine 06: Please just reply OK. Paste check row 6 with numbers 222 and words alpha beta gamma delta.\nLine 07: Please just reply OK. Paste check row 7 with numbers 259 and words alpha beta gamma delta.\nLine 08: Please just reply OK. Paste check row 8 with numbers 296 and words alpha beta gamma delta.\nLine 09: Please just reply OK. Paste check row 9 with numbers 333 and words alpha beta gamma delta.\nLine 10: Please just reply OK. Paste check row 10 with numbers 370 and words alpha beta gamma delta.\nLine 11: Please just reply OK. Paste check row 11 with numbers 407 and words alpha beta gamma delta.\nLine 12: Please just reply OK. Paste check row 12 with numbers 444 and words alpha beta gamma delta.\nLine 13: Please just reply OK. Paste check row 13 with numbers 481 and words alpha beta gamma delta.\nLine 14: Please just reply OK. Paste check row 14 with numbers 518 and words alpha beta gamma delta.\nLine 15: Please just reply OK. Paste check row 15 with numbers 555 and words alpha beta gamma delta.\nLine 16: Please just reply OK. Paste check row 16 with numbers 592 and words alpha beta gamma delta.\nLine 17: Please just reply OK. Paste check row 17 with numbers 629 and words alpha beta gamma delta.\nLine 18: Please just reply OK. Paste check row 18 with numbers 666 and words alpha beta gamma delta.",
+      "ok": true,
+      "ms": 969
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "foo replies",
+      "firstReplyMs": 5047,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "OK.\n\n3:00 AM",
+      "kit": [],
+      "ms": 11623
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

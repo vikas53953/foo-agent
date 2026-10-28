@@ -1,0 +1,62 @@
+{
+  "journey": "U21-window-dialogs",
+  "title": "Close to tray dialog, quit with a running job",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T02-59-52-642Z-U21-window-dialogs",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1044
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793156399331,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "ok": true,
+      "ms": 4001
+    },
+    {
+      "i": 3,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "first-close dialog: foo keeps running in the tray",
+      "ok": true,
+      "ms": 1512
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "job still finishes after the dialog",
+      "firstReplyMs": 2029,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for top 3 India news headlines for Wed 28\nWatch live\nStop\nunder 1 min\n3:00 AM",
+      "kit": [],
+      "ms": 8178
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 22
+    }
+  ]
+}
