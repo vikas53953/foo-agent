@@ -173,7 +173,7 @@
       "not": true,
       "shot": "q5-no-glued-reply",
       "feature": "chat",
-      "expect": "the next answer after a reopen is only that answer: the old cut-off tortoise reply is never glued onto it (G3 / CR-0070)"
+      "expect": "the next answer after a reopen is only that answer: the old cut-off tortoise reply is never glued onto it (release gate G3)"
     },
     {
       "do": "dump",
