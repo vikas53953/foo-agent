@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise hain? Kuch kaam hai aaj?\n\n7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi apne dost se: \"Yaar, main apni biwi ko surprise dena chahta hoon.\"\nDost: \"Toh kya plan hai?\"\nAadmi: \"Soch raha hoon ghar jaldi chala jaoon.\"\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi tasks nahi kar sakta—booking, buying ya sending ka feature is build mein nahi hai. Lekin jab yeh ready hoga, tab main aapke liye table book kar sakta hoon.\n\nFilhaal aap directly restaurant ko call kar sakte hain ya Zomato/Swiggy Dineout use kar sakte hain.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a cab to the airport at 6 am tomorrow\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the cab?\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I have not booked a cab. This build cannot do tasks like booking, buying or sending yet. When that feature is ready, I will be able to book a cab for you.\n\nFor now, you can book directly on Uber or Ola.\n\n7:34 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n7:34 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n7:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n7:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi dark mode nahi badal sakta—yeh feature is build mein nahi hai. Aap khud badal sakte hain: mere face pe click karein top pe, phir settings mein jaake appearance change kar lein.\n\n7:35 AM"
+  }
+]

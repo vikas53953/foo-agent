@@ -1,0 +1,234 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "videos": [],
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-27-46-253Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1019
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from",
+      "sentAt": 1793172472636,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "ref": "BP-CARD-03",
+      "timeline": [
+        {
+          "at": 46,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 550,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6619,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6589,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Sat 31 Oct or Sun 1 Nov?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, back by brunch\n2\nCubbon Park and Lalbagh walk\nEasy, green and free to wander\n3\nCafe hop in Indiranagar\nSlow day with food and coffee\nSomething else…\nSkip\n7:27 AM",
+      "kit": [],
+      "ms": 12668,
+      "shot": "01-choice.png"
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ref": "BP-CARD-03",
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "the second one",
+      "sentAt": 1793172485538,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "timeline": [
+        {
+          "at": 49,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6625,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 7143,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6592,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Cubbon Park and Lalbagh walk it is. 🌿 Go early for cooler air, and do Cubbon Park first, then Lalbagh. Want me to add it to your calendar for Sat 31 Oct or Sun 1 Nov?\n\n7:28 AM",
+      "kit": [],
+      "ms": 13234,
+      "shot": "03-typed-pick.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Now give me 3 dinner options to choose from",
+      "sentAt": 1793172498936,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "timeline": [
+        {
+          "at": 30,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4604,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4579,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli, filter coffee\n2\nNorth Indian thali\nDal, paneer, roti, rice\n3\nBiryani and raita\nHearty and one-pot\nSomething else…\nSkip\n7:28 AM",
+      "kit": [],
+      "ms": 10680,
+      "shot": "04-choice-2.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 601,
+      "shot": "05-something-else.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Actually just a home-cooked dal chawal",
+      "sentAt": 1793172510502,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "timeline": [
+        {
+          "at": 22,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 534,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6093,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6082,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nHome-cooked dal chawal\nBEST FIT\nSimple, warm and easy\n2\nMasala dosa\nSouth Indian, crisp and filling\n3\nPaneer butter masala with roti\nRich and comforting\nSomething else…\nSkip\n7:28 AM",
+      "kit": [],
+      "ms": 12165,
+      "shot": "06-own-answer.png"
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

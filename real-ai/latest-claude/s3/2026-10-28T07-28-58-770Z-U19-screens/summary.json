@@ -1,0 +1,182 @@
+{
+  "journey": "U19-screens",
+  "title": "Activity, Ideas, Spend, foo profile, Shortcuts screens",
+  "videos": [],
+  "steps": 22,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-28-58-770Z-U19-screens",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1023
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "sidebar ⋮ menu: New helper, New group, Memory, Routines, Ideas, Activity, Settings, Shortcuts, Quit",
+      "ok": true,
+      "ms": 501,
+      "shot": "01-more.png"
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "Activity screen",
+      "ok": true,
+      "ms": 1202,
+      "shot": "02-activity.png"
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "03-error-step5.png",
+      "ms": 23047
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "Ideas screen",
+      "ok": true,
+      "ms": 1204,
+      "shot": "04-ideas.png"
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "05-error-step9.png",
+      "ms": 23047
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 74
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "keyboard shortcuts list",
+      "ok": true,
+      "ms": 1201,
+      "shot": "06-shortcuts.png"
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "07-error-step14.png",
+      "ms": 23061
+    },
+    {
+      "i": 15,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "08-error-step15.png",
+      "ms": 23048
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "foo profile: face, name, vibe",
+      "ok": true,
+      "ms": 1201,
+      "shot": "09-foo-profile.png"
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "10-error-step17.png",
+      "ms": 23046
+    },
+    {
+      "i": 18,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "11-error-step18.png",
+      "ms": 23047
+    },
+    {
+      "i": 19,
+      "do": "wait",
+      "expect": "Spend screen / caps",
+      "ok": true,
+      "ms": 1202,
+      "shot": "12-spend.png"
+    },
+    {
+      "i": 20,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "13-error-step20.png",
+      "ms": 23047
+    },
+    {
+      "i": 21,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

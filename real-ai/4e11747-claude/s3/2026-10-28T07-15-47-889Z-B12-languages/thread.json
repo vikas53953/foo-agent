@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n7:15 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:15 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:15 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n7:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso Fri 30 Oct ke liye main rasmalai cake ya chocolate truffle suggest karunga. Dono mein kam hi galti hoti hai. 🎂\n\nRasmalai cake: mithai aur cake ek saath, mummy ko pasand aayega agar unhe desi swaad chahiye.\nChocolate truffle: sabko pasand aane wala, kabhi galat nahi jata.\nFresh fruit ya pineapple: halka aur kam meetha, agar ghar mein sugar ka dhyan rakhte hain.\nPhoto cake: mummy ki pasandida photo ke saath, thoda khaas lagta hai.\n\nCustom design ya photo wala cake ho toh aaj ya kal tak order kar do, taaki Fri 30 Oct ko time par pahunch jaye. Mummy ko eggless chahiye?\n\n7:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n7:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਮੈਂ ਰਸਮਲਾਈ ਕੇਕ ਸੁਝਾਵਾਂਗਾ, ਕਿਉਂਕਿ ਇਸ ਵਿੱਚ ਮਿਠਾਈ ਤੇ ਕੇਕ ਦੋਵਾਂ ਦਾ ਸੁਆਦ ਹੈ। 🎂\n\nਚਾਕਲੇਟ ਟਰਫ਼ਲ: ਜੇ ਉਹ ਪੱਕਾ ਪਸੰਦ ਆਉਣ ਵਾਲਾ ਕੇਕ ਚਾਹੁੰਦੇ ਹਨ।\nਪਾਈਨਐਪਲ ਜਾਂ ਫਰੂਟ ਕੇਕ: ਜੇ ਉਹ ਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਕਰਦੇ ਹਨ।\nਫ਼ੋਟੋ ਕੇਕ: ਜੇ ਤੁਸੀਂ ਕੁਝ ਖ਼ਾਸ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।\n\nਜਨਮ ਦਿਨ Fri 30 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਫ਼ੋਟੋ ਜਾਂ ਖ਼ਾਸ ਡਿਜ਼ਾਈਨ ਵਾਲਾ ਕੇਕ ਅੱਜ ਹੀ ਆਰਡਰ ਕਰ ਦਿਓ। ਕੀ ਮੰਮੀ ਲਈ ਆਂਡੇ ਤੋਂ ਬਿਨਾਂ (eggless) ਕੇਕ ਚਾਹੀਦਾ ਹੈ?\n\n7:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n7:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public or bank holiday in Mumbai, from what I know. It should be a normal working day. I can't check the live holiday list from here, so confirm with your bank or office if it matters.\n\nDiwali falls on Sun 8 Nov this year, so that's the next big one.\n\n7:16 AM"
+  }
+]

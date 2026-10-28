@@ -1,0 +1,195 @@
+{
+  "journey": "U08-rich-text",
+  "title": "foo bubbles: code block copy, table, links, list, sources",
+  "videos": [],
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-26-40-538Z-U08-rich-text",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1042
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Show me a tiny Python hello world in a code block",
+      "sentAt": 1793172406974,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "code block in mono with a Copy button",
+      "ref": "BP-MSG-03",
+      "timeline": [
+        {
+          "at": 52,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3586,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4595,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3547,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your hello world:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it with python hello.py. 🐍\n\n7:26 AM",
+      "kit": [],
+      "ms": 10603,
+      "shot": "01-code.png"
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Make a 3-row table of Indian states and capitals",
+      "sentAt": 1793172417841,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "table renders as a table (CR-0053), not raw pipes",
+      "timeline": [
+        {
+          "at": 29,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4064,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5589,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4038,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are three states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n7:27 AM",
+      "kit": [],
+      "ms": 11633,
+      "shot": "02-table.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Give me the link to the Indian Railways website",
+      "sentAt": 1793172429619,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "a clickable link; right-click shows open/copy",
+      "timeline": [
+        {
+          "at": 33,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5622,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6630,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5604,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Indian Railways ticket site is IRCTC. For train running status and enquiries, try Indian Railways Enquiry. 🚆\n\n7:27 AM",
+      "kit": [],
+      "ms": 12702,
+      "shot": "03-link.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "04-error-step8.png",
+      "ms": 23062
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "link menu: Open, Copy",
+      "ok": true,
+      "ms": 500,
+      "shot": "05-link-menu.png"
+    },
+    {
+      "i": 10,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
