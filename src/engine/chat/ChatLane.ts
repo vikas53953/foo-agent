@@ -1533,5 +1533,11 @@ export function envelopeShape(text: string): string {
   if (act === -1) return say === -1 ? 'no_tags' : 'say_no_act';
   if (say === -1) return words ? 'act_with_untagged_words' : 'act_only';
   if (say > act) return actEnd !== -1 && say > actEnd ? 'say_after_act' : 'say_inside_act';
+  // An empty <say> first (QA2 on run 40667520549, twice even with REASK_EMPTY_LINE): where the words went, if anywhere.
+  const sayEnd = at('</say>');
+  if (actEnd !== -1 && text.slice(actEnd + '</act>'.length).trim()) return 'say_empty_words_after_act';
+  if (sayEnd !== -1 && sayEnd < act && text.slice(sayEnd + '</say>'.length, act).trim()) return 'say_empty_words_before_act';
+  const decision = /"decision"\s*:\s*(\{[^{}]*\})/.exec(text)?.[1] ?? '';
+  if (/"(?!kind")[a-zA-Z]+"\s*:\s*"[^"]+"/.test(decision)) return 'say_empty_words_in_act';
   return 'say_empty_before_act';
 }

@@ -8,6 +8,9 @@ const ACT = '<act>{"decision":{"kind":"reply"},"usedMemoryIds":[]}</act>';
 describe('envelopeShape · the tag order of an empty-say reply', () => {
   it.each([
     [`<say></say>\n${ACT}`, 'say_empty_before_act'],
+    [`<say></say>\n${ACT}\nChotu 😊`, 'say_empty_words_after_act'],
+    [`<say></say>\nChotu 😊\n${ACT}`, 'say_empty_words_before_act'],
+    ['<say></say><act>{"decision":{"kind":"reply","text":"Chotu"},"usedMemoryIds":[]}</act>', 'say_empty_words_in_act'],
     [`${ACT}\n<say>| a | b |</say>`, 'say_after_act'],
     [ACT, 'act_only'],
     ['| a | b |', 'no_tags'],
