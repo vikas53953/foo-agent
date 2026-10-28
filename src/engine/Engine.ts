@@ -565,7 +565,7 @@ export class Engine {
     const helper = chat.helperId ? await this.query<{ name: string }>('helpers.byId', chat.helperId) : null;
     const name =
       m.authorKind === 'user'
-        ? (this.settings.user.firstName ?? 'You')
+        ? (this.settings.user.firstName ?? 'the user') // 08-4 §24 item 4
         : m.authorKind === 'helper'
           ? (helper?.name ?? 'Helper')
           : this.settings.identity.agentName;
@@ -713,7 +713,7 @@ export class Engine {
       buildIntake: (i: IntakeInput) => {
         const nameOf = (m: EngineMessage) =>
           m.authorKind === 'user'
-            ? (i.settings.user.firstName ?? 'You')
+            ? (i.settings.user.firstName ?? 'the user') // 08-4 §24 item 4: never "You", which the AI reads as itself
             : m.authorKind === 'helper'
               ? (i.helper?.name ?? 'Helper')
               : i.settings.identity.agentName;
