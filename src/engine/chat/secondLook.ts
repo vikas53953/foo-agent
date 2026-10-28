@@ -4,9 +4,10 @@
 // is likely one too (QA-X-F32: "Book a table…" answered in words). The words only pick the turns worth a second look; the AI
 // decides the kind both times.
 
-const REMEMBER = /\b(remember|note|noted|forget|forgot|save|keep in mind|memori[sz]e)\b|yaad|bhool|bhul|bhoolna|याद|भूल|नोट|ਯਾਦ|ਭੁੱਲ|ਨੋਟ/iu;
+const REMEMBER =
+  /\b(remember\w*|note|noted|forget\w*|forgot|save|store|keep in mind|memori[sz]e|what you know about me)\b|yaad|bhool|bhul|dhyan rakh|याद|भूल|नोट|ध्यान|ਯਾਦ|ਭੁੱਲ|ਨੋਟ|ਧਿਆਨ/iu;
 const TASK =
-  /\b(book|booking|order|buy|purchase|pay|send|email|reserve|reservation|cancel|schedule|transfer)\b|bhej|mangwa|kharid|बुक|भेज|खरीद|मंगवा|ऑर्डर|ਬੁੱਕ|ਭੇਜ|ਖਰੀਦ/iu;
+  /\b(book|booking|order|buy|purchase|pay|send|email|message|call|reserve|reservation|cancel|schedule|transfer|recharge|get me|find me)\b|bhej|mangwa|kharid|बुक|भेज|खरीद|मंगवा|ऑर्डर|ਬੁੱਕ|ਭੇਜ|ਖਰੀਦ/iu;
 
 /** Whether the message itself asks to remember, note or forget something. */
 export function asksToRemember(text: string): boolean {

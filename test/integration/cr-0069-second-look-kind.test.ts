@@ -36,7 +36,12 @@ const intakes = (x: JobHarness) => x.turnsJsonl().filter((turn) => turn.purpose 
 const asked = (x: JobHarness, line: string) => intakes(x).filter((turn) => String(turn.system).includes(line)).length;
 
 async function run(
-  script: { match: { purpose: string; promptIncludes?: string }; reply?: string; chunks?: { text: string; delayMs?: number }[] }[],
+  script: {
+    match: { purpose: string; promptIncludes?: string };
+    reply?: string;
+    once?: boolean;
+    chunks?: { text: string; delayMs?: number }[];
+  }[],
   text: string,
   features: string | null = BATCH_1,
 ) {
@@ -79,6 +84,9 @@ describe('CR-0069 · memory off: a setting ask labelled memory gets a second loo
     'याद रखना कि मैं शाकाहारी हूँ',
     'forget my address',
     'note that my PIN changes monthly',
+    'dhyan rakhna main vegetarian hoon',
+    "don't store my address",
+    'delete what you know about me',
   ])('a real memory ask ("%s") gets the memory line at once, with no second look', async (text) => {
     const x = await run([{ match: { purpose: 'intake' }, reply: MEMORY }], text);
     expect(intakes(x)).toHaveLength(1);
@@ -158,6 +166,48 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
       'Did you book the cab?',
     );
     expect(fooTexts(x)).toEqual([streamed]);
+  });
+
+  it('Stop during the second look keeps the words the first look showed, with "Stopped." (review on CR-0069)', async () => {
+    const shown = 'Main abhi book nahi kar sakta.';
+    h = jobHarness({
+      script: [
+        {
+          match: { purpose: 'intake' },
+          chunks: [{ text: `<say>${shown} `, delayMs: 2_000 }, { text: `</say>\n${act({ kind: 'reply' }).slice('<say></say>\n'.length)}` }],
+        },
+        { match: { purpose: 'intake' }, reply: TABLE_JOB, delayMs: 60_000 },
+      ],
+      features: BATCH_1,
+    });
+    h.userSays('Book a cab for me');
+    for (let i = 0; i < 40 && intakes(h).length < 2; i++) {
+      await new Promise((r) => setTimeout(r, 20));
+      h.clock.advance(250);
+    }
+    expect(intakes(h)).toHaveLength(2);
+    h.send('reply.stop', { chatId: h.chatId });
+    await h.settle();
+    const rows = h.db.prepare("SELECT text, status, badge FROM messages WHERE author_kind = 'foo' AND kind = 'text'").all();
+    expect(rows).toEqual([{ text: shown, status: 'complete', badge: 'stopped' }]);
+  });
+
+  it('one second look per message, even when an empty answer runs the turn again (review on CR-0069)', async () => {
+    const x = await run([{ match: { purpose: 'intake' }, reply: act({ kind: 'reply' }), once: false }], 'Send me a joke');
+    expect(asked(x, REASK_JOB_LINE)).toBe(1);
+    expect(intakes(x).length).toBeLessThanOrEqual(3);
+    expect(fooTexts(x)).toEqual([t('thread.reply.empty')]);
+  });
+
+  it('memory off: a first look labelled memory and a second look that replies posts that reply', async () => {
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: MEMORY },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Dark mode is in Settings, under Appearance.') },
+      ],
+      'how do I get dark mode',
+    );
+    expect(fooTexts(x)).toEqual(['Dark mode is in Settings, under Appearance.']);
   });
 
   it('plain chat is never asked twice: "hi" with jobs off, and a task ask with every feature on', async () => {

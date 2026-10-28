@@ -20,19 +20,22 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
 
 1. With memory off, every intake turn carries MEMORY_OFF_LINE (like JOBS_OFF_LINE): decide `memory` only when the message
    itself says to remember, note or forget something; a change to how foo looks or works is `setting`.
-2. Intake gets one second look, with a line naming its first answer (REASK_MEMORY_LINE or REASK_JOB_LINE), when:
+2. Within the same turn, intake gets one second look, with a line naming its first answer (REASK_MEMORY_LINE or
+   REASK_JOB_LINE), when:
    - it answered `memory`, memory is off, and the message has no remember, note or forget word (English, Hinglish,
      Hindi, Punjabi); or
-   - it answered `reply`, jobs are off, and the message names a task (book, order, buy, pay, send, …).
-3. The second look's answer is the one foo acts on. It streams nothing into a bubble the first look already showed words
-   in: a `job` answer replaces those words with the jobs line (CR-0067); a `reply` keeps them, since the person has read
-   them and the second look only checked the kind. The shown words are saved before the second look, so they also stay
-   when it fails.
+   - it answered `reply`, jobs are off, and the message names a task (book, order, buy, pay, send, call, …).
+3. The second look streams nothing; foo acts on its kind. Words the first look already showed stay: a `job` answer's jobs
+   line replaces them (CR-0067), a `reply` keeps them (the person has read them). A `memory` first look that turns into a
+   `reply` answers with the second look's words, filtered by the release gate.
 4. A `memory` answer for a message with no remember word never gets the memory line, even after the second look: foo
    says "I didn't get that. Say it another way?" (`thread.reply.empty`).
 5. A real memory ask ("remember…", "yaad rakhna…", "याद रखना…") gets the memory line at once, as before.
-6. Only one second look per message; none for side questions, Try again, or with the feature on. Cost: one more intake
-   turn, only in these cases.
+6. One second look per message, ever (an empty-answer retry does not get another); none for side questions, Try again,
+   or with the feature on. When it fails, hits the spend cap or gives no act, the first look's answer stands. Stop during
+   it stops the reply like any other (the shown words stay, with "Stopped."). Cost: one more intake turn, only in these cases.
+7. Known limit: words a first look showed for a wrong `memory` answer stay when the second look picks another non-reply
+   kind (the prompt asks for an empty `<say>` on every non-reply kind, so this is rare).
 
 ## (c) Evidence
 
