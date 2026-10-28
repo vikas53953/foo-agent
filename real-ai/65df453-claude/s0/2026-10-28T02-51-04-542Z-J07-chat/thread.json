@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n2:50 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:50 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n2:51 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What can I do for you today?\n\n2:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n2:51 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can check your email, calendar and websites, write and send messages, set up routines that watch things for you, and remember things about you. Tell me what you need and I'll sort it out.\n\n2:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n2:51 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it scrambled, so nobody in between can read it.\n\nWithout one, your traffic goes straight from your phone or laptop to a website, and your Wi-Fi owner or internet provider can see where it's headed. With one, your data is locked first and sent to the VPN company's computer. That computer unlocks it and talks to the website for you. The website sees the VPN's address, not yours.\n\nGood for: staying safer on public Wi-Fi, hiding your browsing from your internet provider, and making it look like you're in another city or country.\n\nNot magic: the VPN company can see your traffic instead, so pick one you trust. It also won't protect you if you sign in to an account that tracks you.\n\n2:51 AM"
+  }
+]

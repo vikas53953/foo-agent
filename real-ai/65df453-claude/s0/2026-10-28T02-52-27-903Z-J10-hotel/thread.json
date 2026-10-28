@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n2:51 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it scrambled, so nobody in between can read it.\n\nWithout one, your traffic goes straight from your phone or laptop to a website, and your Wi-Fi owner or internet provider can see where it's headed. With one, your data is locked first and sent to the VPN company's computer. That computer unlocks it and talks to the website for you. The website sees the VPN's address, not yours.\n\nGood for: staying safer on public Wi-Fi, hiding your browsing from your internet provider, and making it look like you're in another city or country.\n\nNot magic: the VPN company can see your traffic instead, so pick one you trust. It also won't protect you if you sign in to an account that tracks you.\n\n2:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n2:51 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Where will you run most in these shoes? → Treadmill or gym\n2:51 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:51 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n2:52 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "How far do you usually run in one session?\n1\nUnder 5 km\nBEST FIT\nShort, easy runs\n2\n5 to 10 km\nRegular fitness runs\n3\n10 km or more\nLonger runs, need more cushioning\n4\nJust starting out\nStill building the habit\nSomething else…\nSkip\n2:52 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:52 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n2:52 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:52 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n2:52 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 2:52 AM\n2:52 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:52 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for Goa hotels for 2 nights, Sat 7 Nov to\nSlow here, trying another way\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nCompare price, area and rating\nWait for you to pick one\nWatch live\nStop\n2 min\n2:52 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:52 AM"
+  }
+]
