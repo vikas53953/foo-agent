@@ -1,2 +1,0 @@
-{"started_at":1793169037262,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":8202,"chat_id":"c_01a18131-59b8-7db0-935e-8843f79a4acc","job_id":null,"provider_id":"claude-cli","billing":"plan"}
-{"started_at":1793169065473,"purpose":"memory_review","outcome":"ok","error_kind":null,"duration_ms":3867,"chat_id":"c_01a18131-59b8-7db0-935e-8843f79a4acc","job_id":null,"provider_id":"claude-cli","billing":"plan"}

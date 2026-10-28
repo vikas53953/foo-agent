@@ -1,8 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-28-35-703Z-J01-J02-first-run"}
-{"journey":"B12-languages","title":"Chat in Hinglish and Punjabi, short answers","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-29-26-367Z-B12-languages"}
-{"journey":"B11-zoom-appearance","title":"Zoom keys, settings rows","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-30-21-316Z-B11-zoom-appearance"}
-{"journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","steps":17,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-30-35-392Z-U03-select-delete"}
-{"journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-30-57-018Z-U08-rich-text"}
-{"journey":"R-dark-hi","title":"Setting by chat, then hi: foo replies and does not change the setting again","steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-32-02-711Z-R-dark-hi"}
-{"journey":"U27-composer-no-dropped-letters","title":"Fast typing and a long paste reach foo letter for letter","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-32-32-067Z-U27-composer-no-dropped-letters"}
-{"journey":"QA2-setup-key-name-face-vibe","title":"Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart","steps":42,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-33-21-257Z-QA2-setup-key-name-face-vibe"}

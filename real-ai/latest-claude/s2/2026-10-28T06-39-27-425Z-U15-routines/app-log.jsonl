@@ -1,7 +1,0 @@
-{"t":1793169568376,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793169574115,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793169583988,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"routine"}
-{"t":1793169583988,"lvl":"info","mod":"engine","evt":"chat.kind_not_built"}
-{"t":1793169592824,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2927}
-{"t":1793169610238,"lvl":"info","mod":"engine","evt":"memory.scope_coerced"}
-{"t":1793169610276,"lvl":"info","mod":"engine","evt":"memory.saved_said"}

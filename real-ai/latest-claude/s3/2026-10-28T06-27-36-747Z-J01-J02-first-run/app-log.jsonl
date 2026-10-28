@@ -1,4 +1,0 @@
-{"t":1793168857497,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793168870423,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6941}
-{"t":1793168906693,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
-{"t":1793168906693,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}
