@@ -1,8 +1,0 @@
-{"t":1793172208931,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793172214622,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793172226446,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
-{"t":1793172234055,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793172239962,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
-{"t":1793172246419,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1793172251679,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
-{"t":1793172254611,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}

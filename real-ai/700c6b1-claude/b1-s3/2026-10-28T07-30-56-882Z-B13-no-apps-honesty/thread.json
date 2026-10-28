@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:29 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n7:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:29 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:30 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n7:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n7:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a relaxed 3-day Jaipur plan for your parents, with short mornings, a long afternoon break and no steep walks.\n\nDay 1, the old city: Govind Dev Ji temple in the morning, then City Palace and Jantar Mantar. Stop at Hawa Mahal for photos, and shop at Bapu Bazaar in the evening.\nDay 2, forts: Amber Fort early, before the crowds and heat. Take a jeep up instead of walking. Stop at Jal Mahal for photos on the way back, rest in the afternoon, then see Nahargarh Fort at sunset by car.\nDay 3, easy day: Birla Mandir, Albert Hall Museum and a slow lunch. In the evening, go to Chokhi Dhani for a Rajasthani dinner and folk shows.\n\nLate October to March is the best time for weather. Book a hotel near the old city so there's less travel each day. I can't book anything yet, but I can adjust this plan. Are your parents travelling from another city?\n\n7:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n7:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do catch-ups yet. Ask me about one thing, like your latest email, and I’ll look.\n\n7:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n7:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group do you want me to catch you up on? Tell me its name and I'll read it.\n\n7:31 AM"
+  }
+]

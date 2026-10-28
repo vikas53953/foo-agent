@@ -1,0 +1,193 @@
+{
+  "journey": "QA3-languages-batch1",
+  "title": "Hindi, Punjabi and Hinglish with real Claude on the batch-1 build",
+  "steps": 23,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-36-42-344Z-QA3-languages-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "ok": true,
+      "ms": 20002
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 104
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "ok": true,
+      "ms": 30003
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 1,
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Anthropic key (your AI)\n7:36 AM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "ok": true,
+      "ms": 10003
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "sentAt": 1793173068397,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "expect": "Hindi in Devanagari is answered in Devanagari",
+      "firstReplyMs": 2052,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "शाम के लिए आलू गोभी बना लो। कढ़ाई में जीरा, हल्दी, आलू और गोभी डालो, नमक मिर्च के साथ ढककर पकाओ—15 मिनट में तैयार।\n\n7:37 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 10679
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "sentAt": 1793173079200,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly",
+      "firstReplyMs": 4570,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਬਟਰਸਕੌਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ—ਦੋਵੇਂ ਹੀ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਨੇ। ਜੇ ਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਘੱਟ ਪਸੰਦ ਹੈ ਤਾਂ ਫਲਾਂ ਵਾਲਾ ਫਰੈਸ਼ ਕ੍ਰੀਮ ਕੇਕ ਲਵੋ।\n\n7:38 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 14195
+    },
+    {
+      "i": 20,
+      "do": "send",
+      "sentAt": 1793173093501,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "i": 21,
+      "do": "waitReply",
+      "expect": "Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)",
+      "firstReplyMs": 3042,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "सुबह 7:45 बजे अलार्म लगा लो—तैयार होने के लिए एक घंटा मिल जाएगा और 15 मिनट एक्स्ट्रा भी। अगर तैयार होने में ज़्यादा टाइम लगता है तो 7:30 बजे लगा लो।\n\n7:38 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 10684
+    },
+    {
+      "i": 22,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers (batch 1 build: jobs are off)",
+  "steps": 10,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-30-22-897Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "eval",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts",
+      "value": 2,
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793172628040,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "a new, finished answer with a table in chat; never a plan card or a job (jobs are off in batch 1, and a table is words, so it is a chat answer)",
+      "firstReplyMs": 6076,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:30 AM",
+      "kit": [],
+      "endState": false,
+      "ms": 12179
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "no plan card with jobs off",
+      "found": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 5,
+      "do": "eval",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts",
+      "value": 3,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793172640370,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply: a day-by-day plan in chat, or the honest jobs-off line; never a plan card or a job",
+      "firstReplyMs": 7063,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a relaxed 3-day Jaipur plan for your parents, with short mornings, a long afternoon break and no steep walks.\n\nDay 1, the old city: Govind Dev Ji temple in the morning, then City Palace and Jantar Mantar. Stop at Hawa Mahal for photos, and shop at Bapu Bazaar in the evening.\nDay 2, forts: Amber Fort early, before the crowds and heat. Take a jeep up instead of walking. Stop at Jal Mahal for photos on the way back, rest in the afternoon, then see Nahargarh Fort at sunset by car.\nDay 3, easy day: Birla Mandir, Albert Hall Museum and a slow lunch. In the evening, go to Chokhi Dhani for a Rajasthani dinner and folk shows.\n\nLate October to March is the best time for weather. Book a hotel near the old city so there's less travel each day. I can't book anything yet, but I can adjust this plan. Are your parents travelling from another city?\n\n7:30 AM",
+      "kit": [],
+      "endState": true,
+      "ms": 16167
+    },
+    {
+      "i": 8,
+      "do": "check",
+      "note": "no plan card with jobs off",
+      "found": 0,
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 15
+    }
+  ]
+}

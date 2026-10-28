@@ -1,0 +1,12 @@
+{"t":1793172915740,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172921167,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172927463,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793172927464,"lvl":"info","mod":"engine","evt":"chat.kind_feature_off","kind":"jobs"}
+{"t":1793172934066,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172940524,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793172940525,"lvl":"info","mod":"engine","evt":"chat.kind_feature_off","kind":"jobs"}
+{"t":1793172946995,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172951021,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"job"}
+{"t":1793172951021,"lvl":"info","mod":"engine","evt":"chat.kind_feature_off","kind":"jobs"}
+{"t":1793172981146,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1793172981147,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}
