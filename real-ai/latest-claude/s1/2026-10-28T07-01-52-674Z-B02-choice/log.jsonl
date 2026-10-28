@@ -1,0 +1,15 @@
+{"t":"2026-10-28T07:01:52.674Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:01:57.741Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:01:57.832Z","i":0,"do":"send","sentAt":1793170917809,"sent":true,"before":0,"ok":true,"ms":88}
+{"t":"2026-10-28T07:02:08.511Z","i":1,"do":"waitReply","firstReplyMs":4555,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What will you mostly use the shoes for?\n1\nRoad running\nBEST FIT\nPavements, parks, daily jogs\n2\nGym or treadmill\nIndoor, lighter cushioning\n3\nTrails\nMud, grit and uneven ground\n4\nWalking and casual\nComfort first, easy miles\nSomething else…\nSkip\n7:02 AM","kit":[],"ms":10679}
+{"t":"2026-10-28T07:02:08.561Z","shot":"01-choice.png"}
+{"t":"2026-10-28T07:02:08.563Z","i":2,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T07:02:08.565Z","i":3,"do":"check","found":4,"ok":true,"ms":2}
+{"t":"2026-10-28T07:02:08.567Z","i":4,"do":"text","soft":true,"text":"What will you mostly use the shoes for?\n1\nRoad running\nBEST FIT\nPavements, parks, daily jogs\n2\nGym or treadmill\nIndoor, lighter cushioning\n3\nTrails\nMud, grit and uneven ground\n4\nWalking and casual\nComfort first, easy miles\nSomething else…\nSkip\n7:02 AM","ok":true,"ms":2}
+{"t":"2026-10-28T07:02:08.633Z","i":5,"do":"send","sentAt":1793170928612,"sent":true,"before":0,"ok":true,"ms":66}
+{"t":"2026-10-28T07:02:21.730Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","firstReplyMs":7051,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"How should the shoes feel on your feet?\n1\nSoft and cushioned\nBEST FIT\nEasier on knees for longer sessions\n2\nLight and springy\nFaster feel, good for short runs\n3\nFirm and stable\nGood if you also lift weights\n4\nNo preference\nSomething else…\nSkip\n7:02 AM","kit":[],"ms":13097}
+{"t":"2026-10-28T07:02:21.776Z","shot":"02-typed-2.png"}
+{"t":"2026-10-28T07:02:21.783Z","i":7,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T07:02:21.903Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-10-28T07:02:21.913Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T07:02:21.914Z","step":"jobTrail","steps":0,"calls":0}

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked Amazon India, Flipkart, brand sites\nA\nF\nB\nKept 3 laptops under ₹50,000 that fit best value for price, specs and reviews\nCompared price, processor, RAM, storage, screen\nStopped by you\n7:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember that I am vegetarian on Tuesdays\n7:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I'm noting that you're vegetarian on Tuesdays.\n\n7:13 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry brand sites instead\n7:13 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Remember my favourite cricket team is Punjab Kings\n7:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the top 3 news headlines in India today\n7:14 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking major Indian news sites\nlive checklist\nChecking major Indian news sites\nM\nLook for top 3 news headlines in India today\nCompare headlines across sites\nWatch live\nStop\nunder 1 min\n7:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 AM"
+  }
+]
