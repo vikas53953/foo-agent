@@ -125,15 +125,17 @@
     },
     {
       "do": "clickIf",
-      "tid": "bubble-actions-retry",
-      "note": "if the reply was cut, Try again once"
+      "tid": "bubble-error-retry",
+      "note": "if the reply was cut, press its Try again once"
     },
     {
-      "do": "wait",
-      "ms": 20000,
+      "do": "waitReply",
+      "timeoutMs": 150000,
       "shot": "q5-answered",
       "feature": "chat",
-      "expect": "the tortoise question has a real answer"
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "the tortoise question gets a real answer of its own (names), not a cut-off line",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /kachhua|tortoise|naam|name/i.test(t)&&!/cut off/i.test(t)})()"
     },
     {
       "do": "relaunch"
@@ -161,7 +163,17 @@
       "feature": "ai",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "after two restarts the stored key still works with real Claude",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)&&!/kachhua|tortoise|shelly|naam/i.test(t)})()"
+    },
+    {
+      "do": "expectText",
+      "css": "[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]",
+      "last": true,
+      "re": "kachhua|tortoise|shelly",
+      "not": true,
+      "shot": "q5-no-glued-reply",
+      "feature": "chat",
+      "expect": "the next answer after a reopen is only that answer: the old cut-off tortoise reply is never glued onto it (G3 / CR-0070)"
     },
     {
       "do": "dump",
