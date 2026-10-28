@@ -100,6 +100,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ELECTRON_RUN_AS_NODE: '1'
+          FOO_REAL_AI_ONLY: '1' # Vikas 2026-10-28: real AI only; the driver refuses FOO_TEST and FOO_FAKE_* settings
           FOO_VIDEO: '1'
           FOO_WATCH_MS: '1500,3000,6000'
           ROUNDS: ${{ inputs.rounds || '3' }}

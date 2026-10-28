@@ -133,6 +133,14 @@ describe('gate journeys', () => {
     }
   });
 
+  it('the gate runs on the real AI only: the workflow sets FOO_REAL_AI_ONLY and nothing in the kit names the pretend AI', () => {
+    const wf = readFileSync(join('.github', 'workflows', 'release-gate.yml'), 'utf8');
+    expect(wf).toMatch(/FOO_REAL_AI_ONLY: '1'/);
+    const code = wf.replace(/#.*$/gm, '');
+    expect(code).not.toMatch(/FOO_FAKE_|FOO_TEST/);
+    for (const id of ids) expect(JSON.stringify(load(id)), id).not.toMatch(/FOO_FAKE_|FOO_TEST/);
+  });
+
   it('every batch-1 feature is reached by some gate journey', () => {
     const reached = new Set(
       ids.flatMap((id) => {

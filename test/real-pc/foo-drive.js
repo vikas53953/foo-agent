@@ -62,6 +62,15 @@ function loadPlaywright() {
 let journeyFeatures = null;
 
 // foo must start as the app, not as Node: drop the variable this script itself runs under.
+// Vikas 2026-10-28: "test with real AI only". FOO_REAL_AI_ONLY=1 (the release gate) refuses to start when anything could
+// put the app's pretend AI or test hooks in play: the fake AI only runs with FOO_TEST=1 plus a FOO_FAKE_* script.
+const REAL_AI_ONLY = process.env.FOO_REAL_AI_ONLY === '1';
+const PRETEND = Object.keys(process.env).filter((k) => /^FOO_(TEST|FAKE_)/i.test(k) && process.env[k]);
+if (REAL_AI_ONLY && PRETEND.length) {
+  console.error(`Real AI only: refusing to run with ${PRETEND.join(', ')} set.`);
+  process.exit(2);
+}
+
 function childEnv() {
   const env = { ...process.env, FOO_DATA_DIR: path.join(PROFILE, 'data'), FOO_LOCAL_DIR: path.join(PROFILE, 'local') };
   // CR-0054: every feature is on unless the journey asks for the build's own list ("features": "shipped") or names some.
