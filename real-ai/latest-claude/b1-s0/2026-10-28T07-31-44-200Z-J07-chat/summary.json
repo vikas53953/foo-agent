@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-31-44-200Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793172709809,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3557,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good morning. What can I do for you today?\n\n7:31 AM",
+      "kit": [],
+      "ms": 10139
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793172720116,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 4545,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper. Ask me anything, and the app shows what works on this PC right below.\n\n7:32 AM",
+      "kit": [],
+      "ms": 11627
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793172731899,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3054,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it in scrambled form, so people on the way can't read it.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) your data and sends it to the VPN company's computer.\nThat computer unscrambles it and passes it on to the website you asked for.\nThe website sees the VPN's address, not yours, and the reply comes back the same way.\n\nIt helps on public Wi-Fi, since strangers on the same network can't snoop. It also hides your location from websites. It doesn't make you anonymous, though, because the VPN company can still see where you go, so pick one you trust.\n\n7:32 AM",
+      "kit": [],
+      "ms": 11697
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

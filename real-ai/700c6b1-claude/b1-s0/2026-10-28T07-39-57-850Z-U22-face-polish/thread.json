@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper. Ask me anything, and the app shows what works on this PC right below.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it in scrambled form, so people on the way can't read it.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) your data and sends it to the VPN company's computer.\nThat computer unscrambles it and passes it on to the website you asked for.\nThe website sees the VPN's address, not yours, and the reply comes back the same way.\n\nIt helps on public Wi-Fi, since strangers on the same network can't snoop. It also hides your location from websites. It doesn't make you anonymous, though, because the VPN company can still see where you go, so pick one you trust.\n\n7:32 AM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has more than 1,000 historic monuments, and the city has been rebuilt and reinhabited so many times that people often say it has had seven or more earlier cities before the modern one.\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because it is a huge hub for hosiery, bicycles and woollen clothes, and it makes a big share of the country's bicycles.\n\nShow earlier answer\nRewritten\n7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n7:40 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's one for the rains:\n\nGrey clouds roll in over Marine Drive,\nChai steams as the waves rise and dive.\nStreets turn to streams, the trains run slow,\nYet Mumbai smiles in the rain's soft flow. 🌧️\n\nWant one in Hindi too?\n\n7:40 AM"
+  }
+]
