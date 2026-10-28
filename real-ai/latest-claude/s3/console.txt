@@ -1,0 +1,7 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-23-56-341Z-J01-J02-first-run"}
+{"journey":"B09-kit","title":"Rich reply pieces: calculator, map, chart, compare, timer, form","videos":[],"steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-24-47-791Z-B09-kit"}
+{"journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","videos":[],"steps":6,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-26-43-304Z-J10-hotel"}
+{"journey":"J08-choice","title":"Question with choice chips","videos":[],"steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-30-02-822Z-J08-choice"}
+{"journey":"J21-J22-settings-search","title":"Settings and search","videos":[],"steps":6,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-30-22-839Z-J21-J22-settings-search"}
+{"journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","videos":[],"steps":16,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-30-34-167Z-U11-approval-states"}
+{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","videos":[],"steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-35-57-523Z-U18-new-helper-group"}
