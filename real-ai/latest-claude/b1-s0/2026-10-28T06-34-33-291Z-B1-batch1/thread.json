@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Tum kaisi ho? Kuch kaam hai aaj?\n\n6:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n6:35 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek baar ek aadmi ne apne dost se kaha, \"Yaar, mujhe lagta hai mera phone mujhse zyada smart hai.\" Dost bola, \"Kyun?\" Usne kaha, \"Kyunki jab main galat jagah jaata hoon, woh mujhe bata deta hai!\" 😄\n\nAur kuch chahiye?\n\n6:35 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n6:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n6:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a cab to the airport at 6 am tomorrow\n6:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n6:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the cab?\n6:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I haven't booked the cab. I can't do tasks yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n6:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n6:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n6:36 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:36 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main dark mode nahi laga sakta abhi, kyunki yeh setting change karne ka kaam hai jo main kar sakta hoon. Lekin tumne \"switch to dark mode\" kaha, toh main samajh gaya.\n\nTumhare liye appearance theme \"dark\" par set kar raha hoon.\n\n6:36 AM"
+  }
+]

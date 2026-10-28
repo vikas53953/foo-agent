@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-29-52-540Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793168998140,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2529,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good morning, it's Wed 28 Oct, 6:29 AM. What shall we sort out today?\n\n6:30 AM",
+      "kit": [],
+      "ms": 9631
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793169007943,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3559,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can read your email and calendar, look things up on the web, fill in forms, draft and send messages, and set up routines that keep watch for you.\n\n6:30 AM",
+      "kit": [],
+      "ms": 10672
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793169018763,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3556,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and another computer on the internet, and everything you send goes through it scrambled.\n\nWithout one, your internet company can see which sites you visit, and those sites see where you are. With one, your data is locked before it leaves your phone or PC and travels to the VPN's computer. That computer unlocks it and visits the site for you, so the site sees the VPN's location, not yours.\n\nIt helps on public Wi-Fi and hides your browsing from your internet company. It doesn't make you anonymous, though, since the VPN company can see what you do instead. Pick one you trust.\n\n6:30 AM",
+      "kit": [],
+      "ms": 11146
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

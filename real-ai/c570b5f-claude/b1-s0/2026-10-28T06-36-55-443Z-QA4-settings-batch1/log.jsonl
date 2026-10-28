@@ -1,0 +1,64 @@
+{"t":"2026-10-28T06:36:55.443Z","journey":"QA4-settings-batch1","title":"Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:37:00.907Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:37:00.914Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":4}
+{"t":"2026-10-28T06:37:00.980Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T06:37:01.122Z","i":1,"do":"click","ok":true,"ms":142}
+{"t":"2026-10-28T06:37:01.137Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":15}
+{"t":"2026-10-28T06:37:01.244Z","shot":"02-finder.png"}
+{"t":"2026-10-28T06:37:21.255Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20011}
+{"t":"2026-10-28T06:37:21.311Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T06:37:21.411Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":99}
+{"t":"2026-10-28T06:37:21.415Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T06:37:21.514Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T06:37:21.527Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":12}
+{"t":"2026-10-28T06:37:21.635Z","i":7,"do":"click","ok":true,"ms":108}
+{"t":"2026-10-28T06:37:51.644Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","ok":true,"ms":30009}
+{"t":"2026-10-28T06:37:51.706Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T06:37:51.743Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":37}
+{"t":"2026-10-28T06:37:51.897Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":154}
+{"t":"2026-10-28T06:37:51.900Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:37:51.904Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","ok":true,"ms":4}
+{"t":"2026-10-28T06:37:51.984Z","shot":"06-step2.png"}
+{"t":"2026-10-28T06:37:51.988Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n6:37 AM","ok":true,"ms":3}
+{"t":"2026-10-28T06:37:52.123Z","i":14,"do":"click","ok":true,"ms":135}
+{"t":"2026-10-28T06:38:02.124Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","ok":true,"ms":10001}
+{"t":"2026-10-28T06:38:02.187Z","shot":"07-first-chat.png"}
+{"t":"2026-10-28T06:38:02.225Z","i":16,"do":"key","ok":true,"ms":38}
+{"t":"2026-10-28T06:38:03.726Z","i":17,"do":"wait","expect":"Settings opens with Ctrl+,","ok":true,"ms":1501}
+{"t":"2026-10-28T06:38:03.778Z","shot":"08-q4-settings.png"}
+{"t":"2026-10-28T06:38:03.781Z","i":18,"do":"check","note":"the Settings screen is open","found":1,"ok":true,"ms":3}
+{"t":"2026-10-28T06:38:03.782Z","i":19,"do":"check","note":"batch 1 has no money settings","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T06:38:03.784Z","i":20,"do":"check","note":"batch 1 has no connections","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T06:38:03.785Z","i":21,"do":"check","note":"batch 1 has no routines","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T06:38:03.843Z","i":22,"do":"click","ok":true,"ms":57}
+{"t":"2026-10-28T06:38:04.644Z","i":23,"do":"wait","expect":"Appearance: theme and text size rows","ok":true,"ms":800}
+{"t":"2026-10-28T06:38:04.706Z","shot":"09-q4-appearance.png"}
+{"t":"2026-10-28T06:38:04.707Z","i":24,"do":"check","found":1,"ok":true,"ms":1}
+{"t":"2026-10-28T06:38:04.744Z","i":25,"do":"clickIf","found":1,"ok":true,"ms":36}
+{"t":"2026-10-28T06:38:05.545Z","i":26,"do":"wait","expect":"Account: your AI shows the Anthropic key in use","ok":true,"ms":800}
+{"t":"2026-10-28T06:38:05.605Z","shot":"10-q4-account.png"}
+{"t":"2026-10-28T06:38:05.607Z","i":27,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:38:06.408Z","i":28,"do":"wait","expect":"Chat settings page has real rows, not empty","ok":true,"ms":801}
+{"t":"2026-10-28T06:38:06.463Z","shot":"11-q4-chat.png"}
+{"t":"2026-10-28T06:38:06.498Z","i":29,"do":"clickIf","found":1,"ok":true,"ms":34}
+{"t":"2026-10-28T06:38:07.300Z","i":30,"do":"wait","expect":"Keyboard shortcuts page lists keys","ok":true,"ms":801}
+{"t":"2026-10-28T06:38:07.355Z","shot":"12-q4-shortcuts.png"}
+{"t":"2026-10-28T06:38:07.384Z","i":31,"do":"clickIf","found":1,"ok":true,"ms":28}
+{"t":"2026-10-28T06:38:08.185Z","i":32,"do":"wait","expect":"About page has version and What leaves this PC","ok":true,"ms":801}
+{"t":"2026-10-28T06:38:08.242Z","shot":"13-q4-about.png"}
+{"t":"2026-10-28T06:38:08.266Z","i":33,"do":"key","ok":true,"ms":24}
+{"t":"2026-10-28T06:38:09.267Z","i":34,"do":"wait","ok":true,"ms":1001}
+{"t":"2026-10-28T06:38:09.269Z","i":35,"do":"check","note":"Esc closes Settings","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:38:09.337Z","i":36,"do":"send","sentAt":1793169489331,"sent":true,"before":0,"ok":true,"ms":68}
+{"t":"2026-10-28T06:38:11.645Z","i":37,"do":"waitFor","expect":"dark theme by chat, one Changed line with Undo","ok":true,"ms":2308}
+{"t":"2026-10-28T06:38:11.734Z","shot":"14-q4-dark.png"}
+{"t":"2026-10-28T06:38:11.736Z","i":38,"do":"expectText","note":"a settings ask is never answered with an off-feature line","text":"Start of your chat with foo\nToday, Wed 28 Oct\nHi, I'm foo. → Let's go\n6:36 AM\nUsing Anthropic key (your AI)\n6:37 AM\nAnthropic key\nsecret\nSaved securely. foo’s AI never sees it.\nAnthropic key · saved Wed 28 Oct\nReplace\nRemove\n6:37 AM\nWhat should I call myself? → Skipped\n6:37 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:37 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:37 AM\nSwitch to dark mode\n6:38 AM\nfoo\n\nDone. Dark mode is on.\n\n6:38 AM\nChanged: Theme → Dark. Undo","ok":true,"ms":2}
+{"t":"2026-10-28T06:38:16.946Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:38:16.946Z","i":39,"do":"relaunch","ok":true,"ms":5210}
+{"t":"2026-10-28T06:38:24.959Z","i":40,"do":"wait","ok":true,"ms":8013}
+{"t":"2026-10-28T06:38:24.962Z","i":41,"do":"waitFor","expect":"dark theme survives quit and reopen","ok":true,"ms":3}
+{"t":"2026-10-28T06:38:25.028Z","shot":"15-q4-dark-after-reopen.png"}
+{"t":"2026-10-28T06:38:25.038Z","i":42,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:38:25.161Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T06:38:25.174Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T06:38:25.176Z","step":"jobTrail","steps":0,"calls":0}
