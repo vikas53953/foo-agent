@@ -28,6 +28,7 @@
 // [ Undo ]" line; anything else gets "That's one for you to change. [ Open Settings ]".
 // Restart fix (real-PC J19 bug): the queue lives in memory, so after a restart cutOffTurns/answerCutOff give the messages
 // whose turn never finished their one intake turn (08-2 §5.2), and a reply left streaming is cut off with Try again (§19.4).
+import { asksToRemember, namesTask } from './secondLook';
 import { t } from '../../shared/copy/t';
 import type { Clock } from '../../shared/clock';
 import type { Result } from '../../shared/errors';
@@ -103,6 +104,9 @@ export interface IntakeInput {
   oldPlan?: { title: string; steps: string[] };
   /** CR-0028: the intake questions this message already got answers to, as "- Q: … → A: …" lines. */
   answers?: string[];
+  /** CR-0069: the second look at a likely wrong `memory` or `reply` answer while that feature is off, or (item 9) the retry
+   * after a reply with an empty say. */
+  reask?: 'memory' | 'job' | 'empty';
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -278,6 +282,10 @@ export class ChatLane {
   private violationRetried = new Set<string>();
   /** CR-0041: user messages whose intake turn already ran once more after an empty answer. */
   private emptyRetried = new Set<string>();
+  /** CR-0069 item 9: messages whose CR-0041 retry follows an empty say (not a filtered one); read once by the retry's intake. */
+  private emptySay = new Set<string>();
+  /** CR-0069: user messages whose intake already had its one second look at the kind. */
+  private looked = new Set<string>();
   /** Enqueued by a drain of Waiting-to-send messages: skipped if another turn already answered it. */
   private drained = new Set<string>();
   /** Messages a steer sent back to intake (`new_job`): they skip the runner's branches. */
@@ -505,16 +513,23 @@ export class ChatLane {
     const intakeOnly = this.intakeOnly.delete(messageId) || side;
     const rewrite = this.rewrites.get(messageId) ?? null;
     this.rewrites.delete(messageId);
+    // CR-0069 item 9: this run is the CR-0041 retry after an empty say. Read once, here, so no later run of the message (a
+    // rewrite, a card answer) gets the line; a rerun of this same retry (protocol retry, a wait to send) keeps it.
+    const emptySay = this.emptySay.delete(messageId) && !rewrite;
     // The turn runs once more with what it was given: its intake-only mark and (CR-0059 row 1) its rewrite (the protocol
     // retry; a rewrite with an empty reply keeps the old answer instead).
     const again = () => {
       if (rewrite) this.rewrites.set(messageId, rewrite);
+      if (emptySay) this.emptySay.add(messageId);
       if (rewrite || (intakeOnly && !side)) this.intakeOnly.add(messageId);
       return this.turn(chatId, messageId);
     };
     // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
     if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
-    if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
+    // CR-0054: with jobs switched off the runner's own replies (the flight scope card, a steer) never run; intake answers.
+    const jobsOn = this.d.featureOn?.('jobs') !== false;
+    if (!intakeOnly && jobsOn && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text })))
+      return;
     const pick = this.d.ai.pick();
     if (!pick && rewrite) {
       // CR-0059 row 1: an answered message never goes back to "Waiting to send"; the old answer stays.
@@ -523,6 +538,7 @@ export class ChatLane {
     }
     if (!pick) {
       // 04 §3.3 Waiting to send: foo cannot hand it on now; drained when the AI is back (Engine.drainQueued).
+      if (emptySay) this.emptySay.add(messageId);
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
       return;
     }
@@ -551,10 +567,11 @@ export class ChatLane {
             now: this.d.clock.now(),
           });
     let built: { system: string; prompt: string; factIds?: string[] } | null;
+    let intakeInput: IntakeInput | null = null;
     try {
       const oldPlan = side ? null : (this.d.jobs?.planChange?.(chatId) ?? null);
       const answers = this.askAnswers.get(messageId);
-      built = this.d.protocol.buildIntake({
+      intakeInput = {
         settings,
         chat,
         helper,
@@ -564,7 +581,10 @@ export class ChatLane {
         memory,
         ...(oldPlan ? { oldPlan } : {}),
         ...(answers?.length ? { answers } : {}),
-      });
+        // CR-0069 item 9: the CR-0041 retry after a reply with an empty say names it (run 40643760745: the same empty twice).
+        ...(emptySay ? { reask: 'empty' as const } : {}),
+      };
+      built = this.d.protocol.buildIntake(intakeInput);
     } catch {
       built = null;
     }
@@ -575,6 +595,7 @@ export class ChatLane {
         await this.rewriteKept(chatId, messageId, who, 'cap', helper);
         return;
       }
+      if (emptySay) this.emptySay.add(messageId);
       if (message.status !== 'queued') await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { status: 'queued' } }]);
       return;
     }
@@ -774,9 +795,53 @@ export class ChatLane {
       this.catchUpConnected.delete(messageId);
       act = readEmailJob();
     }
+    // CR-0069 (X-226): with a feature off, a likely wrong kind gets one second look in this same turn before foo answers:
+    // `memory` for a message with no remember word (QA-X-F30), `reply` to a message naming a task (QA-X-F32). The second
+    // look streams nothing; foo acts on its kind.
+    const firstKind = act?.kind ?? 'reply';
+    const asked = message.textForAi ?? message.text;
+    const look =
+      rewrite || side || !intakeInput || this.looked.has(messageId)
+        ? null
+        : firstKind === 'memory' && this.d.featureOn?.('memory') === false && !asksToRemember(asked)
+          ? 'memory'
+          : firstKind === 'reply' && this.d.featureOn?.('jobs') === false && namesTask(asked)
+            ? 'job'
+            : null;
+    let lookSay = '';
+    let lookTrailer: string | null = null;
+    if (look && intakeInput) {
+      this.looked.add(messageId);
+      this.d.log('chat.second_look', look, { chatId });
+      const second = await this.secondLook(chatId, pick, { ...intakeInput, reask: look });
+      if (second === 'stopped') {
+        const shown = gate.released().trimEnd();
+        if (fooId)
+          await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: shown, status: 'complete', badge: 'stopped' } }]);
+        else await this.tx([{ op: 'update', table: 'messages', id: messageId, set: { badge: null } }]);
+        this.typing(chatId, false, who);
+        // The first look finished; the second look's own row says it was cancelled.
+        await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
+        return;
+      }
+      if (second?.act) {
+        // A reply that stays a reply keeps the first look's words, so the facts they used stay its own.
+        if (!(firstKind === 'reply' && second.act.kind === 'reply')) {
+          usedMemoryIds = second.usedMemoryIds;
+          tags = second.tags;
+          lookTrailer = second.rawSay;
+        }
+        act = second.act;
+        lookSay = second.say;
+      }
+    }
     const kind = act?.kind ?? 'reply';
+    // CR-0069: after the second look a `memory` answer with no remember word never gets the memory line.
+    const noMemoryLine = kind === 'memory' && this.d.featureOn?.('memory') === false && !asksToRemember(asked);
     let retryEmpty = false;
-    const released = gate.released().trimEnd();
+    let released = gate.released().trimEnd();
+    // CR-0069: a `memory` first look turned `reply` answers with the second look's words (the first look's were not a reply).
+    if (look === 'memory' && kind === 'reply' && lookSay.trim()) released = lookSay;
     if (kind !== 'reply' && released.trim()) this.d.log('chat.say_leak', 'PROTOCOL_SAY_LEAK', { chatId });
     // CR-0044: the decided kind goes to the tech log (an enum, no words), so a real-AI run shows why a message got its answer.
     this.d.log('chat.intake_kind', act ? kind : 'none', { chatId });
@@ -834,7 +899,7 @@ export class ChatLane {
     ) {
       if (fooId) {
         // P1 T6: the follow-ups the reply's own `Suggestions:` line held (the gate kept the line out of the bubble).
-        const trailer = kind === 'reply' ? splitSuggestions(parsed.say) : null;
+        const trailer = kind === 'reply' ? splitSuggestions(lookTrailer ?? parsed.say) : null;
         const suggestions = trailer?.suggestions ?? null;
         // R1 T7: the action chips the reply's own `Actions:` line held (04-2 §21.7; the gate kept it out of the bubble too).
         const actions = trailer ? splitActions(trailer.text).actions : null;
@@ -850,12 +915,19 @@ export class ChatLane {
         // CR-0054: every row is a task, so no card while jobs are off; the reply's sentence stands alone.
         if (kind === 'reply' && !side && tags.includes('intent_capabilities') && this.d.featureOn?.('jobs') !== false)
           await this.capabilitiesCard(chatId, helper);
+      } else if (look && released.trim()) {
+        // CR-0069: the second look's reply, when the first look showed no words.
+        await this.post(chatId, messageId, released, helper, providerNote);
       } else {
         // Run 21 B14: which empty it was (the AI said nothing, or every sentence it said was dropped), never the words.
         this.d.log(parsed.say.trim() ? 'chat.reply_empty.filtered' : 'chat.reply_empty.no_say', undefined, { chatId });
+        // R1 on real Claude (run 40638245705): a table ask came back `reply` with no say, twice. Where the words went, by tag
+        // order only, never the words.
+        if (!parsed.say.trim()) this.d.log('chat.reply_empty.shape', envelopeShape(result.text), { chatId });
         if (!this.emptyRetried.has(messageId)) {
           // CR-0041 (08-4 §25.5 item 6, F-092 as amended): nothing passed the filters; the turn runs once more, nothing shown.
           this.emptyRetried.add(messageId);
+          if (!parsed.say.trim()) this.emptySay.add(messageId);
           retryEmpty = true;
         } else {
           await this.emptyReply(chatId, messageId, helper, who, providerNote);
@@ -909,13 +981,18 @@ export class ChatLane {
             op: 'update',
             table: 'messages',
             id: fooId,
-            set: { text: featureOffLine(offFeature), status: 'complete', provider_note: providerNote },
+            set: {
+              text: noMemoryLine ? t('thread.reply.empty') : featureOffLine(offFeature),
+              status: 'complete',
+              provider_note: providerNote,
+            },
           },
           { op: 'update', table: 'messages', id: messageId, set: { badge: null } },
         ]);
       } else {
         if (fooId && notBuilt) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
-        await this.post(chatId, messageId, offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind), helper, providerNote);
+        const line = noMemoryLine ? t('thread.reply.empty') : offFeature ? featureOffLine(offFeature) : notBuiltLine(act?.kind);
+        await this.post(chatId, messageId, line, helper, providerNote);
       }
     }
     // CR-0041: a retried turn keeps the Thinking row and records no uses of the answer it threw away.
@@ -939,6 +1016,64 @@ export class ChatLane {
     if (kind !== 'ask') this.askAnswers.delete(messageId);
     await this.turnRow(turnId, chatId, pick, startedAt, result, 'ok');
     this.d.memory?.answered(chatId);
+  }
+
+  /**
+   * CR-0069 (X-226): the one second look at a likely wrong kind: the same intake with a line naming the first answer. It
+   * streams nothing; Stop ends it like the turn it belongs to. Null when it could not run (cap, prompt, error) or gave no
+   * act, so the first look's answer stands; `say` is its `<say>` after the release gate's filters.
+   */
+  private async secondLook(
+    chatId: string,
+    pick: NonNullable<ReturnType<LaneDeps['ai']['pick']>>,
+    input: IntakeInput,
+  ): Promise<{ act: IntakeDecisionView; usedMemoryIds: string[]; tags: IntakeTag[]; say: string; rawSay: string } | 'stopped' | null> {
+    let built: { system: string; prompt: string };
+    try {
+      built = this.d.protocol.buildIntake(input);
+    } catch {
+      return null;
+    }
+    if (this.d.capCheck && !(await this.d.capCheck(built.system.length + built.prompt.length, 'intake'))) return null;
+    const turnId = this.d.newId('t');
+    const startedAt = this.d.clock.now();
+    const abort = new AbortController();
+    const live = { abort, stopped: false };
+    this.aborts.set(turnId, abort);
+    this.chatTurns.set(chatId, live);
+    const req: TurnRequest = {
+      ...this.d.ai.turnParams(pick.providerId, 'intake'),
+      turnId,
+      purpose: 'intake',
+      system: built.system,
+      prompt: built.prompt,
+      chatId,
+    };
+    let result: TurnResult;
+    try {
+      result = await this.d.ai.runTurn(pick.providerId, req, { onText: () => {}, onSession: () => {} }, abort.signal);
+    } catch {
+      result = { text: '', usage: emptyUsage(), stopReason: 'error', errorKind: 'UNKNOWN' };
+    } finally {
+      this.aborts.delete(turnId);
+      this.chatTurns.delete(chatId);
+    }
+    const failed = result.stopReason === 'error' || result.stopReason === 'cancelled';
+    await this.turnRow(turnId, chatId, pick, startedAt, result, live.stopped ? 'cancelled' : failed ? 'error' : 'ok');
+    if (live.stopped) return 'stopped';
+    if (failed) return null;
+    const parsed = this.d.protocol.parse(result.text);
+    if (!parsed.act) return null;
+    const gate = this.d.protocol.gate(() => {}, new AbortController().signal);
+    gate.push(result.text);
+    await gate.end();
+    return {
+      act: parsed.act,
+      usedMemoryIds: parsed.usedMemoryIds ?? [],
+      tags: parsed.tags ?? [],
+      say: gate.released().trimEnd(),
+      rawSay: parsed.say,
+    };
   }
 
   /**
@@ -1382,4 +1517,27 @@ export class ChatLane {
 
 export function emptyUsage(): AiUsage {
   return { tokensIn: null, tokensOut: null, cacheRead: null, cacheWrite: null, costUsd: null };
+}
+
+/** Run 40638245705: the tag order of a reply whose say came out empty, as one enum for the tech log (never its words). */
+export function envelopeShape(text: string): string {
+  const at = (tag: string) => text.indexOf(tag);
+  const say = at('<say>');
+  const act = at('<act>');
+  const actEnd = at('</act>');
+  const words =
+    text
+      .replace(/<\/?(say|act)>/g, '')
+      .replace(/\{[\s\S]*\}/, '')
+      .trim().length > 0;
+  if (act === -1) return say === -1 ? 'no_tags' : 'say_no_act';
+  if (say === -1) return words ? 'act_with_untagged_words' : 'act_only';
+  if (say > act) return actEnd !== -1 && say > actEnd ? 'say_after_act' : 'say_inside_act';
+  // An empty <say> first (QA2 on run 40667520549, twice even with REASK_EMPTY_LINE): where the words went, if anywhere.
+  const sayEnd = at('</say>');
+  if (actEnd !== -1 && text.slice(actEnd + '</act>'.length).trim()) return 'say_empty_words_after_act';
+  if (sayEnd !== -1 && sayEnd < act && text.slice(sayEnd + '</say>'.length, act).trim()) return 'say_empty_words_before_act';
+  const decision = /"decision"\s*:\s*(\{[^{}]*\})/.exec(text)?.[1] ?? '';
+  if (/"(?!kind")[a-zA-Z]+"\s*:\s*"[^"]+"/.test(decision)) return 'say_empty_words_in_act';
+  return 'say_empty_before_act';
 }

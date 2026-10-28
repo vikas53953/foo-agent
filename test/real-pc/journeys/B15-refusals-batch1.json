@@ -1,0 +1,90 @@
+{
+  "id": "B15-refusals-batch1",
+  "title": "Batch 1 build: asks foo cannot do yet (email, WhatsApp, pay, order, flights) get an honest answer, never a fake one",
+  "spec": "CR-0054 (switched-off features); the batch-1 refusal steps of B13, U20 and U25",
+  "features": "shipped",
+  "steps": [
+    {
+      "do": "send",
+      "text": "check my email"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "email",
+      "expect": "an honest answer that foo cannot read email yet (connections are off in batch 1); no connect card, never a made-up inbox (B13)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me||!me.innerText.includes(\"check my email\"))return false;const after=(sel)=>[...document.querySelectorAll(sel)].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);if(after('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"],[data-testid=\"card-choice\"]').length)return false;const f=after('[data-testid=\"bubble-foo\"]').at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "what did I miss on WhatsApp"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "whatsapp",
+      "expect": "an honest answer that foo cannot see WhatsApp yet; no connect card, never made-up messages (B13)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me||!me.innerText.includes(\"what did I miss on WhatsApp\"))return false;const after=(sel)=>[...document.querySelectorAll(sel)].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);if(after('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"],[data-testid=\"card-choice\"]').length)return false;const f=after('[data-testid=\"bubble-foo\"]').at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Pay my electricity bill now"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "pay-bill",
+      "expect": "an honest answer that foo cannot pay yet; never claims it paid (U20)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me||!me.innerText.includes(\"Pay my electricity bill now\"))return false;const after=(sel)=>[...document.querySelectorAll(sel)].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);if(after('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"],[data-testid=\"card-choice\"]').length)return false;const f=after('[data-testid=\"bubble-foo\"]').at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Order me a pizza from Dominos"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "order",
+      "expect": "an honest answer that foo cannot order yet; never a fake success (U20)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me||!me.innerText.includes(\"Order me a pizza from Dominos\"))return false;const after=(sel)=>[...document.querySelectorAll(sel)].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);if(after('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"],[data-testid=\"card-choice\"]').length)return false;const f=after('[data-testid=\"bubble-foo\"]').at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "Read my latest Gmail"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "gmail",
+      "expect": "an honest answer that foo cannot read Gmail yet; no connect card, not a made-up inbox (U20)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me||!me.innerText.includes(\"Read my latest Gmail\"))return false;const after=(sel)=>[...document.querySelectorAll(sel)].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);if(after('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"],[data-testid=\"card-choice\"]').length)return false;const f=after('[data-testid=\"bubble-foo\"]').at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "send",
+      "text": "book me a flight to Goa on Sat 12 Dec"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 180000,
+      "shot": "flights",
+      "expect": "the jobs-off answer: foo cannot book yet; no plan card, never a booking (U25 with jobs off)",
+      "expectJs": "(()=>{const me=[...document.querySelectorAll('[data-testid=\"bubble-me\"]')].at(-1);if(!me||!me.innerText.includes(\"book me a flight to Goa on Sat 12 Dec\"))return false;const after=(sel)=>[...document.querySelectorAll(sel)].filter((e)=>me.compareDocumentPosition(e)&Node.DOCUMENT_POSITION_FOLLOWING);if(after('[data-testid=\"card-plan\"],[data-testid=\"card-connect\"],[data-testid=\"card-choice\"]').length)return false;const f=after('[data-testid=\"bubble-foo\"]').at(-1);if(!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&/can[’']?t|cannot|can not|not able|unable|don[’']?t have access|no access|haven[’']?t|not yet|isn[’']?t connected|not connected/i.test(t)})()"
+    },
+    {
+      "do": "check",
+      "tid": "card-plan",
+      "count": 0,
+      "note": "no plan card with jobs off"
+    },
+    {
+      "do": "check",
+      "tid": "card-connect",
+      "count": 0,
+      "note": "no connect card with connections off"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

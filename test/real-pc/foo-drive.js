@@ -147,6 +147,41 @@ function copyTechLog(from, out) {
 
 // foo's AI turn log (ai_turns, 0001_init.sql) from the test profile's database, for this journey only. Only ids and enum
 // columns are kept (no text, no tokens of content), so it is safe for the public evidence branch.
+// The job's own trail for the same window: each step's state and each tool call's name, gate and outcome (tool_calls and
+// steps, 0001_init.sql). Enum columns only (no args, results or slots), so it is safe for the public evidence branch; it
+// shows what a job's step turns actually did (J09: 26 step turns with no checklist progress).
+function copyJobTrail(from, out) {
+  const file = path.join(PROFILE, 'data', 'data', 'foo.db');
+  if (!fs.existsSync(file)) return { calls: 0, note: 'no database' };
+  const Database = require(path.join(path.dirname(EXE), 'resources', 'app.asar.unpacked', 'node_modules', 'better-sqlite3'));
+  const db = new Database(file, { readonly: true, fileMustExist: true });
+  const safe = (rows) =>
+    rows.map((r) =>
+      Object.fromEntries(
+        Object.entries(r).filter(([, v]) => v === null || typeof v === 'number' || /^[A-Za-z0-9_.:-]{1,64}$/.test(String(v))),
+      ),
+    );
+  try {
+    const steps = db
+      .prepare(
+        `SELECT s.job_id, s.idx, s.phrase_key, s.state, s.attempts, s.route, s.started_at, s.finished_at FROM steps s
+         JOIN jobs j ON j.id = s.job_id WHERE j.created_at >= ? ORDER BY s.job_id, s.idx`,
+      )
+      .all(from);
+    const calls = db
+      .prepare(
+        `SELECT c.job_id, s.idx AS step_idx, c.tool, c.action_class, c.gate, c.outcome, c.error_kind, c.started_at, c.finished_at
+         FROM tool_calls c LEFT JOIN steps s ON s.id = c.step_id WHERE c.started_at >= ? ORDER BY c.started_at`,
+      )
+      .all(from);
+    const lines = [...safe(steps).map((r) => ({ kind: 'step', ...r })), ...safe(calls).map((r) => ({ kind: 'call', ...r }))];
+    fs.writeFileSync(path.join(out, 'job-trail.jsonl'), lines.map((r) => JSON.stringify(r)).join('\n') + (lines.length ? '\n' : ''));
+    return { steps: steps.length, calls: calls.length };
+  } finally {
+    db.close();
+  }
+}
+
 const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
 function copyAiTurns(from, out) {
   const file = path.join(PROFILE, 'data', 'data', 'foo.db');
@@ -639,6 +674,14 @@ async function main() {
         case 'eval':
           rec.value = await page.evaluate(s.js);
           break;
+        // Waits until s.js is true in the page (a change no new bubble shows, like an answer written again in place).
+        case 'waitJs': {
+          const until = Date.now() + (s.timeoutMs ?? 120_000);
+          let v = false;
+          while (!(v = await page.evaluate(s.js).catch(() => false)) && Date.now() < until) await page.waitForTimeout(500);
+          rec.ok = !!v;
+          break;
+        }
         case 'fill':
           // "env" names a variable whose value is typed (a real key into the Secret box); only the name is logged.
           // pick() honours nth / last; .first() ignored them, so U13 typed the key into the Name box (real-AI run 47fea16).
@@ -870,6 +913,8 @@ async function main() {
     // A measured failure (👀 seen, foo still writing, a dropped kit piece) is never undone by a late end state.
     if (r.ok !== false || r.didntGetThat || r.refused || r.forbidden || r.neverSeenMs !== undefined || r.stillWorking || r.kitDropped)
       continue;
+    // A reply that never came stays failed; a late look can't stand in for it.
+    if (r.do === 'waitReply' && !(r.newBubbles > 0)) continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
     const now = await endState(named).catch(() => false);
@@ -890,6 +935,11 @@ async function main() {
   } catch (e) {
     log({ step: 'aiTurns', ok: false, error: String(e).slice(0, 300) });
   }
+  try {
+    log({ step: 'jobTrail', ...copyJobTrail(journeyStart, out) });
+  } catch (e) {
+    log({ step: 'jobTrail', ok: false, error: String(e).slice(0, 300) });
+  }
   const videoDir = path.join(out, 'video');
   const summary = {
     journey: journey.id,
@@ -902,14 +952,13 @@ async function main() {
   };
   fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ ...summary, results }, null, 2));
   console.log(JSON.stringify(summary));
-  // A required journey (first run: picking the AI) stops the batch, since every later journey needs it. A gate journey (a
-  // batch's acceptance journey, like B1-batch1) does not stop it, but any failed step turns the run red: the workflow ends
-  // the part with the exit status, so a batch is never reported green with its own acceptance steps failing.
-  // A first-run journey that marks its setup step (`"setupDone": true`) and got past it exits 3, not 1: the shared profile
-  // is ready, so the release gate goes on with the other journeys and judges the failed steps in its report.
+  // Any failed step (soft checks aside) turns the run red: the workflow ends the part with the exit status, so a run is
+  // never reported green with a journey failing (audit 2026-10-28). A first-run journey that marks its setup step
+  // (`"setupDone": true`) and got past it exits 3, not 1: the shared profile is ready, so the release gate goes on with the
+  // other journeys and judges the failed steps in its report.
   const setup = results.filter((r) => journey.steps[r.i]?.setupDone);
   if (journey.required && summary.failed > 0 && setup.length && setup.every((r) => r.ok !== false)) process.exit(3);
-  if ((journey.required || journey.gate) && summary.failed > 0) process.exit(1);
+  if (summary.failed > 0) process.exit(1);
 }
 
 main().catch((e) => {

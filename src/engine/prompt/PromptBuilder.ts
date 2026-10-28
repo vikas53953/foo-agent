@@ -47,7 +47,23 @@ export const SUGGESTIONS_ASK =
  * had "no record" of one instead of saying it cannot book yet (judge run 40269932734, off-already-done).
  */
 export const JOBS_OFF_LINE =
-  'This build cannot do tasks yet (booking, buying, sending, paying). Asked to do one, decide "job" as usual. Asked whether you already did one, say plainly that you have not and cannot do tasks yet; never say you have "no record" of it.';
+  'foo cannot do tasks yet (booking, buying, sending, paying, or checking live news, weather or prices on the web). Asked to do one, decide "job" as usual. Asked for words you can write from what you already know (an answer, a table, a comparison, a list, a plan), decide "reply" and write them, saying plainly when facts such as prices may be out of date. foo cannot read the user’s email, WhatsApp or other apps yet either, so never offer to read, check or catch up on them. Changing foo’s own settings (dark mode, text size, language and the like) is not a task: decide "setting" as usual. Asked whether you already did one, say plainly, in everyday words, that you have not and cannot do tasks yet: never mention a build or a version, never say you have "no record" of it, and never offer to search, find or check something.';
+
+/** CR-0069 (X-226): a build with memory switched off tells the AI so (QA-X-F30: "Switch to dark mode" came back `memory`). */
+export const MEMORY_OFF_LINE =
+  'This build cannot remember things yet. Decide "memory" only when the message itself says to remember, note or forget something; asking to change how foo looks or works, like "switch to dark mode", is "setting", whatever came before it.';
+/** CR-0069: the second look at a `memory` answer for a message with no remember, note or forget word. */
+export const REASK_MEMORY_LINE =
+  'Your first answer for this message was "memory", but it does not ask to remember, note or forget anything. Decide again from the message itself: a change to how foo looks or works is "setting"; a question or small talk is "reply".';
+/** CR-0069: the second look at a `reply` to a message that asks for a task while jobs are off (QA-X-F32). */
+export const REASK_JOB_LINE =
+  'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though foo cannot do tasks yet; when it only asks a question, such as whether you already did one, or asks foo for words (a joke, an answer, an explanation, a draft to read here), "reply".';
+
+/** CR-0069 item 9: the retried turn after a `reply` with an empty <say> (CR-0041; real Claude, run 40643760745). */
+export const REASK_EMPTY_LINE =
+  'Your first answer for this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>.';
+
+const REASK_LINES = { memory: REASK_MEMORY_LINE, job: REASK_JOB_LINE, empty: REASK_EMPTY_LINE } as const;
 
 /** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
  * with the kit section, so a tight local budget leaves it out with the kit (part `4k`). */
@@ -120,6 +136,11 @@ export interface IntakeInput {
   answers?: string[];
   /** CR-0059 row 6: jobs are switched off in this build (JOBS_OFF_LINE goes with part 4). */
   jobsOff?: boolean;
+  /** CR-0069 (X-226): memory is switched off in this build (MEMORY_OFF_LINE goes with part 4). */
+  memoryOff?: boolean;
+  /** CR-0069: this turn is the second look at a likely wrong kind (REASK_MEMORY_LINE or REASK_JOB_LINE goes with part 4), or
+   * (item 9) the retry after a reply with an empty <say> (REASK_EMPTY_LINE). */
+  reask?: 'memory' | 'job' | 'empty';
   /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
   visuals?: Visuals;
 }
@@ -322,7 +343,7 @@ export class PromptBuilder {
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
     const protocolWith = (kit: string) =>
       gate(
-        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}`,
+        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}${input.memoryOff ? `\n${MEMORY_OFF_LINE}` : ''}${input.reask ? `\n${REASK_LINES[input.reask]}` : ''}`,
         '4',
       );
     let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;

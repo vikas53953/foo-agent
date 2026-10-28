@@ -103,7 +103,7 @@ describe('AT-076 (review): sensitive guesses are never saved', () => {
 
     const turn = x.turnsJsonl().find((t) => t.purpose === 'memory_review')!;
     expect(String(turn.prompt)).toContain('Messages since my last look:');
-    expect(String(turn.prompt)).toContain('[m_u1] [You, Fri 16 Oct');
+    expect(String(turn.prompt)).toContain('[m_u1] [the user, Fri 16 Oct');
     expect(String(turn.system)).toContain('Save only facts that will matter in future conversations.');
 
     const saved = facts(x);

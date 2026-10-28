@@ -4,7 +4,7 @@
 # Codex CLI signed in with the OPENAI_API_KEY secret. "auto" runs every AI whose secret exists, Claude first, one at a
 # time. Evidence (screenshots, logs, thread dumps) goes to the `evidence` branch under real-ai/<short-sha>-<ai>/ and
 # real-ai/latest-<ai>/, since agents cannot read CI artifacts.
-# Spend guards: owner-started runs only (a tap or a merge into main), one run at a time, a journey cap, a Sonnet-class model for Claude,
+# Spend guards: owner-started runs only (a tap, a ready PR into main or a merge into main), one run at a time, a journey cap, a Sonnet-class model for Claude,
 # --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
 # Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
 # before anything is pushed.
@@ -22,7 +22,7 @@ on:
         default: all
         required: true
       max_journeys:
-        description: Stop after this many journeys per AI (cost cap)
+        description: Stop after this many journeys per AI in each set, batch1 and other (cost cap)
         default: '80'
         required: true
       shards:
@@ -41,6 +41,11 @@ on:
   # Vikas picked "On every merge to main" (2026-10-21): each merge runs the defaults on that commit, no tap needed.
   push:
     branches: [main]
+  # Vikas 2026-10-28: "test with real AI only". Every ready PR into main runs the real-AI journeys on its own merge commit
+  # before it merges; drafts wait until marked ready.
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
   # One queue per branch (coordinator, 28 Oct): a PR's waiting run and main's waiting run never cancel each other.
@@ -54,8 +59,8 @@ jobs:
   # Which AIs to run: the asked one, or with "auto" every AI whose secret exists. Fails fast when none can run.
   plan:
     name: Pick the AIs
-    # Only the owner may spend the keys. Neither trigger fires for forks, and fork PRs never see secrets.
-    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    # Only the owner may spend the keys. No trigger fires for forks: a fork PR never sees secrets, and its actor is not the owner.
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent' && !github.event.pull_request.draft
     runs-on: ubuntu-latest
     outputs:
       ais: ${{ steps.pick.outputs.ais }}
@@ -78,15 +83,20 @@ jobs:
           echo "ais=[$(IFS=,; echo "${ais[*]}")]" >> "$GITHUB_OUTPUT"
           echo "shards=[$(seq -s, 0 $((SHARDS - 1)))]" >> "$GITHUB_OUTPUT"
 
+  # Two sets (coordinator, 28 Oct): "batch1" is every journey for a feature switched on in the batch being shipped
+  # (test/real-pc/journeys-batch1.txt) and must be green to merge; "other" runs the rest, and its reds stay visible on its
+  # own check without failing the run, until that feature's batch comes.
   real-ai:
-    name: Real-AI journeys on ${{ matrix.ai }}, part ${{ matrix.shard }} (windows-latest)
+    name: Real-AI journeys on ${{ matrix.ai }}, ${{ matrix.set == 'batch1' && 'batch 1 (required)' || 'other features (not required)' }}, part ${{ matrix.shard }} (windows-latest)
     needs: plan
     runs-on: windows-latest
+    continue-on-error: ${{ matrix.set == 'other' }}
     timeout-minutes: 180 # ~20 journeys per part at 2–5 min each, plus a ~4 min build
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix:
+        set: [batch1, other]
         ai: ${{ fromJSON(needs.plan.outputs.ais) }}
         shard: ${{ fromJSON(needs.plan.outputs.shards) }}
     steps:
@@ -144,12 +154,24 @@ jobs:
           MAX_JOURNEYS: ${{ inputs.max_journeys || '80' }}
           SHARD: ${{ matrix.shard }}
           SHARDS: ${{ inputs.shards || '4' }}
+          SET: ${{ matrix.set }}
+          # The batch-1 set tests the batch-1 build: every journey runs with the shipped features (jobs, memory, web… off)
+          # unless it names its own. Run 40638245705: U17 ran with jobs on, and an earlier journey's job took its dark-mode ask.
+          FOO_FEATURES: ${{ matrix.set == 'batch1' && 'shipped' || 'all' }}
         run: |
           export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
           kit="$RUNNER_TEMP/kit/test/real-pc"
           rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
-          if [ "$JOURNEYS" = "all" ]; then list=$(tr -d '\r' < "$kit/journeys.txt"); else list="$JOURNEYS"; fi
+          if [ "$JOURNEYS" = "all" ]; then
+            b1=" $(tr -d '\r' < "$kit/journeys-batch1.txt" | tr '\n' ' ') "
+            list=""
+            for j in $(tr -d '\r' < "$kit/journeys.txt"); do
+              case "$b1" in *" $j "*) [ "$SET" = "batch1" ] && list="$list $j" ;; *) [ "$SET" = "other" ] && list="$list $j" ;; esac
+            done
+          elif [ "$SET" = "batch1" ]; then list="$JOURNEYS"
+          else echo "journeys named by hand run in the batch1 set only"; rm -rf "$FOO_REAL_TEST_DIR/runs"; exit 0 # no runs, so no push: the evidence of an earlier full run stays
+          fi
           list=$(echo $list) # one line, single spaces, so the J01 check below sees " J01-J02-first-run "
           # The first run must pick the AI; every other journey needs it, so it always goes first.
           # Every part needs its own first run (a fresh profile picks the AI); the rest of the list is dealt round-robin.
@@ -163,7 +185,13 @@ jobs:
           echo "part $SHARD of $SHARDS: $list"
           status=0
           cd "$kit"
+          noai=0
           for j in $list; do
+            # After the first run failed twice, journeys on the shared profile have no AI; a journey on its own profile
+            # ("profile": "own" sets itself up) still runs, so one failure never hides another journey's result.
+            if [ "$noai" = 1 ] && ! grep -q '"profile": *"own"' "journeys/$j.json"; then
+              echo "::error::$j not run: the first run failed, so the shared profile has no AI"; continue
+            fi
             echo "=== $j ==="
             if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
               status=1
@@ -174,7 +202,7 @@ jobs:
                 taskkill //IM foo.exe //F > /dev/null 2>&1 || true
                 rm -rf "$FOO_REAL_TEST_DIR/profile"
                 if ! "$FOO_EXE" foo-drive.js "journeys/$j.json" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; then
-                  echo "::error::First run failed twice; later journeys need an AI, stopping."; break
+                  echo "::error::First run failed twice; journeys on the shared profile are skipped, own-profile ones still run."; noai=1
                 fi
               fi
             fi
@@ -187,7 +215,7 @@ jobs:
         shell: bash
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
+            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, set ${{ matrix.set }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue
@@ -218,12 +246,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AI: ${{ matrix.ai }}
           SHARD: ${{ matrix.shard }}
+          SET: ${{ matrix.set }}
         run: |
           [ -f "$RUNNER_TEMP/no-push" ] && { echo "skipped: key found in evidence"; exit 0; }
           runs="$RUNNER_TEMP/foo-real-test/runs"
           [ -d "$runs" ] || { echo "no runs"; exit 0; }
           short="$(git rev-parse --short=7 HEAD)-$AI"
-          part="s$SHARD"
+          # batch 1 parts are b1-s0…, the other set keeps s0… (QA reads both).
+          part="s$SHARD"; [ "$SET" = "batch1" ] && part="b1-s$SHARD"
           printf 'run %s · ref %s · commit %s · AI %s\n' "$GITHUB_RUN_ID" "${{ inputs.ref || github.sha }}" "$(git rev-parse HEAD)" "$AI" > "$runs/RUN.txt"
           work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
           git init -q && git config core.autocrlf false

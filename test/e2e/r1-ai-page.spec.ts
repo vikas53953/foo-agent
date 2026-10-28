@@ -104,8 +104,36 @@ const call = (f: Frame, method: string, params: object) =>
   ] as const);
 /** The same call, made from the user's tap on the page's Go button. */
 async function tap(f: Frame, method: string, params: object): Promise<Reply> {
-  await f.evaluate(([m, p]) => ((window as unknown as { next: unknown }).next = [m, p]), [method, params] as const);
+  await f.evaluate(
+    ([m, p]) => {
+      const w = window as unknown as { next: unknown; last: unknown };
+      w.next = [m, p];
+      w.last = undefined;
+    },
+    [method, params] as const,
+  );
+  // Playwright waits for Go to be still inside the page's frame, not for the frame itself: a row that moves as a message
+  // lands (the list scrolls) would take the click off Go. Wait for the frame to stay put first.
+  const frameEl = page.getByTestId(TID.bubbleFoo).filter({ hasText: BUILDING_SAY }).getByTestId(TID.aiPageFrame);
+  // Still = the same box on two readings 150 ms apart (the first reading never counts; no box is never still).
+  let at: string | null = null;
+  await expect
+    .poll(
+      async () => {
+        const box = await frameEl.boundingBox();
+        const now = box ? JSON.stringify(box) : null;
+        const still = now !== null && now === at;
+        at = now;
+        return still;
+      },
+      { intervals: [150], message: "the page's frame stays put" },
+    )
+    .toBe(true);
   await f.locator('#go').click();
+  // A click that missed Go leaves `last` unset: fail on that, never read the last tap's answer.
+  await expect
+    .poll(() => f.evaluate(() => (window as unknown as { last?: unknown }).last !== undefined), { message: 'the tap reached Go' })
+    .toBe(true);
   return f.evaluate(() => (window as unknown as { last: Promise<Reply> }).last);
 }
 

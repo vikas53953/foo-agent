@@ -1,7 +1,7 @@
 {
   "id": "U17-settings-by-chat",
   "title": "Change a setting by chat: mini line with Undo; theme and accent rows",
-  "spec": "06 Settings changed-by-chat, settings:undo, 10-2 §C.5 Settings",
+  "spec": "06 Settings changed-by-chat, settings:undo, 10-2 §C.5 Settings; CR-0043 (the setting line with Undo)",
   "covers": ["C.5 Settings", "C.8 Quiet premium polish"],
   "steps": [
     {
@@ -14,24 +14,25 @@
       "text": "Switch to dark mode"
     },
     {
-      "do": "waitReply",
+      "do": "waitJs",
       "timeoutMs": 150000,
       "shot": "dark",
-      "expect": "foo switches to dark and shows \"Changed: Theme → Dark. [Undo]\"",
       "ref": "UX-12-02",
-      "expectJs": "document.documentElement.dataset.theme === 'dark'"
+      "expect": "foo switches to dark and shows the line \"Changed: Theme → Dark. [Undo]\" (CR-0043: a system line, not a reply bubble)",
+      "js": "(()=>{const l=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"thread-marker\"][data-setting=\"changed\"]')].at(-1);return document.documentElement.dataset.theme==='dark'&&!!l&&/Theme/.test(l.innerText)&&!!l.querySelector('[data-action=\"undo\"]')})()"
     },
     {
       "do": "click",
-      "soft": true,
-      "tid": "app-undo-action",
-      "last": true
+      "css": "[data-testid=\"thread-log\"] [data-testid=\"thread-marker\"][data-setting=\"changed\"] [data-testid=\"thread-marker-link\"][data-action=\"undo\"]",
+      "last": true,
+      "note": "Undo on the setting line"
     },
     {
-      "do": "wait",
-      "ms": 1500,
+      "do": "waitJs",
+      "timeoutMs": 10000,
       "shot": "undo",
-      "expect": "back to light"
+      "expect": "back to light; the line says it was undone",
+      "js": "(()=>document.documentElement.dataset.theme!=='dark'&&!!document.querySelector('[data-testid=\"thread-marker\"][data-setting=\"undone\"]'))()"
     },
     {
       "do": "key",
