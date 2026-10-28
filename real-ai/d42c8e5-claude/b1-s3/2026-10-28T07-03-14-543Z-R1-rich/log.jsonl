@@ -1,0 +1,17 @@
+{"t":"2026-10-28T07:03:14.543Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers (batch 1 build: jobs are off)","spec":"CR-0022 R1; CR-0054 (switched-off features)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:03:19.982Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:03:19.989Z","i":0,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":2,"ok":true,"ms":4}
+{"t":"2026-10-28T07:03:20.096Z","i":1,"do":"send","sentAt":1793171000063,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-10-28T07:03:34.805Z","i":2,"do":"waitReply","expect":"a new, finished answer with a table in chat; never a plan card or a job (jobs are off in batch 1, and a table is words, so it is a chat answer)","firstReplyMs":8650,"newBubbles":1,"ok":false,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:03 AM","kit":[],"endState":false,"ms":14709}
+{"t":"2026-10-28T07:03:34.865Z","shot":"01-table.png"}
+{"t":"2026-10-28T07:03:34.867Z","i":3,"do":"check","note":"no plan card with jobs off","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T07:03:34.874Z","i":4,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T07:03:34.875Z","i":5,"do":"eval","note":"count foo's answers before the ask, so only a new, settled answer counts","value":3,"ok":true,"ms":1}
+{"t":"2026-10-28T07:03:34.968Z","i":6,"do":"send","sentAt":1793171014955,"sent":true,"before":0,"ok":true,"ms":93}
+{"t":"2026-10-28T07:03:52.184Z","i":7,"do":"waitReply","expect":"one reply: a day-by-day plan in chat, or the honest jobs-off line; never a plan card or a job","firstReplyMs":7596,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's a relaxed 3-day Jaipur plan for your parents, with a car for the whole trip and a late start each day.\n\nDay 1: Old city\n\nGovind Dev Ji temple in the morning\nCity Palace and Jantar Mantar\nHawa Mahal from the outside, then tea at a rooftop café across the road\nJohari Bazaar in the evening for a slow walk and shopping\n\nDay 2: Forts\n\nAmber Fort early, before the heat and crowds; a jeep up the slope saves their knees\nJal Mahal photo stop on the way back\nRest after lunch\nNahargarh Fort at sunset, which you can do by car with very little walking\n\nDay 3: Easy day\n\nAlbert Hall Museum and its gardens\nBirla Mandir\nLunch of dal baati churma, then last-minute shopping for block prints and jewellery\n\nJaipur is pleasant from November to February, but mornings are cool and the forts have many steps. Do they have any trouble with stairs, or any food needs? That would help me adjust the plan.\n\n7:03 AM","kit":[],"endState":true,"ms":17215}
+{"t":"2026-10-28T07:03:52.257Z","shot":"02-trip.png"}
+{"t":"2026-10-28T07:03:52.259Z","i":8,"do":"check","note":"no plan card with jobs off","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T07:03:52.267Z","i":9,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T07:03:52.390Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-10-28T07:03:52.402Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T07:03:52.404Z","step":"jobTrail","steps":0,"calls":0}

@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:02 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n7:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:02 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n7:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:03 AM"
+  }
+]
