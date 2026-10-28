@@ -131,6 +131,20 @@
     },
     {
       "do": "send",
+      "text": "phir se batao, tumhara naam kya hai? sirf naam",
+      "note": "the user re-asks foo's name with no name of their own given (QA2 step 40 case, in plain words)"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q7-no-name-reask",
+      "feature": "chat",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "asked again for its own name, foo gives its own name again; never 'I don't know your name' and never asks the question back",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\bfoo\\b/i.test(t)&&!/aapka naam kya|tumhara naam kya|what.s your name|what is your name|ਤੁਹਾਡਾ ਨਾਮ ਕੀ|आपका नाम क्या/i.test(t)&&!/<\\/?say>/.test(t)})()"
+    },
+    {
+      "do": "send",
       "text": "Mera naam Gurpreet hai."
     },
     {
