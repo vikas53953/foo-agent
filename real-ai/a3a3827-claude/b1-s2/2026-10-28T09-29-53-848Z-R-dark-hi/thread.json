@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਬਟਰਸਕਾਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਪਰ ਕੁਝ ਖਾਸ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ।\n\nਬਟਰਸਕਾਚ / ਬਲੈਕ ਫੌਰੈਸਟ: ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\nਰਸਮਲਾਈ ਕੇਕ: ਜੇ ਮੰਮੀ ਨੂੰ ਮਿਠਾਈ ਪਸੰਦ ਹੈ, ਥੋੜ੍ਹਾ ਵੱਖਰਾ ਤੇ ਖਾਸ।\nਫੋਟੋ ਕੇਕ: ਉਨ੍ਹਾਂ ਦੀ ਕੋਈ ਪਿਆਰੀ ਫੋਟੋ ਨਾਲ, ਦਿਲ ਜਿੱਤ ਲਵੇਗਾ।\n\nਕੇਕ Thu 29 Oct ਤੱਕ ਬੁੱਕ ਕਰ ਲਓ, ਤਾਂ ਜੋ Fri 30 Oct ਨੂੰ ਤਾਜ਼ਾ ਮਿਲੇ। ਮੰਮੀ ਨੂੰ ਜ਼ਿਆਦਾ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਜਾਂ ਹਲਕਾ?\n\n9:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n9:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know. Banks and offices should be open as usual. This is from what I already know, not a live check, so confirm with the official holiday list if it matters. Diwali is the next big one, around Sun 8 Nov.\n\n9:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n9:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hello in Hindi is नमस्ते (namaste). A casual version is \"Hi\" or \"Kya haal hai?\" (how are you?).\n\n9:28 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n9:28 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here it is: print(\"Hello, world!\"). Run it with Python and it shows Hello, world! on the screen.\n\n9:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n9:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states with their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n9:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n9:29 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status and PNR, there's also Indian Railways Enquiry.\n\n9:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n9:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Mummy's cake for Fri 30 Oct is still open, so want me to pick one up for you, or is there something else?\n\n9:30 AM"
+  }
+]

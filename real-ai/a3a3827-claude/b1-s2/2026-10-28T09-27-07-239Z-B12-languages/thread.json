@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:26 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:26 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:26 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n9:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ka birthday Fri 30 Oct ko hai, toh cake ek din pehle (Thu 29 Oct) tak book kar lo, taaki fresh aur time par mile. Kuch ideas:\n\nButterscotch ya black forest: safe choice, sabko pasand aata hai.\nRasmalai ya gulab jamun cake: agar mummy ko mithai pasand hai, yeh thoda alag aur special lagega.\nPhoto cake: unki koi pyaari photo cake par, dil jeet lega.\nEggless fruit cake: halka aur healthy, agar zyada meetha nahi chahiye.\n\nMummy ko kaunsa flavour sabse zyada pasand hai? Phir main usi hisaab se pakka option nikaal deta hoon.\n\n9:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n9:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਬਟਰਸਕਾਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਪਰ ਕੁਝ ਖਾਸ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ।\n\nਬਟਰਸਕਾਚ / ਬਲੈਕ ਫੌਰੈਸਟ: ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\nਰਸਮਲਾਈ ਕੇਕ: ਜੇ ਮੰਮੀ ਨੂੰ ਮਿਠਾਈ ਪਸੰਦ ਹੈ, ਥੋੜ੍ਹਾ ਵੱਖਰਾ ਤੇ ਖਾਸ।\nਫੋਟੋ ਕੇਕ: ਉਨ੍ਹਾਂ ਦੀ ਕੋਈ ਪਿਆਰੀ ਫੋਟੋ ਨਾਲ, ਦਿਲ ਜਿੱਤ ਲਵੇਗਾ।\n\nਕੇਕ Thu 29 Oct ਤੱਕ ਬੁੱਕ ਕਰ ਲਓ, ਤਾਂ ਜੋ Fri 30 Oct ਨੂੰ ਤਾਜ਼ਾ ਮਿਲੇ। ਮੰਮੀ ਨੂੰ ਜ਼ਿਆਦਾ ਮਿੱਠਾ ਪਸੰਦ ਹੈ ਜਾਂ ਹਲਕਾ?\n\n9:27 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n9:27 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov isn't a public holiday in Mumbai as far as I know. Banks and offices should be open as usual. This is from what I already know, not a live check, so confirm with the official holiday list if it matters. Diwali is the next big one, around Sun 8 Nov.\n\n9:28 AM"
+  }
+]

@@ -1,8 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-30-56-989Z-J01-J02-first-run"}
-{"journey":"B03-web-local","title":"Web without keys: news read locally, sources","steps":9,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-31-47-829Z-B03-web-local"}
-{"journey":"J09-J18-booking","title":"Restaurant booking, watch live and stop (never approves)","steps":13,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-34-36-783Z-J09-J18-booking"}
-{"journey":"J05-web","title":"First real task with the internet (news + sources)","steps":6,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-38-58-926Z-J05-web"}
-{"journey":"J15-helper","title":"Create a helper","steps":4,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-39-27-055Z-J15-helper"}
-{"journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-39-43-667Z-U10-plan-change-stop"}
-{"journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-40-43-780Z-U15-routines"}
-{"journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-41-26-650Z-U23-ai-page-chips"}
