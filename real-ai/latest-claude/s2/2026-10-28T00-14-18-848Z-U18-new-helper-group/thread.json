@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n12:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! 🌿 Hindi में \"hello\" को नमस्ते कहते हैं, और आप \"नमस्कार\" भी कह सकते हैं।\n\n12:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n12:07 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:08 AM\n12:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:07 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Booking table for 2, Sat 31 Oct, 8:00 PM\nlive checklist\n2 steps done · Show\nYou picked\nShowed you before the booking for 2 on Sat 31 Oct, 8:00 PM\nYou said yes\nBooked table for 2, Sat 31 Oct, 8:00 PM\nStopped by you\n12:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:08 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Booking table for 2, Sat 31 Oct, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\n12:10 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:10 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n12:12 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n12:12 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n12:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n12:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n12:14 AM"
+  }
+]

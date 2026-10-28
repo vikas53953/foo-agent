@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n11:58 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 11:59 PM\n11:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:59 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooked for well-rated Italian restaurants in\nChecked restaurant table booking sites\nR\nKept 3 Italian places with a table that fit free on Sat 31 Oct, 8:00 PM for 2\nStopped by you\n11:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:59 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "withdrawn",
+    "text": "No longer needed. The job was stopped.\n11:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:59 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n12:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n12:02 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n12:02 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 12:02 AM\n12:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:02 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 1 min\nDetails\n12:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:02 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays.\n\nEntry for Indian adults is ₹20. Students up to class 12 get in free with their ID card. Foreign nationals pay ₹500.\n\nThis is from the museum's official Plan Your Visit page. Tickets can be booked online at https://www.zoonga.com/national-museum. Tomorrow, Thu 29 Oct, it is open 10:00 AM to 6:00 PM.\n\n12:03 AM"
+  }
+]
