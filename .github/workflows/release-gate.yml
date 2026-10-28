@@ -1,0 +1,469 @@
+# Spec: project testing rule §4–10 (Vikas 2026-10-21); CR-0054 (batch 1); Vikas 2026-10-27 "professionals test the actual
+# app, every feature, like a user, and visually". The release gate: nothing goes to Vikas unless this run says PASS.
+#   drive   builds the installer he downloads (NSIS, test hooks checked absent), installs it silently on a clean Windows
+#           runner, opens the INSTALLED app with a
+#           real AI (his ANTHROPIC_API_KEY typed into foo's own Secret box) and walks test/real-pc/gate.txt like a user:
+#           messy Hinglish, Hindi, Punjabi, typos, wrong name and key, gibberish, restarts and quits, every control clicked.
+#           Each journey is filmed; each answer is pictured while foo is still working (1.5, 3 and 6 s) and after.
+#           pass^k: the chat, restart and settings journeys run `rounds` times and every round counts; nothing is re-run.
+#   review  a separate reviewer (Sonnet through the API, never the builder) checks each picture beside its walkthrough frame,
+#           then scripts/release-gate.ts writes one HTML report: per feature works / wrong vs design / broken / not tested,
+#           plus the other checks on the same commit (CI fast lane, the four Windows shards, golden lane), which must be green.
+#           At the end it uninstalls foo and checks the app is gone (installer smoke test, Grok practice 13).
+#   red-first  for each `Red-first: <journey>[@<sha>]` line in the pushed commits, builds the commit before the fix (or <sha>)
+#           and runs that journey once: it must fail there, or the test does not catch the bug (Grok practice 4).
+#   mutation   Stryker on the chat envelope, AI-answer classifier, phrase rules and probe; below the floor is red (practice 16).
+#   release only on PASS with red-first and mutation green, re-uploads the exact installer that was tested as
+#           foo-windows-app-gated: the one artifact to send.
+# Evidence (report, pictures, step records; no videos) goes to the `evidence` branch under gate/<short-sha>/ and
+# gate/latest/, since agents cannot read CI artifacts. The videos are in the release-gate-report download.
+# Spend guards: owner-started runs only (dispatch or a push to main), one run at a time, Sonnet for the reviewer, a hard timeout.
+# The driver never clicks Approve, Pay, Book or Send. The key reaches only the steps that need it and the evidence is
+# scanned for it before anything is kept.
+name: Release gate
+
+on:
+  # Vikas 2026-10-28 (decision card): every merge to main, and before any app is sent (only foo-windows-app-gated goes out).
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch, tag or commit to test (main, or a PR head branch)
+        default: main
+        required: true
+      rounds:
+        description: pass^k - how many times the chat, restart and settings journeys run (every round must pass)
+        default: '3'
+        required: true
+      model:
+        description: Model the separate reviewer uses (foo's own turns use foo's own pick for the Anthropic key)
+        default: claude-sonnet-5-5
+        required: true
+
+concurrency:
+  # One gate at a time per branch, so a branch run never cancels main's waiting run (28 Oct).
+  group: release-gate-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write # pushes the evidence branch only
+  checks: read
+  actions: read
+
+jobs:
+  drive:
+    name: Drive the packaged app like a user (windows-latest, real AI)
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: windows-latest
+    timeout-minutes: 200
+    outputs:
+      sha: ${{ steps.head.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - id: head
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      # The journey kit and the crawler helpers come from this workflow's branch, so an older commit (the one Vikas saw a
+      # bug on) can be tested with today's gate: it must come out red there, or the gate does not catch that bug.
+      - name: Take the gate kit from the workflow's branch
+        shell: bash
+        env:
+          KIT_REF: ${{ github.sha }}
+        run: |
+          git fetch -q --depth 1 origin "$KIT_REF"
+          rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
+          paths="test/real-pc"
+          git cat-file -e FETCH_HEAD:test/qa-explore/inpage.js 2>/dev/null && paths="$paths test/qa-explore/inpage.js"
+          git archive FETCH_HEAD $paths | (cd "$RUNNER_TEMP/kit" && tar -x)
+          echo "app $(git rev-parse HEAD) kit $KIT_REF ($paths)"
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Download the Electron binary
+        run: node node_modules/electron/install.js
+      - run: pnpm build
+      - name: Rebuild native modules for Electron
+        run: pnpm rebuild:electron
+      - name: Package the installer (NSIS, the file Vikas downloads)
+        run: pnpm exec electron-builder --win nsis --publish never
+      # Installer smoke test: a silent per-user install (09-windows §9.3: no admin) on this clean runner, then every journey
+      # drives the INSTALLED foo.exe, not the build folder.
+      - name: Install foo with the installer
+        id: install
+        shell: pwsh
+        run: |
+          $setup = Get-ChildItem dist -Filter '*Setup*.exe' | Select-Object -First 1
+          if (-not $setup) { Write-Output '::error::No installer in dist/'; exit 1 }
+          $dir = Join-Path $env:LOCALAPPDATA 'Programs\foo'
+          if (Test-Path $dir) { Write-Output "::error::$dir exists before the install: the runner is not clean"; exit 1 }
+          $p = Start-Process -FilePath $setup.FullName -ArgumentList '/S' -Wait -PassThru
+          Get-Process foo -ErrorAction SilentlyContinue | Stop-Process -Force
+          $exe = Join-Path $dir 'foo.exe'
+          $menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\foo.lnk'
+          $checks = [ordered]@{
+            'installer exit code 0' = ($p.ExitCode -eq 0)
+            'foo.exe installed' = (Test-Path $exe)
+            'uninstaller installed' = (Test-Path (Join-Path $dir 'Uninstall foo.exe'))
+            'Start menu shortcut' = (Test-Path $menu)
+          }
+          $checks.GetEnumerator() | ForEach-Object { Write-Output ("{0}: {1}" -f $_.Key, $(if ($_.Value) { 'yes' } else { 'NO' })) }
+          $mb = [math]::Round($setup.Length / 1MB, 1)
+          "### Installer: $($setup.Name), $mb MB" >> $env:GITHUB_STEP_SUMMARY
+          $checks.GetEnumerator() | ForEach-Object { "- $($_.Key): $(if ($_.Value) { 'yes' } else { '**no**' })" >> $env:GITHUB_STEP_SUMMARY }
+          if ($checks.Values -contains $false) { Write-Output '::error::The installer did not install foo properly.'; exit 1 }
+          "exe=$exe" >> $env:GITHUB_OUTPUT
+          "dir=$dir" >> $env:GITHUB_OUTPUT
+          "setup=$($setup.FullName)" >> $env:GITHUB_OUTPUT
+      - name: No test hooks in the installed app (08-3 §22.1)
+        shell: bash
+        env:
+          DIR: ${{ steps.install.outputs.dir }}
+        run: |
+          [ -f "$DIR/resources/app.asar" ] || { echo "::error::app.asar is missing from the installed app."; exit 1; }
+          for needle in "__fooTest" "test:clock" "test:seed"; do
+            if grep -a -q "$needle" "$DIR/resources/app.asar"; then echo "$needle found in app.asar"; exit 1; fi
+          done
+      - name: Video recorder for the journeys
+        run: pnpm exec playwright install ffmpeg
+      - name: Run the gate journeys
+        shell: bash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ELECTRON_RUN_AS_NODE: '1'
+          FOO_REAL_AI_ONLY: '1' # Vikas 2026-10-28: real AI only; the driver refuses FOO_TEST and FOO_FAKE_* settings
+          FOO_VIDEO: '1'
+          FOO_WATCH_MS: '1500,3000,6000'
+          ROUNDS: ${{ inputs.rounds || '3' }}
+        run: |
+          export FOO_EXE="${{ steps.install.outputs.exe }}"
+          export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-gate"
+          export FOO_QA_INPAGE="$RUNNER_TEMP/kit/test/qa-explore/inpage.js"
+          kit="$RUNNER_TEMP/kit/test/real-pc"
+          rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
+          [ -n "$ANTHROPIC_API_KEY" ] || { echo "::error::ANTHROPIC_API_KEY is not set: the gate needs a real AI."; exit 1; }
+          file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
+          # Each journey's failed steps go to this log too, so a failure can be read without downloading the evidence.
+          failed_steps() {
+            node -e '
+              const fs = require("fs"), path = require("path"), d = path.join(process.env.FOO_REAL_TEST_DIR, "runs");
+              const last = fs.readdirSync(d).filter((x) => fs.existsSync(path.join(d, x, "summary.json"))).sort().pop();
+              const s = last ? JSON.parse(fs.readFileSync(path.join(d, last, "summary.json"), "utf8")) : { results: [] };
+              for (const r of s.results.filter((r) => r.ok === false && !r.soft))
+                console.log(`  failed step ${r.i} ${r.do}${r.tid ? " " + r.tid : ""}: ${String(r.error || r.blocked || (r.forbidden ? "👀 at " + r.forbidden.at + " ms" : "") || "end state not reached").slice(0, 200)}`);
+            ' || true
+          }
+          drive() { echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; failed_steps; return $s; }
+          list=$(tr -d '\r' < "$kit/gate.txt")
+          # What the report must find: each journey's rounds and the features its steps cover. A round with no record
+          # (the driver crashed) then counts as broken instead of silently shrinking pass^k.
+          node -e '
+            const fs = require("fs"), path = require("path");
+            const [kit, rounds, ...ids] = process.argv.slice(1);
+            const out = ids.map((id, k) => {
+              const f = fs.existsSync(path.join(kit, "gate", id + ".json")) ? path.join(kit, "gate", id + ".json") : path.join(kit, "journeys", id + ".json");
+              const j = JSON.parse(fs.readFileSync(f, "utf8"));
+              const features = [...new Set(j.steps.map((s) => s.feature || j.feature).filter(Boolean))];
+              return { journey: j.id, features, count: k === 0 || j.once ? 1 : Number(rounds) };
+            });
+            fs.writeFileSync(path.join(process.env.FOO_REAL_TEST_DIR, "runs", "expected.json"), JSON.stringify(out, null, 2));
+          ' "$kit" "$ROUNDS" $list
+          cd "$kit"
+          # The first run sets up the shared profile; every later shared-profile journey needs its AI. No retry.
+          first=$(echo $list | cut -d' ' -f1)
+          # Exit 3: setup finished but some first-run steps failed; they are judged in the report and the rest still runs.
+          rc=0; drive "$first" || rc=$?
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then echo "::error::$first could not finish setup; the journeys after it need it, stopping."; exit 1; fi
+          for round in $(seq 1 "$ROUNDS"); do
+            for j in $list; do
+              [ "$j" = "$first" ] && continue
+              # Journeys that only check a first-run screen (a wrong key) run once; the rest run every round.
+              if [ "$round" -gt 1 ] && grep -q '"once": true' "$(file "$j")"; then continue; fi
+              drive "$j" || echo "::warning::$j ended with an error (judged in the report)"
+            done
+          done
+          tail -n 40 "$FOO_REAL_TEST_DIR/runs/console.txt" || true
+          # A failed step is judged in the report; the job itself fails only when the driver could not run.
+          exit 0
+      - name: Uninstall foo and check it is gone
+        shell: pwsh
+        env:
+          DIR: ${{ steps.install.outputs.dir }}
+        run: |
+          Get-Process foo -ErrorAction SilentlyContinue | Stop-Process -Force
+          $p = Start-Process -FilePath (Join-Path $env:DIR 'Uninstall foo.exe') -ArgumentList '/S' -Wait -PassThru
+          # The NSIS uninstaller copies itself to a temp folder and returns at once; give it up to a minute.
+          for ($i = 0; $i -lt 30 -and (Test-Path (Join-Path $env:DIR 'foo.exe')); $i++) { Start-Sleep -Seconds 2 }
+          $gone = -not (Test-Path (Join-Path $env:DIR 'foo.exe'))
+          "- Uninstall: exit $($p.ExitCode), foo.exe removed: $(if ($gone) { 'yes' } else { '**no**' })" >> $env:GITHUB_STEP_SUMMARY
+          if (-not $gone) { Write-Output '::error::Uninstall left foo.exe behind.'; exit 1 }
+      - name: Scan the evidence for the key
+        if: always()
+        shell: bash
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          runs="$RUNNER_TEMP/foo-gate/runs"
+          [ -d "$runs" ] || exit 0
+          if [ -n "$KEY_A" ] && grep -rlF -- "$KEY_A" "$runs" > "$RUNNER_TEMP/leak.txt"; then
+            echo "::error::The key appeared in $(wc -l < "$RUNNER_TEMP/leak.txt") evidence file(s); they are deleted and the gate fails."
+            xargs -d '\n' rm -f < "$RUNNER_TEMP/leak.txt"
+            exit 1
+          fi
+      - name: Keep the runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-runs
+          path: ${{ runner.temp }}/foo-gate/runs
+          retention-days: 14
+      - name: Keep the tested installer (released only if the gate passes)
+        uses: actions/upload-artifact@v4
+        with:
+          name: foo-windows-app-candidate
+          path: ${{ steps.install.outputs.setup }}
+          retention-days: 14
+
+  review:
+    name: Separate reviewer and the gate report (ubuntu-latest)
+    needs: drive
+    if: always() && needs.drive.result != 'cancelled' && needs.drive.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    outputs:
+      status: ${{ steps.report.outputs.status }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: gate-runs
+          path: gate-runs
+      - name: Draw the walkthrough frames the journeys name
+        run: |
+          pnpm exec playwright install chromium
+          ids=$(pnpm -s exec tsx scripts/release-gate.ts refs --runs gate-runs)
+          [ -z "$ids" ] || pnpm golden:render --ids "$ids" --engine chromium --out gate-refs
+      # The gate also needs every other check on the same commit green (no known-red waivers). Wait for them to finish.
+      - name: The other checks on this commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ needs.drive.outputs.sha }}
+        run: |
+          # Required: Fast lane, the 4 Full suite shards and the Golden lane (scripts/release-gate.ts REQUIRED_CHECKS).
+          for i in $(seq 1 90); do
+            gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs?per_page=100" \
+              --jq '[.check_runs[] | select(.name | test("^(Fast lane|Screen change|Full suite|Golden lane)")) | {name, conclusion, url: .html_url}]' > checks.json
+            fast=$(jq '[.[] | select(.name | startswith("Fast lane"))] | length' checks.json)
+            full=$(jq '[.[] | select(.name | startswith("Full suite"))] | length' checks.json)
+            gold=$(jq '[.[] | select(.name | startswith("Golden lane"))] | length' checks.json)
+            open=$(jq '[.[] | select(.conclusion == null)] | length' checks.json)
+            echo "checks: fast $fast/1, full suite $full/4, golden $gold/1, $open still running"
+            [ "$fast" -ge 1 ] && [ "$full" -ge 4 ] && [ "$gold" -ge 1 ] && [ "$open" -eq 0 ] && break
+            # CI chose not to run the Windows lanes on this commit (a draft PR skips them): they will not come, and the
+            # report counts them red. Five quiet minutes with nothing running also ends the wait.
+            skipped=$(jq '[.[] | select((.name | test("^(Full suite|Golden lane)")) and .conclusion == "skipped")] | length' checks.json)
+            [ "$open" -eq 0 ] && [ "$fast" -ge 1 ] && [ "$skipped" -gt 0 ] && break
+            if [ "$open" -eq 0 ]; then quiet=$((${quiet:-0} + 1)); else quiet=0; fi
+            [ "${quiet:-0}" -ge 5 ] && break
+            sleep 60
+          done
+      - name: Separate reviewer looks at every picture
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: pnpm exec tsx scripts/release-gate.ts review --runs gate-runs --refs gate-refs --out gate-report --model "${{ inputs.model || 'claude-sonnet-5-5' }}"
+      - name: Gate report
+        id: report
+        env:
+          SHA: ${{ needs.drive.outputs.sha }}
+        run: |
+          set +e
+          pnpm exec tsx scripts/release-gate.ts report --runs gate-runs --refs gate-refs --out gate-report --checks checks.json --expect gate-runs/expected.json --known test/real-pc/known-red.json --sha "$SHA"
+          code=$?
+          echo "status=$(jq -r .status gate-report/verdict.json)" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Release gate on $SHA: $(jq -r .status gate-report/verdict.json)"
+            echo "| Feature | Verdict | Checkpoints | Broken | Wrong vs design |"; echo "|---|---|---|---|---|"
+            jq -r '.features[] | "| \(.name) | \(.verdict) | \(.checkpoints) | \(.broken) | \(.wrong) |"' gate-report/verdict.json
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+      - name: Scan the report for the key
+        if: always()
+        env:
+          KEY_A: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          [ -d gate-report ] || exit 0
+          if [ -n "$KEY_A" ] && grep -rlF -- "$KEY_A" gate-report gate-runs > leak.txt; then
+            echo "::error::The key appeared in the report; nothing is kept."; rm -rf gate-report gate-runs; exit 1
+          fi
+      - name: Keep the report (with videos)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-gate-report
+          path: gate-report
+          retention-days: 30
+      - name: Push the report to the evidence branch (no videos)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ needs.drive.outputs.sha }}
+        run: |
+          [ -f gate-report/index.html ] || { echo "no report"; exit 0; }
+          short="${SHA:0:7}"
+          work="$RUNNER_TEMP/evidence" && rm -rf "$work" && mkdir -p "$work" && cd "$work"
+          git init -q && git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
+          git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git"
+          g() { git -c "http.extraheader=$auth" "$@"; }
+          for attempt in 1 2 3 4 5; do
+            if g fetch -q --depth 1 origin evidence 2>/dev/null; then git checkout -q -B evidence FETCH_HEAD; else git checkout -q --orphan evidence; fi
+            for d in "gate/$short" gate/latest; do
+              rm -rf "$d" && mkdir -p "$d"
+              (cd "$GITHUB_WORKSPACE/gate-report" && tar -c --exclude=videos .) | (cd "$d" && tar -x)
+              # Step records, foo's own app log and the thread dumps, so a failure can be traced without the artifact.
+              (cd "$GITHUB_WORKSPACE/gate-runs" && find . \( -name '*.json' -o -name app-log.jsonl \) | tar -c -T -) | (cd "$d" && mkdir -p runs && cd runs && tar -x)
+            done
+            printf 'run %s · commit %s\n' "$GITHUB_RUN_ID" "$SHA" > gate/latest/RUN.txt
+            git add -A -- gate
+            git diff --cached --quiet && { echo "evidence unchanged"; exit 0; }
+            git commit -q -m "Evidence: release gate on $short (run $GITHUB_RUN_ID)"
+            g push -q origin HEAD:refs/heads/evidence && { echo "evidence pushed to evidence:gate/$short"; exit 0; }
+            sleep $((attempt * 3))
+          done
+          exit 1
+
+  red-first:
+    name: Red first (a fix's journey fails on the commit before it) (windows-latest, real AI)
+    if: github.event_name == 'push' && github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      # `Red-first: B1-batch1` (or `Red-first: B1-batch1@<sha>` to name the commit that had the bug) in any pushed commit.
+      - name: Which journeys this push says it fixes
+        id: which
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ -z "$BEFORE" ] || [ -z "${BEFORE//0/}" ]; then echo "No earlier commit (new branch): nothing to check."; exit 0; fi
+          lines=$(git log --format=%B "$BEFORE..$GITHUB_SHA" | tr -d '\r' | sed -n 's/^Red-first:[[:space:]]*//p' | tr ', ' '\n\n' | grep -v '^$' | sort -u | tr '\n' ' ')
+          echo "Red-first in this push: ${lines:-none}"
+          echo "list=$lines" >> "$GITHUB_OUTPUT"
+          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
+      - name: Take the gate kit from this commit
+        if: steps.which.outputs.list != ''
+        shell: bash
+        run: |
+          rm -rf "$RUNNER_TEMP/kit" && mkdir -p "$RUNNER_TEMP/kit"
+          git archive HEAD test/real-pc test/qa-explore/inpage.js | (cd "$RUNNER_TEMP/kit" && tar -x)
+      - uses: pnpm/action-setup@v4
+        if: steps.which.outputs.list != ''
+      - uses: actions/setup-node@v4
+        if: steps.which.outputs.list != ''
+        with:
+          node-version: 22
+      - name: Build each commit before a fix and run its journey once
+        if: steps.which.outputs.list != ''
+        shell: bash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FOO_REAL_AI_ONLY: '1'
+          LIST: ${{ steps.which.outputs.list }}
+          BEFORE: ${{ steps.which.outputs.before }}
+        run: |
+          [ -n "$ANTHROPIC_API_KEY" ] || { echo "::error::ANTHROPIC_API_KEY is not set: red-first needs a real AI."; exit 1; }
+          kit="$RUNNER_TEMP/kit/test/real-pc"
+          export FOO_QA_INPAGE="$RUNNER_TEMP/kit/test/qa-explore/inpage.js"
+          file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
+          # Failed steps in the newest record of journey $1 only; -1 when it left none (another journey's record never counts).
+          failed() { J="$1" node -e '
+            const fs = require("fs"), path = require("path"), d = path.join(process.env.FOO_REAL_TEST_DIR, "runs");
+            const read = (x) => { try { return JSON.parse(fs.readFileSync(path.join(d, x, "summary.json"), "utf8")); } catch { return null; } };
+            const s = fs.readdirSync(d).sort().reverse().map(read).find((r) => r && r.journey === process.env.J);
+            console.log(s ? s.results.filter((r) => r.ok === false && !r.soft).length : -1);'; }
+          echo "| Journey | Commit before the fix | Failed steps there | Red first |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          bad=0
+          # A failing journey is the point here, so the driver's exit code is ignored; the step records decide.
+          for item in $LIST; do
+            j="${item%%@*}"; at="$BEFORE"; [ "$item" != "$j" ] && at="${item#*@}"
+            [ -f "$kit/$(file "$j")" ] || { echo "::error::Red-first names $j, which is not a journey."; bad=1; continue; }
+            git checkout -q --force "$at" && git clean -qfdx -e node_modules
+            pnpm install --frozen-lockfile --ignore-scripts > /dev/null && node node_modules/electron/install.js
+            pnpm build > /dev/null && pnpm rebuild:electron > /dev/null && pnpm package:dir > /dev/null
+            export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe" FOO_REAL_TEST_DIR="$RUNNER_TEMP/red-$j"
+            rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
+            first=$(tr -d '\r' < "$kit/gate.txt" | head -n 1)
+            (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$first")" > /dev/null 2>&1) || true; taskkill //IM foo.exe //F > /dev/null 2>&1 || true
+            if [ "$j" != "$first" ]; then (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$j")" > /dev/null 2>&1) || true; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; fi
+            n=$(failed "$j")
+            if [ "$n" -gt 0 ]; then verdict="yes"; else verdict="**no: the journey passes without the fix**"; bad=1; fi
+            if [ "$n" -lt 0 ]; then verdict="**no record: the journey did not run**"; bad=1; fi
+            echo "$j on ${at:0:7}: $n failed step(s)"
+            echo "| $j | ${at:0:7} | $n | $verdict |" >> "$GITHUB_STEP_SUMMARY"
+          done
+          [ "$bad" -eq 0 ] || { echo "::error::A Red-first journey does not fail on the commit before its fix."; exit 1; }
+
+  mutation:
+    name: Mutation tests (Stryker, ubuntu-latest)
+    if: github.actor == github.repository_owner && github.repository == 'vikas53953/foo-agent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # stryker.config.json `break` is the floor: a score under it is red. The floor only rises.
+      - run: pnpm test:mutation
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: reports/mutation/
+          if-no-files-found: ignore
+
+  release:
+    name: Release the tested installer (only on PASS)
+    needs: [drive, review, red-first, mutation]
+    # A drive that failed (the first run, the install or uninstall, or a key found in the evidence) never releases, whatever
+    # the report says. Red-first is skipped when nothing in the push names a fixed journey.
+    if: >-
+      always() && needs.drive.result == 'success' && needs.review.result == 'success' && needs.review.outputs.status == 'PASS' &&
+      (needs.red-first.result == 'success' || needs.red-first.result == 'skipped') && needs.mutation.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: foo-windows-app-candidate
+          path: app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foo-windows-app-gated
+          path: app/
+          retention-days: 30

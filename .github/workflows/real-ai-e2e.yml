@@ -48,7 +48,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
-  group: real-ai-e2e
+  # One queue per branch (coordinator, 28 Oct): a PR's waiting run and main's waiting run never cancel each other.
+  group: real-ai-e2e-${{ github.head_ref || github.ref_name }}
   cancel-in-progress: false
 
 permissions:

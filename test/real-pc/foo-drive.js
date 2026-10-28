@@ -29,6 +29,20 @@ const REFUSED_TIDS = new Set([
 ]);
 const REFUSED_WORDS = /^(approve|pay|pay now|book|book now|confirm booking|send email|send now|post|post now)$/i;
 
+// Release gate (Vikas 2026-10-27: test the real app like a user, and look at it). FOO_VIDEO=1 records a video of every
+// launch; FOO_WATCH_MS ("1500,5000") takes a picture that long after each send while foo is still answering, so the
+// waiting state is checked, not only the answer; `sweep` clicks every visible control with the QA crawler's in-page
+// helpers (test/qa-explore/inpage.js, or FOO_QA_INPAGE). FOO_TICK_TEST_CLOCK=1 is for a local dev run only: a FOO_TEST
+// build's clock stands still unless it is ticked (a packaged build has no test clock, so it does nothing there).
+const VIDEO = process.env.FOO_VIDEO === '1';
+const WATCH_MS = (process.env.FOO_WATCH_MS || '')
+  .split(',')
+  .map(Number)
+  .filter((n) => n > 0)
+  .sort((a, b) => a - b);
+const INPAGE_FILE = process.env.FOO_QA_INPAGE || path.join(__dirname, '..', 'qa-explore', 'inpage.js');
+const TICK = process.env.FOO_TICK_TEST_CLOCK === '1';
+
 function loadPlaywright() {
   const candidates = [
     path.join(path.dirname(EXE), 'resources', 'app.asar', 'node_modules', 'playwright-core'),
@@ -48,6 +62,15 @@ function loadPlaywright() {
 let journeyFeatures = null;
 
 // foo must start as the app, not as Node: drop the variable this script itself runs under.
+// Vikas 2026-10-28: "test with real AI only". FOO_REAL_AI_ONLY=1 (the release gate) refuses to start when anything could
+// put the app's pretend AI or test hooks in play: the fake AI only runs with FOO_TEST=1 plus a FOO_FAKE_* script.
+const REAL_AI_ONLY = process.env.FOO_REAL_AI_ONLY === '1';
+const PRETEND = Object.keys(process.env).filter((k) => /^FOO_(TEST|FAKE_)/i.test(k) && process.env[k]);
+if (REAL_AI_ONLY && PRETEND.length) {
+  console.error(`Real AI only: refusing to run with ${PRETEND.join(', ')} set.`);
+  process.exit(2);
+}
+
 function childEnv() {
   const env = { ...process.env, FOO_DATA_DIR: path.join(PROFILE, 'data'), FOO_LOCAL_DIR: path.join(PROFILE, 'local') };
   // CR-0054: every feature is on unless the journey asks for the build's own list ("features": "shipped") or names some.
@@ -207,9 +230,19 @@ async function main() {
       colorScheme: null,
       env: childEnv(),
       timeout: 60_000,
+      ...(VIDEO ? { recordVideo: { dir: path.join(out, 'video'), size: { width: 1280, height: 800 } } } : {}),
     });
     page = await app.firstWindow();
     pageRef = page;
+    if (TICK) {
+      const p = page;
+      (async () => {
+        while (!p.isClosed()) {
+          await p.evaluate(() => window.__fooTest?.clock.advance(100)).catch(() => {});
+          await new Promise((r) => setTimeout(r, 100));
+        }
+      })();
+    }
     // Wait until the window shows the chat or the setup card, then let the thread finish loading its history,
     // so counting foo's bubbles before a send never mistakes old messages for a new reply.
     await page
@@ -226,7 +259,23 @@ async function main() {
     const f = path.join(out, `${String(shotN).padStart(2, '0')}-${name}.png`);
     await page.screenshot({ path: f });
     log({ shot: path.basename(f) });
+    return path.basename(f);
   };
+  // What the user sees on their newest message and below it while foo answers: the status badge (👀 is "seen"),
+  // reaction chips, the Thinking row and how many of foo's rows have arrived.
+  const watchState = () =>
+    page.evaluate(() => {
+      const me = [...document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-me"]')].pop();
+      // The badge and reaction chips sit beside the bubble in its row, not inside it.
+      const mine = me ? me.closest('[data-side]') || me.parentElement : null;
+      const all = (q) => (mine ? [...mine.querySelectorAll(q)] : []);
+      return {
+        badges: all('[data-testid="bubble-badge"]').map((b) => b.getAttribute('data-state')),
+        reactions: all('[data-testid="bubble-reaction"]').map((b) => (b.innerText || '').trim()),
+        thinking: !!document.querySelector('[data-testid="thread-thinking"]'),
+        streaming: document.querySelectorAll('[data-testid="thread-log"] [data-testid="bubble-foo"][data-state="streaming"]').length,
+      };
+    });
   const threadDump = () =>
     page.evaluate(() =>
       [
@@ -305,6 +354,188 @@ async function main() {
     return true;
   };
 
+  // The sweep's view of the page, compared before and after each click (the QA crawler's signature, test/qa-explore).
+  const signature = () =>
+    page.evaluate(() => ({
+      overlays: window.__qa
+        .overlays()
+        .filter((o) => o.role !== 'listbox' && o.role !== 'tooltip')
+        .map((o) => `${o.role}:${o.text.slice(0, 40)}`),
+      screens: [...document.querySelectorAll('[data-testid^="screen-"]')].map((e) => e.dataset.testid || ''),
+      theme: document.documentElement.dataset.theme || '',
+      // A hover tooltip is not an effect of the click: leave its words out, or a dead button with a tooltip passes.
+      text: [...document.querySelectorAll('[role=tooltip]')].reduce((t, tip) => t.split(tip.innerText).join(''), document.body.innerText),
+      focus: (() => {
+        const f = document.activeElement;
+        return f && /^(INPUT|TEXTAREA)$/.test(f.tagName) ? f.getAttribute('aria-label') || f.getAttribute('placeholder') || f.tagName : '';
+      })(),
+      pressed: [...document.querySelectorAll('[aria-pressed="true"],[aria-checked="true"],[aria-selected="true"]')]
+        .map((e) => `${e.dataset.testid || ''}:${e.getAttribute('aria-label') || e.innerText.slice(0, 20)}`)
+        .join('|'),
+    }));
+  const effectOf = (a, b) => {
+    const fx = [];
+    const opened = b.overlays.filter((o) => !a.overlays.includes(o));
+    if (opened.length) fx.push(`opened ${opened.join(' | ')}`);
+    if (b.screens.join() !== a.screens.join()) fx.push(`screen: ${b.screens.join(',') || 'chat'}`);
+    if (b.theme !== a.theme) fx.push(`theme: ${b.theme}`);
+    if (b.pressed !== a.pressed) fx.push('selection changed');
+    if (b.focus && b.focus !== a.focus) fx.push(`typing in ${b.focus}`);
+    if (b.text !== a.text) {
+      const was = new Set(a.text.split('\n'));
+      const added = b.text.split('\n').filter((l) => l.trim() && !was.has(l));
+      fx.push(`content changed${added.length ? `: "${added.slice(0, 2).join(' / ').slice(0, 60)}"` : ''}`);
+    }
+    return fx;
+  };
+  const backTo = async (s) => {
+    // A suggestion chip fills the message box and hides the other chips; empty it so the next control is on screen again.
+    const box = page.locator('[data-testid="composer-field"]');
+    if ((await box.count()) && (await box.inputValue().catch(() => ''))) await box.fill('').catch(() => {});
+    for (let k = 0; k < 6; k++) {
+      await page.keyboard.press('Escape');
+      await page.waitForTimeout(150);
+      if (!(await page.locator('[role=dialog],[role=alertdialog],[role=menu]').count())) break;
+    }
+    if (s.openTid) {
+      const back = page.locator('[data-testid="screen-back"]');
+      if (!(await page.locator(`[data-testid="${s.openTid}"]`).count()) && (await back.count())) await back.click().catch(() => {});
+      // Still not there (a click took the user to another screen): walk the way in again, e.g. ⋯ menu → Settings.
+      if (!(await page.locator(`[data-testid="${s.openTid}"]`).count()))
+        for (const tid of s.openVia || [])
+          await page
+            .locator(`[data-testid="${tid}"]`)
+            .first()
+            .click({ timeout: 5_000 })
+            .catch(() => {});
+      await page
+        .locator(`[data-testid="${s.openTid}"]`)
+        .first()
+        .click({ timeout: 5_000 })
+        .catch(() => {});
+    }
+    await page.waitForTimeout(300);
+  };
+  // foo is still answering or rewriting (Thinking row or a reply being written). The sweep waits this out between controls,
+  // so its next click and picture never land mid-rewrite (gate run d0c2d02: "typing…" pictured 2 s after Try again).
+  const settle = async (ms = 90_000) => {
+    const t0 = Date.now();
+    while (Date.now() - t0 < ms) {
+      const w = await watchState().catch(() => null);
+      if (!w || (!w.thinking && !w.streaming)) return Date.now() - t0;
+      await page.waitForTimeout(500);
+    }
+    return -1;
+  };
+  const sweep = async (s) => {
+    if (!fs.existsSync(INPAGE_FILE)) return { blocked: `crawler helpers not found at ${INPAGE_FILE}`, controls: [] };
+    await page.evaluate(fs.readFileSync(INPAGE_FILE, 'utf8'));
+    await backTo(s);
+    const skip = new Set([
+      ...REFUSED_TIDS,
+      ...(s.skip || []),
+      'sidebar-menu-quit',
+      'composer-field',
+      'thread-log',
+      'sidebar-resize',
+      'composer-send',
+    ]);
+    const scope = s.within || null;
+    const listed = await page.evaluate((sc) => {
+      const box = sc ? document.querySelector(sc) : null;
+      return window.__qa.controls().filter((c) => {
+        if (!box) return true;
+        const el = document.elementFromPoint(c.box[0] + c.box[2] / 2, c.box[1] + c.box[3] / 2);
+        return !!el && box.contains(el);
+      });
+    }, scope);
+    const controls = [];
+    const seen = new Set();
+    const cap = s.max ?? 60;
+    const truncated = listed.length > cap ? listed.length - cap : 0;
+    for (const c of listed.slice(0, cap)) {
+      const key = `${c.tid}|${c.name}`;
+      if (seen.has(key) || (!c.tid && !c.name)) continue;
+      seen.add(key);
+      const e = { tid: c.tid, role: c.role, name: c.name, status: 'pass', effect: [], issues: [] };
+      controls.push(e);
+      if (skip.has(c.tid) || REFUSED_WORDS.test(c.name)) {
+        e.status = 'skipped';
+        e.reason = REFUSED_WORDS.test(c.name) || REFUSED_TIDS.has(c.tid) ? 'safety: money or outbound' : 'own journey covers it';
+        continue;
+      }
+      if (c.disabled) {
+        e.status = 'skipped';
+        e.reason = 'disabled here';
+        continue;
+      }
+      await backTo(s);
+      // Clicking the tab or option that is already chosen correctly does nothing (the QA crawler skips it the same way).
+      if (
+        /radio|checkbox|switch|tab/.test(c.role) &&
+        (await page.evaluate((b) => {
+          const el = document.elementFromPoint(b[0] + b[2] / 2, b[1] + b[3] / 2)?.closest('[role]');
+          return el?.getAttribute('aria-checked') === 'true' || el?.getAttribute('aria-selected') === 'true';
+        }, c.box))
+      ) {
+        e.status = 'skipped';
+        e.reason = 'already chosen';
+        continue;
+      }
+      const loc = c.tid
+        ? page.locator(`[data-testid="${c.tid}"]`).filter({ hasText: c.name.length < 40 ? c.name : '' })
+        : page.getByRole(c.role, { name: c.name, exact: true });
+      const target = (await loc.count()) ? loc.first() : page.locator(`[data-testid="${c.tid}"]`).first();
+      let before;
+      try {
+        await target.hover({ timeout: 2_000 });
+        await page.waitForTimeout(500);
+        before = await signature();
+        await target.click({ timeout: 3_000 });
+      } catch (err) {
+        e.status = 'not-tested';
+        // Say why: gone from the screen after an earlier click, or something else sits on top of it.
+        const why = await target
+          .evaluate((el) => {
+            const r = el.getBoundingClientRect();
+            if (!r.width || !r.height) return 'no longer on screen';
+            const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+            return top && !el.contains(top) ? `covered by ${top.getAttribute('data-testid') || top.tagName.toLowerCase()}` : '';
+          })
+          .catch(() => 'no longer on screen');
+        if (why) e.effect.push(why);
+        e.effect.push(
+          `could not click: ${String(err && err.message ? err.message : err)
+            .split('\n')[0]
+            .slice(0, 120)}`,
+        );
+        continue;
+      }
+      await page.waitForTimeout(800);
+      let after = await signature();
+      // Some controls answer slowly (testing the AI); 4 s more before calling one dead.
+      if (!effectOf(before, after).length) {
+        await page.waitForTimeout(4_000);
+        after = await signature();
+      }
+      e.effect = effectOf(before, after);
+      e.issues = await page.evaluate(() => window.__qa.invariants()).catch(() => []);
+      e.shot = await shot(`sweep-${(c.tid || c.name).replace(/[^a-z0-9-]+/gi, '_').slice(0, 40)}`).catch(() => undefined);
+      if (!e.effect.length) {
+        e.effect.push('NO VISIBLE EFFECT');
+        e.status = s.noEffectOk?.includes(c.tid) ? 'pass' : 'fail';
+      } else if (e.issues.length) e.status = 'fail';
+      const waited = await settle();
+      if (waited > 1_000) e.effect.push(`foo finished answering ${(waited / 1000).toFixed(1)} s later`);
+      if (waited < 0) {
+        e.effect.push('foo was still answering 90 s later');
+        e.status = 'fail';
+      }
+    }
+    await backTo(s);
+    return { controls, truncated };
+  };
+
   try {
     await launch();
   } catch (e) {
@@ -328,7 +559,7 @@ async function main() {
   const results = [];
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
-    const rec = { i, do: s.do, note: s.note, expect: s.expect, soft: s.soft };
+    const rec = { i, do: s.do, note: s.note, expect: s.expect, soft: s.soft, ref: s.ref, feature: s.feature, typed: s.text };
     try {
       switch (s.do) {
         case 'wait':
@@ -499,9 +730,32 @@ async function main() {
           let cur = await afterMe();
           let lastChange = Date.now();
           let first = null;
+          // The wait as the user saw it: each change of the badge, reactions or Thinking row, timed from the send, and a
+          // picture at each FOO_WATCH_MS mark while foo had not finished. forbidBadge names a badge (e.g. "seen", 👀) that
+          // must never show on this message.
+          const sentAt = prevSend?.sentAt ?? start;
+          const marks = [...WATCH_MS];
+          rec.timeline = [];
+          rec.watchShots = [];
+          const watch = async (done) => {
+            const w = await watchState().catch(() => null);
+            if (!w) return;
+            const at = Date.now() - sentAt;
+            const last = rec.timeline[rec.timeline.length - 1];
+            const key = JSON.stringify(w);
+            if (!last || last.key !== key) rec.timeline.push({ at, ...w, key });
+            if (s.forbidBadge && w.badges.includes(s.forbidBadge) && !rec.forbidden) rec.forbidden = { badge: s.forbidBadge, at };
+            while (!done && marks.length && at >= marks[0]) {
+              const m = marks.shift();
+              const f = await shot(`${s.shot || 'reply'}-wait-${(m / 1000).toFixed(1)}s`).catch(() => undefined);
+              if (f) rec.watchShots.push({ at, mark: m, shot: f, ...w });
+            }
+          };
+          await watch(false);
           while (Date.now() - start < (s.timeoutMs ?? 120_000)) {
-            await page.waitForTimeout(500);
+            await page.waitForTimeout(WATCH_MS.length || s.forbidBadge ? 250 : 500);
             const now = await afterMe();
+            await watch(settled({ n: now.n, before, items: now.items.slice(before), quietFor: 0, quietMs: 0 }));
             if (now.n > before && first === null) first = Date.now() - start;
             // neverCss: something that must not show at any point while foo answers (CR-0066: 👀 on a plain message).
             if (s.neverCss && rec.neverSeenMs === undefined && (await page.locator(s.neverCss).count()) > 0) {
@@ -514,6 +768,8 @@ async function main() {
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
           rec.ok = cur.n > before && rec.neverSeenMs === undefined;
+          for (const t of rec.timeline) delete t.key;
+          if (rec.forbidden) rec.ok = false;
           // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
           if (stillWorking(cur.items.slice(before))) {
             rec.stillWorking = true;
@@ -544,6 +800,16 @@ async function main() {
             rec.endState = await endState(s);
             rec.ok = rec.endState;
           }
+          break;
+        }
+        case 'sweep': {
+          // Every visible control in this place, clicked like a user: each must visibly do something and leave the
+          // screen whole (QA crawler invariants). The controls list and a picture of each result go to the evidence.
+          Object.assign(rec, await sweep(s));
+          // No controls found (a wrong scope) or a control that could not be clicked is a failure, not a pass.
+          if (!rec.blocked && !rec.controls.some((c) => c.status === 'pass' || c.status === 'fail'))
+            rec.blocked = 'no control found to click';
+          rec.ok = !rec.blocked && rec.controls.every((c) => c.status !== 'fail' && c.status !== 'not-tested');
           break;
         }
         case 'dump':
@@ -619,12 +885,12 @@ async function main() {
       rec.error = String(e && e.message ? e.message : e)
         .split('\n')[0]
         .slice(0, 400);
-      await shot(`error-step${i}`).catch(() => {});
+      rec.errorShot = await shot(`error-step${i}`).catch(() => undefined);
     }
     rec.ms = Date.now() - t0;
+    if (s.shot) rec.shot = await shot(s.shot).catch(() => undefined);
     results.push(rec);
     log(rec);
-    if (s.shot) await shot(s.shot).catch(() => {});
   }
   // Closing foo mid-reply cuts that reply off, and the next journey (same profile) would find "That reply got cut off".
   // Let any reply still streaming, or page still building, finish first, for up to 3 minutes.
@@ -644,9 +910,11 @@ async function main() {
   // look again at the end state it names; a late pass is kept as ok with late: true.
   for (const r of results) {
     const s = journey.steps[r.i];
-    if (r.ok !== false || r.didntGetThat || r.refused) continue;
-    // A reply that never came (or never settled, or showed what it must not) stays failed; a late look can't stand in for it.
-    if (r.do === 'waitReply' && (!(r.newBubbles > 0) || r.stillWorking || r.neverSeenMs !== undefined)) continue;
+    // A measured failure (👀 seen, foo still writing, a dropped kit piece) is never undone by a late end state.
+    if (r.ok !== false || r.didntGetThat || r.refused || r.forbidden || r.neverSeenMs !== undefined || r.stillWorking || r.kitDropped)
+      continue;
+    // A reply that never came stays failed; a late look can't stand in for it.
+    if (r.do === 'waitReply' && !(r.newBubbles > 0)) continue;
     const named = s.do === 'check' || s.do === 'waitFor' ? { tid: s.tid, css: s.css, count: s.count } : s;
     if (!(named.tid || named.css || named.expectTid || named.expectJs)) continue;
     const now = await endState(named).catch(() => false);
@@ -672,9 +940,12 @@ async function main() {
   } catch (e) {
     log({ step: 'jobTrail', ok: false, error: String(e).slice(0, 300) });
   }
+  const videoDir = path.join(out, 'video');
   const summary = {
     journey: journey.id,
     title: journey.title,
+    feature: journey.feature,
+    videos: fs.existsSync(videoDir) ? fs.readdirSync(videoDir).map((f) => `video/${f}`) : [],
     steps: results.length,
     failed: results.filter((r) => r.ok === false && !r.soft).length,
     out,
@@ -682,8 +953,11 @@ async function main() {
   fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ ...summary, results }, null, 2));
   console.log(JSON.stringify(summary));
   // Any failed step (soft checks aside) turns the run red: the workflow ends the part with the exit status, so a run is
-  // never reported green with a journey failing (audit 2026-10-28). Only a failed first run (picking the AI) also stops
-  // the batch, since every later journey needs it; the workflow handles that.
+  // never reported green with a journey failing (audit 2026-10-28). A first-run journey that marks its setup step
+  // (`"setupDone": true`) and got past it exits 3, not 1: the shared profile is ready, so the release gate goes on with the
+  // other journeys and judges the failed steps in its report.
+  const setup = results.filter((r) => journey.steps[r.i]?.setupDone);
+  if (journey.required && summary.failed > 0 && setup.length && setup.every((r) => r.ok !== false)) process.exit(3);
   if (summary.failed > 0) process.exit(1);
 }
 
