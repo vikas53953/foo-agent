@@ -1,0 +1,68 @@
+{"t":"2026-10-28T10:37:11.820Z","journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","spec":"CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b; CR-0066 (X-223, no 👀 on a plain message)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T10:37:17.271Z","step":"launch","ok":true}
+{"t":"2026-10-28T10:37:17.340Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T10:37:17.341Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"ai","ok":true,"ms":3,"shot":"01-welcome.png"}
+{"t":"2026-10-28T10:37:17.488Z","i":1,"do":"click","feature":"ai","ok":true,"ms":147}
+{"t":"2026-10-28T10:37:17.592Z","shot":"02-finder.png"}
+{"t":"2026-10-28T10:37:17.592Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":9,"shot":"02-finder.png"}
+{"t":"2026-10-28T10:37:37.655Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T10:37:37.655Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":20001,"shot":"03-finder-tested.png"}
+{"t":"2026-10-28T10:37:37.746Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","feature":"ai","ok":true,"ms":90}
+{"t":"2026-10-28T10:37:37.843Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T10:37:37.843Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"ms":2,"shot":"04-secret-box.png"}
+{"t":"2026-10-28T10:37:37.855Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","feature":"ai","ok":true,"ms":12}
+{"t":"2026-10-28T10:37:37.964Z","i":7,"do":"click","feature":"ai","ok":true,"ms":109}
+{"t":"2026-10-28T10:38:08.048Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T10:38:08.050Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"ms":30005,"shot":"05-key-tested.png"}
+{"t":"2026-10-28T10:38:08.053Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","feature":"ai","found":0,"ok":true,"ms":3}
+{"t":"2026-10-28T10:38:08.055Z","i":10,"do":"clickIf","feature":"ai","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T10:38:08.057Z","i":11,"do":"clickIf","note":"only the key works: Use it","feature":"ai","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T10:39:08.126Z","shot":"06-error-step12.png"}
+{"t":"2026-10-28T10:39:08.188Z","shot":"07-step2.png"}
+{"t":"2026-10-28T10:39:08.188Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"ai","ok":false,"error":"locator.waitFor: Timeout 60000ms exceeded.","errorShot":"06-error-step12.png","ms":60068,"shot":"07-step2.png"}
+{"t":"2026-10-28T10:39:08.192Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","feature":"ai","text":"I’m looking for the AI you already use…\n\nClaude\nsigned in\nslow to answer.\nTest again\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nAdd in secret box\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI couldn’t find an AI on this PC yet. Which one do you use?\n\n1\nChatGPT · sign in with your account\nBEST FIT\n2\nClaude · sign in with your account\n3\nGemini · sign in\n4\nI have a key","ok":true,"ms":4}
+{"t":"2026-10-28T10:39:31.251Z","shot":"08-error-step14.png"}
+{"t":"2026-10-28T10:39:31.251Z","i":14,"do":"click","feature":"ai","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"08-error-step14.png","ms":23059}
+{"t":"2026-10-28T10:39:41.314Z","shot":"09-first-chat.png"}
+{"t":"2026-10-28T10:39:41.314Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"ai","ok":true,"ms":10002,"shot":"09-first-chat.png"}
+{"t":"2026-10-28T10:39:41.316Z","i":16,"do":"check","note":"batch 1 has no helpers: no New helper button","feature":"ai","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T10:39:41.317Z","i":17,"do":"check","note":"batch 1 has no voice: the round button is Send, not the mic","feature":"ai","found":0,"ok":false,"ms":1}
+{"t":"2026-10-28T10:40:11.383Z","shot":"10-error-step18.png"}
+{"t":"2026-10-28T10:40:11.383Z","i":18,"do":"send","feature":"chat","typed":"hi foo, kaise ho?","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"10-error-step18.png","ms":30065}
+{"t":"2026-10-28T10:42:11.503Z","shot":"11-hinglish.png"}
+{"t":"2026-10-28T10:42:11.503Z","i":19,"do":"waitReply","expect":"a short warm reply in Hinglish, streamed","feature":"chat","timeline":[{"at":7,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120067,"shot":"11-hinglish.png"}
+{"t":"2026-10-28T10:42:41.569Z","shot":"12-error-step20.png"}
+{"t":"2026-10-28T10:42:41.569Z","i":20,"do":"send","feature":"chat","typed":"mujhe ek chhota sa joke sunao","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"12-error-step20.png","ms":30065}
+{"t":"2026-10-28T10:44:41.662Z","shot":"13-joke.png"}
+{"t":"2026-10-28T10:44:41.662Z","i":21,"do":"waitReply","expect":"a joke, in the user's mix of Hindi and English","feature":"chat","timeline":[{"at":5,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120030,"shot":"13-joke.png"}
+{"t":"2026-10-28T10:45:11.729Z","shot":"14-error-step22.png"}
+{"t":"2026-10-28T10:45:11.729Z","i":22,"do":"send","feature":"refusals","typed":"Book a table for 2 tonight at a cafe in Delhi","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"14-error-step22.png","ms":30066}
+{"t":"2026-10-28T10:47:11.808Z","shot":"15-job-off.png"}
+{"t":"2026-10-28T10:47:11.808Z","i":23,"do":"waitReply","expect":"the batch-1 line: foo can’t do tasks yet; no checklist, no plan card","feature":"refusals","timeline":[{"at":4,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120015,"shot":"15-job-off.png"}
+{"t":"2026-10-28T10:47:41.873Z","shot":"16-error-step24.png"}
+{"t":"2026-10-28T10:47:41.873Z","i":24,"do":"send","feature":"refusals","typed":"Book me a cab to the airport at 6 am tomorrow","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"16-error-step24.png","ms":30065}
+{"t":"2026-10-28T10:49:41.967Z","shot":"17-cab-off.png"}
+{"t":"2026-10-28T10:49:41.968Z","i":25,"do":"waitReply","expect":"says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist","feature":"refusals","timeline":[{"at":5,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120031,"shot":"17-cab-off.png"}
+{"t":"2026-10-28T10:50:12.032Z","shot":"18-error-step26.png"}
+{"t":"2026-10-28T10:50:12.032Z","i":26,"do":"send","feature":"refusals","typed":"did you book the cab?","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"18-error-step26.png","ms":30064}
+{"t":"2026-10-28T10:52:12.158Z","shot":"19-cab-asked.png"}
+{"t":"2026-10-28T10:52:12.158Z","i":27,"do":"waitReply","expect":"no, foo can’t book cabs yet; never “no record” or memory words","feature":"refusals","timeline":[{"at":4,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120064,"shot":"19-cab-asked.png"}
+{"t":"2026-10-28T10:52:42.223Z","shot":"20-error-step28.png"}
+{"t":"2026-10-28T10:52:42.224Z","i":28,"do":"send","feature":"refusals","typed":"remember that I am vegetarian","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"20-error-step28.png","ms":30065}
+{"t":"2026-10-28T10:54:42.303Z","shot":"21-memory-off.png"}
+{"t":"2026-10-28T10:54:42.303Z","i":29,"do":"waitReply","expect":"one bubble: the batch-1 memory line, or a plain reply; never a memory chip, never “Noted” (CR-0067)","feature":"refusals","timeline":[{"at":5,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120014,"shot":"21-memory-off.png"}
+{"t":"2026-10-28T10:55:12.367Z","shot":"22-error-step30.png"}
+{"t":"2026-10-28T10:55:12.367Z","i":30,"do":"send","feature":"settings","typed":"Switch to dark mode","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"22-error-step30.png","ms":30064}
+{"t":"2026-10-28T10:57:12.438Z","shot":"23-error-step31.png"}
+{"t":"2026-10-28T10:57:12.438Z","i":31,"do":"waitFor","note":"settings by chat is on in batch 1","feature":"settings","ok":false,"error":"locator.waitFor: Timeout 120000ms exceeded.","errorShot":"23-error-step31.png","ms":120071}
+{"t":"2026-10-28T10:57:17.495Z","shot":"24-dark.png"}
+{"t":"2026-10-28T10:57:17.496Z","i":32,"do":"wait","expect":"dark theme; one line Changed: Theme → Dark. Undo","feature":"settings","ok":true,"ms":5002,"shot":"24-dark.png"}
+{"t":"2026-10-28T10:57:17.563Z","i":33,"do":"click","feature":"install","ok":true,"ms":67}
+{"t":"2026-10-28T10:57:18.420Z","shot":"25-more-menu.png"}
+{"t":"2026-10-28T10:57:18.420Z","i":34,"do":"wait","expect":"Settings, Keyboard shortcuts and Quit only","feature":"install","ok":true,"ms":801,"shot":"25-more-menu.png"}
+{"t":"2026-10-28T10:57:18.422Z","i":35,"do":"check","feature":"install","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T10:57:18.427Z","i":36,"do":"key","feature":"install","ok":true,"ms":5}
+{"t":"2026-10-28T10:57:18.439Z","i":37,"do":"dump","feature":null,"ok":true,"ms":11}
+{"t":"2026-10-28T10:57:18.592Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T10:57:18.606Z","step":"aiTurns","turns":0}
+{"t":"2026-10-28T10:57:18.609Z","step":"jobTrail","steps":0,"calls":0}

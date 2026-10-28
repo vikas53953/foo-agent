@@ -1,0 +1,8 @@
+{"t":1793185039824,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793185046309,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:UNKNOWN","ms":1612}
+{"t":1793185065123,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":89}
+{"t":1793185194697,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":64}
+{"t":1793185196299,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:UNKNOWN","ms":1667}
+{"t":1793185346335,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793185348102,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":91}
+{"t":1793185349611,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:UNKNOWN","ms":1601}

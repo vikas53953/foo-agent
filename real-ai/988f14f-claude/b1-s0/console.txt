@@ -1,0 +1,4 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-31-45-091Z-J01-J02-first-run"}
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":2,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-34-28-535Z-J01-J02-first-run"}
+{"journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","feature":"chat","videos":[],"steps":38,"failed":17,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-37-11-820Z-B1-batch1"}
+{"journey":"QA4-settings-batch1","title":"Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart","videos":[],"steps":43,"failed":5,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T10-57-18-822Z-QA4-settings-batch1"}
