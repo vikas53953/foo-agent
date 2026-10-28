@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nRajasthan\tJaipur\n3:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n3:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket booking site is IRCTC. For train running status and enquiries, try National Train Enquiry System.\n\n3:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n3:01 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best in Bengaluru? → Cubbon Park and café hopping\n3:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n3:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Cubbon Park and café hopping it is. Go early on Sat 31 Oct, around 8:00 AM, for a walk while it's cool and quiet, then head to the cafés nearby for a long brunch. Want me to add it to your calendar?\n\n3:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n3:01 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nSouth Indian tiffin\nBEST FIT\nDosa, idli and filter coffee\n2\nNorth Indian thali\nDal, paneer, roti and rice\n3\nBiryani night\nHyderabadi or Donne style\nSomething else…\nSkip\n3:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "3:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n3:01 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good call for dinner. Want a quick recipe for a cosy tadka dal?\n\n3:01 AM"
+  }
+]
