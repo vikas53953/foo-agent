@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for good Italian restaurants… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant booking sites instead\n6:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n6:05 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n6:05 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, Janpath, New Delhi 110011. Open Tue to Sun, 10:00 AM to 6:00 PM. Closed on Mondays and national holidays. Entry: adults ₹20 foreign nationals ₹500 students up to class 12 free with I-card. A notice from Mon 29 May 2023 says the Arms and Armour, Textiles and Jewellery galleries are closed for renovation until further notice; this may be outdated.\n\n6:06 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:08 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:08 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n6:08 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:08 AM\n6:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:08 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nSigning in to HDFC net banking\nSign in to HDFC net banking\nLook for account balance\n6:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:08 AM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n6:08 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:08 AM"
+  }
+]

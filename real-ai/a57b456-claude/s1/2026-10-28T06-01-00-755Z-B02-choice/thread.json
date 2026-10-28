@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:00 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:00 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:00 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n6:01 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mainly use the shoes for? → Gym or treadmill\n6:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:01 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n6:01 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For gym and treadmill, how should the shoe feel underfoot?\n1\nBalanced\nBEST FIT\nComfortable for most workouts\n2\nSoft and bouncy\nExtra cushioning for longer runs\n3\nFirm and light\nBetter for mixed gym work\n4\nNot sure\nI'll show a few kinds to compare\nSomething else…\nSkip\n6:01 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:01 AM"
+  }
+]
