@@ -336,7 +336,8 @@ jobs:
             for d in "gate/$short" gate/latest; do
               rm -rf "$d" && mkdir -p "$d"
               (cd "$GITHUB_WORKSPACE/gate-report" && tar -c --exclude=videos .) | (cd "$d" && tar -x)
-              (cd "$GITHUB_WORKSPACE/gate-runs" && find . -name summary.json | tar -c -T -) | (cd "$d" && mkdir -p runs && cd runs && tar -x)
+              # Step records, foo's own app log and the thread dumps, so a failure can be traced without the artifact.
+              (cd "$GITHUB_WORKSPACE/gate-runs" && find . \( -name '*.json' -o -name app-log.jsonl \) | tar -c -T -) | (cd "$d" && mkdir -p runs && cd runs && tar -x)
             done
             printf 'run %s · commit %s\n' "$GITHUB_RUN_ID" "$SHA" > gate/latest/RUN.txt
             git add -A -- gate

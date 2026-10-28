@@ -381,6 +381,17 @@ async function main() {
     }
     await page.waitForTimeout(300);
   };
+  // foo is still answering or rewriting (Thinking row or a reply being written). The sweep waits this out between controls,
+  // so its next click and picture never land mid-rewrite (gate run d0c2d02: "typing…" pictured 2 s after Try again).
+  const settle = async (ms = 90_000) => {
+    const t0 = Date.now();
+    while (Date.now() - t0 < ms) {
+      const w = await watchState().catch(() => null);
+      if (!w || (!w.thinking && !w.streaming)) return Date.now() - t0;
+      await page.waitForTimeout(500);
+    }
+    return -1;
+  };
   const sweep = async (s) => {
     if (!fs.existsSync(INPAGE_FILE)) return { blocked: `crawler helpers not found at ${INPAGE_FILE}`, controls: [] };
     await page.evaluate(fs.readFileSync(INPAGE_FILE, 'utf8'));
@@ -479,6 +490,12 @@ async function main() {
         e.effect.push('NO VISIBLE EFFECT');
         e.status = s.noEffectOk?.includes(c.tid) ? 'pass' : 'fail';
       } else if (e.issues.length) e.status = 'fail';
+      const waited = await settle();
+      if (waited > 1_000) e.effect.push(`foo finished answering ${(waited / 1000).toFixed(1)} s later`);
+      if (waited < 0) {
+        e.effect.push('foo was still answering 90 s later');
+        e.status = 'fail';
+      }
     }
     await backTo(s);
     return { controls, truncated };
