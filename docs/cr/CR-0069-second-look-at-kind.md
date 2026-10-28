@@ -39,7 +39,11 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
 8. JOBS_OFF_LINE (CR-0059 row 6) asks for everyday words. Real Claude on f1a6d09 answered "did you book the table?" with
    "this build only reads and checks things. I can find cafes…", which is jargon plus an offer batch 1 can't keep. The
    line now says foo can't do tasks yet (looking things up on the web included), and asks the AI never to mention a
-   build or a version and never to offer to search, find or check something.
+   build or a version and never to offer to search, find or check something. Run 40646517889 (R1): with "looking things
+   up on the web" named as a task, real Claude decided "job" for "Make a table comparing 3 budget phones under 20000
+   rupees", so foo answered with the jobs-off line. The task named is now checking live news, weather or prices, and
+   words the AI can write from what it knows (an answer, a table, a comparison, a list, a plan) are a reply, saying
+   plainly when facts such as prices may be out of date.
 9. A `reply` with an empty `<say>` gets its CR-0041 retry with one more line, REASK_EMPTY_LINE: "Your first answer for
    this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>." On run
    40643760745, real Claude answered "Make a table comparing 3 budget phones…" (R1) and "aur tumhara naam? sirf naam

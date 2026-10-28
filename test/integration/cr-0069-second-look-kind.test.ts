@@ -229,6 +229,9 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(JOBS_OFF_LINE).not.toMatch(/^This build/);
     expect(JOBS_OFF_LINE).toContain('never mention a build or a version');
     expect(JOBS_OFF_LINE).toContain('never offer to search, find or check something');
+    // Run 40646517889 (R1): "looking things up on the web" made a phone table a job; words from what the AI knows are a reply.
+    expect(JOBS_OFF_LINE).not.toContain('looking things up');
+    expect(JOBS_OFF_LINE).toContain('(an answer, a table, a comparison, a list, a plan), decide "reply"');
   });
 
   it('a reply with an empty say is asked once more with a line naming it, and the words show (R1, QA2 on run 40643760745)', async () => {
