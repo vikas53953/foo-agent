@@ -280,6 +280,7 @@
         "the",
         "table…",
         "Working",
+        "1",
         "T",
         "9:38",
         "AM",
@@ -749,8 +750,8 @@
     "total": 80520
   },
   "r5": {
-    "ratio": 0.085818359375,
-    "diffPixels": 87878,
+    "ratio": 0.085994140625,
+    "diffPixels": 88058,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-12-07.light.diff.png"
