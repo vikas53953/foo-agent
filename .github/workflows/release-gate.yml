@@ -37,7 +37,8 @@ on:
         required: true
 
 concurrency:
-  group: release-gate
+  # One gate at a time. Renamed from release-gate so this run is not queued behind a stuck old one (28 Oct).
+  group: release-gate-v2
   cancel-in-progress: false
 
 permissions:
