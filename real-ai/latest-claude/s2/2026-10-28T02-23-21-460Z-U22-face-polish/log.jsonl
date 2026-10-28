@@ -1,0 +1,20 @@
+{"t":"2026-10-28T02:23:21.461Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T02:23:27.101Z","step":"launch","ok":true}
+{"t":"2026-10-28T02:23:28.147Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1043}
+{"t":"2026-10-28T02:23:28.266Z","i":1,"do":"send","sentAt":1793154208233,"sent":true,"before":0,"ok":true,"ms":118}
+{"t":"2026-10-28T02:23:29.776Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1510}
+{"t":"2026-10-28T02:23:29.866Z","shot":"01-thinking.png"}
+{"t":"2026-10-28T02:23:44.013Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":6056,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Mumbai monsoon, in four lines:\n\nGrey clouds roll in over the Arabian Sea,\nChai steams while the rain drums on the street.\nMarine Drive waves leap up wild and free,\nAnd the whole city dances in wet feet. 🌧️\n\n2:23 AM","kit":[],"ms":14147}
+{"t":"2026-10-28T02:23:44.085Z","shot":"02-poem.png"}
+{"t":"2026-10-28T02:23:44.165Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":79}
+{"t":"2026-10-28T02:23:44.215Z","i":5,"do":"key","ok":true,"ms":49}
+{"t":"2026-10-28T02:23:44.306Z","i":6,"do":"click","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-28T02:23:44.388Z","i":7,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-28T02:23:44.989Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":600}
+{"t":"2026-10-28T02:23:45.056Z","shot":"04-face-motion.png"}
+{"t":"2026-10-28T02:23:45.105Z","i":9,"do":"key","ok":true,"ms":49}
+{"t":"2026-10-28T02:24:08.180Z","shot":"05-error-step10.png"}
+{"t":"2026-10-28T02:24:08.180Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23075}
+{"t":"2026-10-28T02:24:08.191Z","i":11,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-28T02:24:08.332Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-10-28T02:24:08.344Z","step":"aiTurns","turns":3}

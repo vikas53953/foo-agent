@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n2:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:02 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n2:02 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:02 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n2:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n2:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n2:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n2:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it is faster, cheaper and easier than cash, cards or old-style bank transfers. Not long ago, sending money meant carrying change, remembering account numbers and bank codes, or hoping a shop took cards. Now a phone number or a QR code is enough, and the money reaches the other person's bank account in seconds, at any hour, even on holidays.\n\nThree main reasons:\n\nIt is simple: Scan, type the amount, approve with your PIN. No card, no change, no account details to remember.\nIt costs little or nothing: Paying friends or most shops is usually free, so even small vendors and street sellers are happy to accept it.\nIt works almost everywhere: One bank account can link to many apps, and from a chai stall to a big store, nearly every shop shows a QR code.\n\nTrust has grown too. When your chai seller, your landlord and your friends all use it, paying this way simply feels normal. Each payment needs your own PIN, which adds to the comfort. Early cashbacks and strong backing from banks and the government gave it a push, and daily habit did the rest.\n\n2:04 AM"
+  }
+]
