@@ -188,6 +188,19 @@ export async function laneRun(script: (sites: LaneSites) => FakeLine[], o: { war
   return run;
 }
 
+/** The job checklist posts 1.5 s of fake time after the job starts (CHECKLIST_AFTER_MS). With the browser warm (the warm-up
+ * above) a job can reach a held step or a Sign-in card before the clock has moved that far, so move it on until the
+ * checklist is up: at most 5 s, far short of any hold or sign-in timeout. */
+export const checklistUp = (run: LaneRun, title?: string): Promise<void> =>
+  run.until(
+    async () => {
+      const all = run.page.getByTestId(TID.threadLog).locator(byTid(TID.cardChecklist));
+      return (await (title ? all.filter({ hasText: title }) : all).count()) > 0;
+    },
+    'the checklist is up',
+    10,
+  );
+
 /** The newest Sign-in card in the open chat. */
 export const signinCard = (page: Page) => page.locator(byTid(TID.cardSignin)).last();
 
