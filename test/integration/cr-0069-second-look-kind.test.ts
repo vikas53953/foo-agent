@@ -233,7 +233,7 @@ describe('CR-0069 · jobs off: a task ask answered in words gets a second look (
     expect(JOBS_OFF_LINE).not.toContain('looking things up');
     expect(JOBS_OFF_LINE).toContain('(an answer, a table, a comparison, a list, a plan), decide "reply"');
     // Run 40663528915 (B15): "what did I miss on WhatsApp" got "Tell me its name and I'll read what came in".
-    expect(JOBS_OFF_LINE).toContain("cannot read the user’s email, WhatsApp or other apps yet");
+    expect(JOBS_OFF_LINE).toContain('cannot read the user’s email, WhatsApp or other apps yet');
   });
 
   it('a reply with an empty say is asked once more with a line naming it, and the words show (R1, QA2 on run 40643760745)', async () => {
