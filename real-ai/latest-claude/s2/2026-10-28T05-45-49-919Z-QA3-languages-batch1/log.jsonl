@@ -1,0 +1,37 @@
+{"t":"2026-10-28T05:45:49.920Z","journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T05:45:54.872Z","step":"launch","ok":true}
+{"t":"2026-10-28T05:45:54.876Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":2}
+{"t":"2026-10-28T05:45:54.919Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T05:45:55.025Z","i":1,"do":"click","ok":true,"ms":106}
+{"t":"2026-10-28T05:45:55.036Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":11}
+{"t":"2026-10-28T05:45:55.114Z","shot":"02-finder.png"}
+{"t":"2026-10-28T05:46:15.116Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20002}
+{"t":"2026-10-28T05:46:15.171Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T05:46:15.263Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":92}
+{"t":"2026-10-28T05:46:15.267Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T05:46:15.327Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T05:46:15.336Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":8}
+{"t":"2026-10-28T05:46:15.430Z","i":7,"do":"click","ok":true,"ms":94}
+{"t":"2026-10-28T05:46:45.431Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","ok":true,"ms":30001}
+{"t":"2026-10-28T05:46:45.484Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T05:46:45.520Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":36}
+{"t":"2026-10-28T05:46:45.627Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":106}
+{"t":"2026-10-28T05:46:45.629Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T05:46:45.630Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","ok":true,"ms":1}
+{"t":"2026-10-28T05:46:45.712Z","shot":"06-step2.png"}
+{"t":"2026-10-28T05:46:45.714Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n5:45 AM","ok":true,"ms":2}
+{"t":"2026-10-28T05:46:45.818Z","i":14,"do":"click","ok":true,"ms":104}
+{"t":"2026-10-28T05:46:55.820Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","ok":true,"ms":10002}
+{"t":"2026-10-28T05:46:55.873Z","shot":"07-first-chat.png"}
+{"t":"2026-10-28T05:46:55.969Z","i":16,"do":"send","sentAt":1793166415957,"sent":true,"before":0,"ok":true,"ms":96}
+{"t":"2026-10-28T05:47:06.657Z","i":17,"do":"waitReply","expect":"Hindi in Devanagari is answered in Devanagari","firstReplyMs":3052,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"शाम के लिए आलू गोभी बना लो: कटी गोभी और आलू को जीरा, हल्दी और नमक के साथ ढककर 15 मिनट भून लो। धनिया पत्ती डालकर गरम-गरम परोसो।\n\n5:46 AM","kit":[],"endState":true,"ms":10688}
+{"t":"2026-10-28T05:47:06.703Z","shot":"08-q3-hindi.png"}
+{"t":"2026-10-28T05:47:06.774Z","i":18,"do":"send","sentAt":1793166426768,"sent":true,"before":0,"ok":true,"ms":71}
+{"t":"2026-10-28T05:47:19.532Z","i":19,"do":"waitReply","expect":"Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly","firstReplyMs":4599,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਬਟਰਸਕੌਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ, ਜੇ ਉਹ ਮਿੱਠਾ ਪਸੰਦ ਕਰਦੀਆਂ ਹਨ। ਫਲਾਂ ਵਾਲਾ ਕੇਕ ਵੀ ਚੰਗਾ ਆਪਸ਼ਨ ਹੈ।\n\n5:47 AM","kit":[],"endState":true,"ms":12757}
+{"t":"2026-10-28T05:47:19.577Z","shot":"09-q3-punjabi.png"}
+{"t":"2026-10-28T05:47:19.652Z","i":20,"do":"send","sentAt":1793166439643,"sent":true,"before":0,"ok":true,"ms":75}
+{"t":"2026-10-28T05:47:31.344Z","i":21,"do":"waitReply","expect":"Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)","firstReplyMs":2031,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"8:15 AM बजे अलार्म लगा लो, ताकि तैयार होने के लिए थोड़ा टाइम मिल जाए। चाहो तो मैं तुम्हारे लिए अलार्म सेट कर दूं?\n\n5:47 AM","kit":[],"endState":true,"ms":11692}
+{"t":"2026-10-28T05:47:31.391Z","shot":"10-q3-hinglish.png"}
+{"t":"2026-10-28T05:47:31.398Z","i":22,"do":"dump","ok":true,"ms":6}
+{"t":"2026-10-28T05:47:31.487Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T05:47:31.495Z","step":"aiTurns","turns":3}

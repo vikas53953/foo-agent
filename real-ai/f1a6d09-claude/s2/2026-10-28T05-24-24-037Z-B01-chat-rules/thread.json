@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n5:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:23 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n5:23 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:23 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n5:24 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n5:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n5:24 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n5:24 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as sending a message, and it costs almost nothing to use.\n\nBefore UPI, small payments meant carrying cash, hunting for change, or typing long card and bank details. Now you scan a code or enter a phone number, type your PIN, and the money moves from your bank account in seconds, at any hour, even on holidays.\n\nFree and instant: Most person-to-person and shop payments cost nothing, and the money arrives right away.\nWorks everywhere: From a tea stall to a big mall, one QR code takes payments from any bank's app, so shops don't need a card machine.\nSimple and familiar: One phone and one PIN. No card, no cash, and even first-time smartphone users pick it up fast.\n\nShopkeepers like it too. There is no cash to count, no change to find, and every sale is recorded automatically. Once a few shops on a street accept UPI, the rest follow, and customers get used to paying this way very quickly.\n\n5:24 AM"
+  }
+]

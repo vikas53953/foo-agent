@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n5:28 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 5:29 AM\n5:28 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:28 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for well-rated Italian…\nlive checklist\nLooking for well-rated Italian restaurants in\nKeep 3 Italian restaurants in Bandra that fit good reviews and a free table for 2 on\nCheck the restaurants' booking pages\nWait for you to pick one\nWatch live\nStop\n6 min\n5:29 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:29 AM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for well-rated Italian… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry the restaurants' booking pages instead\nTry another way\nTake over\nStop\n5:31 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n5:32 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking for well-rated Italian…\n3\nBoth\nSomething else…\nSkip\n5:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "5:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n5:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got it, I’ll fold that in.\n\n5:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Poco X6 5G is the best value at ₹17,999 and Realme Narzo 70 Pro 5G is the pick if you want the best camera for the price.\n\nPhone\tPrice\tDisplay\tCamera\tBattery\nPoco X6 5G\t₹17,999\t6.67\" AMOLED, 120Hz\t64MP with OIS\t5100mAh, 67W\nRealme Narzo 70 Pro 5G\t₹18,499\t6.67\" AMOLED, 120Hz\t50MP Sony with OIS\t5000mAh, 67W\nRedmi Note 13 Pro 5G\t₹18,999\t6.67\" AMOLED, 120Hz\t200MP with OIS\t5100mAh, 67W\n\nRedmi has the biggest camera number but may heat up in long gaming. Poco has some pre-installed apps you may not want. All figures come from one buying guide, so check the price on the shop page before you buy.\n\nWant me to look up reviews for one of them?\n\n5:33 AM"
+  }
+]
