@@ -1,4 +1,0 @@
-{"kind":"step","job_id":"j_01a18124-cd76-7703-9e7d-1edd0bc59b2b","idx":0,"phrase_key":"look_web","state":"running","attempts":0,"route":"browser","started_at":1793168035199,"finished_at":null}
-{"kind":"step","job_id":"j_01a18124-cd76-7703-9e7d-1edd0bc59b2b","idx":1,"phrase_key":"compare","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
-{"kind":"step","job_id":"j_01a18124-cd76-7703-9e7d-1edd0bc59b2b","idx":2,"phrase_key":"writing","state":"pending","attempts":0,"route":"api","started_at":null,"finished_at":null}
-{"kind":"call","job_id":"j_01a18124-cd76-7703-9e7d-1edd0bc59b2b","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793168039713,"finished_at":1793168041875}

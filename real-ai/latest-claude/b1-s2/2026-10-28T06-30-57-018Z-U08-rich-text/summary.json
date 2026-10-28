@@ -1,0 +1,113 @@
+{
+  "journey": "U08-rich-text",
+  "title": "foo bubbles: code block copy, table, links, list, sources",
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-30-57-018Z-U08-rich-text",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1033
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793169063715,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "code block in mono with a Copy button",
+      "firstReplyMs": 7564,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's the whole thing in one line: print(\"Hello, world!\"). Run it with Python and it shows Hello, world! on screen.\n\n6:31 AM",
+      "kit": [],
+      "ms": 14233
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23077
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793169101213,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "table renders as a table (CR-0053), not raw pipes",
+      "firstReplyMs": 3545,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are three states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nKarnataka\tBengaluru\n6:31 AM",
+      "kit": [],
+      "ms": 10656
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793169112023,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 108
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "a clickable link; right-click shows open/copy",
+      "firstReplyMs": 2532,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Indian Railways ticket site is IRCTC. For train running status, PNR and seat checks, the enquiry site is Indian Railways Enquiry.\n\n6:31 AM",
+      "kit": [],
+      "ms": 9665
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "link menu: Open, Copy",
+      "ok": true,
+      "ms": 501
+    },
+    {
+      "i": 10,
+      "do": "key",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

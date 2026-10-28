@@ -1,3 +1,0 @@
-{"t":1793167521075,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1793167536196,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
-{"t":1793167536198,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

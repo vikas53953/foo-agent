@@ -1,9 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T05-59-53-225Z-J01-J02-first-run"}
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-03-00-709Z-J01-J02-first-run"}
-{"journey":"J17-memory","title":"Remember, view and forget","steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-03-51-225Z-J17-memory"}
-{"journey":"J12-draft","title":"Draft an email (never sends)","steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-04-20-586Z-J12-draft"}
-{"journey":"B04-stop","title":"Start a job then stop it by typing stop","steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-04-46-714Z-B04-stop"}
-{"journey":"B07-live","title":"Watch live, take over, hand back, stop","steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-05-51-432Z-B07-live"}
-{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-07-13-339Z-U06-header-panel"}
-{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-08-08-879Z-U12-choice-variants"}
-{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","steps":22,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-09-08-957Z-U19-screens"}

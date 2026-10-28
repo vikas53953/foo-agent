@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। 🎂\n\nਘੱਟ ਮਿੱਠਾ ਚਾਹੀਦਾ ਹੋਵੇ: ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ।\nਖਾਸ ਲੱਗਣਾ ਚਾਹੀਦਾ ਹੋਵੇ: ਮੰਮੀ ਦੀ ਫੋਟੋ ਵਾਲਾ ਕੇਕ।\n\nਜਨਮ ਦਿਨ Fri 30 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੇਕ ਕੱਲ੍ਹ Thu 29 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਕੀ ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ?\n\n6:29 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n6:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I don't know of any public holiday in Mumbai on Mon 2 Nov, so it should be a normal working day. I can't check a live holiday list from here, so confirm with your office or bank if it matters. Diwali falls later, around Sun 8 Nov.\n\n6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n6:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hello in Hindi is नमस्ते (namaste). A casual version is हैलो or राम राम, and for a warm hello to elders, नमस्कार.\n\n6:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n6:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's the whole thing in one line: print(\"Hello, world!\"). Run it with Python and it shows Hello, world! on screen.\n\n6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n6:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nKarnataka\tBengaluru\n6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n6:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status, PNR and seat checks, the enquiry site is Indian Railways Enquiry.\n\n6:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n6:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Mummy ka birthday cake abhi baaki hai, Thu 29 Oct tak order karna hai. Chahoge toh main options dekh loon?\n\n6:32 AM"
+  }
+]
