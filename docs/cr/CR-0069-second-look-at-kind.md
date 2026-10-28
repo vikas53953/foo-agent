@@ -44,6 +44,10 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
    rupees", so foo answered with the jobs-off line. The task named is now checking live news, weather or prices, and
    words the AI can write from what it knows (an answer, a table, a comparison, a list, a plan) are a reply, saying
    plainly when facts such as prices may be out of date.
+   Run 40663528915 (B15): "what did I miss on WhatsApp" got "Tell me its name and I'll read what came in", and "book me
+   a flight to Goa" got the flight scope card (08-2 §5.3.4), both promises batch 1 can't keep. The line now also says foo
+   cannot read the user’s email, WhatsApp or other apps yet, and with jobs off the runner's own pre-intake replies (the
+   flight scope card, a steer) do not run, so intake answers and a flight booking gets the jobs-off line.
 9. A `reply` with an empty `<say>` gets its CR-0041 retry with one more line, REASK_EMPTY_LINE: "Your first answer for
    this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>." On run
    40643760745, real Claude answered "Make a table comparing 3 budget phones…" (R1) and "aur tumhara naam? sirf naam

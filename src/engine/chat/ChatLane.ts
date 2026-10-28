@@ -526,7 +526,10 @@ export class ChatLane {
     };
     // M5 (T5): a typed answer to an open Choice or tiles card comes after the stop word and before the G16 reply (08-2 §5.2).
     if (!intakeOnly && message.kind === 'text' && (await answerTyped(this.typedDeps, { chatId, messageId, text: message.text }))) return;
-    if (!intakeOnly && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text }))) return;
+    // CR-0054: with jobs switched off the runner's own replies (the flight scope card, a steer) never run; intake answers.
+    const jobsOn = this.d.featureOn?.('jobs') !== false;
+    if (!intakeOnly && jobsOn && message.kind === 'text' && (await this.d.jobs?.onUserMessage?.({ chatId, messageId, text: message.text })))
+      return;
     const pick = this.d.ai.pick();
     if (!pick && rewrite) {
       // CR-0059 row 1: an answered message never goes back to "Waiting to send"; the old answer stays.
