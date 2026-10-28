@@ -12,7 +12,8 @@
       "tid": "setup-welcome-start",
       "timeoutMs": 60000,
       "shot": "welcome",
-      "expect": "Welcome card, step 1 of 2"
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install"
     },
     {
       "do": "click",
@@ -23,13 +24,15 @@
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "timeoutMs": 60000,
       "shot": "finder",
-      "expect": "Find your AI card; the Anthropic key row offers to add the key"
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai"
     },
     {
       "do": "wait",
       "ms": 20000,
       "shot": "finder-tested",
-      "expect": "rows tested; the key row waits for a key"
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai"
     },
     {
       "do": "click",
@@ -41,7 +44,8 @@
       "tid": "card-secret-field",
       "timeoutMs": 30000,
       "shot": "secret-box",
-      "expect": "Secret box asks for the Anthropic key"
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai"
     },
     {
       "do": "fill",
@@ -57,7 +61,8 @@
       "do": "wait",
       "ms": 30000,
       "shot": "key-tested",
-      "expect": "the Anthropic key row shows works"
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai"
     },
     {
       "do": "clickIf",
@@ -78,7 +83,8 @@
       "tid": "setup-skip-rest",
       "timeoutMs": 60000,
       "shot": "step2",
-      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key"
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name"
     },
     {
       "do": "expectText",
@@ -94,7 +100,8 @@
       "do": "wait",
       "ms": 10000,
       "shot": "first-chat",
-      "expect": "warm hello with three things to try; composer unlocked"
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat"
     },
     {
       "do": "send",
@@ -105,14 +112,17 @@
       "timeoutMs": 120000,
       "shot": "q1-chat",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
-      "expect": "a reply; 👀 never shows while foo answers (Vikas 27 Oct, QA-X-F27)"
+      "expect": "a reply; 👀 never shows while foo answers (Vikas 27 Oct, QA-X-F27)",
+      "feature": "chat"
     },
     {
       "do": "check",
       "css": "[data-testid^=\"chatlist-filter\"]",
       "count": 0,
       "shot": "q2-no-job-filters",
-      "note": "QA (Vikas bug 3): jobs off, so no job filter chips"
+      "note": "QA (Vikas bug 3): jobs off, so no job filter chips",
+      "feature": "refusals",
+      "expect": "QA (Vikas bug 3): jobs off, so no job filter chips"
     },
     {
       "do": "hover",
@@ -134,7 +144,8 @@
       "tid": "thread-log",
       "re": "Rewritten",
       "shot": "q3-try-again",
-      "expect": "Try again rewrites the answer in place and says Rewritten"
+      "expect": "Try again rewrites the answer in place and says Rewritten",
+      "feature": "chat"
     },
     {
       "do": "send",
@@ -145,7 +156,8 @@
       "timeoutMs": 120000,
       "shot": "q4-ok",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
-      "expect": "foo replies OK"
+      "expect": "foo replies OK",
+      "feature": "chat"
     },
     {
       "do": "click",
@@ -173,20 +185,23 @@
       "re": "deleted this message|message was deleted",
       "not": true,
       "shot": "q5-deleted",
-      "expect": "the message leaves the chat; no 'You deleted this message' line"
+      "expect": "the message leaves the chat; no 'You deleted this message' line",
+      "feature": "chat"
     },
     {
       "do": "pasteSend",
       "text": "gamma\n\ndelta. Please just reply OK.",
       "shot": "q6-paste-blank-line",
-      "expect": "QA-X-F26: a pasted blank line is sent once, exactly as pasted"
+      "expect": "QA-X-F26: a pasted blank line is sent once, exactly as pasted",
+      "feature": "chat"
     },
     {
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "q6-reply",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
-      "expect": "foo replies"
+      "expect": "foo replies",
+      "feature": "chat"
     },
     {
       "do": "paste",
@@ -205,7 +220,8 @@
       "tid": "composer-field",
       "re": "three\\s*•",
       "shot": "q7-key-mask",
-      "expect": "QA-X-F28: the key's mask lands after \"three \", never inside it (a made-up key, never sent)"
+      "expect": "QA-X-F28: the key's mask lands after \"three \", never inside it (a made-up key, never sent)",
+      "feature": "chat"
     },
     {
       "do": "key",
@@ -234,7 +250,8 @@
       "shot": "q8-job-off",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "QA-X-F32: foo's own fixed line that it can't do tasks yet",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/can.t do tasks for you yet/i.test(b.innerText)&&!/<\\/?say>/.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);return !!b&&/can.t do tasks for you yet/i.test(b.innerText)&&!/<\\/?say>/.test(b.innerText)&&!document.querySelector('[data-testid=\"card-checklist\"]')})()",
+      "feature": "refusals"
     },
     {
       "do": "send",
@@ -246,7 +263,8 @@
       "shot": "q9-memory-off",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "QA-X-F29: exactly one bubble, foo can't remember yet; never 'Noted'",
-      "expectJs": "(()=>{const all=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"], [data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')];const me=all.map(b=>b.dataset.testid).lastIndexOf('bubble-me');const after=all.slice(me+1);return after.length===1&&!/noted|i.ve saved|i.ll remember/i.test(after[0].innerText)&&!/<\\/?say>/.test(after[0].innerText)})()"
+      "expectJs": "(()=>{const all=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"], [data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')];const me=all.map(b=>b.dataset.testid).lastIndexOf('bubble-me');const after=all.slice(me+1);return after.length===1&&!/noted|i.ve saved|i.ll remember/i.test(after[0].innerText)&&!/<\\/?say>/.test(after[0].innerText)})()",
+      "feature": "refusals"
     },
     {
       "do": "send",
@@ -257,7 +275,9 @@
       "css": "html[data-theme=\"dark\"]",
       "timeoutMs": 120000,
       "shot": "q10-dark",
-      "note": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)"
+      "note": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
+      "feature": "settings",
+      "expect": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)"
     },
     {
       "do": "wait",
@@ -273,7 +293,8 @@
       "shot": "q11-no-tags",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "QA-X-F31: an honest no, shown once, never raw <say> tags",
-      "expectJs": "(()=>{const all=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"], [data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')];const me=all.map(b=>b.dataset.testid).lastIndexOf('bubble-me');const after=all.slice(me+1);if(after.length!==1)return false;const t=after[0].innerText;return !/<\\/?say>/.test(t)&&/(can.?t|cannot|not able|unable|haven.?t|didn.?t|not yet|nahi)/i.test(t)})()"
+      "expectJs": "(()=>{const all=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-me\"], [data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')];const me=all.map(b=>b.dataset.testid).lastIndexOf('bubble-me');const after=all.slice(me+1);if(after.length!==1)return false;const t=after[0].innerText;return !/<\\/?say>/.test(t)&&/(can.?t|cannot|not able|unable|haven.?t|didn.?t|not yet|nahi)/i.test(t)})()",
+      "feature": "refusals"
     },
     {
       "do": "dump",
