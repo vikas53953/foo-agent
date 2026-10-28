@@ -4,3 +4,8 @@ G2-chat
 G3-restart
 G4-settings
 G5-wrong-key
+QA1-batch1-recheck
+QA2-setup-key-name-face-vibe
+QA3-languages-batch1
+QA4-settings-batch1
+QA5-restart-batch1
