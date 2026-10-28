@@ -1,0 +1,14 @@
+{"t":"2026-10-28T06:07:09.577Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:07:14.513Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:07:22.557Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8041}
+{"t":"2026-10-28T06:07:22.632Z","i":0,"do":"send","sentAt":1793167642613,"sent":true,"before":0,"ok":true,"ms":75}
+{"t":"2026-10-28T06:07:35.718Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":7056,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Mon 26 Oct to Wed 28 Oct\nCompare reports across news sites and the ISRO\nWatch live\nStop\nunder 1 min\n6:07 AM","kit":[],"ms":13085}
+{"t":"2026-10-28T06:07:35.770Z","shot":"01-news.png"}
+{"t":"2026-10-28T06:07:35.771Z","i":2,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-28T06:07:35.773Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T06:07:45.821Z","shot":"02-error-step4.png"}
+{"t":"2026-10-28T06:07:45.822Z","i":4,"do":"expectText","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","ms":10048}
+{"t":"2026-10-28T06:07:45.827Z","i":5,"do":"dump","ok":true,"ms":5}
+{"t":"2026-10-28T06:07:46.024Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T06:07:46.033Z","step":"aiTurns","turns":4}
+{"t":"2026-10-28T06:07:46.034Z","step":"jobTrail","steps":3,"calls":2}

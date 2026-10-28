@@ -1,0 +1,29 @@
+{"t":"2026-10-28T06:08:02.067Z","journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","spec":"05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:08:06.981Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:08:15.030Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8046}
+{"t":"2026-10-28T06:08:16.070Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1040}
+{"t":"2026-10-28T06:08:16.145Z","i":1,"do":"send","sentAt":1793167696126,"sent":true,"before":0,"ok":true,"ms":75}
+{"t":"2026-10-28T06:08:45.330Z","i":2,"do":"waitReply","expect":"plan card","firstReplyMs":20139,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are five good weekend treks from Pune, with rough costs per person. The costs are my estimates, not live prices.\n\nTrek\tFrom Pune\tDifficulty\tRough cost\nSinhagad\tAbout 35 km\tEasy\t₹200–₹500\nLohagad and Visapur\tAbout 65 km\tEasy\t₹300–₹700\nRajmachi\tAbout 90 km\tEasy to moderate\t₹800–₹1,500\nTorna\tAbout 70 km\tModerate to hard\t₹1,000–₹1,800\nHarishchandragad\tAbout 150 km\tHard\t₹1,500–₹2,500\n\nThe low end is going on your own (transport and food). The high end is a group trek with a guide, and overnight stays push it up. The weather should be good this Sat 31 Oct and Sun 1 Nov, after the monsoon.\n\nWant me to look up group trek dates and current prices for one or two of these?\n\n6:08 AM","kit":[],"ms":29185}
+{"t":"2026-10-28T06:08:45.398Z","shot":"01-plan.png"}
+{"t":"2026-10-28T06:09:08.453Z","shot":"02-error-step3.png"}
+{"t":"2026-10-28T06:09:08.453Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23055}
+{"t":"2026-10-28T06:09:09.254Z","i":4,"do":"wait","expect":"composer prompts for the change","ok":true,"ms":801}
+{"t":"2026-10-28T06:09:09.309Z","shot":"03-change.png"}
+{"t":"2026-10-28T06:09:09.400Z","i":5,"do":"send","sentAt":1793167749376,"sent":true,"before":0,"ok":true,"ms":90}
+{"t":"2026-10-28T06:09:26.483Z","i":6,"do":"waitReply","expect":"a changed plan, the old one marked changed","firstReplyMs":11049,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Noted on easy treks, but this job is only about ISRO news. Want me to look for easy treks as a separate job after this?\n\n6:09 AM","kit":[],"ms":17082}
+{"t":"2026-10-28T06:09:26.527Z","shot":"04-plan-2.png"}
+{"t":"2026-10-28T06:09:49.578Z","shot":"05-error-step7.png"}
+{"t":"2026-10-28T06:09:49.578Z","i":7,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23051}
+{"t":"2026-10-28T06:09:57.579Z","i":8,"do":"wait","expect":"checklist running; Doing now shows the job; chat pill Working","ok":true,"ms":8001}
+{"t":"2026-10-28T06:09:57.644Z","shot":"06-running.png"}
+{"t":"2026-10-28T06:09:57.666Z","i":9,"do":"key","ok":true,"ms":22}
+{"t":"2026-10-28T06:09:58.468Z","i":10,"do":"wait","expect":"right panel Doing now row with Stop","ok":true,"ms":801}
+{"t":"2026-10-28T06:09:58.514Z","shot":"07-doing-now.png"}
+{"t":"2026-10-28T06:09:58.583Z","i":11,"do":"click","soft":true,"ok":true,"ms":68}
+{"t":"2026-10-28T06:10:03.584Z","i":12,"do":"wait","expect":"job stopped ⛔, checklist says stopped, no further steps","ok":true,"ms":5001}
+{"t":"2026-10-28T06:10:03.635Z","shot":"08-stopped.png"}
+{"t":"2026-10-28T06:10:03.643Z","i":13,"do":"key","ok":true,"ms":7}
+{"t":"2026-10-28T06:10:03.652Z","i":14,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:10:03.845Z","step":"appLog","lines":29,"dropped":0}
+{"t":"2026-10-28T06:10:03.854Z","step":"aiTurns","turns":23}
+{"t":"2026-10-28T06:10:03.856Z","step":"jobTrail","steps":0,"calls":21}

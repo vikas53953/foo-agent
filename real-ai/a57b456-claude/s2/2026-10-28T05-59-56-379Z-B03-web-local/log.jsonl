@@ -1,0 +1,16 @@
+{"t":"2026-10-28T05:59:56.379Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:00:01.268Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:00:01.349Z","i":0,"do":"send","sentAt":1793167201322,"sent":true,"before":0,"ok":true,"ms":79}
+{"t":"2026-10-28T06:00:15.020Z","i":1,"do":"waitReply","firstReplyMs":7594,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Mon 26 Oct to Wed 28 Oct\nCompare reports across sources to confirm each\nWatch live\nStop\nunder 1 min\n6:00 AM","kit":[],"ms":13671}
+{"t":"2026-10-28T06:00:15.067Z","shot":"01-news.png"}
+{"t":"2026-10-28T06:00:15.069Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T06:02:45.074Z","i":3,"do":"wait","ok":true,"ms":150004}
+{"t":"2026-10-28T06:02:45.135Z","shot":"02-news-later.png"}
+{"t":"2026-10-28T06:02:45.138Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T06:02:45.139Z","i":5,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-10-28T06:02:45.142Z","i":6,"do":"expectText","text":"All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:59 AM","ok":true,"ms":2}
+{"t":"2026-10-28T06:02:45.144Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T06:02:45.149Z","i":8,"do":"dump","ok":true,"ms":5}
+{"t":"2026-10-28T06:02:45.318Z","step":"appLog","lines":31,"dropped":0}
+{"t":"2026-10-28T06:02:45.327Z","step":"aiTurns","turns":28}
+{"t":"2026-10-28T06:02:45.329Z","step":"jobTrail","steps":3,"calls":25}
