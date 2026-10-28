@@ -128,6 +128,7 @@
         "to",
         "peanuts",
         "Done",
+        "1",
         "T",
         "11:58",
         "AM",
@@ -594,8 +595,8 @@
     "total": 7644
   },
   "r5": {
-    "ratio": 0.1046962890625,
-    "diffPixels": 107209,
+    "ratio": 0.1049033203125,
+    "diffPixels": 107421,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-02.light.diff.png"

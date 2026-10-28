@@ -1,0 +1,336 @@
+{
+  "id": "UX-08-03",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-08-03.light.png",
+      "sha256": "ac3a1f8e81605eb5aa178a6012ce318d6c5c95e71e3fc834b106ba039e492401"
+    },
+    "dark": {
+      "png": "UX-08-03.dark.png",
+      "sha256": "10f7b89aa69cae31c1fe01202edb8ac58c7b1eee2ed1ecfe5a41bf0456da49bc"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "Thu",
+    "I already see your Goa trip on Sat 12–Mon 14 Dec",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "foo",
+    "Awake on your PC",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "☀ Good morning, Vikas",
+    "Morning brief",
+    "Mom's birthday is Sun 18 Oct. Cake ordered?",
+    "Yes, from Theobroma",
+    "Not yet",
+    "👍 👎",
+    "Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.",
+    "Open Money",
+    "👍 👎",
+    "Goa stays for Sat 12 Dec dropped 18%.",
+    "Show me",
+    "👍",
+    "👎",
+    "Mumbai today: 31°, light rain after 4:00 PM.",
+    "👍 👎",
+    "That's all for today · 👍 · 👎 ·",
+    "Tomorrow, more of / less of…",
+    "Cake from Theobroma is booked for Sun 18 Oct, 11:00 AM.",
+    "8:05 AM",
+    "thanks!",
+    "8:06 AM ✓",
+    "✓",
+    "👍",
+    "is Mon 2 Nov a holiday?",
+    "8:10 AM ✓",
+    "✓",
+    "👀",
+    "No, Mon 2 Nov is a normal working day in Mumbai.",
+    "8:10 AM",
+    "The next holiday is Diwali, Sun 8 Nov.",
+    "8:10 AM",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "The next holiday is Diwali, Sun 8 Nov.",
+    "8:10 AM"
+  ],
+  "hl": {
+    "id": "hol2",
+    "box": {
+      "x": 364,
+      "y": 681,
+      "width": 323.953125,
+      "height": 38
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 364,
+      "y": 681,
+      "width": 323.953125,
+      "height": 38
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M2",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 8,
+    "step": 3,
+    "anchor": "chat-3",
+    "title": "Just chatting, in your language",
+    "part": "Every day · Fri 16 Oct",
+    "j": "J7",
+    "r": "R1 · R24",
+    "c": "Short answers come as 1–3 bubbles, a moment apart. No filler.",
+    "s": "\"No, Mon 2 Nov is a normal working day in Mumbai.\" then \"The next holiday is Diwali, Sun 8 Nov.\"",
+    "f": "Never says \"Great question\" or \"How can I help you\".",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "Thu",
+            "prev": "I already see your Goa trip on Sat 12–Mon 14 Dec"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\"><b style=\"color:var(--accent)\">👍</b> 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Cake from Theobroma is booked for Sun 18 Oct, 11:00 AM.<span class=\"meta\">8:05 AM</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\" data-hl=\"thx\">thanks!<span class=\"meta\">8:06 AM ✓<span class=\"rd\">✓</span></span><span class=\"react\">👍</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\">is Mon 2 Nov a holiday?<span class=\"meta\">8:10 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">👀</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">No, Mon 2 Nov is a normal working day in Mumbai.<span class=\"meta\">8:10 AM</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo cont\" data-hl=\"hol2\">The next holiday is Diwali, Sun 8 Nov.<span class=\"meta\">8:10 AM</span></div>",
+              "g": 2
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Trips. I'll look after your travel. I already see your Goa trip on Sat 12–Mon 14 Dec. Anything to sort for it?<span class=\"meta\">8:12 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Awake on your PC"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "9:41 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest",
+          "trips": "rest",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": false,
+          "trips": true,
+          "money": true,
+          "home": true
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "9:41 AM",
+    "superseded": null
+  }
+}
