@@ -1,0 +1,22 @@
+{"t":"2026-10-28T00:07:07.237Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T00:07:12.848Z","step":"launch","ok":true}
+{"t":"2026-10-28T00:07:13.888Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1037}
+{"t":"2026-10-28T00:07:14.039Z","i":1,"do":"send","sentAt":1793146033999,"sent":true,"before":0,"ok":true,"ms":150}
+{"t":"2026-10-28T00:07:25.199Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":5059,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds good in Bengaluru?\n1\nLalbagh and breakfast\nBEST FIT\nEasy morning walk, then a dosa\n2\nNandi Hills sunrise\nEarly start, cool views\n3\nCubbon Park and cafés\nRelaxed day in the city\nSomething else…\nSkip\n12:07 AM","kit":[],"ms":11160}
+{"t":"2026-10-28T00:07:25.264Z","shot":"01-choice.png"}
+{"t":"2026-10-28T00:07:25.365Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":101}
+{"t":"2026-10-28T00:07:25.502Z","i":4,"do":"send","sentAt":1793146045450,"sent":true,"before":0,"ok":true,"ms":137}
+{"t":"2026-10-28T00:07:41.154Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":8099,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Nice pick: Nandi Hills sunrise it is. It's a roughly 1.5-hour drive from Bengaluru, so you'd leave in the middle of the night. Carry a light jacket, and check the gate timings and parking rules before you go, since I can't see those from here.\n\nWant me to add it to your calendar for Sat 31 Oct or Sun 1 Nov?\n\n12:07 AM","kit":[],"ms":15652}
+{"t":"2026-10-28T00:07:41.217Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-28T00:07:41.331Z","i":6,"do":"send","sentAt":1793146061302,"sent":true,"before":0,"ok":true,"ms":114}
+{"t":"2026-10-28T00:07:51.983Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":4570,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, South Indian\n2\nChicken or veg biryani\nHearty and filling\n3\nCreamy pasta with garlic bread\nComfort food, quick to make\nSomething else…\nSkip\n12:07 AM","kit":[],"ms":10652}
+{"t":"2026-10-28T00:07:52.046Z","shot":"04-choice-2.png"}
+{"t":"2026-10-28T00:07:52.162Z","i":8,"do":"click","soft":true,"ok":true,"ms":116}
+{"t":"2026-10-28T00:07:52.764Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":601}
+{"t":"2026-10-28T00:07:52.824Z","shot":"05-something-else.png"}
+{"t":"2026-10-28T00:07:52.936Z","i":10,"do":"send","sentAt":1793146072913,"sent":true,"before":0,"ok":true,"ms":112}
+{"t":"2026-10-28T00:08:05.150Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":5050,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, a good call for a late dinner. Add a spoon of ghee and some jeera tadka on top.\n\nWant a quick recipe for it?\n\n12:07 AM","kit":[],"ms":12214}
+{"t":"2026-10-28T00:08:05.212Z","shot":"06-own-answer.png"}
+{"t":"2026-10-28T00:08:05.225Z","i":12,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-28T00:08:05.358Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T00:08:05.371Z","step":"aiTurns","turns":4}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n11:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:54 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n11:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:54 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n11:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n11:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n11:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n11:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ka birthday Thu 29 Oct ko hai, toh cake kal Wed 28 Oct tak order kar dena theek rahega. Yeh kuch achhe options hain:\n\nChocolate truffle: sabko pasand aata hai, galti ka chance kam.\nButterscotch ya pineapple: purana classic, halka meetha.\nFresh fruit cake: kam heavy, agar mummy ko zyada meetha nahi pasand.\nPhoto ya naam wala cake: thoda personal touch, bas ek din pehle order karna padta hai.\n\nMummy ko kaunsa flavour pasand hai, aur eggless chahiye ya sugar-free?\n\n11:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n11:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। ਜੇ ਉਨ੍ਹਾਂ ਨੂੰ ਘੱਟ ਮਿੱਠਾ ਪਸੰਦ ਹੈ, ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਠੀਕ ਰਹੇਗਾ।\n\nਜਨਮ ਦਿਨ Thu 29 Oct ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੇਕ Wed 28 Oct ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ। ਮੰਮੀ ਨੂੰ ਕਿਹੜਾ ਫਲੇਵਰ ਸਭ ਤੋਂ ਵੱਧ ਪਸੰਦ ਹੈ?\n\n11:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n11:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov looks like a normal working day in Mumbai. I don't know of any public or bank holiday on that date, but I can't check the live Maharashtra holiday list from here, so confirm with your bank or office if it matters.\n\n11:56 PM"
+  }
+]

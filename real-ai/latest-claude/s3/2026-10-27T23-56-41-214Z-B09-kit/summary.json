@@ -1,0 +1,190 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-27T23-56-41-214Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793145406952,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "firstReplyMs": 8117,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The EMI on ₹50,00,000 at 8.5% for 20 years comes to about ₹43,391 a month. Over 240 months you would pay around ₹1,04,13,800 in all, of which about ₹54,13,800 is interest. Change the numbers below to try other loans.\n\nLoan amount (₹)\nInterest per year (%)\nYears\nMonthly EMI\n₹43,391.16\nTotal you pay\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n11:56 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 16258
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793145423413,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "firstReplyMs": 6093,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 Jaipur places, in an easy order to visit: Amber Fort first, then the old city. Hawa Mahal, City Palace and Jantar Mantar are a short walk from each other.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort, best in the morning\n2\nNahargarh Fort\nGreat city view at sunset\n3\nHawa Mahal\nPink palace front, best in morning light\n4\nCity Palace\nRoyal palace and museum\n5\nJantar Mantar\nOld stone observatory next to City Palace\nOpen in Maps\nKeep\n\nWant me to turn this into a one-day plan?\n\n11:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "ms": 14742
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793145438383,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 122
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "firstReplyMs": 5568,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's real GDP growth over the last five completed financial years: -5.8% in FY21, then 9.7%, 7.6%, 9.2% and 6.5% in FY25. These are rounded figures as I remember them, and the government revises them, so check the latest release from the statistics ministry if you need exact numbers. I don't have FY26 here.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n11:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "ms": 14248
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793145452833,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "firstReplyMs": 8672,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Galaxy S25 is the best value of the three: the fastest chip, three cameras including a zoom lens, and 7 years of updates at about the same launch price. These are specs as I remember them, and I can't see live prices from here, so check the current price before you buy.\n\niPhone 16\nScreen\n6.1 inch OLED, 60Hz\nChip\nApple A18\nCameras\n48MP main + 12MP ultrawide\nBattery\nAbout 3,560 mAh\nBase storage\n128GB\nUpdates\nAbout 5 to 6 years\nPixel 9\nScreen\n6.3 inch OLED, 120Hz\nChip\nGoogle Tensor G4\nCameras\n50MP main + 48MP ultrawide\nBattery\nAbout 4,700 mAh\nBase storage\n128GB\nUpdates\n7 years\nBest pick\nGalaxy S25\nScreen\n6.2 inch AMOLED, 120Hz\nChip\nSnapdragon 8 Elite\nCameras\n50MP main + 12MP ultrawide + 10MP 3x zoom\nBattery\nAbout 4,000 mAh\nBase storage\n128GB\nUpdates\n7 years\n\nFastest chip, a zoom lens and 7 years of updates at a similar price.\n\nKeep\n\nPixel 9 is a close second if battery life matters more to you than zoom. Want me to look up today's prices?\n\n11:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "ms": 18897
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "sentAt": 1793145472014,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 212
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "firstReplyMs": 4565,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is below. Start it when the water is ready.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n11:57 PM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "ms": 11632
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793145483862,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 175
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "firstReplyMs": 3035,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here is a short form for the party plan: fill in the date, number of guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n11:58 PM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "ms": 11636
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "sentAt": 1793145495721,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 161
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "firstReplyMs": 6613,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here is your expense tracker for Oct 2026: add an item, set a monthly budget and see the total and category split update live. Entries stay only while this page is open, so nothing is saved after you close it.\n\nKeep\n11:58 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 23864
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}

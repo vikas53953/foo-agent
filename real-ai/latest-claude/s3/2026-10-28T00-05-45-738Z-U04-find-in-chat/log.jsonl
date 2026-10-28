@@ -1,0 +1,21 @@
+{"t":"2026-10-28T00:05:45.738Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T00:05:51.352Z","step":"launch","ok":true}
+{"t":"2026-10-28T00:05:52.408Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1052}
+{"t":"2026-10-28T00:05:52.564Z","i":1,"do":"send","sentAt":1793145952523,"sent":true,"before":0,"ok":true,"ms":155}
+{"t":"2026-10-28T00:06:03.650Z","i":2,"do":"waitReply","expect":"a short list","firstReplyMs":4546,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Ganga, Yamuna and Godavari.\n\n12:05 AM","kit":[],"ms":11086}
+{"t":"2026-10-28T00:06:03.716Z","shot":"01-rivers.png"}
+{"t":"2026-10-28T00:06:03.728Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":12}
+{"t":"2026-10-28T00:06:03.793Z","shot":"02-find-open.png"}
+{"t":"2026-10-28T00:06:03.806Z","i":4,"do":"fill","soft":true,"ok":true,"ms":13}
+{"t":"2026-10-28T00:06:04.608Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":801}
+{"t":"2026-10-28T00:06:04.666Z","shot":"03-find-results.png"}
+{"t":"2026-10-28T00:06:04.740Z","i":6,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-10-28T00:06:04.816Z","i":7,"do":"click","soft":true,"ok":true,"ms":76}
+{"t":"2026-10-28T00:06:04.906Z","i":8,"do":"click","soft":true,"ok":true,"ms":90}
+{"t":"2026-10-28T00:06:04.910Z","i":9,"do":"key","ok":true,"ms":4}
+{"t":"2026-10-28T00:06:05.711Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":801}
+{"t":"2026-10-28T00:06:05.775Z","shot":"04-ctrl-k.png"}
+{"t":"2026-10-28T00:06:05.778Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-28T00:06:05.788Z","i":12,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-28T00:06:05.922Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T00:06:05.934Z","step":"aiTurns","turns":1}

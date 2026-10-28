@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds good in Bengaluru? → Nandi Hills sunrise\n12:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n12:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nice pick: Nandi Hills sunrise it is. It's a roughly 1.5-hour drive from Bengaluru, so you'd leave in the middle of the night. Carry a light jacket, and check the gate timings and parking rules before you go, since I can't see those from here.\n\nWant me to add it to your calendar for Sat 31 Oct or Sun 1 Nov?\n\n12:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n12:07 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, South Indian\n2\nChicken or veg biryani\nHearty and filling\n3\nCreamy pasta with garlic bread\nComfort food, quick to make\nSomething else…\nSkip\n12:07 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n12:07 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good call for a late dinner. Add a spoon of ghee and some jeera tadka on top.\n\nWant a quick recipe for it?\n\n12:07 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n12:11 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a water tracker with a goal of 8 glasses. Tap + Glass after each one, and it starts fresh each day.\n\nKeep\n12:11 AM"
+  }
+]

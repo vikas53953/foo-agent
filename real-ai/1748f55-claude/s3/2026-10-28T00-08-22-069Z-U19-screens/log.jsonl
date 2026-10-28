@@ -1,0 +1,39 @@
+{"t":"2026-10-28T00:08:22.070Z","journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","spec":"06 screens, 10-2 §C.5","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T00:08:27.700Z","step":"launch","ok":true}
+{"t":"2026-10-28T00:08:28.751Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-10-28T00:08:28.835Z","i":1,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-10-28T00:08:29.336Z","i":2,"do":"wait","expect":"sidebar ⋮ menu: New helper, New group, Memory, Routines, Ideas, Activity, Settings, Shortcuts, Quit","ok":true,"ms":501}
+{"t":"2026-10-28T00:08:29.404Z","shot":"01-more.png"}
+{"t":"2026-10-28T00:08:29.503Z","i":3,"do":"click","soft":true,"ok":true,"ms":99}
+{"t":"2026-10-28T00:08:30.704Z","i":4,"do":"wait","expect":"Activity screen","ok":true,"ms":1201}
+{"t":"2026-10-28T00:08:30.762Z","shot":"02-activity.png"}
+{"t":"2026-10-28T00:08:53.827Z","shot":"03-error-step5.png"}
+{"t":"2026-10-28T00:08:53.827Z","i":5,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23064}
+{"t":"2026-10-28T00:08:53.892Z","i":6,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-28T00:08:53.971Z","i":7,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-28T00:08:55.173Z","i":8,"do":"wait","expect":"Ideas screen","ok":true,"ms":1201}
+{"t":"2026-10-28T00:08:55.231Z","shot":"04-ideas.png"}
+{"t":"2026-10-28T00:09:18.296Z","shot":"05-error-step9.png"}
+{"t":"2026-10-28T00:09:18.296Z","i":9,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23065}
+{"t":"2026-10-28T00:09:18.361Z","i":10,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-28T00:09:18.454Z","i":11,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-10-28T00:09:19.656Z","i":12,"do":"wait","expect":"keyboard shortcuts list","ok":true,"ms":1202}
+{"t":"2026-10-28T00:09:19.728Z","shot":"06-shortcuts.png"}
+{"t":"2026-10-28T00:09:19.734Z","i":13,"do":"key","ok":true,"ms":5}
+{"t":"2026-10-28T00:09:42.794Z","shot":"07-error-step14.png"}
+{"t":"2026-10-28T00:09:42.794Z","i":14,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23060}
+{"t":"2026-10-28T00:10:05.840Z","shot":"08-error-step15.png"}
+{"t":"2026-10-28T00:10:05.841Z","i":15,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23047}
+{"t":"2026-10-28T00:10:07.042Z","i":16,"do":"wait","expect":"foo profile: face, name, vibe","ok":true,"ms":1201}
+{"t":"2026-10-28T00:10:07.091Z","shot":"09-foo-profile.png"}
+{"t":"2026-10-28T00:10:30.168Z","shot":"10-error-step17.png"}
+{"t":"2026-10-28T00:10:30.169Z","i":17,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23078}
+{"t":"2026-10-28T00:10:53.231Z","shot":"11-error-step18.png"}
+{"t":"2026-10-28T00:10:53.232Z","i":18,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23063}
+{"t":"2026-10-28T00:10:54.433Z","i":19,"do":"wait","expect":"Spend screen / caps","ok":true,"ms":1201}
+{"t":"2026-10-28T00:10:54.481Z","shot":"12-spend.png"}
+{"t":"2026-10-28T00:11:17.543Z","shot":"13-error-step20.png"}
+{"t":"2026-10-28T00:11:17.543Z","i":20,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-28T00:11:17.555Z","i":21,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-28T00:11:17.689Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-10-28T00:11:17.702Z","step":"aiTurns","turns":0}
