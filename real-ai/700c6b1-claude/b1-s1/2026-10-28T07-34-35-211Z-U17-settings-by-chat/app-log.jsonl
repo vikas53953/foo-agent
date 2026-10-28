@@ -1,0 +1,3 @@
+{"t":1793172876202,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1793172881880,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1793172885276,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}

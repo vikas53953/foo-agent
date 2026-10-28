@@ -1,0 +1,78 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-32-23-066Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793172748546,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20001
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "sentAt": 1793172768724,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "firstReplyMs": 9131,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it is the fastest and simplest way to pay almost anyone, at any hour. You open an app, scan a code or type a phone number, enter your PIN, and the money moves between bank accounts in seconds. There is no card machine, no hunting for change and no waiting.\n\nIt also spread because it works across apps. You can use PhonePe, Google Pay, Paytm or your own bank's app and still pay a shopkeeper who uses a different one. Small sellers, from chai stalls to vegetable vendors, can accept payments with just a printed QR code. Every new shop made UPI more useful for customers, and every new customer made it more useful for shops.\n\nThe three main reasons:\n\nQuick and usually free: Everyday payments settle in seconds, even at night or on holidays, and most cost the user nothing.\nOne system, many apps: Any app can pay any other, so nobody is locked in to one company.\nEasy for everyone: All you need is a bank account and a smartphone, and a QR code is enough for even the tiniest shop.\n\nAdd easy bill payments and splitting costs with friends, and cash starts to feel slow.\n\n7:32 AM",
+      "kit": [],
+      "ms": 17745
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 3
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

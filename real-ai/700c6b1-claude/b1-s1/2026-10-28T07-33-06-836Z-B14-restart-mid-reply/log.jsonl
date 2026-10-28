@@ -1,0 +1,19 @@
+{"t":"2026-10-28T07:33:06.836Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:33:12.427Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:33:12.583Z","i":0,"do":"send","sentAt":1793172792533,"sent":true,"before":0,"ok":true,"ms":153}
+{"t":"2026-10-28T07:33:15.585Z","i":1,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-10-28T07:33:20.731Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:33:20.731Z","i":2,"do":"relaunch","ok":true,"ms":5146}
+{"t":"2026-10-28T07:33:26.805Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","firstReplyMs":508,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"That reply got cut off.\nTry again\n7:33 AM","kit":[],"ms":6074}
+{"t":"2026-10-28T07:33:26.866Z","shot":"01-after-reopen.png"}
+{"t":"2026-10-28T07:33:26.868Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n7:33 AM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-10-28T07:33:27.021Z","i":5,"do":"send","sentAt":1793172806965,"sent":true,"before":0,"ok":true,"ms":153}
+{"t":"2026-10-28T07:33:29.026Z","i":6,"do":"wait","ok":true,"ms":2005}
+{"t":"2026-10-28T07:33:34.264Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:33:34.264Z","i":7,"do":"relaunch","ok":true,"ms":5237}
+{"t":"2026-10-28T07:33:44.368Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","firstReplyMs":3541,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Good tortoise names: Turbo (the joke never gets old), Dhimu (from \"dheere\", slow) or Pickle.\n\nI can't look things up on the web yet, so I can't tell you today's biggest news story in India.\n\n7:33 AM","kit":[],"ms":10104}
+{"t":"2026-10-28T07:33:44.426Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-10-28T07:33:44.434Z","i":9,"do":"dump","ok":true,"ms":8}
+{"t":"2026-10-28T07:33:44.550Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-10-28T07:33:44.564Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T07:33:44.567Z","step":"jobTrail","steps":0,"calls":0}
