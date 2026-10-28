@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Please remember that my favourite food is South Indian.\n7:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What is my favourite food?\n7:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your favourite food is South Indian, and I've already got that noted. 🌿\n\n7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting\n7:32 AM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Email about running late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:32 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:32 AM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:33 AM\n7:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:33 AM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 6 Nov\nKept 3 flights that fit lowest fare\nCompared the 3 flights by fare, times and airline\nStopped by you\n7:33 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:33 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:33 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:33 AM"
+  }
+]

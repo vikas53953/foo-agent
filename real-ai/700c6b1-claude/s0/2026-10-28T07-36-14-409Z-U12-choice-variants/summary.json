@@ -1,0 +1,127 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-36-14-409Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1048
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793172981459,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 160
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "firstReplyMs": 9145,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best?\n1\nSouth Indian breakfast crawl\nBEST FIT\nIdli, dosa and filter coffee, Malleswaram or Basavanagudi\n2\nLalbagh and Cubbon Park walk\nEasy, green and free of traffic stress\n3\nNandi Hills sunrise drive\nLeave early, back by late morning\nSomething else…\nSkip\n7:36 AM",
+      "kit": [],
+      "ms": 15208
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793172996954,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 118
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "firstReplyMs": 8596,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Lalbagh and Cubbon Park walk it is. Go early, around Sat 31 Oct, 7:00 AM, when it's cool and quiet, and finish with a South Indian breakfast since that's your favourite. Want me to put it on your calendar?\n\n7:36 AM",
+      "kit": [],
+      "ms": 15650
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "sentAt": 1793173012791,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 105
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "firstReplyMs": 6078,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nGhee roast dosa with sambar\nBEST FIT\nSouth Indian, crisp and light\n2\nBisi bele bath with curd\nSouth Indian, warm and filling\n3\nVeg biryani with raita\nSomething a little different\nSomething else…\nSkip\n7:36 AM",
+      "kit": [],
+      "ms": 12150
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 115
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 612
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "sentAt": 1793173025911,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "firstReplyMs": 13231,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Home-cooked dal chawal it is, simple and hard to beat. 🌿 Want a quick tadka idea, or a South Indian twist like a sambar-style dal?\n\n7:37 AM",
+      "kit": [],
+      "ms": 20348
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}
