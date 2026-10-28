@@ -1,0 +1,320 @@
+{
+  "journey": "U01-bubble-menu",
+  "title": "Bubble menu: copy, react, reply, edit, try again, good and bad",
+  "steps": 42,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-02-25-300Z-U01-bubble-menu",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1049
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793167351929,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "one short reply; my bubble shows a tick and a badge, never ⚠",
+      "firstReplyMs": 3570,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Delhi has been rebuilt so many times, by so many rulers, that historians often count at least seven or eight \"cities\" of Delhi layered on top of each other.\n\n6:02 AM",
+      "kit": [],
+      "ms": 10137
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select",
+      "ok": true,
+      "ms": 616
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "reaction picker with emoji options",
+      "ok": true,
+      "ms": 601
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "reaction chip under foo bubble",
+      "ok": true,
+      "ms": 809
+    },
+    {
+      "i": 12,
+      "do": "check",
+      "note": "reaction chip shows",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "clicking my reaction again removes it",
+      "ok": true,
+      "ms": 801
+    },
+    {
+      "i": 15,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "menu on my bubble: Reply, Copy, React, Edit, Select, Delete",
+      "ok": true,
+      "ms": 604
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 18,
+      "do": "wait",
+      "expect": "reply quote above the composer with a close X",
+      "ok": true,
+      "ms": 500
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "sentAt": 1793167367280,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 100
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "expect": "my bubble shows the quoted message; foo answers about Amritsar",
+      "firstReplyMs": 3540,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Golden Temple in Amritsar runs one of the world's largest free kitchens, serving simple vegetarian meals to well over 50,000 people every day, whoever they are.\n\n6:02 AM",
+      "kit": [],
+      "ms": 10116
+    },
+    {
+      "i": 21,
+      "do": "check",
+      "note": "quote shows inside my bubble",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 68
+    },
+    {
+      "i": 23,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 24,
+      "do": "wait",
+      "expect": "composer in edit mode with my text",
+      "ok": true,
+      "ms": 502
+    },
+    {
+      "i": 25,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 16
+    },
+    {
+      "i": 26,
+      "do": "key",
+      "ok": true,
+      "ms": 18
+    },
+    {
+      "i": 27,
+      "do": "wait",
+      "expect": "my bubble says edited; foo answers the edited question",
+      "ok": true,
+      "ms": 20013
+    },
+    {
+      "i": 28,
+      "do": "expectText",
+      "note": "edited label",
+      "soft": true,
+      "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n6:02 AM",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 30,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 31,
+      "do": "wait",
+      "expect": "thumbs up feedback recorded quietly",
+      "ok": true,
+      "ms": 803
+    },
+    {
+      "i": 32,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 33,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 84
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "expect": "feedback chips / field after thumbs down",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 35,
+      "do": "key",
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 36,
+      "do": "eval",
+      "value": 5,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 37,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 38,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 39,
+      "do": "waitJs",
+      "expect": "Try again writes the answer again: a finished, non-error answer whose text changed in place and is marked Rewritten (CR-0059), or a fresh finished answer follows; no duplicate bubbles",
+      "ok": true,
+      "ms": 6581
+    },
+    {
+      "i": 40,
+      "do": "wait",
+      "expect": "the rewritten answer, marked Rewritten",
+      "ok": true,
+      "ms": 6001
+    },
+    {
+      "i": 41,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{"t":"2026-10-28T06:05:36.450Z","journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","spec":"02 §F15.9 living face, 10-2 §C.7, §C.8","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:05:42.366Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:05:43.415Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1045}
+{"t":"2026-10-28T06:05:43.556Z","i":1,"do":"send","sentAt":1793167543518,"sent":true,"before":0,"ok":true,"ms":140}
+{"t":"2026-10-28T06:05:45.058Z","i":2,"do":"wait","expect":"26px Thinking face only while the request is in flight (C.7.4)","ok":true,"ms":1502}
+{"t":"2026-10-28T06:05:45.154Z","shot":"01-thinking.png"}
+{"t":"2026-10-28T06:05:55.806Z","i":3,"do":"waitReply","expect":"poem; face back to resting, blinks","firstReplyMs":3049,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your monsoon poem:\n\nGrey clouds roll in from the Arabian Sea,\nThe Marine Drive waves rise up with glee.\nChai steams hot as the local trains crawl,\nAnd Mumbai dances in the rain, puddles and all.\n\n6:05 AM","kit":[],"ms":10652}
+{"t":"2026-10-28T06:05:55.863Z","shot":"02-poem.png"}
+{"t":"2026-10-28T06:05:55.929Z","i":4,"do":"shotEl","soft":true,"ok":true,"ms":66}
+{"t":"2026-10-28T06:05:55.981Z","i":5,"do":"key","ok":true,"ms":51}
+{"t":"2026-10-28T06:05:56.070Z","i":6,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-28T06:05:56.154Z","i":7,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-28T06:05:56.755Z","i":8,"do":"wait","expect":"face motion setting","ok":true,"ms":601}
+{"t":"2026-10-28T06:05:56.824Z","shot":"04-face-motion.png"}
+{"t":"2026-10-28T06:05:56.869Z","i":9,"do":"key","ok":true,"ms":45}
+{"t":"2026-10-28T06:06:19.943Z","shot":"05-error-step10.png"}
+{"t":"2026-10-28T06:06:19.943Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23074}
+{"t":"2026-10-28T06:06:19.953Z","i":11,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T06:06:20.081Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T06:06:20.095Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T06:06:20.097Z","step":"jobTrail","steps":0,"calls":0}
