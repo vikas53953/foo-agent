@@ -46,6 +46,17 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Download the Electron binary
         run: node node_modules/electron/install.js
+      # nodejs.org downloads of the Node headers stall on the Windows runner (run 40663528961: three tries, 5 min
+      # each); keep node-gyp's header cache between runs, keyed by the exact Node version.
+      - name: Node version for the header cache
+        id: nodever
+        shell: bash
+        run: echo "v=$(node -v)" >> "$GITHUB_OUTPUT"
+      - name: Cache node-gyp headers
+        uses: actions/cache@v4
+        with:
+          path: ~/AppData/Local/node-gyp/Cache
+          key: node-gyp-${{ runner.os }}-${{ steps.nodever.outputs.v }}
       - name: Build better-sqlite3 for Node (unit tests)
         # nodejs.org downloads sometimes stall on the Windows runner ("Completion callback never invoked"). Try 3 times
         # (10 minutes each), dropping node-gyp's half-written header cache between tries.
