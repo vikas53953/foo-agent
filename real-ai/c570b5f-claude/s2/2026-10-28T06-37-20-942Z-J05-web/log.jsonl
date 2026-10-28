@@ -1,0 +1,12 @@
+{"t":"2026-10-28T06:37:20.943Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T06:37:26.430Z","step":"launch","ok":true}
+{"t":"2026-10-28T06:37:26.559Z","i":0,"do":"send","sentAt":1793169446524,"sent":true,"before":0,"ok":true,"ms":126}
+{"t":"2026-10-28T06:37:42.806Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":9638,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The ISRO update is the one just above: NVS-03 is set to launch on Fri 30 Oct on a GSLV Mk II from Sriharikota, with no launch time announced yet.\n\nSources: ISRO's own launch missions page and Indian Express, which flagged the earlier delays. I only saw search summaries, not the full articles.\n\nYour table for 2 near Connaught Place is still waiting. Want me to find vegetarian options for Thu 29 Oct, 8:00 PM?\n\n6:37 AM","kit":[],"ms":16247}
+{"t":"2026-10-28T06:37:42.878Z","shot":"01-news.png"}
+{"t":"2026-10-28T06:37:42.880Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T06:37:42.882Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T06:37:42.885Z","i":4,"do":"expectText","text":"The ISRO update is the one just above: NVS-03 is set to launch on Fri 30 Oct on a GSLV Mk II from Sriharikota, with no launch time announced yet.\n\nSources: ISRO's own launch missions page and Indian Express, which flagged the earlier delays. I only saw search summaries, not the full articles.\n\nYour table for 2 near Connaught Place is still waiting. Want me to find vegetarian options for Thu 29 Oct, 8:00 PM?\n\n6:37 AM","ok":true,"ms":3}
+{"t":"2026-10-28T06:37:42.893Z","i":5,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T06:37:43.022Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-10-28T06:37:43.035Z","step":"aiTurns","turns":1}
+{"t":"2026-10-28T06:37:43.038Z","step":"jobTrail","steps":0,"calls":0}

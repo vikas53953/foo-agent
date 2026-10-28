@@ -1,0 +1,127 @@
+{
+  "journey": "U10-plan-change-stop",
+  "title": "Plan card: Change plan, then Stop a running job from the checklist",
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T06-37-51-626Z-U10-plan-change-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1043
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "sentAt": 1793169478262,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "plan card",
+      "firstReplyMs": 8113,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for weekend treks near Pune with difficulty\nKeep 5 treks that fit doable in a weekend from Pune, with\nCompare difficulty and cost of the 5 treks\nWatch live\nStop\nunder 1 min\n6:38 AM",
+      "kit": [],
+      "ms": 14231
+    },
+    {
+      "i": 3,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23078
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "composer prompts for the change",
+      "ok": true,
+      "ms": 802
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "sentAt": 1793169516645,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 6,
+      "do": "waitReply",
+      "expect": "a changed plan, the old one marked changed",
+      "firstReplyMs": 7047,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got it, I’ll fold that in.\n\n6:38 AM",
+      "kit": [],
+      "ms": 13086
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "ms": 23071
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "checklist running; Doing now shows the job; chat pill Working",
+      "ok": true,
+      "ms": 8001
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "right panel Doing now row with Stop",
+      "ok": true,
+      "ms": 800
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 12,
+      "do": "wait",
+      "expect": "job stopped ⛔, checklist says stopped, no further steps",
+      "ok": true,
+      "ms": 5003
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 11
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

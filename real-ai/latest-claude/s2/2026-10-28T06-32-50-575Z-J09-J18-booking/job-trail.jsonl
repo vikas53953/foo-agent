@@ -1,0 +1,3 @@
+{"kind":"call","job_id":"j_01a18133-b59a-7507-92c1-070cdc68d650","step_idx":1,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793169177007,"finished_at":1793169181441}
+{"kind":"call","job_id":"j_01a18133-b59a-7507-92c1-070cdc68d650","step_idx":1,"tool":"web.fetch","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793169190159,"finished_at":1793169191006}
+{"kind":"call","job_id":"j_01a18133-b59a-7507-92c1-070cdc68d650","step_idx":1,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1793169195692,"finished_at":1793169197282}
