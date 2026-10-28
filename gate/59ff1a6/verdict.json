@@ -1,0 +1,78 @@
+{
+  "status": "FAIL",
+  "sha": "59ff1a6aa54049a07b15899f2072c48e5d700fb1",
+  "features": [
+    {
+      "feature": "install",
+      "name": "Install and open foo (the app as downloaded, restart, quit)",
+      "verdict": "broken",
+      "checkpoints": 11,
+      "broken": 9,
+      "wrong": 0
+    },
+    {
+      "feature": "ai",
+      "name": "Connect your AI (find it, your own key, a wrong key)",
+      "verdict": "broken",
+      "checkpoints": 8,
+      "broken": 6,
+      "wrong": 2
+    },
+    {
+      "feature": "name",
+      "name": "Name, face and vibe",
+      "verdict": "broken",
+      "checkpoints": 9,
+      "broken": 6,
+      "wrong": 2
+    },
+    {
+      "feature": "chat",
+      "name": "Just chatting, in your language",
+      "verdict": "broken",
+      "checkpoints": 9,
+      "broken": 9,
+      "wrong": 0
+    },
+    {
+      "feature": "settings",
+      "name": "Settings, by page or by asking",
+      "verdict": "broken",
+      "checkpoints": 6,
+      "broken": 6,
+      "wrong": 0
+    },
+    {
+      "feature": "refusals",
+      "name": "What batch 1 must refuse plainly (tasks, memory)",
+      "verdict": "broken",
+      "checkpoints": 6,
+      "broken": 6,
+      "wrong": 0
+    }
+  ],
+  "checks": [
+    {
+      "conclusion": "skipped",
+      "name": "Golden lane (windows-latest)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40629086695/job/122621971509"
+    },
+    {
+      "conclusion": "skipped",
+      "name": "Full suite (windows-latest, shard ${{ matrix.shard }}/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40629086695/job/122620967910"
+    },
+    {
+      "conclusion": "success",
+      "name": "Screen change check",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40629086695/job/122620966843"
+    },
+    {
+      "conclusion": "success",
+      "name": "Fast lane (ubuntu-latest)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/40629086695/job/122620966580"
+    }
+  ],
+  "reviewed": 14,
+  "checkpoints": 49
+}

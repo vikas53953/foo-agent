@@ -1,0 +1,165 @@
+[
+  {
+    "id": "G1-first-run#1",
+    "verdict": "works",
+    "summary": "The app opens with a friendly welcome card from foo, says it is step 1 of 2, and shows one clear blue \"Let's go\" button to start.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#0",
+    "verdict": "works",
+    "summary": "foo opens normally and shows its face, wordmark and a friendly welcome card with a 'Let's go' button, with no blank window or error.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#4",
+    "verdict": "broken",
+    "summary": "The Find your AI card shows every row as 'Looking...' with spinners, so it never shows the expected results of Claude and ChatGPT testing and the other AIs not being found.",
+    "problems": [
+      "All five rows (Claude, ChatGPT, Gemini, Your own key, AI on this PC) show 'Looking...' with spinners; nothing moves on to 'Testing…' for Claude and ChatGPT, and Gemini and AI on this PC never show 'not found'.",
+      "The key row is labelled 'Your own key' instead of naming the Anthropic key as expected (the reference shows 'OpenAI key'), and it has a spinner next to the 'Add in secret box' button, which makes it look unfinished.",
+      "Step label reads 'Step 1 of 2' where the reference says 'Step 1 of 4'.",
+      "The state looks stuck: the progress bar is partway and every row is still searching, with no sign the tiny test question was sent."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#7",
+    "verdict": "wrong-design",
+    "summary": "The app correctly asks for the key in a separate secret box and says not to paste it in the chat, but it asks for an Anthropic key instead of the OpenAI key the user picked.",
+    "problems": [
+      "The prompt and the box label say \"Anthropic key\" while the expected flow for this step is \"OpenAI key\", so the wording does not match the choice the user made.",
+      "The secret box is empty with the placeholder \"Paste it here\" in a monospace font, while the reference shows a masked, filled box with a \"Show\" label; the eye icon is a different style.",
+      "The \"Save securely\" button text looks faded and low-contrast on the blue fill, which makes it harder to read than the reference's clear black button.",
+      "The secondary button reads \"Cancel\" where the reference says \"Not now\".",
+      "The key icon next to the title is a thin outline, where the reference uses a coloured key emoji, and the \"secret\" label is tiny and lowercase."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#5",
+    "verdict": "broken",
+    "summary": "The Connect your AI screen shows no result for the AI checks: no row says works, and the user is asked which AI they use after the app says it couldn't find one.",
+    "problems": [
+      "None of the rows ends with a green \"✓ works\" or a plain reason as expected: the Anthropic key row and the \"Your own key\" row only show \"Add in secret box\" buttons, with no test result.",
+      "The card says \"I couldn't find an AI on this PC yet. Which one do you use?\", but the reference flow shows the checks finishing with green \"✓ works\" lines; this is a different, unresolved path.",
+      "The screen shows a numbered list (ChatGPT, Claude, Gemini, I have a key) that is not in the reference and makes the user pick without explaining what each choice does.",
+      "The Gemini option appears greyed or highlighted as if hovered, while ChatGPT is marked \"BEST FIT\" even though nothing was found to work, which is confusing and unsupported.",
+      "The step label says \"Step 1 of 2\" while the reference shows \"Step 1 of 4\", so the step count differs.",
+      "The chat list shows \"Setting up...\" and the bottom-left shows \"Setting up\" with no user name, unlike the reference's named user; the header has no \"New helper\" or filter chips, which is fine for this build."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#10",
+    "verdict": "wrong-design",
+    "summary": "The key was saved and the key itself is not shown, but the Anthropic key card never shows the expected green \"works\" result and its layout differs from the reference.",
+    "problems": [
+      "The saved-key card shows \"Anthropic key · saved Wed 28 Oct\" with no \"✓ works\" status, so the user has no sign that the key was tested and works. The reference shows a green \"✓ works\" on that row.",
+      "The \"Saved securely. foo's AI never sees it.\" message is small grey text with a faint check mark above it. In the reference it is a bold green heading with a check mark.",
+      "The \"Anthropic key\" card shows a \"secret\" tag and a \"Remove\" link instead of the reference's \"Change cap\" and \"Replace\" buttons. \"Change cap\" appears only as a small link in the text above.",
+      "The chat still shows the older setup card with \"Use Anthropic key\" and \"Add in secret box\" buttons after the key was saved, which is confusing.",
+      "The top of the chat is clipped, with a partly hidden row and button cut off at the header.",
+      "The header says \"Step 1 of 2\", while the reference says \"Step 1 of 4\".",
+      "The message box still says \"Connect your AI first, then we can talk.\" even though a key was saved."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#14",
+    "verdict": "wrong-design",
+    "summary": "The name question appears with a box, Keep \"foo\" and Surprise me, but the screen has visible flaws: the header says \"Step 2 of 2\" while a duplicate struck-through \"step 1 of 2\" is drawn underneath, and the earlier history shows a raw arrow and a secret-key card.",
+    "problems": [
+      "The subtitle under \"foo\" in the header reads \"Setting up · step 1 of 2\" with garbled, struck-through text that overlaps and contradicts the \"Step 2 of 2\" pill above it.",
+      "An extra \"That's it\" button is shown next to Keep \"foo\" and Surprise me, which is not part of the expected set of choices.",
+      "The message \"Hi, I'm foo. → Let's go\" shows a raw arrow in plain text, which looks unfinished.",
+      "The Anthropic key card with \"secret\", \"Replace\" and \"Remove\" and the \"saved Wed 28 Oct\" line is technical detail that clutters the name step.",
+      "The \"Using Anthropic key (your AI)\" confirmation is plain grey text with a faint check mark rather than the bold green confirmation shown in the reference design.",
+      "The sidebar says \"Setting up…\" with an unread badge of 1 while the user is already in the chat, which looks stale."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#17",
+    "verdict": "broken",
+    "summary": "The screen shows the face-picking step after foo accepted the name \"foo it is.\", so the empty-name test is not shown and there is no sign that an empty name was refused or that the name card is still waiting.",
+    "problems": [
+      "The name card (\"What should I call myself?\" with the empty box, Keep \"foo\" and Surprise me) is gone; the chat has moved on to \"Pick a face.\" and the name was accepted as \"foo it is.\"",
+      "No message tells the user what foo needs when the name is empty, so the expected outcome (an empty name is not taken and the card stays) is not met.",
+      "The step label reads \"Step 2 of 2\" where the reference shows \"Step 2 of 4\", and the header subtitle repeats \"Setting up · step 2 of 2\".",
+      "The sidebar chat preview shows \"Setting up...\" and the foo name is greyed, unlike the reference."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#19",
+    "verdict": "broken",
+    "summary": "The screen shows the face-picking step with the name already accepted as \"foo it is.\", instead of the name box with the dice-filled name and the That's it, Keep \"foo\" and dice buttons.",
+    "problems": [
+      "The expected name box (with a name filled in by the dice) is not visible; the screen has already moved on to \"Pick a face.\", so the dice-name step cannot be seen.",
+      "The chat shows the user's reply \"foo it is.\", so the name was kept as \"foo\" rather than the dice name or \"Chotu 😊\" appearing in the box.",
+      "No That's it, Keep \"foo\" or dice-only button row is shown; the only dice is \"Surprise me\" on the face picker, which is a different step.",
+      "The header says \"Step 2 of 2\" while the reference says \"Step 2 of 4\", and the subtitle appears in a different place."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#21",
+    "verdict": "wrong-design",
+    "summary": "The face picker works with four faces and the living face preselected, but it is laid out as a grid of cards with different buttons and no collapsed name answer visible, unlike the reference.",
+    "problems": [
+      "The faces are shown as numbered square cards in a 2x2 grid, not a single row of four round faces with names under each as in the reference.",
+      "Only the first face has a label (\"Living face\" / \"Default\"); the other three faces have no names (Flower, Half moon, Star) and show only small numbers.",
+      "The buttons read \"Use this face\" and \"Surprise me\" instead of the reference's \"New faces\" and \"Use my own picture\", so there is no way to pick your own picture.",
+      "The name card is not visible as a collapsed answer line (\"What should I call myself? → foo\") above \"foo it is.\"; this may be scrolled off, but the shrunken card cannot be confirmed.",
+      "The header says \"Step 2 of 2\" where the reference says \"Step 2 of 4\"."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#25",
+    "verdict": "works",
+    "summary": "The app shows the 'How should I talk to you?' card with Calm, a bit funny marked Best fit, plus the other styles, Something else and Skip, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#23",
+    "verdict": "broken",
+    "summary": "The user picked the flower face (option 2), but the header and chat list still show the default black face, and the chat row stays grey, so the choice does not seem to have taken effect.",
+    "problems": [
+      "The expected outcome is a ring around the chosen face. The ring and tick sit on the flower face (option 2), while the header and chat row still show the default black eyes face, so the selection and the rest of the app disagree.",
+      "The chat row on the left is still grey with the faded text \"Setting up...\", where the reference shows the row no longer grey.",
+      "The face cards have no names. Only face 1 has the label \"Living face / Default\", so faces 2, 3 and 4 are unlabeled, unlike the reference, which names them Flower, Half moon and Star.",
+      "The face options wrap onto two rows with number badges, which differs from the single-row layout in the reference, and the ring is not shown around a face in the same style.",
+      "The step label reads \"Step 2 of 2\" where the reference says \"Step 2 of 4\", and the buttons read \"Use this face\" and \"Surprise me\" instead of the reference wording."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#27",
+    "verdict": "broken",
+    "summary": "The assistant should now be called Chotu, but the screen still shows it as \"foo\" everywhere, even though the user picked the name.",
+    "problems": [
+      "The chat header, sidebar, and message senders all say \"foo\" instead of the new name \"Chotu 😊\".",
+      "The confirmation line reads \"Straight to the point. Got it. 🎯\" with no mention of the new name. The greeting does not use \"Chotu\" and introduces itself as \"I'm foo\".",
+      "The chat shows \"foo it is.\" as the chosen name, which contradicts the expected name Chotu.",
+      "The face picker shows only as a collapsed one-line summary, \"Pick a face. → Face ✿ (flower)\", and the chat's avatar is a flower rather than the default face."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#31",
+    "verdict": "broken",
+    "summary": "The screen shows the setup conversation from the first run still on screen, not a clean reopened chat, and the closing message says to try one of the suggestions but none appear.",
+    "problems": [
+      "The last message says \"Ask me anything, or try one of these.\" but no suggestion buttons appear below it, so the message points to something missing.",
+      "The setup questions (\"What should I call myself?\", \"Pick a face.\", \"How should I talk to you?\") are still shown as answered cards in the chat. This looks like the first-run setup flow, not a reopened app, so there is no evidence the app was closed and reopened.",
+      "The message box already contains \"What can you do?\" typed in but not sent, and nothing answers it. The screen gives no sign that the reopened chat works.",
+      "The answered cards have uneven widths and styles. The last one has a green check and the earlier ones have none, which looks inconsistent."
+    ],
+    "by": "claude-sonnet-5-5"
+  }
+]

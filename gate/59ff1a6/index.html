@@ -1,0 +1,329 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>foo release gate</title>
+<style>
+:root{--bg:#fff;--fg:#14161a;--muted:#5d6470;--line:#e3e6ea;--ok:#0f7b3f;--okbg:#e5f5ec;--warn:#8a5a00;--warnbg:#fff3d6;--bad:#b42318;--badbg:#fde8e7;--card:#f7f8fa}
+@media (prefers-color-scheme:dark){:root{--bg:#121417;--fg:#e8eaed;--muted:#9aa1ab;--line:#2a2e34;--ok:#5fd393;--okbg:#14301f;--warn:#f2c14e;--warnbg:#3a2e10;--bad:#ff8a80;--badbg:#3b1514;--card:#1a1d21}}
+body{margin:0;padding:16px;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,Segoe UI,sans-serif}main{max-width:1100px;margin:auto}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:32px 0 8px}.muted{color:var(--muted)}table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.small{font-size:13px}.v{display:inline-block;padding:1px 8px;border-radius:10px;font-size:13px;font-weight:600}.works{color:var(--ok);background:var(--okbg)}.wrong-design{color:var(--warn);background:var(--warnbg)}
+.broken,.not-tested,.not-reviewed,.FAIL,.BLOCKED{color:var(--bad);background:var(--badbg)}.PASS{color:var(--ok);background:var(--okbg)}tr.fail td{color:var(--bad)}.bad{color:var(--bad)}
+.cp{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0}.cp.works{background:var(--card)}.pics{display:flex;gap:8px;flex-wrap:wrap}.pics figure{margin:0;flex:1 1 300px;min-width:0}
+.pics img{width:100%;border:1px solid var(--line);border-radius:6px}figcaption{font-size:12px;color:var(--muted)}code{font-size:12px;overflow-wrap:anywhere}.big{font-size:20px;padding:4px 14px}
+</style></head><body><main>
+<h1>foo release gate <span class="v big FAIL">FAIL</span></h1>
+<p class="muted">Commit 59ff1a6aa54049a07b15899f2072c48e5d700fb1 · the packaged app (the same files Vikas downloads) driven like a user with a real AI · pictures checked by a separate reviewer · 2026-10-28T05:32:22.773Z</p>
+<p>This build must not go to Vikas until every row below says Works.</p>
+<h2>Features</h2><table><tr><th>Feature</th><th>Verdict</th><th>Checkpoints</th><th>Broken</th><th>Wrong vs design</th></tr><tr><td>Install and open foo (the app as downloaded, restart, quit)</td><td><span class="v broken">Broken</span></td><td>11</td><td>9</td><td>0</td></tr><tr><td>Connect your AI (find it, your own key, a wrong key)</td><td><span class="v broken">Broken</span></td><td>8</td><td>6</td><td>2</td></tr><tr><td>Name, face and vibe</td><td><span class="v broken">Broken</span></td><td>9</td><td>6</td><td>2</td></tr><tr><td>Just chatting, in your language</td><td><span class="v broken">Broken</span></td><td>9</td><td>9</td><td>0</td></tr><tr><td>Settings, by page or by asking</td><td><span class="v broken">Broken</span></td><td>6</td><td>6</td><td>0</td></tr><tr><td>What batch 1 must refuse plainly (tasks, memory)</td><td><span class="v broken">Broken</span></td><td>6</td><td>6</td><td>0</td></tr></table>
+<h2>Other checks on this commit</h2><table><tr><td>Golden lane (windows-latest)</td><td><span class="v broken">skipped</span></td></tr><tr><td>Full suite (windows-latest, shard ${{ matrix.shard }}/4)</td><td><span class="v broken">skipped</span></td></tr><tr><td>Screen change check</td><td><span class="v works">success</span></td></tr><tr><td>Fast lane (ubuntu-latest)</td><td><span class="v works">success</span></td></tr><tr><td>Full suite (missing on this commit)</td><td><span class="v broken">missing or not finished</span></td></tr><tr><td>Full suite (missing on this commit)</td><td><span class="v broken">missing or not finished</span></td></tr><tr><td>Full suite (missing on this commit)</td><td><span class="v broken">missing or not finished</span></td></tr></table>
+<h2>Videos</h2><p class="muted">In the run's release-gate-report download.</p><ul><li>G1-first-run: <a href="videos/2026-10-28T03-55-18-642Z-G1-first-run/page@4945bc60e96e701e72cc57da496b45ee.webm">page@4945bc60e96e701e72cc57da496b45ee.webm</a></li><li>G1-first-run: <a href="videos/2026-10-28T03-55-18-642Z-G1-first-run/page@ee6b796ceb3597cfc30694d9123c6840.webm">page@ee6b796ceb3597cfc30694d9123c6840.webm</a></li></ul>
+<section><h2>Install and open foo (the app as downloaded, restart, quit) <span class="v broken">Broken</span></h2><article class="cp"><header><span class="v works">Works</span> <b>Step</b> <code>G1-first-run#0</code></header>
+<p><b>Expected:</b> foo opens: the face and wordmark, no blank or white window, no error</p>
+
+<p><b>Reviewer:</b> foo opens normally and shows its face, wordmark and a friendly welcome card with a 'Let's go' button, with no blank window or error.</p>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-01-splash.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-01-splash.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-02-01.light.png"><img src="refs/UX-02-01.light.png" loading="lazy" alt=""></a><figcaption>Design UX-02-01</figcaption></figure></div>
+</article><article class="cp"><header><span class="v works">Works</span> <b>Step</b> <code>G1-first-run#1</code></header>
+<p><b>Expected:</b> Welcome card from foo, step 1 of 2, one clear button to start</p>
+
+<p><b>Reviewer:</b> The app opens with a friendly welcome card from foo, says it is step 1 of 2, and shows one clear blue &quot;Let's go&quot; button to start.</p>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-02-welcome.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-02-welcome.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-02-01.light.png"><img src="refs/UX-02-01.light.png" loading="lazy" alt=""></a><figcaption>Design UX-02-01</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Every control clicked</b> <code>G1-first-run#2</code></header>
+<p><b>Expected:</b> every button on the welcome screen does something visible</p>
+<p class="bad"><b>Measured:</b> a control did nothing visible, could not be clicked, or broke the screen (see the sweep table)</p>
+
+
+<div class="pics"></div>
+<table class="small"><tr><th>control</th><th>result</th><th>what happened</th></tr><tr class="pass"><td>More options<br><code>sidebar-more</code></td><td>pass</td><td>opened menu:Settings
+Ctrl+,
+Keyboard shortcuts
+Ctrl+ · content changed: &quot;Settings / Ctrl+,&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-03-sweep-sidebar-more.png">picture</a></td></tr><tr class="pass"><td>Search chats<br><code></code></td><td>pass</td><td>typing in Search chats <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-04-sweep-Search_chats.png">picture</a></td></tr><tr class="skipped"><td>foo, Setting up…, Wed 28 Oct, 3:55 AM<br><code>chatlist-row</code></td><td>skipped</td><td>disabled here</td></tr><tr class="pass"><td>Setting up, Uses your plan. Open AI settings.<br><code>sidebar-footer-status</code></td><td>pass</td><td>screen: screen-settings,screen-back,screen-title · selection changed · content changed: &quot;Settings / Account &amp; your AI&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-05-sweep-sidebar-footer-status.png">picture</a></td></tr><tr class="pass"><td>Settings<br><code>sidebar-footer-settings</code></td><td>pass</td><td>screen: screen-settings,screen-back,screen-title · selection changed · content changed: &quot;Settings / Account &amp; your AI&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-06-sweep-sidebar-footer-settings.png">picture</a></td></tr><tr class="pass"><td>Open profile<br><code>chat-header-avatar</code></td><td>pass</td><td>screen: screen-foo-profile,screen-back,screen-title · selection changed · content changed: &quot;Message foo / Your main helper&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-07-sweep-chat-header-avatar.png">picture</a></td></tr><tr class="pass"><td>Find in this chat<br><code>chat-header-find</code></td><td>pass</td><td>selection changed · typing in Find in this chat · content changed <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-08-sweep-chat-header-find.png">picture</a></td></tr><tr class="pass"><td>Chat options<br><code>chat-header-more</code></td><td>pass</td><td>opened menu:Open profile
+Mute notifications
+Clear me · content changed: &quot;Open profile / Mute notifications&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-09-sweep-chat-header-more.png">picture</a></td></tr><tr class="skipped"><td>Messages with foo<br><code>thread-log</code></td><td>skipped</td><td>own journey covers it</td></tr><tr class="skipped"><td>Let's go<br><code>setup-welcome-start</code></td><td>skipped</td><td>own journey covers it</td></tr><tr class="pass"><td>Privacy details<br><code>setup-privacy-details</code></td><td>pass</td><td>opened dialog:What leaves this PC
+
+These are the only  · content changed: &quot;What leaves this PC / These are the only places your informa&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-10-sweep-setup-privacy-details.png">picture</a></td></tr><tr class="skipped"><td>Add photos, files and more<br><code>composer-attach</code></td><td>skipped</td><td>disabled here</td></tr><tr class="skipped"><td>Connect your AI first<br><code>composer-send</code></td><td>skipped</td><td>own journey covers it</td></tr><tr class="not-tested"><td>Photos and files<br><code></code></td><td>not-tested</td><td>no longer on screen · could not click: locator.hover: Timeout 2000ms exceeded.</td></tr></table></article><article class="cp"><header><span class="v broken">Broken</span> <b>Every control clicked</b> <code>G1-first-run#29</code></header>
+<p><b>Expected:</b> every control on the first chat screen does something visible and nothing overlaps</p>
+<p class="bad"><b>Measured:</b> a control did nothing visible, could not be clicked, or broke the screen (see the sweep table)</p>
+
+
+<div class="pics"></div>
+<table class="small"><tr><th>control</th><th>result</th><th>what happened</th></tr><tr class="pass"><td>More options<br><code>sidebar-more</code></td><td>pass</td><td>opened menu:Settings
+Ctrl+,
+Keyboard shortcuts
+Ctrl+ · content changed: &quot;Settings / Ctrl+,&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-24-sweep-sidebar-more.png">picture</a></td></tr><tr class="pass"><td>Search chats<br><code></code></td><td>pass</td><td>typing in Search chats <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-25-sweep-Search_chats.png">picture</a></td></tr><tr class="fail"><td>foo, All set. I'm foo, and I'm here whenever you need me. As<br><code>chatlist-row</code></td><td>fail</td><td>NO VISIBLE EFFECT <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-26-sweep-chatlist-row.png">picture</a></td></tr><tr class="pass"><td>Anthropic key ready, Uses your Anthropic key plan. Open AI s<br><code>sidebar-footer-status</code></td><td>pass</td><td>screen: screen-settings,screen-back,screen-title · selection changed · content changed: &quot;Settings / Account &amp; your AI&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-27-sweep-sidebar-footer-status.png">picture</a></td></tr><tr class="pass"><td>Settings<br><code>sidebar-footer-settings</code></td><td>pass</td><td>screen: screen-settings,screen-back,screen-title · selection changed · content changed: &quot;Settings / Account &amp; your AI&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-28-sweep-sidebar-footer-settings.png">picture</a></td></tr><tr class="pass"><td>Open profile<br><code>chat-header-avatar</code></td><td>pass</td><td>screen: screen-foo-profile,screen-back,screen-title · selection changed · content changed: &quot;Your main helper / Name and look&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-29-sweep-chat-header-avatar.png">picture</a></td></tr><tr class="pass"><td>Find in this chat<br><code>chat-header-find</code></td><td>pass</td><td>selection changed · typing in Find in this chat · content changed <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-30-sweep-chat-header-find.png">picture</a></td></tr><tr class="pass"><td>Chat options<br><code>chat-header-more</code></td><td>pass</td><td>opened menu:Open profile
+Mute notifications
+Clear me · content changed: &quot;Open profile / Mute notifications&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-31-sweep-chat-header-more.png">picture</a></td></tr><tr class="skipped"><td>Messages with foo<br><code>thread-log</code></td><td>skipped</td><td>own journey covers it</td></tr><tr class="pass"><td>How should I talk to you? → Straight to the point 3:58 AM<br><code></code></td><td>pass</td><td>selection changed · content changed: &quot;1 / Calm, a bit funny&quot; <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-32-sweep-How_should_I_talk_to_you_Straight_to_the.png">picture</a></td></tr><tr class="not-tested"><td>React<br><code>bubble-toolbar-react</code></td><td>not-tested</td><td>covered by div · could not click: locator.hover: Timeout 2000ms exceeded.</td></tr><tr class="not-tested"><td>More options<br><code>bubble-toolbar-more</code></td><td>not-tested</td><td>covered by div · could not click: locator.hover: Timeout 2000ms exceeded.</td></tr><tr class="fail"><td>Copy message<br><code>bubble-actions-copy</code></td><td>fail</td><td>content changed · {&quot;kind&quot;:&quot;control-over-text&quot;,&quot;control&quot;:&quot;div&gt;[card-choice]&gt;div&gt;[card-choice-option] \&quot;1 of 3, Calm, a bit funny, , best fit\&quot;&quot;,&quot;text&quot;:&quot;All set. I'm foo, and I'm h <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-33-sweep-bubble-actions-copy.png">picture</a></td></tr><tr class="fail"><td>Write this answer again<br><code>bubble-actions-retry</code></td><td>fail</td><td>content changed · {&quot;kind&quot;:&quot;control-over-text&quot;,&quot;control&quot;:&quot;div&gt;[card-choice]&gt;div&gt;[card-choice-option] \&quot;1 of 3, Calm, a bit funny, , best fit\&quot;&quot;,&quot;text&quot;:&quot;All set. I'm foo, and I'm h <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-34-sweep-bubble-actions-retry.png">picture</a></td></tr><tr class="fail"><td>Good answer<br><code>bubble-actions-good</code></td><td>fail</td><td>selection changed · content changed · {&quot;kind&quot;:&quot;control-over-text&quot;,&quot;control&quot;:&quot;div&gt;[card-choice]&gt;div&gt;[card-choice-option] \&quot;1 of 3, Calm, a bit funny, , best fit\&quot;&quot;,&quot;text&quot;:&quot;All set. I'm foo, and I'm h <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-35-sweep-bubble-actions-good.png">picture</a></td></tr><tr class="fail"><td>Not a good answer<br><code>bubble-actions-bad</code></td><td>fail</td><td>opened dialog:What went wrong?
+Wrong
+Not what I asked
+ · content changed: &quot;What went wrong? / Wrong&quot; · {&quot;kind&quot;:&quot;control-over-text&quot;,&quot;control&quot;:&quot;div&gt;[card-choice]&gt;div&gt;[card-choice-option] \&quot;1 of 3, Calm, a bit funny, , best fit\&quot;&quot;,&quot;text&quot;:&quot;All set. I'm foo, and I'm h <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-36-sweep-bubble-actions-bad.png">picture</a></td></tr><tr class="fail"><td>What can you do?<br><code>composer-suggestion-chip</code></td><td>fail</td><td>content changed · {&quot;kind&quot;:&quot;control-over-text&quot;,&quot;control&quot;:&quot;div&gt;[card-choice]&gt;div&gt;[card-choice-option] \&quot;1 of 3, Calm, a bit funny, , best fit\&quot;&quot;,&quot;text&quot;:&quot;All set. I'm foo, and I'm h <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-37-sweep-composer-suggestion-chip.png">picture</a></td></tr><tr class="not-tested"><td>Help me write a message<br><code>composer-suggestion-chip</code></td><td>not-tested</td><td>no longer on screen · could not click: locator.hover: Timeout 2000ms exceeded.</td></tr><tr class="not-tested"><td>Plan my day with me<br><code>composer-suggestion-chip</code></td><td>not-tested</td><td>no longer on screen · could not click: locator.hover: Timeout 2000ms exceeded.</td></tr><tr class="fail"><td>Add photos, files and more<br><code>composer-attach</code></td><td>fail</td><td>opened menu:Emoji
+Win+. · content changed: &quot;Emoji / Win+.&quot; · {&quot;kind&quot;:&quot;control-over-text&quot;,&quot;control&quot;:&quot;div&gt;[card-choice]&gt;div&gt;[card-choice-option] \&quot;1 of 3, Calm, a bit funny, , best fit\&quot;&quot;,&quot;text&quot;:&quot;All set. I'm foo, and I'm h <a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-38-sweep-composer-attach.png">picture</a></td></tr><tr class="skipped"><td>Message foo<br><code>composer-field</code></td><td>skipped</td><td>own journey covers it</td></tr><tr class="skipped"><td>Send (Enter)<br><code>composer-send</code></td><td>skipped</td><td>own journey covers it</td></tr><tr class="not-tested"><td>Photos and files<br><code></code></td><td>not-tested</td><td>no longer on screen · could not click: locator.hover: Timeout 2000ms exceeded.</td></tr></table></article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#31</code></header>
+<p><b>Expected:</b> after closing and reopening: same chat, same name and face, no setup card again, no error</p>
+
+<p><b>Reviewer:</b> The screen shows the setup conversation from the first run still on screen, not a clean reopened chat, and the closing message says to try one of the suggestions but none appear.</p><ul><li>The last message says &quot;Ask me anything, or try one of these.&quot; but no suggestion buttons appear below it, so the message points to something missing.</li><li>The setup questions (&quot;What should I call myself?&quot;, &quot;Pick a face.&quot;, &quot;How should I talk to you?&quot;) are still shown as answered cards in the chat. This looks like the first-run setup flow, not a reopened app, so there is no evidence the app was closed and reopened.</li><li>The message box already contains &quot;What can you do?&quot; typed in but not sent, and nothing answers it. The screen gives no sign that the reopened chat works.</li><li>The answered cards have uneven widths and styles. The last one has a green check and the earlier ones have none, which looks inconsistent.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-39-reopened.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-39-reopened.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·1#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·2#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·3#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G3-restart·1#missing</code></header>
+<p><b>Expected:</b> G3-restart round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> G3-restart round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G3-restart·2#missing</code></header>
+<p><b>Expected:</b> G3-restart round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> G3-restart round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G3-restart·3#missing</code></header>
+<p><b>Expected:</b> G3-restart round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> G3-restart round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article></section><section><h2>Connect your AI (find it, your own key, a wrong key) <span class="v broken">Broken</span></h2><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#4</code></header>
+<p><b>Expected:</b> Find your AI card: rows testing live; the Anthropic key row offers to add a key</p>
+
+<p><b>Reviewer:</b> The Find your AI card shows every row as 'Looking...' with spinners, so it never shows the expected results of Claude and ChatGPT testing and the other AIs not being found.</p><ul><li>All five rows (Claude, ChatGPT, Gemini, Your own key, AI on this PC) show 'Looking...' with spinners; nothing moves on to 'Testing…' for Claude and ChatGPT, and Gemini and AI on this PC never show 'not found'.</li><li>The key row is labelled 'Your own key' instead of naming the Anthropic key as expected (the reference shows 'OpenAI key'), and it has a spinner next to the 'Add in secret box' button, which makes it look unfinished.</li><li>Step label reads 'Step 1 of 2' where the reference says 'Step 1 of 4'.</li><li>The state looks stuck: the progress bar is partway and every row is still searching, with no sign the tiny test question was sent.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-11-finder.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-11-finder.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-02-02.light.png"><img src="refs/UX-02-02.light.png" loading="lazy" alt=""></a><figcaption>Design UX-02-02</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#5</code></header>
+<p><b>Expected:</b> each row ends with works or a plain reason; nothing stuck on Testing</p>
+
+<p><b>Reviewer:</b> The Connect your AI screen shows no result for the AI checks: no row says works, and the user is asked which AI they use after the app says it couldn't find one.</p><ul><li>None of the rows ends with a green &quot;✓ works&quot; or a plain reason as expected: the Anthropic key row and the &quot;Your own key&quot; row only show &quot;Add in secret box&quot; buttons, with no test result.</li><li>The card says &quot;I couldn't find an AI on this PC yet. Which one do you use?&quot;, but the reference flow shows the checks finishing with green &quot;✓ works&quot; lines; this is a different, unresolved path.</li><li>The screen shows a numbered list (ChatGPT, Claude, Gemini, I have a key) that is not in the reference and makes the user pick without explaining what each choice does.</li><li>The Gemini option appears greyed or highlighted as if hovered, while ChatGPT is marked &quot;BEST FIT&quot; even though nothing was found to work, which is confusing and unsupported.</li><li>The step label says &quot;Step 1 of 2&quot; while the reference shows &quot;Step 1 of 4&quot;, so the step count differs.</li><li>The chat list shows &quot;Setting up...&quot; and the bottom-left shows &quot;Setting up&quot; with no user name, unlike the reference's named user; the header has no &quot;New helper&quot; or filter chips, which is fine for this build.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-12-finder-tested.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-12-finder-tested.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-02-03.light.png"><img src="refs/UX-02-03.light.png" loading="lazy" alt=""></a><figcaption>Design UX-02-03</figcaption></figure></div>
+</article><article class="cp"><header><span class="v wrong-design">Works but wrong vs design</span> <b>Step</b> <code>G1-first-run#7</code></header>
+<p><b>Expected:</b> a masked Secret box asks for the key; it says not to paste keys in the chat</p>
+
+<p><b>Reviewer:</b> The app correctly asks for the key in a separate secret box and says not to paste it in the chat, but it asks for an Anthropic key instead of the OpenAI key the user picked.</p><ul><li>The prompt and the box label say &quot;Anthropic key&quot; while the expected flow for this step is &quot;OpenAI key&quot;, so the wording does not match the choice the user made.</li><li>The secret box is empty with the placeholder &quot;Paste it here&quot; in a monospace font, while the reference shows a masked, filled box with a &quot;Show&quot; label; the eye icon is a different style.</li><li>The &quot;Save securely&quot; button text looks faded and low-contrast on the blue fill, which makes it harder to read than the reference's clear black button.</li><li>The secondary button reads &quot;Cancel&quot; where the reference says &quot;Not now&quot;.</li><li>The key icon next to the title is a thin outline, where the reference uses a coloured key emoji, and the &quot;secret&quot; label is tiny and lowercase.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-13-secret-box.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-13-secret-box.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-02-07.light.png"><img src="refs/UX-02-07.light.png" loading="lazy" alt=""></a><figcaption>Design UX-02-07</figcaption></figure></div>
+</article><article class="cp"><header><span class="v wrong-design">Works but wrong vs design</span> <b>Step</b> <code>G1-first-run#10</code></header>
+<p><b>Expected:</b> Saved securely; the Anthropic key row shows works; the key itself is never shown</p>
+
+<p><b>Reviewer:</b> The key was saved and the key itself is not shown, but the Anthropic key card never shows the expected green &quot;works&quot; result and its layout differs from the reference.</p><ul><li>The saved-key card shows &quot;Anthropic key · saved Wed 28 Oct&quot; with no &quot;✓ works&quot; status, so the user has no sign that the key was tested and works. The reference shows a green &quot;✓ works&quot; on that row.</li><li>The &quot;Saved securely. foo's AI never sees it.&quot; message is small grey text with a faint check mark above it. In the reference it is a bold green heading with a check mark.</li><li>The &quot;Anthropic key&quot; card shows a &quot;secret&quot; tag and a &quot;Remove&quot; link instead of the reference's &quot;Change cap&quot; and &quot;Replace&quot; buttons. &quot;Change cap&quot; appears only as a small link in the text above.</li><li>The chat still shows the older setup card with &quot;Use Anthropic key&quot; and &quot;Add in secret box&quot; buttons after the key was saved, which is confusing.</li><li>The top of the chat is clipped, with a partly hidden row and button cut off at the header.</li><li>The header says &quot;Step 1 of 2&quot;, while the reference says &quot;Step 1 of 4&quot;.</li><li>The message box still says &quot;Connect your AI first, then we can talk.&quot; even though a key was saved.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-14-key-tested.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-14-key-tested.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-02-09.light.png"><img src="refs/UX-02-09.light.png" loading="lazy" alt=""></a><figcaption>Design UX-02-09</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·1#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·2#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·3#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G5-wrong-key·1#missing</code></header>
+<p><b>Expected:</b> G5-wrong-key round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> G5-wrong-key round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article></section><section><h2>Name, face and vibe <span class="v broken">Broken</span></h2><article class="cp"><header><span class="v wrong-design">Works but wrong vs design</span> <b>Step</b> <code>G1-first-run#14</code></header>
+<p><b>Expected:</b> What should I call myself? with a box, Keep &quot;foo&quot; and Surprise me; step 2 of 2</p>
+
+<p><b>Reviewer:</b> The name question appears with a box, Keep &quot;foo&quot; and Surprise me, but the screen has visible flaws: the header says &quot;Step 2 of 2&quot; while a duplicate struck-through &quot;step 1 of 2&quot; is drawn underneath, and the earlier history shows a raw arrow and a secret-key card.</p><ul><li>The subtitle under &quot;foo&quot; in the header reads &quot;Setting up · step 1 of 2&quot; with garbled, struck-through text that overlaps and contradicts the &quot;Step 2 of 2&quot; pill above it.</li><li>An extra &quot;That's it&quot; button is shown next to Keep &quot;foo&quot; and Surprise me, which is not part of the expected set of choices.</li><li>The message &quot;Hi, I'm foo. → Let's go&quot; shows a raw arrow in plain text, which looks unfinished.</li><li>The Anthropic key card with &quot;secret&quot;, &quot;Replace&quot; and &quot;Remove&quot; and the &quot;saved Wed 28 Oct&quot; line is technical detail that clutters the name step.</li><li>The &quot;Using Anthropic key (your AI)&quot; confirmation is plain grey text with a faint check mark rather than the bold green confirmation shown in the reference design.</li><li>The sidebar says &quot;Setting up…&quot; with an unread badge of 1 while the user is already in the chat, which looks stale.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-15-name-card.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-15-name-card.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-01.light.png"><img src="refs/UX-03-01.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-01</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#17</code></header>
+<p><b>Expected:</b> an empty name is not taken: foo says what it needs, or That's it stays off; the card is still there</p>
+
+<p><b>Reviewer:</b> The screen shows the face-picking step after foo accepted the name &quot;foo it is.&quot;, so the empty-name test is not shown and there is no sign that an empty name was refused or that the name card is still waiting.</p><ul><li>The name card (&quot;What should I call myself?&quot; with the empty box, Keep &quot;foo&quot; and Surprise me) is gone; the chat has moved on to &quot;Pick a face.&quot; and the name was accepted as &quot;foo it is.&quot;</li><li>No message tells the user what foo needs when the name is empty, so the expected outcome (an empty name is not taken and the card stays) is not met.</li><li>The step label reads &quot;Step 2 of 2&quot; where the reference shows &quot;Step 2 of 4&quot;, and the header subtitle repeats &quot;Setting up · step 2 of 2&quot;.</li><li>The sidebar chat preview shows &quot;Setting up...&quot; and the foo name is greyed, unlike the reference.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-16-name-empty.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-16-name-empty.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-01.light.png"><img src="refs/UX-03-01.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-01</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#18</code></header>
+<p><b>Expected:</b> step &quot;fill&quot; works</p>
+<p class="bad"><b>Measured:</b> step failed: locator.fill: Timeout 30000ms exceeded.</p>
+
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-17-error-step18.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-17-error-step18.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#19</code></header>
+<p><b>Expected:</b> &quot;Chotu 😊&quot; in the box with That's it, Keep &quot;foo&quot; and the dice</p>
+
+<p><b>Reviewer:</b> The screen shows the face-picking step with the name already accepted as &quot;foo it is.&quot;, instead of the name box with the dice-filled name and the That's it, Keep &quot;foo&quot; and dice buttons.</p><ul><li>The expected name box (with a name filled in by the dice) is not visible; the screen has already moved on to &quot;Pick a face.&quot;, so the dice-name step cannot be seen.</li><li>The chat shows the user's reply &quot;foo it is.&quot;, so the name was kept as &quot;foo&quot; rather than the dice name or &quot;Chotu 😊&quot; appearing in the box.</li><li>No That's it, Keep &quot;foo&quot; or dice-only button row is shown; the only dice is &quot;Surprise me&quot; on the face picker, which is a different step.</li><li>The header says &quot;Step 2 of 2&quot; while the reference says &quot;Step 2 of 4&quot;, and the subtitle appears in a different place.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-18-name-typed.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-18-name-typed.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-02.light.png"><img src="refs/UX-03-02.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-02</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#20</code></header>
+<p><b>Expected:</b> step &quot;click&quot; works</p>
+<p class="bad"><b>Measured:</b> step failed: locator.click: Timeout 15000ms exceeded.</p>
+
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-19-error-step20.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-19-error-step20.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure></div>
+</article><article class="cp"><header><span class="v wrong-design">Works but wrong vs design</span> <b>Step</b> <code>G1-first-run#21</code></header>
+<p><b>Expected:</b> the name card shrinks to its answer; four round faces, the living face marked default</p>
+
+<p><b>Reviewer:</b> The face picker works with four faces and the living face preselected, but it is laid out as a grid of cards with different buttons and no collapsed name answer visible, unlike the reference.</p><ul><li>The faces are shown as numbered square cards in a 2x2 grid, not a single row of four round faces with names under each as in the reference.</li><li>Only the first face has a label (&quot;Living face&quot; / &quot;Default&quot;); the other three faces have no names (Flower, Half moon, Star) and show only small numbers.</li><li>The buttons read &quot;Use this face&quot; and &quot;Surprise me&quot; instead of the reference's &quot;New faces&quot; and &quot;Use my own picture&quot;, so there is no way to pick your own picture.</li><li>The name card is not visible as a collapsed answer line (&quot;What should I call myself? → foo&quot;) above &quot;foo it is.&quot;; this may be scrolled off, but the shrunken card cannot be confirmed.</li><li>The header says &quot;Step 2 of 2&quot; where the reference says &quot;Step 2 of 4&quot;.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-20-faces.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-20-faces.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-04.light.png"><img src="refs/UX-03-04.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-04</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#23</code></header>
+<p><b>Expected:</b> a ring around the chosen face</p>
+
+<p><b>Reviewer:</b> The user picked the flower face (option 2), but the header and chat list still show the default black face, and the chat row stays grey, so the choice does not seem to have taken effect.</p><ul><li>The expected outcome is a ring around the chosen face. The ring and tick sit on the flower face (option 2), while the header and chat row still show the default black eyes face, so the selection and the rest of the app disagree.</li><li>The chat row on the left is still grey with the faded text &quot;Setting up...&quot;, where the reference shows the row no longer grey.</li><li>The face cards have no names. Only face 1 has the label &quot;Living face / Default&quot;, so faces 2, 3 and 4 are unlabeled, unlike the reference, which names them Flower, Half moon and Star.</li><li>The face options wrap onto two rows with number badges, which differs from the single-row layout in the reference, and the ring is not shown around a face in the same style.</li><li>The step label reads &quot;Step 2 of 2&quot; where the reference says &quot;Step 2 of 4&quot;, and the buttons read &quot;Use this face&quot; and &quot;Surprise me&quot; instead of the reference wording.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-21-face-picked.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-21-face-picked.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-05.light.png"><img src="refs/UX-03-05.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-05</figcaption></figure></div>
+</article><article class="cp"><header><span class="v works">Works</span> <b>Step</b> <code>G1-first-run#25</code></header>
+<p><b>Expected:</b> a choice card of talk styles, one marked Best fit</p>
+
+<p><b>Reviewer:</b> The app shows the 'How should I talk to you?' card with Calm, a bit funny marked Best fit, plus the other styles, Something else and Skip, as expected.</p>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-22-vibe.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-22-vibe.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-07.light.png"><img src="refs/UX-03-07.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-07</figcaption></figure></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G1-first-run#27</code></header>
+<p><b>Expected:</b> foo, now called Chotu 😊, confirms the style in one short line and greets; the composer is unlocked</p>
+
+<p><b>Reviewer:</b> The assistant should now be called Chotu, but the screen still shows it as &quot;foo&quot; everywhere, even though the user picked the name.</p><ul><li>The chat header, sidebar, and message senders all say &quot;foo&quot; instead of the new name &quot;Chotu 😊&quot;.</li><li>The confirmation line reads &quot;Straight to the point. Got it. 🎯&quot; with no mention of the new name. The greeting does not use &quot;Chotu&quot; and introduces itself as &quot;I'm foo&quot;.</li><li>The chat shows &quot;foo it is.&quot; as the chosen name, which contradicts the expected name Chotu.</li><li>The face picker shows only as a collapsed one-line summary, &quot;Pick a face. → Face ✿ (flower)&quot;, and the chat's avatar is a flower rather than the default face.</li></ul>
+
+<div class="pics"><figure><a href="shots/2026-10-28T03-55-18-642Z-G1-first-run-23-first-chat.png"><img src="shots/2026-10-28T03-55-18-642Z-G1-first-run-23-first-chat.png" loading="lazy" alt=""></a><figcaption>The app</figcaption></figure><figure><a href="refs/UX-03-09.light.png"><img src="refs/UX-03-09.light.png" loading="lazy" alt=""></a><figcaption>Design UX-03-09</figcaption></figure></div>
+</article></section><section><h2>Just chatting, in your language <span class="v broken">Broken</span></h2><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·1#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·2#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·3#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G2-chat·1#missing</code></header>
+<p><b>Expected:</b> G2-chat round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> G2-chat round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G2-chat·2#missing</code></header>
+<p><b>Expected:</b> G2-chat round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> G2-chat round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G2-chat·3#missing</code></header>
+<p><b>Expected:</b> G2-chat round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> G2-chat round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G3-restart·1#missing</code></header>
+<p><b>Expected:</b> G3-restart round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> G3-restart round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G3-restart·2#missing</code></header>
+<p><b>Expected:</b> G3-restart round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> G3-restart round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G3-restart·3#missing</code></header>
+<p><b>Expected:</b> G3-restart round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> G3-restart round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article></section><section><h2>Settings, by page or by asking <span class="v broken">Broken</span></h2><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·1#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·2#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·3#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G4-settings·1#missing</code></header>
+<p><b>Expected:</b> G4-settings round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> G4-settings round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G4-settings·2#missing</code></header>
+<p><b>Expected:</b> G4-settings round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> G4-settings round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G4-settings·3#missing</code></header>
+<p><b>Expected:</b> G4-settings round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> G4-settings round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article></section><section><h2>What batch 1 must refuse plainly (tasks, memory) <span class="v broken">Broken</span></h2><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·1#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·2#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>B1-batch1·3#missing</code></header>
+<p><b>Expected:</b> B1-batch1 round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> B1-batch1 round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G2-chat·1#missing</code></header>
+<p><b>Expected:</b> G2-chat round 1 runs to the end</p>
+<p class="bad"><b>Measured:</b> G2-chat round 1 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G2-chat·2#missing</code></header>
+<p><b>Expected:</b> G2-chat round 2 runs to the end</p>
+<p class="bad"><b>Measured:</b> G2-chat round 2 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article><article class="cp"><header><span class="v broken">Broken</span> <b>Step</b> <code>G2-chat·3#missing</code></header>
+<p><b>Expected:</b> G2-chat round 3 runs to the end</p>
+<p class="bad"><b>Measured:</b> G2-chat round 3 left no record: it crashed or never ran</p>
+
+
+<div class="pics"></div>
+</article></section>
+</main></body></html>
