@@ -1,0 +1,46 @@
+{
+  "id": "G3-restart",
+  "title": "Release gate: close foo while it is answering, and reopen; quit from the menu and reopen",
+  "spec": "04 §19.4 (cut-off reply); 09 (window, quit); B14",
+  "feature": "chat",
+  "features": "shipped",
+  "steps": [
+    { "do": "send", "text": "Give me 5 tips to sleep better, one line each" },
+    { "do": "wait", "ms": 3000, "shot": "mid-reply", "expect": "foo is answering (Thinking row or words streaming)" },
+    { "do": "relaunch", "feature": "install" },
+    {
+      "do": "waitReply",
+      "timeoutMs": 150000,
+      "shot": "after-reopen",
+      "expect": "after reopening, the question is answered, or the cut-off reply shows Try again; never 👀 or the Thinking row left forever"
+    },
+    { "do": "check", "css": "[data-testid=\"thread-thinking\"]", "count": 0, "note": "no Thinking row stuck after the reopen" },
+    { "do": "click", "tid": "sidebar-more", "feature": "install" },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "more-menu",
+      "feature": "install",
+      "expect": "the menu shows Settings, Keyboard shortcuts and Quit only (batch 1)"
+    },
+    { "do": "key", "key": "Escape" },
+    { "do": "quit", "feature": "install" },
+    { "do": "relaunch", "feature": "install" },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "shot": "after-quit-reopen",
+      "feature": "install",
+      "expect": "reopens on the same chat with all earlier messages; no error card"
+    },
+    { "do": "send", "text": "are you still there?" },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "shot": "still-there",
+      "expect": "a normal short reply after the restart"
+    },
+    { "do": "dump", "name": "thread" }
+  ]
+}

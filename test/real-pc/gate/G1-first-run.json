@@ -1,0 +1,236 @@
+{
+  "id": "G1-first-run",
+  "title": "Release gate: first open of the app Vikas downloads, real Claude key, a Hinglish name, a face and a vibe, then close and reopen",
+  "spec": "CR-0026, CR-0054; 07-1 J1, J2, J3; walkthrough chapters 2 and 3",
+  "feature": "install",
+  "features": "shipped",
+  "required": true,
+  "steps": [
+    {
+      "do": "wait",
+      "ms": 600,
+      "shot": "splash",
+      "expect": "foo opens: the face and wordmark, no blank or white window, no error",
+      "ref": "UX-02-01"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-welcome-start",
+      "timeoutMs": 60000,
+      "shot": "welcome",
+      "expect": "Welcome card from foo, step 1 of 2, one clear button to start",
+      "ref": "UX-02-01"
+    },
+    {
+      "do": "sweep",
+      "feature": "install",
+      "noEffectOk": [],
+      "skip": ["setup-welcome-start", "setup-skip-rest"],
+      "expect": "every button on the welcome screen does something visible"
+    },
+    {
+      "do": "click",
+      "tid": "setup-welcome-start",
+      "feature": "ai"
+    },
+    {
+      "do": "waitFor",
+      "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
+      "timeoutMs": 60000,
+      "shot": "finder",
+      "feature": "ai",
+      "expect": "Find your AI card: rows testing live; the Anthropic key row offers to add a key",
+      "ref": "UX-02-02"
+    },
+    {
+      "do": "wait",
+      "ms": 20000,
+      "shot": "finder-tested",
+      "feature": "ai",
+      "expect": "each row ends with works or a plain reason; nothing stuck on Testing",
+      "ref": "UX-02-03"
+    },
+    {
+      "do": "click",
+      "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
+      "feature": "ai"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-secret-field",
+      "timeoutMs": 30000,
+      "shot": "secret-box",
+      "feature": "ai",
+      "expect": "a masked Secret box asks for the key; it says not to paste keys in the chat",
+      "ref": "UX-02-07"
+    },
+    {
+      "do": "fill",
+      "tid": "card-secret-field",
+      "env": "ANTHROPIC_API_KEY",
+      "feature": "ai"
+    },
+    {
+      "do": "click",
+      "tid": "card-secret-save",
+      "feature": "ai"
+    },
+    {
+      "do": "wait",
+      "ms": 30000,
+      "shot": "key-tested",
+      "feature": "ai",
+      "expect": "Saved securely; the Anthropic key row shows works; the key itself is never shown",
+      "ref": "UX-02-09"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-pick-another",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "css": "[data-testid=\"card-choice-option\"][data-option=\"anthropic-key\"]",
+      "feature": "ai"
+    },
+    {
+      "do": "clickIf",
+      "tid": "setup-ai-use",
+      "feature": "ai"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-name-field",
+      "timeoutMs": 60000,
+      "shot": "name-card",
+      "feature": "name",
+      "expect": "What should I call myself? with a box, Keep \"foo\" and Surprise me; step 2 of 2",
+      "ref": "UX-03-01"
+    },
+    {
+      "do": "fill",
+      "tid": "setup-name-field",
+      "value": "😊!!",
+      "feature": "name",
+      "note": "06-1 §(name card): a blank field means Keep \"foo\", so the refusal check uses a name with no letter"
+    },
+    {
+      "do": "click",
+      "tid": "setup-name-done",
+      "feature": "name",
+      "soft": true
+    },
+    {
+      "do": "wait",
+      "ms": 1500,
+      "shot": "name-no-letter",
+      "feature": "name",
+      "expect": "a name with no letter or number (only an emoji and !!) is refused in plain words; the name card stays",
+      "ref": "UX-03-01"
+    },
+    {
+      "do": "fill",
+      "tid": "setup-name-field",
+      "value": "Chotu 😊",
+      "feature": "name"
+    },
+    {
+      "do": "wait",
+      "ms": 500,
+      "shot": "name-typed",
+      "feature": "name",
+      "expect": "\"Chotu 😊\" in the box with That's it, Keep \"foo\" and the dice",
+      "ref": "UX-03-02"
+    },
+    {
+      "do": "click",
+      "tid": "setup-name-done",
+      "feature": "name"
+    },
+    {
+      "do": "waitFor",
+      "tid": "setup-face-tile",
+      "timeoutMs": 60000,
+      "shot": "faces",
+      "feature": "name",
+      "expect": "the name card shrinks to its answer; four round faces, the living face marked default",
+      "ref": "UX-03-04"
+    },
+    {
+      "do": "click",
+      "tid": "setup-face-tile",
+      "nth": 1,
+      "feature": "name"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "face-picked",
+      "feature": "name",
+      "expect": "a ring around the chosen face",
+      "ref": "UX-03-05"
+    },
+    {
+      "do": "click",
+      "tid": "setup-face-use",
+      "feature": "name"
+    },
+    {
+      "do": "waitFor",
+      "tid": "card-choice-option",
+      "timeoutMs": 60000,
+      "shot": "vibe",
+      "feature": "name",
+      "expect": "a choice card of talk styles, one marked Best fit",
+      "ref": "UX-03-07"
+    },
+    {
+      "do": "click",
+      "tid": "card-choice-option",
+      "nth": 1,
+      "feature": "name"
+    },
+    {
+      "do": "wait",
+      "ms": 10000,
+      "shot": "first-chat",
+      "feature": "name",
+      "expect": "foo, now called Chotu 😊, confirms the style in one short line and greets; the composer is unlocked",
+      "ref": "UX-03-09"
+    },
+    {
+      "do": "expectText",
+      "tid": "chat-header-name",
+      "re": "Chotu",
+      "feature": "name",
+      "setupDone": true,
+      "note": "setup is done here: the key is in and the chat opened under the new name; later failures are judged, not fatal"
+    },
+    {
+      "do": "sweep",
+      "feature": "install",
+      "expect": "every control on the first chat screen does something visible and nothing overlaps"
+    },
+    {
+      "do": "relaunch",
+      "feature": "install"
+    },
+    {
+      "do": "wait",
+      "ms": 3000,
+      "shot": "reopened",
+      "feature": "install",
+      "expect": "after closing and reopening: same chat, same name and face, no setup card again, no error"
+    },
+    {
+      "do": "check",
+      "tid": "setup-welcome-start",
+      "count": 0,
+      "feature": "install"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}

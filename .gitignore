@@ -14,9 +14,15 @@ qa-evidence/*/fidelity.json
 .claude/*
 !.claude/skills/
 !.claude/agents/
+!.claude/settings.json
+!.claude/hooks/
 qa-evidence/verify/
 qa-evidence/cold-open/
 
 # M8: the real Google OAuth client is owner-provided and never committed (public repo)
 resources/google-oauth.json
 qa-explore-report/
+
+# Mutation testing output (pnpm test:mutation)
+reports/mutation/
+.stryker-tmp/

@@ -1,0 +1,117 @@
+{
+  "id": "G4-settings",
+  "title": "Release gate: settings by asking in Hinglish and by the Settings page, every control clicked",
+  "spec": "07-2 J21; 06 Settings; walkthrough chapter 24",
+  "feature": "settings",
+  "features": "shipped",
+  "steps": [
+    {
+      "do": "send",
+      "text": "dark mode kar do please"
+    },
+    {
+      "do": "waitFor",
+      "css": "html[data-theme=\"dark\"]",
+      "timeoutMs": 120000
+    },
+    {
+      "do": "wait",
+      "ms": 4000,
+      "shot": "dark",
+      "expect": "the whole app turns dark; one line: Changed: Theme → Dark · Undo",
+      "ref": "UX-24-07"
+    },
+    {
+      "do": "send",
+      "text": "nahi, wapas light kar do"
+    },
+    {
+      "do": "waitFor",
+      "css": "html[data-theme=\"light\"]",
+      "timeoutMs": 120000
+    },
+    {
+      "do": "wait",
+      "ms": 4000,
+      "shot": "light",
+      "expect": "back to light; the same kind of one line with Undo"
+    },
+    {
+      "do": "click",
+      "tid": "sidebar-more"
+    },
+    {
+      "do": "click",
+      "tid": "sidebar-menu-settings"
+    },
+    {
+      "do": "wait",
+      "ms": 1000,
+      "shot": "settings",
+      "expect": "Settings opens on a page with real rows; only the batch-1 pages are listed",
+      "ref": "UX-24-02"
+    },
+    {
+      "do": "click",
+      "tid": "settings-nav-account"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "settings-account",
+      "expect": "Using: Anthropic key · works · Test now · Change; the key is never shown",
+      "ref": "UX-24-02"
+    },
+    {
+      "do": "sweep",
+      "within": "[data-testid^=\"screen-\"]",
+      "max": 40,
+      "expect": "every control on the Settings page does something visible; nothing overlaps",
+      "openTid": "settings-nav-account",
+      "openVia": ["sidebar-more", "sidebar-menu-settings"]
+    },
+    {
+      "do": "click",
+      "tid": "settings-nav-appearance"
+    },
+    {
+      "do": "wait",
+      "ms": 800,
+      "shot": "settings-appearance",
+      "expect": "Theme: Light · Dark · Windows, the current one marked",
+      "ref": "UX-24-09"
+    },
+    {
+      "do": "sweep",
+      "within": "[data-testid^=\"screen-\"]",
+      "max": 40,
+      "expect": "every Appearance control visibly changes the app",
+      "openTid": "settings-nav-appearance",
+      "openVia": ["sidebar-more", "sidebar-menu-settings"]
+    },
+    {
+      "do": "key",
+      "key": "Control+0",
+      "soft": true,
+      "note": "undo any zoom the sweep changed, so later rounds' pictures are at normal size"
+    },
+    {
+      "do": "click",
+      "tid": "screen-back"
+    },
+    {
+      "do": "send",
+      "text": "make the text bigger"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "text-size",
+      "expect": "text size changes with an Undo line, or foo says plainly where to change it; never a fake confirmation"
+    },
+    {
+      "do": "dump",
+      "name": "thread"
+    }
+  ]
+}
