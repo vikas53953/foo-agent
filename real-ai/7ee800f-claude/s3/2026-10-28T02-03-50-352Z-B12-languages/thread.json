@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n2:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:03 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n2:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:03 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n2:03 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n2:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n2:03 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n2:03 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mummy ke birthday (Fri 30 Oct) ke liye rasmalai cake sabse safe aur special lagega. Ye 3 options bhi acche hain:\n\nRasmalai cake: halka meetha, desi swaad, almost sabko pasand aata hai\nChocolate truffle: classic, ghar mein sab khushi se khayenge\nFresh fruit cake: kam meetha aur halka, agar mummy zyada sweet nahi khati\n\nPhoto cake ya naam likhwana ho to wo bhi ho jata hai. Ek baat batao: mummy ko meetha kaisa pasand hai, zyada rich ya halka?\n\n2:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n2:04 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Mummy ke birthday (Fri 30 Oct) ke liye kaunsa cake dekhun?\n1\nRasmalai cake\nBEST FIT\nHalka meetha, desi swaad\n2\nChocolate truffle\nClassic, sabko pasand\n3\nFresh fruit cake\nKam meetha, halka\n4\nPhoto cake\nPhoto ya naam ke saath\nSomething else…\nSkip\n2:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:04 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n2:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so it should be a normal working day. I can't check live holiday lists here, so confirm with your bank or office if it matters. Diwali is around Sun 8 Nov.\n\n2:04 AM"
+  }
+]

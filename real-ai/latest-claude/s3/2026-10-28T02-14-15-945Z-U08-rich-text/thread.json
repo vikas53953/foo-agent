@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Check your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n2:13 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n2:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Which WhatsApp group should I catch you up on? Tell me its name and I'll read what you missed. I can only read one group at a time.\n\n2:13 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "List three Indian rivers\n2:13 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ganga, Yamuna and Godavari. Want three more, or ones from a particular region?\n\n2:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n2:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here it is: print(\"Hello, world!\"). Save it in a file ending in .py and run it with Python, and it prints the greeting.\n\n2:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n2:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here you go:\n\nState\tCapital\nMaharashtra\tMumbai\nTamil Nadu\tChennai\nPunjab\tChandigarh\n\nPunjab shares Chandigarh with Haryana, so that one is a fun fact too. Want more rows?\n\n2:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n2:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC. For train running status and enquiries, use Indian Railways Enquiry. Want me to search for a train on IRCTC?\n\n2:15 AM"
+  }
+]

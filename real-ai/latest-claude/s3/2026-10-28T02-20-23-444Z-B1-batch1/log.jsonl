@@ -1,0 +1,58 @@
+{"t":"2026-10-28T02:20:23.444Z","journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","spec":"CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b; CR-0066 (X-223, no 👀 on a plain message)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T02:20:28.974Z","step":"launch","ok":true}
+{"t":"2026-10-28T02:20:28.981Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","ok":true,"ms":4}
+{"t":"2026-10-28T02:20:29.042Z","shot":"01-welcome.png"}
+{"t":"2026-10-28T02:20:29.192Z","i":1,"do":"click","ok":true,"ms":150}
+{"t":"2026-10-28T02:20:29.198Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","ok":true,"ms":6}
+{"t":"2026-10-28T02:20:29.305Z","shot":"02-finder.png"}
+{"t":"2026-10-28T02:20:49.308Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","ok":true,"ms":20002}
+{"t":"2026-10-28T02:20:49.372Z","shot":"03-finder-tested.png"}
+{"t":"2026-10-28T02:20:49.469Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":97}
+{"t":"2026-10-28T02:20:49.473Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T02:20:49.544Z","shot":"04-secret-box.png"}
+{"t":"2026-10-28T02:20:49.555Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":11}
+{"t":"2026-10-28T02:20:49.665Z","i":7,"do":"click","ok":true,"ms":110}
+{"t":"2026-10-28T02:21:19.666Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","ok":true,"ms":30000}
+{"t":"2026-10-28T02:21:19.733Z","shot":"05-key-tested.png"}
+{"t":"2026-10-28T02:21:19.772Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":1,"ok":true,"ms":39}
+{"t":"2026-10-28T02:21:19.880Z","i":10,"do":"clickIf","found":1,"ok":true,"ms":108}
+{"t":"2026-10-28T02:21:19.882Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T02:21:19.885Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","ok":true,"ms":3}
+{"t":"2026-10-28T02:21:19.966Z","shot":"06-step2.png"}
+{"t":"2026-10-28T02:21:19.970Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Anthropic key (your AI)\n2:20 AM","ok":true,"ms":4}
+{"t":"2026-10-28T02:21:20.087Z","i":14,"do":"click","ok":true,"ms":117}
+{"t":"2026-10-28T02:21:30.089Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","ok":true,"ms":10002}
+{"t":"2026-10-28T02:21:30.154Z","shot":"07-first-chat.png"}
+{"t":"2026-10-28T02:21:30.156Z","i":16,"do":"check","note":"batch 1 has no helpers: no New helper button","found":0,"ok":true,"ms":1}
+{"t":"2026-10-28T02:21:30.158Z","i":17,"do":"check","note":"batch 1 has no voice: the round button is Send, not the mic","found":1,"ok":true,"ms":2}
+{"t":"2026-10-28T02:21:30.250Z","i":18,"do":"send","sentAt":1793154090236,"sent":true,"before":0,"ok":true,"ms":92}
+{"t":"2026-10-28T02:21:39.389Z","i":19,"do":"waitReply","expect":"a short warm reply in Hinglish, streamed","firstReplyMs":2039,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Main bilkul theek hoon, shukriya! Aap kaise ho? Kuch kaam hai aaj?\n\n2:21 AM","kit":[],"ms":9139}
+{"t":"2026-10-28T02:21:39.450Z","shot":"08-hinglish.png"}
+{"t":"2026-10-28T02:21:39.532Z","i":20,"do":"send","sentAt":1793154099522,"sent":true,"before":0,"ok":true,"ms":81}
+{"t":"2026-10-28T02:21:53.762Z","i":21,"do":"waitReply","expect":"a joke, in the user's mix of Hindi and English","firstReplyMs":4078,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Ek baar ek aadmi ne apne dost se kaha, \"Yaar, mera phone bahut smart hai.\"\n\nDost bola, \"Kaise?\"\n\nUsne kaha, \"Jab main ghar jaata hoon, toh automatically silent mode pe chala jaata hai.\"\n\nDost bola, \"Wow! Kaise?\"\n\nAadmi bola, \"Kyunki battery khatam ho jaati hai!\" 😄\n\n2:21 AM","kit":[],"ms":14230}
+{"t":"2026-10-28T02:21:53.826Z","shot":"09-joke.png"}
+{"t":"2026-10-28T02:21:53.909Z","i":22,"do":"send","sentAt":1793154113900,"sent":true,"before":0,"ok":true,"ms":83}
+{"t":"2026-10-28T02:22:06.189Z","i":23,"do":"waitReply","expect":"the batch-1 line: foo can’t do tasks yet; no checklist, no plan card","firstReplyMs":6111,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n2:21 AM","kit":[],"endState":true,"ms":12279}
+{"t":"2026-10-28T02:22:06.246Z","shot":"10-job-off.png"}
+{"t":"2026-10-28T02:22:06.334Z","i":24,"do":"send","sentAt":1793154126318,"sent":true,"before":0,"ok":true,"ms":87}
+{"t":"2026-10-28T02:22:16.002Z","i":25,"do":"waitReply","expect":"says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist","firstReplyMs":2042,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Main abhi tasks nahi kar sakta, jaise booking ya payment. Lekin main aapko bata sakta hoon kaise karna hai, ya kaunsi app use karni hai.\n\n2:22 AM","kit":[],"endState":true,"ms":9668}
+{"t":"2026-10-28T02:22:16.060Z","shot":"11-cab-off.png"}
+{"t":"2026-10-28T02:22:16.151Z","i":26,"do":"send","sentAt":1793154136136,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-28T02:22:25.801Z","i":27,"do":"waitReply","expect":"no, foo can’t book cabs yet; never “no record” or memory words","firstReplyMs":1532,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Nahi, maine cab book nahi ki. Main abhi tasks nahi kar sakta—booking, buying ya kuch bhi bhejne ka kaam nahi ho sakta is build mein.\n\n2:22 AM","kit":[],"endState":true,"ms":9649}
+{"t":"2026-10-28T02:22:25.858Z","shot":"12-cab-asked.png"}
+{"t":"2026-10-28T02:22:25.950Z","i":28,"do":"send","sentAt":1793154145932,"sent":true,"before":0,"ok":true,"ms":92}
+{"t":"2026-10-28T02:22:35.056Z","i":29,"do":"waitReply","expect":"one bubble: the batch-1 memory line, or a plain reply; never a memory chip, never “Noted” (CR-0067)","firstReplyMs":2027,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t remember things for you yet, so tell me again when it matters.\n\n2:22 AM","kit":[],"endState":true,"ms":9106}
+{"t":"2026-10-28T02:22:35.122Z","shot":"13-memory-off.png"}
+{"t":"2026-10-28T02:22:35.222Z","i":30,"do":"send","sentAt":1793154155203,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-10-28T02:24:35.277Z","shot":"14-error-step31.png"}
+{"t":"2026-10-28T02:24:35.278Z","i":31,"do":"waitFor","note":"settings by chat is on in batch 1","ok":false,"error":"locator.waitFor: Timeout 120000ms exceeded.","ms":120056}
+{"t":"2026-10-28T02:24:40.278Z","i":32,"do":"wait","expect":"dark theme; one line Changed: Theme → Dark. Undo","ok":true,"ms":5000}
+{"t":"2026-10-28T02:24:40.340Z","shot":"15-dark.png"}
+{"t":"2026-10-28T02:24:40.418Z","i":33,"do":"click","ok":true,"ms":77}
+{"t":"2026-10-28T02:24:41.224Z","i":34,"do":"wait","expect":"Settings, Keyboard shortcuts and Quit only","ok":true,"ms":806}
+{"t":"2026-10-28T02:24:41.279Z","shot":"16-more-menu.png"}
+{"t":"2026-10-28T02:24:41.281Z","i":35,"do":"check","found":0,"ok":true,"ms":2}
+{"t":"2026-10-28T02:24:41.285Z","i":36,"do":"key","ok":true,"ms":3}
+{"t":"2026-10-28T02:24:41.292Z","i":37,"do":"dump","ok":true,"ms":7}
+{"t":"2026-10-28T02:24:41.422Z","step":"appLog","lines":22,"dropped":0}
+{"t":"2026-10-28T02:24:41.435Z","step":"aiTurns","turns":7}

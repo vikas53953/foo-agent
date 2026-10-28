@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n2:15 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best for Bengaluru? → Cubbon Park and café morning\n2:15 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n2:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Cubbon Park and a café morning it is. Go early, around 7:30 AM, for a walk under the trees and a slow breakfast after. Want me to check your calendar for Sat 31 Oct and Sun 1 Nov to see which morning is free?\n\n2:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n2:16 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner would you like tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, South Indian, quick\n2\nButter chicken with naan\nRich North Indian comfort\n3\nVeg pulao with raita\nSimple, easy, home-style\nSomething else…\nSkip\n2:16 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "2:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n2:16 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a good call at this hour. Add a spoon of ghee and some pickle on the side. Want a quick tadka recipe?\n\n2:16 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n2:19 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a water tracker with a goal of 8 glasses. Tap + after each glass, and it saves per day if your viewer allows it.\n\nKeep\n2:20 AM"
+  }
+]

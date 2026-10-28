@@ -1,0 +1,78 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T02-03-50-352Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793153035906,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 134
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "firstReplyMs": 5589,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Fri 30 Oct) ke liye rasmalai cake sabse safe aur special lagega. Ye 3 options bhi acche hain:\n\nRasmalai cake: halka meetha, desi swaad, almost sabko pasand aata hai\nChocolate truffle: classic, ghar mein sab khushi se khayenge\nFresh fruit cake: kam meetha aur halka, agar mummy zyada sweet nahi khati\n\nPhoto cake ya naam likhwana ho to wo bhi ho jata hai. Ek baat batao: mummy ko meetha kaisa pasand hai, zyada rich ya halka?\n\n2:04 AM",
+      "kit": [],
+      "ms": 15723
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793153051869,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 153
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "firstReplyMs": 8636,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Fri 30 Oct) ke liye kaunsa cake dekhun?\n1\nRasmalai cake\nBEST FIT\nHalka meetha, desi swaad\n2\nChocolate truffle\nClassic, sabko pasand\n3\nFresh fruit cake\nKam meetha, halka\n4\nPhoto cake\nPhoto ya naam ke saath\nSomething else…\nSkip\n2:04 AM",
+      "kit": [],
+      "ms": 14731
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793153066770,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 84
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "firstReplyMs": 10149,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mon 2 Nov isn't a public holiday in Mumbai as far as I know, so it should be a normal working day. I can't check live holiday lists here, so confirm with your bank or office if it matters. Diwali is around Sun 8 Nov.\n\n2:04 AM",
+      "kit": [],
+      "ms": 17218
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

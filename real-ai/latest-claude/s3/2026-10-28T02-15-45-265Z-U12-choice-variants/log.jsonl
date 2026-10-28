@@ -1,0 +1,22 @@
+{"t":"2026-10-28T02:15:45.266Z","journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","spec":"05-1 §5.4 Choice, 10-2 §C.4 Choice (C3), AT-035","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T02:15:50.826Z","step":"launch","ok":true}
+{"t":"2026-10-28T02:15:51.873Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1044}
+{"t":"2026-10-28T02:15:52.020Z","i":1,"do":"send","sentAt":1793153751971,"sent":true,"before":0,"ok":true,"ms":147}
+{"t":"2026-10-28T02:16:04.231Z","i":2,"do":"waitReply","expect":"Choice card with 3 options, Best fit tag, Something else","firstReplyMs":6107,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which weekend plan sounds best for Bengaluru?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, cool views, breakfast on the way back\n2\nCubbon Park and café morning\nEasy walk, filter coffee, relaxed pace\n3\nIndiranagar food and brewery crawl\nGood for friends, lazy afternoon into evening\nSomething else…\nSkip\n2:15 AM","kit":[],"ms":12211}
+{"t":"2026-10-28T02:16:04.297Z","shot":"01-choice.png"}
+{"t":"2026-10-28T02:16:04.401Z","i":3,"do":"shotEl","soft":true,"ok":true,"ms":103}
+{"t":"2026-10-28T02:16:04.537Z","i":4,"do":"send","sentAt":1793153764482,"sent":true,"before":0,"ok":true,"ms":136}
+{"t":"2026-10-28T02:16:17.248Z","i":5,"do":"waitReply","expect":"typed answer picks option 2; card collapses \"question → answer\"","firstReplyMs":5566,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Cubbon Park and a café morning it is. Go early, around 7:30 AM, for a walk under the trees and a slow breakfast after. Want me to check your calendar for Sat 31 Oct and Sun 1 Nov to see which morning is free?\n\n2:16 AM","kit":[],"ms":12710}
+{"t":"2026-10-28T02:16:17.313Z","shot":"03-typed-pick.png"}
+{"t":"2026-10-28T02:16:17.421Z","i":6,"do":"send","sentAt":1793153777399,"sent":true,"before":0,"ok":true,"ms":108}
+{"t":"2026-10-28T02:16:27.564Z","i":7,"do":"waitReply","expect":"another Choice card","firstReplyMs":4077,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which dinner would you like tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nLight, South Indian, quick\n2\nButter chicken with naan\nRich North Indian comfort\n3\nVeg pulao with raita\nSimple, easy, home-style\nSomething else…\nSkip\n2:16 AM","kit":[],"ms":10143}
+{"t":"2026-10-28T02:16:27.642Z","shot":"04-choice-2.png"}
+{"t":"2026-10-28T02:16:27.712Z","i":8,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-10-28T02:16:28.323Z","i":9,"do":"wait","expect":"composer hint for my own answer","ok":true,"ms":610}
+{"t":"2026-10-28T02:16:28.388Z","shot":"05-something-else.png"}
+{"t":"2026-10-28T02:16:28.490Z","i":10,"do":"send","sentAt":1793153788480,"sent":true,"before":0,"ok":true,"ms":102}
+{"t":"2026-10-28T02:16:39.679Z","i":11,"do":"waitReply","expect":"foo takes my own answer","firstReplyMs":3582,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Dal chawal it is, a good call at this hour. Add a spoon of ghee and some pickle on the side. Want a quick tadka recipe?\n\n2:16 AM","kit":[],"ms":11189}
+{"t":"2026-10-28T02:16:39.747Z","shot":"06-own-answer.png"}
+{"t":"2026-10-28T02:16:39.760Z","i":12,"do":"dump","ok":true,"ms":12}
+{"t":"2026-10-28T02:16:39.891Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-10-28T02:16:39.903Z","step":"aiTurns","turns":4}
