@@ -50,7 +50,7 @@ interface StepResult {
   didntGetThat?: boolean;
   stillWorking?: boolean;
   timeline?: { at: number; badges: string[]; reactions: string[]; thinking: boolean; streaming: number }[];
-  watchShots?: { at: number; mark: number; shot: string; badges: string[]; thinking: boolean }[];
+  watchShots?: { at: number; mark: number; shot: string; badges: string[]; thinking: boolean; streaming?: number }[];
   truncated?: number;
   controls?: { tid: string; name: string; status: string; effect: string[]; issues: unknown[]; shot?: string; reason?: string }[];
   blocked?: string;
@@ -161,11 +161,14 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
           ref: r.ref,
           expect:
             `WHILE WAITING, ${sec(w.at)} after the user sent "${r.typed ?? '(previous message)'}", before foo's answer was complete. ` +
-            `The screen must show plainly that foo is working on it (the Thinking row: foo's small face where typing dots would be). ` +
+            `The screen must show plainly that foo is working on it: before the first words, the Thinking row (foo's small face where ` +
+            `typing dots would be); once foo starts writing, its reply appearing word by word is the sign and the Thinking row is gone, ` +
+            `so a partly written reply is right at this moment, not a fault. ` +
             `The user's own message must not carry 👀. Nothing may be stuck, blank or overlapping.`,
           facts: [
             `Badges on the user's message at this moment: ${w.badges.join(', ') || 'none'}`,
             `Thinking row: ${w.thinking ? 'shown' : 'not shown'}`,
+            `foo's reply being written at this moment: ${w.streaming ? 'yes' : 'no'}`,
           ],
           measured: forbidden && forbidden.at <= w.at + 300 ? `👀 on the user's message at ${sec(forbidden.at)}` : undefined,
         });

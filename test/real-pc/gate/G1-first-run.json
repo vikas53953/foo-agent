@@ -110,8 +110,9 @@
     {
       "do": "fill",
       "tid": "setup-name-field",
-      "value": "",
-      "feature": "name"
+      "value": "😊!!",
+      "feature": "name",
+      "note": "06-1 §(name card): a blank field means Keep \"foo\", so the refusal check uses a name with no letter"
     },
     {
       "do": "click",
@@ -122,9 +123,9 @@
     {
       "do": "wait",
       "ms": 1500,
-      "shot": "name-empty",
+      "shot": "name-no-letter",
       "feature": "name",
-      "expect": "an empty name is not taken: foo says what it needs, or That's it stays off; the card is still there",
+      "expect": "a name with no letter or number (only an emoji and !!) is refused in plain words; the name card stays",
       "ref": "UX-03-01"
     },
     {
