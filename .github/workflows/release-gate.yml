@@ -24,9 +24,8 @@ name: Release gate
 
 on:
   # Vikas 2026-10-28 (decision card): every merge to main, and before any app is sent (only foo-windows-app-gated goes out).
-  # TEMPORARY: the gate branch is listed once to prove the run on Windows with the real key; removed before the PR leaves draft.
   push:
-    branches: [main, claude/project-thread-gfja4p]
+    branches: [main]
   workflow_dispatch:
     inputs:
       ref:
@@ -403,6 +402,7 @@ jobs:
           echo "| Journey | Commit before the fix | Failed steps there | Red first |" >> "$GITHUB_STEP_SUMMARY"
           echo "|---|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
           bad=0
+          # A failing journey is the point here, so the driver's exit code is ignored; the step records decide.
           for item in $LIST; do
             j="${item%%@*}"; at="$BEFORE"; [ "$item" != "$j" ] && at="${item#*@}"
             [ -f "$kit/$(file "$j")" ] || { echo "::error::Red-first names $j, which is not a journey."; bad=1; continue; }
@@ -412,8 +412,8 @@ jobs:
             export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe" FOO_REAL_TEST_DIR="$RUNNER_TEMP/red-$j"
             rm -rf "$FOO_REAL_TEST_DIR" && mkdir -p "$FOO_REAL_TEST_DIR/runs"
             first=$(tr -d '\r' < "$kit/gate.txt" | head -n 1)
-            (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$first")" > /dev/null 2>&1); taskkill //IM foo.exe //F > /dev/null 2>&1 || true
-            if [ "$j" != "$first" ]; then (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$j")" > /dev/null 2>&1); taskkill //IM foo.exe //F > /dev/null 2>&1 || true; fi
+            (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$first")" > /dev/null 2>&1) || true; taskkill //IM foo.exe //F > /dev/null 2>&1 || true
+            if [ "$j" != "$first" ]; then (cd "$kit" && ELECTRON_RUN_AS_NODE=1 "$FOO_EXE" foo-drive.js "$(file "$j")" > /dev/null 2>&1) || true; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; fi
             n=$(failed)
             if [ "$n" -gt 0 ]; then verdict="yes"; else verdict="**no: the journey passes without the fix**"; bad=1; fi
             if [ "$n" -lt 0 ]; then verdict="**no record: the journey did not run**"; bad=1; fi
