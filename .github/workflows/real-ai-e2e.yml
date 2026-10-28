@@ -154,6 +154,9 @@ jobs:
           SHARD: ${{ matrix.shard }}
           SHARDS: ${{ inputs.shards || '4' }}
           SET: ${{ matrix.set }}
+          # The batch-1 set tests the batch-1 build: every journey runs with the shipped features (jobs, memory, web… off)
+          # unless it names its own. Run 40638245705: U17 ran with jobs on, and an earlier journey's job took its dark-mode ask.
+          FOO_FEATURES: ${{ matrix.set == 'batch1' && 'shipped' || 'all' }}
         run: |
           export FOO_EXE="$GITHUB_WORKSPACE/dist/win-unpacked/foo.exe"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-real-test"
