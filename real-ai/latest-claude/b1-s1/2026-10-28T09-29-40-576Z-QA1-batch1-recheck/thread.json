@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:30 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, ek line mein batao: chai ya coffee?\n9:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n9:30 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n9:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "gamma\n\ndelta. Please just reply OK.\n9:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n9:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n9:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n9:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that my sister's birthday is on 5 March\n9:31 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n9:31 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Switched to dark mode.\n\n9:32 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the table?\n9:32 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I haven't booked anything. I can't do tasks yet, like booking, buying or sending things.\n\n9:32 AM"
+  }
+]

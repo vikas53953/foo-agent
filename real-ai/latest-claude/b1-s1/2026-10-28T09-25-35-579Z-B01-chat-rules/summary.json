@@ -1,0 +1,107 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "videos": [],
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T09-25-35-579Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "thanks!",
+      "sentAt": 1793179541109,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 126
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20002,
+      "shot": "01-thanks.png"
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons",
+      "sentAt": 1793179561296,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 97
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "timeline": [
+        {
+          "at": 33,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2563,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 7142,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2544,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying someone feel as easy as sending a message. You open any app on your phone, scan a QR code or type a number, enter your PIN, and the money moves from your bank account in seconds. No cash to carry, no change to count, no card machine needed.\n\nIt also works everywhere. The same system runs across dozens of banks and apps, so a chai stall, a vegetable seller and a large store can all accept it with one printed QR code. Small shopkeepers like this because they get money straight into their bank account without paying heavy fees. For most people, sending money to a friend or family member is free, which is a big part of why it caught on so quickly.\n\nTrust has helped too. Payments go directly between bank accounts, and every transaction leaves a record on your phone, so splitting bills, tracking spending and settling disputes are far simpler than with cash. Over the years, habit has done the rest: once everyone around you pays this way, you do too.\n\nThree main reasons:\n\nSpeed and simplicity: pay in seconds with a scan and a PIN.\nLow or no cost: free for most people, cheap for small shops.\nWorks everywhere: one system across banks, apps and shops of every size.\n9:26 AM",
+      "kit": [],
+      "ms": 13239,
+      "shot": "02-long.png"
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
