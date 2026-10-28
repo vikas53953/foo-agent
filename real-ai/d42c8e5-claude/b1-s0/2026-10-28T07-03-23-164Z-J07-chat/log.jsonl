@@ -1,0 +1,15 @@
+{"t":"2026-10-28T07:03:23.164Z","journey":"J07-chat","title":"Casual chat","spec":"07-1 J7; 04 §12; 08-4 rules","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:03:28.600Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:03:28.722Z","i":0,"do":"send","sentAt":1793171008687,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-10-28T07:03:39.881Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":4041,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! Good morning, it's Wed 28 Oct, 7:03 AM. What can I do for you today?\n\n7:03 AM","kit":[],"ms":11159}
+{"t":"2026-10-28T07:03:39.946Z","shot":"01-hi.png"}
+{"t":"2026-10-28T07:03:40.035Z","i":2,"do":"send","sentAt":1793171020021,"sent":true,"before":0,"ok":true,"ms":89}
+{"t":"2026-10-28T07:03:50.178Z","i":3,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":3556,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I'm foo, your personal helper: I can answer questions, keep an eye on things for you and take care of everyday jobs. The cards below show what works on this PC right now.\n\n7:03 AM","kit":[],"ms":10142}
+{"t":"2026-10-28T07:03:50.240Z","shot":"02-what-can-you-do.png"}
+{"t":"2026-10-28T07:03:50.331Z","i":4,"do":"send","sentAt":1793171030317,"sent":true,"before":0,"ok":true,"ms":91}
+{"t":"2026-10-28T07:04:02.010Z","i":5,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","firstReplyMs":2555,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A VPN is a private tunnel between your device and the internet. Everything you send goes into the tunnel locked, reaches the VPN company's computer, and only then goes out to the website.\n\nLocked: Anyone in the middle, like café Wi-Fi or your internet provider, sees scrambled data, not what you are doing.\nNew address: The website sees the VPN's address, not yours, so it is harder to tell where you are.\nLimits: The VPN company can still see your traffic, so pick one you trust. It does not make you anonymous or protect you from fake links.\n\nThink of it as posting a letter inside a sealed courier bag: the postman sees the bag, and only the courier opens it.\n\n7:03 AM","kit":[],"ms":11678}
+{"t":"2026-10-28T07:04:02.072Z","shot":"03-vpn.png"}
+{"t":"2026-10-28T07:04:02.081Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-10-28T07:04:02.210Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T07:04:02.225Z","step":"aiTurns","turns":3}
+{"t":"2026-10-28T07:04:02.228Z","step":"jobTrail","steps":0,"calls":0}

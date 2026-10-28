@@ -1,0 +1,78 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-10-28T07-03-23-164Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "sentAt": 1793171008687,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 4041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good morning, it's Wed 28 Oct, 7:03 AM. What can I do for you today?\n\n7:03 AM",
+      "kit": [],
+      "ms": 11159
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "sentAt": 1793171020021,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 3556,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper: I can answer questions, keep an eye on things for you and take care of everyday jobs. The cards below show what works on this PC right now.\n\n7:03 AM",
+      "kit": [],
+      "ms": 10142
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "sentAt": 1793171030317,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "firstReplyMs": 2555,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet. Everything you send goes into the tunnel locked, reaches the VPN company's computer, and only then goes out to the website.\n\nLocked: Anyone in the middle, like café Wi-Fi or your internet provider, sees scrambled data, not what you are doing.\nNew address: The website sees the VPN's address, not yours, so it is harder to tell where you are.\nLimits: The VPN company can still see your traffic, so pick one you trust. It does not make you anonymous or protect you from fake links.\n\nThink of it as posting a letter inside a sealed courier bag: the postman sees the bag, and only the courier opens it.\n\n7:03 AM",
+      "kit": [],
+      "ms": 11678
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

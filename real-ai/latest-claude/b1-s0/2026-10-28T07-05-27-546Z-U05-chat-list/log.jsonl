@@ -1,0 +1,61 @@
+{"t":"2026-10-28T07:05:27.547Z","journey":"U05-chat-list","title":"Chat list: filters, row menu (pin, mute, mark unread), search chats","spec":"03-1 §3.4, 10-2 §C.2 Left shell / Filter chips","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T07:05:33.144Z","step":"launch","ok":true}
+{"t":"2026-10-28T07:05:34.187Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1040}
+{"t":"2026-10-28T07:05:34.258Z","shot":"01-list.png"}
+{"t":"2026-10-28T07:05:34.258Z","i":1,"do":"shot","expect":"chat list with foo row (and any helpers); filter chips All · Needs you · Working · Done","ok":true,"ms":71}
+{"t":"2026-10-28T07:05:57.333Z","shot":"02-error-step2.png"}
+{"t":"2026-10-28T07:05:57.333Z","i":2,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23075}
+{"t":"2026-10-28T07:05:57.834Z","i":3,"do":"wait","expect":"filter selected; empty state if nothing needs me","ok":true,"ms":500}
+{"t":"2026-10-28T07:05:57.896Z","shot":"03-filter-needs-you.png"}
+{"t":"2026-10-28T07:06:20.959Z","shot":"04-error-step4.png"}
+{"t":"2026-10-28T07:06:20.959Z","i":4,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23063}
+{"t":"2026-10-28T07:06:21.462Z","i":5,"do":"wait","ok":true,"ms":503}
+{"t":"2026-10-28T07:06:21.523Z","shot":"05-filter-working.png"}
+{"t":"2026-10-28T07:06:44.601Z","shot":"06-error-step6.png"}
+{"t":"2026-10-28T07:06:44.602Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23079}
+{"t":"2026-10-28T07:06:45.102Z","i":7,"do":"wait","ok":true,"ms":500}
+{"t":"2026-10-28T07:06:45.164Z","shot":"07-filter-done.png"}
+{"t":"2026-10-28T07:07:08.226Z","shot":"08-error-step8.png"}
+{"t":"2026-10-28T07:07:08.226Z","i":8,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23062}
+{"t":"2026-10-28T07:07:08.315Z","i":9,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-28T07:07:08.821Z","i":10,"do":"wait","expect":"row menu: Pin, Mark unread, Mute, Profile, Find, Clear, Delete","ok":true,"ms":506}
+{"t":"2026-10-28T07:07:08.885Z","shot":"09-row-menu.png"}
+{"t":"2026-10-28T07:07:31.967Z","shot":"10-error-step11.png"}
+{"t":"2026-10-28T07:07:31.967Z","i":11,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23082}
+{"t":"2026-10-28T07:07:32.481Z","i":12,"do":"wait","expect":"pin icon on the row","ok":true,"ms":514}
+{"t":"2026-10-28T07:07:32.546Z","shot":"11-pinned.png"}
+{"t":"2026-10-28T07:07:32.548Z","i":13,"do":"check","note":"pinned mark","soft":true,"found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T07:07:32.630Z","i":14,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-10-28T07:07:32.721Z","i":15,"do":"click","soft":true,"ok":true,"ms":91}
+{"t":"2026-10-28T07:07:33.132Z","i":16,"do":"wait","expect":"mute choices 8 hours, 1 week, Always","ok":true,"ms":410}
+{"t":"2026-10-28T07:07:33.201Z","shot":"12-mute-sub.png"}
+{"t":"2026-10-28T07:07:33.290Z","i":17,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-10-28T07:07:33.294Z","i":18,"do":"check","note":"muted mark","soft":true,"found":1,"ok":true,"ms":4}
+{"t":"2026-10-28T07:07:33.379Z","i":19,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-10-28T07:07:33.462Z","i":20,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-10-28T07:07:33.980Z","i":21,"do":"wait","expect":"unread dot/count on the row","ok":true,"ms":518}
+{"t":"2026-10-28T07:07:34.062Z","shot":"13-unread.png"}
+{"t":"2026-10-28T07:07:34.127Z","i":22,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-10-28T07:07:57.220Z","shot":"14-error-step23.png"}
+{"t":"2026-10-28T07:07:57.220Z","i":23,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23093}
+{"t":"2026-10-28T07:07:57.300Z","i":24,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-10-28T07:07:57.378Z","i":25,"do":"click","soft":true,"ok":true,"ms":78}
+{"t":"2026-10-28T07:08:20.446Z","shot":"15-error-step26.png"}
+{"t":"2026-10-28T07:08:20.446Z","i":26,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23068}
+{"t":"2026-10-28T07:08:20.524Z","shot":"16-error-step27.png"}
+{"t":"2026-10-28T07:08:20.525Z","i":27,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]","ms":79}
+{"t":"2026-10-28T07:08:21.137Z","i":28,"do":"wait","expect":"list filtered to foo","ok":true,"ms":612}
+{"t":"2026-10-28T07:08:21.194Z","shot":"17-search-chats.png"}
+{"t":"2026-10-28T07:08:21.256Z","shot":"18-error-step29.png"}
+{"t":"2026-10-28T07:08:21.256Z","i":29,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Error: Element is not an <input>, <textarea>, <select> or [contenteditable] and does not have a role allowing [aria-readonly]","ms":62}
+{"t":"2026-10-28T07:08:21.858Z","i":30,"do":"wait","expect":"empty result message","ok":true,"ms":602}
+{"t":"2026-10-28T07:08:21.915Z","shot":"19-search-none.png"}
+{"t":"2026-10-28T07:08:44.976Z","shot":"20-error-step31.png"}
+{"t":"2026-10-28T07:08:44.976Z","i":31,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","ms":23061}
+{"t":"2026-10-28T07:08:46.032Z","i":32,"do":"openChat","soft":true,"ok":true,"ms":1055}
+{"t":"2026-10-28T07:08:46.042Z","i":33,"do":"dump","ok":true,"ms":10}
+{"t":"2026-10-28T07:08:46.055Z","step":"recheck","i":27,"do":"fill","late":true}
+{"t":"2026-10-28T07:08:46.057Z","step":"recheck","i":29,"do":"fill","late":true}
+{"t":"2026-10-28T07:08:46.187Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-10-28T07:08:46.202Z","step":"aiTurns","turns":0}
+{"t":"2026-10-28T07:08:46.205Z","step":"jobTrail","steps":0,"calls":0}
