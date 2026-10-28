@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-890990f-40644010021",
+  "reportId": "M9-2837cd5-40646517804",
   "milestone": "M9",
-  "generatedAt": "2026-10-28T06:53:23.510Z",
-  "commit": "e870bc61af2faf3e86bb89754863e2e1216f4fc4",
-  "head": "890990f39b9d733ab21be15e38f6c587943014da",
+  "generatedAt": "2026-10-28T07:03:24.527Z",
+  "commit": "d42c8e52bdcfa9675217725672d2d6a62de621ad",
+  "head": "2837cd51f338827d1a1801033f9528eb8157867a",
   "ci": {
-    "runId": "40644010021",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40644010021"
+    "runId": "40646517804",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/40646517804"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "026cfa54320431755cf7df6e15da8128dc13469d90b3ed3a624058777ee256f7"
   },
   "runner": {
-    "recordedAt": "2026-10-28T06:36:18.050Z",
+    "recordedAt": "2026-10-28T07:02:15.018Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261021.278.1",
-      "runner": "GitHub Actions 1000006854"
+      "runner": "GitHub Actions 1000006861"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,9 +59,12 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "12 audit item(s) not DONE (the milestone is not complete)"
+    "missing evidence: FID-14 results",
+    "19 audit item(s) not DONE (the milestone is not complete)"
   ],
-  "missingInputs": [],
+  "missingInputs": [
+    "FID-14 results"
+  ],
   "forVikas": {
     "tryNow": [
       "Nothing new to try yet: none of the 36 M9 drawings is built in the app. This run shows that the checking machinery works."
@@ -85,7 +88,7 @@
       ],
       "covers": "part",
       "manual": "demo against the sandbox on Vikas's PC (plan §5 M9 Demo); the calendar entry and three photo options are M7/M8 seams (G-M9-05) and Choice cards per 08-4 §25; carry items in docs/decisions/M9.tsv",
-      "resolved": "PARTIAL"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Constitution",
@@ -436,7 +439,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-036",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -476,7 +479,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-056",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -484,7 +487,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-057",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -492,7 +495,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-058",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -516,7 +519,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-078",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -532,7 +535,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-080",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -582,7 +585,7 @@
       "status": "UNVERIFIABLE",
       "evidence": "test:AT-142",
       "covers": "whole",
-      "resolved": "DONE"
+      "resolved": "UNVERIFIABLE"
     },
     {
       "group": "M9 Must pass",
@@ -672,237 +675,19 @@
     "stylelint": "not installed yet (FID-13 Stylelint half; ART-24a scans styles today)",
     "fid11": "DONE",
     "fid12": "DONE",
-    "fid14": [
-      {
-        "id": "SV-13",
-        "ok": true,
-        "expected": "height 72 (±0.5)",
-        "measured": "323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72"
-      },
-      {
-        "id": "SV-14",
-        "ok": true,
-        "expected": "width 48 × height 48 (±0.5)",
-        "measured": "48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48, 48×48"
-      },
-      {
-        "id": "SV-17",
-        "ok": true,
-        "expected": "width 340 (±0.5)",
-        "measured": "340×868"
-      },
-      {
-        "id": "SV-23",
-        "ok": true,
-        "expected": "min-height: 40px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-24",
-        "ok": true,
-        "expected": "height 36 (±0.5)",
-        "measured": "307×36"
-      },
-      {
-        "id": "SV-25",
-        "ok": true,
-        "expected": "≥ width 40 × height 40 (±0.5)",
-        "measured": "122.125×40, 40×40, 40×40, 91.078125×40, 79.140625×40, 52.515625×40, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 323×72, 271×42, 40×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40, 253.90625×40"
-      },
-      {
-        "id": "SV-15",
-        "ok": true,
-        "expected": "60px",
-        "measured": "60px"
-      },
-      {
-        "id": "SV-15",
-        "ok": true,
-        "expected": "60px; aligned",
-        "measured": "chat header 32+60; left header 32+60"
-      },
-      {
-        "id": "SV-18",
-        "ok": true,
-        "expected": "width 340 (±0.5)",
-        "measured": "340×868"
-      },
-      {
-        "id": "SV-29",
-        "ok": true,
-        "expected": "background-color: rgb(255, 255, 255)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-29",
-        "ok": true,
-        "expected": "background-color: rgb(13, 13, 17)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-10",
-        "ok": true,
-        "expected": "height 46 (±0.5)",
-        "measured": "640.0001220703125×46"
-      },
-      {
-        "id": "SV-11",
-        "ok": true,
-        "expected": "border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-12",
-        "ok": true,
-        "expected": "width 36 × height 36 (±0.5)",
-        "measured": "36×36, 36×36"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(105, 105, 117)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-30",
-        "ok": true,
-        "expected": "transition-duration: 0.083s (background-color)",
-        "measured": "background-color, transform 0.083s, 0.083s; background-color, transform 0.083s, 0.083s"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(142, 142, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-03",
-        "ok": true,
-        "expected": "border-bottom-left-radius: 6px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-04",
-        "ok": true,
-        "expected": "background-color: rgb(11, 11, 16)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-05",
-        "ok": true,
-        "expected": "background-color: rgb(240, 240, 244)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-06",
-        "ok": true,
-        "expected": "font-size: 15px; line-height: 22px; font-weight: 400",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-07",
-        "ok": true,
-        "expected": "line-height: 24px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-09",
-        "ok": true,
-        "expected": "max-width: 760px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(105, 105, 117)",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-01",
-        "ok": true,
-        "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "15 bubbles, all equal"
-      },
-      {
-        "id": "SV-08",
-        "ok": true,
-        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "15 bubbles within"
-      },
-      {
-        "id": "SV-04",
-        "ok": true,
-        "expected": "background-color: rgb(44, 53, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-05",
-        "ok": true,
-        "expected": "background-color: rgb(32, 32, 40)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-26",
-        "ok": true,
-        "expected": "color: rgb(142, 142, 154)",
-        "measured": "all equal",
-        "note": "dark"
-      },
-      {
-        "id": "SV-02",
-        "ok": true,
-        "expected": "border-bottom-right-radius: 6px",
-        "measured": "all equal"
-      },
-      {
-        "id": "SV-01",
-        "ok": true,
-        "expected": "18px non-tail corners (tail corners 6px)",
-        "measured": "14 bubbles, all equal",
-        "note": "Trips"
-      },
-      {
-        "id": "SV-08",
-        "ok": true,
-        "expected": "≤ 72 % of the column and ≤ 620px (rich ≤ 680px)",
-        "measured": "14 bubbles within",
-        "note": "Trips"
-      },
-      {
-        "id": "SV-16",
-        "ok": true,
-        "expected": "height 32 (±0.5)",
-        "measured": "922×32"
-      },
-      {
-        "id": "SV-37",
-        "ok": true,
-        "expected": "922×648 (work area 1024×720)",
-        "measured": "922×648"
-      },
-      {
-        "id": "SV-38",
-        "ok": true,
-        "expected": "font-synthesis: none",
-        "measured": "all equal"
-      }
-    ]
+    "fid14": []
   },
   "behaviour": {
     "totals": {
       "unit": {
-        "passed": 7016,
+        "passed": 7017,
         "failed": 0,
         "skipped": 4
       },
       "e2e": {
-        "passed": 220,
+        "passed": 9,
         "failed": 0,
-        "skipped": 38
+        "skipped": 249
       }
     },
     "ids": [
@@ -31907,26 +31692,6 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/approvals/withdraw.test.ts"
       },
       {
-        "id": "AT-033",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-034",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
-      },
-      {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
-        "id": "AT-118a",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
-      },
-      {
         "id": "AT-059",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/browser/login.test.ts"
@@ -31975,6 +31740,26 @@
         "id": "AT-038",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/browser/submit.test.ts"
+      },
+      {
+        "id": "AT-033",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-034",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/choice/timeouts.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
+      },
+      {
+        "id": "AT-118a",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/db/rebuild.test.ts"
       },
       {
         "id": "AT-119",
@@ -32502,6 +32287,11 @@
         "file": "D:/a/foo-agent/foo-agent/test/unit/choice/typed.test.ts"
       },
       {
+        "id": "AT-132",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/unit/gate/decide.test.ts"
+      },
+      {
         "id": "AT-105",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/jobs/queue.test.ts"
@@ -32525,11 +32315,6 @@
         "id": "AT-116a",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/unit/jobs/watchdog.test.ts"
-      },
-      {
-        "id": "AT-132",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/unit/gate/decide.test.ts"
       },
       {
         "id": "AT-422",
@@ -32613,647 +32398,647 @@
       },
       {
         "id": "AT-421",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/c1-bubbles.spec.ts"
       },
       {
         "id": "AT-429",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/c1-bubbles.spec.ts"
       },
       {
         "id": "AT-425",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/c1-capabilities.spec.ts"
       },
       {
         "id": "AT-426",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/c1-capabilities.spec.ts"
       },
       {
         "id": "PERF-01",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m0-window.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "ART-29",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "PERF-03",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m1-shell.spec.ts"
       },
       {
         "id": "AT-007",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-02",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-composer.spec.ts"
       },
       {
         "id": "PERF-04",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "ART-26a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "ART-21a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
         "id": "AT-027",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "ART-23a",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-030",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-006",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "AT-006",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m3-replies.spec.ts"
       },
       {
         "id": "PERF-07",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-08",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "PERF-11",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
         "id": "AT-287",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-286",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-list.spec.ts"
       },
       {
         "id": "AT-282",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-notices.spec.ts"
       },
       {
         "id": "AT-081",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-offline.spec.ts"
       },
       {
         "id": "AT-281",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m4-panel.spec.ts"
       },
       {
         "id": "AT-122",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-126",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-127",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-280",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-approval.spec.ts"
       },
       {
         "id": "AT-032",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-035",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-288",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-choice.spec.ts"
       },
       {
         "id": "AT-009",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m5-secret.spec.ts"
       },
       {
         "id": "AT-072",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m6-page.spec.ts"
       },
       {
         "id": "AT-073",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m6-page.spec.ts"
       },
       {
         "id": "AT-014",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-connectors.spec.ts"
       },
       {
         "id": "AT-093",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-connectors.spec.ts"
       },
       {
         "id": "AT-051",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-drafts.spec.ts"
       },
       {
         "id": "AT-052",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-drafts.spec.ts"
       },
       {
         "id": "AT-270",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-whatsapp.spec.ts"
       },
       {
         "id": "AT-269",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-whatsapp.spec.ts"
       },
       {
         "id": "AT-269",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m8-whatsapp.spec.ts"
       },
       {
         "id": "AT-036",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-booking.spec.ts"
       },
       {
         "id": "AT-157",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-flights.spec.ts"
       },
       {
         "id": "AT-157",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-flights.spec.ts"
       },
       {
         "id": "AT-142",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-handback.spec.ts"
       },
       {
         "id": "AT-079",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-live.spec.ts"
       },
       {
         "id": "AT-272",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-live.spec.ts"
       },
       {
         "id": "AT-056",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-signin.spec.ts"
       },
       {
         "id": "AT-057",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-signin.spec.ts"
       },
       {
         "id": "AT-211",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-signin.spec.ts"
       },
       {
         "id": "AT-080",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-stop.spec.ts"
       },
       {
         "id": "AT-058",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-takeover.spec.ts"
       },
       {
         "id": "AT-078",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/m9-takeover.spec.ts"
       },
       {
         "id": "AT-320",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-appearance.spec.ts"
       },
       {
         "id": "AT-321",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-appearance.spec.ts"
       },
       {
         "id": "AT-319",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-appearance.spec.ts"
       },
       {
         "id": "AT-318",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-appearance.spec.ts"
       },
       {
         "id": "AT-310",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-cards.spec.ts"
       },
       {
         "id": "AT-311",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-cards.spec.ts"
       },
       {
         "id": "AT-312",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-cards.spec.ts"
       },
       {
         "id": "AT-312",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-cards.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-323",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-chatlist.spec.ts"
       },
       {
         "id": "AT-307",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-composer.spec.ts"
       },
       {
         "id": "AT-325",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-composer.spec.ts"
       },
       {
         "id": "AT-308",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-composer.spec.ts"
       },
       {
         "id": "AT-309",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-composer.spec.ts"
       },
       {
         "id": "AT-309",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-composer.spec.ts"
       },
       {
         "id": "AT-304",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-face.spec.ts"
       },
       {
         "id": "AT-305",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-face.spec.ts"
       },
       {
         "id": "AT-306",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-face.spec.ts"
       },
       {
         "id": "AT-313",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-first-run.spec.ts"
       },
       {
         "id": "AT-313",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-first-run.spec.ts"
       },
       {
         "id": "AT-314",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-first-run.spec.ts"
       },
       {
         "id": "AT-324",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-messages.spec.ts"
       },
       {
         "id": "AT-324",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-messages.spec.ts"
       },
       {
         "id": "AT-324",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-messages.spec.ts"
       },
       {
         "id": "AT-324",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-messages.spec.ts"
       },
       {
         "id": "AT-324",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-messages.spec.ts"
       },
       {
         "id": "AT-302",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-motion.spec.ts"
       },
       {
         "id": "AT-303",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-motion.spec.ts"
       },
       {
         "id": "AT-301",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-motion.spec.ts"
       },
       {
         "id": "AT-326",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-motion.spec.ts"
       },
       {
         "id": "AT-327",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/p1-motion.spec.ts"
       },
       {
         "id": "AT-451",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/qa-b1-about.spec.ts"
       },
       {
         "id": "AT-453",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/qa-b1-dayone.spec.ts"
       },
       {
         "id": "AT-450",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/qa-b1-pages.spec.ts"
       },
       {
         "id": "AT-449",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/qa-b1-sweep.spec.ts"
       },
       {
         "id": "AT-362",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-358",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-359",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-360",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-361",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-361",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-357",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-359",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-ai-page.spec.ts"
       },
       {
         "id": "AT-363",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-input.spec.ts"
       },
       {
         "id": "AT-364",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-input.spec.ts"
       },
       {
         "id": "AT-365",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-input.spec.ts"
       },
       {
         "id": "AT-340",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-kit.spec.ts"
       },
       {
         "id": "AT-353",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-kit.spec.ts"
       },
       {
         "id": "AT-354",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-kit.spec.ts"
       },
       {
         "id": "AT-355",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-kit.spec.ts"
       },
       {
         "id": "AT-356",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-kit.spec.ts"
       },
       {
         "id": "AT-342",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-numbers-forms.spec.ts"
       },
       {
         "id": "AT-347",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-numbers-forms.spec.ts"
       },
       {
         "id": "AT-343",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-numbers-forms.spec.ts"
       },
       {
         "id": "AT-348",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-numbers-forms.spec.ts"
       },
       {
         "id": "AT-346",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-numbers-forms.spec.ts"
       },
       {
         "id": "AT-351",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-numbers-forms.spec.ts"
       },
       {
         "id": "AT-366",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-output.spec.ts"
       },
       {
         "id": "AT-352",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-output.spec.ts"
       },
       {
         "id": "AT-368",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-output.spec.ts"
       },
       {
         "id": "AT-367",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-output.spec.ts"
       },
       {
         "id": "AT-369",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-output.spec.ts"
       },
       {
         "id": "AT-341",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-places-time.spec.ts"
       },
       {
         "id": "AT-344",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-places-time.spec.ts"
       },
       {
         "id": "AT-345",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-places-time.spec.ts"
       },
       {
         "id": "AT-349",
-        "status": "passed",
+        "status": "skipped",
         "file": "test/e2e/r1-places-time.spec.ts"
       },
       {
