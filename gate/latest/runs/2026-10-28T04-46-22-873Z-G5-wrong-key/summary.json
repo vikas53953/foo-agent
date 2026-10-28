@@ -1,0 +1,86 @@
+{
+  "journey": "G5-wrong-key",
+  "title": "Release gate: a fresh PC where the user pastes a wrong key, and types in the chat before any AI is connected",
+  "feature": "ai",
+  "videos": [
+    "video/page@0347a8ae388fe128feecda333de7bad2.webm"
+  ],
+  "steps": 11,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-10-28T04-46-22-873Z-G5-wrong-key",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 178
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "the message box says to connect an AI first; Send is not live",
+      "ref": "UX-02-03",
+      "ok": true,
+      "ms": 15006,
+      "shot": "01-locked-composer.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 7
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "ok": true,
+      "ms": 23
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the key row says plainly the key did not work and offers to try again; no crash, no fake works",
+      "ok": true,
+      "ms": 30016,
+      "shot": "02-wrong-key.png"
+    },
+    {
+      "i": 9,
+      "do": "check",
+      "note": "a wrong key is never offered as Use",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}

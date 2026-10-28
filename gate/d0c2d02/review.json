@@ -1,0 +1,2086 @@
+[
+  {
+    "id": "G1-first-run#1",
+    "verdict": "works",
+    "summary": "The app opens with a clean welcome card from foo saying it will find your AI, with one clear \"Let's go\" button, matching the expected step 1 of 2 outcome.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#0",
+    "verdict": "works",
+    "summary": "foo opens cleanly with its face, wordmark, a friendly welcome card and a Let's go button, with no blank window or error.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#4",
+    "verdict": "broken",
+    "summary": "The Find your AI card shows every row stuck on \"Looking...\" instead of showing which AIs are being tested, and the key row does not match what was expected.",
+    "problems": [
+      "Claude and ChatGPT both show \"Looking...\" rather than \"Testing...\", so the real test of each AI is not shown.",
+      "Gemini and \"AI on this PC\" also show \"Looking...\" rather than \"not found\", so nothing has been decided and the card looks stuck.",
+      "The key row is labelled \"Your own key\" instead of the expected Anthropic/OpenAI key row, and it shows a spinner next to the \"Add in secret box\" button, which looks unfinished.",
+      "The step label reads \"Step 1 of 2\" while the reference shows \"Step 1 of 4\".",
+      "Rows do not show \"(signed in)\" for the AIs that were found, so the user cannot tell which AIs foo detected."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#5",
+    "verdict": "broken",
+    "summary": "The screen asks which AI the user uses, but no row shows a green \"works\" result, so the connection check did not visibly finish as expected.",
+    "problems": [
+      "No row shows a green \"✓ works\" or a plain failure reason. Anthropic key says \"found on this PC\" with an \"Add in secret box\" button, and \"AI on this PC\" says \"not found\", so the expected result is never shown.",
+      "The app asks \"I couldn't find an AI on this PC yet. Which one do you use?\" instead of showing the two tested, working AIs from the reference.",
+      "The step badge reads \"Step 1 of 2\" while the reference reads \"Step 1 of 4\". The wording differs from the approved flow.",
+      "The list is scrolled partway down, so the top of the check card is cut off and the user can't see the whole result.",
+      "The Gemini option has a grey highlighted background that looks like a stuck hover state and clashes with the other options."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#10",
+    "verdict": "wrong-design",
+    "summary": "The key was saved and the key itself is not shown, but the Anthropic key row never shows a 'works' result and the layout differs from the approved design.",
+    "problems": [
+      "The saved-key card shows 'Anthropic key · saved Wed 28 Oct' but no green '✓ works' badge, so the user cannot see that the key was tested and works.",
+      "The headline 'Saved securely. foo's AI never sees it.' is small grey text under a plain tick, not the bold green '✓ Saved securely' heading in the reference.",
+      "The 'Change cap' link is tiny inside the cost sentence instead of being a clear button next to Replace, and the cap text is split across two oddly spaced lines.",
+      "The 'Remove' link is tiny and the word 'secret' sits in the card's top corner, so the card looks cluttered compared with the reference.",
+      "The saved-key card appears below the 'Use Anthropic key' button while that button is still offered, which is confusing; it is unclear whether setup is finished.",
+      "The header shows 'Step 1 of 2' while the reference shows 'Step 1 of 4'.",
+      "The AI list at the top is cut off by the scroll area, and the 'Add in secret box' button is half-hidden."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#7",
+    "verdict": "wrong-design",
+    "summary": "The app asks for the key in a separate masked secret box and says not to paste it in the chat, but it names the wrong provider and some details differ from the design.",
+    "problems": [
+      "The message and box ask for an \"Anthropic key\", but the reference flow (user picks OpenAI) expects \"OpenAI key\"; the provider named is not the one the user was walked through.",
+      "The \"Cancel\" button replaces the reference's \"Not now\" wording.",
+      "The secret box has a placeholder \"Paste it here\" in a monospace font, and a small \"secret\" label rather than the reference's \"Secret\" label, so it looks slightly different from the design.",
+      "The \"Save securely\" button text appears pale and low-contrast on the blue button, so it is harder to read than the reference's bold, high-contrast button.",
+      "The chat header says \"Step 1 of 2\" while the reference shows \"Step 1 of 4\"; the step count differs from the reference.",
+      "The options list is cut off at the top of the visible area, so the question heading is scrolled out of view."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#17",
+    "verdict": "broken",
+    "summary": "The test was to submit an empty name and see foo ask for one, but the screen has already moved on to the face-picking step with the name \"foo it is.\" accepted, so the empty-name check never showed.",
+    "problems": [
+      "The expected outcome is not visible: there is no message from foo saying it needs a name, and the name card is gone.",
+      "The chat shows \"foo it is.\" as if a name was accepted, and the flow moved to \"Pick a face\" even though no name was entered.",
+      "The step label reads \"Step 2 of 2\" and the sidebar shows \"Setting up...\", which suggests the step was passed rather than blocked on the empty name.",
+      "The \"What should I call myself?\" card with the empty box, Keep \"foo\" and Surprise me is no longer on screen, so it cannot be confirmed that the card is still there."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#14",
+    "verdict": "wrong-design",
+    "summary": "The name question appears with a box, Keep \"foo\" and Surprise me, but the screen has extra and mismatched elements compared with the approved design.",
+    "problems": [
+      "An extra \"That's it\" button sits beside Keep \"foo\" and Surprise me, which the expected outcome does not list.",
+      "The header shows the step label twice, a pill reading \"Step 2 of 2\" and a smudged, overlapping \"step 1 of 2\" subtitle that looks garbled and contradicts it.",
+      "Chat list and header show a \"1\" unread badge and \"Setting up...\" text, while the header subtitle reads \"Setting up · step...\" instead of a clean \"Setting up\" line.",
+      "A \"Skip the rest\" link is in the header, which is not part of the reference.",
+      "The key card with \"Anthropic key\", \"secret\", Replace and Remove adds clutter between the status line and the name question, and an earlier \"Hi, I'm foo. → Let's go\" bubble shows an odd arrow.",
+      "The reference has a New helper button and the question card shows the title in bold black; here the question text is grey and faint, looking disabled.",
+      "The Surprise me dice emoji is faint and the buttons are not styled like the reference."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#19",
+    "verdict": "broken",
+    "summary": "The screen shows the face-picking step with no name box, so the expected name entry with That's it, Keep \"foo\" and the dice is missing.",
+    "problems": [
+      "The name box is missing: there is no text field with a name like \"Chotu 😊\" and no That's it, Keep \"foo\" or dice buttons.",
+      "The screen is already on the \"Pick a face\" card showing \"foo it is.\" as if the name was kept, so the dice and name-fill step was skipped or never shown.",
+      "The step label reads \"Step 2 of 2\" while the reference says \"Step 2 of 4\".",
+      "The face picker shows labels only under face 1 (\"Living face\", \"Default\"), so faces 2, 3 and 4 have no names and the layout looks unfinished."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#21",
+    "verdict": "wrong-design",
+    "summary": "The face picker works and shows four faces with the living face chosen, but it is laid out as a grid of cards with different buttons and the name card is not visible.",
+    "problems": [
+      "The four faces are shown as boxed cards in a 2x2 grid with small numbers 1-4, not as one row of four round faces.",
+      "Only the first face has a label (\"Living face\" / \"Default\"); the others have no names (Flower, Half moon, Star), and the label reads \"Default\" instead of \"Living face (default)\".",
+      "The buttons say \"Use this face\" and \"Surprise me\" instead of \"New faces\" and \"Use my own picture\", so there is no way to choose your own picture.",
+      "The shrunken name card (\"What should I call myself? → foo\") is not visible above the \"foo it is.\" bubble, so the card shrinking to its answer cannot be confirmed.",
+      "The header says \"Step 2 of 2\" where the reference says \"Step 2 of 4\".",
+      "A tiny cut-off avatar piece shows at the top of the chat above the \"foo it is.\" bubble."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#23",
+    "verdict": "wrong-design",
+    "summary": "The face picker does show a ring and tick on the chosen face, but the ring is on the flower face while the expected choice was the living face, and the chat row still looks greyed out.",
+    "problems": [
+      "The ring and tick sit on face 2 (the flower), but the scenario says the user keeps the living face, so the ring is on the wrong face or the choice did not match.",
+      "The chat row for foo is still grey (grey name and 'Setting up…' preview), whereas the reference shows it in normal dark text once a face is chosen.",
+      "The header says 'Step 2 of 2' while the reference shows 'Step 2 of 4'.",
+      "The face options are laid out as a 2x2 grid of numbered cards with small numbers, not a single row of round faces with names like Flower, Half moon and Star; only the first face has a label, so the others are unnamed.",
+      "The 'Use my own picture' option and the 'New faces' wording are missing; the buttons read 'Use this face' and 'Surprise me' instead.",
+      "Only the first face has a label ('Living face, Default') while the other three have none."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#25",
+    "verdict": "works",
+    "summary": "The app shows the \"How should I talk to you?\" card with three talk styles, \"Calm, a bit funny\" marked Best fit, plus a \"Something else…\" box and Skip.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#27",
+    "verdict": "broken",
+    "summary": "The chat still calls the assistant \"foo\" instead of the new name Chotu, and the closing greeting is generic, so the name the user chose is not reflected.",
+    "problems": [
+      "The header, the sidebar entry and the message sender labels all still say \"foo\"; the assistant is never shown as \"Chotu\" as the expected outcome requires.",
+      "The confirmation reads \"Straight to the point. Got it.\" with a target emoji, and the greeting says \"I'm foo\", with no 😊 or the name Chotu, so the name choice is ignored.",
+      "The earlier interview answers say \"foo it is\" and show the face as a flower, so the name and face picked in this flow do not match the expected Chotu result."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#0",
+    "verdict": "works",
+    "summary": "The app shows a clean welcome card saying 'Hi, I'm foo' with a 'Let's go' button and 'step 1 of 2' in the header, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G1-first-run#31",
+    "verdict": "wrong-design",
+    "summary": "The chat reopened with the same name, face and history and no setup card, but the last message promises suggestions to try that never appear, and the typed question is still sitting unsent.",
+    "problems": [
+      "The last foo message says \"Ask me anything, or try one of these.\" but no suggestion buttons or chips appear under it, so the text points at something missing.",
+      "The input box still holds \"What can you do?\" unsent, which suggests a leftover or stuck draft after the restart.",
+      "The thumbs-up icon is shown filled blue under the message and also as an outline next to the timestamp, which looks like a duplicate or inconsistent state the user never chose."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#2",
+    "verdict": "wrong-design",
+    "summary": "The app is searching for the user's AI and shows a connect card, but the key row says \"Your own key\" instead of clearly offering to add the Anthropic key.",
+    "problems": [
+      "The key row is labelled \"Your own key\" with a generic key icon, not the Anthropic key the expected outcome describes, so a user cannot tell which key to add.",
+      "The \"Add in secret box\" button is odd wording that a non-technical person may not understand.",
+      "The key row still shows a small spinner beside the button, which looks like it is still searching and clashes with the add-key option.",
+      "The other rows all say \"Looking...\", so nothing has been found yet and the card gives no clear next step beyond the key button."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#8",
+    "verdict": "works",
+    "summary": "After the user saved their Anthropic key, the app confirmed it was saved securely, said the key works, and offered a clear 'Use Anthropic key' button.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#5",
+    "verdict": "works",
+    "summary": "After the user picked \"I have a key\", foo shows a clear box asking them to paste their Anthropic key privately, with Save securely and Cancel buttons and a note that the key stays on the PC.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#3",
+    "verdict": "works",
+    "summary": "The setup screen lists the ways to connect an AI, shows which were found on this PC, and waits for the user to pick one or add a key, while the message box stays locked until then.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#12",
+    "verdict": "wrong-design",
+    "summary": "The key was saved and the app moved on to the name step, but the header shows garbled text and the setup steps look inconsistent.",
+    "problems": [
+      "The header subtitle under 'foo' reads 'Setting up · step 2 of 2' with the 'of 2' part looking struck through or overlapped, so it is hard to read.",
+      "The step pill says 'Step 2 of 2' while the subtitle repeats the same thing, which is redundant and cluttered.",
+      "The chat list preview says 'Setting up...' and shows an unread badge '1' even though the user is looking at this chat, and the time (4:38) is shown in blue as if it were unread.",
+      "The 'Anthropic key' card shows a 'secret' label and a 'Remove' link in a tiny, low-contrast style; the key row is repeated (header 'Anthropic key' and again 'Anthropic key · saved Wed 28 Oct'), which looks duplicated.",
+      "The 'Surprise me' button carries a dice emoji that does not match the plain styling of the other buttons."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#15",
+    "verdict": "works",
+    "summary": "After the key was saved and the naming question skipped, foo says a warm hello, offers three things to try, and the message box is open for typing.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#19",
+    "verdict": "works",
+    "summary": "The user said hi in Hinglish and foo answered right away with a short, friendly Hinglish reply that fits the question.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#21@1500",
+    "verdict": "works",
+    "summary": "While foo prepares the joke, the chat shows foo's small face in the thinking spot and 'typing...' in the header and chat list, and nothing is stuck or broken.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#19@1500",
+    "verdict": "broken",
+    "summary": "While foo is working on the reply, the header shows two pieces of text printed on top of each other, and the working indicator below the message is too faint to read.",
+    "problems": [
+      "In the chat header, the status line under \"foo\" shows two texts overlapping: \"typing…\" is drawn over \"on your PC\", so neither can be read.",
+      "The Thinking row under the user's message is nearly invisible: a faded face and a ghosted bubble with unreadable text, so it does not plainly show that foo is working on the reply.",
+      "The \"foo\" row in the chat list has an unread badge but no message preview text, so it looks empty."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#23@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the cafe booking request, the chat shows foo's small face as the thinking indicator, the user's message has no eyes emoji, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#21@3000",
+    "verdict": "broken",
+    "summary": "While foo was still working on the joke, the screen showed no sign that it was thinking, so the user can't tell anything is happening.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, although the expected outcome requires it at this moment.",
+      "foo's joke reply is already on screen in faded grey text with a stop-style square button in the message box, which looks half-finished and gives no clear 'working on it' signal.",
+      "The reply's avatar and text look dimmed compared with the earlier reply, so the user can't tell whether it is finished or still arriving."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#21",
+    "verdict": "works",
+    "summary": "foo replied to the request for a short joke with a funny Hindi-English joke, and the chat looks clean and finished.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#25@1500",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be visibly working on the cab request, the screen shows no thinking indicator and instead a faded, half-finished reply already sitting under the message.",
+    "problems": [
+      "The Thinking row (foo's small face in place of typing dots) is not shown while waiting, so the user gets no plain sign that foo is working on the cab request.",
+      "A greyed-out, faded foo reply bubble is already visible, which looks half-loaded or stuck instead of a clear working state.",
+      "The user's cab message already shows 'foo read: Thu 29 Oct, 6:00 AM' under it, which is odd and confusing."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#23@3000",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be showing that it is working on the booking request, the screen instead already shows a partly written reply and no sign that foo is thinking.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, though the expected outcome requires it 3.2 s after sending.",
+      "foo's reply to \"Book a table for 2 tonight...\" is already on screen and cut off at the bottom, so the waiting state never appears.",
+      "The reply bubble is clipped by the message input bar, so its last line is partly unreadable.",
+      "A \"foo read: 2 people · Wed 28 Oct · Delhi\" line sits under the user's message, which is odd, confusing text for a plain chat."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#25",
+    "verdict": "broken",
+    "summary": "foo does say it can't book a cab, but it offers to set a reminder, which this version can't do, and a stray \"foo read\" line shows under the user's message.",
+    "problems": [
+      "The reply offers to \"set a reminder for 6 am tomorrow\", but reminders and tasks are not available in this version. That promise is false and misleading.",
+      "The reply says the feature \"is build mein nahi hai\", which is developer wording (\"build\") rather than plain language, and it is mixed-language text, so it does not read as a plain refusal.",
+      "A \"foo read: Thu 29 Oct, 6:00 AM\" line sits under the user's cab message. It shows a date that makes no sense for a message sent at 4:39 AM, and it looks like a leaked internal detail.",
+      "The first reply repeats nearly the same wording as the earlier refusal, so the answer feels canned."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#27@3000",
+    "verdict": "broken",
+    "summary": "While foo was still working on the answer, the screen did not show the 'Thinking' row with foo's small face, so the user has no sign that foo is busy.",
+    "problems": [
+      "The expected Thinking row (foo's small face in place of typing dots) is not visible while the reply is being written.",
+      "A partial reply from foo is already on screen, but nothing shows it is still being written, so it looks finished or stuck.",
+      "The latest foo reply is cut off at the bottom edge of the chat, just above the message box, so it ends mid-thought."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#27@1500",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be visibly working on the answer, the screen showed no thinking indicator and instead already displayed a short reply.",
+    "problems": [
+      "The expected 'Thinking' row (foo's small face in place of typing dots) is not shown 1.6 s after the user sent \"did you book the cab?\", so the user gets no sign foo is working.",
+      "foo's answer \"Nahi, maine cab book nahi ki.\" is already on screen at the moment it should still be in progress, so the waiting state was skipped or the reply appeared too early.",
+      "The chat list still shows an unread badge \"1\" and the 4:39 AM time with no preview text, which looks unfinished while the chat is open.",
+      "The previous foo replies are in Hinglish and are cut off at the top of the window, with the top message partly hidden under the header."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#29",
+    "verdict": "works",
+    "summary": "When asked to remember that the user is vegetarian, foo plainly said it can't remember things yet, with no memory chip and no \"Noted\" confirmation.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#27",
+    "verdict": "wrong-design",
+    "summary": "foo correctly says it did not book the cab, but the wording is awkward and includes build jargon that a normal user would not understand.",
+    "problems": [
+      "The reply says \"is build mein booking ka feature nahi hai\", which exposes internal \"build\" wording instead of a plain refusal like \"I can't book cabs yet\".",
+      "The reply is in Hinglish although the user wrote in English, so the language does not match what the user typed.",
+      "The earlier replies repeat the same \"build mein nahi hai\" jargon and offer odd alternatives (a reminder for 6 am, a list of cafes), which makes the refusal confusing."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#29@1500",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be showing that it was working on the reply, the screen showed no thinking indicator and instead already had a partly faded reply on screen.",
+    "problems": [
+      "The expected Thinking row (foo's small face in place of typing dots) is not visible; the app does not show that foo is working on the message.",
+      "foo's reply \"Yaad rakh liya. Kuch aur batana chahoge?\" is already on screen at 1.6 s, with faded grey text and a dimmer avatar that looks half-rendered, rather than the waiting state.",
+      "The user's message \"remember that I am vegetarian\" was accepted and answered as if memory worked, although this build is meant to plainly refuse memory, so the reply is a fake confirmation.",
+      "The earlier replies are in Hinglish (\"Main abhi tasks nahi kar sakti\") even though the user wrote in English, so the tone ignores the user's language."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#29@3000",
+    "verdict": "broken",
+    "summary": "Three seconds after the user sent \"remember that I am vegetarian\", the screen should have shown foo working on it, but foo's full reply was already there and no thinking indicator appeared.",
+    "problems": [
+      "The expected \"Thinking\" row (foo's small face in place of typing dots) is not shown. The reply \"Yaad rakh liya. Kuch aur batana chahoge?\" is already on screen, so the waiting state never appeared.",
+      "The user's message \"remember that I am vegetarian\" shows double ticks, which suggests it was already processed instead of still waiting for an answer.",
+      "Batch 1 must refuse memory plainly, but foo says \"Yaad rakh liya\" (I've remembered it), which is a false confirmation of a feature that is not in this build.",
+      "The earlier replies are in Hinglish and mention \"build mein nahi hai\", which is jargon about the build that a user should not see."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#32",
+    "verdict": "works",
+    "summary": "After the user asked for dark mode, the app switched to a dark theme and showed a single line \"Changed: Theme → Dark. Undo\" under the reply.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1#34",
+    "verdict": "works",
+    "summary": "The three-dot menu opens and lists only Settings, Keyboard shortcuts and Quit foo, as expected, and the rest of the app looks clean.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#1",
+    "verdict": "works",
+    "summary": "After the user typed \"hi\", foo quickly answered with a short, friendly \"Hey! What can I help you with?\" and the screen looks clean and finished.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#1@1500",
+    "verdict": "broken",
+    "summary": "After the user sent \"hi\", the screen does not clearly show foo is working on it: there is no thinking face where typing dots belong, and a faded reply already sits in the chat.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would appear) is not shown below the user's \"hi\" message, so there is no clear sign foo is working on the answer.",
+      "The header still says \"Awake on your PC\" instead of \"typing…\" while foo is replying.",
+      "A faded, greyed \"Hey! What can I help you with?\" bubble sits below the message, which looks half-loaded or stuck instead of a proper waiting state.",
+      "The round send button shows a plain square, but nothing else on screen indicates a reply is in progress, so the Stop meaning is unclear.",
+      "The header avatar is a flower face, not the foo face that gently animates in the reference."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#5@1500",
+    "verdict": "works",
+    "summary": "While foo prepares its answer, the screen shows the Hindi question, a small foo face where the typing dots would be, and \"typing...\" in the header and chat list, with nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#3@3000",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be visibly working on the reply, the screen shows no thinking indicator, and a partial reply is already on screen.",
+    "problems": [
+      "The expected 'Thinking' row (foo's small face where typing dots would be) is not shown at all, so the user gets no sign that foo is working on the answer.",
+      "The reply to the Hinglish motivation request is already showing, and it looks like it is cut off at the bottom edge of the chat, so the screen does not match the expected 'waiting' moment.",
+      "The last foo message sits right against the input bar, partly cut off, so the end of the reply cannot be read."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#3",
+    "verdict": "wrong-design",
+    "summary": "foo replied kindly in Roman-script Hinglish to the motivation request, but the reply is partly English and has small design differences from the reference.",
+    "problems": [
+      "The reply drifts into English mid-message (\"that's half the battle\", \"You've got this.\"), so it is not fully in the user's Hinglish style as the expected outcome asks.",
+      "The reply ends with a 💪 emoji, while the reference shows foo not copying the user's style flourishes; here it adds an emoji the user never used.",
+      "The reply is long (about five sentences) rather than a short reply, and it is a generic pep talk.",
+      "The foo avatar is a flower icon on an orange circle, while the reference uses a black circle with two dots.",
+      "The first message shown is a stray \"hi\" with a clipped bubble at the top, and the chat header avatar and sub-label styling differ from the reference."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#5@3000",
+    "verdict": "broken",
+    "summary": "While foo was still answering the Delhi weather question, the screen did not show the 'Thinking' indicator (foo's small face in place of typing dots), so the user gets no clear sign that foo is working.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, though the expected outcome requires it while the answer is incomplete.",
+      "foo's weather reply is visibly cut off at the bottom edge, with its last line half-hidden behind the message box, and nothing else shows that it is still being written.",
+      "The user's Hindi message is marked as read (double check marks) but gives no sign that foo is working on a reply."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#7@1500",
+    "verdict": "works",
+    "summary": "While foo prepares its answer to the Punjabi joke request, the chat shows foo's small face in the typing spot and the header says typing, with the Punjabi and Hindi text readable.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#3@1500",
+    "verdict": "works",
+    "summary": "After the user sent the Hinglish message, foo shows its small face where typing dots would be, plus 'typing...' in the header and chat list, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#5",
+    "verdict": "broken",
+    "summary": "The Hindi text displays correctly, but foo answered with a confident made-up weather forecast and never said it cannot check live weather.",
+    "problems": [
+      "The reply states specific weather (partly cloudy, 18°C to 32°C, warmer by evening, cooler at night) as if it were real, but the app cannot look up live weather, so this is invented information.",
+      "The reply never says it cannot check live weather, which the expected outcome requires.",
+      "The user wrote in Devanagari Hindi, but foo replied in Romanized Hinglish (Latin letters), not Hindi script as expected."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#7@3000",
+    "verdict": "works",
+    "summary": "After the user sent the Punjabi joke request, the chat shows foo's small face where the typing dots would be, with 'typing...' in the header, and the Punjabi, Hindi and Hinglish text all display properly.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#7",
+    "verdict": "works",
+    "summary": "The Punjabi joke request got a clear Punjabi reply, and the Gurmukhi text shows properly instead of empty boxes.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#9",
+    "verdict": "works",
+    "summary": "foo understood the misspelled question and answered correctly in one short bubble, \"Canberra is the capital of Australia.\", without commenting on the typos.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#7@6000",
+    "verdict": "broken",
+    "summary": "While foo was answering the Punjabi joke request, the screen showed no sign that foo was working on it, and the reply was already appearing and getting cut off at the bottom.",
+    "problems": [
+      "The expected 'Thinking' row (foo's small face where typing dots would be) is not shown; the status still just says 'Awake on your PC', so the user cannot tell foo is working.",
+      "The reply to the Punjabi joke is already showing, so this is not the waiting moment the test expected.",
+      "The last Punjabi line ('ਬੰਦਾ ਬੋਲਿਆ...') is clipped at the bottom edge by the message box, so the script is cut off.",
+      "The two lines of the joke reply have uneven spacing and the second line looks squeezed, not the extra line height the design asks for."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#11@1500",
+    "verdict": "works",
+    "summary": "While foo prepares the tiger biryani story, the chat shows foo's small face as a thinking indicator and \"typing...\" in the header and chat list, and nothing looks stuck or broken.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#11@3000",
+    "verdict": "broken",
+    "summary": "While foo was writing the tiger story, the screen did not show the 'Thinking' row with foo's small face, so the user can't tell foo is working on the reply.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown while the answer is still being written.",
+      "The story reply is cut off mid-sentence at the bottom of the chat, with its last line clipped by the message box, and there is no clear sign it is still being written.",
+      "The header still says 'Awake on your PC' instead of showing that foo is busy."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#11@6000",
+    "verdict": "broken",
+    "summary": "While foo was writing the tiger story, the screen did not show the required 'Thinking' sign (foo's small face where typing dots would be), so the user can't tell foo is working.",
+    "problems": [
+      "The Thinking row (foo's small face in place of typing dots) is not shown while foo is still writing the story, as the expected outcome requires.",
+      "The story reply is cut off at the bottom of the chat area mid-sentence with no visible sign that foo is still working, so it looks unfinished or stuck.",
+      "The user's message carries no badge, which is correct, but nothing else shows that foo is busy."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#11",
+    "verdict": "works",
+    "summary": "The tiger biryani story appears in full across three paragraphs, is easy to read, and the small buttons under it sit clear of the text.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#18",
+    "verdict": "broken",
+    "summary": "The screen shows only a long story from foo, and the user's own pasted message with the blank line is nowhere to be seen, so we can't tell it was sent as one message.",
+    "problems": [
+      "The user's pasted message (the text with a blank line) is not visible in the chat; only foo's reply appears, so the expected outcome that it went as ONE message exactly as pasted cannot be confirmed.",
+      "The chat list preview shows only foo's story and no sign of the user's sent message, suggesting the sent message is missing or hidden.",
+      "The reply is a story that does not visibly relate to anything the user wrote, so there is no evidence foo answered the pasted text."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#16",
+    "verdict": "broken",
+    "summary": "The chat still shows foo as 'typing...' with a stop button and a stray empty avatar below the story, so it looks stuck and it is unclear that pressing Enter on an empty box did nothing.",
+    "problems": [
+      "The header and chat list still say 'typing...' even though the full story reply is already shown, so the app looks stuck.",
+      "A lone avatar with no message sits under the reply, which looks like an empty or pending bubble, the very thing the expected outcome says must not appear.",
+      "The send button is a dark square stop icon, so the app seems to be still generating, and it cannot be confirmed that Enter on the empty box was ignored.",
+      "The reply has a thumbs-up icon in the bubble timestamp and a highlighted thumbs-up below it, which is a mixed or duplicated reaction state on a plain reply."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#20",
+    "verdict": "works",
+    "summary": "After the user said thanks, foo put a small 👍 on that message and did not send a long reply, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#22@1500",
+    "verdict": "broken",
+    "summary": "The screen shows foo working on a reply, but the user's \"thanks\" message carries a 👍 badge that should not be there, and the chat looks messy.",
+    "problems": [
+      "The user's \"thanks 🙏\" message has a small 👍 reaction badge on its corner, but the expected outcome says no badge should appear at this moment.",
+      "The user sent a second message, \"asdfghjkl qwerty ???\", although the step expects only \"thanks 🙏\" 1.5 s after sending, so the state does not match what was expected.",
+      "The long story reply is still on screen above the new messages, and the header and sidebar both say \"typing...\" at the same time as the Thinking row. This makes it unclear which reply foo is currently working on."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#22@3000",
+    "verdict": "broken",
+    "summary": "While foo should be showing that it is working on the reply to \"thanks 🙏\", the screen shows no sign of that, and the messages look odd.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after \"thanks 🙏\" was sent, so the user cannot tell foo is working on an answer.",
+      "Both of the user's messages (\"thanks 🙏\" and \"asdfghjkl qwerty ???\") already carry a 👍 badge, which should not be on plain messages at this moment.",
+      "Another message \"asdfghjkl qwerty ???\" was already sent after \"thanks\", so the screen does not match the expected moment of waiting on the reply to \"thanks 🙏\"."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#22@6000",
+    "verdict": "broken",
+    "summary": "While foo should have been visibly working on the reply to \"thanks\", the screen shows no sign of it, and the chat looks idle.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, even though foo had not yet finished answering \"thanks 🙏\", so the user cannot tell anything is happening.",
+      "The chat list preview shows \"You: asdfghjkl qwerty ???\" and the header says \"Awake on your PC\", with no \"working\" or typing cue anywhere.",
+      "The user's \"thanks 🙏\" and \"asdfghjkl qwerty ???\" bubbles each carry a small 👍 reaction badge, which is unexpected since the expected badge state is none.",
+      "The order of messages looks odd: the long story reply sits above both user messages, so it is unclear what foo is answering."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#26",
+    "verdict": "wrong-design",
+    "summary": "foo honestly says it booked no cab and can't do tasks yet, but the reply uses test-build wording and offers something it can't deliver.",
+    "problems": [
+      "The reply says \"this build can't do tasks yet\", which is internal jargon; a normal user would not understand \"build\" and the wording sounds like a test version.",
+      "It offers \"Want me to plan one for when that works?\", a promise of future capability that implies a later feature, instead of a plain refusal.",
+      "The reply is in English although the user wrote in Hinglish, so the tone does not match the user.",
+      "The sidebar footer shows \"Checking Anthropic key...\", technical jargon that a non-technical user should not see."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat#26@1500",
+    "verdict": "broken",
+    "summary": "While foo was meant to be showing that it is working on the cab question, there is no Thinking row, and the header shows two overlapping lines of text.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown while waiting; the screen shows only a faded, half-transparent reply bubble.",
+      "The header status line is garbled: the words \"typing…\" and \"on your PC\" overlap each other under the name \"foo\", so neither can be read cleanly.",
+      "The reply \"I haven't booked any cab – this build can't do tasks yet.\" is pale and washed out, and it uses the \"this build\" test-version jargon that Batch 1 must not show.",
+      "The reply appears at the 1.6 s mark, before the answer should be complete, so the waiting state is not shown as expected."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#3@1500",
+    "verdict": "broken",
+    "summary": "While waiting for the sleep tips, the screen should show foo is working on it, but instead it shows an empty reply bubble with \"That reply got cut off. Try again\".",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown; the user gets no sign that foo is working on the answer.",
+      "foo's reply to \"Give me 5 tips to sleep better, one line each\" is an empty grey bubble with the error \"That reply got cut off. Try again\", so no tips appear and the request looks failed.",
+      "The error appears only about 8 seconds after sending, while the answer should still be in progress, so it looks like a premature failure.",
+      "The bottom left shows \"Checking Anthropic key...\", which looks stuck and is technical wording for a normal user."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#1",
+    "verdict": "wrong-design",
+    "summary": "foo is replying with sleep tips, but the screen shows a few things that don't look finished.",
+    "problems": [
+      "The bottom-left status says \"Checking Anthropic key…\", which is technical jargon an ordinary user shouldn't see, and it looks stuck.",
+      "foo's earlier reply says \"this build can't do tasks yet\", which is test-version wording that a finished product should not show.",
+      "The sleep-tips reply is cut off at the bottom edge of the chat. It is mid-stream, but there is no \"Thinking\" row or typing cue, so it is unclear whether the answer is still arriving.",
+      "The message box has a heavy black outline that looks like a strong focus ring, and the send button shows a square stop icon."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#3@6000",
+    "verdict": "broken",
+    "summary": "While foo should be showing it is working on the sleep tips, the chat instead shows an empty grey bubble with \"That reply got cut off. Try again\" and no tips.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, so nothing tells the user foo is working on the answer.",
+      "foo's reply to \"Give me 5 tips to sleep better, one line each\" is an empty bubble with the error \"That reply got cut off. Try again\", which is a failure and not an answer.",
+      "The error appears only 8.6 seconds in, while the answer should still be in progress, so it looks like the reply failed early or was stopped.",
+      "The bottom-left status \"Checking Anthropic key…\" suggests the connection is not ready, and it names a technical service in plain view."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#3@3000",
+    "verdict": "broken",
+    "summary": "While foo should be showing it is working on the sleep tips, the chat instead shows an empty grey bubble with \"That reply got cut off. Try again\" and no tips.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown at 8.6 s, so nothing tells the user foo is working on the request.",
+      "foo's reply to \"Give me 5 tips to sleep better, one line each\" is an empty grey bubble with an error line, \"That reply got cut off. Try again\", and no tips appear.",
+      "The error appears while the answer should still be in progress, so the chat looks failed or stuck instead of working.",
+      "The empty bubble leaves a large blank gap above the error text, which looks unfinished.",
+      "The bottom-left status \"Checking Anthropic key...\" is still showing, which suggests the connection is not ready and exposes technical wording to a non-technical user."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#3",
+    "verdict": "works",
+    "summary": "After reopening, the sleep-tips question shows a clear 'That reply got cut off.' message with a Try again link instead of a stuck Thinking row or 👀.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#6",
+    "verdict": "broken",
+    "summary": "The menu shows the right three items, but the chat behind it shows a failed reply and a sidebar stuck on 'Checking Anthropic key...'.",
+    "problems": [
+      "The latest foo reply to 'Give me 5 tips to sleep better' is an empty bubble with 'That reply got cut off. Try again', so the user got no answer.",
+      "The bottom-left status is stuck on 'Checking Anthropic key...', which is technical jargon and looks stuck.",
+      "The earlier foo reply says 'this build can't do tasks yet', which is test-version jargon that should not be shown in batch 1.",
+      "The sidebar chat row is mostly hidden behind the open menu and the search box is clipped, so the sidebar looks partly covered."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#10",
+    "verdict": "broken",
+    "summary": "After reopening, the latest answer shows an empty bubble with a 'That reply got cut off. Try again' error instead of the tips the user asked for.",
+    "problems": [
+      "The reply to 'Give me 5 tips to sleep better, one line each' is an empty bubble with the error 'That reply got cut off. Try again', so the request got no answer and an error card is visible, against the expected outcome.",
+      "The bottom-left status reads 'Checking Anthropic key...', which is technical jargon and looks stuck.",
+      "A hover tooltip 'Not a good answer' and the action icons are still showing on the earlier reply, which looks like leftover clutter."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#12@1500",
+    "verdict": "broken",
+    "summary": "While waiting for foo's answer, the screen shows no clear sign that foo is working on it, and an earlier reply to the sleep tips request failed with a cut-off error.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after \"are you still there?\" was sent, so nothing shows plainly that foo is working on the reply.",
+      "The reply to \"Give me 5 tips to sleep better\" shows an error bubble, \"That reply got cut off. Try again\", instead of the tips, so that request was not answered.",
+      "The bubble with the error has an odd empty gap above the message text.",
+      "A faded, half-transparent foo reply (\"Five tips to sleep better\") is cut off behind the message box, which looks glitchy and unfinished.",
+      "The sidebar shows an unread badge \"1\" while the chat is open, and the bottom left shows \"Checking Anthropic key...\", which is technical jargon and suggests a stuck state."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings#5",
+    "verdict": "works",
+    "summary": "The user asked for dark mode and then for light mode again, and foo replied each time, switched the theme, and showed a one-line 'Changed: Theme → Light. Undo' note.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#12@3000",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be visibly working on the reply, the screen shows no 'thinking' indicator, and an earlier answer to the sleep-tips request is stuck on a 'That reply got cut off' error.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after \"are you still there?\" was sent, so the user cannot tell foo is working on it.",
+      "The reply to \"Give me 5 tips to sleep better, one line each\" is an empty grey bubble with a red 'That reply got cut off. Try again' error, so that request was never answered.",
+      "The newest foo reply (\"Five tips to sleep better\") is already partly visible and is cut off at the bottom edge of the chat area, which makes the conversation look confusing.",
+      "The bottom-left status still says 'Checking Anthropic key…', which is technical jargon and suggests the connection is not settled."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart#12",
+    "verdict": "broken",
+    "summary": "When the user asked \"are you still there?\", foo replied with a stale list of sleep tips before a one-line \"Yes, I'm here.\", instead of a normal short answer.",
+    "problems": [
+      "The reply to \"are you still there?\" opens with an unrelated \"Five tips to sleep better\" list, which looks like leftover text from an earlier cut-off answer. The expected outcome was a normal short reply.",
+      "The real answer, \"Yes, I'm here.\", is buried at the bottom of the bubble after the tips.",
+      "The message above shows \"That reply got cut off. Try again\", so the earlier failed reply is still on screen and the restart did not start cleanly.",
+      "The chat list preview shows \"Five tips to sleep better: Keep y...\" rather than the latest short answer, which confirms the stale content.",
+      "The bottom-left status reads \"Checking Anthropic key...\", which is technical wording a non-technical user would not understand, and it is still showing after the reply."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings#10",
+    "verdict": "works",
+    "summary": "The Settings page shows which AI foo uses (an Anthropic key), a green 'works · checked 11 min ago' status, and Test now and Change buttons, without ever revealing the key.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings#2",
+    "verdict": "wrong-design",
+    "summary": "Asking for dark mode worked: the app turned dark, foo said \"Done. Dark mode is on.\" and showed a Changed: Theme → Dark. Undo line, but the screen has visible flaws.",
+    "problems": [
+      "The sidebar is a lighter grey than the dark chat area, so the whole app does not look evenly dark.",
+      "The setting change appears only as a small grey line under the reply, not as a clear card like the reference's mini card with a bold Undo.",
+      "The Undo link is tiny and low contrast, so it is easy to miss.",
+      "The sleep-tips bubble ends with an unrelated \"Yes, I'm here.\" line, which looks like two replies merged into one bubble.",
+      "The bottom-left status reads \"Checking Anthropic key…\" with a blank grey avatar, which is technical wording and looks unfinished compared with the reference's \"Vikas · Claude ready\".",
+      "The message input has a heavy white outline that the reference does not have.",
+      "The foo avatar is an orange flower icon instead of the reference's face avatar, and a visible scrollbar with arrow buttons makes the window look unpolished."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings#8",
+    "verdict": "wrong-design",
+    "summary": "Settings opens on a real Account & your AI page with a working AI check, but the footer still says it is checking the key and the screen shows some small differences from the design.",
+    "problems": [
+      "The bottom-left status reads \"Checking Anthropic key…\" while the page above says the key \"works · checked 11 min ago\", so the two disagree and look unfinished.",
+      "The AI status text is cramped: \"Anthropic key (your AI)\" and \"works · checked 11 min ago\" wrap awkwardly onto several short lines beside the buttons.",
+      "The reference's \"Search settings\" box is missing from the settings list.",
+      "The \"YOU\" section (name, start with Windows, close-window behaviour) from the reference is absent, so the page looks sparser than the design.",
+      "The wording differs from the reference: \"Anthropic key\" is used instead of \"Claude\", and \"How it's paid\" with a \"Replace key\" button appears instead of \"Cost\".",
+      "The Backup AI row shows a \"None\" dropdown instead of the reference's named backup with a Change button.",
+      "The Settings list shows only four pages and the page icons are plain outlines rather than the reference's icons, with no Notifications, Permissions or other pages. This is likely fine for this build but the look differs."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings#18",
+    "verdict": "broken",
+    "summary": "The user asked for dark mode, but foo answered \"Done. Text is now bigger.\" and changed the zoom instead, so the reply ignores what they wrote.",
+    "problems": [
+      "The user typed \"dark mode kar do please\" but foo replied \"Done. Text is now bigger.\", which is about text size, not dark mode.",
+      "The note under the reply says \"Changed: Zoom → 110%. Undo\", so the app changed something the user never asked for.",
+      "The chat list preview also shows \"Changed: Zoom → 110%.\", which confirms the wrong change was made.",
+      "The visible user bubble says \"make the text bigger\" rather than the dark mode request, so the shown conversation does not match what was typed."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G5-wrong-key#3",
+    "verdict": "works",
+    "summary": "The app shows the AI setup list with the message box greyed out and reading \"Connect your AI first, then we can talk.\", so chatting stays locked until an AI is connected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#0",
+    "verdict": "works",
+    "summary": "The app shows a clean welcome card saying \"Hi, I'm foo\" with a clear \"Let's go\" button and a \"step 1 of 2\" header, as expected for the first setup step.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings#13",
+    "verdict": "broken",
+    "summary": "The Appearance page's Theme row is cut off and its label is hidden behind the selector, and the options read \"Same as Windows / Light / Dark\" rather than the expected \"Light · Dark · Windows\".",
+    "problems": [
+      "The Theme row label is clipped: only the letter \"T\" shows at the left edge, because the three-option selector sits on top of the word \"Theme\".",
+      "The options are ordered \"Same as Windows, Light, Dark\" with different wording, not \"Light · Dark · Windows\" as expected.",
+      "Light is highlighted as the current theme, but the expected default is Windows, so the marked choice does not match the described default.",
+      "A stray blue dot sits below the accent colour description and looks like a leftover glitch.",
+      "The page has no \"Search settings\" box, and the settings list lacks entries such as Notifications and Permissions; the missing entries are likely hidden features, but the missing search box is a visible gap.",
+      "The theme selector and rows look cramped, with the right-hand panel running past the card, and the page needs scrolling to see all items."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G5-wrong-key#8",
+    "verdict": "broken",
+    "summary": "After a wrong key was entered, the app shows a green-style 'Saved securely' confirmation instead of saying the key did not work and offering to try again.",
+    "problems": [
+      "The Anthropic key card says \"Saved securely. foo's AI never sees it.\" with a check mark and \"saved Wed 28 Oct\", which is a fake success for a wrong key.",
+      "Nothing says plainly that the key did not work, and there is no \"try again\" prompt. The only options are \"Replace\" and \"Remove\".",
+      "The header still reads \"Setting up · step 1 of 2\" and the input says \"Connect your AI first\", so the user is not told what went wrong or what to do next.",
+      "The card has a duplicate \"Anthropic key\" label (title and row) and a stray check mark with no clear meaning, which looks unpolished."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#3",
+    "verdict": "works",
+    "summary": "The setup screen shows which AI connections were found on this PC, offers 'Add in secret box' for the key rows, and lists four clear choices to pick from, with the message box disabled until an AI is connected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#2",
+    "verdict": "wrong-design",
+    "summary": "The app is searching for the user's AI and shows a card with the options, but the key row says \"Your own key\" instead of naming Anthropic, and it still shows a spinner next to the \"Add in secret box\" button.",
+    "problems": [
+      "The key row is labelled \"Your own key\" and does not name Anthropic, so it does not match the expected \"Anthropic key\" row.",
+      "The \"Your own key\" row shows a loading spinner right beside the \"Add in secret box\" button. This gives a mixed message: it looks like it is still searching while also asking the user to act.",
+      "\"Add in secret box\" is unclear wording for a non-technical user; it does not say that it adds a key.",
+      "The first message bubble reads \"Hi, I'm foo. → Let's go\" with a stray arrow, which looks like a leftover from a button label rather than finished text."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#8",
+    "verdict": "wrong-design",
+    "summary": "The key was saved and foo says it works, but the screen still has a few visible flaws.",
+    "problems": [
+      "The Anthropic key card shows a bare checkmark on its own line with 'Saved securely', not a clear 'works' status on the key row, so the expected outcome is only weakly shown.",
+      "The key is mentioned three times: in the 'Your own key' row, the 'Use Anthropic key' button, and the saved card. This is redundant and confusing.",
+      "The 'Use Anthropic key' button is still shown after the key is saved and works, which makes it look as though a step is left to do.",
+      "The message box still says 'Connect your AI first, then we can talk.' and the header still says 'Step 1 of 2', although the key already works.",
+      "The small grey cost text has loose line spacing, and the 'Change cap' link is cramped. The text also mentions cost, which may not belong in this batch."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#5",
+    "verdict": "works",
+    "summary": "After choosing to use their own key, the chat shows a clear private box asking the user to paste their Anthropic key, with Save securely and Cancel buttons and a note that it is stored on this PC.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#15",
+    "verdict": "works",
+    "summary": "After saving the key and skipping the naming question, foo says a warm hello and offers three things to try, and the message box is ready to type in.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#19",
+    "verdict": "works",
+    "summary": "The user wrote in Hinglish and foo answered right away with a short, warm Hinglish reply that fits the question.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#19@3000",
+    "verdict": "broken",
+    "summary": "While foo was still working on the answer there was no sign that it was thinking, and the reply that appeared looks cut off at the bottom.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown after the user sent \"hi foo, kaise ho?\", so nothing says foo is working on it.",
+      "foo's reply bubble \"Main bilkul theek hoon, shukriya! Aap kaise hain? Kuch kaam hai?\" is already showing, yet the screen is supposed to be mid-wait. It is also clipped at the bottom edge, with no time stamp visible, so it looks unfinished.",
+      "The send button at the right of the message box shows a square stop icon, which suggests foo is still generating, while the chat shows no thinking indicator. The two signals do not agree."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#12",
+    "verdict": "wrong-design",
+    "summary": "The key was saved and the app moved on to the name step with the finder collapsed, but the header shows mismatched step labels and a few details look off.",
+    "problems": [
+      "The header shows two different step counts at once: the pill says \"Step 2 of 2\" while the subtitle underneath says \"Setting up · step 1 of 2\" and is clipped at the edge.",
+      "The key card says \"saved Wed 28 Oct\", an odd date stamp for a key that was just saved, and the card repeats \"Anthropic key\" three times, which is cluttered.",
+      "The sidebar chat row shows an unread badge \"1\" and a time of 4:48 AM, while all the messages in the chat are stamped 4:47 AM."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#21@1500",
+    "verdict": "works",
+    "summary": "While foo prepares the joke, the chat shows foo's small face as a thinking indicator and \"typing...\" in the header, and the user's message is in place without any eyes emoji.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#21",
+    "verdict": "works",
+    "summary": "The user asked for a short joke in Hindi-English mix and foo replied with a fitting Hinglish doctor joke, shown cleanly in the chat.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#23@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the cafe booking request, the screen shows foo's small face as a thinking row, and the user's message has no eyes emoji.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#23@3000",
+    "verdict": "works",
+    "summary": "While foo is working on the cafe booking request, the screen shows foo's small face as the thinking indicator, with the user's message sent and no stuck or broken parts.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#21@3000",
+    "verdict": "works",
+    "summary": "While foo was still writing its joke, the screen showed the reply streaming in as it arrived, with no stuck or broken parts.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#23@6000",
+    "verdict": "works",
+    "summary": "While foo is working on the cafe booking request, the chat shows foo's small face as the thinking indicator and the header says typing, with no stuck or broken elements.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#19@1500",
+    "verdict": "works",
+    "summary": "While foo is preparing its answer, the screen shows foo's small face where typing dots would be, and the header and chat list both say \"typing...\", so the user can tell foo is working on the message.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#23",
+    "verdict": "works",
+    "summary": "When asked to book a table, foo plainly said it can't do tasks like booking yet and offered to chat and answer questions, with no plan card or checklist.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#25@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the cab request, the screen shows foo's small face as the thinking indicator and the header says typing, with no 👀 on the user's message.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#25@3000",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be visibly working on the cab request, the screen shows no 'thinking' indicator and the reply is already partly on screen.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown, so nothing tells the user foo is working on the cab request.",
+      "The Thinking indicator is missing even though the reply to the cab request is already appearing, so the waiting state was not shown at the 3.2 s mark.",
+      "foo's reply to the cab request is cut off at the bottom edge (\"...tab main aapke liye cab book\") and sits against the input bar, so the message looks clipped.",
+      "The user's cab message shows double ticks and 'foo read: Thu 29 Oct, 6:00 AM', which is confusing next to the 4:48 AM timestamps and implies something was scheduled."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#27",
+    "verdict": "wrong-design",
+    "summary": "foo correctly says it did not book the cab, but it answered in Hinglish (Hindi in English letters) to a plain English question, which is jarring.",
+    "problems": [
+      "The user wrote in English (\"did you book the cab?\"), but foo replied in Hinglish (\"Nahi, maine cab book nahi ki...\"), so the reply language does not match the user.",
+      "The earlier English refusal switched to Hinglish for the second message, so the chat language is inconsistent.",
+      "The reply does not state plainly in English that foo can't book cabs yet, the way the first refusal did."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#25",
+    "verdict": "wrong-design",
+    "summary": "foo does say it can't book a cab, but it replies in Hinglish to an English message and promises it will book cabs later.",
+    "problems": [
+      "The reply is in Hinglish (\"Main abhi tasks nahi kar sakta...\") although the user wrote in English; the previous refusal was in English, so the language is inconsistent.",
+      "The reply promises \"jab yeh feature aayega, tab main aapke liye cab book kar sakta hoon\" (when this feature arrives I can book a cab for you), which hints at a future feature and a specific cab-booking promise; the expected outcome is a plain refusal.",
+      "A \"foo read: Thu 29 Oct, 6:00 AM\" line sits under the user's message. It is odd and confusing, and it reads like an echo of the 6 am request instead of a real read receipt."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#32",
+    "verdict": "works",
+    "summary": "After the user asked for dark mode, the app switched to a dark theme and showed a single line \"Changed: Theme → Dark. Undo\" under the reply.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#1",
+    "verdict": "works",
+    "summary": "The user typed \"hi\" and foo quickly replied with a short, friendly \"Hi! What can I help with?\", with no 👀 on the user's message and no filters or spend line showing.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#29",
+    "verdict": "works",
+    "summary": "When asked to remember that the user is vegetarian, foo plainly said it can't remember things yet, with no fake confirmation or memory chip.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·2#34",
+    "verdict": "works",
+    "summary": "The three-dot menu opens and shows only Settings, Keyboard shortcuts and Quit foo, as expected, and the rest of the app looks clean.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#3@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the Hinglish message, the chat shows foo's small face as the thinking indicator below the user's message, with no 👀 and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#3@3000",
+    "verdict": "broken",
+    "summary": "While foo was working on the reply, the screen did not show the Thinking row, and the reply text was already partly shown, with the window also cut off at the edges.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown, so nothing tells the user foo is still working. Instead a partial reply is already visible.",
+      "foo's reply bubble is cut off at the bottom by the message input area, so its last line is clipped and unreadable.",
+      "The right side of the window is cropped: the header icons are cut off, the sent-message timestamps read '4:49 A', and the message box at the bottom is cut off.",
+      "The reply to 'hi' shows thumbs and copy action icons, while the reply is still being generated, so the screen looks inconsistent about whether foo is done."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#3",
+    "verdict": "wrong-design",
+    "summary": "foo replied in kind Hinglish in Roman script as expected, but the app window looks cropped and differs from the reference design.",
+    "problems": [
+      "The reply is two paragraphs and fairly long, not the short reply the expected outcome asks for.",
+      "The chat window is cut off on the right: the header's search and menu icons are clipped, the 'hi' bubble at the top is cut off, and the right edge of the message bubbles is cropped.",
+      "The message input box at the bottom is cut off and only its top edge is visible, so the user cannot see the text field or the send/mic button.",
+      "The window is dark-themed, with a dark sidebar, blue user bubbles and a plain flower avatar. The reference is light, with black bubbles and a face avatar.",
+      "The status text 'Awake on your PC' is green with a dot, where the reference shows it in blue with no dot.",
+      "The sidebar lacks a 'New helper' button, which the reference shows next to the foo title; the sidebar is also missing the footer with the user name and status.",
+      "The top window bar and controls differ from the reference, and a bar is visible at the very top."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#7@1500",
+    "verdict": "works",
+    "summary": "After the user sent the Punjabi joke request, the chat shows foo's small face in a thinking row below it, with no 👀 on the message and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#7@3000",
+    "verdict": "works",
+    "summary": "After the user sent the Punjabi joke request, foo shows a small face with a dotted ring below it as the working indicator, and the Punjabi and Hindi text shows correctly with no 👀 on the user's message.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#5",
+    "verdict": "broken",
+    "summary": "The user asked in Hindi about Delhi's weather, but foo replied in English with an unrelated message about not being able to book or buy things, instead of a Hindi answer that admits it cannot check live weather.",
+    "problems": [
+      "The reply is in English, not Hindi, so it ignores the user's language.",
+      "The reply does not address the weather question; it says 'I can't do tasks for you yet, like booking, buying or sending things', which is unrelated.",
+      "It never says it cannot check live weather, which the expected outcome requires.",
+      "The sidebar preview repeats the same irrelevant refusal, so the wrong answer shows in two places."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#7@6000",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be working on the Punjabi joke request, the screen already shows the finished joke and no sign that foo is thinking.",
+    "problems": [
+      "The expected \"Thinking\" row (foo's small face where typing dots would be) is not shown; the status stays \"Awake on your PC\" with no sign of work in progress.",
+      "foo's full joke reply is already on screen at the moment the screen should show it still being worked on, so the waiting state never appears.",
+      "The chat is also cut off at the bottom: the message box is only partly visible at the edge, so the page looks cramped and unfinished."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#9@1500",
+    "verdict": "broken",
+    "summary": "The screenshot shows foo's answer already complete, so the expected 'foo is working on it' waiting state never appeared on screen.",
+    "problems": [
+      "The Thinking row (foo's small face in place of typing dots) is not shown at the moment it should be, because the reply \"Canberra is the capital of Australia.\" is already displayed.",
+      "The expected waiting state of 1.6 s after sending is missing, so the user gets no visible sign that foo is working.",
+      "The chat list still shows an unread badge \"1\" while the chat is open, which looks stale."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#7",
+    "verdict": "works",
+    "summary": "The user asked for a short joke in Punjabi and foo replied with a Punjabi joke whose Gurmukhi script displays properly and is readable.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#11@1500",
+    "verdict": "broken",
+    "summary": "While foo was still writing the tiger story, the screen gave no sign that it was working on it, and the story had already started to appear.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, so there is no sign that foo is working on the story request.",
+      "The reply is cut off after one sentence, and the chat shows no thinking or typing sign, so it looks stuck or half-finished.",
+      "The sidebar shows an unread badge \"1\" for the open chat while the conversation is in view, which looks inconsistent."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#11@6000",
+    "verdict": "works",
+    "summary": "The tiger story is already appearing in foo's reply, so the app is clearly responding, and nothing looks stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#11@3000",
+    "verdict": "wrong-design",
+    "summary": "foo has started writing the tiger story, but the screen shows no sign that foo is still working on it, such as the small face in the Thinking row.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown while foo is still answering, so nothing says foo is working on it.",
+      "The story reply is cut off at the bottom of the chat, with the message box barely visible, so the user cannot easily see that more is coming.",
+      "The right edge of the window clips the chat header icon and the user's messages (\"Write me a 3 paragraph story about a tiger w...\" and the timestamps)."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#9",
+    "verdict": "works",
+    "summary": "foo understood the misspelled question and answered in one short bubble, \"Canberra is the capital of Australia.\", with no comment on the spelling.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#16",
+    "verdict": "broken",
+    "summary": "The screen shows a finished story reply, yet foo still says \"typing...\" in both the header and the chat list, and the screenshot gives no sign that pressing Enter on an empty box was handled.",
+    "problems": [
+      "The header and the chat list both still show \"typing...\" even though the full reply is already on screen, so the app looks stuck.",
+      "A small avatar with a dotted ring sits below the reply as if foo is still typing, which contradicts the finished message above it.",
+      "Nothing on screen confirms that pressing Enter on an empty box sent nothing; the message input is cut off at the bottom edge, so it cannot be checked.",
+      "The input box at the bottom is clipped, with only the top of its outline visible."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#11",
+    "verdict": "works",
+    "summary": "The tiger biryani story appears in full, is easy to read, and the copy, redo, like and dislike buttons sit below the message without covering any words.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#20",
+    "verdict": "works",
+    "summary": "After the user sent \"thanks 🙏\", foo answered with just a small 👍 reaction on the bubble and no long reply, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#18",
+    "verdict": "broken",
+    "summary": "The screenshot shows only foo's long story reply, so there is no sign that the user's pasted text went as one message, and the composer is cut off at the bottom.",
+    "problems": [
+      "The user's pasted message with the blank line is not visible, so it cannot be confirmed that it was sent as a single message exactly as pasted.",
+      "The chat list preview shows foo's story starting with 'A young tiger named Raju lived...', not the user's message, and nothing shows the reply was a single answer to the paste.",
+      "The message input box at the bottom is cropped and almost invisible, so the user cannot see where to type.",
+      "The top of the foo reply is cut off under the header, and the header icon on the right edge is clipped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#22@6000",
+    "verdict": "broken",
+    "summary": "While foo should be showing it is working on the reply, the screen shows no sign of it, and the chat has already moved on to a second, unrelated message.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, so the user cannot tell foo is working on a reply.",
+      "The screenshot shows a second user message, \"asdfghjkl qwerty ???\", below \"thanks 🙏\", which does not match the expected moment 6.1 s after sending \"thanks\", and neither message has any reply or progress indicator.",
+      "Both user messages carry a 👍 badge, which is unexpected because the expected state has no badges on the user's message.",
+      "The window is cut off on the right, so the message times (\"4:51 A…\") and the header icon are clipped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#22@3000",
+    "verdict": "broken",
+    "summary": "While foo should be showing that it is working on the reply, the screen shows no sign of it, and the user's messages carry thumbs-up badges instead.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after \"thanks 🙏\" was sent, so the user cannot tell foo is working on a reply.",
+      "The user's \"thanks 🙏\" message and the following \"asdfghjkl qwerty ???\" message both have a 👍 reaction badge, even though no badges were expected at this moment.",
+      "The chat list preview shows \"You: asdfghjkl qwerty ???\", so the latest message is the gibberish, not \"thanks\", and the conversation looks out of step with the expected moment.",
+      "The right edge of the window cuts off the message timestamps (\"4:51 A…\") and the header icon, so the text looks clipped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#22@1500",
+    "verdict": "wrong-design",
+    "summary": "foo shows it is working on the reply, but the user's \"thanks\" message carries a 👍 badge that should not be there at this point.",
+    "problems": [
+      "The user's \"thanks 🙏\" bubble has a 👍 reaction badge in its lower-left corner. The expected outcome says there should be no badge on the user's message at this moment.",
+      "The app window looks cut off on the right: the header icon, the message timestamps (\"4:51 A…\") and the message input box are clipped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#3@1500",
+    "verdict": "broken",
+    "summary": "While foo should be showing that it is working on the sleep tips request, the screen shows no thinking indicator and instead shows an unrelated tiger story and an older message, so the request seems ignored.",
+    "problems": [
+      "The Thinking row (foo's small face in place of typing dots) is not shown, so nothing tells the user that foo is working on the answer.",
+      "The last visible messages are 'line one / line three after a blank line' and a long story about a tiger named Raju, not the 'Give me 5 tips to sleep better' message the user just sent, so the reply appears to ignore the request.",
+      "The chat list shows an unread badge '1' while the chat is open, which suggests the state is out of sync.",
+      "The chat header's right-side icon is cut off at the edge of the window."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#26@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the cab question, the screen shows foo's small face in the thinking spot and a 'typing...' status, and the user's message has no eyes emoji.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·2#26@3000",
+    "verdict": "works",
+    "summary": "While foo is working on the cab question, the screen shows foo's small face in the Thinking row and a 'typing...' status, and the user's message carries no 👀.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#1",
+    "verdict": "broken",
+    "summary": "The user asked for 5 one-line sleep tips, but the chat shows no answer to it and no sign that foo is working on one, while an earlier reply was a reply to the cab question that appears out of order.",
+    "problems": [
+      "The latest user message \"Give me 5 tips to sleep better, one line each\" has no matching reply. The only reply beneath it is about the cab booking, so foo ignored the request.",
+      "No Thinking row or streaming words appear, so the expected outcome (foo is answering) is not visible.",
+      "Replies appear out of order: \"I didn't get that. Say it another way?\" and the cab answer are separated by the sleep question, and the cab answer arrives after the sleep question, which makes the conversation confusing.",
+      "The nonsense message \"asdfghjkl qwerty ???\" has a 👍 reaction on it, which is odd for a plain chat message.",
+      "The right edge of the window clips the header icon, timestamps and message bubbles, and the input box at the bottom is cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#3@6000",
+    "verdict": "broken",
+    "summary": "While foo should be showing that it is working on the sleep tips request, the screen shows an unrelated tiger story and no sign of thinking.",
+    "problems": [
+      "No Thinking row (foo's small face in place of typing dots) is visible, so the user cannot tell foo is working on their request.",
+      "The visible messages do not match the request: the user's bubble reads \"line one / line three after a blank line\" and foo's reply is a tiger and biryani story, with no sign of \"Give me 5 tips to sleep better, one line each\" or any answer to it.",
+      "The chat list shows an unread badge (1) and the header shows \"Awake on your PC\" while a reply is supposedly pending, which does not show clear progress.",
+      "The right edge of the chat is clipped (the header search icon is cut off and the timestamp \"4:51 A\" is cut off), so the layout looks unfinished."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#3@3000",
+    "verdict": "broken",
+    "summary": "The screen does not show the chat waiting on the sleep-tips request: there is no sign foo is working on it, and the visible reply is an unrelated tiger story.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, so nothing tells the user that foo is working on their request.",
+      "The visible messages are \"line one / line three after a blank line\" and a story about a tiger named Raju. Neither relates to the sent message \"Give me 5 tips to sleep better, one line each\", and that message is not visible at all.",
+      "The chat list shows an unread badge of 1 while the chat is open, which suggests the state is inconsistent.",
+      "The header's right-side icon is clipped at the window edge, and the message timestamp \"4:51 AM\" is cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#6",
+    "verdict": "works",
+    "summary": "The foo menu opened and lists only Settings, Keyboard shortcuts and Quit foo, as expected, and the chat behind it looks normal.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#3",
+    "verdict": "broken",
+    "summary": "The user asked for 5 sleep tips, but the chat shows an unrelated tiger story and the cut-off reply with a Try again option is not visible.",
+    "problems": [
+      "The reply on screen is a story about a tiger named Raju, which ignores the request for 5 one-line sleep tips.",
+      "The question 'Give me 5 tips to sleep better, one line each' is not visible; the last user bubble reads 'line one / line three after a blank line'.",
+      "The expected 'That reply got cut off. Try again' message is not shown in the visible chat; instead a long story reply is shown, so the outcome does not match.",
+      "The chat list shows an unread badge '1' while the chat is open, and the reply text is cut off at the bottom of the window."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#10",
+    "verdict": "broken",
+    "summary": "After reopening, the chat shows an error message saying the reply got cut off, and an earlier message got an unhelpful answer, instead of a clean restored chat.",
+    "problems": [
+      "The last foo reply is an error card reading \"That reply got cut off. Try again\" with a warning icon, which the expected outcome says must not appear after reopening.",
+      "The reply to \"Give me 5 tips to sleep better, one line each\" is an empty bubble with an error rather than any tips.",
+      "foo answered \"maine kal cab book karne bola tha, ho gaya kya?\" with \"I didn't get that. Say it another way?\", which does not address what the user wrote.",
+      "The error bubble has a large blank gap above the error line, so it looks unfinished."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#12",
+    "verdict": "broken",
+    "summary": "When the user asked \"are you still there?\", foo answered with an unrelated list of sleep tips instead of a short, normal reply.",
+    "problems": [
+      "The reply ignores what the user wrote: \"are you still there?\" got \"5 tips to sleep better\" with five bullet points, not a short answer like \"Yes, I'm here\".",
+      "The expected outcome was a normal short reply after the restart, but the reply is a long bulleted list.",
+      "The earlier message above shows \"That reply got cut off. Try again\", an error left in the chat, which suggests the restart did not go cleanly."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#12@3000",
+    "verdict": "broken",
+    "summary": "While foo was supposed to be visibly working on the reply, the screen shows no 'thinking' indicator, and an earlier answer is stuck showing an error.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after the user sent \"are you still there?\", so nothing says foo is working on it.",
+      "The earlier reply to the sleep-tips request is an empty bubble with \"That reply got cut off. Try again\", which is a visible error and leaves the first question unanswered.",
+      "A partial answer (\"5 tips to sleep better\") is already on screen below the user's message, so the screen does not match the 'before foo's answer was complete' waiting state; the list looks cut off at the bottom edge.",
+      "The message input bar at the bottom is clipped and mostly hidden, and the top-right header icon is cut off at the window edge."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·2#12@1500",
+    "verdict": "broken",
+    "summary": "While foo was still answering, the screen showed no sign that it was working, and an earlier reply is stuck as a blank bubble with a 'That reply got cut off' error.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after the user sent 'are you still there?', so nothing tells the user foo is working on it.",
+      "The first foo reply to the sleep-tips request is an empty bubble with 'That reply got cut off. Try again', which is an error state and not a real answer.",
+      "The header status 'Awake on your PC' overlaps with other faint text, so the words are garbled and hard to read.",
+      "Icons under the header, just above the first message, are clipped and half hidden behind the header bar.",
+      "The new reply shows a list that is partly complete (only two tips of the 5 requested), so it looks cut short."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#5",
+    "verdict": "wrong-design",
+    "summary": "The theme did switch back to light and an Undo line appeared, but the dark-mode change was not given the same Undo line, and the window looks cut off on the right.",
+    "problems": [
+      "The earlier line 'Changed: Theme → Dark.' has no Undo link, while the new 'Changed: Theme → Light.' line does, so the two confirmations are inconsistent.",
+      "The same confirmation appears twice for one request: once as a foo chat bubble ('Changed: Theme → Light.') and again as a small grey line below it, which looks repetitive.",
+      "The right side of the screen is clipped: the user's message bubbles and timestamps run off the edge ('4:54' is cut off), and the header icon at top right is cut off.",
+      "The message input box at the bottom is cropped and only partly visible."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#2",
+    "verdict": "broken",
+    "summary": "After the user asked for dark mode, foo showed an unrelated list of sleep tips as its reply, and the 'Changed: Theme → Dark' note has no Undo option.",
+    "problems": [
+      "The reply above the user's message 'dark mode kar do please' is '5 tips to sleep better', which ignores what the user asked for.",
+      "The confirmation 'Changed: Theme → Dark.' is only faint grey text under the message, with no Undo button or link, unlike the reference mini card with Undo.",
+      "The change is not shown as a card with a clear label like 'Theme: Dark (was Light)'; it is easy to miss.",
+      "The window looks cropped or cut off: the right edge clips the user's message bubble and timestamp, the header icons are cut off, and the message box at the bottom is cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#8",
+    "verdict": "broken",
+    "summary": "The Settings page opens, but the window is cropped and cramped so the AI rows are squeezed into narrow columns and the buttons run off the right edge.",
+    "problems": [
+      "The content is cut off on the right: the \"Change\" button next to \"Using\" and the \"Replace key\" button are clipped at the screen edge, and the Backup AI dropdown (\"None\") is also cut off.",
+      "The \"Using\" row text is squeezed into a very narrow column (\"Anthropic key (your AI)\" wraps across four lines). The \"works · checked 4 min ago\" status is also broken across lines and overlaps the area beside the \"Test now\" button, which makes it hard to read.",
+      "The \"YOU\" section (name, start with Windows, close-window behaviour) is not visible; the page begins straight at \"YOUR AI\", so the expected real rows are missing or off-screen.",
+      "The Settings page has no search box, and the page list is not laid out like the reference: it lists only four pages (Account, Appearance, Keyboard shortcuts, About), and the icons look different from the reference.",
+      "Wording differs from the reference: the row shows \"Using Anthropic key (your AI)\" instead of \"Using: Claude (your AI)\", and \"How it's paid\" instead of \"Cost\", and \"Backup AI\" shows \"None\" rather than ChatGPT. The chat list in the left panel shows only one \"foo\" chat with a system message (\"Changed: Theme → Light.\")."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#10",
+    "verdict": "broken",
+    "summary": "The Settings page is cut off and squashed: the window is too narrow, so the AI status text wraps into a tall, hard-to-read column and the buttons are clipped at the right edge.",
+    "problems": [
+      "The page is cropped on the right: the \"Change\" button reads \"Chang\", \"Replace key\" reads \"Replace ke\", and the \"None\" dropdown is cut off, so the layout does not fit the window.",
+      "In the \"Using\" row the text \"Anthropic key (your AI)\" is squeezed into a narrow column of one or two words per line. It collides with the \"Test now\" button, and the \"works · checked 4 min ago\" status is pushed below and overlaps the row edge.",
+      "The \"✓ works\" status is split from the \"Using\" label and wraps over five lines, so it is hard to see that the key was tested and works.",
+      "The \"Backup AI\" and \"How it's paid\" rows are also squeezed and cut off at the right edge, so their controls cannot be fully seen or used.",
+      "The \"You\" section (your name, start with Windows, close behaviour) is missing from the Account page, which starts straight at \"Your AI\". The settings search box is missing too, and the left list lacks Notifications, Permissions, Money, Privacy, Routines, Connections and Chat and voice. Some of these may be hidden in this build, but the page looks incomplete next to the reference.",
+      "The window has no title bar controls, and the chat list is missing the usual \"New helper\" button and filter chips. The chat preview reads \"Changed: Theme → Light.\" rather than a normal greeting. The bottom account strip is also missing."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#18@1500",
+    "verdict": "broken",
+    "summary": "The screen is waiting on a reply, but the user's message is not the one the test sent, and the old setup card still sits above it.",
+    "problems": [
+      "The user's visible message is \"make the text bigger\", not \"dark mode kar do please\", so the screen does not show the step it was supposed to be testing.",
+      "The thinking row is only a small face at the bottom left with no typing dots or clear \"working on it\" cue, and it sits apart from the message, so it is easy to miss.",
+      "The \"Use Anthropic key\" card and its buttons from an earlier step are still showing and nothing has been answered, which looks stuck or leftover.",
+      "The header and chat list both say \"typing...\" while the send button has turned into a stop square, which is confusing alongside the sparse thinking row."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#18@3000",
+    "verdict": "broken",
+    "summary": "The screen does not show the moment the user asked for dark mode: there is no sign foo is working on it, and the chat shows a different request instead.",
+    "problems": [
+      "The expected Thinking row (foo's small face where typing dots would be) is not shown, so nothing tells the user foo is working on the request.",
+      "The user's message \"dark mode kar do please\" is not visible; the last message is \"make the text bigger\" with a \"Changed: Zoom → 110%\" note, so the reply to the wrong request is on screen.",
+      "The window looks cut off on the right: \"Add in secret bo\", \"not fou\" and the header icons are clipped, and the message time is cropped.",
+      "The sidebar preview says \"Changed: Zoom → 110%.\" with an unread badge, which does not match the dark mode request being tested."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#13",
+    "verdict": "broken",
+    "summary": "The Appearance settings page is cut off on the right, so the theme choice is partly hidden and the current selection cannot be seen.",
+    "problems": [
+      "The theme control is clipped at the right edge: the \"Dark\" button is cut off and the \"Windows\" option is not visible, so the user cannot tell which theme is currently marked.",
+      "The \"Theme\" label is overlapped by the \"Same as Windows\" button, so the word is cut to a lone \"T\".",
+      "The \"Use my Windows accent colour\" switch is cut off at the right edge, so its on/off state cannot be read; it looks switched on, while the design expects it off.",
+      "The Zoom dropdown (\"110%\") is clipped at the right edge, and the Zoom and Animations rows are squeezed into narrow text columns.",
+      "The theme options are labelled \"Same as Windows\" instead of the expected \"Windows\", and the control is a different shape from the reference.",
+      "The settings page has no search box, and the settings list is missing Notifications, Permissions, Privacy, Routines, Connections and Chat and voice (some may be hidden in this build), while the sidebar's chat list shows only foo.",
+      "The window appears cropped or zoomed in, so the layout does not fit the screen like the finished reference design."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·2#18@6000",
+    "verdict": "broken",
+    "summary": "The screen does not show the expected waiting state for the user's 'dark mode kar do please' message; it shows an older 'make the text bigger' exchange with no sign foo is working.",
+    "problems": [
+      "The user's message 'dark mode kar do please' is not visible anywhere; the last message shown is 'make the text bigger', so the request appears ignored or lost.",
+      "No Thinking row (foo's small face in place of typing dots) is shown, so the user cannot tell foo is working on the request.",
+      "The chat list preview still reads 'Changed: Zoom → 110%.', which shows nothing new has happened for the dark mode request.",
+      "The window content is cut off on the right: 'Add in secret bo…', 'not fou…' and the header icon are clipped, so the layout looks unfinished.",
+      "The input box at the bottom is cropped and mostly hidden, so the user cannot see where to type."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#0",
+    "verdict": "works",
+    "summary": "The welcome card shows 'Hi, I'm foo.' with a clear 'Let's go' button and 'step 1 of 2' in the header, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#8",
+    "verdict": "works",
+    "summary": "After saving the Anthropic key, foo confirms it works, offers a 'Use Anthropic key' button, and shows a 'Saved securely' card with Replace and Remove options.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#2",
+    "verdict": "wrong-design",
+    "summary": "The app is searching for the user's AI and shows the find card, but the key row reads 'Your own key' instead of naming Anthropic, and it still shows a spinner next to the button.",
+    "problems": [
+      "The expected outcome says the Anthropic key row offers to add the key, but the row is labelled generically 'Your own key' and never mentions Anthropic.",
+      "The 'Your own key' row shows a loading spinner beside the 'Add in secret box' button, so it looks like it is still searching and the button's state is unclear.",
+      "The first chat message 'Hi, I'm foo. → Let's go' is small, faint text with an arrow glyph, and reads like leftover placeholder wording rather than a polished message."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#3",
+    "verdict": "works",
+    "summary": "The setup screen shows the AI options (Anthropic key, your own key, AI on this PC) and a numbered list of choices, and the chat box is disabled until an AI is connected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#5",
+    "verdict": "works",
+    "summary": "After the user picked \"I have a key\", foo shows a clear private box asking them to paste their Anthropic key, with Save securely and Cancel buttons and a note that it stays on this PC.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#15",
+    "verdict": "works",
+    "summary": "After saving the key and skipping the naming step, foo says a warm hello and offers three things to try, and the message box is ready to type in.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#19",
+    "verdict": "works",
+    "summary": "The user said hi in Hinglish and foo replied right away with a short, warm Hinglish answer that fits the question.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#12",
+    "verdict": "wrong-design",
+    "summary": "The key was saved and the name card appeared as expected, but the header shows overlapping, garbled step text and the layout is slightly inconsistent.",
+    "problems": [
+      "The subtitle under the name \"foo\" reads \"Setting up · step 2 of 2\" and the \"2 of 2\" part looks struck-through or doubled, so the text is hard to read.",
+      "The step is shown twice, in the pill (\"Step 2 of 2 · Name it and pick a face\") and in the subtitle, which is redundant.",
+      "The chat list shows an unread badge \"1\" and a time of 4:58 AM while the chat is open, which looks off.",
+      "The saved key card has a stray key icon and a stray check mark on separate lines, and the key icon repeats in the title and the detail line, so it looks cluttered.",
+      "The key card is narrower than the other cards, so the left column edges look uneven."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#21@1500",
+    "verdict": "works",
+    "summary": "While foo prepares the joke, the chat shows foo's small face where the typing dots would be, and the header and chat list both say \"typing...\".",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#19@1500",
+    "verdict": "broken",
+    "summary": "While foo was working on the reply, the screen did not show the expected 'thinking' row with foo's small face where typing dots would be, so the user gets no clear sign that foo is working on it.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after the user sent \"hi foo, kaise ho?\".",
+      "foo's reply \"Main bilkul theek hoon, shukriya!\" is already on screen in faded, greyed-out text, with a dimmed avatar, so it looks half-loaded rather than clearly working or finished.",
+      "The sidebar chat still shows an unread badge \"1\" while the chat is open, and the preview line under \"foo\" is empty."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#23@1500",
+    "verdict": "works",
+    "summary": "While foo works on the table-booking request, the chat shows foo's small face in the Thinking row below the user's message, with no eyes emoji and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#23@6000",
+    "verdict": "works",
+    "summary": "While foo is working on the cafe booking request, the screen shows foo's small face in the thinking spot and 'typing...' in the header, with nothing stuck or broken.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#21@3000",
+    "verdict": "broken",
+    "summary": "While foo was still answering the joke request, the screen did not show the expected 'thinking' row with foo's small face where typing dots would be.",
+    "problems": [
+      "The expected Thinking row (foo's small face in place of typing dots) is not shown while foo is working on the joke.",
+      "The joke reply is already half-visible in faded grey text, as if mid-stream, with a dimmed avatar, instead of the clear working indicator the user should see.",
+      "The send button shows a square stop icon, but there is no visible thinking row to explain that foo is busy."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#21",
+    "verdict": "works",
+    "summary": "The user asked for a short joke in Hinglish and foo replied within about 3 seconds with a short Hinglish joke, in a clean chat layout.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#23@3000",
+    "verdict": "wrong-design",
+    "summary": "The app shows foo is working on the booking request, but a small line under the message reads \"foo read: 2 people · Wed 28 Oct · Delhi\", which is jargon-like and implies foo already understood and acted on the booking.",
+    "problems": [
+      "Under the user's \"Book a table\" message there is a line \"foo read: 2 people · Wed 28 Oct · Delhi\" that looks like a task-extraction detail, which batch 1 should not show while it is meant to refuse tasks plainly.",
+      "The Thinking row is just a lone face with no typing dots or wording, so it is faint, though it is present."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#25",
+    "verdict": "works",
+    "summary": "When asked to book a cab, foo plainly says it can't book cabs yet and offers what it can do, with no memory wording, no eyes emoji and no checklist.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#23",
+    "verdict": "works",
+    "summary": "When asked to book a table, foo plainly said it can't do tasks like booking yet and offered to chat and answer questions, with no checklist or plan card.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#27",
+    "verdict": "works",
+    "summary": "When asked if it booked the cab, foo plainly says no and explains it can't do tasks like booking yet, without any memory or 'no record' wording.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#25@1500",
+    "verdict": "broken",
+    "summary": "While foo was working on the cab request, the screen did not show the required 'Thinking' row with foo's small face, and a half-finished grey reply sat in its place.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, so the user gets no clear sign that foo is working on the request.",
+      "A reply bubble reading \"I can't book cabs yet.\" is already on screen, looking faded and cut off at the bottom edge by the message box, so it looks half-finished or stuck instead of showing the Thinking state.",
+      "The last reply bubble is clipped at the bottom of the chat area, with extra empty space inside it."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#29",
+    "verdict": "works",
+    "summary": "When asked to remember that the user is vegetarian, foo replied in one plain bubble that it can't remember things yet, with no memory chip and no \"Noted\".",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#34",
+    "verdict": "works",
+    "summary": "The menu from the three-dot button shows just Settings, Keyboard shortcuts and Quit foo, as expected, and the chat behind it looks clean.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "B1-batch1·3#32",
+    "verdict": "works",
+    "summary": "After the user asked for dark mode, the app switched to a dark theme and shows a single \"Changed: Theme → Dark. Undo\" line in the chat.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#3",
+    "verdict": "works",
+    "summary": "The user wrote in Hinglish and foo replied with a short, kind motivating message in Roman-script Hinglish, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#3@1500",
+    "verdict": "broken",
+    "summary": "The app shows foo is working on the reply, but the screen is cut off and a spend-cap message is visible, so it does not look like a finished screen.",
+    "problems": [
+      "The window is cropped at the right edge: the header buttons, message timestamps (\"4:55 A\", \"5:00 A\") and the send/mic controls are cut off, and the message box is clipped at the bottom.",
+      "An old message at the top about the \"monthly cap (₹1,000 to start)\" with a \"Change cap\" link is visible, which is spend/money content that Batch 1 must not show.",
+      "The header and chat list say \"typing...\" in blue, where the reference shows a status like \"Awake on your PC\" and a face in the thinking row. The avatar is an orange flower in a dotted ring, not foo's black face with two eyes.",
+      "The \"New helper\" button and the bottom profile/settings bar from the reference are missing, and the left panel looks different (dark theme, empty lower area) from the reference's light design."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#3@3000",
+    "verdict": "broken",
+    "summary": "While foo should still be working on the user's Hinglish message, the screen already shows a finished reply and no sign that foo is thinking.",
+    "problems": [
+      "The expected 'Thinking' row (foo's small face where typing dots would be) is not shown; the test notes say it is not shown, and the screenshot shows none, so there is no visible sign foo is working.",
+      "A full reply from foo ('Office jaana hai toh soch – kal shaam ko ghar aake jo peace milegi, wo bhi toh kamaani padegi.') is already on screen at the moment it should still be waiting, so the screen does not match the expected waiting state.",
+      "The reply is also cut off by the input area at the bottom: the message box is clipped and overlaps the bottom of the chat, with the text field barely visible.",
+      "The window looks cropped on the right: the header icons are cut off and message timestamps are clipped (e.g. '4:55 A', '4:59 A')."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#7@1500",
+    "verdict": "works",
+    "summary": "After the user sent the Punjabi joke request, foo shows a small face where typing dots would be and 'typing…' in the header, the Punjabi message displays properly with no 👀, and nothing is stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#5@1500",
+    "verdict": "works",
+    "summary": "While foo prepares its answer to the Hindi weather question, the screen shows foo's small face as a thinking indicator and the user's message has no 👀.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#1",
+    "verdict": "broken",
+    "summary": "The chat shows a reply to \"hi\", but the screen is cut off, shows leftover setup text and a stray earlier message, and is missing parts of the expected design.",
+    "problems": [
+      "The window is cropped: the right edge cuts off the header buttons, message times (\"4:55 A\", \"4:59 A\") and the Anthropic text, and the message box at the bottom is cut off, so the screen looks unfinished.",
+      "The top of the chat still shows an old setup card (\"I'll use Anthropic key… Use Anthropic key\", cap text) that is half cut off at the top, which looks messy in a plain chat.",
+      "A leftover \"make the text bigger\" message and a \"Changed: Zoom → 110%. Undo\" line sit in the chat, so the conversation does not look like a clean 'hi' exchange.",
+      "The reply \"Hi! How can I help?\" is already shown with foo's name, so the waiting state (the small foo face Thinking row, header showing typing…, and the round Stop button) cannot be seen.",
+      "The chat header does not show the typing state, and the sidebar shows \"Awake on your PC\" with no \"New helper\" button, which differs from the reference; the avatar is an orange flower rather than foo's black face with two eyes.",
+      "The foo avatar is a different brown flower icon from the reference's black round face, which is a visible brand mismatch."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#5",
+    "verdict": "broken",
+    "summary": "The Hindi question displays fine, but foo answers in romanised Hinglish instead of Hindi and states a made-up weather forecast as fact without saying it cannot check live weather.",
+    "problems": [
+      "The reply is written in Roman-script Hinglish (\"Delhi mein aaj mostly clear rahega...\") rather than in Hindi in Devanagari, although the user wrote in Devanagari.",
+      "The reply invents a specific forecast (\"mostly clear\", \"around 28°C\", \"subah thodi thand hai\") and never admits it cannot check live weather, so it gives false confidence.",
+      "The reply came back in 1.9 seconds with a confident forecast, which suggests it is canned or made up rather than a real answer."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#7@3000",
+    "verdict": "works",
+    "summary": "After the user sent the Punjabi joke request, foo shows its small face in a thinking row below the message, the Punjabi text displays properly, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#7",
+    "verdict": "works",
+    "summary": "foo replied to the Punjabi joke request with a proper joke in Punjabi, and the Gurmukhi text shows clearly without broken boxes or clipping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#7@6000",
+    "verdict": "broken",
+    "summary": "Foo's reply to the Punjabi joke request already shows in full, so the screen never showed a clear 'foo is working on it' state while the user waited.",
+    "problems": [
+      "The expected 'Thinking' row (foo's small face where typing dots would be) is not shown; the bot's joke reply is already fully displayed, so the waiting state is not visible.",
+      "The header only says 'Awake on your PC' and gives no sign that foo is working on the answer.",
+      "The user's Punjabi message at the right edge is cut off, with its timestamp clipped by the window edge.",
+      "The input box at the bottom is cut off, so the message field is only partly visible."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#9@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the question about Australia's capital, the chat shows foo's small face in the thinking spot, and the user's message has no eyes emoji.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#9@3000",
+    "verdict": "works",
+    "summary": "While foo is working on the capital-of-Australia question, the screen shows foo's small face where the typing dots would be, with 'typing...' in the header and chat list, and the user's message has no 👀.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#11",
+    "verdict": "works",
+    "summary": "The tiger biryani story shows in full across three paragraphs, it reads clearly, and the copy, retry and like buttons sit below the message without covering any words.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#11@1500",
+    "verdict": "broken",
+    "summary": "While foo was writing the tiger story, the screen gave no sign that it was still working, and the earlier question about Austria's capital got a confusing non-answer.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, though the story request was just sent and the answer is still incomplete; a user cannot tell foo is working on it.",
+      "The story reply shows only one sentence (\"A young tiger named Raju lived in the Sundarbans...\") with no typing or progress indicator, so it looks stuck or cut off.",
+      "foo answered \"wat is teh capitl of austrlia??\" with \"I didn't get that. Say it another way?\", ignoring a simple question that has a clear answer.",
+      "The chat list still shows an unread badge \"1\" while the conversation is open and being read."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#11@3000",
+    "verdict": "broken",
+    "summary": "While foo was writing the tiger story the screen shows no sign that foo is working on it, and an earlier question about Austria's capital got a confused non-answer.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is missing while the story is being written, so nothing tells the user foo is working.",
+      "foo's reply to \"wat is teh capitl of austrlia??\" was \"I didn't get that. Say it another way?\", which ignores a simple question the user asked.",
+      "The story reply is already partly visible and cut off at the bottom edge, so it is unclear whether foo is still working or finished, and no status shows either way.",
+      "The right side of the window is clipped: the timestamps on the user's messages (\"5:00 A\") and the end of the story message text are cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#11@6000",
+    "verdict": "broken",
+    "summary": "While foo was writing the tiger story, the screen did not show any sign that foo was working on it, and an earlier answer to a simple question was an unhelpful error.",
+    "problems": [
+      "The expected 'Thinking' row (foo's small face where typing dots would be) is not shown while the story is being written, so the user cannot tell foo is working.",
+      "foo replied \"I didn't get that. Say it another way?\" to the plain question \"wat is teh capitl of austrlia??\", ignoring what the user asked instead of answering Canberra.",
+      "The story reply is cut off partway through the first paragraph, and the view is clipped at the right edge, so message times and the user's text are cut off (\"tiger w\", \"5:00 A\")."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#18",
+    "verdict": "broken",
+    "summary": "The multi-line message went through as one bubble, but foo's reply was a confused \"I didn't get that. Say it another way?\" instead of a real answer.",
+    "problems": [
+      "foo's reply to the pasted text is \"I didn't get that. Say it another way?\", a fallback error-style answer that does not engage with what the user wrote, so the expected outcome (foo answering it properly) did not happen.",
+      "The sidebar preview shows the same \"I didn't get that\" failure line, confirming the chat is stuck on a non-answer.",
+      "The app window is cut off on the right: the user's blue bubble and its timestamp are clipped at the edge and the header's right-side icon is partly cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#20",
+    "verdict": "broken",
+    "summary": "After the user said thanks, foo did not just react quietly; the chat shows a confusing earlier reply, \"I didn't get that. Say it another way?\", which suggests foo misunderstood the user's messages.",
+    "problems": [
+      "Just above the \"thanks 🙏\" bubble, foo says \"I didn't get that. Say it another way?\" (a failure-style reply) instead of staying quiet or giving a short friendly line.",
+      "The reaction on the thanks bubble is a small 👍, which is right, but it sits next to an error-sounding reply, so the exchange does not look like the approved quiet-reaction behavior.",
+      "The chat list preview shows \"You: thanks 🙏\", so foo's reply is not what the preview highlights, but the visible conversation still shows foo failing to understand the user's earlier multi-line message."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#22@1500",
+    "verdict": "broken",
+    "summary": "foo's thinking indicator is showing as expected, but the user's \"thanks 🙏\" message has a 👍 reaction badge on it, which was not supposed to be there at this moment.",
+    "problems": [
+      "A 👍 emoji badge is attached to the bottom-left corner of the user's \"thanks 🙏\" message, although the expected state is no badges on that message while foo is still working.",
+      "The thumbs-up badge looks like foo has already reacted before it has finished answering, which is a fake or premature confirmation.",
+      "The app window is cut off on the right, so the timestamps on the user's messages (\"5:01 A\") and the header icon are clipped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#16",
+    "verdict": "broken",
+    "summary": "The chat still shows \"typing...\" in the header and the chat list, with a second typing avatar under the last reply, so it looks stuck and nothing shows that pressing Enter on an empty box was ignored.",
+    "problems": [
+      "The header and the chat list entry both still say \"typing...\" even though the story reply is complete, so the assistant looks stuck.",
+      "A second small avatar with a dotted ring sits below the reply as if another answer is loading, but nothing follows it.",
+      "The screen gives no sign that the empty Enter press was handled: the message box is cut off at the bottom and its contents cannot be seen.",
+      "The thumbs-up under the reply is highlighted and the message bubble also shows an outlined thumb icon, which looks inconsistent."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#26@1500",
+    "verdict": "broken",
+    "summary": "While foo should have been visibly working on the cab question, the screen shows no 'thinking' indicator and foo's answer 'I have not booked any cab.' is already there.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after the user sent the cab message, so the user gets no sign that foo is working on it.",
+      "foo's reply 'I have not booked any cab.' is already on screen at the moment the screen should show the waiting state, so the waiting step did not happen as expected.",
+      "The window is cut off on the right, so the timestamps ('5:01 A…') and the header icon are clipped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#26",
+    "verdict": "wrong-design",
+    "summary": "foo honestly says it has not booked any cab and cannot book yet, but the wording uses the technical word \"build\" and the window looks cut off on the right.",
+    "problems": [
+      "The reply says \"This build cannot do tasks like booking yet\"; \"build\" is developer jargon that a non-technical user would not understand, and it hints at a test version.",
+      "The app window is cropped on the right: the sent message bubbles and their times are cut off (\"5:01 A\", \"5:03 A\"), and the header icon is clipped.",
+      "The message input bar at the bottom is cut off, so the typing area is barely visible."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#22@3000",
+    "verdict": "broken",
+    "summary": "While foo should be showing that it is working on the \"thanks 🙏\" message, there is no thinking indicator at all, so the user can't tell anything is happening.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after \"thanks 🙏\", although the screen should plainly show foo is working on it.",
+      "The user's \"thanks 🙏\" message and the later \"asdfghjkl qwerty ???\" message both carry a 👍 badge, but the expected state at this moment is no badge on the user's message.",
+      "The chat shows the user's \"asdfghjkl qwerty ???\" message already sent below \"thanks\", with no sign of a pending reply, so the screen does not match the expected 3.2 s wait moment."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G2-chat·3#22@6000",
+    "verdict": "broken",
+    "summary": "While foo should have been visibly working on the reply to \"thanks 🙏\", the screen shows no sign of it, and the conversation looks muddled.",
+    "problems": [
+      "The Thinking row (foo's small face in place of typing dots) is not shown, so nothing tells the user foo is working on the reply.",
+      "The \"thanks 🙏\" message carries a 👍 badge even though the expected badges were none; a plain message should not show a reaction at this moment.",
+      "The later message \"asdfghjkl qwerty ???\" is also already in the chat with a 👍 badge, and foo's \"I didn't get that. Say it another way?\" reply sits above both, so the order looks confusing and the reply does not answer \"thanks\".",
+      "The right edge of the window is cut off: message times and the header icon are clipped (\"5:01 A\"), and the input box at the bottom is cropped."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#3@1500",
+    "verdict": "broken",
+    "summary": "Instead of showing that foo is working on the sleep tips, the screen shows an empty reply bubble with the error \"That reply got cut off. Try again\".",
+    "problems": [
+      "The expected \"Thinking\" row (foo's small face where typing dots would be) is not shown; it should be visible while foo is working on the answer.",
+      "foo's reply to \"Give me 5 tips to sleep better, one line each\" is an empty bubble with the error \"That reply got cut off. Try again\", so there is no answer and the request failed within about 9 seconds.",
+      "The empty bubble has a large blank area above the error line, which looks broken.",
+      "A stray \"More options\" button and tooltip are showing next to the user's message, partly covering the area around the message, which adds clutter."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#1",
+    "verdict": "wrong-design",
+    "summary": "foo is replying to the sleep-tips request with a numbered list, but the reply uses 'This build cannot do tasks like booking yet', which is test-version wording, and the window looks cropped.",
+    "problems": [
+      "The earlier foo message says \"This build cannot do tasks like booking yet\", which is the kind of 'test version' wording that Batch 1 must not show.",
+      "The window is cut off on the right: the header icon and message timestamps (\"5:03 A…\") are clipped at the edge.",
+      "The input box at the bottom is cut off and barely visible, so the user cannot see where to type.",
+      "The reply is a numbered list that wraps to two lines per tip, although the user asked for 'one line each'."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#3@3000",
+    "verdict": "broken",
+    "summary": "Instead of showing that foo is working on the sleep tips, the screen shows an empty reply bubble with an error saying the reply got cut off.",
+    "problems": [
+      "No Thinking row (foo's small face where typing dots would be) is shown while waiting for the answer to \"Give me 5 tips to sleep better, one line each\".",
+      "foo's reply bubble is empty apart from the error \"That reply got cut off. Try again\", so the user sees a failure instead of progress.",
+      "A large blank area sits at the top of the reply bubble above the error line, which looks broken.",
+      "A \"More options\" tooltip and a \"...\" button are stuck open next to the user's message, covering part of the layout."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#3@6000",
+    "verdict": "broken",
+    "summary": "Instead of showing that foo is working on the sleep tips, the screen shows an empty reply bubble with the error \"That reply got cut off. Try again\".",
+    "problems": [
+      "The expected \"Thinking\" row (foo's small face where typing dots would be) is not shown while waiting for the answer to \"Give me 5 tips to sleep better, one line each\".",
+      "foo's reply bubble for the sleep tips is blank except for a red error line, \"That reply got cut off. Try again\", so the user gets no answer and sees an error while the reply should still be in progress.",
+      "A \"More options\" tooltip and a \"...\" button are showing over the user's message, partly covering the area between the two messages and adding clutter during the wait.",
+      "The blue message bubbles are clipped at the right edge of the window, so the text and timestamp are cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#3",
+    "verdict": "works",
+    "summary": "After reopening, the sleep-tips question shows a clear 'That reply got cut off. Try again' message instead of a stuck Thinking row or a 👀.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#12@1500",
+    "verdict": "broken",
+    "summary": "While foo was meant to be visibly working on the answer, the screen shows no working indicator, an earlier reply that says it got cut off, and a half-finished answer that is just a lone \"1.\".",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown, so the user cannot tell foo is working on \"are you still there?\".",
+      "The earlier reply to the sleep-tips request is an empty bubble with the error \"That reply got cut off. Try again\", so the user never got their 5 tips.",
+      "The latest foo bubble says \"Five tips to sleep better:\" followed by an empty \"1.\", which looks stuck or half-finished and does not answer \"are you still there?\".",
+      "The chat list shows an unread badge (1) and a 5:04 AM time while the conversation is open and the reply is still incomplete, which is confusing."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#10",
+    "verdict": "broken",
+    "summary": "After reopening, the latest reply from foo shows an empty bubble with 'That reply got cut off. Try again' instead of tips for sleeping better.",
+    "problems": [
+      "The reply to 'Give me 5 tips to sleep better, one line each' is an error card reading 'That reply got cut off. Try again' with an empty area above it, but the expected outcome is no error card.",
+      "The user's question about sleep tips was not answered, so the chat looks stuck on a failed reply.",
+      "A 'More options' tooltip is left floating over the chat next to the user's message, which looks untidy."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#6",
+    "verdict": "broken",
+    "summary": "The menu shows the right three items, but the latest chat reply failed with a 'That reply got cut off' error instead of giving the sleep tips the user asked for.",
+    "problems": [
+      "The user asked for 5 sleep tips, but foo's reply bubble is empty apart from the error 'That reply got cut off. Try again', so the request was not answered.",
+      "The failed reply bubble has a large blank gap above the error line, which looks unfinished.",
+      "The window is cropped at the right edge: the header search icon and the sent message bubbles are cut off."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#12@3000",
+    "verdict": "broken",
+    "summary": "While waiting for foo's answer there is no sign that foo is working on it, and an earlier reply is shown as cut off with an error.",
+    "problems": [
+      "The Thinking row (foo's small face where typing dots would be) is not shown after \"are you still there?\", so the user can't tell foo is working on it.",
+      "The earlier reply to the sleep tips request shows an empty bubble with the error \"That reply got cut off. Try again\" instead of the tips.",
+      "The full answer (\"Five tips to sleep better:\") already appears below the user's message and is cut off at the bottom, which contradicts the expected \"before foo's answer was complete\" state.",
+      "The message input area at the bottom is clipped by a white rounded outline, and the right side of the window is cut off (header icon and message times are truncated)."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·3#5",
+    "verdict": "works",
+    "summary": "The user asked to go back to light mode, foo replied \"Light mode on.\", and a line \"Changed: Theme → Light.\" with an Undo link appeared, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G3-restart·3#12",
+    "verdict": "broken",
+    "summary": "The user asked \"are you still there?\" and foo answered with an unrelated list of five sleep tips instead of a short reply.",
+    "problems": [
+      "The reply ignores what the user wrote: \"are you still there?\" got a long list of sleep tips instead of a normal short answer like \"Yes, I'm here\".",
+      "The expected outcome was a short reply after the restart, but the reply is a long numbered list, so it looks like an old or unrelated answer.",
+      "The chat list preview also shows \"Five tips to sleep better: Keep y...\", which confirms the off-topic reply was the latest message."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·3#2",
+    "verdict": "wrong-design",
+    "summary": "The app did turn dark and says \"Dark mode on\" with a \"Changed: Theme → Dark.\" line, but that line has no Undo option, so the user cannot reverse the change as expected.",
+    "problems": [
+      "The confirmation line \"Changed: Theme → Dark.\" is plain small grey text with no \"Undo\" link or button, though the expected outcome is \"Changed: Theme → Dark · Undo\".",
+      "The change is not shown as a mini card like the reference (title, \"was\" value, Undo, Open Settings); it is only a faint centered line under the reply.",
+      "The line ends with a full stop instead of the \" · Undo\" format that was expected.",
+      "The window looks cropped on the right: the send bar, header icons and the user's message time are cut off at the edge."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·3#10",
+    "verdict": "broken",
+    "summary": "The Settings page for the AI account is cut off and squeezed, so the status text wraps into a narrow column and the buttons run off the edge of the window.",
+    "problems": [
+      "The window is cropped on the right: the Test now, Change and Replace key buttons are cut off at the edge, and the Backup AI dropdown is also clipped.",
+      "The 'Using: Anthropic key (your AI)' text is squeezed into a very narrow column and breaks into many short lines (Anthropic / key / (your / AI)).",
+      "The status line 'works · checked 3 min ago' is also squeezed into a narrow column and overlaps the Test now button's row, so it reads as scattered words instead of one tidy line.",
+      "The Backup AI and 'How it's paid' descriptions are cramped and wrap awkwardly, and the 'How it's paid' text is cut off at the bottom.",
+      "The layout does not match the reference, where the status sits on one line under 'Using' with Test now and Change aligned on the right.",
+      "The 'YOU' section (name, start with Windows, close behaviour) from the reference is missing from the Account page, which starts directly at 'YOUR AI'."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·3#8",
+    "verdict": "broken",
+    "summary": "Settings opens, but the window is cut off on the right and the AI section is squeezed into a narrow column, so the text wraps awkwardly and the buttons are clipped.",
+    "problems": [
+      "The Settings page is cut off on the right edge, so the \"Change\" and \"Replace key\" buttons are clipped and the \"Backup AI\" dropdown is cut off.",
+      "In the \"Using\" row, the text \"Anthropic key (your AI)\" and \"works · checked 3 min ago\" is squeezed into a very narrow column and breaks into one or two words per line. The green check mark is separated from its text and the row looks broken.",
+      "The \"Test now\" button sits on top of the wrapped description text, so the row looks crowded and overlapping.",
+      "The \"YOU\" section (your name, start with Windows, close behaviour) is missing from the top of the page. The page jumps straight to \"YOUR AI\".",
+      "The settings page has no search box, and the left list has no Notifications or Permissions entries. Its first section differs from the reference.",
+      "The wording shows \"Anthropic key (your AI)\" and \"How it's paid\", which differ from the reference text \"Claude (your AI)\" and \"Cost\", and the technical word \"key\" is shown to the user.",
+      "The chat list shows only one chat, \"foo\", with the text \"Changed: Theme → Light.\" The other chats and the bottom user status bar are missing."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·3#13",
+    "verdict": "broken",
+    "summary": "The Appearance settings page is cut off on the right, so the theme choice (Light, Dark, Windows) is not fully visible and the current selection is hard to tell.",
+    "problems": [
+      "The theme row is clipped at the right edge: the \"Dark\" option is cut off and the end of the row is not visible.",
+      "The theme buttons are crowded and overlap the \"Theme\" label, which shows only as a cut-off \"T\".",
+      "The \"Windows\" button is wrapped onto two lines under \"Same as\", and the \"Light\" button looks selected. The expected \"Windows\" default is not clearly marked as the current choice.",
+      "The accent colour toggle is cut off at the right edge and looks switched on (blue), while the expected default is off. A stray blue dot sits under the description text.",
+      "The page content is wider than the window, so the controls on the right side of every row (zoom, animations) are cropped or missing.",
+      "The Zoom and Animations rows differ from the expected text size and animation rows. Their long wrapped descriptions squeeze the text into narrow columns.",
+      "The settings list is missing the search settings box shown in the reference."
+    ],
+    "by": "claude-sonnet-5-5"
+  },
+  {
+    "id": "G4-settings·3#18",
+    "verdict": "broken",
+    "summary": "The user asked for dark mode, but foo ignored that and the screen shows it increased the text size instead.",
+    "problems": [
+      "The visible chat shows the user message \"make the text bigger\" and foo's reply \"Text size increased.\", which does not match the request \"dark mode kar do please\"; the reply ignores what the user asked.",
+      "The \"Changed: Zoom → 110%. Undo\" line reports a change the user never requested, so it is a wrong action presented as a confirmation.",
+      "foo does not say where to change the theme or whether dark mode is available, so the user gets no useful answer to the request.",
+      "The app window looks cut off on the right: the header icon and message bubbles are clipped at the edge, and the input box at the bottom is partly hidden."
+    ],
+    "by": "claude-sonnet-5-5"
+  }
+]

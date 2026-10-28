@@ -1,0 +1,502 @@
+{
+  "journey": "G4-settings",
+  "title": "Release gate: settings by asking in Hinglish and by the Settings page, every control clicked",
+  "feature": "settings",
+  "videos": [
+    "video/page@8e7ac8a52f3f2458ba1f45a95d103201.webm"
+  ],
+  "steps": 20,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-10-28T05-04-31-748Z-G4-settings",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "dark mode kar do please",
+      "sentAt": 1793163877547,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 195
+    },
+    {
+      "i": 1,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "the whole app turns dark; one line: Changed: Theme → Dark · Undo",
+      "ref": "UX-24-07",
+      "ok": true,
+      "ms": 4001,
+      "shot": "01-dark.png"
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "nahi, wapas light kar do",
+      "sentAt": 1793163881755,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 4,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 2306
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "back to light; the same kind of one line with Undo",
+      "ok": true,
+      "ms": 4001,
+      "shot": "02-light.png"
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "ok": true,
+      "ms": 83
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "Settings opens on a page with real rows; only the batch-1 pages are listed",
+      "ref": "UX-24-02",
+      "ok": true,
+      "ms": 1004,
+      "shot": "03-settings.png"
+    },
+    {
+      "i": 9,
+      "do": "click",
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 10,
+      "do": "wait",
+      "expect": "Using: Anthropic key · works · Test now · Change; the key is never shown",
+      "ref": "UX-24-02",
+      "ok": true,
+      "ms": 809,
+      "shot": "04-settings-account.png"
+    },
+    {
+      "i": 11,
+      "do": "sweep",
+      "expect": "every control on the Settings page does something visible; nothing overlaps",
+      "controls": [
+        {
+          "tid": "screen-back",
+          "role": "button",
+          "name": "Back",
+          "status": "pass",
+          "effect": [
+            "screen: chat",
+            "selection changed",
+            "content changed: \"Awake on your PC / I didn’t get that. Say it another way?\""
+          ],
+          "issues": [],
+          "shot": "05-sweep-screen-back.png"
+        },
+        {
+          "tid": "settings-nav-account",
+          "role": "button",
+          "name": "Account & your AI",
+          "status": "fail",
+          "effect": [
+            "NO VISIBLE EFFECT"
+          ],
+          "issues": [
+            {
+              "kind": "text-covered",
+              "text": "works · checked 3 min ago",
+              "textEl": "span>span>span>span",
+              "by": "section>ul>[settings-row-account-ai-using]>button \"Test now\"",
+              "at": [
+                635,
+                303
+              ]
+            }
+          ],
+          "shot": "06-sweep-settings-nav-account.png"
+        },
+        {
+          "tid": "settings-nav-appearance",
+          "role": "button",
+          "name": "Appearance",
+          "status": "pass",
+          "effect": [
+            "selection changed",
+            "content changed: \"Theme / Same as Windows\""
+          ],
+          "issues": [],
+          "shot": "07-sweep-settings-nav-appearance.png"
+        },
+        {
+          "tid": "settings-nav-shortcuts",
+          "role": "button",
+          "name": "Keyboard shortcuts",
+          "status": "pass",
+          "effect": [
+            "content changed: \"Getting around / Search chats\t\""
+          ],
+          "issues": [],
+          "shot": "08-sweep-settings-nav-shortcuts.png"
+        },
+        {
+          "tid": "settings-nav-about",
+          "role": "button",
+          "name": "About",
+          "status": "pass",
+          "effect": [
+            "content changed: \"Version 0.0.1 · tester build / What's new with me\""
+          ],
+          "issues": [],
+          "shot": "09-sweep-settings-nav-about.png"
+        },
+        {
+          "tid": "",
+          "role": "button",
+          "name": "Test now",
+          "status": "fail",
+          "effect": [
+            "content changed: \"works · checked just now\""
+          ],
+          "issues": [
+            {
+              "kind": "text-covered",
+              "text": "works · checked just now",
+              "textEl": "span>span>span>span",
+              "by": "section>ul>[settings-row-account-ai-using]>button \"Test now\"",
+              "at": [
+                635,
+                303
+              ]
+            }
+          ],
+          "shot": "10-sweep-Test_now.png"
+        },
+        {
+          "tid": "",
+          "role": "button",
+          "name": "Change",
+          "status": "pass",
+          "effect": [
+            "screen: chat",
+            "selection changed",
+            "content changed: \"5:05 AM / 1\""
+          ],
+          "issues": [],
+          "shot": "11-sweep-Change.png"
+        },
+        {
+          "tid": "",
+          "role": "button",
+          "name": "None",
+          "status": "fail",
+          "effect": [
+            "opened menu:None",
+            "content changed"
+          ],
+          "issues": [
+            {
+              "kind": "text-covered",
+              "text": "works · checked just now",
+              "textEl": "span>span>span>span",
+              "by": "section>ul>[settings-row-account-ai-using]>button \"Test now\"",
+              "at": [
+                635,
+                303
+              ]
+            }
+          ],
+          "shot": "12-sweep-None.png"
+        },
+        {
+          "tid": "",
+          "role": "button",
+          "name": "Replace key",
+          "status": "fail",
+          "effect": [
+            "opened dialog:Replace your Anthropic key\n\nPaste the ne",
+            "typing in New key, hidden",
+            "content changed: \"Replace your Anthropic key / Paste the new key below. The ol\""
+          ],
+          "issues": [
+            {
+              "kind": "controls-overlap",
+              "a": "[dialog-replace-key]>div>span>[card-secret-field] \"New key, hidden\"",
+              "b": "[dialog-replace-key]>div>span>[card-secret-eye] \"Show secret\"",
+              "px": [
+                38,
+                36
+              ]
+            }
+          ],
+          "shot": "13-sweep-Replace_key.png"
+        }
+      ],
+      "truncated": 0,
+      "ok": false,
+      "ms": 23739
+    },
+    {
+      "i": 12,
+      "do": "click",
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "i": 13,
+      "do": "wait",
+      "expect": "Theme: Light · Dark · Windows, the current one marked",
+      "ref": "UX-24-09",
+      "ok": true,
+      "ms": 808,
+      "shot": "14-settings-appearance.png"
+    },
+    {
+      "i": 14,
+      "do": "sweep",
+      "expect": "every Appearance control visibly changes the app",
+      "controls": [
+        {
+          "tid": "screen-back",
+          "role": "button",
+          "name": "Back",
+          "status": "pass",
+          "effect": [
+            "screen: chat",
+            "selection changed",
+            "content changed: \"Awake on your PC / are you still there?\""
+          ],
+          "issues": [],
+          "shot": "15-sweep-screen-back.png"
+        },
+        {
+          "tid": "settings-nav-account",
+          "role": "button",
+          "name": "Account & your AI",
+          "status": "fail",
+          "effect": [
+            "selection changed",
+            "content changed: \"YOUR AI / Using\""
+          ],
+          "issues": [
+            {
+              "kind": "text-covered",
+              "text": "works · checked just now",
+              "textEl": "span>span>span>span",
+              "by": "section>ul>[settings-row-account-ai-using]>button \"Test now\"",
+              "at": [
+                635,
+                303
+              ]
+            }
+          ],
+          "shot": "16-sweep-settings-nav-account.png"
+        },
+        {
+          "tid": "settings-nav-appearance",
+          "role": "button",
+          "name": "Appearance",
+          "status": "fail",
+          "effect": [
+            "NO VISIBLE EFFECT"
+          ],
+          "issues": [],
+          "shot": "17-sweep-settings-nav-appearance.png"
+        },
+        {
+          "tid": "settings-nav-shortcuts",
+          "role": "button",
+          "name": "Keyboard shortcuts",
+          "status": "pass",
+          "effect": [
+            "selection changed",
+            "content changed: \"Getting around / Search chats\t\""
+          ],
+          "issues": [],
+          "shot": "18-sweep-settings-nav-shortcuts.png"
+        },
+        {
+          "tid": "settings-nav-about",
+          "role": "button",
+          "name": "About",
+          "status": "pass",
+          "effect": [
+            "selection changed",
+            "content changed: \"Version 0.0.1 · tester build / What's new with me\""
+          ],
+          "issues": [],
+          "shot": "19-sweep-settings-nav-about.png"
+        },
+        {
+          "tid": "",
+          "role": "radio",
+          "name": "Same as Windows",
+          "status": "pass",
+          "effect": [
+            "selection changed"
+          ],
+          "issues": [],
+          "shot": "20-sweep-Same_as_Windows.png"
+        },
+        {
+          "tid": "",
+          "role": "radio",
+          "name": "Light",
+          "status": "pass",
+          "effect": [
+            "selection changed"
+          ],
+          "issues": [],
+          "shot": "21-sweep-Light.png"
+        },
+        {
+          "tid": "",
+          "role": "radio",
+          "name": "Dark",
+          "status": "pass",
+          "effect": [
+            "theme: dark",
+            "selection changed"
+          ],
+          "issues": [],
+          "shot": "22-sweep-Dark.png"
+        },
+        {
+          "tid": "",
+          "role": "switch",
+          "name": "Use my Windows accent colour",
+          "status": "skipped",
+          "effect": [],
+          "issues": [],
+          "reason": "already chosen"
+        },
+        {
+          "tid": "",
+          "role": "button",
+          "name": "Zoom",
+          "status": "pass",
+          "effect": [
+            "opened menu:80%\n90%\n100%\n110%\n125%\n150%\n175%\n200%",
+            "content changed: \"80% / 90%\""
+          ],
+          "issues": [],
+          "shot": "23-sweep-Zoom.png"
+        },
+        {
+          "tid": "",
+          "role": "radio",
+          "name": "Full",
+          "status": "pass",
+          "effect": [
+            "selection changed"
+          ],
+          "issues": [],
+          "shot": "24-sweep-Full.png"
+        },
+        {
+          "tid": "",
+          "role": "radio",
+          "name": "Basic",
+          "status": "pass",
+          "effect": [
+            "selection changed"
+          ],
+          "issues": [],
+          "shot": "25-sweep-Basic.png"
+        },
+        {
+          "tid": "",
+          "role": "radio",
+          "name": "Off",
+          "status": "pass",
+          "effect": [
+            "selection changed"
+          ],
+          "issues": [],
+          "shot": "26-sweep-Off.png"
+        }
+      ],
+      "truncated": 0,
+      "ok": false,
+      "ms": 33135
+    },
+    {
+      "i": 15,
+      "do": "key",
+      "note": "undo any zoom the sweep changed, so later rounds' pictures are at normal size",
+      "soft": true,
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "i": 16,
+      "do": "click",
+      "ok": true,
+      "ms": 231
+    },
+    {
+      "i": 17,
+      "do": "send",
+      "typed": "make the text bigger",
+      "sentAt": 1793163948620,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 269
+    },
+    {
+      "i": 18,
+      "do": "waitReply",
+      "expect": "text size changes with an Undo line, or foo says plainly where to change it; never a fake confirmation",
+      "timeline": [
+        {
+          "at": 58,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1111,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 1322,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Text size increased.\n\n5:05 AM",
+      "kit": [],
+      "ms": 7471,
+      "shot": "27-text-size.png"
+    },
+    {
+      "i": 19,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}
