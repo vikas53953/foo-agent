@@ -671,10 +671,10 @@ async function main() {
   };
   fs.writeFileSync(path.join(out, 'summary.json'), JSON.stringify({ ...summary, results }, null, 2));
   console.log(JSON.stringify(summary));
-  // A required journey (first run: picking the AI) stops the batch, since every later journey needs it. A gate journey (a
-  // batch's acceptance journey, like B1-batch1) does not stop it, but any failed step turns the run red: the workflow ends
-  // the part with the exit status, so a batch is never reported green with its own acceptance steps failing.
-  if ((journey.required || journey.gate) && summary.failed > 0) process.exit(1);
+  // Any failed step (soft checks aside) turns the run red: the workflow ends the part with the exit status, so a run is
+  // never reported green with a journey failing (audit 2026-10-28). Only a failed first run (picking the AI) also stops
+  // the batch, since every later journey needs it; the workflow handles that.
+  if (summary.failed > 0) process.exit(1);
 }
 
 main().catch((e) => {
