@@ -1,0 +1,13 @@
+{"t":"2026-10-28T09:33:16.674Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-10-28T09:33:22.228Z","step":"launch","ok":true}
+{"t":"2026-10-28T09:33:30.327Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8095}
+{"t":"2026-10-28T09:33:30.472Z","i":0,"do":"send","typed":"What's the latest news about ISRO this week? Give me sources.","sentAt":1793180010418,"sent":true,"before":0,"ok":true,"ms":144}
+{"t":"2026-10-28T09:33:45.384Z","shot":"01-news.png"}
+{"t":"2026-10-28T09:33:45.384Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":65,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7176,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":8645,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Mon 26 Oct to Wed 28 Oct\nWrite it\nWatch live\nStop\nunder 1 min\n9:33 AM","kit":[],"ms":14795,"shot":"01-news.png"}
+{"t":"2026-10-28T09:33:45.388Z","i":2,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-10-28T09:33:45.390Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-10-28T09:33:45.394Z","i":4,"do":"expectText","text":"Stopped. Nothing was booked, paid or sent.\n\n9:33 AM","ok":true,"ms":4}
+{"t":"2026-10-28T09:33:45.405Z","i":5,"do":"dump","ok":true,"ms":11}
+{"t":"2026-10-28T09:33:45.826Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-10-28T09:33:45.840Z","step":"aiTurns","turns":2}
+{"t":"2026-10-28T09:33:45.843Z","step":"jobTrail","steps":3,"calls":1}
