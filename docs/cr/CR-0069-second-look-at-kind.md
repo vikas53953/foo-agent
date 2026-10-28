@@ -48,6 +48,8 @@ The intake prompt already says a dark-mode ask is always a setting (CR-0058); th
    a flight to Goa" got the flight scope card (08-2 §5.3.4), both promises batch 1 can't keep. The line now also says foo
    cannot read the user’s email, WhatsApp or other apps yet, and with jobs off the runner's own pre-intake replies (the
    flight scope card, a steer) do not run, so intake answers and a flight booking gets the jobs-off line.
+   On the same run (B1), with that longer line "Switch to dark mode" came back as a reply saying foo can't switch it, so
+   the line also says that changing foo's own settings is not a task and is decided "setting" as usual.
 9. A `reply` with an empty `<say>` gets its CR-0041 retry with one more line, REASK_EMPTY_LINE: "Your first answer for
    this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>." On run
    40643760745, real Claude answered "Make a table comparing 3 budget phones…" (R1) and "aur tumhara naam? sirf naam
