@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the cup is ready. 🍵\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n7:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill it in and send it, and I can help from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an expense with a name, category, amount and date, and it shows your month total, a budget bar and a spend breakdown by category. It works only while this page is open, so nothing is saved after you close it.\n\nKeep\n7:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n7:16 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:17 PM\n7:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:16 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for Goa hotels, Sat 21 Nov to…\nlive checklist\nLooked for Goa hotels, Sat 21 Nov to Mon 23 Nov, 2\nChecking hotel booking sites\nH\nKeep 5 hotels that fit under ₹6,000 a night\nCompare price, rating and location\nWait for you to pick one\nWatch live\nStop\n3 min\n7:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n7:20 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for Goa hotels, Sat 21 Nov to… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry hotel booking sites instead\nTry another way\nTake over\nStop\n7:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:20 PM"
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's economy dipped to -5.8% in FY21, bounced back to 9.7% in FY22, and has settled around 6.5% by FY25. These are rounded figures from memory (FY runs April to March), and official numbers get revised, so I can check the latest if you want.\n\nIndia's real GDP growth, by year\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 is the best value on specs: it is the only one with a 3x zoom camera and a 120Hz screen, and it has the fastest chip. Launch prices were within about ₹1,100 of each other, so features decide it. These are specs from memory, and today's prices vary by seller and offers, so I can check them if you want.\n\niPhone 16\nScreen\n6.1 in OLED, 60Hz\nChip\nApple A18\nCameras\n48MP main, 12MP ultrawide\nZoom\nNo telephoto\nBattery\nAbout 3,600 mAh\nUpdates\nLong iOS support\nPixel 9\nScreen\n6.3 in OLED, 120Hz\nChip\nGoogle Tensor G4\nCameras\n50MP main, 48MP ultrawide\nZoom\nNo telephoto\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nScreen\n6.2 in AMOLED, 120Hz\nChip\nSnapdragon 8 Elite\nCameras\n50MP main, 12MP ultrawide, 10MP 3x zoom\nZoom\n3x telephoto\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nOnly one with a 3x zoom camera, plus a 120Hz screen and the fastest chip at a similar launch price.\n\nKeep\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the cup is ready. 🍵\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n7:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill it in and send it, and I can help from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n7:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Add an expense with a name, category, amount and date, and it shows your month total, a budget bar and a spend breakdown by category. It works only while this page is open, so nothing is saved after you close it.\n\nKeep\n7:16 PM"
+  }
+]
