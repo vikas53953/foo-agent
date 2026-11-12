@@ -27,6 +27,8 @@ export interface RowLayout {
   senderLabel: boolean;
   /** foo's latest text answer: the action row shows under it (§17.1). */
   latestAnswer: boolean;
+  /** A user message comes before this row, so Try again has a question to answer again (gate 10 QA5: the welcome lines had none). */
+  afterQuestion: boolean;
 }
 
 type Msg = Pick<MessageRow, 'authorKind' | 'authorId' | 'kind' | 'createdAt' | 'deletedAt' | 'badge' | 'reactions' | 'status'>;
@@ -65,7 +67,7 @@ const isOutput = (m: Msg) => m.authorKind === 'foo' || m.authorKind === 'helper'
 /** Layout facts for every row (rows are in display order). */
 export function layoutRows(rows: VRow[], o: { chatKind: ChatKind }): RowLayout[] {
   const isGroup = o.chatKind === 'group';
-  const out: RowLayout[] = rows.map(() => ({ pos: null, gap: 'none', senderLabel: false, latestAnswer: false }));
+  const out: RowLayout[] = rows.map(() => ({ pos: null, gap: 'none', senderLabel: false, latestAnswer: false, afterQuestion: false }));
   const joined: boolean[] = rows.map(() => false);
   for (let i = 1; i < rows.length; i++) {
     const a = rows[i - 1]!;
@@ -78,11 +80,14 @@ export function layoutRows(rows: VRow[], o: { chatKind: ChatKind }): RowLayout[]
     const m = r.message;
     if (isOutput(m) && m.kind === 'text' && m.deletedAt === null && m.status === 'complete') latest = i;
   });
+  let asked = false;
   rows.forEach((r, i) => {
     if (r.kind !== 'message') return;
     const m = r.message;
     const prev = rows[i - 1];
     const L = out[i]!;
+    L.afterQuestion = asked;
+    if (m.authorKind === 'user' && m.deletedAt === null) asked = true;
     if (isBubble(m)) {
       const startsRun = !joined[i];
       const continues = i + 1 < rows.length && joined[i + 1]!;

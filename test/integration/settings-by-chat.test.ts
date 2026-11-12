@@ -67,6 +67,20 @@ describe('AT-094 · a setting on the allow-list changes by chat, with one line a
     expect(x.patches.some((p) => p.event === 'settings:changed')).toBe(true);
   });
 
+  it('the AI\'s own "Changed: …" words already shown are taken back; foo\'s line is the only answer (CR-0073 item 4)', async () => {
+    // Gate 10 (a52aa85) G4 s18: "make the text bigger" showed the AI's "Changed: Text size → 110%" and then foo's real line.
+    const act = `<act>${JSON.stringify({ decision: { kind: 'setting', path: 'appearance.theme', value: 'dark' }, usedMemoryIds: [] })}</act>`;
+    h = jobHarness({
+      script: [{ match: { purpose: 'intake' }, chunks: [{ text: '<say>Done. Dark mode is on.</say>\n' }, { text: act, delayMs: 5_000 }] }],
+      settings: verified(),
+    });
+    h.userSays('Switch to dark mode');
+    await h.settle();
+    expect(h.settings().appearance.theme).toBe('dark');
+    expect(lines(h).map((l) => l.text)).toEqual(['Changed: Theme → Dark.']);
+    expect(fooTexts(h).filter((x) => x.trim())).toEqual([]);
+  });
+
   it('Undo calls settings:undo and puts the old value back: "Changed back: Theme → Same as Windows."', async () => {
     const { h: x } = await ask(DARK, 'dark mode kar do');
     const changeId = lines(x)[0]!.why.settingLine.changeId!;
