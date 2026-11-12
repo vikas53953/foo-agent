@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is my best-value pick: the fastest chip, 12 GB memory, three rear cameras and 7 years of updates for about the same price as the others. Prices are India launch prices from memory (128 GB versions), so check today's price before you buy, since sale prices can change the answer.\n\niPhone 16\nLaunch price\n₹79,900\nScreen\n6.1 inch, 60 Hz\nChip\nApple A18\nMemory\n8 GB\nRear cameras\n48 MP + 12 MP\nUpdates\nAbout 6 years\nPixel 9\nLaunch price\n₹79,999\nScreen\n6.3 inch, 120 Hz\nChip\nGoogle Tensor G4\nMemory\n12 GB\nRear cameras\n50 MP + 48 MP\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999\nScreen\n6.2 inch, 120 Hz\nChip\nSnapdragon 8 Elite\nMemory\n12 GB\nRear cameras\n50 MP + 12 MP + 10 MP\nUpdates\n7 years\n\nMost power and cameras for roughly the same price, with 7 years of updates.\n\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the cup is ready.\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short party planner: fill in the date, guest count and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below. Pick a month, set a budget, add expenses, and it totals them by category. It tries to save on this device, but that may not work inside chat, so don't rely on it.\n\nKeep\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n6:15 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:15 PM\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nLook for Goa hotels for 2 nights, Sat 21 Nov to\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n2 min\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "waiting",
+    "text": "This page wants to check you’re a person. You do this bit, then hand it back.\nwww.booking.com\nTake over\nSkip\n6:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:17 PM"
+  }
+]
