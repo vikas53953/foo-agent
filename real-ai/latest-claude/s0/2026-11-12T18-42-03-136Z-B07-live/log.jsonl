@@ -1,0 +1,24 @@
+{"t":"2026-11-12T18:42:03.136Z","journey":"B07-live","title":"Watch live, take over, hand back, stop","spec":"AT-058, AT-272, AT-078, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:42:08.105Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:42:08.229Z","i":0,"do":"send","typed":"Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning","sentAt":1794508928193,"sent":true,"before":0,"ok":true,"ms":121}
+{"t":"2026-11-12T18:42:19.430Z","shot":"01-irctc.png"}
+{"t":"2026-11-12T18:42:19.431Z","i":1,"do":"waitReply","timeline":[{"at":49,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5131,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":7163,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":5096,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking IRCTC\n1\nCheck IRCTC\n2\nFind trains on IRCTC\n3\nLook for morning trains New Delhi to Agra on Fri\n4\nCompare departure and arrival times\nAbout 3 minutes\nGo\nChange plan\n6:42 PM","kit":[],"ms":11155,"shot":"01-irctc.png"}
+{"t":"2026-11-12T18:42:19.465Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":34}
+{"t":"2026-11-12T18:43:04.469Z","i":3,"do":"wait","ok":true,"ms":45003}
+{"t":"2026-11-12T18:43:04.529Z","i":4,"do":"clickIf","found":1,"ok":true,"ms":59}
+{"t":"2026-11-12T18:43:08.575Z","shot":"02-live.png"}
+{"t":"2026-11-12T18:43:08.575Z","i":5,"do":"wait","ok":true,"ms":4001,"shot":"02-live.png"}
+{"t":"2026-11-12T18:43:08.577Z","i":6,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T18:43:11.621Z","shot":"03-taken-over.png"}
+{"t":"2026-11-12T18:43:11.621Z","i":7,"do":"wait","ok":true,"ms":3001,"shot":"03-taken-over.png"}
+{"t":"2026-11-12T18:43:11.623Z","i":8,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T18:43:14.669Z","shot":"04-handed-back.png"}
+{"t":"2026-11-12T18:43:14.669Z","i":9,"do":"wait","ok":true,"ms":3001,"shot":"04-handed-back.png"}
+{"t":"2026-11-12T18:43:14.670Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":1}
+{"t":"2026-11-12T18:43:22.714Z","shot":"05-stopped.png"}
+{"t":"2026-11-12T18:43:22.714Z","i":11,"do":"wait","ok":true,"ms":8001,"shot":"05-stopped.png"}
+{"t":"2026-11-12T18:43:22.716Z","i":12,"do":"key","ok":true,"ms":2}
+{"t":"2026-11-12T18:43:22.723Z","i":13,"do":"dump","ok":true,"ms":6}
+{"t":"2026-11-12T18:43:22.877Z","step":"appLog","lines":11,"dropped":0}
+{"t":"2026-11-12T18:43:22.886Z","step":"aiTurns","turns":9}
+{"t":"2026-11-12T18:43:22.888Z","step":"jobTrail","steps":4,"calls":3}

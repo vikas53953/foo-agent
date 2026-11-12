@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n6:40 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:41 PM\n6:41 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:41 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 20 Nov\nKept 3 flights that fit lowest fare\nCompared the 3 cheapest flights on price, time\nStopped by you\n6:41 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n6:42 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:42 PM\n6:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:42 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n6:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The 6:00 AM Shatabdi (12002) is the best morning train from New Delhi to Agra Cantt on Fri 13 Nov. It takes 1 hr 50 min and gets in at 7:50 AM.\n\nAll leave from New Delhi on Fri 13 Nov:\n\n12002 Shatabdi: leaves 6:00 AM, arrives 7:50 AM (1 hr 50 min)\n12138 Punjab Mail: leaves 5:10 AM, arrives 8:10 AM (3 hr)\n64074 NDLS-DHO EMU: leaves 4:15 AM, arrives 9:05 AM (4 hr 50 min)\n11906 HSX AGC Exp: leaves 7:20 AM, arrives 11:00 AM (3 hr 40 min)\n20848 Durg SF Exp: leaves 11:15 AM, arrives 1:55 PM (2 hr 40 min), only just morning\n\nThe 22470 Vande Bharat is quicker at 1 hr 40 min (6:00 AM to 7:40 AM), but it leaves from Hazrat Nizamuddin, not New Delhi. Seat availability and fares were not checked.\n\nWant me to look up fares for the Shatabdi?\n\n6:43 PM"
+  }
+]

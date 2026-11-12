@@ -1,0 +1,225 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "videos": [],
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-44-18-232Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1032
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from",
+      "sentAt": 1794509064369,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 109
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "ref": "BP-CARD-03",
+      "timeline": [
+        {
+          "at": 42,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6128,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6105,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Sat 14 Nov or Sun 15 Nov?\n1\nSouth Indian breakfast crawl\nBEST FIT\nDosa, idli and filter coffee, easy morning\n2\nLalbagh and Cubbon Park walk\nRelaxed, green, half a day\n3\nNandi Hills sunrise trip\nEarly start, home by lunch\nSomething else…\nSkip\n6:44 PM",
+      "kit": [],
+      "ms": 12154,
+      "shot": "01-choice.png"
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ref": "BP-CARD-03",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "the second one",
+      "sentAt": 1794509076709,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "timeline": [
+        {
+          "at": 41,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8660,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 9679,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8622,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Lalbagh and Cubbon Park walk it is, for the weekend of Sat 14 Nov or Sun 15 Nov. Mornings are usually the best time for both parks. Want me to add it to your calendar for one of those days?\n\n6:44 PM",
+      "kit": [],
+      "ms": 15685,
+      "shot": "03-typed-pick.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Now give me 3 dinner options to choose from",
+      "sentAt": 1794509092546,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 70
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "timeline": [
+        {
+          "at": 31,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6619,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6613,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nSouth Indian, light and quick\n2\nFull South Indian thali\nRice, sambar, rasam, curries, payasam\n3\nBiryani and raita\nHearty, a change from South Indian\nSomething else…\nSkip\n6:44 PM",
+      "kit": [],
+      "ms": 12664,
+      "shot": "04-choice-2.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 102
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 600,
+      "shot": "05-something-else.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Actually just a home-cooked dal chawal",
+      "sentAt": 1794509106089,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "timeline": [
+        {
+          "at": 15,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4067,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5584,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4060,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Home-cooked dal chawal it is, a solid choice for a Thursday night. 🌿 Since you love South Indian food, a curry leaf and mustard seed tadka on top would give it a nice twist.\n\n6:45 PM",
+      "kit": [],
+      "ms": 11653,
+      "shot": "06-own-answer.png"
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:42 PM\n6:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:42 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n6:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The 6:00 AM Shatabdi (12002) is the best morning train from New Delhi to Agra Cantt on Fri 13 Nov. It takes 1 hr 50 min and gets in at 7:50 AM.\n\nAll leave from New Delhi on Fri 13 Nov:\n\n12002 Shatabdi: leaves 6:00 AM, arrives 7:50 AM (1 hr 50 min)\n12138 Punjab Mail: leaves 5:10 AM, arrives 8:10 AM (3 hr)\n64074 NDLS-DHO EMU: leaves 4:15 AM, arrives 9:05 AM (4 hr 50 min)\n11906 HSX AGC Exp: leaves 7:20 AM, arrives 11:00 AM (3 hr 40 min)\n20848 Durg SF Exp: leaves 11:15 AM, arrives 1:55 PM (2 hr 40 min), only just morning\n\nThe 22470 Vande Bharat is quicker at 1 hr 40 min (6:00 AM to 7:40 AM), but it leaves from Hazrat Nizamuddin, not New Delhi. Seat availability and fares were not checked.\n\nWant me to look up fares for the Shatabdi?\n\n6:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n6:44 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best for Sat 14 Nov or Sun 15 Nov? → Lalbagh and Cubbon Park walk\n6:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n6:44 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Lalbagh and Cubbon Park walk it is, for the weekend of Sat 14 Nov or Sun 15 Nov. Mornings are usually the best time for both parks. Want me to add it to your calendar for one of those days?\n\n6:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n6:44 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nSouth Indian, light and quick\n2\nFull South Indian thali\nRice, sambar, rasam, curries, payasam\n3\nBiryani and raita\nHearty, a change from South Indian\nSomething else…\nSkip\n6:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n6:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Home-cooked dal chawal it is, a solid choice for a Thursday night. 🌿 Since you love South Indian food, a curry leaf and mustard seed tadka on top would give it a nice twist.\n\n6:45 PM"
+  }
+]
