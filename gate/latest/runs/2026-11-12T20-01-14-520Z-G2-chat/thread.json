@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "दिल्ली का मौसम मुझे पता नहीं, मैं अभी मौसम नहीं देख सकता। कोई और काम?\n\n8:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ\n8:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਇੱਕ ਆਦਮੀ ਨੇ ਆਪਣੇ ਦੋਸਤ ਨੂੰ ਪੁੱਛਿਆ, \"ਤੂੰ ਰੋਜ਼ ਜਿਮ ਜਾਂਦਾ ਐਂ ਪਰ ਫਿਰ ਵੀ ਕਮਜ਼ੋਰ ਕਿਉਂ ਐਂ?\" ਦੋਸਤ ਬੋਲਿਆ, \"ਮੈਂ ਜਿਮ ਜਾਂਦਾ ਜ਼ਰੂਰ ਆਂ, ਪਰ ਅੰਦਰ ਨਹੀਂ ਜਾਂਦਾ—ਬਾਹਰ ਖੜ੍ਹੇ ਹੋ ਕੇ ਸੋਚਦਾ ਆਂ ਕਿ ਅੱਜ ਕੀ ਕਰਾਂ!\" 😄\n\n8:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "wat is teh capitl of austrlia??\n8:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n8:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n8:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Sheru lived alone in the forest and grew tired of hunting every day. One evening, he smelled something wonderful drifting from a village nearby—biryani, rich with spices and saffron. Curious, he crept close to a kitchen window and watched an old cook layer rice and meat in a heavy pot, sealing it with dough.\n\nThe next night, Sheru returned with a stolen pot and a sack of rice. He had no fire, so he learned to gather dry wood and strike stones until sparks flew. His first biryani was a disaster—burnt on the bottom, raw on top—but he kept trying, adjusting the heat, adding cardamom and cloves he found in the forest from a trader's dropped bag.\n\nAfter many attempts, Sheru finally made a perfect pot. The aroma drew every animal in the forest to his clearing. They sat together under the stars, sharing the biryani, and from that day on, Sheru became known not as a hunter, but as the forest's finest cook. 🍛\n\nShow earlier answer\nRewritten\n8:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n8:02 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Sheru lived alone in the forest and grew tired of hunting every day. One evening, he smelled something wonderful drifting from a village nearby—biryani, rich with spices and saffron. Curious, he crept close to a kitchen window and watched an old cook layer rice and meat in a heavy pot, sealing it with dough.\n\nThe next night, Sheru returned with a stolen pot and a sack of rice. He had no fire, so he learned to gather dry wood and strike stones until sparks flew. His first biryani was a disaster—burnt on the bottom, raw on top—but he kept trying, adjusting the heat, adding cardamom and cloves he found in the forest from a trader's dropped bag.\n\nAfter many attempts, Sheru finally made a perfect pot. The aroma drew every animal in the forest to his clearing. They sat together under the stars, sharing the biryani, and from that day on, Sheru became known not as a hunter, but as the forest's finest cook. 🍛\n\n8:02 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n8:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n8:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n8:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n8:05 PM"
+  }
+]

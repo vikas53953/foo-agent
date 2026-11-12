@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Canberra is the capital of Australia.\n\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n8:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Raja lived in the Sundarbans and loved the smell of biryani drifting from nearby villages. One day, he befriended a kind chef who agreed to teach him. Raja practiced chopping onions with his claws, stirring rice gently, and layering spices just right.\n\nAfter weeks of trying, Raja finally made his first pot of biryani. The aroma filled the forest, and animals gathered around. Even the chef came to taste it and declared it perfect.\n\nFrom that day on, Raja became famous as the only tiger who could cook. He opened a small stall by the river, serving biryani to travelers and animals alike. His secret? A pinch of jungle herbs and a lot of heart. 🐅🍛\n\nShow earlier answer\nRewritten\n8:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n8:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A young tiger named Raja lived in the Sundarbans and loved the smell of biryani drifting from nearby villages. One day, he befriended a kind chef who agreed to teach him. Raja practiced chopping onions with his claws, stirring rice gently, and layering spices just right.\n\nAfter weeks of trying, Raja finally made his first pot of biryani. The aroma filled the forest, and animals gathered around. Even the chef came to taste it and declared it perfect.\n\nFrom that day on, Raja became famous as the only tiger who could cook. He opened a small stall by the river, serving biryani to travelers and animals alike. His secret? A pinch of jungle herbs and a lot of heart. 🐅🍛\n\n8:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n8:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n8:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n8:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn’t get that. Say it another way?\n\n8:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n8:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "failed",
+    "text": "That reply got cut off.\nTry again\n8:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n8:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I didn't book a cab—I can't do tasks yet. Want me to plan one for you now?\n\n8:24 PM"
+  }
+]
