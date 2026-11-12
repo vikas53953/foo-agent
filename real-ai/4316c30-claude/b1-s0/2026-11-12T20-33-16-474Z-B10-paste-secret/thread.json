@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What are we sorting out today?\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can answer questions, write things out, and plan with you. The app shows what works on this PC right now.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it, locked so nobody in the middle can read it.\n\nHere is how it goes:\n\nYour device locks (encrypts) your data before it leaves.\nThe locked data travels to the VPN company's computer.\nThat computer unlocks it and sends it on to the website, so the website sees the VPN's address, not yours.\nThe reply comes back the same way.\n\nWhy people use it: safer on public Wi-Fi, and your internet provider can't see which sites you visit. What it doesn't do: it won't stop viruses or hide you from sites you sign in to. You are just trusting the VPN company instead of your provider.\n\n8:33 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n20 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  }
+]
