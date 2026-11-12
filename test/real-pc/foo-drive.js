@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { stillWorking, settled } = require('./settle');
+const { replyFaults, replyWords } = require('./reply-check');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -107,6 +108,8 @@ const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 // message text out and redacts; the repo is public, so keep only the allowed fields and drop any line that still holds
 // something value-like (an email, a long number, an API key).
 const DIDNT_GET = /didn[’']t get that/i;
+/** Steps that send a message; the next waitReply judges what foo said below it. */
+const SENDS = new Set(['send', 'pasteSend', 'typeSend']);
 const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
 const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
 function copyTechLog(from, out) {
@@ -576,6 +579,8 @@ async function main() {
     log({ step: 'cleanup', stoppedStuckJob: ok, stuckLeft: await stuck.count().catch(() => -1), ms: Date.now() - t0 });
   }
   const results = [];
+  // foo's replies so far in this journey (words only), for notEcho.
+  const earlierReplies = [];
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
     const rec = { i, do: s.do, note: s.note, expect: s.expect, soft: s.soft, ref: s.ref, feature: s.feature, typed: s.text };
@@ -688,6 +693,9 @@ async function main() {
             rec.fieldOk = rec.inField === want;
           }
           await page.keyboard.press('Escape').catch(() => {});
+          // A pasted or typed message is a send too: the next waitReply judges only what foo said below it.
+          rec.sentAt = Date.now();
+          rec.before = 0;
           break;
         }
         case 'eval':
@@ -742,7 +750,7 @@ async function main() {
           // A reply is "settled" once the replies below the newest user bubble have grown and then stayed the same for quietMs.
           const start = Date.now();
           // The baseline comes from the latest send, unless a waitReply has already used it.
-          const lastSend = results.findLastIndex((r) => r.do === 'send');
+          const lastSend = results.findLastIndex((r) => SENDS.has(r.do));
           const prevSend = lastSend > results.findLastIndex((r) => r.do === 'waitReply') ? results[lastSend] : null;
           const before = s.before ?? prevSend?.before ?? (await afterMe()).n;
           const quiet = s.quietMs ?? 6_000;
@@ -783,10 +791,15 @@ async function main() {
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
             if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
+            // allowReaction: a ❤️ or 👍 on the user's message with no words is foo's whole answer (02-3: "thanks!" → react,
+            // send nothing). Gate 10 waited 120 s for words that were never coming.
+            const tl = rec.timeline[rec.timeline.length - 1];
+            if (s.allowReaction && now.n === before && tl?.reactions?.length && !tl.thinking && Date.now() - lastChange >= quiet) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
-          rec.ok = cur.n > before && rec.neverSeenMs === undefined;
+          rec.reactions = rec.timeline.at(-1)?.reactions ?? [];
+          rec.ok = (cur.n > before || (!!s.allowReaction && rec.reactions.length > 0)) && rec.neverSeenMs === undefined;
           for (const t of rec.timeline) delete t.key;
           if (rec.forbidden) rec.ok = false;
           // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
@@ -815,6 +828,11 @@ async function main() {
             rec.kitMissing = s.expectKit;
             rec.ok = false;
           }
+          // The words themselves (reply-check.js): what must and must not be in this step's own reply, how many rows, which
+          // script. A plain "a bubble came" no longer passes a chat check.
+          rec.replyFaults = replyFaults(s, { texts, reactions: rec.reactions }, earlierReplies);
+          if (rec.replyFaults.length) rec.ok = false;
+          earlierReplies.push(replyWords(texts).join('\n'));
           if (rec.ok && (s.expectTid || s.expectJs)) {
             rec.endState = await endState(s);
             rec.ok = rec.endState;

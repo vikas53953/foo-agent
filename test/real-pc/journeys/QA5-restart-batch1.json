@@ -125,15 +125,16 @@
     },
     {
       "do": "clickIf",
-      "tid": "bubble-actions-retry",
-      "note": "if the reply was cut, Try again once"
+      "tid": "bubble-error-retry",
+      "note": "if the reply was cut, press the cut-off row's own Try again once (bubble-actions-retry is the answer-row rewrite; gate 10 clicked it under the welcome line)"
     },
     {
-      "do": "wait",
-      "ms": 20000,
+      "do": "waitJs",
+      "timeoutMs": 120000,
+      "js": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b||b.dataset.state==='streaming')return false;const t=b.innerText.replace(/\\d{1,2}:\\d{2}\\s*[AP]M/i,'').trim();return !/cut off/i.test(t)&&t.length>20})()",
       "shot": "q5-answered",
-      "feature": "chat",
-      "expect": "the tortoise question has a real answer"
+      "expect": "the tortoise question has a real answer",
+      "feature": "chat"
     },
     {
       "do": "relaunch"
@@ -161,7 +162,9 @@
       "feature": "ai",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "after two restarts the stored key still works with real Claude",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)})()",
+      "script": "latin",
+      "replyNot": "naam|shelly|moti|kachhu|tortoise|नाम|कछु"
     },
     {
       "do": "dump",

@@ -137,7 +137,8 @@
       "shot": "hinglish",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "a short warm reply in Hinglish, streamed",
-      "feature": "chat"
+      "feature": "chat",
+      "script": "latin"
     },
     {
       "do": "send",
@@ -150,7 +151,8 @@
       "shot": "joke",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "a joke, in the user's mix of Hindi and English",
-      "feature": "chat"
+      "feature": "chat",
+      "script": "latin"
     },
     {
       "do": "send",
@@ -221,8 +223,11 @@
       "feature": "settings"
     },
     {
-      "do": "wait",
-      "ms": 5000,
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "replyRe": "theme",
+      "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
+      "maxBubbles": 1,
       "shot": "dark",
       "expect": "dark theme; one line Changed: Theme → Dark. Undo",
       "feature": "settings"

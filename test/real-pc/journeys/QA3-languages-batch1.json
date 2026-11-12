@@ -140,7 +140,10 @@
       "feature": "chat",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b(7|8)([:.]\\d{2})?\\b/.test(t)&&!/<\\/?say>/.test(t)})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b(7|8)([:.]\\d{2})?\\b/.test(t)&&!/<\\/?say>/.test(t)})()",
+      "script": "latin",
+      "replyRe": "(^|[^0-9:.])(7([:.][0-5]\\d)?|8([:.]00)?)(?![0-9])",
+      "replyNot": "(^|[^0-9])8[:.](0[1-9]|[1-5]\\d)|remind|रिमाइंडर"
     },
     {
       "do": "dump",
