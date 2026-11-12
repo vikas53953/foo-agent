@@ -1,0 +1,284 @@
+{
+  "id": "UX-04-05",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-04-05.light.png",
+      "sha256": "5f5485cf61f681275441f3913ff69521a475f7aa1e670f0443aed8e733cdbfcb"
+    },
+    "dark": {
+      "png": "UX-04-05.dark.png",
+      "sha256": "2bff15c733d0fc1bacbe959f9457649c924a535f7e5fe7d7b261154e8aebdb46"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "7:45 PM",
+    "Calm, a bit funny. Got it. 🌿",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "Setting up foo",
+    "⚙",
+    "foo",
+    "Setting up",
+    "Step 3 of 4 · A quick interview",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Thu 15 Oct",
+    "✓ Using Claude (your AI) · foo · Calm, a bit funny",
+    "What should I call you? →",
+    "Vikas",
+    "Hi Vikas.",
+    "7:46 PM",
+    "Can I peek at which apps you have installed? →",
+    "Yes, have a look",
+    "Which apps do you use most? →",
+    "WhatsApp, Gmail + Calendar, X",
+    "Want me to read your Gmail so I know your bills and trips?",
+    "7:46 PM",
+    "✉ Connect Gmail and Calendar",
+    "4 of 8",
+    "I'll read emails and your calendar to spot bills, trips and plans. I'll write drafts, but I never send without your tap.",
+    "Connect",
+    "Not now",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "What I know about you",
+    "Nothing yet. Tell me about you any time.",
+    "Spent this month",
+    "Your AI",
+    "₹0 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps",
+    "🌐 Sign in – Google Accounts",
+    "—",
+    "☐",
+    "✕",
+    "🔒 accounts.google.com",
+    "accounts.google.com",
+    "foo wants to access your Google Account",
+    "v••••@gmail.com",
+    "This will allow foo to:",
+    "✓ Read your email",
+    "✓ Create drafts",
+    "✓ Send email (only after you approve in foo)",
+    "✓ See and add calendar events",
+    "Cancel",
+    "Allow",
+    "⊞",
+    "⌕",
+    "🌐",
+    "📁",
+    "🌐",
+    "f",
+    "˄",
+    "📶",
+    "🔊",
+    "7:41 PM",
+    "15-10-2026"
+  ],
+  "hlTexts": [
+    "accounts.google.com",
+    "foo wants to access your Google Account",
+    "v••••@gmail.com",
+    "This will allow foo to:",
+    "✓ Read your email",
+    "✓ Create drafts",
+    "✓ Send email (only after you approve in foo)",
+    "✓ See and add calendar events",
+    "Cancel",
+    "Allow"
+  ],
+  "hl": {
+    "id": "gconsent",
+    "box": {
+      "x": 221,
+      "y": 137,
+      "width": 818,
+      "height": 532
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 221,
+      "y": 137,
+      "width": 818,
+      "height": 532
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M12",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 4,
+    "step": 5,
+    "anchor": "interview-5",
+    "title": "Quick interview and connections",
+    "part": "Day 0 · Thu 15 Oct, evening",
+    "j": "J4",
+    "r": "R18 · R9",
+    "c": "Google's own page opens in your browser. You check what foo asks for and allow it.",
+    "s": "Read email · create drafts · send only after you approve in foo · see and add calendar events.",
+    "f": "Waits. foo never sees your Google password.",
+    "state": {
+      "view": "desk",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "7:45 PM",
+            "prev": "Calm, a bit funny. Got it. 🌿"
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "f",
+              "h": "<div class=\"card okc\"><div class=\"hd\">✓ Using Claude (your AI) · foo · Calm, a bit funny</div></div>",
+              "g": 12
+            },
+            {
+              "id": "A",
+              "h": "<div class=\"card\"><div class=\"ans\">What should I call you? → <b>Vikas</b></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Hi Vikas.<span class=\"meta\">7:46 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "B",
+              "h": "<div class=\"card\"><div class=\"ans\">Can I peek at which apps you have installed? → <b>Yes, have a look</b></div></div>",
+              "g": 12
+            },
+            {
+              "id": "C",
+              "h": "<div class=\"card\"><div class=\"ans\">Which apps do you use most? → <b>WhatsApp, Gmail + Calendar, X</b></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Want me to read your Gmail so I know your bills and trips?<span class=\"meta\">7:46 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "D",
+              "h": "<div class=\"card\" data-hl=\"dcard\"><div class=\"hd\">✉ Connect Gmail and Calendar<span class=\"lbl\">4 of 8</span></div><div class=\"sm\">I'll read emails and your calendar to spot bills, trips and plans. I'll write drafts, but I never send without your tap.</div><div class=\"row2\"><span class=\"pillbtn sm dark\" data-hl=\"connect\">Connect</span><span class=\"pillbtn sm \">Not now</span></div></div>",
+              "g": 4
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Setting up",
+          "pill": "Step 3 of 4 · A quick interview"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)"
+          ],
+          "mem": [],
+          "ai": 0,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "setup": 1,
+        "ai": "Claude ready",
+        "aiTone": null,
+        "foot2": "Setting up foo"
+      },
+      "d": {
+        "app": true,
+        "wins": [
+          {
+            "k": "browser",
+            "x": 220,
+            "y": 70,
+            "w": 820,
+            "h": 600,
+            "tab": "Sign in – Google Accounts",
+            "url": "accounts.google.com",
+            "site": "google",
+            "hlb": "gconsent"
+          }
+        ],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "7:41 PM",
+        "date": "15-10-2026",
+        "tbx": [
+          "🌐"
+        ]
+      },
+      "mo": {
+        "m": {
+          "foo": "rest"
+        },
+        "still": {
+          "foo": true
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "7:41 PM",
+    "superseded": null
+  }
+}
