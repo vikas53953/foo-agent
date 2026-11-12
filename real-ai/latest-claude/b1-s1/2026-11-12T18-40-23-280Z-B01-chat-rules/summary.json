@@ -1,0 +1,107 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "videos": [],
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-40-23-280Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "thanks!",
+      "sentAt": 1794508828413,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 90
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20002,
+      "shot": "01-thanks.png"
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons",
+      "sentAt": 1794508848558,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "timeline": [
+        {
+          "at": 25,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2052,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6595,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2031,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Indians are moving to UPI because it makes paying as easy as sending a message. You open any app, scan a code or type a phone number, enter your PIN, and the money moves in seconds. There is no card to carry, no cash to count and no change to hunt for.\n\nIt also works everywhere. The small tea stall, the vegetable seller and the big mall all show the same QR code, so you never have to ask whether they take your app. Banks and apps all talk to each other, so you can pay from your own account without loading a wallet first.\n\nCost matters too. For most everyday payments, people pay no fee at all, and shopkeepers do not need an expensive machine, just a printed code and a phone. That is why even tiny payments of ₹10 or ₹20 now happen digitally.\n\nThe three main reasons:\n\nSpeed and ease: Pay in seconds with a scan or a phone number, any time of day.\nWorks everywhere: One QR code is accepted from street stalls to big stores, across all bank accounts.\nLow cost: Usually free for users and cheap for shopkeepers, so small payments make sense.\n\nFees, limits and rules can change, so check your bank or app for the latest.\n\n6:40 PM",
+      "kit": [],
+      "ms": 12676,
+      "shot": "02-long.png"
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}
