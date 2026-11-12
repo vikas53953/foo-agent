@@ -1,93 +1,93 @@
 {
   "status": "FAIL",
-  "sha": "2c767a9d1da7ece89829c01e3158c84263f76a18",
+  "sha": "a52aa8510a96fdba0757c77ffc1de15df2a46419",
   "features": [
     {
       "feature": "install",
       "name": "Install and open foo (the app as downloaded, restart, quit)",
       "verdict": "broken",
       "checkpoints": 29,
-      "broken": 7,
+      "broken": 6,
       "wrong": 0
     },
     {
       "feature": "ai",
       "name": "Connect your AI (find it, your own key, a wrong key)",
       "verdict": "broken",
-      "checkpoints": 95,
-      "broken": 15,
-      "wrong": 25
+      "checkpoints": 98,
+      "broken": 17,
+      "wrong": 19
     },
     {
       "feature": "name",
       "name": "Name, face and vibe",
       "verdict": "broken",
-      "checkpoints": 40,
-      "broken": 9,
+      "checkpoints": 42,
+      "broken": 7,
       "wrong": 15
     },
     {
       "feature": "chat",
       "name": "Just chatting, in your language",
       "verdict": "broken",
-      "checkpoints": 202,
-      "broken": 79,
-      "wrong": 8
+      "checkpoints": 212,
+      "broken": 76,
+      "wrong": 10
     },
     {
       "feature": "settings",
       "name": "Settings, by page or by asking",
       "verdict": "broken",
-      "checkpoints": 55,
-      "broken": 21,
+      "checkpoints": 56,
+      "broken": 25,
       "wrong": 6
     },
     {
       "feature": "refusals",
       "name": "What batch 1 must refuse plainly (tasks, memory)",
       "verdict": "broken",
-      "checkpoints": 60,
-      "broken": 13,
+      "checkpoints": 68,
+      "broken": 6,
       "wrong": 7
     }
   ],
   "checks": [
     {
-      "conclusion": "success",
+      "conclusion": "failure",
       "name": "Golden lane (windows-latest)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131414990909"
-    },
-    {
-      "conclusion": "success",
-      "name": "Full suite (windows-latest, shard 2/4)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131413701383"
-    },
-    {
-      "conclusion": "success",
-      "name": "Screen change check",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131413701196"
-    },
-    {
-      "conclusion": "success",
-      "name": "Full suite (windows-latest, shard 3/4)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131413701154"
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131470866902"
     },
     {
       "conclusion": "success",
       "name": "Full suite (windows-latest, shard 1/4)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131413701124"
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131469598549"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full suite (windows-latest, shard 2/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131469598532"
+    },
+    {
+      "conclusion": "success",
+      "name": "Full suite (windows-latest, shard 3/4)",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131469598491"
     },
     {
       "conclusion": "success",
       "name": "Full suite (windows-latest, shard 4/4)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131413701001"
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131469598370"
     },
     {
       "conclusion": "success",
       "name": "Fast lane (ubuntu-latest)",
-      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43284365106/job/131413700451"
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131469598193"
+    },
+    {
+      "conclusion": "success",
+      "name": "Screen change check",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/43300367002/job/131469597820"
     }
   ],
-  "reviewed": 455,
-  "checkpoints": 481
+  "reviewed": 483,
+  "checkpoints": 505
 }

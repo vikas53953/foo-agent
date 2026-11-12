@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, ek line mein batao: chai ya coffee?\n9:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chai, हमेशा। ☕\n\nShow earlier answer\nRewritten\n9:12 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n9:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "gamma\n\ndelta. Please just reply OK.\n9:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chai, हमेशा। ☕\n\n9:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n9:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't book tables yet, but I can help you find places and give you their details to call or visit.\n\n9:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that my sister's birthday is on 5 March\n9:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n9:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the table?\n9:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I haven't. I can't book tables yet—you'll need to call or visit the place yourself.\n\n9:13 PM"
+  }
+]

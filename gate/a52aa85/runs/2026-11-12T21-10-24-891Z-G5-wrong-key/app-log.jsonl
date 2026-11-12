@@ -1,0 +1,3 @@
+{"t":1794517825867,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794517846078,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":127}
+{"t":1794517878030,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}

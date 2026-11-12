@@ -1,5 +1,0 @@
-{"t":1794512095662,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1794512171988,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":895}
-{"t":1794512239780,"lvl":"info","mod":"engine","evt":"chat.rewrite_skipped","kind":"no_question"}
-{"t":1794512348226,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
-{"t":1794512348849,"lvl":"info","mod":"main","evt":"APP_STARTED"}

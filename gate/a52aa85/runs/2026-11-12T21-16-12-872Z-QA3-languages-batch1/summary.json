@@ -1,0 +1,364 @@
+{
+  "journey": "QA3-languages-batch1",
+  "title": "Hindi, Punjabi and Hinglish with real Claude on the batch-1 build",
+  "videos": [
+    "video/page@35b132b48f62112a90c4fed38fe671ff.webm"
+  ],
+  "steps": 23,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-11-12T21-16-12-872Z-QA3-languages-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 3,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 160
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 25,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20002,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "ms": 116
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 4,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "ms": 24
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 141
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "ms": 30005,
+      "shot": "05-key-tested.png"
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 1,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name",
+      "ok": true,
+      "ms": 14,
+      "shot": "06-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Anthropic key (your AI)\n9:16 PM",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 151
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10001,
+      "shot": "07-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "typed": "नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।",
+      "sentAt": 1794518239884,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 151
+    },
+    {
+      "i": 17,
+      "do": "waitReply",
+      "expect": "Hindi in Devanagari is answered in Devanagari",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 11,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 265,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1584,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4349,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1584,
+          "mark": 1500,
+          "shot": "08-q3-hindi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3241,
+          "mark": 3000,
+          "shot": "09-q3-hindi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1692,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "नमस्ते! आलू गोभी बना लो: कटी गोभी और आलू को जीरा, हल्दी और नमक के साथ ढककर 15 मिनट पकाओ, बस। धनिया पत्ती डालकर परोसो।\n\n9:17 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 10542,
+      "shot": "10-q3-hindi.png"
+    },
+    {
+      "i": 18,
+      "do": "send",
+      "typed": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।",
+      "sentAt": 1794518250635,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 10,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1543,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 7451,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1543,
+          "mark": 1500,
+          "shot": "11-q3-punjabi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3179,
+          "mark": 3000,
+          "shot": "12-q3-punjabi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6088,
+          "mark": 6000,
+          "shot": "13-q3-punjabi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1611,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਬਟਰਸਕੌਚ ਜਾਂ ਬਲੈਕ ਫੌਰੈਸਟ ਕੇਕ ਲੈ ਲਓ, ਦੋਵੇਂ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦੇ ਨੇ। ਜੇ ਮੰਮੀ ਨੂੰ ਫਲ ਪਸੰਦ ਨੇ ਤਾਂ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਵੀ ਵਧੀਆ ਰਹੇਗਾ।\n\n9:17 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 13633,
+      "shot": "14-q3-punjabi.png"
+    },
+    {
+      "i": 20,
+      "do": "send",
+      "typed": "yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?",
+      "sentAt": 1794518264463,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 150
+    },
+    {
+      "i": 21,
+      "do": "waitReply",
+      "expect": "Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 25,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2138,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4289,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1562,
+          "mark": 1500,
+          "shot": "15-q3-hinglish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3172,
+          "mark": 3000,
+          "shot": "16-q3-hinglish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 2117,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "सुबह 7:45 बजे अलार्म लगा लो, तैयार होने के लिए एक घंटा मिल जाएगा। चाहो तो 7:30 बजे भी लगा सकते हो, थोड़ा एक्स्ट्रा टाइम रहेगा।\n\n9:17 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 10464,
+      "shot": "17-q3-hinglish.png"
+    },
+    {
+      "i": 22,
+      "do": "dump",
+      "ok": true,
+      "ms": 20
+    }
+  ]
+}
