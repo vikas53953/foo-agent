@@ -1,0 +1,21 @@
+{"t":"2026-11-12T20:35:31.052Z","journey":"U17-settings-by-chat","title":"Change a setting by chat: mini line with Undo; theme and accent rows","spec":"06 Settings changed-by-chat, settings:undo, 10-2 §C.5 Settings; CR-0043 (the setting line with Undo)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:35:36.758Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:35:37.802Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1041}
+{"t":"2026-11-12T20:35:37.930Z","i":1,"do":"send","typed":"Switch to dark mode","sentAt":1794515737892,"sent":true,"before":0,"ok":true,"ms":128}
+{"t":"2026-11-12T20:35:42.053Z","shot":"01-dark.png"}
+{"t":"2026-11-12T20:35:42.053Z","i":2,"do":"waitJs","expect":"foo switches to dark and shows the line \"Changed: Theme → Dark. [Undo]\" (CR-0043: a system line, not a reply bubble)","ref":"UX-12-02","ok":true,"ms":4021,"shot":"01-dark.png"}
+{"t":"2026-11-12T20:35:42.168Z","i":3,"do":"click","note":"Undo on the setting line","ok":true,"ms":114}
+{"t":"2026-11-12T20:35:42.269Z","shot":"02-undo.png"}
+{"t":"2026-11-12T20:35:42.269Z","i":4,"do":"waitJs","expect":"back to light; the line says it was undone","ok":true,"ms":2,"shot":"02-undo.png"}
+{"t":"2026-11-12T20:35:42.317Z","i":5,"do":"key","ok":true,"ms":48}
+{"t":"2026-11-12T20:35:42.417Z","i":6,"do":"click","soft":true,"ok":true,"ms":100}
+{"t":"2026-11-12T20:35:42.533Z","i":7,"do":"click","soft":true,"ok":true,"ms":116}
+{"t":"2026-11-12T20:35:43.192Z","shot":"03-theme-row.png"}
+{"t":"2026-11-12T20:35:43.193Z","i":8,"do":"wait","expect":"theme options","ok":true,"ms":601,"shot":"03-theme-row.png"}
+{"t":"2026-11-12T20:35:43.243Z","i":9,"do":"key","ok":true,"ms":50}
+{"t":"2026-11-12T20:36:06.315Z","shot":"04-error-step10.png"}
+{"t":"2026-11-12T20:36:06.315Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"04-error-step10.png","ms":23071}
+{"t":"2026-11-12T20:36:06.326Z","i":11,"do":"dump","ok":true,"ms":11}
+{"t":"2026-11-12T20:36:06.470Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-12T20:36:06.482Z","step":"aiTurns","turns":1}
+{"t":"2026-11-12T20:36:06.485Z","step":"jobTrail","steps":0,"calls":0}

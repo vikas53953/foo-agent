@@ -1,0 +1,107 @@
+{
+  "journey": "B01-chat-rules",
+  "title": "Chat rules: thanks, long answer, filler, reactions",
+  "videos": [],
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-33-15-160Z-B01-chat-rules",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "thanks!",
+      "sentAt": 1794515600852,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "expect": "AT-027: 👍 reaction on my message, no foo message",
+      "ok": true,
+      "ms": 20002,
+      "shot": "01-thanks.png"
+    },
+    {
+      "i": 2,
+      "do": "eval",
+      "value": {
+        "reaction": true,
+        "lastKind": "bubble-me"
+      },
+      "ok": true,
+      "ms": 3
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons",
+      "sentAt": 1794515621052,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 91
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "AT-030: at most 3 bubbles, a list never split across bubbles; AT-031 no filler",
+      "timeline": [
+        {
+          "at": 29,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8677,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 11208,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8664,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "People in India are switching to UPI because it makes paying as easy as sending a text, and it costs almost nothing to use. Since it launched in 2016, it has become the default way to pay, from a ₹20 cup of chai to monthly rent.\n\nThree main reasons:\n\nSpeed and simplicity: Scan a code or pick a contact, enter an amount, and the money moves in seconds, any time of day, even on holidays.\nLow or zero cost: Most person-to-person and small shop payments are free for users, so there are no card fees and no hunting for change.\nWorks everywhere: One payment address works across banks and apps. Street vendors, big stores and bill payments all accept the same QR code, and a basic smartphone is enough.\n\nTrust helps too. Payments link straight to your bank account, you confirm with a PIN, and banks and the government pushed it hard through the Digital India drive. Once your neighbours, your vendor and your landlord all use it, carrying cash starts to feel like the odd choice.\n\n8:33 PM",
+      "kit": [],
+      "ms": 17310,
+      "shot": "02-long.png"
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "note": "AT-308 suggestion chips (≤3)",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "eval",
+      "value": 0,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

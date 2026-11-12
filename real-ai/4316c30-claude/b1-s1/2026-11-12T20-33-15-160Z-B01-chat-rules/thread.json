@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks!\n8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Tell me in about 200 words why people in India are switching to UPI, with a short list of 3 reasons\n8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "People in India are switching to UPI because it makes paying as easy as sending a text, and it costs almost nothing to use. Since it launched in 2016, it has become the default way to pay, from a ₹20 cup of chai to monthly rent.\n\nThree main reasons:\n\nSpeed and simplicity: Scan a code or pick a contact, enter an amount, and the money moves in seconds, any time of day, even on holidays.\nLow or zero cost: Most person-to-person and small shop payments are free for users, so there are no card fees and no hunting for change.\nWorks everywhere: One payment address works across banks and apps. Street vendors, big stores and bill payments all accept the same QR code, and a basic smartphone is enough.\n\nTrust helps too. Payments link straight to your bank account, you confirm with a PIN, and banks and the government pushed it hard through the Digital India drive. Once your neighbours, your vendor and your landlord all use it, carrying cash starts to feel like the odd choice.\n\n8:33 PM"
+  }
+]
