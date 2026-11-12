@@ -1,0 +1,11 @@
+{"t":1794511313348,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794511321181,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2941}
+{"t":1794511339391,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":860}
+{"t":1794511379139,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794511382826,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794511393528,"lvl":"info","mod":"engine","evt":"chat.rewrite_skipped","kind":"no_question"}
+{"t":1794511414279,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794511427021,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794511430930,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1794511437404,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1794511437405,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}
