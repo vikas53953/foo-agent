@@ -1,0 +1,3 @@
+{"t":1794524861562,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794524867999,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:UNKNOWN","ms":1863}
+{"t":1794524886661,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:UNKNOWN","ms":225}
