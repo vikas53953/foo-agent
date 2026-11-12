@@ -1,0 +1,172 @@
+{
+  "journey": "R1-rich",
+  "title": "Rich replies: table, steps, numbers",
+  "videos": [],
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-58-00-205Z-R1-rich",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Make a table comparing 3 budget phones under 20000 rupees",
+      "sentAt": 1794509885737,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 122
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 53,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 557,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6110,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8148,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6068,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 budget phones that fit priced under ₹20,000, well reviewed\n3\nCompare price, screen, camera, battery\nAbout 3 minutes\nGo\nChange plan\n6:58 PM",
+      "kit": [],
+      "ms": 12137,
+      "shot": "01-table.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)",
+      "found": 1,
+      "ok": true,
+      "ms": 35
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 150002,
+      "shot": "02-table-after-go.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Plan a 3 day trip to Jaipur for my parents",
+      "sentAt": 1794510048193,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 95
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 20,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 2047,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 10610,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 11658,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 17749,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 21309,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 17737,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here is an easy-paced 3 day Jaipur plan for your parents, with mornings for sightseeing and rests in the afternoon. November is a good time to go, with mild days.\n\nDay 1, the old city: City Palace and Jantar Mantar in the morning, then a view of Hawa Mahal from the street. In the evening, a slow stroll through Johari Bazaar for jewellery and block prints.\nDay 2, forts: Amber Fort early to beat the crowds, with a jeep up so they skip the steep climb. Stop for photos at Jal Mahal on the way back. Rest after lunch, then dinner with a folk show at Chokhi Dhani.\nDay 3, gentle wrap-up: Albert Hall Museum and Birla Mandir in the morning, then a Rajasthani thali lunch. Leave time for last-minute shopping at Bapu Bazaar before they head home.\n\nStaying near MI Road or the old city keeps each day's travel short. Where are they travelling from? I can then look at train and stay options.\n\n7:01 PM",
+      "kit": [],
+      "ms": 27384,
+      "shot": "03-trip.png"
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

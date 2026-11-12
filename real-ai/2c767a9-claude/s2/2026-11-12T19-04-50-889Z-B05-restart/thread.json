@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:01 PM\n7:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:01 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 well-rated Italian places in Bandra that fit best reviews\nCheck their booking pages\nLook for a table for 2 on Sat 14 Nov, 8:00 PM\nWatch live\nStop\n6 min\n7:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:01 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n7:03 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:03 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry their booking pages instead\nTry another way\nTake over\nStop\n7:04 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:04 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nLooking on the web\n3\nBoth\nSomething else…\nSkip\n7:04 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:04 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n7:05 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:05 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:05 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "National Museum, Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. It is already shut for today (Thu 12 Nov, 7:05 PM). Tomorrow, Fri 13 Nov, it opens at 10:00 AM.\n\nTickets: adults ₹20 foreign nationals ₹500 and students up to class 12 get in free with their ID card.\n\nThis is from the museum's own site. The page shows no update date, so the fee may have changed. The site also links to online booking at https://www.zoonga.com/national-museum, which I have not opened.\n\n7:06 PM"
+  }
+]

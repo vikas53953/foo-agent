@@ -1,0 +1,119 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-01-16-169Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?",
+      "sentAt": 1794510081744,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 117
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 36,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 2054,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 15827,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 16852,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 22418,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 24435,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 22387,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 well-rated Italian places in Bandra that fit best reviews\n3\nCheck their booking pages\n4\nLook for a table for 2 on Sat 14 Nov, 8:00 PM\nAbout 4 minutes\nGo\nChange plan\n7:01 PM",
+      "kit": [],
+      "ms": 28511,
+      "shot": "01-italian.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 47
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180002,
+      "shot": "02-italian-later.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
