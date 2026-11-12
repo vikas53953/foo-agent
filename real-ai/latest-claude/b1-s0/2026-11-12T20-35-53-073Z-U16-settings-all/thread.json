@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:30 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n8:30 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What are we sorting out tonight?\n\n8:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n8:30 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper. I can answer questions, write things out like lists, plans or comparisons, and tune how I look and behave for you.\n\n8:30 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your phone or PC and another computer on the internet, and that computer then goes online for you.\n\nNormally your internet company can see which sites you visit, and those sites see your home address on the internet. With a VPN, your traffic is scrambled before it leaves your device. Your internet company only sees scrambled data going to the VPN. The websites see the VPN's address, not yours.\n\nHandy for:\n\nUsing public Wi-Fi at a café or airport more safely\nKeeping your internet company from seeing which sites you visit\nHiding your location from websites\n\nIt won't make you anonymous, though. The VPN company can see your activity, so pick one you trust. It also won't protect you if you sign in to accounts that already know who you are.\n\n8:31 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n8:31 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt so many times that historians count at least seven earlier cities on the same ground, long before today's New Delhi.\n\n8:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because its hosiery and textile makers turn out a huge share of the country's woollen clothing.\n\nShow earlier answer\nRewritten\n8:31 PM"
+  }
+]

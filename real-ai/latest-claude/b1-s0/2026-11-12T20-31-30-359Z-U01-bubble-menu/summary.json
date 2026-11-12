@@ -1,0 +1,389 @@
+{
+  "journey": "U01-bubble-menu",
+  "title": "Bubble menu: copy, react, reply, edit, try again, good and bad",
+  "videos": [],
+  "steps": 42,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-31-30-359Z-U01-bubble-menu",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1050
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Give me one fun fact about Delhi in one sentence",
+      "sentAt": 1794515496777,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "one short reply; my bubble shows a tick and a badge, never ⚠",
+      "ref": "BP-MSG-01",
+      "timeline": [
+        {
+          "at": 50,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4081,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4585,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4036,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Delhi has been rebuilt so many times that historians count at least seven earlier cities on the same ground, long before today's New Delhi.\n\n8:31 PM",
+      "kit": [],
+      "ms": 10650,
+      "shot": "01-fact.png"
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ref": "BP-MSG-02",
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 71
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "menu on foo bubble: Reply, Copy, React, Try again, Good, Bad, Select",
+      "ref": "UX-04-05",
+      "ok": true,
+      "ms": 601,
+      "shot": "03-foo-menu.png"
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 77
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 78
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "reaction picker with emoji options",
+      "ref": "UX-04-06",
+      "ok": true,
+      "ms": 600,
+      "shot": "04-react-picker.png"
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 93
+    },
+    {
+      "i": 11,
+      "do": "wait",
+      "expect": "reaction chip under foo bubble",
+      "ok": true,
+      "ms": 809,
+      "shot": "05-reacted.png"
+    },
+    {
+      "i": 12,
+      "do": "check",
+      "note": "reaction chip shows",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 13,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 14,
+      "do": "wait",
+      "expect": "clicking my reaction again removes it",
+      "ok": true,
+      "ms": 801,
+      "shot": "06-reaction-removed.png"
+    },
+    {
+      "i": 15,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 63
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "menu on my bubble: Reply, Copy, React, Edit, Select, Delete",
+      "ok": true,
+      "ms": 602,
+      "shot": "07-my-menu.png"
+    },
+    {
+      "i": 17,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 18,
+      "do": "wait",
+      "expect": "reply quote above the composer with a close X",
+      "ref": "BP-COMP-04",
+      "ok": true,
+      "ms": 507,
+      "shot": "08-reply-quote.png"
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "typed": "And one about Amritsar",
+      "sentAt": 1794515512534,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 103
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "expect": "my bubble shows the quoted message; foo answers about Amritsar",
+      "timeline": [
+        {
+          "at": 34,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2055,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3580,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2028,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Amritsar's Golden Temple runs one of the world's largest free kitchens, feeding tens of thousands of people of every background, every single day.\n\n8:31 PM",
+      "kit": [],
+      "ms": 9646,
+      "shot": "09-reply-sent.png"
+    },
+    {
+      "i": 21,
+      "do": "check",
+      "note": "quote shows inside my bubble",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 61
+    },
+    {
+      "i": 23,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 79
+    },
+    {
+      "i": 24,
+      "do": "wait",
+      "expect": "composer in edit mode with my text",
+      "ok": true,
+      "ms": 504,
+      "shot": "10-edit-mode.png"
+    },
+    {
+      "i": 25,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 12
+    },
+    {
+      "i": 26,
+      "do": "key",
+      "ok": true,
+      "ms": 15
+    },
+    {
+      "i": 27,
+      "do": "wait",
+      "expect": "my bubble says edited; foo answers the edited question",
+      "ok": true,
+      "ms": 20013,
+      "shot": "11-edited.png"
+    },
+    {
+      "i": 28,
+      "do": "expectText",
+      "note": "edited label",
+      "soft": true,
+      "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:31 PM",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 60
+    },
+    {
+      "i": 30,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 31,
+      "do": "wait",
+      "expect": "thumbs up feedback recorded quietly",
+      "ok": true,
+      "ms": 801,
+      "shot": "12-good.png"
+    },
+    {
+      "i": 32,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 33,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 80
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "expect": "feedback chips / field after thumbs down",
+      "ok": true,
+      "ms": 800,
+      "shot": "13-bad-feedback.png"
+    },
+    {
+      "i": 35,
+      "do": "key",
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 36,
+      "do": "eval",
+      "value": 5,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 37,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 75
+    },
+    {
+      "i": 38,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 39,
+      "do": "waitJs",
+      "expect": "Try again writes the answer again: a finished, non-error answer whose text changed in place and is marked Rewritten (CR-0059), or a fresh finished answer follows; no duplicate bubbles",
+      "ok": true,
+      "ms": 3537
+    },
+    {
+      "i": 40,
+      "do": "wait",
+      "expect": "the rewritten answer, marked Rewritten",
+      "ok": true,
+      "ms": 6003,
+      "shot": "14-try-again.png"
+    },
+    {
+      "i": 41,
+      "do": "dump",
+      "ok": true,
+      "ms": 6
+    }
+  ]
+}
