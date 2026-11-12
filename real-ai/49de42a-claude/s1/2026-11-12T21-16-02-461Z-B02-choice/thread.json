@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n9:16 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mostly use these running shoes for? → Trail running\n9:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n9:16 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "What's your budget range for trail running shoes?\n1\nUp to ₹3,000\nBEST FIT\nBasic trail grip\n2\n₹3,000 to ₹4,000\nMid-range\n3\nUp to ₹5,000\nBest you can get under the cap\nSomething else…\nSkip\n9:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:16 PM"
+  }
+]

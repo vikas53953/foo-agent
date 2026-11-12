@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n9:23 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:23 PM\n9:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:23 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n9:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:23 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n9:23 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n9:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Research the 3 best budget laptops under ₹50,000 in India right now and compare them\n9:24 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:24 PM\n9:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:24 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooking for laptops under ₹50,000 with current\nKeep 3 laptops that fit best value under ₹50,000\nCompare the 3 laptops on price, processor, RAM\nWatch live\nStop\n2 min\n9:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:24 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n9:27 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:27 PM"
+  }
+]
