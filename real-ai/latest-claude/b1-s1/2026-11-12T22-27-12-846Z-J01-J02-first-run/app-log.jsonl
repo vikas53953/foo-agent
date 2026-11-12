@@ -1,3 +1,0 @@
-{"t":1794522433865,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1794522441414,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:UNKNOWN","ms":2152}
-{"t":1794522471427,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:UNKNOWN","ms":2102}
