@@ -1,0 +1,157 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-41-21-216Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1794508886457,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 51,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2570,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3595,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2523,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! I'm foo. What would you like to sort out this evening?\n\n6:41 PM",
+      "kit": [],
+      "ms": 9606,
+      "shot": "01-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "what can you do?",
+      "sentAt": 1794508896218,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 66
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 23,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4623,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5127,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4612,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper: I can answer questions, write things out like plans, lists and comparisons, and tune how I look and behave. The app shows what else works on this PC.\n\n6:41 PM",
+      "kit": [],
+      "ms": 11207,
+      "shot": "02-what-can-you-do.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Explain how a VPN works in simple words",
+      "sentAt": 1794508907544,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 23,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2580,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5104,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2568,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet: everything you send is locked first, passes through the tunnel to a VPN company's computer, and only then goes out to the website you wanted.\n\nWhat that does for you:\n\nYour internet provider, or the café Wi-Fi, sees only scrambled data, not which sites you visit.\nWebsites see the VPN computer's location instead of yours, so your real address stays hidden.\nOn public Wi-Fi, strangers on the same network can't read what you send.\n\nWhat it doesn't do: it doesn't make you fully anonymous. The VPN company can see your traffic, so pick one you trust. It also won't protect you from fake links or weak passwords.\n\n6:41 PM",
+      "kit": [],
+      "ms": 11191,
+      "shot": "03-vpn.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

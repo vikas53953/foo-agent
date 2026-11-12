@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n6:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! I'm foo. What would you like to sort out this evening?\n\n6:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n6:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can answer questions, write things out like plans, lists and comparisons, and tune how I look and behave. The app shows what else works on this PC.\n\n6:41 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n6:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet: everything you send is locked first, passes through the tunnel to a VPN company's computer, and only then goes out to the website you wanted.\n\nWhat that does for you:\n\nYour internet provider, or the café Wi-Fi, sees only scrambled data, not which sites you visit.\nWebsites see the VPN computer's location instead of yours, so your real address stays hidden.\nOn public Wi-Fi, strangers on the same network can't read what you send.\n\nWhat it doesn't do: it doesn't make you fully anonymous. The VPN company can see your traffic, so pick one you trust. It also won't protect you from fake links or weak passwords.\n\n6:41 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n6:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n6:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt and re-ruled so many times, by Mughals, Sultans and the British among others, that people often say the city has had seven or more earlier versions before today's.\n\n6:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n6:42 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is nicknamed the \"Manchester of India\" because of its huge hosiery and woollen industry, and it makes a big share of the country's bicycles and knitwear.\n\nShow earlier answer\nRewritten\n6:42 PM"
+  }
+]
