@@ -365,7 +365,7 @@ jobs:
           BEFORE: ${{ github.event.before }}
         run: |
           if [ -z "$BEFORE" ] || [ -z "${BEFORE//0/}" ]; then echo "No earlier commit (new branch): nothing to check."; exit 0; fi
-          lines=$(git log --format=%B "$BEFORE..$GITHUB_SHA" | tr -d '\r' | sed -n 's/^Red-first:[[:space:]]*//p' | tr ', ' '\n\n' | grep -v '^$' | sort -u | tr '\n' ' ')
+          lines=$(git log --format=%B "$BEFORE..$GITHUB_SHA" | tr -d '\r' | sed -n 's/^Red-first:[[:space:]]*//p' | tr ', ' '\n\n' | { grep -v '^$' || true; } | sort -u | tr '\n' ' ')
           echo "Red-first in this push: ${lines:-none}"
           echo "list=$lines" >> "$GITHUB_OUTPUT"
           echo "before=$BEFORE" >> "$GITHUB_OUTPUT"

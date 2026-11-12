@@ -744,6 +744,7 @@ export class Engine {
           ...(jobsOn ? {} : { jobsOff: true }),
           ...(memoryOn ? {} : { memoryOff: true }),
           ...(i.reask ? { reask: i.reask } : {}),
+          ...(i.rewriteOf ? { rewriteOf: i.rewriteOf } : {}),
         });
       },
       buildRepair: (issues) => this.prompts.buildRepair(issues).prompt,
