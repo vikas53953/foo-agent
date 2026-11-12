@@ -1,0 +1,13 @@
+{"t":"2026-11-12T18:15:38.606Z","journey":"R-dark-hi","title":"Setting by chat, then hi: foo replies and does not change the setting again","spec":"08-2 §7.2 part 7; 08-4 §25.6 (CR-0043); 06 settings by chat; AT-094","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:15:43.623Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:15:43.727Z","i":0,"do":"send","typed":"Switch to dark mode","sentAt":1794507343690,"sent":true,"before":0,"ok":true,"ms":101}
+{"t":"2026-11-12T18:15:46.534Z","i":1,"do":"waitFor","note":"a setting answer is a line, not a bubble, so waitReply would never see it (real-AI run 62d419e R-dark-hi step 1)","ok":true,"ms":2807}
+{"t":"2026-11-12T18:15:56.595Z","shot":"01-dark.png"}
+{"t":"2026-11-12T18:15:56.595Z","i":2,"do":"wait","expect":"the theme is dark and foo shows one line \"Changed: Theme → Dark. Undo\"","ok":true,"ms":10010,"shot":"01-dark.png"}
+{"t":"2026-11-12T18:15:56.666Z","i":3,"do":"send","typed":"hi","sentAt":1794507356653,"sent":true,"before":0,"ok":true,"ms":71}
+{"t":"2026-11-12T18:16:05.861Z","shot":"02-hi-after-dark.png"}
+{"t":"2026-11-12T18:16:05.861Z","i":4,"do":"waitReply","expect":"foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)","timeline":[{"at":27,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2046,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":3067,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2033,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hi! 🌿 Mummy ka cake ho ya kuch aur, bas bol do.\n\n6:15 PM","kit":[],"endState":true,"ms":9148,"shot":"02-hi-after-dark.png"}
+{"t":"2026-11-12T18:16:05.867Z","i":5,"do":"dump","ok":true,"ms":6}
+{"t":"2026-11-12T18:16:05.963Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-11-12T18:16:05.972Z","step":"aiTurns","turns":2}
+{"t":"2026-11-12T18:16:05.974Z","step":"jobTrail","steps":0,"calls":0}
