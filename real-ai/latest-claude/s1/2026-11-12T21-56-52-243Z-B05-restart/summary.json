@@ -1,0 +1,98 @@
+{
+  "journey": "B05-restart",
+  "title": "Quit mid-job and reopen: job resumes",
+  "videos": [],
+  "steps": 8,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-56-52-243Z-B05-restart",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Find the opening hours of the National Museum in Delhi and the ticket price",
+      "sentAt": 1794520625555,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 122
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 60,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5135,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 7157,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5093,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking on the web\n1\nLook on the web\n2\nCheck National Museum, New Delhi official site\n3\nCompare opening hours and ticket price across\nAbout 2.25 minutes\nGo\nChange plan\n9:57 PM",
+      "kit": [],
+      "ms": 11147,
+      "shot": "01-museum-start.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 8000
+    },
+    {
+      "i": 4,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5202
+    },
+    {
+      "i": 5,
+      "do": "wait",
+      "expect": "AT-118: recovery card; job resumes (WAITING → WORKING)",
+      "ok": true,
+      "ms": 8002,
+      "shot": "02-after-reopen.png"
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 150005,
+      "shot": "03-after-reopen-later.png"
+    },
+    {
+      "i": 7,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

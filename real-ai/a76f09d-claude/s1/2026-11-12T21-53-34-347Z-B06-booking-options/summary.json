@@ -1,0 +1,101 @@
+{
+  "journey": "B06-booking-options",
+  "title": "Restaurant options without booking",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-53-34-347Z-B06-booking-options",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?",
+      "sentAt": 1794520419541,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 89
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 33,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 537,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6162,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8192,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6136,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Looking for good Italian restaurants…\n1\nLook for good Italian restaurants in Bandra\n2\nCheck Dineout, EazyDiner, restaurant sites\n3\nKeep 3 Italian places with a table that fit Sat 14 Nov, 8:00 PM for 2\nAbout 3 minutes\nGo\nChange plan\n9:53 PM",
+      "kit": [],
+      "ms": 12194,
+      "shot": "01-italian.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 34
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "options shown; no booking Approval card until I say book",
+      "ok": true,
+      "ms": 180016,
+      "shot": "02-italian-later.png"
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "soft": true,
+      "found": 2,
+      "ok": true,
+      "ms": 1
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

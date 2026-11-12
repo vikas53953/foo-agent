@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:52 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:52 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n9:53 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mostly use the shoes for? → Gym / treadmill\n9:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n9:53 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "For gym and treadmill runs, what matters most in the shoe?\n1\nCushioning\nBEST FIT\nSoft and easy on the knees\n2\nLightweight\nFeels quick and breathable\n3\nDurability\nLasts a long time\n4\nLowest price\nBest deal under ₹5,000\nSomething else…\nSkip\n9:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n9:53 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:53 PM\n9:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:53 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for good Italian restaurants…\nlive checklist\nLooked for good Italian restaurants in Bandra\nChecking Dineout, EazyDiner, restaurant sites\nD\nE\nR\nKeep 3 Italian places with a table that fit Sat 14 Nov, 8:00 PM for 2\nWatch live\nStop\n2 min\n9:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:53 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for good Italian restaurants… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry restaurant sites instead\nTry another way\nTake over\nStop\n9:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 PM"
+  }
+]

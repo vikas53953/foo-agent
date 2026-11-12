@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n9:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n9:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n9:57 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:57 PM\n9:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:57 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n9:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum (Janpath, New Delhi) is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays, so tomorrow, Fri 13 Nov, it is open 10:00 AM to 6:00 PM.\n\nEntry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an ID card.\n\nThe museum's own page says you can book tickets online at https://www.zoonga.com/national-museum. This comes from the museum's official site, which does not show when it was last updated. Check the holiday calendar there before you go.\n\n9:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n10:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n10:00 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 10:00 PM\n10:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Looking for account balance\nDidn’t finish\nWaiting for you to sign in ›\nLook for account balance\n10:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n10:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 PM"
+  }
+]
