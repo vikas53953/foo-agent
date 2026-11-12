@@ -110,6 +110,29 @@ describe('CR-0069 · memory off: a setting ask labelled memory gets a second loo
   });
 });
 
+describe('CR-0069 · memory off: a question about foo itself is a reply (QA2 on real-AI run 43276705296)', () => {
+  it('every intake with memory off is told that asking foo its name is a reply', async () => {
+    const x = await run([{ match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Chotu.') }], 'tumhara naam kya hai?');
+    expect(asked(x, MEMORY_OFF_LINE)).toBe(1);
+    expect(MEMORY_OFF_LINE).toContain('tumhara naam?');
+  });
+
+  it('"aur tumhara naam?" labelled memory: the second look says "tumhara" means foo, and the reply it gives is posted', async () => {
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: MEMORY, once: true },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Chotu.') },
+      ],
+      'aur tumhara naam? sirf naam batao',
+    );
+    expect(intakes(x)).toHaveLength(2);
+    expect(asked(x, REASK_MEMORY_LINE)).toBe(1);
+    expect(REASK_MEMORY_LINE).toMatch(/"tumhara".*mean you, the helper/);
+    expect(REASK_MEMORY_LINE).toContain('Asked your name, give your own name.');
+    expect(fooTexts(x)).toEqual(['Chotu.']);
+  });
+});
+
 describe('CR-0069 · jobs off: a task ask answered in words gets a second look (QA-X-F32)', () => {
   it('"Book a table for 2 tonight" answered as a reply: asked once more, the jobs line replaces the words in one bubble', async () => {
     const x = await run(
