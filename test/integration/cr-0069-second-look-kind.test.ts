@@ -115,6 +115,7 @@ describe('CR-0069 · memory off: a question about foo itself is a reply (QA2 on 
     const x = await run([{ match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Chotu.') }], 'tumhara naam kya hai?');
     expect(asked(x, MEMORY_OFF_LINE)).toBe(1);
     expect(MEMORY_OFF_LINE).toContain('tumhara naam?');
+    expect(MEMORY_OFF_LINE).toContain('even when it comes again or starts with "aur"');
   });
 
   it('"aur tumhara naam?" labelled memory: the second look says "tumhara" means foo, and the reply it gives is posted', async () => {

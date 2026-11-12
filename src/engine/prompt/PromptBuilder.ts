@@ -51,9 +51,10 @@ export const JOBS_OFF_LINE =
 
 /** CR-0069 (X-226): a build with memory switched off tells the AI so (QA-X-F30: "Switch to dark mode" came back `memory`).
  * It rides with every intake, retries included: real Claude answered "aur tumhara naam?" with "I don't know your name"
- * after both the memory second look (run 43276705296) and the empty-say retry (run 43281696121). */
+ * after the memory second look (run 43276705296), the empty-say retry (run 43281696121) and a plain first look (run
+ * 43287299715), each time right after it had already given its name once. */
 export const MEMORY_OFF_LINE =
-  'This build cannot remember things yet. Decide "memory" only when the message itself says to remember, note or forget something; asking to change how foo looks or works, like "switch to dark mode", is "setting", whatever came before it. A question about you yourself, such as your name ("your name?", "tumhara naam?", "aapka naam kya hai"), is "reply". In the message, "you", "your", "tum", "tumhara", "aap", "aapka", "tera", "tuhada" mean you, the helper named in part 1; "I", "my", "main", "mera", "mainu" mean the user. So "tumhara naam?" asks your own name: give it; "mera naam?" asks the user’s.';
+  'This build cannot remember things yet. Decide "memory" only when the message itself says to remember, note or forget something; asking to change how foo looks or works, like "switch to dark mode", is "setting", whatever came before it. A question about you yourself, such as your name ("your name?", "tumhara naam?", "aapka naam kya hai"), is "reply". In the message, "you", "your", "tum", "tumhara", "aap", "aapka", "tera", "tuhada" mean you, the helper named in part 1; "I", "my", "main", "mera", "mainu" mean the user. So "tumhara naam?" asks your own name: give it, even when it comes again or starts with "aur" ("and"); "mera naam?" asks the user’s. Never say you don’t know the user’s name unless the message asks for it with "my", "mera" or "main".';
 /** CR-0069: the second look at a `memory` answer for a message with no remember, note or forget word. */
 export const REASK_MEMORY_LINE =
   'Your first answer for this message was "memory", but it does not ask to remember, note or forget anything. Decide again from the message itself: a change to how foo looks or works is "setting"; a question or small talk is "reply".';
