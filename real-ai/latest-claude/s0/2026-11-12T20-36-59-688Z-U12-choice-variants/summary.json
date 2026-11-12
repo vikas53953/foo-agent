@@ -1,0 +1,246 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "videos": [],
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-36-59-688Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1050
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from",
+      "sentAt": 1794515826495,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 152
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "ref": "BP-CARD-03",
+      "timeline": [
+        {
+          "at": 50,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 554,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6681,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6640,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend plan sounds best for Sat 14 Nov or Sun 15 Nov?\n1\nSouth Indian breakfast crawl\nBEST FIT\nDosa and filter coffee in Basavanagudi\n2\nNandi Hills sunrise\nEarly start, cool air, hill views\n3\nLalbagh and Cubbon Park walk\nEasy, green, good for a slow day\nSomething else…\nSkip\n8:37 PM",
+      "kit": [],
+      "ms": 12688,
+      "shot": "01-choice.png"
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ref": "BP-CARD-03",
+      "ok": true,
+      "ms": 87
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "the second one",
+      "sentAt": 1794515839461,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "timeline": [
+        {
+          "at": 41,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 545,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 9192,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 10217,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 9154,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Nandi Hills sunrise it is, a good pick. It's about 60 km from the city, so leave by around 4:00 AM to be up there before first light, and carry a light jacket because it gets chilly. Do you want Sat 14 Nov or Sun 15 Nov?\n\n8:37 PM",
+      "kit": [],
+      "ms": 16236,
+      "shot": "03-typed-pick.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Now give me 3 dinner options to choose from",
+      "sentAt": 1794515855913,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 124
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "timeline": [
+        {
+          "at": 12,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 516,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 17257,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 17249,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nDosa and filter coffee\nBEST FIT\nMasala dosa, idli, vada. Your favourite.\n2\nFull South Indian meal\nRice, sambar, rasam, curd and poriyal\n3\nHyderabadi biryani\nSomething hearty with raita\nSomething else…\nSkip\n8:37 PM",
+      "kit": [],
+      "ms": 23315,
+      "shot": "04-choice-2.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 603,
+      "shot": "05-something-else.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Actually just a home-cooked dal chawal",
+      "sentAt": 1794515880164,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 98
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "timeline": [
+        {
+          "at": 42,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5107,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6115,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5091,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal tonight, a solid choice. 🌿 Want a quick tadka recipe, maybe with a South Indian twist of curry leaves and mustard seeds?\n\n8:38 PM",
+      "kit": [],
+      "ms": 12199,
+      "shot": "06-own-answer.png"
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
