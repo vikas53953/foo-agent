@@ -66,6 +66,11 @@ export const REASK_JOB_LINE =
 export const REASK_EMPTY_LINE =
   'Your first answer for this message was "reply" with an empty <say>. A reply must put the whole answer, in words, inside <say>.';
 
+/** CR-0059 row 1 (04 §17.1 "Write this answer again": same bubble, new words): the rewrite turn sees the answer it replaces.
+ * Without it real Claude wrote the same sentence again (U01 on run 43300544953: Try again left the Ludhiana fact as it was). */
+export const rewriteLine = (earlier: string): string =>
+  `The user tapped Try again on your earlier answer to this message: "${earlier.replace(/\s+/g, ' ').trim().slice(0, 600)}". Answer again in new words; do not repeat it.`;
+
 const REASK_LINES = { memory: REASK_MEMORY_LINE, job: REASK_JOB_LINE, empty: REASK_EMPTY_LINE } as const;
 
 /** R1 T7 (lead ok, 04-2 §21.7 action chips): the reply's own `Actions:` line (engine/prompt/actions.ts checks it). It rides
@@ -144,6 +149,8 @@ export interface IntakeInput {
   /** CR-0069: this turn is the second look at a likely wrong kind (REASK_MEMORY_LINE or REASK_JOB_LINE goes with part 4), or
    * (item 9) the retry after a reply with an empty <say> (REASK_EMPTY_LINE). */
   reask?: 'memory' | 'job' | 'empty';
+  /** CR-0059 row 1: this turn rewrites a finished answer; its old text (rewriteLine goes with part 4). */
+  rewriteOf?: string;
   /** CR-0022 (X-180): Settings → Appearance → Visuals (08-0 §A `appearance.visuals`); Balanced when not given. */
   visuals?: Visuals;
 }
@@ -346,7 +353,7 @@ export class PromptBuilder {
     const helperList = input.helpers.length ? input.helpers.map((h) => `${h.id}: ${h.name}, ${h.jobText}`).join('\n') : 'none';
     const protocolWith = (kit: string) =>
       gate(
-        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}${input.memoryOff ? `\n${MEMORY_OFF_LINE}` : ''}${input.reask ? `\n${REASK_LINES[input.reask]}` : ''}`,
+        `${this.protocolThen(IntakeActSchema, 'intake.md', { helperList, phraseKeys: PHRASE_KEY_LIST })}\n${SUGGESTIONS_ASK}${kit ? `\n${kit}` : ''}${input.jobsOff ? `\n${JOBS_OFF_LINE}` : ''}${input.memoryOff ? `\n${MEMORY_OFF_LINE}` : ''}${input.reask ? `\n${REASK_LINES[input.reask]}` : ''}${input.rewriteOf ? `\n${rewriteLine(input.rewriteOf)}` : ''}`,
         '4',
       );
     let kit = `${ACTIONS_ASK}\n${kitPromptSection(input.visuals ?? 'balanced')}`;
