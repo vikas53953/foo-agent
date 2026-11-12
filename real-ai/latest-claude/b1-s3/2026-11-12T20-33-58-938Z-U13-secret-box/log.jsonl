@@ -1,0 +1,34 @@
+{"t":"2026-11-12T20:33:58.938Z","journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","spec":"05-2 §5.8 Secret box, 10-2 §C.4 Secret box (C7), ART-08a","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:34:04.521Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:34:05.570Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1046}
+{"t":"2026-11-12T20:34:05.653Z","i":1,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-11-12T20:34:28.736Z","shot":"01-error-step2.png"}
+{"t":"2026-11-12T20:34:28.736Z","i":2,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"01-error-step2.png","ms":23082}
+{"t":"2026-11-12T20:34:30.328Z","shot":"02-secret.png"}
+{"t":"2026-11-12T20:34:30.328Z","i":3,"do":"wait","expect":"Secret box card: Name field, masked key field, eye toggle, Save (CR-0057)","ref":"BP-CARD-07","ok":true,"ms":1512,"shot":"02-secret.png"}
+{"t":"2026-11-12T20:35:00.396Z","shot":"03-error-step4.png"}
+{"t":"2026-11-12T20:35:00.396Z","i":4,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Timeout 30000ms exceeded.","errorShot":"03-error-step4.png","ms":30068}
+{"t":"2026-11-12T20:35:30.470Z","shot":"04-error-step5.png"}
+{"t":"2026-11-12T20:35:30.470Z","i":5,"do":"fill","soft":true,"ok":false,"error":"locator.fill: Timeout 30000ms exceeded.","errorShot":"04-error-step5.png","ms":30073}
+{"t":"2026-11-12T20:35:30.829Z","shot":"05-typed.png"}
+{"t":"2026-11-12T20:35:30.829Z","i":6,"do":"wait","expect":"value masked","ok":true,"ms":301,"shot":"05-typed.png"}
+{"t":"2026-11-12T20:35:53.892Z","shot":"06-error-step7.png"}
+{"t":"2026-11-12T20:35:53.892Z","i":7,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"06-error-step7.png","ms":23063}
+{"t":"2026-11-12T20:35:54.250Z","shot":"07-shown.png"}
+{"t":"2026-11-12T20:35:54.251Z","i":8,"do":"wait","expect":"value shown after eye","ok":true,"ms":301,"shot":"07-shown.png"}
+{"t":"2026-11-12T20:36:17.314Z","shot":"08-error-step9.png"}
+{"t":"2026-11-12T20:36:17.315Z","i":9,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"08-error-step9.png","ms":23064}
+{"t":"2026-11-12T20:36:40.377Z","shot":"09-error-step10.png"}
+{"t":"2026-11-12T20:36:40.377Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"09-error-step10.png","ms":23062}
+{"t":"2026-11-12T20:36:42.440Z","shot":"10-saved.png"}
+{"t":"2026-11-12T20:36:42.440Z","i":11,"do":"wait","expect":"\"Test key · saved {date}\", only Replace offered; value never shown again","ref":"BP-CARD-08","ok":true,"ms":2001,"shot":"10-saved.png"}
+{"t":"2026-11-12T20:37:05.502Z","shot":"11-error-step12.png"}
+{"t":"2026-11-12T20:37:05.502Z","i":12,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"11-error-step12.png","ms":23062}
+{"t":"2026-11-12T20:37:06.360Z","shot":"12-replace.png"}
+{"t":"2026-11-12T20:37:06.360Z","i":13,"do":"wait","expect":"empty field to replace","ok":true,"ms":800,"shot":"12-replace.png"}
+{"t":"2026-11-12T20:37:29.424Z","shot":"13-error-step14.png"}
+{"t":"2026-11-12T20:37:29.424Z","i":14,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"13-error-step14.png","ms":23064}
+{"t":"2026-11-12T20:37:29.435Z","i":15,"do":"dump","ok":true,"ms":11}
+{"t":"2026-11-12T20:37:29.609Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-11-12T20:37:29.622Z","step":"aiTurns","turns":0}
+{"t":"2026-11-12T20:37:29.624Z","step":"jobTrail","steps":0,"calls":0}
