@@ -51,10 +51,10 @@ export const JOBS_OFF_LINE =
 
 /** CR-0069 (X-226): a build with memory switched off tells the AI so (QA-X-F30: "Switch to dark mode" came back `memory`). */
 export const MEMORY_OFF_LINE =
-  'This build cannot remember things yet. Decide "memory" only when the message itself says to remember, note or forget something; asking to change how foo looks or works, like "switch to dark mode", is "setting", whatever came before it. A question about you, such as your name ("your name?", "tumhara naam?", "aapka naam kya hai"), is "reply".';
+  'This build cannot remember things yet. Decide "memory" only when the message itself says to remember, note or forget something; asking to change how foo looks or works, like "switch to dark mode", is "setting", whatever came before it. A question about you yourself, such as your name ("your name?", "tumhara naam?", "aapka naam kya hai"), is "reply".';
 /** CR-0069: the second look at a `memory` answer for a message with no remember, note or forget word. */
 export const REASK_MEMORY_LINE =
-  'Your first answer for this message was "memory", but it does not ask to remember, note or forget anything. Decide again from the message itself: a change to how foo looks or works is "setting"; a question or small talk is "reply". In the message, "you", "your", "tum", "tumhara", "aap", "aapka", "tera", "tuhada" mean you, the helper named in part 1; "I", "my", "main", "mera", "mainu", "mera naam" mean the user. Asked your name, give your own name.';
+  'Your first answer for this message was "memory", but it does not ask to remember, note or forget anything. Decide again from the message itself: a change to how foo looks or works is "setting"; a question or small talk is "reply". In the message, "you", "your", "tum", "tumhara", "aap", "aapka", "tera", "tuhada" mean you, the helper named in part 1; "I", "my", "main", "mera", "mainu" mean the user. So "tumhara naam?" asks your own name: give it; "mera naam?" asks the user’s.';
 /** CR-0069: the second look at a `reply` to a message that asks for a task while jobs are off (QA-X-F32). */
 export const REASK_JOB_LINE =
   'Your first answer for this message was "reply". Decide again: when the message asks foo to do a task (book, buy, order, send, pay), decide "job" and leave <say> empty, even though foo cannot do tasks yet; when it only asks a question, such as whether you already did one, or asks foo for words (a joke, an answer, an explanation, a draft to read here), "reply".';

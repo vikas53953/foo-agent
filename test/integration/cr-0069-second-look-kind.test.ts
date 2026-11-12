@@ -128,7 +128,9 @@ describe('CR-0069 · memory off: a question about foo itself is a reply (QA2 on 
     expect(intakes(x)).toHaveLength(2);
     expect(asked(x, REASK_MEMORY_LINE)).toBe(1);
     expect(REASK_MEMORY_LINE).toMatch(/"tumhara".*mean you, the helper/);
-    expect(REASK_MEMORY_LINE).toContain('Asked your name, give your own name.');
+    // Scripted AI: this checks the wiring only. The proof is QA2 on the real-AI run with real Claude.
+    const second = intakes(x)[1];
+    expect(String(second?.system)).toContain('"tumhara naam?" asks your own name');
     expect(fooTexts(x)).toEqual(['Chotu.']);
   });
 });
