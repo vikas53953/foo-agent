@@ -1,0 +1,319 @@
+{
+  "id": "UX-14-10",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-14-10.light.png",
+      "sha256": "ea75c8289025ab2e93b6cffe74594f9b57c26e672f3e963419fa60b191d8435d"
+    },
+    "dark": {
+      "png": "UX-14-10.dark.png",
+      "sha256": "10be9d01daffdf64e0254ffd6257e6422265cef906cba9d3bf362970ca19c9b8"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "10:05 AM",
+    "I stopped the train booking…",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "Trips",
+    "Awake on your PC",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "book 2 seats on the Deccan Queen to Pune, Sat 24 Oct",
+    "10:04 AM ✓",
+    "✓",
+    "⛔",
+    "IRCTC wants you to sign in",
+    "Expired",
+    "Still need you to sign in to IRCTC.",
+    "10:15 AM",
+    "I stopped the train booking because you didn't sign in. Nothing was booked.",
+    "12:05 PM",
+    "Start again",
+    "＋",
+    "Message Trips, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "I stopped the train booking because you didn't sign in. Nothing was booked.",
+    "12:05 PM"
+  ],
+  "hl": {
+    "id": "stopped2h",
+    "box": {
+      "x": 364,
+      "y": 601,
+      "width": 397.4375,
+      "height": 60
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 364,
+      "y": 601,
+      "width": 397.4375,
+      "height": 60
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M9",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 14,
+    "step": 10,
+    "anchor": "signin-10",
+    "title": "Sign in here: trains on IRCTC",
+    "part": "Every day · Fri 16 Oct",
+    "j": "J13",
+    "r": "R11 · R4 · R10",
+    "c": "If you never sign in, foo reminds you once, then stops after 2 hours with nothing booked.",
+    "s": "\"I stopped the train booking because you didn't sign in. Nothing was booked.\" · Start again.",
+    "f": "Fails safe: no half-finished bookings.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "trips",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "10:05 AM",
+            "prev": "I stopped the train booking…"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b me\">book 2 seats on the Deccan Queen to Pune, Sat 24 Oct<span class=\"meta\">10:04 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">⛔</span></div>",
+              "g": 12
+            },
+            {
+              "id": "si",
+              "h": "<div class=\"card dim\"><div class=\"hd\">IRCTC wants you to sign in<span class=\"lbl\">Expired</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\">Still need you to sign in to IRCTC.<span class=\"meta\">10:15 AM</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b foo\" data-hl=\"stopped2h\">I stopped the train booking because you didn't sign in. Nothing was booked.<span class=\"meta\">12:05 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "sa",
+              "h": "<div class=\"card\"><div class=\"row2\"><span class=\"pillbtn sm \">Start again</span></div></div>",
+              "g": 4
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Awake on your PC",
+          "tone": null
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null
+      },
+      "d": {
+        "app": {
+          "x": 20,
+          "y": 20,
+          "sc": 0.62
+        },
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "10:05 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest",
+          "trips": "sorry",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": true,
+          "trips": false,
+          "money": true,
+          "home": true
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "trips"
+      }
+    },
+    "clockShown": "10:05 AM",
+    "superseded": null
+  }
+}

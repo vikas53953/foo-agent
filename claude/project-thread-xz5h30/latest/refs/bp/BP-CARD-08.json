@@ -1,0 +1,50 @@
+{
+  "id": "BP-CARD-08",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(8) > .mini",
+  "box": {
+    "x": 528.828125,
+    "y": 11572.40625,
+    "width": 351.328125,
+    "height": 182
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-08.light.png",
+      "sha256": "4a4914a6baf85a57f0b6e94502c6bf8cc78d853b838b3f6a5a0a8e3f40749a9e"
+    },
+    "dark": {
+      "png": "BP-CARD-08.dark.png",
+      "sha256": "5e1a69dcfad467a2de6d1113e4b2bf2cc2a168c71bca43879d4d8c9ef72ae84c"
+    }
+  },
+  "texts": [
+    "🔑 OpenAI key",
+    "Secret",
+    "sk-••••••••••••3f9a",
+    "Show",
+    "Save securely",
+    "Cancel",
+    "● Stored on this PC. foo's AI never sees it."
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-08": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 182
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M5",
+  "spec": "05-2 §5.8",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
