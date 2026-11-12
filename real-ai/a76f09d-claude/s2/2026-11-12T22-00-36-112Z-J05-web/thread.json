@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:52 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:52 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:53 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n9:53 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking isro.gov.in, pib.gov.in, The…\nlive checklist\nChecked isro.gov.in, pib.gov.in, The Hindu\nI\nP\nT\nLooked for ISRO news from Mon 9 Nov to Thu 12 Nov\nWrote it\nStopped by you\n9:53 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:53 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n9:56 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Checking isro.gov.in, pib.gov.in, The… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nemail customersupport@thehindu.co.in instead (I’ll ask first)\n9:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n10:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n10:00 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking on the web\n1\nLook on the web\n2\nLook for ISRO news from 6 to 12 Nov 2026\n3\nCompare reports from different news sites\n4\nWrite it\nAbout 3 minutes\nGo\nChange plan\n10:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:00 PM"
+  }
+]

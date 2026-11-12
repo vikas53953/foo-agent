@@ -1,0 +1,16 @@
+{"t":"2026-11-12T21:53:37.772Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T21:53:42.924Z","step":"launch","ok":true}
+{"t":"2026-11-12T21:53:43.032Z","i":0,"do":"send","typed":"What's the latest news about ISRO this week? Give me sources.","sentAt":1794520422996,"sent":true,"before":0,"ok":true,"ms":105}
+{"t":"2026-11-12T21:53:56.357Z","shot":"01-news.png"}
+{"t":"2026-11-12T21:53:56.357Z","i":1,"do":"waitReply","timeline":[{"at":49,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5609,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7109,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking isro.gov.in, pib.gov.in, The…\nlive checklist\nChecking isro.gov.in, pib.gov.in, The Hindu\nI\nP\nT\nLook for ISRO news from Mon 9 Nov to Thu 12 Nov\nWrite it\nWatch live\nStop\nunder 1 min\n9:53 PM","kit":[],"ms":13259,"shot":"01-news.png"}
+{"t":"2026-11-12T21:53:56.359Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T21:56:26.912Z","shot":"02-news-later.png"}
+{"t":"2026-11-12T21:56:26.912Z","i":3,"do":"wait","ok":true,"ms":150190,"shot":"02-news-later.png"}
+{"t":"2026-11-12T21:56:26.947Z","i":4,"do":"check","found":0,"ok":false,"ms":35}
+{"t":"2026-11-12T21:56:26.950Z","i":5,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-11-12T21:56:26.957Z","i":6,"do":"expectText","text":"All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:53 PM","ok":true,"ms":7}
+{"t":"2026-11-12T21:56:26.989Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":31}
+{"t":"2026-11-12T21:56:27.115Z","i":8,"do":"dump","ok":true,"ms":126}
+{"t":"2026-11-12T21:56:27.633Z","step":"appLog","lines":32,"dropped":0}
+{"t":"2026-11-12T21:56:27.646Z","step":"aiTurns","turns":26}
+{"t":"2026-11-12T21:56:27.649Z","step":"jobTrail","steps":3,"calls":24}
