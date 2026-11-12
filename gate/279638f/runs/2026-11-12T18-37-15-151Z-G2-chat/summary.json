@@ -1,0 +1,699 @@
+{
+  "journey": "G2-chat",
+  "title": "Release gate: just chatting like a real person, in Hinglish, Hindi, Punjabi and with typos, while the AI takes its time",
+  "feature": "chat",
+  "videos": [
+    "video/page@453ec9642820f94b516bb3076d2548b5.webm"
+  ],
+  "steps": 28,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-gate\\runs\\2026-11-12T18-37-15-151Z-G2-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1794508641000,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 187
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "while waiting: the Thinking row (foo's small face) and no 👀 on my message; after: one short warm reply",
+      "ref": "UX-08-02",
+      "timeline": [
+        {
+          "at": 65,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1621,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 2491,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1621,
+          "mark": 1500,
+          "shot": "01-hi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1665,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! What can I do for you?\n\n6:37 PM",
+      "kit": [],
+      "ms": 8602,
+      "shot": "02-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "kal office jaana hai, mood off hai yaar. kuch motivate karo",
+      "sentAt": 1794508649813,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 137
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a short, kind reply in Hinglish (Roman script), not in English or Devanagari",
+      "ref": "UX-08-04",
+      "timeline": [
+        {
+          "at": 54,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1604,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4072,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1604,
+          "mark": 1500,
+          "shot": "03-hinglish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3244,
+          "mark": 3000,
+          "shot": "04-hinglish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1650,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Office is just one day. You've done harder things. Go, get it done, then you're free for the weekend.\n\n6:37 PM",
+      "kit": [],
+      "ms": 10197,
+      "shot": "05-hinglish.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "आज दिल्ली में मौसम कैसा रहेगा, अंदाज़ा बताओ?",
+      "sentAt": 1794508660200,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "Devanagari shows properly (no boxes); the answer is in Hindi and honest that it cannot check live weather",
+      "timeline": [
+        {
+          "at": 68,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1614,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5100,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1614,
+          "mark": 1500,
+          "shot": "06-hindi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3239,
+          "mark": 3000,
+          "shot": "07-hindi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1653,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n6:37 PM",
+      "kit": [],
+      "ms": 11197,
+      "shot": "08-hindi.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ",
+      "sentAt": 1794508671598,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 130
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "Gurmukhi shows properly; the joke is in Punjabi",
+      "ref": "UX-08-05",
+      "timeline": [
+        {
+          "at": 46,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8903,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 9955,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1582,
+          "mark": 1500,
+          "shot": "09-punjabi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3170,
+          "mark": 3000,
+          "shot": "10-punjabi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6032,
+          "mark": 6000,
+          "shot": "11-punjabi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 8872,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਇੱਕ ਆਦਮੀ ਨੇ ਆਪਣੇ ਦੋਸਤ ਨੂੰ ਪੁੱਛਿਆ, \"ਤੂੰ ਹਰ ਰੋਜ਼ ਜਿਮ ਜਾਂਦਾ ਐਂ ਪਰ ਫਿਰ ਵੀ ਕਮਜ਼ੋਰ ਕਿਉਂ ਐਂ?\" ਦੋਸਤ ਬੋਲਿਆ, \"ਜਿਮ ਤਾਂ ਜਾਂਦਾ ਹਾਂ, ਪਰ ਅੰਦਰ ਨਹੀਂ ਜਾਂਦਾ—ਬਾਹਰ ਹੀ ਚਾਹ ਪੀ ਕੇ ਵਾਪਸ ਆ ਜਾਂਦਾ ਹਾਂ!\" 😄\n\n6:38 PM",
+      "kit": [],
+      "ms": 16062,
+      "shot": "12-punjabi.png"
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "typed": "wat is teh capitl of austrlia??",
+      "sentAt": 1794508687867,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 147
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "understands the typos: Canberra, in one short bubble, no lecture about spelling",
+      "timeline": [
+        {
+          "at": 51,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4566,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1578,
+          "mark": 1500,
+          "shot": "13-typos-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3213,
+          "mark": 3000,
+          "shot": "14-typos-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 4537,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "I didn’t get that. Say it another way?\n\n6:38 PM",
+      "didntGetThat": true,
+      "kit": [],
+      "ms": 10703,
+      "shot": "15-typos.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Write me a 3 paragraph story about a tiger who learns to cook biryani",
+      "sentAt": 1794508698748,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 128
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words",
+      "timeline": [
+        {
+          "at": 89,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1931,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 8980,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1614,
+          "mark": 1500,
+          "shot": "16-long-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3206,
+          "mark": 3000,
+          "shot": "17-long-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6081,
+          "mark": 6000,
+          "shot": "18-long-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1896,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A young tiger named Raja lived alone in the forest and grew tired of eating raw meat every day. One evening, he smelled something wonderful drifting from a village and followed it to a wedding feast. He watched from the trees as the cook layered rice, spices and meat in a huge pot, and decided he had to learn this magic.\n\nThe next morning, Raja crept to the cook's house and left a basket of mangoes at the door. The cook, touched by the gift, began leaving him small portions of biryani each week. Raja studied every layer, every spice, practising in secret with a clay pot he found by the river.\n\nMonths later, Raja invited all the forest animals to a feast. They arrived nervously, but when he lifted the lid, the fragrance made everyone forget their fear. The biryani was perfect—tender, fragrant, just the right heat. From that day, Raja became the forest's beloved cook, and no one went hungry again.\n\n6:38 PM",
+      "kit": [],
+      "ms": 15099,
+      "shot": "19-long.png"
+    },
+    {
+      "i": 12,
+      "do": "sweep",
+      "expect": "every control in the chat (answer actions, chips, links) does something visible; nothing covers a bubble's words",
+      "controls": [
+        {
+          "tid": "thread-log",
+          "role": "log",
+          "name": "Messages with Chotu 😊",
+          "status": "skipped",
+          "effect": [],
+          "issues": [],
+          "reason": "own journey covers it"
+        },
+        {
+          "tid": "bubble-actions-copy",
+          "role": "button",
+          "name": "Copy message",
+          "status": "pass",
+          "effect": [
+            "content changed"
+          ],
+          "issues": [],
+          "shot": "20-sweep-bubble-actions-copy.png"
+        },
+        {
+          "tid": "bubble-actions-retry",
+          "role": "button",
+          "name": "Write this answer again",
+          "status": "pass",
+          "effect": [
+            "selection changed",
+            "content changed: \"typing… / typing…\"",
+            "foo finished answering 8.1 s later"
+          ],
+          "issues": [],
+          "shot": "21-sweep-bubble-actions-retry.png"
+        },
+        {
+          "tid": "bubble-actions-good",
+          "role": "button",
+          "name": "Good answer",
+          "status": "pass",
+          "effect": [
+            "selection changed",
+            "content changed"
+          ],
+          "issues": [],
+          "shot": "22-sweep-bubble-actions-good.png"
+        },
+        {
+          "tid": "bubble-actions-bad",
+          "role": "button",
+          "name": "Not a good answer",
+          "status": "pass",
+          "effect": [
+            "opened dialog:What went wrong?\nWrong\nNot what I asked\n",
+            "content changed: \"What went wrong? / Wrong\""
+          ],
+          "issues": [],
+          "shot": "23-sweep-bubble-actions-bad.png"
+        }
+      ],
+      "truncated": 0,
+      "ok": true,
+      "ms": 16776
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 15,
+      "do": "key",
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "pressing Enter on an empty box sends nothing: no empty bubble",
+      "ok": true,
+      "ms": 1501,
+      "shot": "24-empty-send.png"
+    },
+    {
+      "i": 17,
+      "do": "pasteSend",
+      "typed": "line one\n\nline three after a blank line",
+      "inField": "line one\n\n\nline three after a blank line",
+      "ok": true,
+      "ms": 984
+    },
+    {
+      "i": 18,
+      "do": "wait",
+      "expect": "the pasted text with a blank line went as ONE message, exactly as pasted, and foo answered it once",
+      "ok": true,
+      "ms": 15002,
+      "shot": "25-paste-blank-line.png"
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "typed": "thanks 🙏",
+      "sentAt": 1794508748535,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 139
+    },
+    {
+      "i": 20,
+      "do": "wait",
+      "expect": "a small 👍 or ❤️ reaction on my thanks, or one short line; no long You're welcome speech",
+      "ref": "UX-08-01",
+      "ok": true,
+      "ms": 8005,
+      "shot": "26-thanks.png"
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "typed": "asdfghjkl qwerty ???",
+      "sentAt": 1794508756779,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 163
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash",
+      "timeline": [
+        {
+          "at": 61,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2186,
+          "badges": [],
+          "reactions": [
+            "👍"
+          ],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1616,
+          "mark": 1500,
+          "shot": "27-gibberish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3202,
+          "mark": 3000,
+          "shot": "28-gibberish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [
+            "👍"
+          ],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6087,
+          "mark": 6000,
+          "shot": "29-gibberish-wait-6.0s.png",
+          "badges": [],
+          "reactions": [
+            "👍"
+          ],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "ms": 120136,
+      "shot": "30-gibberish.png"
+    },
+    {
+      "i": 23,
+      "do": "check",
+      "note": "Vikas 26 Oct: batch 1 has no jobs, so no job filter chips",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 24,
+      "do": "check",
+      "note": "batch 1 has no helpers",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "typed": "maine kal cab book karne bola tha, ho gaya kya?",
+      "sentAt": 1794508877152,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "expect": "Vikas 26 Oct: honest that foo cannot book cabs or do tasks yet and booked nothing; never \"I have no record\", never a fake booking",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 31,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 1551,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3172,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1551,
+          "mark": 1500,
+          "shot": "31-cab-honesty-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 1621,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I haven't booked any cab. This build can't do tasks like booking yet—I can only chat and answer questions for now.\n\n6:41 PM",
+      "kit": [],
+      "ms": 9282,
+      "shot": "32-cab-honesty.png"
+    },
+    {
+      "i": 27,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

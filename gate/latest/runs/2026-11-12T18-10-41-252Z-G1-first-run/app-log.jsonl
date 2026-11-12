@@ -1,0 +1,4 @@
+{"t":1794507042239,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794507118617,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":872}
+{"t":1794507191911,"lvl":"info","mod":"engine","evt":"chat.rewrite_skipped","kind":"no_question"}
+{"t":1794507302156,"lvl":"info","mod":"main","evt":"APP_STARTED"}

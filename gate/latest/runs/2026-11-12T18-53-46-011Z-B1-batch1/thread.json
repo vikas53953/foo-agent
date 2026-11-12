@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, kaise ho?\n6:54 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise hain? Kuch kaam hai?\n\n6:54 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi apne dost se bola: \"Yaar, main apni biwi ko surprise dena chahta hoon.\"\nDost ne kaha: \"Toh ghar jaldi chale jao!\" 😄\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a cab to the airport at 6 am tomorrow\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't book cabs yet. For now I can chat, answer questions and help you plan things.\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the cab?\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I didn't book the cab. I can't do tasks like booking, buying or sending things yet.\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Done. Dark mode is on.\n\n6:55 PM"
+  }
+]
