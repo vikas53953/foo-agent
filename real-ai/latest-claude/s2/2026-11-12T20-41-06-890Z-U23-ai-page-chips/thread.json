@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:40 PM\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune\nCompared difficulty, cost and travel time\nKept 5 treks that fit easy only, best fit for a weekend from\nStopped by you\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The one ISRO item from 9 to 12 Nov 2026 is a successful ground test of the PSLV third stage (PS3) on Thu 12 Nov 2026 at the Satish Dhawan Space Centre, Sriharikota. It was a test on the ground, not a launch.\n\nWhy it was needed: the third stage showed problems on the PSLV-C61/EOS-09 and PSLV-C62/EOS-N1 missions. ISRO then reviewed the stage's design, raw material checks, assembly and quality checks.\n\nWhat changed:\n\nStronger nozzle design, with better safety margins\nUpdated rules for accepting raw materials\nUpdated assembly steps and non-destructive tests during integration and transport\nStronger mechanical joints, with backup in the sealing systems\n\nISRO says it will plan further tests after studying the test data. This comes from one report (Amar Ujala, quoting ISRO's statement shared by ANI). I did not find a second source, and no launch date was given.\n\n8:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n8:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n8:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n8:41 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your water tracker: tap a glass to add it, and it counts toward your goal of 8 glasses. It starts fresh each day and saves on this device if your app allows it.\n\nKeep\n8:41 PM"
+  }
+]

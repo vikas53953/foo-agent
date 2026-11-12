@@ -1,0 +1,14 @@
+{"t":"2026-11-12T20:38:14.383Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:38:19.907Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:38:27.988Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8078}
+{"t":"2026-11-12T20:38:28.107Z","i":0,"do":"send","typed":"What's the latest news about ISRO this week? Give me sources.","sentAt":1794515908075,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-11-12T20:38:42.917Z","shot":"01-news.png"}
+{"t":"2026-11-12T20:38:42.917Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":37,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":541,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7161,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":8657,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 9 to 12 Nov 2026\nCheck it went through\nWrite it\nWatch live\nStop\nunder 1 min\n8:38 PM","kit":[],"ms":14741,"shot":"01-news.png"}
+{"t":"2026-11-12T20:38:42.920Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T20:38:42.922Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T20:38:52.978Z","shot":"02-error-step4.png"}
+{"t":"2026-11-12T20:38:52.978Z","i":4,"do":"expectText","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","errorShot":"02-error-step4.png","ms":10056}
+{"t":"2026-11-12T20:38:52.988Z","i":5,"do":"dump","ok":true,"ms":10}
+{"t":"2026-11-12T20:38:53.338Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-11-12T20:38:53.350Z","step":"aiTurns","turns":4}
+{"t":"2026-11-12T20:38:53.354Z","step":"jobTrail","steps":4,"calls":3}
