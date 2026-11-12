@@ -1,0 +1,128 @@
+{
+  "journey": "U22-face-polish",
+  "title": "Living face: thinking while working, resting; motion off in settings",
+  "videos": [],
+  "steps": 12,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-22-44-011Z-U22-face-polish",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1026
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Write a 4-line poem about monsoon in Mumbai",
+      "sentAt": 1794511370719,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 135
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "26px Thinking face only while the request is in flight (C.7.4)",
+      "ok": true,
+      "ms": 1511,
+      "shot": "01-thinking.png"
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "poem; face back to resting, blinks",
+      "timeline": [
+        {
+          "at": 1657,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3173,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4698,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 1521,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your monsoon in Mumbai:\n\nGrey clouds drum on the sea-facing walls,\nMarine Drive shimmers as the first rain falls.\nChai steams, umbrellas bloom, and trains run slow,\nMumbai just smiles and lets the water flow.\n\n7:22 PM",
+      "kit": [],
+      "ms": 9101,
+      "shot": "02-poem.png"
+    },
+    {
+      "i": 4,
+      "do": "shotEl",
+      "soft": true,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 5,
+      "do": "key",
+      "ok": true,
+      "ms": 53
+    },
+    {
+      "i": 6,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 88
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "face motion setting",
+      "ok": true,
+      "ms": 602,
+      "shot": "04-face-motion.png"
+    },
+    {
+      "i": 9,
+      "do": "key",
+      "ok": true,
+      "ms": 46
+    },
+    {
+      "i": 10,
+      "do": "click",
+      "soft": true,
+      "ok": false,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "05-error-step10.png",
+      "ms": 23089
+    },
+    {
+      "i": 11,
+      "do": "dump",
+      "ok": true,
+      "ms": 10
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n7:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can answer questions, write out plans, tables and comparisons, and change how I look or work for you.\n\n7:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet: your traffic goes into the tunnel scrambled, comes out at the VPN company's computer, and only then reaches the website.\n\nHere is the flow:\n\nYour device scrambles (encrypts) everything before it leaves, so your Wi-Fi owner or internet provider sees only gibberish.\nThe scrambled data reaches the VPN's computer, which unscrambles it and sends your request on to the website.\nThe website sees the VPN's address, not yours, so it thinks you are wherever that computer is.\nThe reply comes back the same way, scrambled again for the trip to you.\n\nIt helps on public Wi-Fi and hides your browsing from your internet provider. It does not make you invisible: the VPN company can see your traffic instead, so pick one you trust. Sites can still know you through logins and cookies.\n\n7:15 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n7:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt so many times that it is often called the city of seven (some say eight) old cities, and you can still walk through ruins from several of them today.\n\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is nicknamed the \"Manchester of India\" because its hosiery and woollen factories make a huge share of the country's winter wear.\n\nShow earlier answer\nRewritten\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write a 4-line poem about monsoon in Mumbai\n7:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your monsoon in Mumbai:\n\nGrey clouds drum on the sea-facing walls,\nMarine Drive shimmers as the first rain falls.\nChai steams, umbrellas bloom, and trains run slow,\nMumbai just smiles and lets the water flow.\n\n7:22 PM"
+  }
+]
