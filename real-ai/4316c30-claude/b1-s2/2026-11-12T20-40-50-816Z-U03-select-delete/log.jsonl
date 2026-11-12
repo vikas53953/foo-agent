@@ -1,0 +1,26 @@
+{"t":"2026-11-12T20:40:50.817Z","journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","spec":"04 §9, 03-2 selection header, 10-2 §C.3","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:40:56.370Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:40:57.414Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1041}
+{"t":"2026-11-12T20:40:57.536Z","i":1,"do":"send","typed":"Say hello in Hindi","sentAt":1794516057505,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-11-12T20:41:08.813Z","shot":"01-hello.png"}
+{"t":"2026-11-12T20:41:08.813Z","i":2,"do":"waitReply","expect":"short reply","timeline":[{"at":57,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3606,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":5128,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":3574,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Hello in Hindi is नमस्ते (namaste). A casual version is हाय or कैसे हो? (kaise ho?), which means \"how are you?\"\n\n8:41 PM","kit":[],"ms":11215,"shot":"01-hello.png"}
+{"t":"2026-11-12T20:41:08.885Z","i":3,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-11-12T20:41:08.972Z","i":4,"do":"click","soft":true,"ok":true,"ms":85}
+{"t":"2026-11-12T20:41:09.639Z","shot":"02-select-mode.png"}
+{"t":"2026-11-12T20:41:09.640Z","i":5,"do":"wait","expect":"selection header with count, Copy, Delete, Cancel; check circles on bubbles","ok":true,"ms":600,"shot":"02-select-mode.png"}
+{"t":"2026-11-12T20:41:09.711Z","i":6,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-11-12T20:41:10.170Z","shot":"03-two-selected.png"}
+{"t":"2026-11-12T20:41:10.170Z","i":7,"do":"wait","expect":"count 2","ok":true,"ms":402,"shot":"03-two-selected.png"}
+{"t":"2026-11-12T20:41:10.174Z","i":8,"do":"expectText","note":"count shows 2","soft":true,"text":"2 selected","ok":true,"ms":3}
+{"t":"2026-11-12T20:41:10.241Z","i":9,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-11-12T20:41:10.331Z","i":10,"do":"click","soft":true,"ok":true,"ms":90}
+{"t":"2026-11-12T20:41:10.399Z","i":11,"do":"click","soft":true,"ok":true,"ms":67}
+{"t":"2026-11-12T20:41:10.481Z","i":12,"do":"click","soft":true,"ok":true,"ms":82}
+{"t":"2026-11-12T20:41:11.146Z","shot":"04-delete-dialog.png"}
+{"t":"2026-11-12T20:41:11.146Z","i":13,"do":"wait","expect":"confirm dialog; Esc keeps the message","ref":"UX-23-04","ok":true,"ms":601,"shot":"04-delete-dialog.png"}
+{"t":"2026-11-12T20:41:11.150Z","i":14,"do":"key","ok":true,"ms":4}
+{"t":"2026-11-12T20:41:11.152Z","i":15,"do":"check","note":"message kept after Esc","soft":true,"found":4,"ok":true,"ms":2}
+{"t":"2026-11-12T20:41:11.162Z","i":16,"do":"dump","ok":true,"ms":10}
+{"t":"2026-11-12T20:41:11.287Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-12T20:41:11.299Z","step":"aiTurns","turns":1}
+{"t":"2026-11-12T20:41:11.301Z","step":"jobTrail","steps":0,"calls":0}
