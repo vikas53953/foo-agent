@@ -1,0 +1,15 @@
+{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-09-23-130Z-J01-J02-first-run"}
+{"journey":"B01-chat-rules","title":"Chat rules: thanks, long answer, filler, reactions","videos":[],"steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-10-13-925Z-B01-chat-rules"}
+{"journey":"R1-rich","title":"Rich replies: table, steps, numbers","videos":[],"steps":9,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-10-56-876Z-R1-rich"}
+{"journey":"B06-booking-options","title":"Restaurant options without booking","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-13-55-518Z-B06-booking-options"}
+{"journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","videos":[],"steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-17-23-000Z-B05-restart"}
+{"journey":"B07-live","title":"Watch live, take over, hand back, stop","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-20-42-105Z-B07-live"}
+{"journey":"B11-zoom-appearance","title":"Zoom keys, settings rows","videos":[],"steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-22-12-226Z-B11-zoom-appearance"}
+{"journey":"U03-select-delete","title":"Select messages, copy them, delete one (keep)","videos":[],"steps":17,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-22-26-236Z-U03-select-delete"}
+{"journey":"U07-composer","title":"Composer: multi-line, attach menu, emoji, Esc, draft kept after restart","videos":[],"steps":18,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-22-45-853Z-U07-composer"}
+{"journey":"U11-approval-states","title":"Approval card: pending, Not now (declined), Change (never Approve)","videos":[],"steps":16,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-23-02-314Z-U11-approval-states"}
+{"journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","videos":[],"steps":8,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-28-49-109Z-U15-routines"}
+{"journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","videos":[],"steps":9,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-29-39-150Z-U18-new-helper-group"}
+{"journey":"U22-face-polish","title":"Living face: thinking while working, resting; motion off in settings","videos":[],"steps":12,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-29-55-396Z-U22-face-polish"}
+{"journey":"U26-crash-reopen","title":"foo crashes and is reopened at once: a window must appear","videos":[],"steps":5,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-30-45-507Z-U26-crash-reopen"}
+{"journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","videos":[],"steps":23,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-31-07-545Z-QA3-languages-batch1"}

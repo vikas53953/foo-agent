@@ -1,0 +1,16 @@
+{"t":"2026-11-12T18:10:56.877Z","journey":"R1-rich","title":"Rich replies: table, steps, numbers","spec":"CR-0022 R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:11:02.320Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:11:02.472Z","i":0,"do":"send","typed":"Make a table comparing 3 budget phones under 20000 rupees","sentAt":1794507062413,"sent":true,"before":0,"ok":true,"ms":149}
+{"t":"2026-11-12T18:11:18.211Z","shot":"01-table.png"}
+{"t":"2026-11-12T18:11:18.211Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":68,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9686,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":11703,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":9626,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nKeep 3 phones under ₹20,000 that fit best value for price, camera and battery\n3\nCompare price, display, camera, battery and\nAbout 3 minutes\nGo\nChange plan\n6:11 PM","kit":[],"ms":15674,"shot":"01-table.png"}
+{"t":"2026-11-12T18:11:18.247Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":35}
+{"t":"2026-11-12T18:13:48.316Z","shot":"02-table-after-go.png"}
+{"t":"2026-11-12T18:13:48.316Z","i":3,"do":"wait","ok":true,"ms":150009,"shot":"02-table-after-go.png"}
+{"t":"2026-11-12T18:13:48.318Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T18:13:48.329Z","i":5,"do":"dump","ok":true,"ms":10}
+{"t":"2026-11-12T18:13:48.422Z","i":6,"do":"send","typed":"Plan a 3 day trip to Jaipur for my parents","sentAt":1794507228409,"sent":true,"before":0,"ok":true,"ms":93}
+{"t":"2026-11-12T18:13:55.101Z","shot":"03-trip.png"}
+{"t":"2026-11-12T18:13:55.102Z","i":7,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":19,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":523,"badges":["waiting"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":509,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:13 PM","kit":[],"ms":6615,"shot":"03-trip.png"}
+{"t":"2026-11-12T18:13:55.108Z","i":8,"do":"dump","ok":true,"ms":6}
+{"t":"2026-11-12T18:13:55.319Z","step":"appLog","lines":30,"dropped":0}
+{"t":"2026-11-12T18:13:55.332Z","step":"aiTurns","turns":27}

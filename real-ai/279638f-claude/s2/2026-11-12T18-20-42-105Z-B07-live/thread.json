@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n6:17 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for National Museum Delhi opening hours and\nCompared official site against other sources\nStopped by you\n6:17 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n6:20 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:21 PM\n6:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n6:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The best morning train from New Delhi (NDLS) to Agra Cantt is the 12002 Shatabdi Express: Daily, leaves 6:00 AM, arrives 7:50 AM, 1 hr 50 min.\n\nOther morning trains from New Delhi:\n\n12138 Punjab Mail: Daily, 5:10 AM to 8:10 AM (3 hr)\n18514 / 20808 Hirakund Express: 8:15 AM to 10:35 AM (2 hr 20 min)\n11906 HSX AGC Express: Daily, 7:20 AM to 11:00 AM (3 hr 40 min)\n64074 EMU: Daily, 4:15 AM to 9:05 AM (4 hr 50 min)\n\nIf Hazrat Nizamuddin (NZM) works for you, the 22470 Vande Bharat (6:00 AM to 7:40 AM) and 12050 Gatimaan Express (8:10 AM to 9:50 AM) are fastest at 1 hr 40 min. Their running days and seat availability are not confirmed.\n\nThis list is for Thu 12 Nov, and today's morning trains have already left. It came from a web page, not IRCTC, which blocked me, and the page was cut off after 11:20 AM. Check running days and seats on IRCTC before you plan around any of these.\n\n6:21 PM"
+  }
+]
