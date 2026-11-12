@@ -1,0 +1,46 @@
+{
+  "id": "BP-CARD-19",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(19) > .mini",
+  "box": {
+    "x": 127.5,
+    "y": 12743.40625,
+    "width": 351.328125,
+    "height": 138
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-19.light.png",
+      "sha256": "c7d36f095001b7c7f059f60313ea46493a4940a03b7219e94afae10538d2a026"
+    },
+    "dark": {
+      "png": "BP-CARD-19.dark.png",
+      "sha256": "9b7f571d0eeb0d3b655cc9b3af2bc778d2ce5b943c693c07ba736df6d00d14f2"
+    }
+  },
+  "texts": [
+    "MakeMyTrip didn't accept it",
+    "Nothing was booked or charged.",
+    "Try again"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-19": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 138
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M4",
+  "spec": "05-3 §5.20",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
