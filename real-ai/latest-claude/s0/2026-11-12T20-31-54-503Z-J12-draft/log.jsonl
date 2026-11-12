@@ -1,0 +1,10 @@
+{"t":"2026-11-12T20:31:54.503Z","journey":"J12-draft","title":"Draft an email (never sends)","spec":"07-1 J12; M8 drafts","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:32:00.051Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:32:00.217Z","i":0,"do":"send","typed":"Draft an email to someone@example.com saying I'll be 15 minutes late to tomorrow's meeting","sentAt":1794515520155,"sent":true,"before":0,"ok":true,"ms":163}
+{"t":"2026-11-12T20:32:10.436Z","shot":"01-draft.png"}
+{"t":"2026-11-12T20:32:10.436Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":71,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4126,"badges":["waiting"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":4063,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Connect Gmail\n\nI need to read your email for “Email about running late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n8:32 PM","kit":[],"ms":10157,"shot":"01-draft.png"}
+{"t":"2026-11-12T20:32:10.439Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T20:32:10.447Z","i":3,"do":"dump","ok":true,"ms":8}
+{"t":"2026-11-12T20:32:10.574Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-12T20:32:10.586Z","step":"aiTurns","turns":1}
+{"t":"2026-11-12T20:32:10.588Z","step":"jobTrail","steps":0,"calls":0}

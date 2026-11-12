@@ -1,0 +1,28 @@
+{"t":"2026-11-12T20:34:36.083Z","journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","spec":"03-2 §3.6, 10-2 §C.2 Headers / Right shell","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:34:41.580Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:34:42.639Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1056}
+{"t":"2026-11-12T20:34:42.704Z","shot":"01-header.png"}
+{"t":"2026-11-12T20:34:42.705Z","i":1,"do":"shot","expect":"header 60px: face, name, status line, find, details toggle, ⋮","ref":"BP-ANAT-MHEAD","ok":true,"ms":65}
+{"t":"2026-11-12T20:34:42.803Z","i":2,"do":"click","soft":true,"ok":true,"ms":98}
+{"t":"2026-11-12T20:34:43.376Z","shot":"02-more-menu.png"}
+{"t":"2026-11-12T20:34:43.377Z","i":3,"do":"wait","expect":"header ⋮ menu items","ok":true,"ms":500,"shot":"02-more-menu.png"}
+{"t":"2026-11-12T20:34:43.382Z","i":4,"do":"key","ok":true,"ms":5}
+{"t":"2026-11-12T20:34:43.490Z","shot":"03-panel-toggle.png"}
+{"t":"2026-11-12T20:34:43.490Z","i":5,"do":"key","expect":"details panel toggles (Ctrl+Shift+D)","ok":true,"ms":24,"shot":"03-panel-toggle.png"}
+{"t":"2026-11-12T20:34:44.362Z","shot":"04-panel.png"}
+{"t":"2026-11-12T20:34:44.362Z","i":6,"do":"wait","expect":"right panel: Doing now, Using, What I know, Spent this month (AI ₹1,000 / purchases ₹25,000)","ref":"BP-APP-R","ok":true,"ms":801,"shot":"04-panel.png"}
+{"t":"2026-11-12T20:34:44.438Z","i":7,"do":"shotEl","soft":true,"ref":"BP-ANAT-SPENT","ok":true,"ms":75}
+{"t":"2026-11-12T20:34:44.516Z","i":8,"do":"shotEl","soft":true,"ref":"BP-ANAT-USING","ok":true,"ms":77}
+{"t":"2026-11-12T20:34:44.595Z","i":9,"do":"shotEl","soft":true,"ref":"BP-ANAT-KNOW","ok":true,"ms":79}
+{"t":"2026-11-12T20:35:07.660Z","shot":"08-error-step10.png"}
+{"t":"2026-11-12T20:35:07.661Z","i":10,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"08-error-step10.png","ms":23066}
+{"t":"2026-11-12T20:35:08.535Z","shot":"09-know-all.png"}
+{"t":"2026-11-12T20:35:08.535Z","i":11,"do":"wait","expect":"memory page opens","ok":true,"ms":800,"shot":"09-know-all.png"}
+{"t":"2026-11-12T20:35:31.613Z","shot":"10-error-step12.png"}
+{"t":"2026-11-12T20:35:31.613Z","i":12,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"10-error-step12.png","ms":23077}
+{"t":"2026-11-12T20:35:31.691Z","shot":"11-panel-hidden.png"}
+{"t":"2026-11-12T20:35:31.691Z","i":13,"do":"key","expect":"panel hidden again","ok":true,"ms":11,"shot":"11-panel-hidden.png"}
+{"t":"2026-11-12T20:35:31.702Z","i":14,"do":"dump","ok":true,"ms":11}
+{"t":"2026-11-12T20:35:31.823Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-11-12T20:35:31.835Z","step":"aiTurns","turns":0}
+{"t":"2026-11-12T20:35:31.837Z","step":"jobTrail","steps":0,"calls":0}

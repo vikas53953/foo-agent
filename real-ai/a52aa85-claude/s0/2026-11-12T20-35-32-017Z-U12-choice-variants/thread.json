@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest morning train from New Delhi to Agra Cantt is the Rani Kamalapati Shatabdi (12002), 6:00 AM to 7:50 AM, 1h 50m, running daily.\n\nDaily trains before noon:\n\nPunjab Mail (12138): 5:10 AM to 8:10 AM, 3h\nRani Kamalapati Shatabdi (12002): 6:00 AM to 7:50 AM, 1h 50m\nTaj Express (12280): 6:55 AM to 9:25 AM, 2h 30m\nAgra Cantt Express (11906): 7:20 AM to 11:00 AM, 3h 40m\nJhelum Express (11078): 11:30 AM to 2:05 PM, 2h 35m\n\nOn some days only: Hirakud Express (20808) Wed, Sat and Sun, 8:15 AM to 10:35 AM. Durg SF (20848) on Fri and Nagpur AC SF (22126) on Mon, both 11:15 AM to 1:55 PM.\n\nThis comes from a train schedule site, not IRCTC itself, and shows no seats or fares. Tell me your travel day and I can narrow it down.\n\n8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n8:35 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend activity in Bengaluru sounds best? → Lalbagh garden walk\n8:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:35 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Lalbagh garden walk is your pick, and it suits you: go early, around Sat 14 Nov, 7:00 AM, when it's cool and quiet, then have a South Indian breakfast nearby. Want a reminder for Friday evening?\n\n8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n8:36 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nYour favourite, light and quick\n2\nBisi bele bath with curd rice\nComforting, one-bowl South Indian\n3\nRava idli, vada and sambar\nSmall plates, easy to share\nSomething else…\nSkip\n8:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, a solid choice for a Thursday night. 🌿 Add a spoon of ghee and a squeeze of lemon, and it needs no help from me. Want a reminder for Friday evening about the Lalbagh walk?\n\n8:36 PM"
+  }
+]

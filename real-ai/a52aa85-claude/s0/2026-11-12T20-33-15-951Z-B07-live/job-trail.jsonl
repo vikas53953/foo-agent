@@ -1,0 +1,5 @@
+{"kind":"step","job_id":"j_01a1d177-1a89-7d43-b1d5-759e6a800242","idx":0,"phrase_key":"find_trains","state":"done","attempts":0,"route":"browser","started_at":1794515612396,"finished_at":1794515644377}
+{"kind":"step","job_id":"j_01a1d177-1a89-7d43-b1d5-759e6a800242","idx":1,"phrase_key":"look_for","state":"skipped","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1d177-1a89-7d43-b1d5-759e6a800242","idx":2,"phrase_key":"compare","state":"skipped","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"call","job_id":"j_01a1d177-1a89-7d43-b1d5-759e6a800242","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794515616371,"finished_at":1794515620875}
+{"kind":"call","job_id":"j_01a1d177-1a89-7d43-b1d5-759e6a800242","step_idx":0,"tool":"web.fetch","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794515626006,"finished_at":1794515633253}

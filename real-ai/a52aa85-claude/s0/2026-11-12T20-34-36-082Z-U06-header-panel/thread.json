@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n8:32 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:32 PM\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking for flights Delhi to Mumbai on…\nlive checklist\nLooked for flights Delhi to Mumbai on Fri 20 Nov\nKept 3 flights that fit lowest fare\nCompared the 3 cheapest flights\nStopped by you\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n8:33 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:33 PM\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest morning train from New Delhi to Agra Cantt is the Rani Kamalapati Shatabdi (12002), 6:00 AM to 7:50 AM, 1h 50m, running daily.\n\nDaily trains before noon:\n\nPunjab Mail (12138): 5:10 AM to 8:10 AM, 3h\nRani Kamalapati Shatabdi (12002): 6:00 AM to 7:50 AM, 1h 50m\nTaj Express (12280): 6:55 AM to 9:25 AM, 2h 30m\nAgra Cantt Express (11906): 7:20 AM to 11:00 AM, 3h 40m\nJhelum Express (11078): 11:30 AM to 2:05 PM, 2h 35m\n\nOn some days only: Hirakud Express (20808) Wed, Sat and Sun, 8:15 AM to 10:35 AM. Durg SF (20848) on Fri and Nagpur AC SF (22126) on Mon, both 11:15 AM to 1:55 PM.\n\nThis comes from a train schedule site, not IRCTC itself, and shows no seats or fares. Tell me your travel day and I can narrow it down.\n\n8:34 PM"
+  }
+]
