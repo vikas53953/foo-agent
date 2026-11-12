@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Email about running late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:48 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:48 PM\n7:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for Delhi to Mumbai flights on Fri 20 Nov\nKept 3 flights that fit lowest fare\nCompared the 3 flights on fare, timings and stops\nStopped by you\n7:48 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:49 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n7:49 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:49 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:49 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The fastest morning train from New Delhi to Agra Cantt is the 12002 Shatabdi Express: Fri 13 Nov, 6:00 AM to 7:50 AM (1 hr 50 min).\n\nOther morning trains from New Delhi on Fri 13 Nov:\n\n64074 NDLS-DHO EMU: 4:15 AM to 9:05 AM (4 hr 50 min)\n12138 Punjab Mail: 5:10 AM to 8:10 AM (3 hr)\n11906 HSX AGC Express: 7:20 AM to 11:00 AM (3 hr 40 min)\n20848 Durg SF Express: 11:15 AM to 1:55 PM (2 hr 40 min)\n11078 Jhelum Express: 11:30 AM to 2:05 PM (2 hr 35 min)\n\nFrom Hazrat Nizamuddin, the 22470 Vande Bharat leaves Fri 13 Nov, 6:00 AM and reaches Agra Cantt at 7:40 AM (1 hr 40 min), which is slightly quicker if Nizamuddin works for you.\n\nIRCTC blocked me, so this comes from another timetable site. The page was cut off after the 1:00 PM trains, and I did not check seat availability or fares.\n\n7:50 PM"
+  }
+]
