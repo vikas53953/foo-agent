@@ -1,0 +1,50 @@
+{
+  "id": "BP-MSG-04",
+  "family": "bp",
+  "selector": "#messages .grid2 > .panel:nth-child(4) > .mini",
+  "box": {
+    "x": 127.5,
+    "y": 8945.828125,
+    "width": 350,
+    "height": 260
+  },
+  "files": {
+    "light": {
+      "png": "BP-MSG-04.light.png",
+      "sha256": "3427cd63339bdef4d709d4a864b590545cacd4c23520c561aab64cba0a35bb12"
+    },
+    "dark": {
+      "png": "BP-MSG-04.dark.png",
+      "sha256": "7abbc5a3ccd84ac9c7ce3f2950df3d19e29594fd0f377282815329c5c52e8eb8"
+    }
+  },
+  "texts": [
+    "Today, Fri 16 Oct",
+    "Handed to Trips",
+    "Your BTC alert: it's at ₹54,80,000 (54.8 lakh).",
+    "11:02 AM",
+    "Why am I getting this?",
+    "▶",
+    "0:14"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-MSG-04": {
+      "x": 0,
+      "y": 0,
+      "width": 350,
+      "height": 260
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M2",
+  "spec": "04 §15–§19; 05 §5.18, §5.25",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

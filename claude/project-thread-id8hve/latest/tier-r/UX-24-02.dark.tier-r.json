@@ -141,7 +141,7 @@
         "3:30",
         "Setting",
         "up…",
-        "1",
+        "3",
         "Setting",
         "up",
         "Uses",
@@ -219,8 +219,8 @@
     "total": 2072
   },
   "r5": {
-    "ratio": 0.0369443359375,
-    "diffPixels": 37831,
+    "ratio": 0.0369482421875,
+    "diffPixels": 37835,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-24-02.dark.diff.png"

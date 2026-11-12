@@ -1,0 +1,46 @@
+{
+  "id": "BP-CARD-15",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(15) > .mini",
+  "box": {
+    "x": 930.15625,
+    "y": 12174.40625,
+    "width": 351.34375,
+    "height": 134
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-15.light.png",
+      "sha256": "a5effbddce006397152894bceed8a50e702260393adea1af5d98eaa076be5984"
+    },
+    "dark": {
+      "png": "BP-CARD-15.dark.png",
+      "sha256": "9c0a4f8b5d3fcb33f3bbc99a0eaa003ca4b1c737040f84026edeb8967bf7039a"
+    }
+  },
+  "texts": [
+    "Gas cylinder booked for Mon 19 Oct.",
+    "✓ Proof: booking #HP82731 · screenshot",
+    "⚠ Not checked live"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-15": {
+      "x": 0,
+      "y": 0,
+      "width": 351.34375,
+      "height": 134
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M4",
+  "spec": "05-3 §5.15–§5.16",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
