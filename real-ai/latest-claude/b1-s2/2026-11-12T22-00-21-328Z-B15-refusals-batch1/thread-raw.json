@@ -1,8 +1,0 @@
-[
-  {
-    "chatId": "c_01a1d1c0-9bac-738d-8d63-4faf7ae7ef03",
-    "messageId": "m_01a1d1c3-10d6-7c4c-aedc-debb5f0673de",
-    "status": "complete",
-    "text": "Here it is, just one line:\n\n```python\nprint(\"Hello, world!\")\n```\n\nSave it as `hello.py` and run it with `python hello.py`. Want the Hindi version too?"
-  }
-]

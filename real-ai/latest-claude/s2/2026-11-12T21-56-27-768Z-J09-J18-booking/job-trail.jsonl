@@ -1,1 +1,0 @@
-{"kind":"call","job_id":"j_01a1d1c0-ae62-7512-8fac-5c45d5573121","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"cancelled","error_kind":null,"started_at":1794520593840,"finished_at":1794520595744}

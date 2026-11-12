@@ -1,9 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":3,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-53-46-133Z-J01-J02-first-run"}
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-56-52-878Z-J01-J02-first-run"}
-{"journey":"J17-memory","title":"Remember, view and forget","videos":[],"steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-57-43-278Z-J17-memory"}
-{"journey":"J12-draft","title":"Draft an email (never sends)","videos":[],"steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-58-11-596Z-J12-draft"}
-{"journey":"B04-stop","title":"Start a job then stop it by typing stop","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-58-27-378Z-B04-stop"}
-{"journey":"B07-live","title":"Watch live, take over, hand back, stop","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-59-34-175Z-B07-live"}
-{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","videos":[],"steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T22-00-57-234Z-U06-header-panel"}
-{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","videos":[],"steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T22-01-53-237Z-U12-choice-variants"}
-{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","videos":[],"steps":22,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T22-03-03-081Z-U19-screens"}
