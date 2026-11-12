@@ -2,7 +2,7 @@
 // keeping the old words in `earlier_text` and the chat's preview fresh; with `jobs` off, intake is told foo cannot do tasks
 // yet (JOBS_OFF_LINE). The real Engine over a temp SQLite db, as in AT-074.
 import { afterEach, describe, expect, it } from 'vitest';
-import { JOBS_OFF_LINE } from '../../src/engine/prompt/PromptBuilder';
+import { JOBS_OFF_LINE, rewriteLine } from '../../src/engine/prompt/PromptBuilder';
 import { t } from '../../src/shared/copy/t';
 import { intake, makeHarness, verified, type Harness } from '../unit/m3-engine-helpers';
 
@@ -45,6 +45,28 @@ describe('CR-0059 · the batch-1 baseline', () => {
     expect(after[0]).toMatchObject({ id: first!.id, text: 'Second answer.', status: 'complete', earlier_text: 'First answer.' });
     // The chat row takes a new rev, so the window accepts the fresh preview (a same-rev chat:upsert is dropped).
     expect((h.db.prepare('SELECT rev FROM chats WHERE id = ?').get(chatId) as { rev: number }).rev).toBeGreaterThan(revBefore);
+  });
+
+  it('the rewrite turn is shown the answer it replaces and asked for new words; the first turn is not (U01, run 43300544953)', async () => {
+    h = makeHarness({
+      script: [intake(reply('Ludhiana is the Manchester of India.')), intake(reply('Ludhiana makes most of India’s bicycles.'))],
+      settings: verified(),
+      tools: {},
+      features: BATCH_1,
+    });
+    await h.idle();
+    h.userSays('And one about Ludhiana');
+    await h.idle();
+    const [first] = fooAnswers(h);
+    h.send('reply.rewrite', { messageId: first!.id });
+    await h.idle();
+
+    const turns = h.turnsJsonl().filter((x) => x.purpose === 'intake');
+    expect(turns).toHaveLength(2);
+    const line = rewriteLine('Ludhiana is the Manchester of India.');
+    expect(String(turns[0]!.system)).not.toContain('tapped Try again');
+    expect(String(turns[1]!.system)).toContain(line);
+    expect(fooAnswers(h)[0]).toMatchObject({ text: 'Ludhiana makes most of India’s bicycles.' });
   });
 
   it('a streamed rewrite lands whole in the same bubble', async () => {

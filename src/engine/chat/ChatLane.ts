@@ -107,6 +107,8 @@ export interface IntakeInput {
   /** CR-0069: the second look at a likely wrong `memory` or `reply` answer while that feature is off, or (item 9) the retry
    * after a reply with an empty say. */
   reask?: 'memory' | 'job' | 'empty';
+  /** CR-0059 row 1: Try again on a finished answer; the text it replaces. */
+  rewriteOf?: string;
 }
 
 /** The reply protocol (builder B's modules, wired by Engine). */
@@ -583,6 +585,8 @@ export class ChatLane {
         ...(answers?.length ? { answers } : {}),
         // CR-0069 item 9: the CR-0041 retry after a reply with an empty say names it (run 40643760745: the same empty twice).
         ...(emptySay ? { reask: 'empty' as const } : {}),
+        // CR-0059 row 1: the rewrite sees the answer it replaces, so Try again brings new words (U01, run 43300544953).
+        ...(rewrite ? { rewriteOf: rewrite.text } : {}),
       };
       built = this.d.protocol.buildIntake(intakeInput);
     } catch {
