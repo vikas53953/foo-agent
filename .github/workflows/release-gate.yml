@@ -17,7 +17,7 @@
 #           foo-windows-app-gated: the one artifact to send.
 # Evidence (report, pictures, step records; no videos) goes to the `evidence` branch under gate/<short-sha>/ and
 # gate/latest/, since agents cannot read CI artifacts. The videos are in the release-gate-report download.
-# Spend guards: owner-started runs only (dispatch or a push to main), one run at a time, Sonnet for the reviewer, a hard timeout.
+# Spend guards: owner-started runs only (dispatch, a push to main, or the Monday sentinel), one run at a time, Sonnet for the reviewer, a hard timeout.
 # The driver never clicks Approve, Pay, Book or Send. The key reaches only the steps that need it and the evidence is
 # scanned for it before anything is kept.
 name: Release gate
@@ -26,6 +26,10 @@ on:
   # Vikas 2026-10-28 (decision card): every merge to main, and before any app is sent (only foo-windows-app-gated goes out).
   push:
     branches: [main]
+  # Vikas 2026-10-28 19:07Z: a weekly real-Claude sentinel on Mondays, so a quiet week still proves main (and the key) work.
+  # 03:30 UTC = 09:00 IST. Runs on main with the default inputs; added by the 12 Nov audit (R6, approved by Vikas).
+  schedule:
+    - cron: '30 3 * * 1'
   workflow_dispatch:
     inputs:
       ref:
