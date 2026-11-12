@@ -1,0 +1,22 @@
+{"t":"2026-11-12T20:32:34.559Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:32:40.164Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:32:41.199Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1031}
+{"t":"2026-11-12T20:32:41.374Z","i":1,"do":"send","typed":"List three Indian rivers","sentAt":1794515561310,"sent":true,"before":0,"ok":true,"ms":174}
+{"t":"2026-11-12T20:32:51.603Z","shot":"01-rivers.png"}
+{"t":"2026-11-12T20:32:51.603Z","i":2,"do":"waitReply","expect":"a short list","timeline":[{"at":80,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3123,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":4130,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":3058,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Three big ones: the Ganga, the Yamuna and the Godavari.\n\nThe Ganga is the longest within India, the Yamuna is its largest tributary, and the Godavari is the longest river of peninsular India.\n\n8:32 PM","kit":[],"ms":10156,"shot":"01-rivers.png"}
+{"t":"2026-11-12T20:32:51.680Z","shot":"02-find-open.png"}
+{"t":"2026-11-12T20:32:51.680Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":11,"shot":"02-find-open.png"}
+{"t":"2026-11-12T20:32:51.694Z","i":4,"do":"fill","soft":true,"ok":true,"ms":14}
+{"t":"2026-11-12T20:32:52.554Z","shot":"03-find-results.png"}
+{"t":"2026-11-12T20:32:52.554Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":802,"shot":"03-find-results.png"}
+{"t":"2026-11-12T20:32:52.629Z","i":6,"do":"click","soft":true,"ok":true,"ms":75}
+{"t":"2026-11-12T20:32:52.722Z","i":7,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-11-12T20:32:52.802Z","i":8,"do":"click","soft":true,"ok":true,"ms":80}
+{"t":"2026-11-12T20:32:52.813Z","i":9,"do":"key","ok":true,"ms":11}
+{"t":"2026-11-12T20:32:53.679Z","shot":"04-ctrl-k.png"}
+{"t":"2026-11-12T20:32:53.679Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":800,"shot":"04-ctrl-k.png"}
+{"t":"2026-11-12T20:32:53.683Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-11-12T20:32:53.691Z","i":12,"do":"dump","ok":true,"ms":8}
+{"t":"2026-11-12T20:32:53.818Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-12T20:32:53.830Z","step":"aiTurns","turns":1}
+{"t":"2026-11-12T20:32:53.832Z","step":"jobTrail","steps":0,"calls":0}
