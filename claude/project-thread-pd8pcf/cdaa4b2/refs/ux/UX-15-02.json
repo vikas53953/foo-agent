@@ -1,0 +1,340 @@
+{
+  "id": "UX-15-02",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-15-02.light.png",
+      "sha256": "c06b96286ce21d8e4fd218b7737302eda9d2d2146f6ff6b5a9ab31256825978e"
+    },
+    "dark": {
+      "png": "UX-15-02.dark.png",
+      "sha256": "194f94d93a381fba468ccdb975dc4a189b49144e28d144c59d7cbdbdaa6650ee"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "1",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "9:38 AM",
+    "Filling guest details",
+    "Working",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "Trips",
+    "Working on Goa stay · step 3 of 4",
+    "▣ Watch live",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "✓",
+    "Checked Booking.com, MakeMyTrip and hotel sites",
+    "✓",
+    "Kept 3 under ₹8,000 a night, beach within 5 min",
+    "✓",
+    "You picked Taj Holiday Village",
+    "Filling guest details on makemytrip.com",
+    "Watch live",
+    "Stop",
+    "＋",
+    "Message Trips, or hold Ctrl+Space to talk",
+    "🎙",
+    "← Watch live",
+    "⤢",
+    "✕",
+    "Goa stay · step 3 of 4",
+    "Live",
+    "makemytrip.com",
+    "Guest details",
+    "Full name",
+    "Vikas Sharma",
+    "Email",
+    "vikas@…",
+    "Card number",
+    "4242 4242 4242 4242",
+    "Name on card",
+    "VIKAS SHARMA",
+    "Pay ₹14,600",
+    "Now: Filling guest details on makemytrip.com",
+    "Take over",
+    "Stop"
+  ],
+  "hlTexts": [
+    "← Watch live",
+    "⤢",
+    "✕",
+    "Goa stay · step 3 of 4",
+    "Live",
+    "makemytrip.com",
+    "Guest details",
+    "Full name",
+    "Vikas Sharma",
+    "Email",
+    "vikas@…",
+    "Card number",
+    "4242 4242 4242 4242",
+    "Name on card",
+    "VIKAS SHARMA",
+    "Pay ₹14,600",
+    "Now: Filling guest details on makemytrip.com",
+    "Take over",
+    "Stop"
+  ],
+  "hl": {
+    "id": "live",
+    "box": {
+      "x": 940,
+      "y": 32,
+      "width": 340,
+      "height": 768
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 940,
+      "y": 32,
+      "width": 340,
+      "height": 768
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M9",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 15,
+    "step": 2,
+    "anchor": "live-2",
+    "title": "Watch live, take over, stop",
+    "part": "Every day · Fri 16 Oct",
+    "j": "J18",
+    "r": "R11 · R8",
+    "c": "The Details panel becomes a live picture of foo's browser.",
+    "s": "\"Goa stay · step 3 of 4 · Live\", the page with card fields blurred, a step bar, \"Now: Filling guest details on makemytrip.com\", Take over · Stop.",
+    "f": "Blurs password, card and code fields in every frame.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "trips",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "9:38 AM",
+            "prev": "Filling guest details",
+            "st": "work"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "c",
+              "h": "<div class=\"card\" data-hl=\"chk\"><div class=\"hd\">Booking your Goa stay<span class=\"lbl\">Step 3 of 4</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Checked Booking.com, MakeMyTrip and hotel sites</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Kept 3 under ₹8,000 a night, beach within 5 min</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>You picked Taj Holiday Village</span></div><div class=\"li\"><span class=\"tk w\"></span><span>Filling guest details on makemytrip.com</span></div><div class=\"row2\"><span class=\"pillbtn sm \" data-hl=\"watch2\">Watch live</span><span class=\"pillbtn sm bad\" data-hl=\"stop\">Stop</span></div></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Working on Goa stay · step 3 of 4",
+          "watch": 1
+        },
+        "right": "live",
+        "det": {
+          "doing": [
+            {
+              "k": "w",
+              "t": "Trips · Goa stay",
+              "s": "Step 3 of 4 · Filling guest details",
+              "eye": 1
+            },
+            {
+              "k": "w",
+              "t": "Trips · Delhi flights",
+              "s": "Step 2 of 4 · Comparing fares"
+            },
+            {
+              "k": "w",
+              "t": "Money · Airtel bill",
+              "s": "Step 1 of 3 · Checking the amount"
+            }
+          ],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 1179
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "live": {
+          "title": "Goa stay · step 3 of 4",
+          "pill": "live",
+          "now": "Now: Filling guest details on makemytrip.com",
+          "site": "mmt",
+          "prog": 70
+        }
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "9:38 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest",
+          "trips": "work",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": true,
+          "trips": true,
+          "money": true,
+          "home": true
+        },
+        "tray": "work",
+        "toast": null,
+        "sel": "trips"
+      }
+    },
+    "clockShown": "9:38 AM",
+    "superseded": "X-95 (no in-panel live view; Watch live opens live.html, CR-0013 G-M9-02)"
+  }
+}

@@ -401,18 +401,7 @@
         "from",
         "replies",
         "show",
-        "here.",
-        "Waiting",
-        "for",
-        "your",
-        "OK:",
-        "₹14,600",
-        "to",
-        "Taj",
-        "Holiday",
-        "Village.",
-        "Show",
-        "button."
+        "here."
       ]
     },
     "hl": {
@@ -463,8 +452,8 @@
     "total": null
   },
   "r5": {
-    "ratio": 0.067875,
-    "diffPixels": 69504,
+    "ratio": 0.0684404296875,
+    "diffPixels": 70083,
     "total": 1024000,
     "sizeMismatch": {
       "a": [

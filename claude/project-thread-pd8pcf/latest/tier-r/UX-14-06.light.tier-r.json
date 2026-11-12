@@ -419,12 +419,13 @@
         "replies",
         "show",
         "here.",
-        "foo",
-        "sent",
-        "Secret",
-        "box:",
-        "127.0.0.1",
-        "login"
+        "Waiting",
+        "for",
+        "your",
+        "answer:",
+        ".",
+        "Show",
+        "button."
       ]
     },
     "hl": {
@@ -475,8 +476,8 @@
     "total": 2828
   },
   "r5": {
-    "ratio": 0.0752412109375,
-    "diffPixels": 77047,
+    "ratio": 0.0752392578125,
+    "diffPixels": 77045,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-06.light.diff.png"

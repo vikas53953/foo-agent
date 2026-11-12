@@ -1,0 +1,316 @@
+{
+  "id": "UX-23-02",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-23-02.light.png",
+      "sha256": "a84f591c54a3df718ed6a1352594d1400b840f654d93fe2909d381ff2ccfe185"
+    },
+    "dark": {
+      "png": "UX-23-02.dark.png",
+      "sha256": "0513e99cd4ce8407d0bb3e586a969d4c549ef30fe14f2989965be9b995d1c457"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "⚠",
+    "You're offline. Your jobs are saved and I'll carry on when you're back.",
+    "Try again",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "9:38 AM",
+    "Paused: you’re offline",
+    "Paused",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Offline",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "Trips",
+    "Paused: you’re offline",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "✓",
+    "Checked Booking.com, MakeMyTrip and hotel sites",
+    "✓",
+    "Kept 3 under ₹8,000 a night, beach within 5 min",
+    "✓",
+    "You picked Taj Holiday Village",
+    "Filling guest details on makemytrip.com",
+    "Watch live",
+    "Stop",
+    "also check W Goa",
+    "9:41 AM 🕓",
+    "＋",
+    "You're offline. I'll send when you're back.",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "also check W Goa",
+    "9:41 AM 🕓"
+  ],
+  "hl": {
+    "id": "q1",
+    "box": {
+      "x": 701.296875,
+      "y": 681,
+      "width": 214.703125,
+      "height": 38
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 701.296875,
+      "y": 681,
+      "width": 214.703125,
+      "height": 38
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": null,
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 23,
+    "step": 2,
+    "anchor": "errors-2",
+    "title": "When things go wrong",
+    "part": "Living with foo",
+    "j": "J19",
+    "r": "R20",
+    "c": "Anything you type is kept and sent when you're back.",
+    "s": "Your bubble with a small clock instead of ticks.",
+    "f": "Never loses a typed message.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "trips",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "9:38 AM",
+            "prev": "Paused: you’re offline",
+            "st": "pause"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "c",
+              "h": "<div class=\"card\" data-hl=\"chk\"><div class=\"hd\">Booking your Goa stay<span class=\"lbl\">Step 3 of 4</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Checked Booking.com, MakeMyTrip and hotel sites</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Kept 3 under ₹8,000 a night, beach within 5 min</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>You picked Taj Holiday Village</span></div><div class=\"li\"><span class=\"tk w\"></span><span>Filling guest details on makemytrip.com</span></div><div class=\"row2\"><span class=\"pillbtn sm \" data-hl=\"watch2\">Watch live</span><span class=\"pillbtn sm bad\" data-hl=\"stop\">Stop</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\" data-hl=\"q1\">also check W Goa<span class=\"meta\">9:41 AM 🕓</span></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Paused: you’re offline",
+          "tone": "warn"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "off"
+        },
+        "banner": {
+          "tone": "warn",
+          "icon": "⚠",
+          "text": "You're offline. Your jobs are saved and I'll carry on when you're back.",
+          "btn": "Try again"
+        },
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "ai": "Offline",
+        "aiTone": "warn"
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "9:40 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "offline",
+          "trips": "offline",
+          "money": "offline",
+          "home": "offline"
+        },
+        "still": {
+          "foo": true,
+          "trips": true,
+          "money": true,
+          "home": true
+        },
+        "tray": "offline",
+        "toast": null,
+        "sel": "trips"
+      }
+    },
+    "clockShown": "9:40 AM",
+    "superseded": null
+  }
+}
