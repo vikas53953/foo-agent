@@ -1,0 +1,43 @@
+{"t":"2026-11-12T23:08:27.355Z","journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T23:08:32.567Z","step":"launch","ok":true}
+{"t":"2026-11-12T23:08:32.623Z","shot":"01-welcome.png"}
+{"t":"2026-11-12T23:08:32.624Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":2,"shot":"01-welcome.png"}
+{"t":"2026-11-12T23:08:32.757Z","i":1,"do":"click","ok":true,"ms":133}
+{"t":"2026-11-12T23:08:32.853Z","shot":"02-finder.png"}
+{"t":"2026-11-12T23:08:32.853Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":15,"shot":"02-finder.png"}
+{"t":"2026-11-12T23:08:52.906Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-12T23:08:52.906Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":20000,"shot":"03-finder-tested.png"}
+{"t":"2026-11-12T23:08:53.005Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"ms":99}
+{"t":"2026-11-12T23:08:53.094Z","shot":"04-secret-box.png"}
+{"t":"2026-11-12T23:08:53.094Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"ms":3,"shot":"04-secret-box.png"}
+{"t":"2026-11-12T23:08:53.103Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"ms":9}
+{"t":"2026-11-12T23:08:53.201Z","i":7,"do":"click","ok":true,"ms":97}
+{"t":"2026-11-12T23:09:23.266Z","shot":"05-key-tested.png"}
+{"t":"2026-11-12T23:09:23.266Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"ms":30009,"shot":"05-key-tested.png"}
+{"t":"2026-11-12T23:09:23.268Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T23:09:23.270Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T23:09:23.271Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":0,"ok":true,"ms":1}
+{"t":"2026-11-12T23:10:23.331Z","shot":"06-error-step12.png"}
+{"t":"2026-11-12T23:10:23.377Z","shot":"07-step2.png"}
+{"t":"2026-11-12T23:10:23.377Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"name","ok":false,"error":"locator.waitFor: Timeout 60000ms exceeded.","errorShot":"06-error-step12.png","ms":60059,"shot":"07-step2.png"}
+{"t":"2026-11-12T23:10:23.379Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"I’m looking for the AI you already use…\n\nClaude\nsigned in\nslow to answer.\nTest again\nChatGPT\nnot found\nGemini\nnot found\nAnthropic key\nfound on this PC\nslow to answer.\nAdd in secret box\nYour own key\nAdd in secret box\nAI on this PC\nnot found\n\nI couldn’t find an AI on this PC yet. Which one do you use?\n\n1\nChatGPT · sign in with your account\nBEST FIT\n2\nClaude · sign in with your account\n3\nGemini · sign in\n4\nI have a key","ok":true,"ms":2}
+{"t":"2026-11-12T23:10:46.439Z","shot":"08-error-step14.png"}
+{"t":"2026-11-12T23:10:46.439Z","i":14,"do":"click","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"08-error-step14.png","ms":23059}
+{"t":"2026-11-12T23:10:56.486Z","shot":"09-first-chat.png"}
+{"t":"2026-11-12T23:10:56.486Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"chat","ok":true,"ms":10001,"shot":"09-first-chat.png"}
+{"t":"2026-11-12T23:11:26.550Z","shot":"10-error-step16.png"}
+{"t":"2026-11-12T23:11:26.550Z","i":16,"do":"send","typed":"नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"10-error-step16.png","ms":30063}
+{"t":"2026-11-12T23:13:26.989Z","shot":"11-q3-hindi.png"}
+{"t":"2026-11-12T23:13:26.989Z","i":17,"do":"waitReply","expect":"Hindi in Devanagari is answered in Devanagari","feature":"chat","timeline":[{"at":6,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120384,"shot":"11-q3-hindi.png"}
+{"t":"2026-11-12T23:13:57.052Z","shot":"12-error-step18.png"}
+{"t":"2026-11-12T23:13:57.052Z","i":18,"do":"send","typed":"ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"12-error-step18.png","ms":30062}
+{"t":"2026-11-12T23:15:57.491Z","shot":"13-q3-punjabi.png"}
+{"t":"2026-11-12T23:15:57.491Z","i":19,"do":"waitReply","expect":"Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly","feature":"chat","timeline":[{"at":4,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120390,"shot":"13-q3-punjabi.png"}
+{"t":"2026-11-12T23:16:27.553Z","shot":"14-error-step20.png"}
+{"t":"2026-11-12T23:16:27.554Z","i":20,"do":"send","typed":"yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"14-error-step20.png","ms":30063}
+{"t":"2026-11-12T23:18:27.961Z","shot":"15-q3-hinglish.png"}
+{"t":"2026-11-12T23:18:27.962Z","i":21,"do":"waitReply","expect":"Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)","feature":"chat","timeline":[{"at":3,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":null,"newBubbles":0,"ok":false,"duplicates":0,"lastReply":"","kit":[],"ms":120354,"shot":"15-q3-hinglish.png"}
+{"t":"2026-11-12T23:18:27.971Z","i":22,"do":"dump","ok":true,"ms":9}
+{"t":"2026-11-12T23:18:28.074Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-12T23:18:28.084Z","step":"aiTurns","turns":0}
+{"t":"2026-11-12T23:18:28.086Z","step":"jobTrail","steps":0,"calls":0}
