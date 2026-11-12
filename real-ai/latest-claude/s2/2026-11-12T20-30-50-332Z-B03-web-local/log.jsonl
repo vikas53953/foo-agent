@@ -1,0 +1,16 @@
+{"t":"2026-11-12T20:30:50.332Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:30:55.453Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:30:55.579Z","i":0,"do":"send","typed":"What's the latest news about ISRO this week? Give me sources.","sentAt":1794515455536,"sent":true,"before":0,"ok":true,"ms":123}
+{"t":"2026-11-12T20:31:08.338Z","shot":"01-news.png"}
+{"t":"2026-11-12T20:31:08.338Z","i":1,"do":"waitReply","timeline":[{"at":49,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5135,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":6625,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from 9 to 12 Nov 2026\nCheck it went through\nWrite it\nWatch live\nStop\nunder 1 min\n8:31 PM","kit":[],"ms":12696,"shot":"01-news.png"}
+{"t":"2026-11-12T20:31:08.340Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":1}
+{"t":"2026-11-12T20:33:38.396Z","shot":"02-news-later.png"}
+{"t":"2026-11-12T20:33:38.397Z","i":3,"do":"wait","ok":true,"ms":150005,"shot":"02-news-later.png"}
+{"t":"2026-11-12T20:33:38.398Z","i":4,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-11-12T20:33:38.400Z","i":5,"do":"check","found":0,"ok":false,"ms":1}
+{"t":"2026-11-12T20:33:38.402Z","i":6,"do":"expectText","text":"All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:30 PM","ok":true,"ms":2}
+{"t":"2026-11-12T20:33:38.403Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-11-12T20:33:38.409Z","i":8,"do":"dump","ok":true,"ms":5}
+{"t":"2026-11-12T20:33:38.644Z","step":"appLog","lines":34,"dropped":0}
+{"t":"2026-11-12T20:33:38.653Z","step":"aiTurns","turns":30}
+{"t":"2026-11-12T20:33:38.656Z","step":"jobTrail","steps":4,"calls":27}

@@ -1,0 +1,138 @@
+{
+  "journey": "U23-ai-page-chips",
+  "title": "AI page, action chips, reply chips",
+  "videos": [],
+  "steps": 9,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-41-00-694Z-U23-ai-page-chips",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1042
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses",
+      "sentAt": 1794516067055,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 151
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "an AI page / kit card opens with the tracker",
+      "timeline": [
+        {
+          "at": 56,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 2082,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 8128,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 9140,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 13730,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 21791,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 13678,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a water tracker with a goal of 8 glasses. Tap a glass to fill it, or use + and − to adjust. It saves your count for today and starts fresh tomorrow.\n\nKeep\n8:41 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 27886,
+      "shot": "01-ai-page.png"
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "AI page card",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "action chips under the reply",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 56
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "reply chip fills the composer",
+      "ok": true,
+      "ms": 801,
+      "shot": "02-chip-fills.png"
+    },
+    {
+      "i": 7,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 20
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 17
+    }
+  ]
+}
