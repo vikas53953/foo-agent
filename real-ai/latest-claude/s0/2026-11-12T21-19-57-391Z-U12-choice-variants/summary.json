@@ -1,0 +1,239 @@
+{
+  "journey": "U12-choice-variants",
+  "title": "Choice card: pick by click, by typing, by reaction 1️⃣, Something else",
+  "videos": [],
+  "steps": 13,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-19-57-391Z-U12-choice-variants",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1046
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from",
+      "sentAt": 1794518403851,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "Choice card with 3 options, Best fit tag, Something else",
+      "ref": "BP-CARD-03",
+      "timeline": [
+        {
+          "at": 42,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 546,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7135,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 7097,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which weekend activity sounds best for Sat 14 Nov or Sun 15 Nov?\n1\nSouth Indian food walk\nBEST FIT\nVV Puram and Basavanagudi, dosas and filter coffee\n2\nNandi Hills sunrise\nEarly start, cool views above the clouds\n3\nLalbagh and Cubbon Park\nEasy, green, relaxed morning walk\nSomething else…\nSkip\n9:20 PM",
+      "kit": [],
+      "ms": 13149,
+      "shot": "01-choice.png"
+    },
+    {
+      "i": 3,
+      "do": "shotEl",
+      "soft": true,
+      "ref": "BP-CARD-03",
+      "ok": true,
+      "ms": 81
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "the second one",
+      "sentAt": 1794518417251,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "typed answer picks option 2; card collapses \"question → answer\"",
+      "timeline": [
+        {
+          "at": 44,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6607,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 8639,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6580,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Nandi Hills sunrise it is. It's about 60 km from Bengaluru, so plan to leave around 3:30 AM to be up there before first light.\n\nCarry a jacket, since it's cold and windy at the top before sunrise.\nWeekends get crowded, so an early start also helps with parking and the view.\nCheck the entry timings and the weather before you go, as I haven't looked either up.\n\nDo you want it on Sat 14 Nov or Sun 15 Nov?\n\n9:20 PM",
+      "kit": [],
+      "ms": 14657,
+      "shot": "03-typed-pick.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Now give me 3 dinner options to choose from",
+      "sentAt": 1794518432060,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "another Choice card",
+      "timeline": [
+        {
+          "at": 30,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5645,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5621,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nSouth Indian, quick and filling\n2\nFull South Indian meals\nRice, sambar, rasam, curd, poriyal\n3\nHyderabadi biryani\nRich, with raita and mirchi ka salan\nSomething else…\nSkip\n9:20 PM",
+      "kit": [],
+      "ms": 11670,
+      "shot": "04-choice-2.png"
+    },
+    {
+      "i": 8,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 9,
+      "do": "wait",
+      "expect": "composer hint for my own answer",
+      "ok": true,
+      "ms": 602,
+      "shot": "05-something-else.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Actually just a home-cooked dal chawal",
+      "sentAt": 1794518444636,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "foo takes my own answer",
+      "timeline": [
+        {
+          "at": 12,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 517,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3057,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4579,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3047,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Dal chawal it is, a good call for a Thu night. 🌿 A quick tadka of ghee, jeera and garlic on top makes it feel like a proper dinner.\n\n9:20 PM",
+      "kit": [],
+      "ms": 10677,
+      "shot": "06-own-answer.png"
+    },
+    {
+      "i": 12,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}
