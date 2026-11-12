@@ -1,0 +1,126 @@
+{
+  "journey": "B13-no-apps-honesty",
+  "title": "Nothing connected: email / WhatsApp asks get a connect offer, no pretending",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-04-59-361Z-B13-no-apps-honesty",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "check my email",
+      "sentAt": 1794510312705,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 125
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "foo offers to connect Gmail (connect card or clear offer); does not claim to have read any email",
+      "timeline": [
+        {
+          "at": 50,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4112,
+          "badges": [
+            "waiting"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4071,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Connect Gmail\n\nI need to read your email for “Check your email”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:05 PM",
+      "kit": [],
+      "ms": 10137,
+      "shot": "01-email.png"
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "note": "connect card present?",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "what did I miss on WhatsApp",
+      "sentAt": 1794510323022,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 94
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "foo offers to connect WhatsApp; does not invent messages",
+      "timeline": [
+        {
+          "at": 38,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6635,
+          "badges": [
+            "working"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 13734,
+          "badges": [
+            "failed"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8147,
+      "newBubbles": 2,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Reading your WhatsApp\nDidn’t finish\nReading your WhatsApp\nWrite it\n7:05 PM\n---\nSomething went wrong on my side.\nNothing was booked, paid or sent.\nTry again\n7:05 PM",
+      "kit": [],
+      "ms": 18758,
+      "shot": "02-whatsapp.png"
+    },
+    {
+      "i": 5,
+      "do": "check",
+      "soft": true,
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}

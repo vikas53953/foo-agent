@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:54 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:54 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:55 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n6:55 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Parso, Sat 14 Nov ko mummy ka birthday hai, toh ye 4 cakes safe rahenge:\n\nChocolate truffle: sabko pasand aata hai, kabhi galat nahi jaata.\nButterscotch ya pineapple: classic hain, ghar ke bade log inhe pasand karte hain.\nRasmalai ya gulab jamun cake: agar mummy ko mithai zyada pasand hai.\nPhoto cake: mummy ki koi pyaari photo cake par, personal lagta hai.\n\nOrder kal tak kar dena better hai, taaki Sat 14 Nov ko time par mil jaye. Mummy ko eggless chahiye ya normal chalega?\n\n6:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n6:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਚਾਕਲੇਟ ਟਰਫਲ ਸਭ ਤੋਂ ਸੌਖਾ ਤੇ ਸੁਰੱਖਿਅਤ ਰਹੇਗਾ, ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਜੇ ਮੰਮੀ ਨੂੰ ਮਿਠਾਈ ਜ਼ਿਆਦਾ ਪਸੰਦ ਹੈ, ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲਓ। ਜੇ ਕੁਝ ਖ਼ਾਸ ਚਾਹੀਦਾ ਹੈ, ਤਾਂ ਉਨ੍ਹਾਂ ਦੀ ਪਿਆਰੀ ਫੋਟੋ ਵਾਲਾ ਫੋਟੋ ਕੇਕ ਬਹੁਤ ਵਧੀਆ ਲੱਗੇਗਾ।\n\nਜਨਮਦਿਨ Sat 14 Nov ਨੂੰ ਹੈ, ਇਸ ਲਈ ਆਰਡਰ ਕੱਲ੍ਹ ਤੱਕ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਮੰਮੀ ਲਈ ਏਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਆਮ ਚੱਲੇਗਾ?\n\n6:56 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n6:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov 2026 was a normal working day in Mumbai as far as I know, with no public or bank holiday that I'm aware of. Diwali came later, around Sat 8 Nov. I can't see the official Maharashtra list from here, so for anything that matters, like a bank or office matter, check it against that list.\n\n6:56 PM"
+  }
+]

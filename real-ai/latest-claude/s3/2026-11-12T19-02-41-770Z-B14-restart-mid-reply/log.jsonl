@@ -1,0 +1,19 @@
+{"t":"2026-11-12T19:02:41.771Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T19:02:47.081Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:02:55.143Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8059}
+{"t":"2026-11-12T19:02:55.261Z","i":0,"do":"send","typed":"What is a good name for a pet tortoise?","sentAt":1794510175212,"sent":true,"before":0,"ok":true,"ms":118}
+{"t":"2026-11-12T19:02:58.262Z","i":1,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-11-12T19:03:03.262Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:03:03.263Z","i":2,"do":"relaunch","ok":true,"ms":5001}
+{"t":"2026-11-12T19:03:11.424Z","shot":"01-after-reopen.png"}
+{"t":"2026-11-12T19:03:11.424Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","timeline":[{"at":8063,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9592,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":10099,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":1541,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Try Shelly, Turbo (ironic, and always a good joke) or Pickle. If you want something that suits a tortoise's long life, Methuselah or Gandhi work too. 🐢\n\n7:03 PM","kit":[],"ms":8104,"shot":"01-after-reopen.png"}
+{"t":"2026-11-12T19:03:11.427Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n7:02 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-11-12T19:03:11.586Z","i":5,"do":"send","typed":"Which news story is biggest in India today? One line.","sentAt":1794510191532,"sent":true,"before":0,"ok":true,"ms":159}
+{"t":"2026-11-12T19:03:13.591Z","i":6,"do":"wait","ok":true,"ms":2005}
+{"t":"2026-11-12T19:03:18.535Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:03:18.536Z","i":7,"do":"relaunch","ok":true,"ms":4945}
+{"t":"2026-11-12T19:03:29.296Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-11-12T19:03:29.296Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","timeline":[{"at":7009,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":10084,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":4597,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for the biggest India news story today\nWatch live\nStop\nunder 1 min\n7:03 PM","kit":[],"ms":10682,"shot":"02-news-after-reopen.png"}
+{"t":"2026-11-12T19:03:29.311Z","i":9,"do":"dump","ok":true,"ms":15}
+{"t":"2026-11-12T19:03:29.710Z","step":"appLog","lines":15,"dropped":0}
+{"t":"2026-11-12T19:03:29.721Z","step":"aiTurns","turns":3}
