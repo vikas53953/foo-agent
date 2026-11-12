@@ -1,0 +1,29 @@
+{"t":"2026-11-12T18:21:14.001Z","journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","spec":"05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:21:19.530Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:21:27.612Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8078}
+{"t":"2026-11-12T18:21:28.676Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1064}
+{"t":"2026-11-12T18:21:28.788Z","i":1,"do":"send","typed":"Find me 5 weekend trek options near Pune with difficulty and cost","sentAt":1794507688755,"sent":true,"before":0,"ok":true,"ms":112}
+{"t":"2026-11-12T18:21:55.672Z","shot":"01-plan.png"}
+{"t":"2026-11-12T18:21:55.672Z","i":2,"do":"waitReply","expect":"plan card","ref":"BP-CARD-11","timeline":[{"at":37,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2051,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0},{"at":11142,"badges":["seen"],"reactions":[],"thinking":true,"streaming":0},{"at":11647,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":17758,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":20787,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":17725,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are 5 good picks, and November is a great month for them. Costs are rough guides for a group trek including transport and food, not live prices.\n\nTrek\tDifficulty\tTime\tRough cost\nSinhagad\tEasy\t2 to 3 hours\t₹200 to ₹500\nLohagad and Visapur\tEasy\t3 to 4 hours\t₹800 to ₹1,500\nRajmachi\tEasy to moderate\t5 to 6 hours\t₹1,000 to ₹1,800\nKalsubai\tModerate\t4 to 5 hours up and down\t₹1,200 to ₹2,500\nHarishchandragad\tModerate to hard\tOvernight\t₹1,800 to ₹3,500\n\nGoing on your own is at the low end of each range. Group operators are at the high end. Kalsubai and Harishchandragad are best as overnight trips, and they get crowded on Sat 14 Nov.\n\nWant me to look up current group trek prices for Sat 14 Nov?\n\n6:21 PM","kit":[],"ms":26808,"shot":"01-plan.png"}
+{"t":"2026-11-12T18:22:18.749Z","shot":"02-error-step3.png"}
+{"t":"2026-11-12T18:22:18.749Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"02-error-step3.png","ms":23077}
+{"t":"2026-11-12T18:22:19.679Z","shot":"03-change.png"}
+{"t":"2026-11-12T18:22:19.679Z","i":4,"do":"wait","expect":"composer prompts for the change","ok":true,"ms":800,"shot":"03-change.png"}
+{"t":"2026-11-12T18:22:19.846Z","i":5,"do":"send","typed":"Only easy treks please","sentAt":1794507739772,"sent":true,"before":0,"ok":true,"ms":167}
+{"t":"2026-11-12T18:22:39.243Z","shot":"04-plan-2.png"}
+{"t":"2026-11-12T18:22:39.243Z","i":6,"do":"waitReply","expect":"a changed plan, the old one marked changed","timeline":[{"at":90,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2105,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0},{"at":8147,"badges":["seen"],"reactions":[],"thinking":true,"streaming":0},{"at":9167,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":11703,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":13243,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":11629,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Only two of those five are truly easy, and both are good ones. Costs are rough guides, not live prices.\n\nTrek\tDifficulty\tTime\tRough cost\nSinhagad\tEasy\t2 to 3 hours\t₹200 to ₹500\nLohagad and Visapur\tEasy\t3 to 4 hours\t₹800 to ₹1,500\n\nRajmachi is easy to moderate, so it is the next step up if you want a longer day. Want me to look for more easy treks near Pune?\n\n6:22 PM","kit":[],"ms":19231,"shot":"04-plan-2.png"}
+{"t":"2026-11-12T18:23:02.312Z","shot":"05-error-step7.png"}
+{"t":"2026-11-12T18:23:02.312Z","i":7,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"05-error-step7.png","ms":23069}
+{"t":"2026-11-12T18:23:10.376Z","shot":"06-running.png"}
+{"t":"2026-11-12T18:23:10.377Z","i":8,"do":"wait","expect":"checklist running; Doing now shows the job; chat pill Working","ok":true,"ms":8001,"shot":"06-running.png"}
+{"t":"2026-11-12T18:23:10.408Z","i":9,"do":"key","ok":true,"ms":31}
+{"t":"2026-11-12T18:23:11.291Z","shot":"07-doing-now.png"}
+{"t":"2026-11-12T18:23:11.291Z","i":10,"do":"wait","expect":"right panel Doing now row with Stop","ref":"BP-ANAT-DOING","ok":true,"ms":801,"shot":"07-doing-now.png"}
+{"t":"2026-11-12T18:23:11.384Z","i":11,"do":"click","soft":true,"ok":true,"ms":92}
+{"t":"2026-11-12T18:23:16.450Z","shot":"08-stopped.png"}
+{"t":"2026-11-12T18:23:16.450Z","i":12,"do":"wait","expect":"job stopped ⛔, checklist says stopped, no further steps","ok":true,"ms":5001,"shot":"08-stopped.png"}
+{"t":"2026-11-12T18:23:16.462Z","i":13,"do":"key","ok":true,"ms":12}
+{"t":"2026-11-12T18:23:16.473Z","i":14,"do":"dump","ok":true,"ms":11}
+{"t":"2026-11-12T18:23:16.675Z","step":"appLog","lines":31,"dropped":0}
+{"t":"2026-11-12T18:23:16.688Z","step":"aiTurns","turns":25}
+{"t":"2026-11-12T18:23:16.692Z","step":"jobTrail","steps":0,"calls":20}

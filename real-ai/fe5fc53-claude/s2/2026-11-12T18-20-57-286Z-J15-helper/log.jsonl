@@ -1,0 +1,12 @@
+{"t":"2026-11-12T18:20:57.286Z","journey":"J15-helper","title":"Create a helper","spec":"07-1 J15; 06 helper","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:21:02.771Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:21:10.849Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":2,"ms":8074}
+{"t":"2026-11-12T18:21:10.922Z","shot":"01-sidebar.png"}
+{"t":"2026-11-12T18:21:10.922Z","i":0,"do":"shot","ok":true,"ms":72}
+{"t":"2026-11-12T18:21:10.925Z","i":1,"do":"check","note":"is New helper disabled?","soft":true,"found":0,"ok":false,"ms":3}
+{"t":"2026-11-12T18:21:10.976Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":51}
+{"t":"2026-11-12T18:21:13.538Z","shot":"02-new-helper.png"}
+{"t":"2026-11-12T18:21:13.538Z","i":3,"do":"wait","expect":"helper create flow per walkthrough","ok":true,"ms":2502,"shot":"02-new-helper.png"}
+{"t":"2026-11-12T18:21:13.852Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-11-12T18:21:13.864Z","step":"aiTurns","turns":2}
+{"t":"2026-11-12T18:21:13.867Z","step":"jobTrail","steps":0,"calls":2}

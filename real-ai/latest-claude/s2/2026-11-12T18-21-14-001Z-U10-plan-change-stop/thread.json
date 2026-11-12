@@ -1,0 +1,132 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tomorrow at 8pm at a good vegetarian restaurant near Connaught Place, Delhi\n6:15 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:16 PM\n6:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:16 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Fri 13 Nov, 8:00 PM\nlive checklist\nLooked for vegetarian restaurants near Connaught\nPicking the best restaurants\nWait for you to pick one\nShow you before table booking for 2\nShow you before doing anything\nBook table for 2, Fri 13 Nov, 8:00 PM\nWatch live\nStop\n6 min\n6:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:16 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:16 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Fri 13 Nov, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n3 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n6:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:20 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nBooking table for 2, Fri 13 Nov, 8:00 PM\n3\nBoth\nSomething else…\nSkip\n6:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "What's the latest news about ISRO this week? Give me sources.\n6:20 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nChecked isro.gov.in, PIB, The Hindu, Times of\nI\nP\nT\nT\nLooked for ISRO news from Thu 5 Nov to Thu 12 Nov\nWrote it\nStopped by you\n6:20 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:20 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:21 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nBooking table for 2, Fri 13 Nov, 8:00 PM\n3\nLooking on the web\n4\nAll of them\nSomething else…\nSkip\n6:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:21 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nLooking on the web\nBEST FIT\n2\nBooking table for 2, Fri 13 Nov, 8:00 PM\n3\nLooking on the web\n4\nAll of them\nSomething else…\nSkip\n6:21 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n6:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 good picks, and November is a great month for them. Costs are rough guides for a group trek including transport and food, not live prices.\n\nTrek\tDifficulty\tTime\tRough cost\nSinhagad\tEasy\t2 to 3 hours\t₹200 to ₹500\nLohagad and Visapur\tEasy\t3 to 4 hours\t₹800 to ₹1,500\nRajmachi\tEasy to moderate\t5 to 6 hours\t₹1,000 to ₹1,800\nKalsubai\tModerate\t4 to 5 hours up and down\t₹1,200 to ₹2,500\nHarishchandragad\tModerate to hard\tOvernight\t₹1,800 to ₹3,500\n\nGoing on your own is at the low end of each range. Group operators are at the high end. Kalsubai and Harishchandragad are best as overnight trips, and they get crowded on Sat 14 Nov.\n\nWant me to look up current group trek prices for Sat 14 Nov?\n\n6:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n6:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Only two of those five are truly easy, and both are good ones. Costs are rough guides, not live prices.\n\nTrek\tDifficulty\tTime\tRough cost\nSinhagad\tEasy\t2 to 3 hours\t₹200 to ₹500\nLohagad and Visapur\tEasy\t3 to 4 hours\t₹800 to ₹1,500\n\nRajmachi is easy to moderate, so it is the next step up if you want a longer day. Want me to look for more easy treks near Pune?\n\n6:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n6:23 PM"
+  }
+]
