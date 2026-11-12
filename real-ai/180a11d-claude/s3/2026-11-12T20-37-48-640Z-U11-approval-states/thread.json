@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:33 PM\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nLook for Goa hotels for 2 nights, Sat 21 Nov to\nKeep 3 hotels that fit best rated, under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n9 min\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 go for 16GB memory, a 512GB SSD and a recent Ryzen 7, Core i5 or Core i7 chip. That matters more than a fancy graphics card.\n\nMemory: 16GB is the minimum. 8GB gets slow with a browser, an editor and Docker open together.\nStorage: 512GB SSD or more, ideally with a free slot to add more later.\nChip: A recent Ryzen 7, Core i5 or Core i7 is plenty. A MacBook Air with an M-series chip can also fit this budget on sale, and its battery lasts the longest.\nScreen and keyboard: A bright 1080p screen and a comfortable keyboard. You'll look at both all day.\nGraphics card: Only needed for games or machine learning work. Skip it otherwise and put the money into memory and build quality.\n\nI haven't looked up today's prices, so check current shop listings before you buy. What will you mostly code: web apps, mobile apps, or machine learning?\n\n8:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n8:37 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:38 PM\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Checking Booking.com, MakeMyTrip,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\ntry MakeMyTrip instead\nTry another way\nTake over\nStop\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2 on Sat 14 Nov,…\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit vegetarian, open at 8:00 PM, good\nWait for you to pick one\nShow you before the booking for 2 on Sat 14 Nov, 8:00 PM\nShow you before doing anything\nBook table for 2 on Sat 14 Nov, 8:00 PM\nWatch live\nStop\n5 min\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2 on Sat 14 Nov,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n8:42 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Looking for vegetarian restaurants in…\n1\nLook for vegetarian restaurants in Connaught\n2\nKeep 3 vegetarian restaurants that fit open at 8:00 PM, good ratings, table for\n3\nWait for you to pick one\n4\nShow you before the table booking\n5\nShow you before doing anything\n6\nBook table for 2, Sat 14 Nov, 8:00 PM\nAbout 5 minutes\nGo\nChange plan\n8:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:42 PM"
+  }
+]

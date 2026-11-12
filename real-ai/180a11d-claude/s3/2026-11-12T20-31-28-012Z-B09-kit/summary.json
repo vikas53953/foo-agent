@@ -1,0 +1,380 @@
+{
+  "journey": "B09-kit",
+  "title": "Rich reply pieces: calculator, map, chart, compare, timer, form",
+  "videos": [],
+  "steps": 15,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-31-28-012Z-B09-kit",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Make an EMI calculator for a home loan of 50 lakh at 8.5% for 20 years",
+      "sentAt": 1794515493730,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 131
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "AT-347 calculator recomputes",
+      "timeline": [
+        {
+          "at": 57,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 573,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8709,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 11262,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8665,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your EMI comes to about ₹43,392 a month. Over 20 years you'd pay roughly ₹1,04,14,000 in total, of which about ₹54,14,000 is interest. Change the numbers below to try other amounts.\n\nLoan amount (₹)\nInterest rate (% a year)\nYears\nMonthly EMI\n₹43,391.16\nTotal payment\n₹1,04,13,878.80\nTotal interest\n₹54,13,878.80\nKeep\n8:31 PM",
+      "kit": [
+        "kit-surface",
+        "kit-calculator",
+        "kit-keep"
+      ],
+      "ms": 17331,
+      "shot": "01-emi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "Show the 5 places to visit in Jaipur on a map",
+      "sentAt": 1794515511259,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 121
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "AT-341 numbered stops, dashed route, Open in Maps chip",
+      "timeline": [
+        {
+          "at": 45,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4124,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 7174,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4084,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here are 5 top places in Jaipur, numbered in a sensible order for one day, starting with the old city and ending at the hill forts.\n\n1\n2\n3\n4\n5\n1\nHawa Mahal\nThe pink palace with 953 small windows. Best seen in the morning light.\n2\nCity Palace\nRoyal residence with courtyards, museums and still home to the royal family.\n3\nJantar Mantar\n18th-century stone observatory, right next to the City Palace.\n4\nNahargarh Fort\nHilltop fort with a wide view of the city. Good at sunset.\n5\nAmber Fort\nHill fort about 11 km north of the centre. Go early to beat the crowds.\nOpen in Maps\nKeep\n8:31 PM",
+      "kit": [
+        "kit-surface",
+        "kit-map-stops",
+        "kit-map-open",
+        "kit-keep"
+      ],
+      "ms": 13255,
+      "shot": "02-map.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Show a chart of India's GDP growth for the last 5 years",
+      "sentAt": 1794515524722,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 141
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-340 one hue, number rules",
+      "timeline": [
+        {
+          "at": 48,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4655,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 7203,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5129,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "India's GDP growth swung from a 5.8% fall in FY2020-21 to a high of 9.2% in FY2023-24, and settled at 6.5% in FY2024-25. These are real yearly growth figures from my own knowledge, not fetched just now, and official numbers get revised, so check the latest government release before you rely on them.\n\nIndia's real GDP growth by financial year\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n8:32 PM",
+      "kit": [
+        "kit-surface",
+        "kit-line-chart",
+        "kit-keep"
+      ],
+      "ms": 13255,
+      "shot": "03-chart.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value",
+      "sentAt": 1794515538149,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 106
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "AT-343 highlighted column with why",
+      "timeline": [
+        {
+          "at": 63,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8693,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 18344,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8673,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "The Pixel 9 looks like the best value of the three: same launch price, the biggest battery, a smooth 120Hz screen and 12GB of memory. The details are in the table below. These are launch prices and specs from my own knowledge, not fetched just now, so check today's shop prices before you buy.\n\niPhone 16\nLaunch price (India)\n₹79,900\nScreen\n6.1\" OLED, 60Hz\nChip\nApple A18\nMemory\n8GB\nBattery\n3,561 mAh\nCameras\n48MP main + 12MP ultrawide\nUpdates\nLong, no fixed promise\nBest pick\nPixel 9\nLaunch price (India)\n₹79,999\nScreen\n6.3\" OLED, 120Hz\nChip\nGoogle Tensor G4\nMemory\n12GB\nBattery\n4,700 mAh\nCameras\n50MP main + 48MP ultrawide\nUpdates\n7 years\n\nSame price range as the others, but the biggest battery, 120Hz screen, 12GB memory and 7 years of updates.\n\nGalaxy S25\nLaunch price (India)\n₹80,999\nScreen\n6.2\" AMOLED, 120Hz\nChip\nSnapdragon 8 Elite\nMemory\n12GB\nBattery\n4,000 mAh\nCameras\n50MP main + 12MP ultrawide + 10MP 3x zoom\nUpdates\n7 years\nKeep\n\nIf you care most about speed and zoom, the Galaxy S25 is the pick. If you're already on Apple's apps and ecosystem, the iPhone 16 makes sense, but its 60Hz screen is the weakest here.\n\n8:32 PM",
+      "kit": [
+        "kit-surface",
+        "kit-compare",
+        "kit-keep"
+      ],
+      "ms": 24431,
+      "shot": "04-compare.png"
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "typed": "Set a 2 minute timer for my tea",
+      "sentAt": 1794515562766,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 140
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "AT-346 timer runs",
+      "timeline": [
+        {
+          "at": 70,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4183,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5210,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4146,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Your 2 minute tea timer is below. Tap start when the water is in.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n8:32 PM",
+      "kit": [
+        "kit-surface",
+        "kit-timed-checklist",
+        "kit-keep"
+      ],
+      "ms": 11266,
+      "shot": "05-timer.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Give me a short form to plan a birthday party: date, guests, budget",
+      "sentAt": 1794515574215,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 127
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "AT-351 up to 6 fields, submit one action",
+      "timeline": [
+        {
+          "at": 75,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2100,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4136,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2063,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's a short form for your party plan. Fill it in and send it, then I can help with the next steps.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n8:32 PM",
+      "kit": [
+        "kit-surface",
+        "kit-short-form",
+        "kit-keep"
+      ],
+      "ms": 10191,
+      "shot": "06-form.png"
+    },
+    {
+      "i": 12,
+      "do": "send",
+      "typed": "Make me an interactive page to track my monthly expenses",
+      "sentAt": 1794515584608,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 170
+    },
+    {
+      "i": 13,
+      "do": "waitReply",
+      "expect": "AT-358..362 sealed page, status line first",
+      "timeline": [
+        {
+          "at": 88,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5690,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 15887,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5628,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Here's your expense tracker for November. Add an expense, pick a category, and the total and category bars update as you go. It keeps entries only while this page is open, so nothing is saved after you close it.\n\nKeep\n8:33 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": true,
+      "ms": 21904,
+      "shot": "07-ai-page.png"
+    },
+    {
+      "i": 14,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}

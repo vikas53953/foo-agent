@@ -1,3 +1,0 @@
-{"kind":"step","job_id":"j_01a1d17b-bc93-7613-8f06-db4d2107365e","idx":0,"phrase_key":"wait_signin","state":"failed","attempts":0,"route":"handback","started_at":1794515916368,"finished_at":1794515921226}
-{"kind":"step","job_id":"j_01a1d17b-bc93-7613-8f06-db4d2107365e","idx":1,"phrase_key":"check_site","state":"pending","attempts":0,"route":"browser","started_at":null,"finished_at":null}
-{"kind":"call","job_id":"j_01a1d17b-bc93-7613-8f06-db4d2107365e","step_idx":0,"tool":"browser.open","action_class":"read","gate":"auto","outcome":"error","error_kind":"SITE_HANDBACK","started_at":1794515921216,"finished_at":1794515921222}

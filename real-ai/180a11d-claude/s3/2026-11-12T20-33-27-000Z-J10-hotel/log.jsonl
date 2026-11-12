@@ -1,0 +1,13 @@
+{"t":"2026-11-12T20:33:27.001Z","journey":"J10-hotel","title":"Hotel search with payment approval (never approves)","spec":"07-1 J10; 05 approval card","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:33:32.778Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:33:32.972Z","i":0,"do":"send","typed":"Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night","sentAt":1794515612920,"sent":true,"before":0,"ok":true,"ms":190}
+{"t":"2026-11-12T20:33:49.317Z","shot":"01-hotel.png"}
+{"t":"2026-11-12T20:33:49.318Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":62,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":571,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":10228,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":12282,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":10176,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Checking Booking.com, MakeMyTrip,…\n1\nCheck Booking.com, MakeMyTrip, Goibibo\n2\nLook for Goa hotels for 2 nights, Sat 21 Nov to\n3\nKeep 3 hotels that fit best rated, under ₹6,000 a night\n4\nWait for you to pick one\nAbout 3 minutes\nGo\nChange plan\n8:33 PM","kit":[],"ms":16274,"shot":"01-hotel.png"}
+{"t":"2026-11-12T20:33:49.360Z","i":2,"do":"clickIf","note":"press Go on the plan (starts the job; spending still needs Approve, which is never tapped)","found":1,"ok":true,"ms":41}
+{"t":"2026-11-12T20:36:49.428Z","shot":"02-hotel-working.png"}
+{"t":"2026-11-12T20:36:49.428Z","i":3,"do":"wait","ok":true,"ms":179999,"shot":"02-hotel-working.png"}
+{"t":"2026-11-12T20:36:49.431Z","i":4,"do":"check","found":0,"ok":false,"ms":3}
+{"t":"2026-11-12T20:36:49.448Z","i":5,"do":"dump","ok":true,"ms":17}
+{"t":"2026-11-12T20:36:49.872Z","step":"appLog","lines":33,"dropped":0}
+{"t":"2026-11-12T20:36:49.886Z","step":"aiTurns","turns":29}
+{"t":"2026-11-12T20:36:49.889Z","step":"jobTrail","steps":4,"calls":17}
