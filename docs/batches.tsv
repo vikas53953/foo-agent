@@ -1,0 +1,8 @@
+batch	features	state	used_on	note
+B1	install,ai,name,chat,settings	active		Vikas 24 Oct (CR-0054). Locked spec. Next batch starts only after he has used the gated B1 installer for a day (CR-0072, L1).
+B2	choice,jobs,live,errors,spend	draft		Draft until Vikas picks it (CR-0072 §d).
+B3	memory,web,pages,signin,restaurant	draft		
+B4	connections,drafts,helpers,groups,catch_up	draft		
+B5	brief,routines,notify,voice,search	draft		
+B6	bills,hotel,recharges,trains,photos	draft		
+B7	ideas,send_to,private,data	draft		

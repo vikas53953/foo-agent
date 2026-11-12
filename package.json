@@ -34,6 +34,7 @@
     "fidelity:report": "tsx scripts/fidelity-report.ts",
     "closeout": "tsx scripts/closeout.ts",
     "review:tier": "tsx scripts/review-tier.ts",
+    "pipeline:check": "tsx scripts/pipeline-check.ts",
     "qa": "tsx scripts/qa.ts",
     "licences:write": "tsx scripts/licences.ts",
     "qa:explore": "tsx scripts/qa-explore.ts",

@@ -41,6 +41,8 @@ jobs:
         run: pnpm fid:guard
       - name: FID-18 trace matrix
         run: pnpm trace:check
+      - name: Pipeline rules (batch scope, layers register, QA split, proof) — CR-0072
+        run: pnpm pipeline:check
       - run: pnpm check:copy
       - run: pnpm lint
       - run: pnpm format:check

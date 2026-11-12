@@ -1,0 +1,19 @@
+layer	added	why	replaces	enforcer	last_ran	state
+Frozen spec, CRs, fidelity guard	2026-10-17	build what was approved	none (first layer)	scripts/fid-guard.ts, scripts/spec-verify.ts in ci.yml	2026-10-28	running
+Copy, tokens, spec headers, test ids	2026-10-17	no invented words, colours or ids	none	eslint foo/* rules, pnpm check:copy	2026-10-28	running
+Trace matrix	2026-10-17	every spec id has a test	none	pnpm trace:check in ci.yml	2026-10-28	running
+Golden pictures (Tier R/B)	2026-10-17	app looks like the drawings	none	golden lane in ci.yml	2026-10-28	running
+Tickets, foo-verify, decision log	2026-10-18	milestones too big for one thread	one PR per milestone	words only (foo-playbooks, foo-review)	2026-10-28	running
+Risk-tier review, 3-round cap	2026-10-21	reviews slow and noisy	ad-hoc reviews	pnpm review:tier	2026-10-28	running
+Real-AI e2e lane	2026-10-21	pretend AI hid real bugs	pretend-AI proof	.github/workflows/real-ai-e2e.yml	2026-10-28	running
+Coverage matrix 160x15 + Codex lanes	2026-10-21	test every feature from every angle	none	PRs #114 #118-#125 #138	2026-10-23	retired
+Nightly pass^3 + spend cap	2026-10-21	drift and cost	none	PR #102 (never merged)		retired
+Mutation tests + locked checks	2026-10-21	tests that catch planted bugs	none	PR #101 (never merged); Stryker step in release-gate.yml	2026-10-28	running
+Feature batches and switches	2026-10-24	a real user in the loop	milestone chain	resources/features.json + docs/batches.tsv via pnpm pipeline:check	2026-11-12	running
+QA harness and bug-finder sweep	2026-10-25	tests that find bugs on their own	bug-by-bug tests	pnpm qa, pnpm qa:explore, test/e2e/qa-b1-sweep.spec.ts	2026-10-28	running
+Builder never tests its own work	2026-10-26	builder bent tests to pass	words only	pnpm pipeline:check (QA paths split from src)	2026-11-12	running
+Release gate (packaged app, real Claude, pass^3)	2026-10-27	one true release signal	3 scoreboards	.github/workflows/release-gate.yml	2026-10-28	running
+Proven = sha + record + picture	2026-10-28	claims withdrawn within minutes	words only	pnpm pipeline:check (proof block on ready PRs)	2026-11-12	running
+Heartbeat: Monday real-Claude run + issue alert	2026-10-28	15 days frozen with no alarm	none	release-gate.yml schedule + alert job (PR #174)		running
+Caps: 3 threads, 5 PRs, 10 memory notes, no stale branches	2026-10-28	stale state made answers worse	words only	pnpm pipeline:check --weekly	2026-11-12	running
+Layers register and prune	2026-11-12	pipeline only grew	nothing was ever retired	pnpm pipeline:check (this file)	2026-11-12	running
