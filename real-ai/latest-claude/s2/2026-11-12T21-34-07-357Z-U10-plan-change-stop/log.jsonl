@@ -1,0 +1,27 @@
+{"t":"2026-11-12T21:34:07.357Z","journey":"U10-plan-change-stop","title":"Plan card: Change plan, then Stop a running job from the checklist","spec":"05-3 §5.24, 05 §5.5 Stop, 10-2 §C.4","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T21:34:12.872Z","step":"launch","ok":true}
+{"t":"2026-11-12T21:34:20.965Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8090}
+{"t":"2026-11-12T21:34:22.014Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1048}
+{"t":"2026-11-12T21:34:22.129Z","i":1,"do":"send","typed":"Find me 5 weekend trek options near Pune with difficulty and cost","sentAt":1794519262095,"sent":true,"before":0,"ok":true,"ms":115}
+{"t":"2026-11-12T21:34:36.904Z","shot":"01-plan.png"}
+{"t":"2026-11-12T21:34:36.905Z","i":2,"do":"waitReply","expect":"plan card","ref":"BP-CARD-11","timeline":[{"at":38,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":542,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":8680,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":10707,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":8646,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for weekend treks near Pune with difficulty\n3\nCompare difficulty and cost per trek\n4\nKeep 5 treks that fit best for a weekend from Pune\nAbout 3 minutes\nGo\nChange plan\n9:34 PM","kit":[],"ms":14704,"shot":"01-plan.png"}
+{"t":"2026-11-12T21:34:36.992Z","i":3,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-11-12T21:34:37.852Z","shot":"02-change.png"}
+{"t":"2026-11-12T21:34:37.853Z","i":4,"do":"wait","expect":"composer prompts for the change","ok":true,"ms":801,"shot":"02-change.png"}
+{"t":"2026-11-12T21:34:37.959Z","i":5,"do":"send","typed":"Only easy treks please","sentAt":1794519277940,"sent":true,"before":0,"ok":true,"ms":106}
+{"t":"2026-11-12T21:34:49.198Z","shot":"03-plan-2.png"}
+{"t":"2026-11-12T21:34:49.199Z","i":6,"do":"waitReply","expect":"a changed plan, the old one marked changed","timeline":[{"at":42,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5127,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":7159,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":5108,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nLook for easy weekend treks near Pune with\n3\nCompare difficulty and cost per trek\n4\nKeep 5 treks that fit easy difficulty only, best fit for a\nAbout 3 minutes\nGo\nChange plan\n9:34 PM","kit":[],"ms":11172,"shot":"03-plan-2.png"}
+{"t":"2026-11-12T21:34:49.270Z","i":7,"do":"click","soft":true,"ok":true,"ms":71}
+{"t":"2026-11-12T21:34:57.339Z","shot":"04-running.png"}
+{"t":"2026-11-12T21:34:57.339Z","i":8,"do":"wait","expect":"checklist running; Doing now shows the job; chat pill Working","ok":true,"ms":8000,"shot":"04-running.png"}
+{"t":"2026-11-12T21:34:57.361Z","i":9,"do":"key","ok":true,"ms":21}
+{"t":"2026-11-12T21:34:58.233Z","shot":"05-doing-now.png"}
+{"t":"2026-11-12T21:34:58.233Z","i":10,"do":"wait","expect":"right panel Doing now row with Stop","ref":"BP-ANAT-DOING","ok":true,"ms":801,"shot":"05-doing-now.png"}
+{"t":"2026-11-12T21:34:58.320Z","i":11,"do":"click","soft":true,"ok":true,"ms":87}
+{"t":"2026-11-12T21:35:03.385Z","shot":"06-stopped.png"}
+{"t":"2026-11-12T21:35:03.386Z","i":12,"do":"wait","expect":"job stopped ⛔, checklist says stopped, no further steps","ok":true,"ms":5001,"shot":"06-stopped.png"}
+{"t":"2026-11-12T21:35:03.397Z","i":13,"do":"key","ok":true,"ms":11}
+{"t":"2026-11-12T21:35:03.410Z","i":14,"do":"dump","ok":true,"ms":12}
+{"t":"2026-11-12T21:35:03.628Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-11-12T21:35:03.640Z","step":"aiTurns","turns":4}
+{"t":"2026-11-12T21:35:03.643Z","step":"jobTrail","steps":8,"calls":1}
