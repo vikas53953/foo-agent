@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, as far as I know Mon 2 Nov was a normal working day in Mumbai, with no public or bank holiday. It was also 10 days ago, so I can't confirm it from a live list. Diwali this year fell around Sun 8 Nov.\n\n8:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Say hello in Hindi\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hello in Hindi is नमस्ते (namaste). A softer, warmer version is नमस्कार (namaskar), and you can say \"सत श्री अकाल\" if you want the Punjabi touch for Mummy. 🌿\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show me a tiny Python hello world in a code block\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here you go:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it, and it prints the greeting.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a 3-row table of Indian states and capitals\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n\nWant three more, or maybe a quiz version?\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me the link to the Indian Railways website\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Indian Railways ticket site is IRCTC, and the app is called IRCTC Rail Connect. For train running status and PNR checks, Indian Railways enquiry is handy.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! 🌿 Dark mode is on. Anything else for Mummy's birthday on Sat 14 Nov, like a cake message?\n\n8:33 PM"
+  }
+]

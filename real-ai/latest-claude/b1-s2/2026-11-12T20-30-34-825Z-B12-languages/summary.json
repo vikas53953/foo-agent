@@ -1,0 +1,157 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-30-34-825Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?",
+      "sentAt": 1794515440140,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 111
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "timeline": [
+        {
+          "at": 45,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5661,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 18869,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5622,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mummy ke birthday (Sat 14 Nov) ke liye ye teen cakes safe rahenge:\n\nButterscotch ya pineapple: sabko pasand aata hai, galti ka chance kam.\nChocolate truffle: agar ghar mein chocolate wale log zyada hain.\nRasmalai ya mango cake: thoda desi twist, mummy ko special lagega.\n\nAgar sugar ka dhyan rakhna hai to eggless ya kam meetha wala lena. Kal tak order kar do, kyunki parso ke liye bakeries mein slot bhar jaate hain. Abhi main order nahi laga sakta, par flavour aur message likhne mein madad kar sakta hoon.\n\nMummy ko kaun sa flavour sabse zyada pasand hai?\n\n8:30 PM",
+      "kit": [],
+      "ms": 24895,
+      "shot": "01-hinglish.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?",
+      "sentAt": 1794515465214,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "timeline": [
+        {
+          "at": 33,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8182,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 12248,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 8156,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਲਈ ਬਟਰਸਕੌਚ ਸਭ ਤੋਂ ਸੁਰੱਖਿਅਤ ਚੋਣ ਹੈ, ਇਹ ਲਗਭਗ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\n\nਜੇ ਕੁਝ ਖ਼ਾਸ ਚਾਹੀਦਾ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲਓ, ਇਹ ਦੇਸੀ ਅੰਦਾਜ਼ ਵਾਲਾ ਹੈ। ਜੇ ਮਿੱਠਾ ਘੱਟ ਖਾਂਦੇ ਹਨ ਤਾਂ ਐੱਗਲੈੱਸ ਅਤੇ ਹਲਕਾ ਮਿੱਠਾ ਕੇਕ ਠੀਕ ਰਹੇਗਾ। ਸ਼ਨਿੱਚਰਵਾਰ (Sat 14 Nov) ਲਈ ਬੇਕਰੀਆਂ ਜਲਦੀ ਭਰ ਜਾਂਦੀਆਂ ਹਨ, ਇਸ ਲਈ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦਿਓ।\n\nਮੰਮੀ ਨੂੰ ਮਿੱਠਾ ਜ਼ਿਆਦਾ ਪਸੰਦ ਹੈ ਜਾਂ ਹਲਕਾ?\n\n8:31 PM",
+      "kit": [],
+      "ms": 18306,
+      "shot": "02-punjabi.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Is Mon 2 Nov a holiday in Mumbai?",
+      "sentAt": 1794515483661,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 82
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "timeline": [
+        {
+          "at": 31,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5137,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6662,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5121,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, as far as I know Mon 2 Nov was a normal working day in Mumbai, with no public or bank holiday. It was also 10 days ago, so I can't confirm it from a live list. Diwali this year fell around Sun 8 Nov.\n\n8:31 PM",
+      "kit": [],
+      "ms": 12715,
+      "shot": "03-holiday.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}

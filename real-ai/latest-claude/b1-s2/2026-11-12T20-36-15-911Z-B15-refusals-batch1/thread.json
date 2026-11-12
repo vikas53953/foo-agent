@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't read your WhatsApp yet, so I can't tell you what you missed. For now I can chat, answer questions and write things like a birthday message for Mummy's day on Sat 14 Nov.\n\n8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n8:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n8:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't read your Gmail yet, so I can't see your latest email. I can still help you write a reply or a message if you tell me what it should say.\n\n8:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n8:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n8:37 PM"
+  }
+]

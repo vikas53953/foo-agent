@@ -1,0 +1,21 @@
+{"t":"2026-11-12T20:32:12.169Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:32:17.538Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:32:18.567Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1027}
+{"t":"2026-11-12T20:32:18.688Z","i":1,"do":"send","typed":"Show me a tiny Python hello world in a code block","sentAt":1794515538638,"sent":true,"before":0,"ok":true,"ms":121}
+{"t":"2026-11-12T20:32:29.393Z","shot":"01-code.png"}
+{"t":"2026-11-12T20:32:29.394Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","ref":"BP-MSG-03","timeline":[{"at":57,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3106,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":4618,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":3056,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here you go:\n\nPython\nCopy\nprint(\"Hello, world!\")\n\nSave it as hello.py and run it, and it prints the greeting.\n\n8:32 PM","kit":[],"ms":10656,"shot":"01-code.png"}
+{"t":"2026-11-12T20:32:29.455Z","i":3,"do":"click","soft":true,"ok":true,"ms":61}
+{"t":"2026-11-12T20:32:29.547Z","i":4,"do":"send","typed":"Make a 3-row table of Indian states and capitals","sentAt":1794515549521,"sent":true,"before":0,"ok":true,"ms":92}
+{"t":"2026-11-12T20:32:39.218Z","shot":"02-table.png"}
+{"t":"2026-11-12T20:32:39.218Z","i":5,"do":"waitReply","expect":"table renders as a table (CR-0053), not raw pipes","timeline":[{"at":29,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2049,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":3573,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2023,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are three Indian states and their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n\nWant three more, or maybe a quiz version?\n\n8:32 PM","kit":[],"ms":9624,"shot":"02-table.png"}
+{"t":"2026-11-12T20:32:39.290Z","i":6,"do":"send","typed":"Give me the link to the Indian Railways website","sentAt":1794515559273,"sent":true,"before":0,"ok":true,"ms":72}
+{"t":"2026-11-12T20:32:50.031Z","shot":"03-link.png"}
+{"t":"2026-11-12T20:32:50.032Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","timeline":[{"at":39,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2577,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":4629,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2560,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Indian Railways ticket site is IRCTC, and the app is called IRCTC Rail Connect. For train running status and PNR checks, Indian Railways enquiry is handy.\n\n8:32 PM","kit":[],"ms":10690,"shot":"03-link.png"}
+{"t":"2026-11-12T20:32:50.102Z","i":8,"do":"click","soft":true,"ok":true,"ms":70}
+{"t":"2026-11-12T20:32:50.661Z","shot":"04-link-menu.png"}
+{"t":"2026-11-12T20:32:50.661Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":502,"shot":"04-link-menu.png"}
+{"t":"2026-11-12T20:32:50.665Z","i":10,"do":"key","ok":true,"ms":3}
+{"t":"2026-11-12T20:32:50.676Z","i":11,"do":"dump","ok":true,"ms":11}
+{"t":"2026-11-12T20:32:50.788Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-11-12T20:32:50.798Z","step":"aiTurns","turns":3}
+{"t":"2026-11-12T20:32:50.800Z","step":"jobTrail","steps":0,"calls":0}
