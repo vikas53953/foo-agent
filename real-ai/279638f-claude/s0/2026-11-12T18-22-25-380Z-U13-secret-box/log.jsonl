@@ -1,0 +1,26 @@
+{"t":"2026-11-12T18:22:25.381Z","journey":"U13-secret-box","title":"Secret box: type a fake key, show/hide, save, replace","spec":"05-2 §5.8 Secret box, 10-2 §C.4 Secret box (C7), ART-08a","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:22:30.386Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:22:38.445Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8056}
+{"t":"2026-11-12T18:22:39.480Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1034}
+{"t":"2026-11-12T18:22:39.557Z","i":1,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-11-12T18:22:39.642Z","i":2,"do":"click","soft":true,"ok":true,"ms":84}
+{"t":"2026-11-12T18:22:41.192Z","shot":"01-secret.png"}
+{"t":"2026-11-12T18:22:41.192Z","i":3,"do":"wait","expect":"Secret box card: Name field, masked key field, eye toggle, Save (CR-0057)","ref":"BP-CARD-07","ok":true,"ms":1500,"shot":"01-secret.png"}
+{"t":"2026-11-12T18:22:41.201Z","i":4,"do":"fill","soft":true,"ok":true,"ms":9}
+{"t":"2026-11-12T18:22:41.207Z","i":5,"do":"fill","soft":true,"ok":true,"ms":6}
+{"t":"2026-11-12T18:22:41.560Z","shot":"02-typed.png"}
+{"t":"2026-11-12T18:22:41.560Z","i":6,"do":"wait","expect":"value masked","ok":true,"ms":300,"shot":"02-typed.png"}
+{"t":"2026-11-12T18:22:41.634Z","i":7,"do":"click","soft":true,"ok":true,"ms":74}
+{"t":"2026-11-12T18:22:41.988Z","shot":"03-shown.png"}
+{"t":"2026-11-12T18:22:41.989Z","i":8,"do":"wait","expect":"value shown after eye","ok":true,"ms":301,"shot":"03-shown.png"}
+{"t":"2026-11-12T18:22:42.054Z","i":9,"do":"click","soft":true,"ok":true,"ms":65}
+{"t":"2026-11-12T18:22:42.135Z","i":10,"do":"click","soft":true,"ok":true,"ms":81}
+{"t":"2026-11-12T18:22:44.175Z","shot":"04-saved.png"}
+{"t":"2026-11-12T18:22:44.175Z","i":11,"do":"wait","expect":"\"Test key · saved {date}\", only Replace offered; value never shown again","ref":"BP-CARD-08","ok":true,"ms":2000,"shot":"04-saved.png"}
+{"t":"2026-11-12T18:22:44.243Z","i":12,"do":"click","soft":true,"ok":true,"ms":68}
+{"t":"2026-11-12T18:22:45.097Z","shot":"05-replace.png"}
+{"t":"2026-11-12T18:22:45.097Z","i":13,"do":"wait","expect":"empty field to replace","ok":true,"ms":801,"shot":"05-replace.png"}
+{"t":"2026-11-12T18:22:45.163Z","i":14,"do":"click","soft":true,"ok":true,"ms":66}
+{"t":"2026-11-12T18:22:45.170Z","i":15,"do":"dump","ok":true,"ms":6}
+{"t":"2026-11-12T18:22:45.257Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-11-12T18:22:45.265Z","step":"aiTurns","turns":0}

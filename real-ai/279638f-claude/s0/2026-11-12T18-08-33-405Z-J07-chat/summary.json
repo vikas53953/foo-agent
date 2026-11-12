@@ -1,0 +1,157 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-08-33-405Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1794506918452,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 76
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 33,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3590,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5103,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3570,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good to see you. What are we sorting out today?\n\n6:08 PM",
+      "kit": [],
+      "ms": 11180,
+      "shot": "01-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "what can you do?",
+      "sentAt": 1794506929759,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 54
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 17,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4077,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5084,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 4072,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can check things for you, like email, calendar and bills, and set up routines that watch prices or news. I can also catch you up on a WhatsApp group or your inbox, and write and send messages once you say go.\n\n6:08 PM",
+      "kit": [],
+      "ms": 11154,
+      "shot": "02-what-can-you-do.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Explain how a VPN works in simple words",
+      "sentAt": 1794506941018,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 72
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 25,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2065,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4086,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2051,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it in scrambled form, so your Wi-Fi owner or internet company can't read it.\n\nYour data first reaches the VPN company's computer, which then talks to the website for you. The website sees that computer's address instead of yours, so your location looks different too.\n\nIt helps on public Wi-Fi and hides your browsing from your internet company. It doesn't make you anonymous, though, since the VPN company can still see what you do. Pick one you trust.\n\n6:09 PM",
+      "kit": [],
+      "ms": 10163,
+      "shot": "03-vpn.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 7
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:24 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n6:24 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which electricity bill should I pay?\n1\nFind it in my email\nBEST FIT\nI read your inbox, then show the amount first\n2\nI'll tell you the provider\nType the company name\nSomething else…\nSkip\n6:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n6:24 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which pizza should I go for from Domino's?\n1\nMargherita\nBEST FIT\nPlain cheese, the simple pick\n2\nPeppy Paneer\nVeg, a bit spicy\n3\nFarmhouse\nVeg, loaded with toppings\n4\nShow me the menu first\nYou pick from the options\nSomething else…\nSkip\n6:24 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:24 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n6:25 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n6:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:25 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "book me a flight to Goa on Sat 12 Dec\n6:25 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can find and compare flights, and open the booking page for you. Filling in passengers and paying for flights comes in a later version.\n1\nCompare flights\nBEST FIT\n2\nNot now\nSomething else…\nSkip\n6:25 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:25 PM"
+  }
+]
