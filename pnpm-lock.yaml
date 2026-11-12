@@ -64,7 +64,7 @@ importers:
         version: 5.0.15(@types/react@19.3.0)(immer@11.1.21)(react@19.3.1)
     devDependencies:
       '@anthropic-ai/sdk':
-        specifier: ^1.3.0
+        specifier: 1.3.0
         version: 1.3.0(zod@4.6.7)
       '@axe-core/playwright':
         specifier: 4.13.0
