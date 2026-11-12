@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n7:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Sat 14 Nov ko mummy ka birthday hai, toh main rasmalai cake suggest karunga: alag lagta hai aur zyadatar mummies ko pasand aata hai. 🎂\n\nAur options:\n\nChocolate truffle: sabki favourite, kabhi galat nahi jaata.\nFresh fruit cake: halka hota hai, mithai ke baad bhi chal jaata hai.\nButterscotch ya pineapple: purana classic, family wale cake jaisa.\nPhoto cake: mummy ki pasandida photo ke saath, thoda emotional touch.\n\nKal tak order kar do, taaki Sat 14 Nov ko time par mil jaaye. Cake eggless chahiye, ya koi bhi chalega?\n\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?\n7:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਮੰਮੀ ਲਈ ਮੈਂ ਰਸਮਲਾਈ ਕੇਕ ਸੁਝਾਵਾਂਗਾ: ਵੱਖਰਾ ਲੱਗਦਾ ਹੈ ਤੇ ਜ਼ਿਆਦਾਤਰ ਮੰਮੀਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। 🎂\n\nਹੋਰ ਚੰਗੇ ਵਿਕਲਪ:\n\nਚਾਕਲੇਟ ਟਰਫਲ: ਸਭ ਦਾ ਮਨਪਸੰਦ, ਕਦੇ ਗਲਤ ਨਹੀਂ ਜਾਂਦਾ।\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਹਲਕਾ ਹੁੰਦਾ ਹੈ, ਖਾਣੇ ਤੋਂ ਬਾਅਦ ਵੀ ਚੱਲ ਜਾਂਦਾ ਹੈ।\nਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ: ਪੁਰਾਣਾ ਕਲਾਸਿਕ, ਪਰਿਵਾਰ ਵਾਲਾ ਕੇਕ।\nਫੋਟੋ ਕੇਕ: ਮੰਮੀ ਦੀ ਪਸੰਦ ਦੀ ਫੋਟੋ ਨਾਲ, ਥੋੜ੍ਹਾ ਭਾਵੁਕ ਅੰਦਾਜ਼।\n\nਜਨਮਦਿਨ Sat 14 Nov ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ, ਜਾਂ ਕੋਈ ਵੀ ਚੱਲੇਗਾ?\n\n7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Is Mon 2 Nov a holiday in Mumbai?\n7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, Mon 2 Nov 2026 wasn't a public holiday in Mumbai as far as I know. It was a normal working day. Diwali fell a week later, around Sun 8 Nov, so the festive closures were then. I can't check live holiday lists, so confirm with your office or school if it matters.\n\n7:16 PM"
+  }
+]

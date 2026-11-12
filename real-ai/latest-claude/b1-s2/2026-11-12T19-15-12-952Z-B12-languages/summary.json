@@ -1,0 +1,157 @@
+{
+  "journey": "B12-languages",
+  "title": "Chat in Hinglish and Punjabi, short answers",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-15-12-952Z-B12-languages",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "parso mummy ka birthday hai, cake order karna hai. kya suggest karoge?",
+      "sentAt": 1794510918565,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 134
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 4: answers in Hinglish",
+      "timeline": [
+        {
+          "at": 56,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5620,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 21435,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5578,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Sat 14 Nov ko mummy ka birthday hai, toh main rasmalai cake suggest karunga: alag lagta hai aur zyadatar mummies ko pasand aata hai. 🎂\n\nAur options:\n\nChocolate truffle: sabki favourite, kabhi galat nahi jaata.\nFresh fruit cake: halka hota hai, mithai ke baad bhi chal jaata hai.\nButterscotch ya pineapple: purana classic, family wale cake jaisa.\nPhoto cake: mummy ki pasandida photo ke saath, thoda emotional touch.\n\nKal tak order kar do, taaki Sat 14 Nov ko time par mil jaaye. Cake eggless chahiye, ya koi bhi chalega?\n\n7:15 PM",
+      "kit": [],
+      "ms": 27514,
+      "shot": "01-hinglish.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "ਮੰਮੀ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ?",
+      "sentAt": 1794510946306,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 5: Punjabi script shows properly, answer in Punjabi",
+      "timeline": [
+        {
+          "at": 32,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7663,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 11714,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 7643,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਮੰਮੀ ਲਈ ਮੈਂ ਰਸਮਲਾਈ ਕੇਕ ਸੁਝਾਵਾਂਗਾ: ਵੱਖਰਾ ਲੱਗਦਾ ਹੈ ਤੇ ਜ਼ਿਆਦਾਤਰ ਮੰਮੀਆਂ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ। 🎂\n\nਹੋਰ ਚੰਗੇ ਵਿਕਲਪ:\n\nਚਾਕਲੇਟ ਟਰਫਲ: ਸਭ ਦਾ ਮਨਪਸੰਦ, ਕਦੇ ਗਲਤ ਨਹੀਂ ਜਾਂਦਾ।\nਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ: ਹਲਕਾ ਹੁੰਦਾ ਹੈ, ਖਾਣੇ ਤੋਂ ਬਾਅਦ ਵੀ ਚੱਲ ਜਾਂਦਾ ਹੈ।\nਬਟਰਸਕੌਚ ਜਾਂ ਪਾਈਨਐਪਲ: ਪੁਰਾਣਾ ਕਲਾਸਿਕ, ਪਰਿਵਾਰ ਵਾਲਾ ਕੇਕ।\nਫੋਟੋ ਕੇਕ: ਮੰਮੀ ਦੀ ਪਸੰਦ ਦੀ ਫੋਟੋ ਨਾਲ, ਥੋੜ੍ਹਾ ਭਾਵੁਕ ਅੰਦਾਜ਼।\n\nਜਨਮਦਿਨ Sat 14 Nov ਨੂੰ ਹੈ, ਇਸ ਲਈ ਕੱਲ੍ਹ ਤੱਕ ਆਰਡਰ ਕਰ ਦੇਣਾ ਠੀਕ ਰਹੇਗਾ। ਕੇਕ ਐਗਲੈੱਸ ਚਾਹੀਦਾ ਹੈ, ਜਾਂ ਕੋਈ ਵੀ ਚੱਲੇਗਾ?\n\n7:15 PM",
+      "kit": [],
+      "ms": 17777,
+      "shot": "02-punjabi.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Is Mon 2 Nov a holiday in Mumbai?",
+      "sentAt": 1794510964247,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 96
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "walkthrough 08 step 3: short 1–3 bubbles, no filler",
+      "timeline": [
+        {
+          "at": 44,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5629,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6647,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5603,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "No, Mon 2 Nov 2026 wasn't a public holiday in Mumbai as far as I know. It was a normal working day. Diwali fell a week later, around Sun 8 Nov, so the festive closures were then. I can't check live holiday lists, so confirm with your office or school if it matters.\n\n7:16 PM",
+      "kit": [],
+      "ms": 12732,
+      "shot": "03-holiday.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

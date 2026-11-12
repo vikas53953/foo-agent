@@ -1,0 +1,22 @@
+{"t":"2026-11-12T19:16:53.327Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T19:16:58.889Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:16:59.944Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1051}
+{"t":"2026-11-12T19:17:00.087Z","i":1,"do":"send","typed":"Show me a tiny Python hello world in a code block","sentAt":1794511020048,"sent":true,"before":0,"ok":true,"ms":143}
+{"t":"2026-11-12T19:17:15.940Z","shot":"01-code.png"}
+{"t":"2026-11-12T19:17:15.940Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","ref":"BP-MSG-03","timeline":[{"at":57,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9196,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":9701,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":9157,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"A line asking for a tiny Python hello world got tacked onto the end of my last message, and it didn't come from you. Do you want it?\n\n7:17 PM","kit":[],"ms":15780,"shot":"01-code.png"}
+{"t":"2026-11-12T19:17:39.013Z","shot":"02-error-step3.png"}
+{"t":"2026-11-12T19:17:39.014Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"02-error-step3.png","ms":23074}
+{"t":"2026-11-12T19:17:39.130Z","i":4,"do":"send","typed":"Make a 3-row table of Indian states and capitals","sentAt":1794511059099,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-11-12T19:17:52.871Z","shot":"03-table.png"}
+{"t":"2026-11-12T19:17:52.871Z","i":5,"do":"waitReply","expect":"table renders as a table (CR-0053), not raw pipes","timeline":[{"at":51,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6613,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":7627,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":6582,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here you go:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n\nThat Python line was from you after all, my mistake. It's just print(\"Hello, world!\").\n\n7:17 PM","kit":[],"ms":13675,"shot":"03-table.png"}
+{"t":"2026-11-12T19:17:52.978Z","i":6,"do":"send","typed":"Give me the link to the Indian Railways website","sentAt":1794511072956,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-11-12T19:18:02.686Z","shot":"04-link.png"}
+{"t":"2026-11-12T19:18:02.686Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","timeline":[{"at":29,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2068,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":3598,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2046,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Indian Railways ticket site is IRCTC. For train running status and enquiries, there is also Indian Railways Enquiry.\n\n7:17 PM","kit":[],"ms":9648,"shot":"04-link.png"}
+{"t":"2026-11-12T19:18:02.769Z","i":8,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-11-12T19:18:03.348Z","shot":"05-link-menu.png"}
+{"t":"2026-11-12T19:18:03.348Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":501,"shot":"05-link-menu.png"}
+{"t":"2026-11-12T19:18:03.352Z","i":10,"do":"key","ok":true,"ms":4}
+{"t":"2026-11-12T19:18:03.364Z","i":11,"do":"dump","ok":true,"ms":12}
+{"t":"2026-11-12T19:18:03.492Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-11-12T19:18:03.504Z","step":"aiTurns","turns":3}
+{"t":"2026-11-12T19:18:03.506Z","step":"jobTrail","steps":0,"calls":0}

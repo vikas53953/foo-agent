@@ -1,0 +1,89 @@
+{
+  "journey": "R-dark-hi",
+  "title": "Setting by chat, then hi: foo replies and does not change the setting again",
+  "videos": [],
+  "steps": 6,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-18-03-665Z-R-dark-hi",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Switch to dark mode",
+      "sentAt": 1794511089344,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 164
+    },
+    {
+      "i": 1,
+      "do": "waitFor",
+      "note": "a setting answer is a line, not a bubble, so waitReply would never see it (real-AI run 62d419e R-dark-hi step 1)",
+      "ok": true,
+      "ms": 3886
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "expect": "the theme is dark and foo shows one line \"Changed: Theme → Dark. Undo\"",
+      "ok": true,
+      "ms": 10002,
+      "shot": "01-dark.png"
+    },
+    {
+      "i": 3,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1794511103444,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 119
+    },
+    {
+      "i": 4,
+      "do": "waitReply",
+      "expect": "foo answers hi with a reply bubble and no second \"Changed: Theme → Dark.\" line (real-AI run cdf2f65 R-dark, PR #141)",
+      "timeline": [
+        {
+          "at": 41,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2590,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3599,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2555,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hello! 🌿 What can I do for you?\n\n7:18 PM",
+      "kit": [],
+      "endState": true,
+      "ms": 9650,
+      "shot": "02-hi-after-dark.png"
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
