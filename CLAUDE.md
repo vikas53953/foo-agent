@@ -27,28 +27,34 @@ Sources and licences: `.claude/skills/NOTICE.md`.
 ## Before every push
 
 ```bash
-pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm trace:check
+pnpm spec:verify && pnpm check:copy && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm trace:check && pnpm pipeline:check
 pnpm fid:guard --base origin/main
 ```
 
-Commit trailer `Fidelity-CR: none|CR-nnnn`. PRs open as drafts (Windows CI runs only on non-draft PRs); mark ready when the work is proven.
+Commit trailer `Fidelity-CR: none|CR-nnnn`. PRs open as drafts (Windows CI runs only on non-draft PRs); mark ready when the work is proven, with the Proof block filled in.
+
+Software-factory mode until batch 1 is delivered (Vikas, 12 Nov 2026, CR-0072): when CI and the release gate pass on the exact head, merge and log a row in `docs/decisions/*.tsv`; keep going while he is away. The approve-on-behalf exclusions still hold. Spec for batches 2 to 7 is draft (`docs/batches.tsv`); see CR-0072 §d.
 
 ## Rules and what enforces them
 
 The correction ladder (`foo-correct`) keeps this table: each rule and the strongest thing that enforces it. Prefer moving a rule up a rung over adding words.
 
-| Rule                                                                                               | Enforced by                                                                                    |
-| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| UI words only through `t(key)` from `src/shared/copy/en-IN.json`                                   | lint `foo/no-literal-copy`; `pnpm check:copy`                                                  |
-| Test ids only from `TID` (`src/shared/testids.ts`)                                                 | lint `foo/testid-from-registry`                                                                |
-| Colours, sizes, radii only from tokens (`design/tokens.json`)                                      | lint `foo/no-raw-design-values`                                                                |
-| Every source file opens with its spec section                                                      | lint `foo/spec-header` (FID-20)                                                                |
-| `spec/` and `golden/` change only with a CR; no skip/only/mask/threshold changes                   | `pnpm fid:guard` (FID-02, FID-06)                                                              |
-| Every changed path has an owner                                                                    | `pnpm fid:guard` (FID-19, `OWNERS.yml`)                                                        |
-| Every traced spec id has a test with that title                                                    | `pnpm trace:check` (FID-18)                                                                    |
-| `spec/` equals its manifest                                                                        | `pnpm spec:verify` (FID-01)                                                                    |
-| Baselines change only through the bless workflow                                                   | `playwright.config.ts` refuses snapshot updates; `golden-bless.ts` needs a CR or signed report |
-| Check files change only with a CR; tests stay locked while a fix is under way (`.claude/fix.lock`) | hook `.claude/hooks/locked-checks.mjs`; `fid:guard` in CI                                      |
-| A bug fix proves its test was red before the fix (`Red-first:` trailer)                            | release gate (`release-gate.yml`, red-first job)                                               |
-| No "done" without proof from the real app                                                          | words only (rung 5): foo-verify proof block in the PR, checked by `foo-review`                 |
-| Repeat mistakes become rules                                                                       | words only (rung 5): `foo-correct`                                                             |
+| Rule                                                                                               | Enforced by                                                                                     |
+| -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| UI words only through `t(key)` from `src/shared/copy/en-IN.json`                                   | lint `foo/no-literal-copy`; `pnpm check:copy`                                                   |
+| Test ids only from `TID` (`src/shared/testids.ts`)                                                 | lint `foo/testid-from-registry`                                                                 |
+| Colours, sizes, radii only from tokens (`design/tokens.json`)                                      | lint `foo/no-raw-design-values`                                                                 |
+| Every source file opens with its spec section                                                      | lint `foo/spec-header` (FID-20)                                                                 |
+| `spec/` and `golden/` change only with a CR; no skip/only/mask/threshold changes                   | `pnpm fid:guard` (FID-02, FID-06)                                                               |
+| Every changed path has an owner                                                                    | `pnpm fid:guard` (FID-19, `OWNERS.yml`)                                                         |
+| Every traced spec id has a test with that title                                                    | `pnpm trace:check` (FID-18)                                                                     |
+| `spec/` equals its manifest                                                                        | `pnpm spec:verify` (FID-01)                                                                     |
+| Baselines change only through the bless workflow                                                   | `playwright.config.ts` refuses snapshot updates; `golden-bless.ts` needs a CR or signed report  |
+| Check files change only with a CR; tests stay locked while a fix is under way (`.claude/fix.lock`) | hook `.claude/hooks/locked-checks.mjs`; `fid:guard` in CI                                       |
+| A bug fix proves its test was red before the fix (`Red-first:` trailer)                            | release gate (`release-gate.yml`, red-first job)                                                |
+| No "done" without proof from the real app (sha + step record + screenshot, or "pre-check only")    | `pnpm pipeline:check` on ready PRs that change `src/` (CR-0072, L4)                             |
+| Builder never edits the QA bar (`test/qa*`, `test/real-pc/journeys/`, `gate.txt`)                  | `pnpm pipeline:check`: `src/` and QA paths in one PR need a `QA-Split:` trailer (CR-0072, L4)   |
+| One active batch; nothing switched on beyond it; next batch only after Vikas used the last one     | `pnpm pipeline:check` reads `docs/batches.tsv` and `resources/features.json` (CR-0072, L1)      |
+| Every pipeline layer names what it replaces and its enforcer; unused layers are retired            | `docs/pipeline-layers.tsv`, `pnpm pipeline:check` (`--weekly` flags 14-day-stale) (CR-0072, L3) |
+| Caps: at most 5 open PRs, no branches left from closed PRs                                         | `pnpm pipeline:check --weekly` (needs GITHUB_TOKEN) (CR-0072, L6)                               |
+| Repeat mistakes become rules                                                                       | words only (rung 5): `foo-correct`                                                              |
