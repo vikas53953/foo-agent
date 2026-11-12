@@ -1,0 +1,8 @@
+[
+  {
+    "chatId": "c_01a1d174-e113-7e77-9d0d-8bb41bde897a",
+    "messageId": "m_01a1d177-53ec-7bf9-9e42-2e5b36542be9",
+    "status": "complete",
+    "text": "Here's a tiny Python hello world:\n\n```python\nprint(\"Hello, world!\")\n```\n\nSave it as `hello.py` and run it, and it prints the greeting. Want it in Hindi too?"
+  }
+]
