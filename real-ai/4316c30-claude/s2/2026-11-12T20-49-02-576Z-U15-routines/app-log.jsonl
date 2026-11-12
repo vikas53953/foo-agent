@@ -1,0 +1,5 @@
+{"t":1794516543587,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794516549345,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794516555970,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"routine"}
+{"t":1794516555971,"lvl":"info","mod":"engine","evt":"chat.kind_not_built"}
+{"t":1794516568068,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2860}

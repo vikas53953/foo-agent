@@ -1,0 +1,16 @@
+{"t":"2026-11-12T20:49:02.576Z","journey":"U15-routines","title":"Routine: create by chat, routines screen, pause, run once","spec":"05-3 §5.16 Routine, 06 Routines screen, 10-2 §C.4 / §C.5","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:49:08.157Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:49:09.215Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1052}
+{"t":"2026-11-12T20:49:09.400Z","i":1,"do":"send","typed":"Every weekday at 8 AM tell me the weather in Delhi","sentAt":1794516549342,"sent":true,"before":0,"ok":true,"ms":185}
+{"t":"2026-11-12T20:49:22.147Z","shot":"01-routine.png"}
+{"t":"2026-11-12T20:49:22.147Z","i":2,"do":"waitReply","expect":"Routine card: created, next run time with weekday and date","ref":"BP-CARD-16","timeline":[{"at":79,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6684,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":6626,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n8:49 PM","kit":[],"ms":12680,"shot":"01-routine.png"}
+{"t":"2026-11-12T20:49:22.236Z","i":3,"do":"click","soft":true,"ok":true,"ms":89}
+{"t":"2026-11-12T20:49:22.333Z","i":4,"do":"click","soft":true,"ok":true,"ms":97}
+{"t":"2026-11-12T20:49:23.585Z","shot":"02-routines.png"}
+{"t":"2026-11-12T20:49:23.586Z","i":5,"do":"wait","expect":"Routines screen with the new routine row","ref":"UX-18-01","ok":true,"ms":1200,"shot":"02-routines.png"}
+{"t":"2026-11-12T20:49:46.647Z","shot":"03-error-step6.png"}
+{"t":"2026-11-12T20:49:46.647Z","i":6,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"03-error-step6.png","ms":23061}
+{"t":"2026-11-12T20:49:46.656Z","i":7,"do":"dump","ok":true,"ms":9}
+{"t":"2026-11-12T20:49:46.790Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-11-12T20:49:46.804Z","step":"aiTurns","turns":2}
+{"t":"2026-11-12T20:49:46.806Z","step":"jobTrail","steps":0,"calls":0}
