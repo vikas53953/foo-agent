@@ -1,0 +1,13 @@
+{"t":1794509168229,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794509177036,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":3924}
+{"t":1794509193581,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":201}
+{"t":1794509224421,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":774}
+{"t":1794509270987,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794509273133,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1794509279332,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794509292090,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794509294088,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1794509294089,"lvl":"info","mod":"engine","evt":"chat.reply_empty.no_say"}
+{"t":1794509294090,"lvl":"info","mod":"engine","evt":"chat.reply_empty.shape","kind":"say_empty_before_act"}
+{"t":1794509294094,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794509296874,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}

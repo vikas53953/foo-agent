@@ -1,0 +1,22 @@
+{"t":"2026-11-12T18:43:41.839Z","journey":"U08-rich-text","title":"foo bubbles: code block copy, table, links, list, sources","spec":"04 §3–§5, 10-2 §C.3 foo bubble, R1","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:43:47.387Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:43:48.418Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1028}
+{"t":"2026-11-12T18:43:48.552Z","i":1,"do":"send","typed":"Show me a tiny Python hello world in a code block","sentAt":1794509028502,"sent":true,"before":0,"ok":true,"ms":134}
+{"t":"2026-11-12T18:44:01.280Z","shot":"01-code.png"}
+{"t":"2026-11-12T18:44:01.281Z","i":2,"do":"waitReply","expect":"code block in mono with a Copy button","ref":"BP-MSG-03","timeline":[{"at":58,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5116,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":6645,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":5066,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here it is: print(\"Hello, world!\"). Save it as hello.py and run it with Python, and it prints Hello, world!\n\n6:43 PM","kit":[],"ms":12660,"shot":"01-code.png"}
+{"t":"2026-11-12T18:44:24.358Z","shot":"02-error-step3.png"}
+{"t":"2026-11-12T18:44:24.358Z","i":3,"do":"click","soft":true,"ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"02-error-step3.png","ms":23077}
+{"t":"2026-11-12T18:44:24.462Z","i":4,"do":"send","typed":"Make a 3-row table of Indian states and capitals","sentAt":1794509064442,"sent":true,"before":0,"ok":true,"ms":104}
+{"t":"2026-11-12T18:44:34.699Z","shot":"03-table.png"}
+{"t":"2026-11-12T18:44:34.699Z","i":5,"do":"waitReply","expect":"table renders as a table (CR-0053), not raw pipes","timeline":[{"at":36,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2568,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":4084,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2547,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here are three Indian states with their capitals:\n\nState\tCapital\nMaharashtra\tMumbai\nPunjab\tChandigarh\nTamil Nadu\tChennai\n6:44 PM","kit":[],"ms":10179,"shot":"03-table.png"}
+{"t":"2026-11-12T18:44:34.793Z","i":6,"do":"send","typed":"Give me the link to the Indian Railways website","sentAt":1794509074765,"sent":true,"before":0,"ok":true,"ms":94}
+{"t":"2026-11-12T18:44:45.559Z","shot":"04-link.png"}
+{"t":"2026-11-12T18:44:45.559Z","i":7,"do":"waitReply","expect":"a clickable link; right-click shows open/copy","timeline":[{"at":36,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":2589,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":4633,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":2560,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The official Indian Railways site is indianrailways.gov.in. For booking tickets, use IRCTC at irctc.co.in.\n\n6:44 PM","kit":[],"ms":10700,"shot":"04-link.png"}
+{"t":"2026-11-12T18:44:45.642Z","i":8,"do":"click","soft":true,"ok":true,"ms":83}
+{"t":"2026-11-12T18:44:46.204Z","shot":"05-link-menu.png"}
+{"t":"2026-11-12T18:44:46.204Z","i":9,"do":"wait","expect":"link menu: Open, Copy","ok":true,"ms":499,"shot":"05-link-menu.png"}
+{"t":"2026-11-12T18:44:46.208Z","i":10,"do":"key","ok":true,"ms":4}
+{"t":"2026-11-12T18:44:46.215Z","i":11,"do":"dump","ok":true,"ms":7}
+{"t":"2026-11-12T18:44:46.334Z","step":"appLog","lines":7,"dropped":0}
+{"t":"2026-11-12T18:44:46.345Z","step":"aiTurns","turns":3}
+{"t":"2026-11-12T18:44:46.348Z","step":"jobTrail","steps":0,"calls":0}
