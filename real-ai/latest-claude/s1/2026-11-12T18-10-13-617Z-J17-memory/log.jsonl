@@ -1,0 +1,17 @@
+{"t":"2026-11-12T18:10:13.618Z","journey":"J17-memory","title":"Remember, view and forget","spec":"07-1 J17; 06 memory page; M6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:10:19.034Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:10:19.159Z","i":0,"do":"send","typed":"Please remember that my favourite food is South Indian.","sentAt":1794507019122,"sent":true,"before":0,"ok":true,"ms":122}
+{"t":"2026-11-12T18:10:29.961Z","shot":"01-remember.png"}
+{"t":"2026-11-12T18:10:29.961Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":42,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":546,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4177,"badges":[],"reactions":["👍"],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":4651,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I’ll remember: Favourite food: South Indian\nUndo","kit":[],"ms":10731,"shot":"01-remember.png"}
+{"t":"2026-11-12T18:10:30.037Z","i":2,"do":"click","ok":true,"ms":76}
+{"t":"2026-11-12T18:10:30.145Z","i":3,"do":"click","expect":"fact listed in plain words with source","ok":true,"ms":108}
+{"t":"2026-11-12T18:10:32.203Z","shot":"02-memory-page.png"}
+{"t":"2026-11-12T18:10:32.203Z","i":4,"do":"wait","expect":"fact listed in plain words with source","ok":true,"ms":2002,"shot":"02-memory-page.png"}
+{"t":"2026-11-12T18:10:32.205Z","i":5,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-11-12T18:10:32.228Z","i":6,"do":"key","ok":true,"ms":23}
+{"t":"2026-11-12T18:10:32.323Z","i":7,"do":"send","typed":"What is my favourite food?","sentAt":1794507032307,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-11-12T18:10:43.586Z","shot":"03-recall.png"}
+{"t":"2026-11-12T18:10:43.586Z","i":8,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":24,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4594,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":5097,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":4578,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Your favourite food is South Indian, and I already had that saved from earlier today, so nothing new to add. 🌿\n\n6:10 PM","kit":[],"ms":11202,"shot":"03-recall.png"}
+{"t":"2026-11-12T18:10:43.594Z","i":9,"do":"dump","ok":true,"ms":8}
+{"t":"2026-11-12T18:10:43.724Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-11-12T18:10:43.736Z","step":"aiTurns","turns":2}

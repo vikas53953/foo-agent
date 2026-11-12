@@ -1,6 +1,0 @@
-{"t":1794507191042,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1794507195603,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1794507199791,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"memory"}
-{"t":1794507199845,"lvl":"info","mod":"engine","evt":"memory.saved_said"}
-{"t":1794507208731,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1794507213790,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
