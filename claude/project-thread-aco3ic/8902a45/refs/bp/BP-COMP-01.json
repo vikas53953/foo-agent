@@ -1,0 +1,46 @@
+{
+  "id": "BP-COMP-01",
+  "family": "bp",
+  "selector": "#compstates > .panel:nth-child(1) > .mini",
+  "box": {
+    "x": 127.5,
+    "y": 9626.375,
+    "width": 351.328125,
+    "height": 100
+  },
+  "files": {
+    "light": {
+      "png": "BP-COMP-01.light.png",
+      "sha256": "5772abff41b89726622736876dd3db7ece4a75dbd15257dfdb5f6405c72186a1"
+    },
+    "dark": {
+      "png": "BP-COMP-01.dark.png",
+      "sha256": "be283ecb64bc073d58c363520b2233f55ad4d602d72d1777fdbcd80c1d5e403f"
+    }
+  },
+  "texts": [
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-COMP-01": {
+      "x": 0,
+      "y": 0,
+      "width": 351.328125,
+      "height": 100
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M2",
+  "spec": "04-2 §20–§23",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
