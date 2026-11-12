@@ -1,0 +1,154 @@
+{
+  "id": "BP-CARD-07",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0009",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "X",
+        "post",
+        "Just",
+        "booked",
+        "Goa",
+        "December.",
+        "Any",
+        "beach",
+        "shack",
+        "I",
+        "can't",
+        "miss?",
+        "🌴",
+        "Open",
+        "in",
+        "X"
+      ],
+      "extra": [
+        "Email",
+        "To",
+        "Rakesh",
+        "Sharma",
+        "<r.sharma@example.com>",
+        "Subject",
+        "Re:",
+        "October",
+        "rent",
+        "Hi",
+        "Rakesh,",
+        "I’ll",
+        "pay",
+        "October’s",
+        "rent",
+        "on",
+        "Tuesday",
+        "20",
+        "Oct.",
+        "Thanks",
+        "your",
+        "patience.",
+        "Vikas",
+        "Will",
+        "send",
+        "to",
+        "r.sharma@example.com",
+        "from",
+        "your",
+        "Gmail.",
+        "Can’t",
+        "be",
+        "unsent.",
+        "Send",
+        "email",
+        "Discard",
+        "Expires",
+        "Fri",
+        "16",
+        "Oct,",
+        "10:41",
+        "AM",
+        "·",
+        "If",
+        "you",
+        "don’t",
+        "answer,",
+        "I",
+        "won’t",
+        "send",
+        "it.",
+        "9:41",
+        "AM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-07",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 164
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 440,
+          "height": 263
+        },
+        "dPos": 0,
+        "dSize": 99,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-CARD-07",
+        "ref": "#FFFFFF",
+        "app": "#FFFFFF",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.08814536863317352,
+    "diffPixels": 5074,
+    "total": 57564,
+    "sizeMismatch": {
+      "a": [
+        351,
+        164
+      ],
+      "b": [
+        440,
+        263
+      ]
+    },
+    "heatmap": "BP-CARD-07.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-07.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-07.light.png"
+}
