@@ -1,0 +1,10 @@
+{"t":1794516183325,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794516189099,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794516196295,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"memory"}
+{"t":1794516196344,"lvl":"info","mod":"engine","evt":"memory.saved_said"}
+{"t":1794516202985,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794516207294,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"memory"}
+{"t":1794516207303,"lvl":"info","mod":"engine","evt":"memory.saved_said"}
+{"t":1794516207788,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2914}
+{"t":1794516220507,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1794516220508,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

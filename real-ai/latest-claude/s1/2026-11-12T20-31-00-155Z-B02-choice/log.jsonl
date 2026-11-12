@@ -1,0 +1,15 @@
+{"t":"2026-11-12T20:31:00.155Z","journey":"B02-choice","title":"Choice card: options, Best fit, typed answer","spec":"AT-032, AT-035, AT-288","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:31:05.660Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:31:05.797Z","i":0,"do":"send","typed":"I want to buy running shoes under 5000 rupees. Ask me what you need to know first.","sentAt":1794515465759,"sent":true,"before":0,"ok":true,"ms":134}
+{"t":"2026-11-12T20:31:16.534Z","shot":"01-choice.png"}
+{"t":"2026-11-12T20:31:16.535Z","i":1,"do":"waitReply","timeline":[{"at":43,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":549,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4608,"badges":["waiting"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":4570,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"What will you mostly use the shoes for?\n1\nDaily road running\nBEST FIT\nCushioned, everyday pavement miles\n2\nGym or treadmill\nLighter, flatter, indoor use\n3\nTrails or mud\nGrippy sole, tougher build\n4\nJust starting out\nComfort first, not sure yet\nSomething else…\nSkip\n8:31 PM","kit":[],"ms":10677,"shot":"01-choice.png"}
+{"t":"2026-11-12T20:31:16.537Z","i":2,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-11-12T20:31:16.539Z","i":3,"do":"check","found":4,"ok":true,"ms":2}
+{"t":"2026-11-12T20:31:16.541Z","i":4,"do":"text","soft":true,"text":"What will you mostly use the shoes for?\n1\nDaily road running\nBEST FIT\nCushioned, everyday pavement miles\n2\nGym or treadmill\nLighter, flatter, indoor use\n3\nTrails or mud\nGrippy sole, tougher build\n4\nJust starting out\nComfort first, not sure yet\nSomething else…\nSkip\n8:31 PM","ok":true,"ms":2}
+{"t":"2026-11-12T20:31:16.649Z","i":5,"do":"send","typed":"2","sentAt":1794515476616,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-11-12T20:31:29.903Z","shot":"02-typed-2.png"}
+{"t":"2026-11-12T20:31:29.904Z","i":6,"do":"waitReply","expect":"AT-035: card collapses as if option 2 was tapped","timeline":[{"at":39,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":542,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7151,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7117,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"For gym and treadmill, what matters most in the shoe?\n1\nCushioning and comfort\nBEST FIT\nSoft landing for longer runs\n2\nLight weight\nFeels quick, less bulk\n3\nGrip and durability\nHolds up to daily gym use\n4\nLooks\nSomething you like wearing\nSomething else…\nSkip\n8:31 PM","kit":[],"ms":13199,"shot":"02-typed-2.png"}
+{"t":"2026-11-12T20:31:29.913Z","i":7,"do":"dump","ok":true,"ms":9}
+{"t":"2026-11-12T20:31:30.056Z","step":"appLog","lines":5,"dropped":0}
+{"t":"2026-11-12T20:31:30.068Z","step":"aiTurns","turns":2}
+{"t":"2026-11-12T20:31:30.070Z","step":"jobTrail","steps":0,"calls":0}

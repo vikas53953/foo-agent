@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking for well-reviewed Italian… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry booking pages of the shortlisted instead\n8:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:34 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the opening hours of the National Museum in Delhi and the ticket price\n8:35 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 2 steps · 0 min\nDetails\n8:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:35 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The National Museum in Delhi is open Tue to Fri, 10:00 AM to 6:00 PM, and Sat and Sun, 10:00 AM to 8:00 PM. It is closed on Mondays and national holidays. Tomorrow, Fri 13 Nov, it should be open 10:00 AM to 6:00 PM, unless it is a holiday. Entry is ₹20 for adults and ₹500 for foreign nationals. Students up to class 12 get in free with an ID card. This is from the museum's own Plan Your Visit page, and I did not check the holiday calendar.\n\n8:35 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:38 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Log in to my HDFC net banking and tell me my balance\n8:38 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:38 PM\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "failed",
+    "text": "Checking HDFC net banking\nDidn’t finish\nWaiting for you to sign in ›\nCheck HDFC net banking\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  },
+  {
+    "kind": "card-error",
+    "state": "asking",
+    "text": "This is your bank’s site. I’ll open it for you, and you do this part.\nOpen netbanking.hdfcbank.com\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  }
+]
