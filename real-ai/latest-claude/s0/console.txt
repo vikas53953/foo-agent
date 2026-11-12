@@ -1,8 +1,0 @@
-{"journey":"J01-J02-first-run","title":"Install, first launch and Find your AI (fresh profile)","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-46-57-269Z-J01-J02-first-run"}
-{"journey":"J17-memory","title":"Remember, view and forget","videos":[],"steps":10,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-47-48-195Z-J17-memory"}
-{"journey":"J12-draft","title":"Draft an email (never sends)","videos":[],"steps":4,"failed":1,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-48-18-103Z-J12-draft"}
-{"journey":"B04-stop","title":"Start a job then stop it by typing stop","videos":[],"steps":7,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-48-34-377Z-B04-stop"}
-{"journey":"B07-live","title":"Watch live, take over, hand back, stop","videos":[],"steps":14,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-49-39-837Z-B07-live"}
-{"journey":"U06-header-panel","title":"Chat header, ⋮ menu, details panel (Doing, Using, What I know, Spent)","videos":[],"steps":15,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-51-19-208Z-U06-header-panel"}
-{"journey":"U12-choice-variants","title":"Choice card: pick by click, by typing, by reaction 1️⃣, Something else","videos":[],"steps":13,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-52-15-326Z-U12-choice-variants"}
-{"journey":"U19-screens","title":"Activity, Ideas, Spend, foo profile, Shortcuts screens","videos":[],"steps":22,"failed":0,"out":"D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-53-15-749Z-U19-screens"}

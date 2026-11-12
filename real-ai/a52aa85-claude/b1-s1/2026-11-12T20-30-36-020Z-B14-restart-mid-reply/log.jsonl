@@ -1,0 +1,19 @@
+{"t":"2026-11-12T20:30:36.020Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:30:41.135Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:30:41.238Z","i":0,"do":"send","typed":"What is a good name for a pet tortoise?","sentAt":1794515441206,"sent":true,"before":0,"ok":true,"ms":100}
+{"t":"2026-11-12T20:30:44.249Z","i":1,"do":"wait","ok":true,"ms":3011}
+{"t":"2026-11-12T20:30:49.048Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:30:49.048Z","i":2,"do":"relaunch","ok":true,"ms":4799}
+{"t":"2026-11-12T20:30:57.721Z","shot":"01-after-reopen.png"}
+{"t":"2026-11-12T20:30:57.722Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","timeline":[{"at":7847,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":8382,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":10408,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":1046,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Sheldon is my pick: slow, steady and very on brand.\n\nA few more:\n\nDheere (Hindi for \"slowly\"), for a tortoise that takes its time.\nTurbo, because the joke never gets old.\nKachua, simple and affectionate.\n\nWant names for a particular personality, like grumpy, shy or greedy for lettuce?\n\n8:30 PM","kit":[],"ms":8621,"shot":"01-after-reopen.png"}
+{"t":"2026-11-12T20:30:57.724Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n8:30 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-11-12T20:30:57.831Z","i":5,"do":"send","typed":"Which news story is biggest in India today? One line.","sentAt":1794515457790,"sent":true,"before":0,"ok":true,"ms":107}
+{"t":"2026-11-12T20:30:59.833Z","i":6,"do":"wait","ok":true,"ms":2002}
+{"t":"2026-11-12T20:31:04.685Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:31:04.686Z","i":7,"do":"relaunch","ok":true,"ms":4853}
+{"t":"2026-11-12T20:31:11.879Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-11-12T20:31:11.879Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","timeline":[{"at":6900,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7908,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":1012,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n8:31 PM","kit":[],"ms":7137,"shot":"02-news-after-reopen.png"}
+{"t":"2026-11-12T20:31:11.886Z","i":9,"do":"dump","ok":true,"ms":7}
+{"t":"2026-11-12T20:31:11.997Z","step":"appLog","lines":12,"dropped":0}
+{"t":"2026-11-12T20:31:12.006Z","step":"aiTurns","turns":2}
+{"t":"2026-11-12T20:31:12.007Z","step":"jobTrail","steps":0,"calls":0}

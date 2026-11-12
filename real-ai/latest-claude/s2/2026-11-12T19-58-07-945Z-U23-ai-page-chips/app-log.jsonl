@@ -1,4 +1,0 @@
-{"t":1794513488917,"lvl":"info","mod":"main","evt":"APP_STARTED"}
-{"t":1794513494648,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
-{"t":1794513505725,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
-{"t":1794513536030,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
