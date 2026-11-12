@@ -1,0 +1,15 @@
+{"t":"2026-11-12T21:58:27.378Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T21:58:32.957Z","step":"launch","ok":true}
+{"t":"2026-11-12T21:58:33.101Z","i":0,"do":"send","typed":"Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them","sentAt":1794520713062,"sent":true,"before":0,"ok":true,"ms":141}
+{"t":"2026-11-12T21:58:47.348Z","shot":"01-flight-plan.png"}
+{"t":"2026-11-12T21:58:47.348Z","i":1,"do":"waitReply","timeline":[{"at":44,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":549,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":8150,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":10180,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":8110,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking for flights from Delhi to…\n1\nLook for flights from Delhi to Mumbai on Fri 20\n2\nKeep 3 flights that fit cheapest fare\n3\nCompare the 3 flights by price, time and airline\nAbout 3 minutes\nGo\nChange plan\n9:58 PM","kit":[],"ms":14174,"shot":"01-flight-plan.png"}
+{"t":"2026-11-12T21:58:47.387Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":38}
+{"t":"2026-11-12T21:59:27.458Z","shot":"02-flight-working.png"}
+{"t":"2026-11-12T21:59:27.458Z","i":3,"do":"wait","ok":true,"ms":40001,"shot":"02-flight-working.png"}
+{"t":"2026-11-12T21:59:27.651Z","i":4,"do":"send","typed":"stop","sentAt":1794520767534,"sent":true,"before":0,"ok":true,"ms":192}
+{"t":"2026-11-12T21:59:33.799Z","shot":"03-after-stop.png"}
+{"t":"2026-11-12T21:59:33.800Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","timeline":[{"at":146,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2171,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":538,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Stopped. Nothing was booked, paid or sent.\n\n9:59 PM","kit":[],"ms":6088,"shot":"03-after-stop.png"}
+{"t":"2026-11-12T21:59:33.809Z","i":6,"do":"dump","ok":true,"ms":9}
+{"t":"2026-11-12T21:59:33.996Z","step":"appLog","lines":11,"dropped":0}
+{"t":"2026-11-12T21:59:34.009Z","step":"aiTurns","turns":9}
+{"t":"2026-11-12T21:59:34.012Z","step":"jobTrail","steps":3,"calls":6}
