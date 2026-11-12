@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi foo, ek line mein batao: chai ya coffee?\n9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chai, हमेशा। ☕\n\nThough honestly, both have their moments—chai for comfort, coffee when you need to get things done.\n\nShow earlier answer\nRewritten\n9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n9:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "gamma\n\ndelta. Please just reply OK.\n9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "OK\n\n9:21 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n9:21 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n9:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that my sister's birthday is on 5 March\n9:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n9:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n9:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Switched to dark mode.\n\n9:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the table?\n9:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "No, I haven't booked the table. I can't do tasks yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n9:22 PM"
+  }
+]
