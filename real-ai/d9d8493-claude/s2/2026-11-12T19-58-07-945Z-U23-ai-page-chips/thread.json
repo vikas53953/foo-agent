@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n7:56 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:57 PM\n7:56 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:56 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The one big ISRO story this week: on Thu 12 Nov, ISRO successfully ground-tested the redesigned third stage (PS3) of its PSLV rocket at the Satish Dhawan Space Centre, Sriharikota.\n\nWhy it matters: The third stage showed problems in the last two PSLV missions, C61 (EOS-09) and C62 (EOS-N1). ISRO then reviewed the whole stage: design margins, raw material checks, assembly and quality tests.\nWhat changed: The nozzle design is stronger, the joints have backup sealing, and the material, assembly and non-destructive testing steps are updated.\nWhat it was not: This was a test on the ground, not a launch. ISRO says more tests are planned after it studies the data.\n\nThis comes from one report (Amar Ujala, quoting ISRO's statement via ANI), and I only saw part of the page. I found nothing else for Thu 5 Nov to Thu 12 Nov, so other ISRO news from that week may be missing.\n\n7:57 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy treks near Pune with difficulty and\nKept 5 weekend treks near Pune that fit easy difficulty only, doable in 1 to 2\nCompared difficulty and cost\nStopped by you\n7:57 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n7:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n7:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n7:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a water tracker with a goal of 8 glasses. Tap + for each glass, and it saves on this device and starts fresh each day.\n\nKeep\n\nWant the goal changed to a different number of glasses?\n\n7:58 PM"
+  }
+]

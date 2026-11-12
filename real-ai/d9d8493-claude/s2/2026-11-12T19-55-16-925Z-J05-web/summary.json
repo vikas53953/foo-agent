@@ -1,0 +1,86 @@
+{
+  "journey": "J05-web",
+  "title": "First real task with the internet (news + sources)",
+  "videos": [],
+  "steps": 6,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-55-16-925Z-J05-web",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "What's the latest news about ISRO this week? Give me sources.",
+      "sentAt": 1794513330650,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 114
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 46,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 551,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5670,
+          "badges": [
+            "working"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 7174,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nLook for ISRO news from Thu 5 Nov to Thu 12 Nov\nWrite it\nWatch live\nStop\nunder 1 min\n7:55 PM",
+      "kit": [],
+      "ms": 13265,
+      "shot": "01-news.png"
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 6
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 21
+    },
+    {
+      "i": 4,
+      "do": "expectText",
+      "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:47 PM",
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 5,
+      "do": "dump",
+      "ok": true,
+      "ms": 13
+    }
+  ]
+}
