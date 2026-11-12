@@ -1,0 +1,15 @@
+{"t":"2026-11-12T18:13:56.700Z","journey":"B04-stop","title":"Start a job then stop it by typing stop","spec":"AT-077, AT-107, AT-080, J18","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:14:02.327Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:14:02.488Z","i":0,"do":"send","typed":"Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them","sentAt":1794507242446,"sent":true,"before":0,"ok":true,"ms":158}
+{"t":"2026-11-12T18:14:14.730Z","shot":"01-flight-plan.png"}
+{"t":"2026-11-12T18:14:14.730Z","i":1,"do":"waitReply","timeline":[{"at":55,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":570,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6122,"badges":["waiting"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":6080,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Which Friday do you mean for the Delhi to Mumbai flights?\n1\nFri 20 Nov\nBEST FIT\nThe Friday after tomorrow\n2\nFri 13 Nov\nTomorrow\nSomething else…\nSkip\n6:14 PM","kit":[],"ms":12180,"shot":"01-flight-plan.png"}
+{"t":"2026-11-12T18:14:14.733Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T18:14:54.791Z","shot":"02-flight-working.png"}
+{"t":"2026-11-12T18:14:54.792Z","i":3,"do":"wait","ok":true,"ms":40002,"shot":"02-flight-working.png"}
+{"t":"2026-11-12T18:14:54.887Z","i":4,"do":"send","typed":"stop","sentAt":1794507294858,"sent":true,"before":0,"ok":true,"ms":95}
+{"t":"2026-11-12T18:15:01.009Z","shot":"03-after-stop.png"}
+{"t":"2026-11-12T18:15:01.010Z","i":5,"do":"waitReply","expect":"AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔","timeline":[{"at":36,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":2059,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":511,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Nothing’s running right now.\n\n6:14 PM","kit":[],"ms":6062,"shot":"03-after-stop.png"}
+{"t":"2026-11-12T18:15:01.020Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-11-12T18:15:01.154Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-12T18:15:01.165Z","step":"aiTurns","turns":2}
+{"t":"2026-11-12T18:15:01.167Z","step":"jobTrail","steps":0,"calls":0}

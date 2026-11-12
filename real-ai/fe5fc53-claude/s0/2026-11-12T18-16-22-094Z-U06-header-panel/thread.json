@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Email about running late”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n6:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n6:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which Friday do you mean for the Delhi to Mumbai flights?\n1\nFri 20 Nov\nBEST FIT\nThe Friday after tomorrow\n2\nFri 13 Nov\nTomorrow\nSomething else…\nSkip\n6:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n6:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n6:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n6:15 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:15 PM\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking IRCTC\nlive checklist\nChecking IRCTC\nI\nFind trains on IRCTC\nLook for morning departures from New Delhi to\nWatch live\nStop\n1 min\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "IRCTC blocked me. Which city are you travelling to from New Delhi?\n1\nMumbai\nBEST FIT\nI'll check other train sites\n2\nKolkata\nI'll check other train sites\n3\nJaipur\nI'll check other train sites\n4\nAnother city\nTell me which one in chat\nSomething else…\nSkip\n6:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:15 PM"
+  }
+]
