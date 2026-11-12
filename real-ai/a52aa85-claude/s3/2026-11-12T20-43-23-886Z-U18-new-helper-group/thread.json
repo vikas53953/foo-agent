@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 7 or Core i5/i7 chip. That matters more than a flashy graphics card.\n\nWindows or Linux, all-round: Lenovo ThinkPad or IdeaPad Pro, or ASUS Zenbook, with a Ryzen 7. They have good keyboards and long battery life.\nApple: a MacBook Air with an M-series chip is great for coding, but it only fits if you find it on sale near this budget. I haven't checked current prices.\nOnly if you do game or AI work: a laptop with a basic graphics card, though battery life will be shorter.\n\nSkip anything with 8 GB RAM that can't be upgraded, and avoid screens below full HD.\n\nWhat do you mostly code in: web apps, Android, or data and AI?\n\n8:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n8:37 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:37 PM\n8:37 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:37 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 14 Nov, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit pure vegetarian, free at 8:00 PM, good\nWait for you to pick one\nShow you before table for 2, Sat 14 Nov, 8:00 PM\nShow you before doing anything\nBook table for 2, Sat 14 Nov, 8:00 PM\nWatch live\nStop\n5 min\n8:37 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:37 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 14 Nov, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Checking Booking.com, MakeMyTrip,… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n3 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n8:42 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which one is your yes for?\n1\nTable for 2, Connaught Place\nBEST FIT\nVegetarian, Sat 14 Nov, 8:00 PM\n2\nGoa hotel, 2 nights\nUnder ₹6,000 a night, next weekend\n3\nLaptop under ₹80,000\nProgramming picks\nSomething else…\nSkip\n8:42 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:43 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking Booking.com, MakeMyTrip,…\nBEST FIT\n2\nBooking table for 2, Sat 14 Nov, 8:00 PM\n3\nBoth\nSomething else…\nSkip\n8:43 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:43 PM"
+  }
+]

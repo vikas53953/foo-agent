@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "On specs alone, Pixel 9 is the best value: a 120Hz screen and the biggest battery, with 7 years of updates. Galaxy S25 is close, and it's the only one with a telephoto camera. I haven't checked current prices, so treat this as a specs-only pick.\n\niPhone 16\nScreen\n6.1 inch OLED, 60Hz\nChip\nApple A18\nMain cameras\n48MP main + 12MP ultrawide\nZoom\nNo telephoto\nBattery\nAbout 3,600 mAh, the smallest of the three\nBase storage\n128 GB\nUpdates\nAround 5 to 6 years, not officially stated\nBest pick\nPixel 9\nScreen\n6.3 inch OLED, 120Hz\nChip\nGoogle Tensor G4\nMain cameras\n50MP main + 48MP ultrawide\nZoom\nNo telephoto\nBattery\nAbout 4,700 mAh, the largest of the three\nBase storage\n128 GB\nUpdates\n7 years\n\nSmooth 120Hz screen, biggest battery and 7 years of updates. Final value depends on today's price.\n\nGalaxy S25\nScreen\n6.2 inch OLED, 120Hz\nChip\nSnapdragon 8 Elite, the fastest here\nMain cameras\n50MP main + 12MP ultrawide\nZoom\n10MP telephoto, 3x\nBattery\nAbout 4,000 mAh\nBase storage\n128 GB\nUpdates\n7 years\nKeep\n\nWant me to look up current prices in India so we can pick a true value winner?\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Tap start when the water is in. 🍵\n\nSteep the tea\n2:00 left\nStart timer\nKeep\n\nThis timer only runs while this chat is open, so keep it on screen.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for the party plan. Fill in the date, guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n\nOnce you send it, I can suggest a simple plan for food, cake and decor.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker for Nov 2026 is below. Add an item, pick a category, and it totals by category with a budget bar. I can't promise it keeps entries after you close this chat, so note down anything important.\n\nKeep\n\nWant a daily limit added, so it shows how much you can spend each day?\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n8:33 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:33 PM\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nStill working, this one takes a while\nLook for Goa hotels, Sat 21 Nov to Mon 23 Nov\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nCompare the 3 shortlisted hotels\nWait for you to pick one\nWatch live\nStop\n2 min\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  }
+]

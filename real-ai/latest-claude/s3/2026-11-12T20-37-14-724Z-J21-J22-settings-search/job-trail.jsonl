@@ -1,0 +1,1 @@
+{"kind":"call","job_id":"j_01a1d177-20dc-785f-b2e8-b80464ff4375","step_idx":0,"tool":"browser.open","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794515842286,"finished_at":1794515844391}

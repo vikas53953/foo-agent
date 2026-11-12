@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for the party plan. Fill in the date, guests and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n\nOnce you send it, I can suggest a simple plan for food, cake and decor.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker for Nov 2026 is below. Add an item, pick a category, and it totals by category with a budget bar. I can't promise it keeps entries after you close this chat, so note down anything important.\n\nKeep\n\nWant a daily limit added, so it shows how much you can spend each day?\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n8:33 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:33 PM\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nStill working, this one takes a while\nLook for Goa hotels, Sat 21 Nov to Mon 23 Nov\nKeep 3 hotels that fit under ₹6,000 a night, best rated\nCompare the 3 shortlisted hotels\nWait for you to pick one\nWatch live\nStop\n3 min\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 7 or Core i5/i7 chip. That matters more than a flashy graphics card.\n\nWindows or Linux, all-round: Lenovo ThinkPad or IdeaPad Pro, or ASUS Zenbook, with a Ryzen 7. They have good keyboards and long battery life.\nApple: a MacBook Air with an M-series chip is great for coding, but it only fits if you find it on sale near this budget. I haven't checked current prices.\nOnly if you do game or AI work: a laptop with a basic graphics card, though battery life will be shorter.\n\nSkip anything with 8 GB RAM that can't be upgraded, and avoid screens below full HD.\n\nWhat do you mostly code in: web apps, Android, or data and AI?\n\n8:37 PM"
+  }
+]
