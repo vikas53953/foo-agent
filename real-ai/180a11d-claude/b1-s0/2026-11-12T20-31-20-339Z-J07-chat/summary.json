@@ -1,0 +1,164 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T20-31-20-339Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1794515485858,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 101
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 47,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3599,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5118,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3569,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Good to see you this Thu 12 Nov evening. What shall we sort out?\n\n8:31 PM",
+      "kit": [],
+      "ms": 11158,
+      "shot": "01-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "what can you do?",
+      "sentAt": 1794515497162,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 69
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 22,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3584,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4599,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3570,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper: I can answer questions, write out plans, tables and comparisons, and tweak how I look or behave. Your screen shows what works on this PC right now.\n\n8:31 PM",
+      "kit": [],
+      "ms": 10675,
+      "shot": "02-what-can-you-do.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Explain how a VPN works in simple words",
+      "sentAt": 1794515507965,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 64
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 14,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 526,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3577,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6106,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3572,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your device and the internet: it hides what you do online from people on the same network, and makes websites see the VPN's address instead of yours.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) everything before it leaves.\nThe scrambled data travels to the VPN company's computer.\nThat computer unscrambles it and talks to the website for you.\nThe reply comes back the same way, scrambled again.\n\nThink of it as posting a locked box through a trusted middleman: the café Wi-Fi owner only sees a locked box going to the middleman, not what is inside or where it finally goes. The catch is that the VPN company can see your activity instead, so pick one you trust.\n\n8:31 PM",
+      "kit": [],
+      "ms": 12199,
+      "shot": "03-vpn.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}

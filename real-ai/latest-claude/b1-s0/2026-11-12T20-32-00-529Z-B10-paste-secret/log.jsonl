@@ -1,0 +1,22 @@
+{"t":"2026-11-12T20:32:00.530Z","journey":"B10-paste-secret","title":"Paste bands and secret guard","spec":"AT-365, AT-370, AT-008","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T20:32:06.050Z","step":"launch","ok":true}
+{"t":"2026-11-12T20:32:06.113Z","i":0,"do":"paste","typed":"Lorem notes about the meeting. ","ok":true,"ms":59}
+{"t":"2026-11-12T20:32:07.693Z","shot":"01-paste-6000.png"}
+{"t":"2026-11-12T20:32:07.693Z","i":1,"do":"wait","expect":"AT-365: 2,001–10,000 chars → 'Pasted text' chip","ok":true,"ms":1501,"shot":"01-paste-6000.png"}
+{"t":"2026-11-12T20:32:07.695Z","i":2,"do":"check","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-11-12T20:32:07.698Z","i":3,"do":"key","ok":true,"ms":2}
+{"t":"2026-11-12T20:32:07.703Z","i":4,"do":"eval","value":0,"ok":true,"ms":4}
+{"t":"2026-11-12T20:32:07.721Z","i":5,"do":"fill","ok":true,"ms":18}
+{"t":"2026-11-12T20:32:07.740Z","i":6,"do":"key","ok":true,"ms":19}
+{"t":"2026-11-12T20:32:09.319Z","shot":"02-secret-guard.png"}
+{"t":"2026-11-12T20:32:09.319Z","i":7,"do":"wait","expect":"AT-008: 'That looks like a password or key' with Move to secret box / Send anyway; nothing sent","ok":true,"ms":1504,"shot":"02-secret-guard.png"}
+{"t":"2026-11-12T20:32:09.325Z","i":8,"do":"check","found":1,"ok":true,"ms":6}
+{"t":"2026-11-12T20:32:09.328Z","i":9,"do":"check","found":0,"ok":true,"ms":3}
+{"t":"2026-11-12T20:32:09.538Z","i":10,"do":"click","ok":true,"ms":210}
+{"t":"2026-11-12T20:32:11.608Z","shot":"03-secret-box.png"}
+{"t":"2026-11-12T20:32:11.609Z","i":11,"do":"wait","expect":"Secret box card posted with the value in its masked field; password never stored as text","ok":true,"ms":2002,"shot":"03-secret-box.png"}
+{"t":"2026-11-12T20:32:11.611Z","i":12,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-11-12T20:32:11.620Z","i":13,"do":"dump","ok":true,"ms":9}
+{"t":"2026-11-12T20:32:11.746Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-11-12T20:32:11.756Z","step":"aiTurns","turns":0}
+{"t":"2026-11-12T20:32:11.759Z","step":"jobTrail","steps":0,"calls":0}

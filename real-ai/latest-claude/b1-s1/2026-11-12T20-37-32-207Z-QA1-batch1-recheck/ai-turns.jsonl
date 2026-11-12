@@ -1,9 +1,0 @@
-{"started_at":1794515919196,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":2041,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515927186,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":2124,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515947333,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":3934,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515957260,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":2247,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515966303,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":6858,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515979736,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":2099,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515988558,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":2155,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515995053,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":4758,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}
-{"started_at":1794515997650,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":2155,"chat_id":"c_01a1d17a-e004-7e15-9d07-543780ff9928","job_id":null,"provider_id":"anthropic-key","billing":"key"}

@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you this Thu 12 Nov evening. What shall we sort out?\n\n8:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can answer questions, write out plans, tables and comparisons, and tweak how I look or behave. Your screen shows what works on this PC right now.\n\n8:31 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n8:31 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet: it hides what you do online from people on the same network, and makes websites see the VPN's address instead of yours.\n\nHere is how it goes:\n\nYour device scrambles (encrypts) everything before it leaves.\nThe scrambled data travels to the VPN company's computer.\nThat computer unscrambles it and talks to the website for you.\nThe reply comes back the same way, scrambled again.\n\nThink of it as posting a locked box through a trusted middleman: the café Wi-Fi owner only sees a locked box going to the middleman, not what is inside or where it finally goes. The catch is that the VPN company can see your activity instead, so pick one you trust.\n\n8:31 PM"
+  },
+  {
+    "kind": "card-secret",
+    "state": "asking",
+    "text": "Password\nsecret\nName\nPassword or key\n0 characters\nSave securely\nCancel\nStored on this PC. foo’s AI never sees it.\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me one fun fact about Delhi in one sentence\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Delhi has been rebuilt so many times that historians count at least seven earlier cities on the same ground before today's New Delhi.\n\n8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "You\nGive me one fun fact about Delhi in one sentence\nAnd one about Ludhiana\nEdited\n8:32 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ludhiana is often called the \"Manchester of India\" because its hosiery and woollen mills turn out a huge share of the country's knitwear.\n\nShow earlier answer\nRewritten\n8:32 PM"
+  }
+]
