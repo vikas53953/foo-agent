@@ -1,0 +1,137 @@
+{
+  "journey": "B14-restart-mid-reply",
+  "title": "Close foo within 5 s of sending, reopen: the message still gets a real answer",
+  "videos": [],
+  "steps": 10,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-48-21-287Z-B14-restart-mid-reply",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "What is a good name for a pet tortoise?",
+      "sentAt": 1794512907332,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 150
+    },
+    {
+      "i": 1,
+      "do": "wait",
+      "ok": true,
+      "ms": 3001
+    },
+    {
+      "i": 2,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5258
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again",
+      "timeline": [
+        {
+          "at": 8321,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 9839,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 10848,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 1525,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Try Shelly, Sheldon or Turbo (the funny one, since tortoises are anything but). Other good ones: Pebble, Mr. Slowpoke, Biryani. 🐢\n\n7:48 PM",
+      "kit": [],
+      "ms": 8618,
+      "shot": "01-after-reopen.png"
+    },
+    {
+      "i": 4,
+      "do": "eval",
+      "value": {
+        "lastMine": "What is a good name for a pet tortoise?\n7:48 PM",
+        "eyes": false
+      },
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 5,
+      "do": "send",
+      "typed": "Which news story is biggest in India today? One line.",
+      "sentAt": 1794512924423,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 136
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "ok": true,
+      "ms": 2002
+    },
+    {
+      "i": 7,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 5297
+    },
+    {
+      "i": 8,
+      "do": "waitReply",
+      "expect": "the news question is answered after reopening",
+      "timeline": [
+        {
+          "at": 7365,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 9904,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2546,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n7:48 PM",
+      "kit": [],
+      "ms": 8603,
+      "shot": "02-news-after-reopen.png"
+    },
+    {
+      "i": 9,
+      "do": "dump",
+      "ok": true,
+      "ms": 8
+    }
+  ]
+}
