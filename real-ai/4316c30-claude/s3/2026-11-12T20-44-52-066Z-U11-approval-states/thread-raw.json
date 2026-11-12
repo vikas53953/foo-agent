@@ -1,0 +1,38 @@
+[
+  {
+    "chatId": "c_01a1d17b-20e1-78e6-ad08-16c6628d0171",
+    "messageId": "m_01a1d17c-0f0e-7432-bf36-b05c208fad2a",
+    "status": "complete",
+    "text": "Your EMI comes to about ₹43,391 a month. Over 20 years you'd pay about ₹1,04,13,840 in total (1.04 crore), of which about ₹54,13,840 is interest. Change the amount, rate or years below to see it update.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"Calculator\",\"inputs\":[{\"name\":\"loan\",\"label\":\"Loan amount (₹)\",\"value\":5000000},{\"name\":\"rate\",\"label\":\"Interest rate (% per year)\",\"value\":8.5},{\"name\":\"years\",\"label\":\"Years\",\"value\":20}],\"outputs\":[{\"label\":\"Monthly EMI\",\"formula\":\"pmt(rate/12/100, years*12, loan)\",\"unit\":\"rupees\"},{\"label\":\"Total you pay\",\"formula\":\"pmt(rate/12/100, years*12, loan)*years*12\",\"unit\":\"rupees\"},{\"label\":\"Total interest\",\"formula\":\"pmt(rate/12/100, years*12, loan)*years*12-loan\",\"unit\":\"rupees\"}]}}]}\n```"
+  },
+  {
+    "chatId": "c_01a1d17b-20e1-78e6-ad08-16c6628d0171",
+    "messageId": "m_01a1d17c-44ce-7bef-9147-c16f30cdc7c6",
+    "status": "complete",
+    "text": "Here are 5 places worth seeing in Jaipur, numbered on the map below. Hawa Mahal, City Palace and Jantar Mantar are close together, so they fit into one walk.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"MapStops\",\"stops\":[{\"name\":\"Amber Fort\",\"lat\":26.9855,\"lng\":75.8513,\"note\":\"Hilltop fort north of the city, best visited in the morning\"},{\"name\":\"Nahargarh Fort\",\"lat\":26.9373,\"lng\":75.8155,\"note\":\"Great views over the city at sunset\"},{\"name\":\"Hawa Mahal\",\"lat\":26.9239,\"lng\":75.8267,\"note\":\"The pink 'Palace of Winds' facade\"},{\"name\":\"City Palace\",\"lat\":26.9258,\"lng\":75.8237,\"note\":\"Royal palace with museums and courtyards\"},{\"name\":\"Jantar Mantar\",\"lat\":26.9247,\"lng\":75.8246,\"note\":\"18th century stone observatory, right next to City Palace\"}]}]}\n```"
+  },
+  {
+    "chatId": "c_01a1d17b-20e1-78e6-ad08-16c6628d0171",
+    "messageId": "m_01a1d17c-8116-78cc-8506-883f3b6a492f",
+    "status": "complete",
+    "text": "India's real GDP growth over the last 5 full years swung from a **-5.8%** fall in FY 2020-21 to **9.7%** in FY 2021-22, and was **6.5%** in FY 2024-25. These are the official estimates as I know them, and the government revises them, so check the latest release before quoting them.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"LineChart\",\"variant\":\"bar\",\"title\":\"India real GDP growth (% per year)\",\"unit\":\"percent\",\"series\":[{\"label\":\"GDP growth\",\"points\":[{\"x\":\"FY21\",\"y\":-5.8},{\"x\":\"FY22\",\"y\":9.7},{\"x\":\"FY23\",\"y\":7.6},{\"x\":\"FY24\",\"y\":9.2},{\"x\":\"FY25\",\"y\":6.5}]}]}]}\n```"
+  },
+  {
+    "chatId": "c_01a1d17b-20e1-78e6-ad08-16c6628d0171",
+    "messageId": "m_01a1d17c-c35a-77c9-938d-899ab5be4a35",
+    "status": "complete",
+    "text": "The Galaxy S25 looks like the best value on specs: the fastest chip, a 120Hz screen, a 3x zoom camera and 7 years of updates. The Pixel 9 is a close second with the biggest battery. Prices change often, so check today's street prices before you decide.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"Compare\",\"columns\":[{\"title\":\"iPhone 16\",\"rows\":[{\"label\":\"Screen\",\"value\":\"6.1\\\" OLED, 60Hz\"},{\"label\":\"Chip\",\"value\":\"Apple A18\"},{\"label\":\"Memory\",\"value\":\"8GB RAM, 128GB base\"},{\"label\":\"Cameras\",\"value\":\"48MP main + 12MP ultrawide\"},{\"label\":\"Battery\",\"value\":\"About 3,600 mAh\"},{\"label\":\"Updates\",\"value\":\"Not fixed by Apple, usually 6 years or more\"}]},{\"title\":\"Pixel 9\",\"rows\":[{\"label\":\"Screen\",\"value\":\"6.3\\\" OLED, 120Hz\"},{\"label\":\"Chip\",\"value\":\"Google Tensor G4\"},{\"label\":\"Memory\",\"value\":\"12GB RAM, 128GB base\"},{\"label\":\"Cameras\",\"value\":\"50MP main + 48MP ultrawide\"},{\"label\":\"Battery\",\"value\":\"About 4,700 mAh\"},{\"label\":\"Updates\",\"value\":\"7 years\"}]},{\"title\":\"Galaxy S25\",\"rows\":[{\"label\":\"Screen\",\"value\":\"6.2\\\" AMOLED, 120Hz\"},{\"label\":\"Chip\",\"value\":\"Snapdragon 8 Elite\"},{\"label\":\"Memory\",\"value\":\"12GB RAM, 128GB base\"},{\"label\":\"Cameras\",\"value\":\"50MP main + 12MP ultrawide + 10MP 3x zoom\"},{\"label\":\"Battery\",\"value\":\"About 4,000 mAh\"},{\"label\":\"Updates\",\"value\":\"7 years\"}]}],\"highlight\":2,\"why\":\"Fastest chip, 120Hz screen, 3x zoom and 7 years of updates, if the street price is similar.\"}]}\n```"
+  },
+  {
+    "chatId": "c_01a1d17b-20e1-78e6-ad08-16c6628d0171",
+    "messageId": "m_01a1d17d-0c02-7e9b-b08a-d626d8b6a1c3",
+    "status": "complete",
+    "text": "Your 2 minute tea timer is below, and it should finish around Thu 12 Nov, 8:41 PM once you start it. Keep this chat open while it runs.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"TimedChecklist\",\"steps\":[{\"title\":\"Steep your tea\",\"seconds\":120}]}]}}\n```"
+  },
+  {
+    "chatId": "c_01a1d17b-20e1-78e6-ad08-16c6628d0171",
+    "messageId": "m_01a1d17d-3943-70b8-80d4-b8ab290104f6",
+    "status": "complete",
+    "text": "Here's a short party planner: fill in the date, guest count and budget, then send it.\n\n```a2ui\n{\"createSurface\":{\"surfaceId\":\"s1\",\"catalogId\":\"foo.kit.v1\"}}\n{\"updateComponents\":{\"surfaceId\":\"s1\",\"components\":[{\"id\":\"root\",\"component\":\"ShortForm\",\"fields\":[{\"name\":\"date\",\"label\":\"Party date\",\"type\":\"date\"},{\"name\":\"guests\",\"label\":\"Number of guests\",\"type\":\"number\"},{\"name\":\"budget\",\"label\":\"Budget (₹)\",\"type\":\"number\"}],\"action\":{\"event\":{\"name\":\"plan_birthday_party\"}}}]}}\n```"
+  }
+]

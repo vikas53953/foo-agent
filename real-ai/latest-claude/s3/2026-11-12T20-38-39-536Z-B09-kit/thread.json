@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 places worth seeing in Jaipur, numbered on the map below. Hawa Mahal, City Palace and Jantar Mantar are close together, so they fit into one walk.\n\n1\n2\n3\n4\n5\n1\nAmber Fort\nHilltop fort north of the city, best visited in the morning\n2\nNahargarh Fort\nGreat views over the city at sunset\n3\nHawa Mahal\nThe pink 'Palace of Winds' facade\n4\nCity Palace\nRoyal palace with museums and courtyards\n5\nJantar Mantar\n18th century stone observatory, right next to City Palace\nOpen in Maps\nKeep\n8:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Show a chart of India's GDP growth for the last 5 years\n8:39 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "India's real GDP growth over the last 5 full years swung from a -5.8% fall in FY 2020-21 to 9.7% in FY 2021-22, and was 6.5% in FY 2024-25. These are the official estimates as I know them, and the government revises them, so check the latest release before quoting them.\n\nIndia real GDP growth (% per year)\n−10%\n0%\n10%\nFY21\nFY22\nFY23\nFY24\nFY25\nKeep\n8:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Compare iPhone 16, Pixel 9 and Galaxy S25 side by side and highlight the best value\n8:39 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The Galaxy S25 looks like the best value on specs: the fastest chip, a 120Hz screen, a 3x zoom camera and 7 years of updates. The Pixel 9 is a close second with the biggest battery. Prices change often, so check today's street prices before you decide.\n\niPhone 16\nScreen\n6.1\" OLED, 60Hz\nChip\nApple A18\nMemory\n8GB RAM, 128GB base\nCameras\n48MP main + 12MP ultrawide\nBattery\nAbout 3,600 mAh\nUpdates\nNot fixed by Apple, usually 6 years or more\nPixel 9\nScreen\n6.3\" OLED, 120Hz\nChip\nGoogle Tensor G4\nMemory\n12GB RAM, 128GB base\nCameras\n50MP main + 48MP ultrawide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nScreen\n6.2\" AMOLED, 120Hz\nChip\nSnapdragon 8 Elite\nMemory\n12GB RAM, 128GB base\nCameras\n50MP main + 12MP ultrawide + 10MP 3x zoom\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nFastest chip, 120Hz screen, 3x zoom and 7 years of updates, if the street price is similar.\n\nKeep\n8:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n8:39 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below, and it should finish around Thu 12 Nov, 8:41 PM once you start it. Keep this chat open while it runs.\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n8:39 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n8:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short party planner: fill in the date, guest count and budget, then send it.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n8:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n8:40 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below: add an item with a category and amount, and the total, budget left and category split update as you go. Entries stay only while this chat is open, so note down anything you want to keep.\n\n8:40 PM"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your expense tracker is below: add an item with a category and amount, and the total, budget left and category split update as you go. Entries stay only while this chat is open, so note down anything you want to keep.\n\n8:40 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n8:40 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:40 PM\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking hotel booking sites\nlive checklist\nChecked hotel booking sites\nH\nLooked for Goa hotels for 2 nights, Sat 21 Nov\nKept 3 hotels that fit best rating under ₹6,000 a night\nYou picked\nStopped by you\n8:40 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:40 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Checking hotel booking sites job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\ntry hotel booking sites instead\n8:43 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:44 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n8:44 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 get 16GB RAM, a 512GB SSD and a recent Ryzen 5/7 or Intel Core Ultra 5/7 chip. Those matter far more than a fancy graphics card.\n\nRAM: 16GB is the floor. Browser, editor and Docker together will choke 8GB, so pick one that can be upgraded later.\nScreen: 14 to 15.6 inch, at least 1920x1200, IPS or OLED. You'll stare at text all day.\nKeyboard and weight: ThinkPad, Lenovo IdeaPad Slim, ASUS Vivobook/Zenbook and HP Pavilion Plus are usually good picks. Try the keyboard in a shop if you can.\nBattery: Look for 50Wh or more and USB-C charging.\nSkip: 8GB RAM, hard disks, and heavy gaming laptops unless you also game or train AI.\n\nAn older MacBook Air with an Apple chip can also land near this budget during sales. It's great for battery life and coding, but check the price and whether 16GB is available.\n\nPrices change often, so check today's listings before buying. Do you prefer Windows, Mac or Linux?\n\n8:44 PM"
+  }
+]

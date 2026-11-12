@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 get 16GB RAM, a 512GB SSD and a recent Ryzen 5/7 or Intel Core Ultra 5/7 chip. Those matter far more than a fancy graphics card.\n\nRAM: 16GB is the floor. Browser, editor and Docker together will choke 8GB, so pick one that can be upgraded later.\nScreen: 14 to 15.6 inch, at least 1920x1200, IPS or OLED. You'll stare at text all day.\nKeyboard and weight: ThinkPad, Lenovo IdeaPad Slim, ASUS Vivobook/Zenbook and HP Pavilion Plus are usually good picks. Try the keyboard in a shop if you can.\nBattery: Look for 50Wh or more and USB-C charging.\nSkip: 8GB RAM, hard disks, and heavy gaming laptops unless you also game or train AI.\n\nAn older MacBook Air with an Apple chip can also land near this budget during sales. It's great for battery life and coding, but check the price and whether 16GB is available.\n\nPrices change often, so check today's listings before buying. Do you prefer Windows, Mac or Linux?\n\n8:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:44 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:44 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nothing’s running right now.\n\n8:44 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n8:45 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:45 PM\n8:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:45 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 14 Nov, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit vegetarian, open and bookable at 8:00\nWait for you to pick one\nShow you before the booking for 2 on Sat 14 Nov, 8:00 PM\nShow you before doing anything\nBook table for 2, Sat 14 Nov, 8:00 PM\nWatch live\nStop\n5 min\n8:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:45 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 14 Nov, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:47 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n8:49 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "I can't see what you said yes to. What should I do for Sat 14 Nov, 8:00 PM?\n1\nFind vegetarian places first\nBEST FIT\nShow a shortlist in Connaught Place to pick from\n2\nBook a place I name\nYou tell me the restaurant\n3\nCancel this booking request\nNothing gets booked\nSomething else…\nSkip\n8:49 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:49 PM"
+  }
+]
