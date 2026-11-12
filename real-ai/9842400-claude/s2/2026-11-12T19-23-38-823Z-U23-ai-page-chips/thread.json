@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me 5 weekend trek options near Pune with difficulty and cost\n7:22 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "changed",
+    "text": "Plan changed. See the new one below.\n7:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Only easy treks please\n7:22 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:22 PM\n7:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:22 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Looking on the web\nlive checklist\nLooked on the web\nLooked for easy weekend treks near Pune with\nKept 5 treks that fit easy difficulty only, doable in a\nCompared difficulty and cost\nStopped by you\n7:22 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:22 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:22 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Every weekday at 8 AM tell me the weather in Delhi\n7:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t set up repeating checks yet. Ask me each time and I’ll do it then.\n\n7:23 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses\n7:23 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your water tracker: tap a glass to log it, and it counts toward your goal of 8 glasses.\n\nKeep\n\nIt resets each day. If your screen doesn't keep what you log after you close it, tell me and I'll adjust.\n\n7:23 PM"
+  }
+]

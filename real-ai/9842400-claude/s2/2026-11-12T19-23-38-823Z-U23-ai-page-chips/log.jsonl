@@ -1,0 +1,16 @@
+{"t":"2026-11-12T19:23:38.824Z","journey":"U23-ai-page-chips","title":"AI page, action chips, reply chips","spec":"10-2 §C.9 Rich replies (X-180)","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T19:23:44.044Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:23:45.092Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1045}
+{"t":"2026-11-12T19:23:45.209Z","i":1,"do":"send","typed":"Make me a simple page that tracks my daily water intake with a goal of 8 glasses","sentAt":1794511425179,"sent":true,"before":0,"ok":true,"ms":116}
+{"t":"2026-11-12T19:24:04.480Z","shot":"01-ai-page.png"}
+{"t":"2026-11-12T19:24:04.480Z","i":2,"do":"waitReply","expect":"an AI page / kit card opens with the tracker","timeline":[{"at":40,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":544,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5102,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":13171,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":5072,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Here's your water tracker: tap a glass to log it, and it counts toward your goal of 8 glasses.\n\nKeep\n\nIt resets each day. If your screen doesn't keep what you log after you close it, tell me and I'll adjust.\n\n7:23 PM","kit":["kit-keep"],"endState":true,"ms":19213,"shot":"01-ai-page.png"}
+{"t":"2026-11-12T19:24:04.482Z","i":3,"do":"check","note":"AI page card","soft":true,"found":1,"ok":true,"ms":2}
+{"t":"2026-11-12T19:24:04.483Z","i":4,"do":"check","note":"action chips under the reply","soft":true,"found":0,"ok":false,"ms":1}
+{"t":"2026-11-12T19:24:04.543Z","i":5,"do":"click","soft":true,"ok":true,"ms":60}
+{"t":"2026-11-12T19:24:05.400Z","shot":"02-chip-fills.png"}
+{"t":"2026-11-12T19:24:05.401Z","i":6,"do":"wait","expect":"reply chip fills the composer","ok":true,"ms":801,"shot":"02-chip-fills.png"}
+{"t":"2026-11-12T19:24:05.416Z","i":7,"do":"fill","soft":true,"ok":true,"ms":15}
+{"t":"2026-11-12T19:24:05.425Z","i":8,"do":"dump","ok":true,"ms":8}
+{"t":"2026-11-12T19:24:05.533Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-11-12T19:24:05.543Z","step":"aiTurns","turns":1}
+{"t":"2026-11-12T19:24:05.545Z","step":"jobTrail","steps":0,"calls":0}

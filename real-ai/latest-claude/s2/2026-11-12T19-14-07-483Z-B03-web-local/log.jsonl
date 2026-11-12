@@ -1,0 +1,16 @@
+{"t":"2026-11-12T19:14:07.484Z","journey":"B03-web-local","title":"Web without keys: news read locally, sources","spec":"AT-139, AT-020, R1 sources, AT-310","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T19:14:12.604Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:14:12.692Z","i":0,"do":"send","typed":"What's the latest news about ISRO this week? Give me sources.","sentAt":1794510852665,"sent":true,"before":0,"ok":true,"ms":85}
+{"t":"2026-11-12T19:14:26.461Z","shot":"01-news.png"}
+{"t":"2026-11-12T19:14:26.461Z","i":1,"do":"waitReply","timeline":[{"at":41,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6127,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7611,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nCheck isro.gov.in, The Hindu, Times of India\nWrite it\nWatch live\nStop\nunder 1 min\n7:14 PM","kit":[],"ms":13679,"shot":"01-news.png"}
+{"t":"2026-11-12T19:14:26.463Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":1}
+{"t":"2026-11-12T19:16:56.521Z","shot":"02-news-later.png"}
+{"t":"2026-11-12T19:16:56.521Z","i":3,"do":"wait","ok":true,"ms":150005,"shot":"02-news-later.png"}
+{"t":"2026-11-12T19:16:56.523Z","i":4,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T19:16:56.525Z","i":5,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T19:16:56.527Z","i":6,"do":"expectText","text":"All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:13 PM","ok":true,"ms":2}
+{"t":"2026-11-12T19:16:56.528Z","i":7,"do":"check","soft":true,"found":1,"ok":true,"ms":1}
+{"t":"2026-11-12T19:16:56.534Z","i":8,"do":"dump","ok":true,"ms":5}
+{"t":"2026-11-12T19:16:56.682Z","step":"appLog","lines":32,"dropped":0}
+{"t":"2026-11-12T19:16:56.692Z","step":"aiTurns","turns":29}
+{"t":"2026-11-12T19:16:56.695Z","step":"jobTrail","steps":3,"calls":26}
