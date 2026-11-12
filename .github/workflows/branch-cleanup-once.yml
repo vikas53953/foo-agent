@@ -32,8 +32,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch -q --filter=blob:none origin '+refs/heads/archive/deleted-branches-2026-11-12:refs/remotes/origin/archive'
-          archived=$(git rev-list --parents -n 1 refs/remotes/origin/archive | tr ' ' '\n' | tail -n +2 | sort -u)
+          git fetch -q --filter=blob:none origin '+refs/heads/archive/deleted-branches-2026-11-12:refs/cleanup/archive'
+          archived=$(git rev-list --parents -n 1 refs/cleanup/archive | tr ' ' '\n' | tail -n +2 | sort -u)
           live=$(git ls-remote --heads origin)
           deleted=0; kept=0; gone=0
           while IFS=$'\t' read -r branch sha _; do
