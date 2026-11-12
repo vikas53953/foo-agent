@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n8:32 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:32 PM\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking flight booking sites\nlive checklist\nChecked flight booking sites\nF\nLooked for Delhi to Mumbai flights on Fri 20 Nov\nKept 3 flights that fit lowest fare\nCompared price, timings and stops\nStopped by you\n8:32 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:32 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n8:33 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n8:33 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:33 PM\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest morning train from New Delhi to Agra Cantt on Fri 13 Nov is the Shatabdi Express 12002: leaves Fri 13 Nov, 6:00 AM, arrives Fri 13 Nov, 7:50 AM (1 hr 50 min). All run daily.\n\nFrom New Delhi (NDLS):\n\n12002 Shatabdi Express: Fri 13 Nov, 6:00 AM to 7:50 AM\n12138 Punjab Mail: Fri 13 Nov, 5:10 AM to 8:10 AM (3 hr)\n64074 NDLS-DHO EMU: Fri 13 Nov, 4:15 AM to 9:05 AM (4 hr 50 min)\n11906 HSX AGC Express: Fri 13 Nov, 7:20 AM to 11:00 AM (3 hr 40 min)\n20848 Durg SF Express: Fri 13 Nov, 11:15 AM to 1:55 PM (weekdays only per the listing)\n11078 Jhelum Express: Fri 13 Nov, 11:30 AM to 2:05 PM\n\nIf Hazrat Nizamuddin works for you, the Vande Bharat 22470 leaves Fri 13 Nov, 6:00 AM and arrives Fri 13 Nov, 7:40 AM (1 hr 40 min).\n\nThis comes from a timetable site, so I have not checked seats or fares. IRCTC blocked me, so availability needs a look on IRCTC yourself.\n\n8:34 PM"
+  }
+]

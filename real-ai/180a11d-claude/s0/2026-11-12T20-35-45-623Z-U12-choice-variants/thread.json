@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:33 PM\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest morning train from New Delhi to Agra Cantt on Fri 13 Nov is the Shatabdi Express 12002: leaves Fri 13 Nov, 6:00 AM, arrives Fri 13 Nov, 7:50 AM (1 hr 50 min). All run daily.\n\nFrom New Delhi (NDLS):\n\n12002 Shatabdi Express: Fri 13 Nov, 6:00 AM to 7:50 AM\n12138 Punjab Mail: Fri 13 Nov, 5:10 AM to 8:10 AM (3 hr)\n64074 NDLS-DHO EMU: Fri 13 Nov, 4:15 AM to 9:05 AM (4 hr 50 min)\n11906 HSX AGC Express: Fri 13 Nov, 7:20 AM to 11:00 AM (3 hr 40 min)\n20848 Durg SF Express: Fri 13 Nov, 11:15 AM to 1:55 PM (weekdays only per the listing)\n11078 Jhelum Express: Fri 13 Nov, 11:30 AM to 2:05 PM\n\nIf Hazrat Nizamuddin works for you, the Vande Bharat 22470 leaves Fri 13 Nov, 6:00 AM and arrives Fri 13 Nov, 7:40 AM (1 hr 40 min).\n\nThis comes from a timetable site, so I have not checked seats or fares. IRCTC blocked me, so availability needs a look on IRCTC yourself.\n\n8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a weekend activity in Bengaluru, give me 3 options to choose from\n8:35 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "Which weekend plan sounds best for Sat 14 or Sun 15 Nov? → Nandi Hills sunrise\n8:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:35 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "the second one\n8:36 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which weekend plan sounds best for Sat 14 or Sun 15 Nov?\n1\nNandi Hills sunrise\nBEST FIT\nEarly start, hilltop views\n2\nSouth Indian breakfast crawl\nHop between classic Bengaluru spots\n3\nLalbagh and Cubbon Park walk\nEasy, green, no early alarm\nSomething else…\nSkip\n8:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Now give me 3 dinner options to choose from\n8:36 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Which dinner sounds good tonight?\n1\nMasala dosa and filter coffee\nBEST FIT\nSouth Indian classic, light and crisp\n2\nCurd rice with sambar and papad\nSimple, easy on the stomach\n3\nPaneer butter masala with roti\nRich and filling North Indian pick\nSomething else…\nSkip\n8:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:36 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Actually just a home-cooked dal chawal\n8:36 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Dal chawal it is, no menu needed. 🌿 Want a quick tadka tip, or a South Indian twist like a rasam-style dal?\n\n8:36 PM"
+  }
+]
