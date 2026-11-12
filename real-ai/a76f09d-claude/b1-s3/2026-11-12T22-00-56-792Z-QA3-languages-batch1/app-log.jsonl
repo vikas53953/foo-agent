@@ -1,0 +1,10 @@
+{"t":1794520857725,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794520865481,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2895}
+{"t":1794520883596,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":725}
+{"t":1794520923482,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794520927976,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1794520934305,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794520941272,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1794520947686,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794520951572,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1794520957998,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
