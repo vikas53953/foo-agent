@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n7:11 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't change the app's look from here, so dark mode has to be switched on in the app's own settings. I'll keep going with the laptops.\n\n7:12 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "stopped",
+    "text": "I’m stuck on the Looking on the web job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\n7:12 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:12 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:13 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Pay my electricity bill now\n7:13 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "offered",
+    "text": "Connect Gmail\n\nI need to read your email for “Pay electricity bill”. Or tap Not now and I’ll try without it.\n\nGmail isn’t available in this build.\n\nConnect\nNot now\n7:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Order me a pizza from Dominos\n7:13 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "pending",
+    "text": "My plan · Paying Domino's\n1\nSign in to Domino's\n2\nLook for Domino's pizzas and offers near you\n3\nWait for you to pick one\n4\nFill in your details on Domino's\n5\nShow you before placing the order\n…and 2 more · Show\nAbout 5 minutes\nGo\nChange plan\n7:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Read my latest Gmail\n7:13 PM"
+  },
+  {
+    "kind": "card-connect",
+    "state": "skipped",
+    "text": "Connect Gmail\n\nNot connected. You can do this later in Settings → Connections.\n\n7:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 PM"
+  }
+]

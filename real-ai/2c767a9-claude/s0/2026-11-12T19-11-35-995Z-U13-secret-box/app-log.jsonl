@@ -1,0 +1,7 @@
+{"t":1794510696945,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794510698511,"lvl":"info","mod":"engine","evt":"job.resumed","kind":"app_quit"}
+{"t":1794510698528,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794510702317,"lvl":"info","mod":"engine","evt":"browser.ensure","kind":"msedge"}
+{"t":1794510702798,"lvl":"info","mod":"composer","evt":"paste catcher shown","ids":{"chatId":"c_01a1d11e-83f4-77f4-a55d-e20fd5ca636a"},"kind":"key, choice: move"}
+{"t":1794510704201,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794510709954,"lvl":"info","mod":"engine","evt":"job.waiting","kind":"app_quit"}

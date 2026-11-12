@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "hi\n6:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Hi! Good to see you. What shall we sort out today?\n\n6:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what can you do?\n6:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I'm foo, your personal helper: I can look things up, check your email and calendar, keep an eye on things for you and more, and the app shows what works on this PC.\n\n6:57 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Explain how a VPN works in simple words\n6:57 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "A VPN is a private tunnel between your device and the internet. Everything you send goes through it, scrambled, to a VPN company's computer, which then talks to websites for you.\n\nThink of it like posting a letter inside a locked box. Your internet provider or the café Wi-Fi can see that you're sending a box, but not what's inside or where it's finally going. Websites see the VPN company's address instead of yours, so your location looks different too.\n\nIt helps on public Wi-Fi and hides your browsing from your internet provider. It doesn't make you anonymous: the VPN company can still see your activity, and sites you sign into still know who you are.\n\n6:57 PM"
+  }
+]

@@ -1,0 +1,12 @@
+{"t":"2026-11-12T19:02:06.976Z","journey":"J05-web","title":"First real task with the internet (news + sources)","spec":"07-1 J5; R1 sources/citations","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T19:02:12.569Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:02:20.652Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8079}
+{"t":"2026-11-12T19:02:20.814Z","i":0,"do":"send","typed":"What's the latest news about ISRO this week? Give me sources.","sentAt":1794510140751,"sent":true,"before":0,"ok":true,"ms":162}
+{"t":"2026-11-12T19:02:35.523Z","shot":"01-news.png"}
+{"t":"2026-11-12T19:02:35.523Z","i":1,"do":"waitReply","expect":"one reply, no duplicate bubbles, sensible tone and casing","timeline":[{"at":71,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6679,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":8145,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking for ISRO news from Mon 9 Nov…\nlive checklist\nLooking for ISRO news from Mon 9 Nov to Thu 12 Nov\nCheck isro.gov.in and major news sites\nCompare reports across sources\nWrite it\nWatch live\nStop\nunder 1 min\n7:02 PM","kit":[],"ms":14620,"shot":"01-news.png"}
+{"t":"2026-11-12T19:02:35.526Z","i":2,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T19:02:35.528Z","i":3,"do":"check","found":0,"ok":false,"ms":2}
+{"t":"2026-11-12T19:02:35.532Z","i":4,"do":"expectText","text":"Stopped. Nothing was booked, paid or sent.\n\n7:02 PM","ok":true,"ms":4}
+{"t":"2026-11-12T19:02:35.554Z","i":5,"do":"dump","ok":true,"ms":22}
+{"t":"2026-11-12T19:02:35.979Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-11-12T19:02:35.995Z","step":"aiTurns","turns":2}
