@@ -1,0 +1,18 @@
+{"t":"2026-11-12T18:45:29.955Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:45:35.487Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:45:43.570Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8079}
+{"t":"2026-11-12T18:45:43.703Z","i":0,"do":"send","typed":"Find the opening hours of the National Museum in Delhi and the ticket price","sentAt":1794509143669,"sent":true,"before":0,"ok":true,"ms":132}
+{"t":"2026-11-12T18:45:57.457Z","shot":"01-museum-start.png"}
+{"t":"2026-11-12T18:45:57.457Z","i":1,"do":"waitReply","timeline":[{"at":47,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":552,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6141,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":7624,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Looking on the web\nlive checklist\nLooking on the web\nLook for opening hours and ticket price of the\nCompare official site against a second source\nWatch live\nStop\nunder 1 min\n6:45 PM","kit":[],"ms":13686,"shot":"01-museum-start.png"}
+{"t":"2026-11-12T18:45:57.459Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T18:46:05.460Z","i":3,"do":"wait","ok":true,"ms":8000}
+{"t":"2026-11-12T18:46:10.716Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:46:10.716Z","i":4,"do":"relaunch","ok":true,"ms":5256}
+{"t":"2026-11-12T18:46:18.782Z","shot":"02-after-reopen.png"}
+{"t":"2026-11-12T18:46:18.783Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8001,"shot":"02-after-reopen.png"}
+{"t":"2026-11-12T18:48:48.845Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-11-12T18:48:48.845Z","i":6,"do":"wait","ok":true,"ms":150002,"shot":"03-after-reopen-later.png"}
+{"t":"2026-11-12T18:48:48.859Z","i":7,"do":"dump","ok":true,"ms":14}
+{"t":"2026-11-12T18:48:48.983Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-11-12T18:48:48.997Z","step":"aiTurns","turns":3}
+{"t":"2026-11-12T18:48:49.000Z","step":"jobTrail","steps":3,"calls":1}
