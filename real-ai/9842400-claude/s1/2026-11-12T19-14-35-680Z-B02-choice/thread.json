@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n7:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n7:13 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:13 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n7:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n7:14 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n7:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n7:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mostly use the shoes for? → Trail or off-road\n7:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n7:14 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Trail shoes under ₹5,000, noted. What is your shoe size?\n1\nUK 7\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or more\nSomething else…\nSkip\n7:14 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:14 PM"
+  }
+]

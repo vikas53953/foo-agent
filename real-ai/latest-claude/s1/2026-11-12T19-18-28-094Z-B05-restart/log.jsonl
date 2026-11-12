@@ -1,0 +1,17 @@
+{"t":"2026-11-12T19:18:28.095Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T19:18:33.627Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:18:33.758Z","i":0,"do":"send","typed":"Find the opening hours of the National Museum in Delhi and the ticket price","sentAt":1794511113724,"sent":true,"before":0,"ok":true,"ms":128}
+{"t":"2026-11-12T19:18:49.109Z","shot":"01-museum-start.png"}
+{"t":"2026-11-12T19:18:49.109Z","i":1,"do":"waitReply","timeline":[{"at":40,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":3570,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7642,"badges":["working"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":9139,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Checking nationalmuseumindia.gov.in\nlive checklist\nChecking nationalmuseumindia.gov.in\nN\nLook for opening hours and ticket price\nWatch live\nStop\nunder 1 min\n7:18 PM","kit":[],"ms":15273,"shot":"01-museum-start.png"}
+{"t":"2026-11-12T19:18:49.112Z","i":2,"do":"clickIf","found":0,"ok":true,"ms":2}
+{"t":"2026-11-12T19:18:57.113Z","i":3,"do":"wait","ok":true,"ms":8001}
+{"t":"2026-11-12T19:19:02.435Z","step":"launch","ok":true}
+{"t":"2026-11-12T19:19:02.435Z","i":4,"do":"relaunch","ok":true,"ms":5321}
+{"t":"2026-11-12T19:19:10.497Z","shot":"02-after-reopen.png"}
+{"t":"2026-11-12T19:19:10.497Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8001,"shot":"02-after-reopen.png"}
+{"t":"2026-11-12T19:21:40.560Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-11-12T19:21:40.560Z","i":6,"do":"wait","ok":true,"ms":150002,"shot":"03-after-reopen-later.png"}
+{"t":"2026-11-12T19:21:40.574Z","i":7,"do":"dump","ok":true,"ms":14}
+{"t":"2026-11-12T19:21:40.797Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-11-12T19:21:40.810Z","step":"aiTurns","turns":5}
+{"t":"2026-11-12T19:21:40.813Z","step":"jobTrail","steps":2,"calls":2}
