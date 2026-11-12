@@ -1,0 +1,19 @@
+{"t":"2026-11-12T18:16:54.694Z","journey":"B14-restart-mid-reply","title":"Close foo within 5 s of sending, reopen: the message still gets a real answer","spec":"PR #91 crash recovery (CR-0029), AT-118","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:17:00.295Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:17:08.394Z","step":"cleanup","stoppedStuckJob":true,"stuckLeft":1,"ms":8095}
+{"t":"2026-11-12T18:17:08.513Z","i":0,"do":"send","typed":"What is a good name for a pet tortoise?","sentAt":1794507428480,"sent":true,"before":0,"ok":true,"ms":119}
+{"t":"2026-11-12T18:17:11.514Z","i":1,"do":"wait","ok":true,"ms":3000}
+{"t":"2026-11-12T18:17:16.830Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:17:16.830Z","i":2,"do":"relaunch","ok":true,"ms":5316}
+{"t":"2026-11-12T18:17:22.954Z","shot":"01-after-reopen.png"}
+{"t":"2026-11-12T18:17:22.955Z","i":3,"do":"waitReply","expect":"a real answer to the tortoise question, no 👀 left forever; a half-written reply shows as an empty bubble with Try again","timeline":[{"at":8357,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":511,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"That reply got cut off.\nTry again\n6:17 PM","kit":[],"ms":6054,"shot":"01-after-reopen.png"}
+{"t":"2026-11-12T18:17:22.957Z","i":4,"do":"eval","value":{"lastMine":"What is a good name for a pet tortoise?\n6:17 PM","eyes":false},"ok":true,"ms":2}
+{"t":"2026-11-12T18:17:23.101Z","i":5,"do":"send","typed":"Which news story is biggest in India today? One line.","sentAt":1794507443046,"sent":true,"before":0,"ok":true,"ms":144}
+{"t":"2026-11-12T18:17:25.110Z","i":6,"do":"wait","ok":true,"ms":2008}
+{"t":"2026-11-12T18:17:30.408Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:17:30.408Z","i":7,"do":"relaunch","ok":true,"ms":5298}
+{"t":"2026-11-12T18:17:39.577Z","shot":"02-news-after-reopen.png"}
+{"t":"2026-11-12T18:17:39.577Z","i":8,"do":"waitReply","expect":"the news question is answered after reopening","timeline":[{"at":7368,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":8892,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":10415,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":1530,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Go with Turbo, because the irony never gets old. Other good ones: Sheldon, Pickle, Gulab Jamun, or Chai, since he'll take his time.\n\nI can't see today's headlines from here, so I won't guess the biggest story in India. Want me to look it up?\n\n6:17 PM","kit":[],"ms":9096,"shot":"02-news-after-reopen.png"}
+{"t":"2026-11-12T18:17:39.587Z","i":9,"do":"dump","ok":true,"ms":9}
+{"t":"2026-11-12T18:17:39.725Z","step":"appLog","lines":8,"dropped":0}
+{"t":"2026-11-12T18:17:39.737Z","step":"aiTurns","turns":1}

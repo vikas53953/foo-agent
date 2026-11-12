@@ -1,0 +1,7 @@
+{"t":1794508150296,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1794508157830,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":2694}
+{"t":1794508175993,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:ok","ms":596}
+{"t":1794508223133,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1794508225589,"lvl":"info","mod":"engine","evt":"chat.say_leak","kind":"PROTOCOL_SAY_LEAK"}
+{"t":1794508225590,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1794508226673,"lvl":"info","mod":"main","evt":"APP_STARTED"}

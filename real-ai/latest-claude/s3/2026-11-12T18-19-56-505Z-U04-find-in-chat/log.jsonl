@@ -1,0 +1,21 @@
+{"t":"2026-11-12T18:19:56.505Z","journey":"U04-find-in-chat","title":"Find in chat: Ctrl+F, count, next, previous, close","spec":"06 §9 find in chat, 10-2 §C.5 Search palette + find in chat","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:20:02.057Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:20:03.114Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1053}
+{"t":"2026-11-12T18:20:03.255Z","i":1,"do":"send","typed":"List three Indian rivers","sentAt":1794507603212,"sent":true,"before":0,"ok":true,"ms":140}
+{"t":"2026-11-12T18:20:15.969Z","shot":"01-rivers.png"}
+{"t":"2026-11-12T18:20:15.969Z","i":2,"do":"waitReply","expect":"a short list","timeline":[{"at":49,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":3582,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5602,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":6635,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":5558,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"The Ganga, the Yamuna and the Godavari are three big Indian rivers. The Krishna and the Narmada are good ones too.\n\n6:20 PM","kit":[],"ms":12641,"shot":"01-rivers.png"}
+{"t":"2026-11-12T18:20:16.063Z","shot":"02-find-open.png"}
+{"t":"2026-11-12T18:20:16.063Z","i":3,"do":"key","expect":"find bar in the chat header with a field and count","ok":true,"ms":11,"shot":"02-find-open.png"}
+{"t":"2026-11-12T18:20:16.075Z","i":4,"do":"fill","soft":true,"ok":true,"ms":12}
+{"t":"2026-11-12T18:20:16.937Z","shot":"03-find-results.png"}
+{"t":"2026-11-12T18:20:16.937Z","i":5,"do":"wait","expect":"matches highlighted; count \"1 of n\"","ok":true,"ms":800,"shot":"03-find-results.png"}
+{"t":"2026-11-12T18:20:17.010Z","i":6,"do":"click","soft":true,"ok":true,"ms":72}
+{"t":"2026-11-12T18:20:17.088Z","i":7,"do":"click","soft":true,"ok":true,"ms":77}
+{"t":"2026-11-12T18:20:17.168Z","i":8,"do":"click","soft":true,"ok":true,"ms":79}
+{"t":"2026-11-12T18:20:17.176Z","i":9,"do":"key","ok":true,"ms":8}
+{"t":"2026-11-12T18:20:18.031Z","shot":"04-ctrl-k.png"}
+{"t":"2026-11-12T18:20:18.031Z","i":10,"do":"wait","expect":"Ctrl+K search overlay (J22) if built; else nothing happens","ok":true,"ms":800,"shot":"04-ctrl-k.png"}
+{"t":"2026-11-12T18:20:18.034Z","i":11,"do":"key","ok":true,"ms":3}
+{"t":"2026-11-12T18:20:18.044Z","i":12,"do":"dump","ok":true,"ms":10}
+{"t":"2026-11-12T18:20:18.172Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-11-12T18:20:18.184Z","step":"aiTurns","turns":2}

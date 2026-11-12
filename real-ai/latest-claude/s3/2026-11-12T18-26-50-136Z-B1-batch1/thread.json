@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Aap kaise ho? Kya main aapki kisi cheez mein madad kar sakta hoon?\n\n6:27 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "mujhe ek chhota sa joke sunao\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Ek aadmi ne apne dost se kaha, \"Yaar, main apni biwi se bahut pyaar karta hoon, lekin woh mujhe samajhti nahi.\"\n\nDost bola, \"Toh usse Hindi mein bolo!\"\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book a table for 2 tonight at a cafe in Delhi\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a cab to the airport at 6 am tomorrow\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main abhi tasks nahi kar sakta, jaise cab book karna ya kuch bhejna. Filhaal main sirf baatein aur sawaalon ke jawaab de sakta hoon.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "did you book the cab?\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, maine cab book nahi ki. Main abhi tasks nahi kar sakta, jaise booking ya payment. Filhaal main sirf baatein aur sawaalon ke jawaab de sakta hoon.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "remember that I am vegetarian\n6:28 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t remember things for you yet, so tell me again when it matters.\n\n6:28 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Switch to dark mode\n6:29 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Main bilkul theek hoon, shukriya! Dark mode on kar deta hoon.\n\n6:29 PM"
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "journey": "U23-ai-page-chips",
+  "title": "AI page, action chips, reply chips",
+  "videos": [],
+  "steps": 9,
+  "failed": 1,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-26-19-727Z-U23-ai-page-chips",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1038
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Make me a simple page that tracks my daily water intake with a goal of 8 glasses",
+      "sentAt": 1794507986415,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 120
+    },
+    {
+      "i": 2,
+      "do": "waitReply",
+      "expect": "an AI page / kit card opens with the tracker",
+      "timeline": [
+        {
+          "at": 37,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3084,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7632,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 16274,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 7600,
+      "newBubbles": 1,
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "Here's your water tracker. Tap a glass or use + and − to count, and it fills up toward 8 glasses.\n\nKeep\n\nIt starts fresh each day. If your screen doesn't save between visits, the count resets when you close it.\n\n6:26 PM",
+      "kit": [
+        "kit-keep"
+      ],
+      "endState": false,
+      "ms": 22336,
+      "shot": "01-ai-page.png"
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "note": "AI page card",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "check",
+      "note": "action chips under the reply",
+      "soft": true,
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 5,
+      "do": "click",
+      "soft": true,
+      "ok": true,
+      "ms": 86
+    },
+    {
+      "i": 6,
+      "do": "wait",
+      "expect": "reply chip fills the composer",
+      "ok": true,
+      "ms": 801,
+      "shot": "02-chip-fills.png"
+    },
+    {
+      "i": 7,
+      "do": "fill",
+      "soft": true,
+      "ok": true,
+      "ms": 16
+    },
+    {
+      "i": 8,
+      "do": "dump",
+      "ok": true,
+      "ms": 14
+    }
+  ]
+}
