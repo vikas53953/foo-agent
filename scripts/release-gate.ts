@@ -48,6 +48,7 @@ interface StepResult {
   forbidden?: { badge: string; at: number };
   neverSeenMs?: number;
   didntGetThat?: boolean;
+  replyFaults?: string[];
   stillWorking?: boolean;
   timeline?: { at: number; badges: string[]; reactions: string[]; thinking: boolean; streaming: number }[];
   watchShots?: { at: number; mark: number; shot: string; badges: string[]; thinking: boolean; streaming?: number }[];
@@ -132,6 +133,7 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
           measured = `${forbidden.badge === 'seen' ? '👀' : forbidden.badge} showed on the user's message ${sec(forbidden.at)} after sending`;
         else if (r.blocked) measured = `could not run: ${r.blocked}`;
         else if (r.didntGetThat) measured = 'foo answered "I didn\'t get that" to a clear message';
+        else if (r.replyFaults?.length) measured = `foo's reply was wrong: ${r.replyFaults.join('; ')}`;
         else if (r.stillWorking) measured = 'foo was still writing when the step gave up';
         else if (r.do === 'sweep')
           measured = 'a control did nothing visible, could not be clicked, or broke the screen (see the sweep table)';

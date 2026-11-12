@@ -15,7 +15,8 @@
       "forbidBadge": "seen",
       "shot": "hi",
       "expect": "while waiting: the Thinking row (foo's small face) and no 👀 on my message; after: one short warm reply",
-      "ref": "UX-08-02"
+      "ref": "UX-08-02",
+      "maxBubbles": 1
     },
     {
       "do": "send",
@@ -27,7 +28,8 @@
       "forbidBadge": "seen",
       "shot": "hinglish",
       "expect": "a short, kind reply in Hinglish (Roman script), not in English or Devanagari",
-      "ref": "UX-08-04"
+      "ref": "UX-08-04",
+      "script": "latin"
     },
     {
       "do": "send",
@@ -38,7 +40,9 @@
       "timeoutMs": 120000,
       "forbidBadge": "seen",
       "shot": "hindi",
-      "expect": "Devanagari shows properly (no boxes); the answer is in Hindi and honest that it cannot check live weather"
+      "expect": "Devanagari shows properly (no boxes); the answer is in Hindi and honest that it cannot check live weather",
+      "script": "deva",
+      "replyRe": "live|लाइव|अंदाज़|अंदाज|अनुमान|andaaz|check|चेक|नहीं देख|नहीं पता|real.?time|रियल"
     },
     {
       "do": "send",
@@ -50,7 +54,8 @@
       "forbidBadge": "seen",
       "shot": "punjabi",
       "expect": "Gurmukhi shows properly; the joke is in Punjabi",
-      "ref": "UX-08-05"
+      "ref": "UX-08-05",
+      "script": "guru"
     },
     {
       "do": "send",
@@ -61,7 +66,10 @@
       "timeoutMs": 120000,
       "forbidBadge": "seen",
       "shot": "typos",
-      "expect": "understands the typos: Canberra, in one short bubble, no lecture about spelling"
+      "expect": "understands the typos: Canberra, in one short bubble, no lecture about spelling",
+      "replyRe": "canberra",
+      "replyNot": "spell|typo",
+      "maxBubbles": 1
     },
     {
       "do": "send",
@@ -72,7 +80,8 @@
       "timeoutMs": 180000,
       "forbidBadge": "seen",
       "shot": "long",
-      "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words"
+      "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words",
+      "replyRe": "biryani|बिरयानी"
     },
     {
       "do": "sweep",
@@ -103,8 +112,11 @@
       "text": "line one\n\nline three after a blank line"
     },
     {
-      "do": "wait",
-      "ms": 15000,
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "forbidBadge": "seen",
+      "notEcho": true,
+      "maxBubbles": 1,
       "shot": "paste-blank-line",
       "expect": "the pasted text with a blank line went as ONE message, exactly as pasted, and foo answered it once"
     },
@@ -113,8 +125,12 @@
       "text": "thanks 🙏"
     },
     {
-      "do": "wait",
-      "ms": 8000,
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "allowReaction": true,
+      "maxBubbles": 1,
+      "maxChars": 60,
+      "replyNot": "let me know|anything else",
       "shot": "thanks",
       "expect": "a small 👍 or ❤️ reaction on my thanks, or one short line; no long You're welcome speech",
       "ref": "UX-08-01"
@@ -129,7 +145,8 @@
       "forbidBadge": "seen",
       "allowDidntGet": true,
       "shot": "gibberish",
-      "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash"
+      "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash",
+      "maxBubbles": 1
     },
     {
       "do": "check",
@@ -155,7 +172,10 @@
       "forbidBadge": "seen",
       "shot": "cab-honesty",
       "feature": "refusals",
-      "expect": "Vikas 26 Oct: honest that foo cannot book cabs or do tasks yet and booked nothing; never \"I have no record\", never a fake booking"
+      "expect": "Vikas 26 Oct: honest that foo cannot book cabs or do tasks yet and booked nothing; never \"I have no record\", never a fake booking",
+      "script": "latin",
+      "replyRe": "(can.?t|cannot|not able to|unable to|don.?t have a way|not yet|haven.?t|nahi kar sakt[aie]|nahi kar paa?[uo]ng[aie]|nahi ki|nahi kiya|nahi hai)",
+      "replyNot": "no record|i have no|memory|remember"
     },
     {
       "do": "dump",
