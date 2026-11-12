@@ -1,0 +1,157 @@
+{
+  "journey": "J07-chat",
+  "title": "Casual chat",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-13-04-683Z-J07-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1794507190249,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 107
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 55,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3096,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3602,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 3061,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! Ask me anything, or tell me what you need a hand with. 🌿\n\n6:13 PM",
+      "kit": [],
+      "ms": 9675,
+      "shot": "01-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "what can you do?",
+      "sentAt": 1794507200091,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 85
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 30,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2052,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 3062,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2037,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "I'm foo, your personal helper: I can answer questions, write things out like plans, lists and comparisons, and change how I look or work for you.\n\n6:13 PM",
+      "kit": [],
+      "ms": 9149,
+      "shot": "02-what-can-you-do.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "Explain how a VPN works in simple words",
+      "sentAt": 1794507209394,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 92
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 28,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 2056,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 5088,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 2041,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "A VPN is a private tunnel between your phone or PC and the internet, so nobody in between can see what you are doing.\n\nNormally, your connection goes straight from you to a website, and your internet company, or the owner of the café Wi-Fi, can see where it is going. With a VPN, your traffic is locked (encrypted) and sent first to the VPN company's computer. That computer then talks to the website for you.\n\nTwo things follow from this:\n\nPrivacy on public Wi-Fi: people on the same network see only scrambled data.\nHidden location: the website sees the VPN computer's address, not yours, so you can look like you are in another city or country.\n\nA VPN does not make you anonymous. The VPN company can still see your activity, so pick one you trust.\n\n6:13 PM",
+      "kit": [],
+      "ms": 11173,
+      "shot": "03-vpn.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 9
+    }
+  ]
+}
