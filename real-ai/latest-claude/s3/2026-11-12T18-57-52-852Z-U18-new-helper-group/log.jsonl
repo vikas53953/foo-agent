@@ -1,0 +1,17 @@
+{"t":"2026-11-12T18:57:52.852Z","journey":"U18-new-helper-group","title":"New helper and New group dialogs, helper chat, helper profile","spec":"06 C-24/C-25/C-26 dialogs, 10-2 §C.4 New helper / New group dialogs","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:57:58.430Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:57:59.485Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1051}
+{"t":"2026-11-12T18:57:59.573Z","shot":"01-new-helper.png"}
+{"t":"2026-11-12T18:57:59.573Z","i":1,"do":"key","expect":"New helper dialog: templates, name field","ref":"UX-10-01","ok":true,"ms":8,"shot":"01-new-helper.png"}
+{"t":"2026-11-12T18:57:59.578Z","i":2,"do":"key","ok":true,"ms":5}
+{"t":"2026-11-12T18:57:59.684Z","i":3,"do":"click","soft":true,"ok":true,"ms":106}
+{"t":"2026-11-12T18:58:00.554Z","shot":"02-new-helper-2.png"}
+{"t":"2026-11-12T18:58:00.554Z","i":4,"do":"wait","expect":"same dialog from the button","ok":true,"ms":801,"shot":"02-new-helper-2.png"}
+{"t":"2026-11-12T18:58:00.559Z","i":5,"do":"key","ok":true,"ms":4}
+{"t":"2026-11-12T18:58:00.632Z","shot":"03-new-group.png"}
+{"t":"2026-11-12T18:58:00.633Z","i":6,"do":"key","expect":"New group dialog: pick 2–6 members","ref":"UX-10-04","ok":true,"ms":7,"shot":"03-new-group.png"}
+{"t":"2026-11-12T18:58:00.637Z","i":7,"do":"key","ok":true,"ms":4}
+{"t":"2026-11-12T18:58:00.649Z","i":8,"do":"dump","ok":true,"ms":11}
+{"t":"2026-11-12T18:58:00.776Z","step":"appLog","lines":2,"dropped":0}
+{"t":"2026-11-12T18:58:00.788Z","step":"aiTurns","turns":0}
+{"t":"2026-11-12T18:58:00.790Z","step":"jobTrail","steps":0,"calls":0}

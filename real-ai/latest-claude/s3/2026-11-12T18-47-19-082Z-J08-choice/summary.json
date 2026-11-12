@@ -1,0 +1,84 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "videos": [],
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T18-47-19-082Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Help me pick a laptop under 80,000 rupees for programming",
+      "sentAt": 1794509244725,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 128
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 46,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3596,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 10191,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 13741,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 10149,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. RAM matters more than a fancy graphics card.\n\nRAM: 16 GB minimum, and pick one that can be upgraded to 32 GB. 8 GB gets tight with a browser, an editor and Docker open together.\nStorage: 512 GB SSD or more.\nScreen: 14 inch, at least 1920×1200, and a sharp panel. You'll read a lot of text on it.\nKeyboard and battery: Try the keys in a shop if you can. Look for 8+ hours of real battery.\nSkip: Gaming laptops at this price. They're heavy and the battery is poor, and you don't need the graphics card for coding.\n\nA MacBook Air with an M-series chip sometimes dips close to this budget in sales, so it's worth checking if you like Apple. Prices change often, so check today's price before buying.\n\nDo you want Windows, Mac or Linux? That narrows it down fastest.\n\n6:47 PM",
+      "kit": [],
+      "ms": 19820,
+      "shot": "01-laptop.png"
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 1
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 13
+    }
+  ]
+}

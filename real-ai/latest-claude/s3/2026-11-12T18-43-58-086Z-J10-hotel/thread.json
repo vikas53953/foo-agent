@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Galaxy S25 is the best value of the three: the fastest chip, a 120Hz screen and three rear cameras for about the same money. The prices are launch prices in India for the base AI, from memory, so please check today's street price before buying. If you live in Apple's world, the iPhone 16 still makes more sense.\n\niPhone 16\nLaunch price\n₹79,900 (128 GB)\nChip\nApple A18\nScreen\n6.1 inch OLED, 60Hz\nRear cameras\n48 MP main + 12 MP ultrawide\nBattery\nAbout 3,600 mAh\nUpdates\nLong, about 6 to 7 years\nPixel 9\nLaunch price\n₹79,999 (128 GB)\nChip\nGoogle Tensor G4\nScreen\n6.3 inch OLED, 120Hz\nRear cameras\n50 MP main + 48 MP ultrawide\nBattery\nAbout 4,700 mAh\nUpdates\n7 years\nBest pick\nGalaxy S25\nLaunch price\n₹80,999 (128 GB)\nChip\nSnapdragon 8 Elite\nScreen\n6.2 inch OLED, 120Hz\nRear cameras\n50 MP main + 12 MP ultrawide + 10 MP telephoto\nBattery\nAbout 4,000 mAh\nUpdates\n7 years\n\nSimilar price, but the fastest chip, a 120Hz screen and a telephoto camera that the others lack.\n\nKeep\n\nWant me to look up current prices for these three?\n\n6:42 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Set a 2 minute timer for my tea\n6:43 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Your 2 minute tea timer is below. Start it when the bag goes in, and don't squeeze the bag. 🍵\n\nSteep your tea\n2:00 left\nStart timer\nKeep\n6:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me a short form to plan a birthday party: date, guests, budget\n6:43 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill it in and I'll take it from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:43 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your expense tracker. Add an expense, pick a month, and it totals each category as you go. Your entries stay in this page only if your device allows saving, so don't count on them lasting.\n\nKeep\n6:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n6:44 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:44 PM\n6:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:44 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nLook for Goa hotels, 2 nights, Sat 21 Nov to Mon\nCompare price, rating and area\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n2 min\n6:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:44 PM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "waiting",
+    "text": "This page wants to check you’re a person. You do this bit, then hand it back.\nwww.booking.com\nTake over\nSkip\n6:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:45 PM"
+  }
+]

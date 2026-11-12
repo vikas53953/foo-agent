@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's a short form for your party plan. Fill it in and I'll take it from there.\n\nParty date\nNumber of guests\nBudget (₹)\nSend to foo\nKeep\n6:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make me an interactive page to track my monthly expenses\n6:43 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here's your expense tracker. Add an expense, pick a month, and it totals each category as you go. Your entries stay in this page only if your device allows saving, so don't count on them lasting.\n\nKeep\n6:43 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find me a hotel in Goa for 2 nights next weekend under 6000 rupees a night\n6:44 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 6:44 PM\n6:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:44 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nLook for Goa hotels, 2 nights, Sat 21 Nov to Mon\nCompare price, rating and area\nKeep 3 hotels that fit best rated under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n3 min\n6:44 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:44 PM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "waiting",
+    "text": "This page wants to check you’re a person. You do this bit, then hand it back.\nwww.booking.com\nTake over\nSkip\n6:45 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n6:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 5/7 or Intel Core i5/Ultra 5 chip. RAM matters more than a fancy graphics card.\n\nRAM: 16 GB minimum, and pick one that can be upgraded to 32 GB. 8 GB gets tight with a browser, an editor and Docker open together.\nStorage: 512 GB SSD or more.\nScreen: 14 inch, at least 1920×1200, and a sharp panel. You'll read a lot of text on it.\nKeyboard and battery: Try the keys in a shop if you can. Look for 8+ hours of real battery.\nSkip: Gaming laptops at this price. They're heavy and the battery is poor, and you don't need the graphics card for coding.\n\nA MacBook Air with an M-series chip sometimes dips close to this budget in sales, so it's worth checking if you like Apple. Prices change often, so check today's price before buying.\n\nDo you want Windows, Mac or Linux? That narrows it down fastest.\n\n6:47 PM"
+  }
+]
