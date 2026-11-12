@@ -1,0 +1,10 @@
+{"kind":"step","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","idx":0,"phrase_key":"check_sites","state":"skipped","attempts":0,"route":"browser","started_at":1794510942209,"finished_at":null}
+{"kind":"step","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","idx":1,"phrase_key":"look_for","state":"skipped","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","idx":2,"phrase_key":"shortlist","state":"skipped","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"step","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","idx":3,"phrase_key":"compare","state":"skipped","attempts":0,"route":"browser","started_at":null,"finished_at":null}
+{"kind":"call","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","step_idx":0,"tool":"web.search","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794510947465,"finished_at":1794510949668}
+{"kind":"call","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","step_idx":0,"tool":"browser.open","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794510954062,"finished_at":1794510956428}
+{"kind":"call","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","step_idx":0,"tool":"browser.snapshot","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794510959853,"finished_at":1794510959983}
+{"kind":"call","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","step_idx":0,"tool":"browser.open","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794510965756,"finished_at":1794510966403}
+{"kind":"call","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","step_idx":0,"tool":"browser.snapshot","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794510970574,"finished_at":1794510971158}
+{"kind":"call","job_id":"j_01a1d12f-d6b8-79b5-b4a8-2333540d602a","step_idx":0,"tool":"browser.open","action_class":"read","gate":"auto","outcome":"ok","error_kind":null,"started_at":1794510977128,"finished_at":1794510979295}

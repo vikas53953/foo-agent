@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them\n7:15 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:15 PM\n7:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:15 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "stopped",
+    "text": "Checking Google Flights, MakeMyTrip,…\nlive checklist\nChecked Google Flights, MakeMyTrip, Skyscanner\nG\nM\nS\nLooked for Delhi to Mumbai flights on Fri 20 Nov\nKept 3 flights that fit lowest fare\nCompared fare, timings, duration and stops\nStopped by you\n7:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Stopped. Nothing was booked, paid or sent.\n\n7:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Open the Indian Railways IRCTC website and check the train timings from New Delhi to Agra tomorrow morning\n7:16 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 7:16 PM\n7:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:16 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "done_unverified",
+    "text": "Done · 3 steps · 0 min\nDetails\n7:16 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "7:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Fastest morning option: Shatabdi Express (12002), leaves New Delhi Fri 13 Nov, 6:00 AM and reaches Agra Cantt Fri 13 Nov, 7:50 AM (1 hr 50 min).\n\nFrom New Delhi (NDLS) to Agra Cantt, Fri 13 Nov:\n\n64074 NDLS-DHO EMU: 4:15 AM to 9:05 AM (4 hr 50 min)\n12138 Punjab Mail: 5:10 AM to 8:10 AM (3 hr)\n12002 Shatabdi Express: 6:00 AM to 7:50 AM (1 hr 50 min)\n11906 HSX AGC Exp: 7:20 AM to 11:00 AM (3 hr 40 min)\n20848 Durg SF Exp: 11:15 AM to 1:55 PM (2 hr 40 min), runs on Fri\n\nFrom Hazrat Nizamuddin (NZM), if that is easier for you:\n\n22470 Vande Bharat Exp: 6:00 AM to 7:40 AM (1 hr 40 min), the quickest of all\n12644 NZM TVC SF Exp: 5:10 AM to 7:20 AM\n12280 Taj Express: 7:05 AM to 9:25 AM\n\nSeat availability and fares were not checked, and nothing was booked.\n\n7:17 PM"
+  }
+]
