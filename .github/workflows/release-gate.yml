@@ -471,3 +471,31 @@ jobs:
           name: foo-windows-app-gated
           path: app/
           retention-days: 30
+
+  alert:
+    # 12 Nov audit (R6 and finding 5, "the machine stops when you step away"): when the gate on main does not release
+    # (a red push run or a red Monday sentinel, e.g. a refused key), open one issue assigned to Vikas, or comment on the
+    # open one, so GitHub emails him. Issues only; no other write.
+    name: Tell Vikas when main is not releasable
+    needs: [drive, review, red-first, mutation, release]
+    if: >-
+      always() && github.ref == 'refs/heads/main' && github.event_name != 'workflow_dispatch' &&
+      github.repository == 'vikas53953/foo-agent' && needs.release.result != 'success' && needs.drive.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update the "release gate is red on main" issue
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RESULTS: 'drive ${{ needs.drive.result }} · review ${{ needs.review.result }} (${{ needs.review.outputs.status }}) · red-first ${{ needs.red-first.result }} · mutation ${{ needs.mutation.result }}'
+        run: |
+          set -euo pipefail
+          title='Release gate is red on main'
+          body=$(printf 'The release gate on main did not pass (%s run, commit %s).\n\n%s\n\nRun: %s\n\nIf every journey failed at its first AI step, the ANTHROPIC_API_KEY secret is the likely cause: Settings → Secrets and variables → Actions.' "$GITHUB_EVENT_NAME" "${GITHUB_SHA::7}" "$RESULTS" "$RUN_URL")
+          n=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')
+          if [[ -n "$n" ]]; then gh issue comment "$n" --body "$body"; else gh issue create --title "$title" --body "$body" --assignee vikas53953; fi
