@@ -1,0 +1,87 @@
+[
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Checking Booking.com, MakeMyTrip,…\nlive checklist\nChecking Booking.com, MakeMyTrip, Goibibo\nB\nM\nG\nLook for Goa hotels, Sat 21 Nov to Mon 23 Nov, 2\nKeep 3 hotels that fit best rating under ₹6,000 a night\nWait for you to pick one\nWatch live\nStop\n9 min\n9:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:55 PM"
+  },
+  {
+    "kind": "card-signin",
+    "state": "waiting",
+    "text": "This page wants to check you’re a person. You do this bit, then hand it back.\nwww.booking.com\nTake over\nSkip\n9:55 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:55 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Help me pick a laptop under 80,000 rupees for programming\n9:58 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 7, Core Ultra 5/7 or Apple M-series chip. That mix is smooth for coding, Docker and a few browser tabs, and fits under ₹80,000 if you watch for sales.\n\nWindows, all-rounder: Lenovo IdeaPad Slim or ASUS Vivobook with a Ryzen 7 or Core Ultra 7. Good value and easy to find with 16 GB.\nSturdy keyboard and long use: a ThinkPad E-series. It's less flashy, but the typing feel is the best of the lot.\nMac: a MacBook Air with an M-series chip. It has great battery life and runs cool. Base versions with 8 GB are tight for heavy work, so go for 16 GB if your budget allows.\n\nSkip 8 GB RAM, hard drives, and gaming laptops unless you also game, because they are heavier and the battery is short. Prices move a lot, so check today's price for any specific one before you buy.\n\nDo you prefer Windows, Mac or Linux?\n\n9:58 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Book me a table for 2 at a vegetarian restaurant in Connaught Place, Delhi this Saturday 8 PM\n9:58 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 9:59 PM\n9:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:59 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Booking table for 2, Sat 14 Nov, 8:00 PM\nlive checklist\nLooking for vegetarian restaurants in Connaught\nKeep 3 restaurants that fit vegetarian, free at 8:00 PM, best rated\nWait for you to pick one\nShow you before the booking for 2, Sat 14 Nov, 8:00 PM\nShow you before doing anything\nBook table for 2, Sat 14 Nov, 8:00 PM\nWatch live\nStop\n5 min\n9:59 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:59 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Booking table for 2, Sat 14 Nov, 8:00 PM job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n1 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n10:01 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yes\n10:03 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "stop\n10:04 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Stop which one?\n1\nChecking Booking.com, MakeMyTrip,…\nBEST FIT\n2\nBooking table for 2, Sat 14 Nov, 8:00 PM\n3\nBoth\nSomething else…\nSkip\n10:04 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:04 PM"
+  }
+]
