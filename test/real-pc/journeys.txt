@@ -56,3 +56,4 @@ QA2-setup-key-name-face-vibe
 QA3-languages-batch1
 QA4-settings-batch1
 QA5-restart-batch1
+B15-refusals-batch1

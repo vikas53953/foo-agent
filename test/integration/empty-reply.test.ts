@@ -87,7 +87,12 @@ describe('AT-440 · an empty intake answer is asked once more, then the user is 
     h.userSays('Which news story is biggest in India today? One line.');
     await h.settle();
     const empties = h.logs.map((l) => l.evt).filter((e) => typeof e === 'string' && e.startsWith('chat.reply_empty'));
-    expect(empties).toEqual(['chat.reply_empty.no_say', 'chat.reply_empty.no_say']);
+    expect(empties).toEqual(['chat.reply_empty.no_say', 'chat.reply_empty.shape', 'chat.reply_empty.no_say', 'chat.reply_empty.shape']);
+    // R1 run 40638245705: the tag order of the empty reply, as an enum.
+    expect(h.logs.filter((l) => l.evt === 'chat.reply_empty.shape').map((l) => l.kind)).toEqual([
+      'say_empty_before_act',
+      'say_empty_before_act',
+    ]);
     expect(JSON.stringify(h.logs)).not.toContain('news story');
     expect(fooTexts(h)).toEqual([t('thread.reply.empty')]);
   });

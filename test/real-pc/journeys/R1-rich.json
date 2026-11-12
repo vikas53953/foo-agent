@@ -1,8 +1,14 @@
 {
   "id": "R1-rich",
-  "title": "Rich replies: table, steps, numbers",
-  "spec": "CR-0022 R1",
+  "title": "Rich replies: table, steps, numbers (batch 1 build: jobs are off)",
+  "spec": "CR-0022 R1; CR-0054 (switched-off features)",
+  "features": "shipped",
   "steps": [
+    {
+      "do": "eval",
+      "js": "(()=>{window.__r1n=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__r1n})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
+    },
     {
       "do": "send",
       "text": "Make a table comparing 3 budget phones under 20000 rupees"
@@ -10,26 +16,24 @@
     {
       "do": "waitReply",
       "timeoutMs": 180000,
-      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "table"
-    },
-    {
-      "do": "clickIf",
-      "tid": "card-plan-go",
-      "note": "press Go on the plan (starts the job; spending still needs Approve, which is never tapped)"
-    },
-    {
-      "do": "wait",
-      "ms": 150000,
-      "shot": "table-after-go"
+      "shot": "table",
+      "expect": "a new, finished answer with a table in chat; never a plan card or a job (jobs are off in batch 1, and a table is words, so it is a chat answer)",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__r1n===undefined||b.length<=window.__r1n||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return !!t&&!!f.querySelector('[data-testid=\"bubble-table\"]')})()"
     },
     {
       "do": "check",
-      "tid": "bubble-table"
+      "tid": "card-plan",
+      "count": 0,
+      "note": "no plan card with jobs off"
     },
     {
       "do": "dump",
       "name": "thread-table"
+    },
+    {
+      "do": "eval",
+      "js": "(()=>{window.__r1n=document.querySelectorAll('[data-testid=\"bubble-foo\"]').length;return window.__r1n})()",
+      "note": "count foo's answers before the ask, so only a new, settled answer counts"
     },
     {
       "do": "send",
@@ -38,8 +42,15 @@
     {
       "do": "waitReply",
       "timeoutMs": 240000,
-      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
-      "shot": "trip"
+      "shot": "trip",
+      "expect": "one reply: a day-by-day plan in chat, or the honest jobs-off line; never a plan card or a job",
+      "expectJs": "(()=>{if(document.querySelector('[data-testid=\"card-plan\"]'))return false;const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')];const f=b.at(-1);if(window.__r1n===undefined||b.length<=window.__r1n||!f||f.dataset.state!=='complete'||f.querySelector('[data-testid=\"bubble-error-retry\"]'))return false;const t=(f.querySelector('[data-copy=\"ai\"]')?.innerText||'').trim();return t.length>40||t.includes('I can’t do tasks for you yet')})()"
+    },
+    {
+      "do": "check",
+      "tid": "card-plan",
+      "count": 0,
+      "note": "no plan card with jobs off"
     },
     {
       "do": "dump",
