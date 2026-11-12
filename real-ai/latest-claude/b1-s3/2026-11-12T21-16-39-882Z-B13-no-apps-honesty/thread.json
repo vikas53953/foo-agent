@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three popular picks under ₹20,000 from what I know. Prices are launch prices and may have changed, so check the current price before you buy.\n\nPhone\tLaunch price\tScreen\tMain camera\tBattery\nRedmi Note 13 5G\t₹17,999\t6.67\" AMOLED, 120Hz\t108MP\t5000mAh\nPoco X6 5G\t₹19,999\t6.67\" AMOLED, 120Hz\t64MP with stabilisation\t5100mAh\nRealme Narzo 70 Pro 5G\t₹19,999\t6.67\" AMOLED, 120Hz\t50MP with stabilisation\t5000mAh\n\nThe Redmi is the cheapest. The Poco is the strongest for games and everyday speed. The Realme is good for photos in low light. Tell me what matters most to you and I'll narrow it down to one.\n\n9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Plan a 3 day trip to Jaipur for my parents\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here is a relaxed 3 day Jaipur plan for your parents, with mornings for the big sights and slow afternoons. Timings and entry rules can change, so confirm them before you go.\n\nDay 1, Amber side: Amber Fort early, before the crowds. Take a jeep up if the climb is tiring. Then a photo stop at Jal Mahal, and an early evening at Nahargarh Fort for sunset and dinner with a view.\nDay 2, old city: City Palace and Jantar Mantar in the morning. Lunch near Johari Bazaar, then a short Hawa Mahal stop. Spend the evening on a gentle walk through the bazaars for jewellery, block prints and juttis.\nDay 3, easy day: Albert Hall Museum, Birla Mandir and Patrika Gate for photos. Keep the afternoon free for rest, shopping or a last meal of dal baati churma.\n\nWinter (Nov to Feb) is the most comfortable time to visit. A car with a driver for all three days saves a lot of walking and waiting. Tell me their travel dates and whether they walk easily, and I'll adjust the pace.\n\n9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "check my email\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n9:16 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "what did I miss on WhatsApp\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "I can't read your WhatsApp yet, so I can't tell you what you missed. For now I can chat, write things out and answer questions.\n\n9:17 PM"
+  }
+]

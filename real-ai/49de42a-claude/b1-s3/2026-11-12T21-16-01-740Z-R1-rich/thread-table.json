@@ -1,0 +1,52 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n9:15 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "9:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n9:15 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:15 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Make a table comparing 3 budget phones under 20000 rupees\n9:16 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are three popular picks under ₹20,000 from what I know. Prices are launch prices and may have changed, so check the current price before you buy.\n\nPhone\tLaunch price\tScreen\tMain camera\tBattery\nRedmi Note 13 5G\t₹17,999\t6.67\" AMOLED, 120Hz\t108MP\t5000mAh\nPoco X6 5G\t₹19,999\t6.67\" AMOLED, 120Hz\t64MP with stabilisation\t5100mAh\nRealme Narzo 70 Pro 5G\t₹19,999\t6.67\" AMOLED, 120Hz\t50MP with stabilisation\t5000mAh\n\nThe Redmi is the cheapest. The Poco is the strongest for games and everyday speed. The Realme is good for photos in low light. Tell me what matters most to you and I'll narrow it down to one.\n\n9:16 PM"
+  }
+]
