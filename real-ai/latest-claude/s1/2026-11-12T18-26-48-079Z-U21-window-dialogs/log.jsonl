@@ -1,0 +1,14 @@
+{"t":"2026-11-12T18:26:48.079Z","journey":"U21-window-dialogs","title":"Close to tray dialog, quit with a running job","spec":"09 §9.2 close to tray, 06 dialogs, 10-2 §C.5 Dialogs / §C.6","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:26:53.657Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:26:54.710Z","i":0,"do":"openChat","soft":true,"ok":true,"ms":1050}
+{"t":"2026-11-12T18:26:54.894Z","i":1,"do":"send","typed":"Find the top 3 news headlines in India today","sentAt":1794508014829,"sent":true,"before":0,"ok":true,"ms":184}
+{"t":"2026-11-12T18:26:58.896Z","i":2,"do":"wait","ok":true,"ms":4001}
+{"t":"2026-11-12T18:26:58.901Z","i":3,"do":"key","ok":true,"ms":4}
+{"t":"2026-11-12T18:27:00.473Z","shot":"01-first-close.png"}
+{"t":"2026-11-12T18:27:00.473Z","i":4,"do":"wait","expect":"first-close dialog: foo keeps running in the tray","ref":"UX-23-02","ok":true,"ms":1501,"shot":"01-first-close.png"}
+{"t":"2026-11-12T18:27:06.597Z","shot":"02-news.png"}
+{"t":"2026-11-12T18:27:06.597Z","i":5,"do":"waitReply","expect":"job still finishes after the dialog","timeline":[{"at":5649,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":510,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"Fold this into which job?\n1\nLooking for well-rated Italian…\nBEST FIT\n2\nLooking on the web\nSomething else…\nSkip\n6:26 PM","kit":[],"ms":6064,"shot":"02-news.png"}
+{"t":"2026-11-12T18:27:06.607Z","i":6,"do":"dump","ok":true,"ms":10}
+{"t":"2026-11-12T18:27:06.742Z","step":"appLog","lines":1,"dropped":0}
+{"t":"2026-11-12T18:27:06.754Z","step":"aiTurns","turns":0}
+{"t":"2026-11-12T18:27:06.757Z","step":"jobTrail","steps":0,"calls":0}

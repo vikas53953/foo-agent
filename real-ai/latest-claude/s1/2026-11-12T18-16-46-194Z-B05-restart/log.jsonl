@@ -1,0 +1,17 @@
+{"t":"2026-11-12T18:16:46.195Z","journey":"B05-restart","title":"Quit mid-job and reopen: job resumes","spec":"AT-089, AT-118, J19/J20","exe":"D:\\a\\foo-agent\\foo-agent/dist/win-unpacked/foo.exe"}
+{"t":"2026-11-12T18:16:51.759Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:16:51.895Z","i":0,"do":"send","typed":"Find the opening hours of the National Museum in Delhi and the ticket price","sentAt":1794507411853,"sent":true,"before":0,"ok":true,"ms":133}
+{"t":"2026-11-12T18:17:07.192Z","shot":"01-museum-start.png"}
+{"t":"2026-11-12T18:17:07.192Z","i":1,"do":"waitReply","timeline":[{"at":48,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":4090,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9202,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":11236,"badges":["seen"],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[],"firstReplyMs":9160,"newBubbles":1,"ok":true,"duplicates":0,"lastReply":"My plan · Looking on the web\n1\nLook on the web\n2\nCheck National Museum, New Delhi official site\n3\nCompare hours and ticket prices across sources\nAbout 2.25 minutes\nGo\nChange plan\n6:17 PM","kit":[],"ms":15226,"shot":"01-museum-start.png"}
+{"t":"2026-11-12T18:17:07.233Z","i":2,"do":"clickIf","found":1,"ok":true,"ms":40}
+{"t":"2026-11-12T18:17:15.250Z","i":3,"do":"wait","ok":true,"ms":8016}
+{"t":"2026-11-12T18:17:20.630Z","step":"launch","ok":true}
+{"t":"2026-11-12T18:17:20.630Z","i":4,"do":"relaunch","ok":true,"ms":5380}
+{"t":"2026-11-12T18:17:28.707Z","shot":"02-after-reopen.png"}
+{"t":"2026-11-12T18:17:28.707Z","i":5,"do":"wait","expect":"AT-118: recovery card; job resumes (WAITING → WORKING)","ok":true,"ms":8001,"shot":"02-after-reopen.png"}
+{"t":"2026-11-12T18:19:58.771Z","shot":"03-after-reopen-later.png"}
+{"t":"2026-11-12T18:19:58.771Z","i":6,"do":"wait","ok":true,"ms":150002,"shot":"03-after-reopen-later.png"}
+{"t":"2026-11-12T18:19:58.784Z","i":7,"do":"dump","ok":true,"ms":13}
+{"t":"2026-11-12T18:19:59.139Z","step":"appLog","lines":40,"dropped":0}
+{"t":"2026-11-12T18:19:59.154Z","step":"aiTurns","turns":30}
+{"t":"2026-11-12T18:19:59.157Z","step":"jobTrail","steps":3,"calls":26}
