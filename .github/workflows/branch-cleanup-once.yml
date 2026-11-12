@@ -1,0 +1,48 @@
+# Spec: none (repository housekeeping). 12 Nov 2026 audit, R4: Vikas chose "one-time cleanup job after merge" (decision card,
+# 2026-11-12 17:36Z). Deletes the leftover branches listed in .github/cleanup/branches-2026-11-12.tsv, once, when this file
+# reaches main. Safety: a branch is deleted only if its tip is still the commit in the list AND that commit is a parent of
+# archive/deleted-branches-2026-11-12, so every deleted branch can be brought back with
+#   git push origin <last_commit>:refs/heads/<branch>
+# A branch that moved since the audit is kept and named in the log. Running it again deletes nothing new.
+# Remove this workflow and the list in the next cleanup PR after it has run.
+name: Branch cleanup (once)
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/cleanup/branches-2026-11-12.tsv', '.github/workflows/branch-cleanup-once.yml']
+
+concurrency:
+  group: branch-cleanup-once
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  delete:
+    if: github.repository == 'vikas53953/foo-agent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Delete the listed branches that still match and are archived
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch -q --filter=blob:none origin '+refs/heads/archive/deleted-branches-2026-11-12:refs/remotes/origin/archive'
+          archived=$(git rev-list --parents -n 1 refs/remotes/origin/archive | tr ' ' '\n' | tail -n +2 | sort -u)
+          live=$(git ls-remote --heads origin)
+          deleted=0; kept=0; gone=0
+          while IFS=$'\t' read -r branch sha _; do
+            [[ -z "$branch" || "$branch" == \#* ]] && continue
+            tip=$(printf '%s\n' "$live" | awk -v r="refs/heads/$branch" '$2==r {print $1}')
+            if [[ -z "$tip" ]]; then gone=$((gone+1)); continue; fi
+            if [[ "$tip" != "$sha" ]]; then echo "KEPT (moved since the audit): $branch $tip"; kept=$((kept+1)); continue; fi
+            if ! grep -qx "$sha" <<<"$archived"; then echo "KEPT (not archived): $branch $sha"; kept=$((kept+1)); continue; fi
+            git push -q origin ":refs/heads/$branch"
+            echo "deleted $branch ($sha)"; deleted=$((deleted+1))
+          done < .github/cleanup/branches-2026-11-12.tsv
+          echo "deleted $deleted, kept $kept, already gone $gone" | tee -a "$GITHUB_STEP_SUMMARY"
