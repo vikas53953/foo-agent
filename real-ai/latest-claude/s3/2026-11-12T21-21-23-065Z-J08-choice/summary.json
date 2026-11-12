@@ -1,0 +1,77 @@
+{
+  "journey": "J08-choice",
+  "title": "Question with choice chips",
+  "videos": [],
+  "steps": 5,
+  "failed": 2,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T21-21-23-065Z-J08-choice",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Help me pick a laptop under 80,000 rupees for programming",
+      "sentAt": 1794518497203,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 176
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "one reply, no duplicate bubbles, sensible tone and casing",
+      "timeline": [
+        {
+          "at": 82,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6698,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 9738,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 6627,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "For programming under ₹80,000 aim for 16 GB RAM, a 512 GB SSD and a recent Ryzen 7, Core i5 or Apple M-series chip. Screen and keyboard matter more than a gaming graphics card.\n\nMacBook Air (M-series): Best battery and quiet, and great if you build for iPhone or want Unix tools. Usually near your budget only on sale or in an older AI, and 16 GB RAM is worth holding out for.\nWindows thin-and-light (Ryzen 7 or Core i5/i7): Good all-rounder with more ports and easier upgrades. Look for 16 GB RAM, a 1080p IPS screen and a keyboard you like typing on.\nBudget gaming laptop: Only worth it if you also need a graphics card for games or machine learning. It costs you weight, heat and battery.\n\nPrices change often, so check today's listings before you buy. Do you want Windows, Mac or Linux?\n\n9:21 PM",
+      "kit": [],
+      "ms": 15719,
+      "shot": "01-laptop.png"
+    },
+    {
+      "i": 2,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 3,
+      "do": "check",
+      "found": 0,
+      "ok": false,
+      "ms": 2
+    },
+    {
+      "i": 4,
+      "do": "dump",
+      "ok": true,
+      "ms": 12
+    }
+  ]
+}
