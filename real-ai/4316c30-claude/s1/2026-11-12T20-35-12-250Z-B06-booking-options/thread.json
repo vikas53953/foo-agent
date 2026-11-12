@@ -1,0 +1,107 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n8:33 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:33 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n8:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:34 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n8:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:34 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n8:34 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "I want to buy running shoes under 5000 rupees. Ask me what you need to know first.\n8:34 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "What will you mostly use the shoes for? → Gym and treadmill\n8:34 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:34 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "2\n8:35 PM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "asking",
+    "text": "Gym and treadmill, got it. What's your shoe size?\n1\nUK 7\nBEST FIT\n2\nUK 8\n3\nUK 9\n4\nUK 10 or more\nSomething else…\nSkip\n8:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:35 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Are there tables at a good Italian place in Bandra, Mumbai this Saturday at 8pm for 2?\n8:35 PM"
+  },
+  {
+    "kind": "card-plan",
+    "state": "go",
+    "text": "Started · 8:35 PM\n8:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:35 PM"
+  },
+  {
+    "kind": "card-checklist",
+    "state": "live",
+    "text": "Looking for good Italian restaurants…\nlive checklist\nLooked for good Italian restaurants in Bandra\nChecking Dineout, EazyDiner, Zomato\nD\nE\nZ\nKeep 3 Italian places with a free table that fit Sat 14 Nov, 8:00 PM, for 2, best rated\nWait for you to pick one\nWatch live\nStop\n2 min\n8:35 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:35 PM"
+  },
+  {
+    "kind": "card-stuck",
+    "state": "asking",
+    "text": "I’m stuck on the Looking for good Italian restaurants… job\nWhat’s wrong\nThis is taking longer than I planned.\nSpent so far\n2 minutes\nWhat I’d do\nopen the page for you\nTry another way\nTake over\nStop\n8:38 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "8:38 PM"
+  }
+]
