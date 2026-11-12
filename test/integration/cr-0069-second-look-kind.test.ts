@@ -127,10 +127,27 @@ describe('CR-0069 · memory off: a question about foo itself is a reply (QA2 on 
     );
     expect(intakes(x)).toHaveLength(2);
     expect(asked(x, REASK_MEMORY_LINE)).toBe(1);
-    expect(REASK_MEMORY_LINE).toMatch(/"tumhara".*mean you, the helper/);
     // Scripted AI: this checks the wiring only. The proof is QA2 on the real-AI run with real Claude.
     const second = intakes(x)[1];
     expect(String(second?.system)).toContain('"tumhara naam?" asks your own name');
+    expect(String(second?.system)).toContain(REASK_MEMORY_LINE);
+    expect(fooTexts(x)).toEqual(['Chotu.']);
+  });
+});
+
+describe('CR-0069 · memory off: "tumhara naam?" after an empty say (QA2 on real-AI run 43281696121)', () => {
+  it('the empty-say retry still carries the line that "tumhara" means foo', async () => {
+    const x = await run(
+      [
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }), once: true },
+        { match: { purpose: 'intake' }, reply: act({ kind: 'reply' }, 'Chotu.') },
+      ],
+      'aur tumhara naam? sirf naam batao',
+    );
+    // Scripted AI: wiring only. The proof is QA2 on the real-AI run with real Claude.
+    expect(intakes(x)).toHaveLength(2);
+    expect(asked(x, REASK_EMPTY_LINE)).toBe(1);
+    expect(String(intakes(x)[1]?.system)).toContain('"tumhara naam?" asks your own name');
     expect(fooTexts(x)).toEqual(['Chotu.']);
   });
 });
