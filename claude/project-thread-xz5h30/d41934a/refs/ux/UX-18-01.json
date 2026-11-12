@@ -1,0 +1,302 @@
+{
+  "id": "UX-18-01",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-18-01.light.png",
+      "sha256": "a46a99bbe35e533840fd03e6659ab9b66ef77f56ad2f508b0c3462e36bfc52be"
+    },
+    "dark": {
+      "png": "UX-18-01.dark.png",
+      "sha256": "2b24c66158ffb727e816119cb0e8de53d4cd065cb1a54077f44da6f08234355c"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "👍",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "Thu",
+    "I already see your Goa trip on Sat 12–Mon 14 Dec",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "👍",
+    "foo",
+    "Awake on your PC",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "remember I'm allergic to peanuts",
+    "12:00 PM ✓",
+    "✓",
+    "👍",
+    "🧠 I'll remember: Allergic to peanuts ·",
+    "Undo",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Allergic to peanuts",
+    "You said · Fri 16 Oct · Edit",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (25)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "🧠 I'll remember: Allergic to peanuts ·",
+    "Undo"
+  ],
+  "hl": {
+    "id": "memchip",
+    "box": {
+      "x": 364,
+      "y": 693,
+      "width": 263.3125,
+      "height": 26
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 364,
+      "y": 693,
+      "width": 263.3125,
+      "height": 26
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M6",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 18,
+    "step": 1,
+    "anchor": "memory-1",
+    "title": "Memory you can see and forget",
+    "part": "Every day · Fri 16 Oct",
+    "j": "J17",
+    "r": "R13",
+    "c": "\"remember I'm allergic to peanuts.\" foo reacts 👍 and shows exactly what it saved.",
+    "s": "A 👍 on your bubble and a chip: \"🧠 I'll remember: Allergic to peanuts · Undo\".",
+    "f": "Saves it as \"You said\", dated today.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "Thu",
+            "prev": "I already see your Goa trip on Sat 12–Mon 14 Dec"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b me\">remember I'm allergic to peanuts<span class=\"meta\">12:00 PM ✓<span class=\"rd\">✓</span></span><span class=\"react\">👍</span></div>",
+              "g": 12
+            },
+            {
+              "h": "<span class=\"mchip\" data-hl=\"memchip\">🧠 I'll remember: Allergic to peanuts · <u>Undo</u></span>",
+              "g": 4
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Trips. I'll look after your travel. I already see your Goa trip on Sat 12–Mon 14 Dec. Anything to sort for it?<span class=\"meta\">8:12 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Awake on your PC"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Allergic to peanuts",
+              "You said · Fri 16 Oct · Edit"
+            ],
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 25,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "12:00 PM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "thumb",
+          "trips": "rest",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": false,
+          "trips": false,
+          "money": false,
+          "home": false
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "12:00 PM",
+    "superseded": null
+  }
+}
