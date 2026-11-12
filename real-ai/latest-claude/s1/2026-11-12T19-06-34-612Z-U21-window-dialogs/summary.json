@@ -1,0 +1,86 @@
+{
+  "journey": "U21-window-dialogs",
+  "title": "Close to tray dialog, quit with a running job",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-06-34-612Z-U21-window-dialogs",
+  "results": [
+    {
+      "i": 0,
+      "do": "openChat",
+      "soft": true,
+      "ok": true,
+      "ms": 1037
+    },
+    {
+      "i": 1,
+      "do": "send",
+      "typed": "Find the top 3 news headlines in India today",
+      "sentAt": 1794510401322,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 145
+    },
+    {
+      "i": 2,
+      "do": "wait",
+      "ok": true,
+      "ms": 4002
+    },
+    {
+      "i": 3,
+      "do": "key",
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 4,
+      "do": "wait",
+      "expect": "first-close dialog: foo keeps running in the tray",
+      "ref": "UX-23-02",
+      "ok": true,
+      "ms": 1515,
+      "shot": "01-first-close.png"
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "job still finishes after the dialog",
+      "timeline": [
+        {
+          "at": 5628,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 9175,
+          "badges": [
+            "working"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 5086,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Looking on the web\nlive checklist\nLooking on the web\nKeep 3 India headlines that fit top stories across major news sites\nWatch live\nStop\nunder 1 min\n7:06 PM",
+      "kit": [],
+      "ms": 11290,
+      "shot": "02-news.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 13
+    }
+  ]
+}

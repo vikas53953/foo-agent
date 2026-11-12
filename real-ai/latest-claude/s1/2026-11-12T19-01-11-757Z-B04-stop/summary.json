@@ -1,0 +1,127 @@
+{
+  "journey": "B04-stop",
+  "title": "Start a job then stop it by typing stop",
+  "videos": [],
+  "steps": 7,
+  "failed": 0,
+  "out": "D:\\a\\_temp\\foo-real-test\\runs\\2026-11-12T19-01-11-757Z-B04-stop",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "Find the 3 cheapest flights from Delhi to Mumbai next Friday and compare them",
+      "sentAt": 1794510085480,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 123
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "timeline": [
+        {
+          "at": 38,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 543,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7184,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 9205,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 7151,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "My plan · Checking Google Flights, MakeMyTrip,…\n1\nCheck Google Flights, MakeMyTrip, Ixigo\n2\nLook for Delhi to Mumbai flights on Fri 20 Nov\n3\nKeep 3 flights that fit lowest fare\n4\nCompare fare, departure time, duration and stops\nAbout 3 minutes\nGo\nChange plan\n7:01 PM",
+      "kit": [],
+      "ms": 13204,
+      "shot": "01-flight-plan.png"
+    },
+    {
+      "i": 2,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 39
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "ok": true,
+      "ms": 40021,
+      "shot": "02-flight-working.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "stop",
+      "sentAt": 1794510139016,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 176
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "AT-077: stops within 1 s; reply lists exactly what was done; badge ⛔",
+      "timeline": [
+        {
+          "at": 101,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 2121,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [],
+      "firstReplyMs": 514,
+      "newBubbles": 1,
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Stopped. Nothing was booked, paid or sent.\n\n7:02 PM",
+      "kit": [],
+      "ms": 6065,
+      "shot": "03-after-stop.png"
+    },
+    {
+      "i": 6,
+      "do": "dump",
+      "ok": true,
+      "ms": 11
+    }
+  ]
+}
