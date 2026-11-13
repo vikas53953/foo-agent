@@ -17,7 +17,15 @@
 #           foo-windows-app-gated: the one artifact to send.
 # Evidence (report, pictures, step records; no videos) goes to the `evidence` branch under gate/<short-sha>/ and
 # gate/latest/, since agents cannot read CI artifacts. The videos are in the release-gate-report download.
-# Spend guards: owner-started runs only (dispatch or a push to main), one run at a time, Sonnet for the reviewer, a hard timeout.
+# Spend guards (Vikas 13 Nov 2026 after 54 USD went in an afternoon, "go with all 5" and "all 4 yes"):
+#   - foo itself runs on its shipped default model here (the gate tests what Vikas gets); the cheap model is for PR checks;
+#   - a push to main runs only when it changes the app or the gate, and with ONE round; pass^3 (rounds 3) is the final
+#     candidate, started by hand, and only a run with 3 or more rounds may release the installer;
+#   - one tiny key check before anything is built and before every journey: a refused key stops the run at once;
+#   - a spend cap (budget_usd): 60% for driving foo, 40% for the picture reviewer;
+#   - the picture reviewer looks at nothing when a step already failed (the gate is red anyway), and Haiku 5.5 looks
+#     first: only the pictures it does not call "works" go to the Sonnet reviewer;
+#   - owner-started runs only, one run at a time, a hard timeout.
 # The driver never clicks Approve, Pay, Book or Send. The key reaches only the steps that need it and the evidence is
 # scanned for it before anything is kept.
 name: Release gate
@@ -26,6 +34,18 @@ on:
   # Vikas 2026-10-28 (decision card): every merge to main, and before any app is sent (only foo-windows-app-gated goes out).
   push:
     branches: [main]
+    # Vikas 13 Nov 2026: no gate run for a merge that cannot change the app (12 Nov: #173 docs only, #172 test script only).
+    paths:
+      - 'src/**'
+      - 'resources/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'electron-builder.yml'
+      - 'vite.config.ts'
+      - 'tsconfig*.json'
+      - 'test/real-pc/**'
+      - 'scripts/release-gate.ts'
+      - '.github/workflows/release-gate.yml'
   workflow_dispatch:
     inputs:
       ref:
@@ -33,12 +53,20 @@ on:
         default: main
         required: true
       rounds:
-        description: pass^k - how many times the chat, restart and settings journeys run (every round must pass)
+        description: pass^k - how many times the chat, restart and settings journeys run (every round must pass; 3 or more to release)
         default: '3'
         required: true
       model:
         description: Model the separate reviewer uses (foo's own turns use foo's own pick for the Anthropic key)
         default: claude-sonnet-5-5
+        required: true
+      first_pass:
+        description: Cheaper model that looks at each picture first; only what it does not call "works" goes to the reviewer ("none" to skip)
+        default: claude-haiku-5-5
+        required: true
+      budget_usd:
+        description: Spend cap for the whole gate in USD (60% driving foo, 40% the picture reviewer)
+        default: '5'
         required: true
 
 concurrency:
@@ -80,6 +108,12 @@ jobs:
           git cat-file -e FETCH_HEAD:test/qa-explore/inpage.js 2>/dev/null && paths="$paths test/qa-explore/inpage.js"
           git archive FETCH_HEAD $paths | (cd "$RUNNER_TEMP/kit" && tar -x)
           echo "app $(git rev-parse HEAD) kit $KIT_REF ($paths)"
+      # One tiny call before the 15-minute build: a refused key (credit used up) stops the gate here.
+      - name: Check the Anthropic key can still answer
+        shell: bash
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node "$RUNNER_TEMP/kit/test/real-pc/key-check.js"
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -140,7 +174,8 @@ jobs:
           FOO_REAL_AI_ONLY: '1' # Vikas 2026-10-28: real AI only; the driver refuses FOO_TEST and FOO_FAKE_* settings
           FOO_VIDEO: '1'
           FOO_WATCH_MS: '1500,3000,6000'
-          ROUNDS: ${{ inputs.rounds || '3' }}
+          ROUNDS: ${{ inputs.rounds || '1' }}
+          BUDGET: ${{ inputs.budget_usd || '5' }}
         run: |
           export FOO_EXE="${{ steps.install.outputs.exe }}"
           export FOO_REAL_TEST_DIR="$RUNNER_TEMP/foo-gate"
@@ -159,7 +194,17 @@ jobs:
                 console.log(`  failed step ${r.i} ${r.do}${r.tid ? " " + r.tid : ""}: ${String(r.error || r.blocked || (r.forbidden ? "👀 at " + r.forbidden.at + " ms" : "") || "end state not reached").slice(0, 200)}`);
             ' || true
           }
-          drive() { echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; failed_steps; return $s; }
+          cap=$(node -e "console.log((Number(process.argv[1]) * 0.6).toFixed(2))" "$BUDGET")
+          echo "spend cap for driving foo: $cap USD"
+          # Spend guards: once the cap is spent or the key is refused, no more journeys run. The rounds they leave out
+          # count as broken in the report (expected.json), so a stopped gate is red, never a quiet pass.
+          stopped=""
+          guard() {
+            [ -z "$stopped" ] || return 1
+            local spent; spent=$(node spend.js "$FOO_REAL_TEST_DIR/runs" --cap "$cap") || { stopped="spend cap reached ($spent of $cap USD)"; echo "::error::$stopped; the gate stops here."; return 1; }
+            node key-check.js || { stopped="the key was refused"; echo "::error::$stopped; the gate stops here."; return 1; }
+          }
+          drive() { guard || return 0; echo "=== $1 ==="; "$FOO_EXE" foo-drive.js "$(file "$1")" >> "$FOO_REAL_TEST_DIR/runs/console.txt" 2>&1; local s=$?; taskkill //IM foo.exe //F > /dev/null 2>&1 || true; failed_steps; return $s; }
           list=$(tr -d '\r' < "$kit/gate.txt")
           # What the report must find: each journey's rounds and the features its steps cover. A round with no record
           # (the driver crashed) then counts as broken instead of silently shrinking pass^k.
@@ -189,6 +234,7 @@ jobs:
             done
           done
           tail -n 40 "$FOO_REAL_TEST_DIR/runs/console.txt" || true
+          echo "Spent driving foo: $(node spend.js "$FOO_REAL_TEST_DIR/runs") USD of $cap" | tee -a "$GITHUB_STEP_SUMMARY"
           # A failed step is judged in the report; the job itself fails only when the driver could not run.
           exit 0
       - name: Uninstall foo and check it is gone
@@ -284,7 +330,12 @@ jobs:
       - name: Separate reviewer looks at every picture
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: pnpm exec tsx scripts/release-gate.ts review --runs gate-runs --refs gate-refs --out gate-report --model "${{ inputs.model || 'claude-sonnet-5-5' }}"
+          BUDGET: ${{ inputs.budget_usd || '5' }}
+        run: |
+          cap=$(node -e "console.log((Number(process.argv[1]) * 0.4).toFixed(2))" "$BUDGET")
+          pnpm exec tsx scripts/release-gate.ts review --runs gate-runs --refs gate-refs --out gate-report \
+            --model "${{ inputs.model || 'claude-sonnet-5-5' }}" --first-pass "${{ inputs.first_pass || 'claude-haiku-5-5' }}" \
+            --budget-usd "$cap" --skip-when-failed
       - name: Gate report
         id: report
         env:
@@ -391,6 +442,7 @@ jobs:
           BEFORE: ${{ steps.which.outputs.before }}
         run: |
           [ -n "$ANTHROPIC_API_KEY" ] || { echo "::error::ANTHROPIC_API_KEY is not set: red-first needs a real AI."; exit 1; }
+          node "$RUNNER_TEMP/kit/test/real-pc/key-check.js" || { echo "::error::The key was refused: red-first cannot run."; exit 1; }
           kit="$RUNNER_TEMP/kit/test/real-pc"
           export FOO_QA_INPAGE="$RUNNER_TEMP/kit/test/qa-explore/inpage.js"
           file() { [ -f "$kit/gate/$1.json" ] && echo "gate/$1.json" || echo "journeys/$1.json"; }
@@ -451,10 +503,12 @@ jobs:
   release:
     name: Release the tested installer (only on PASS)
     needs: [drive, review, red-first, mutation]
+    # pass^3 or more only (Vikas 13 Nov 2026): a one-round run on a push to main never releases the installer.
     # A drive that failed (the first run, the install or uninstall, or a key found in the evidence) never releases, whatever
     # the report says. Red-first is skipped when nothing in the push names a fixed journey.
     if: >-
       always() && needs.drive.result == 'success' && needs.review.result == 'success' && needs.review.outputs.status == 'PASS' &&
+      fromJSON(inputs.rounds || '1') >= 3 &&
       (needs.red-first.result == 'success' || needs.red-first.result == 'skipped') && needs.mutation.result == 'success'
     runs-on: ubuntu-latest
     steps:

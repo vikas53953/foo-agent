@@ -4,8 +4,14 @@
 # Codex CLI signed in with the OPENAI_API_KEY secret. "auto" runs every AI whose secret exists, Claude first, one at a
 # time. Evidence (screenshots, logs, thread dumps) goes to the `evidence` branch under real-ai/<short-sha>-<ai>/ and
 # real-ai/latest-<ai>/, since agents cannot read CI artifacts.
-# Spend guards: owner-started runs only (a tap, a ready PR into main or a merge into main), one run at a time, a journey cap, a Sonnet-class model for Claude,
-# --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
+# Spend guards (Vikas 13 Nov 2026 after 54 USD went in an afternoon, "go with all 5" and "all 4 yes"):
+#   - runs only on the newest commit of a ready PR that changes the app (docs, spec, unit tests and other workflows skip);
+#     a newer push cancels the older run; a merge into main does not run it again (the PR already tested that code);
+#   - the batch-1 set only; "other features" (switched off in batch 1) runs only when started by hand with sets: other/both;
+#   - foo runs on Haiku 5.5 here (Claude CLI and foo's own-key turns); the release gate keeps foo's shipped model;
+#   - one tiny key check before anything is built and before every journey: a refused key stops the run at once;
+#   - a spend cap per run (budget_usd, split across the parts), added up from foo's own per-turn cost after every journey;
+#   - owner-started runs only, a journey cap, --max-turns 1 per foo turn (foo's own setting), and a hard job timeout. The driver never clicks Approve, Pay, Book or
 # Send. A key reaches only the steps that need it, through env; it is never echoed, and the evidence is scanned for it
 # before anything is pushed.
 name: Real-AI e2e
@@ -35,22 +41,47 @@ on:
         options: [auto, claude, chatgpt]
         default: auto
       model:
-        description: Model the Claude CLI uses for foo's turns (Claude only)
-        default: claude-sonnet-5-5
+        description: Model foo uses for its turns (the Claude CLI and foo's own Anthropic key)
+        default: claude-haiku-5-5
         required: true
-  # Vikas picked "On every merge to main" (2026-10-21): each merge runs the defaults on that commit, no tap needed.
-  push:
-    branches: [main]
-  # Vikas 2026-10-28: "test with real AI only". Every ready PR into main runs the real-AI journeys on its own merge commit
-  # before it merges; drafts wait until marked ready.
+      sets:
+        description: batch1 (required, the default), other (features switched off in this batch), or both
+        type: choice
+        options: [batch1, other, both]
+        default: batch1
+      budget_usd:
+        description: Spend cap for the whole run in USD, split evenly across the parts; a part stops when it reaches its share
+        default: '3'
+        required: true
+  # Vikas 2026-10-28: "test with real AI only". Every ready PR into main runs the batch-1 journeys on its own merge commit
+  # before it merges; drafts wait until marked ready. Vikas 13 Nov 2026: no second run on main after the merge, and none
+  # for a change that cannot change the app.
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - 'docs/**'
+      - 'spec/**'
+      - '**/*.md'
+      - 'golden/**'
+      - '.claude/**'
+      - 'design/**'
+      - 'test/unit/**'
+      - 'test/integration/**'
+      - 'test/e2e/**'
+      - 'test/judge/**'
+      - 'test/qa-explore/**'
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/release-gate.yml'
+      - '.github/workflows/golden-bless.yml'
+      - '.github/workflows/flake-hunt.yml'
+      - '.github/workflows/qa-ai-judge.yml'
 
 concurrency:
-  # One queue per branch (coordinator, 28 Oct): a PR's waiting run and main's waiting run never cancel each other.
+  # One queue per branch (coordinator, 28 Oct). On a PR a newer push cancels the older run (Vikas 13 Nov: test only the
+  # newest commit); a run started by hand is never cancelled.
   group: real-ai-e2e-${{ github.head_ref || github.ref_name }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: write # pushes the evidence branch only
@@ -65,11 +96,27 @@ jobs:
     outputs:
       ais: ${{ steps.pick.outputs.ais }}
       shards: ${{ steps.pick.outputs.shards }}
+      sets: ${{ steps.pick.outputs.sets }}
+      part_budget: ${{ steps.pick.outputs.part_budget }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: test/real-pc
+          persist-credentials: false
+      # One tiny call before 8 Windows machines build anything: a refused key (credit used up) stops the run here.
+      - name: Check the Anthropic key can still answer
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AI: ${{ inputs.ai || 'auto' }}
+        run: |
+          if [ "$AI" = "chatgpt" ] || [ -z "$ANTHROPIC_API_KEY" ]; then echo "no Anthropic key in this run"; exit 0; fi
+          node test/real-pc/key-check.js
       - id: pick
         env:
           AI: ${{ inputs.ai || 'auto' }}
           SHARDS: ${{ inputs.shards || '4' }}
+          SETS: ${{ inputs.sets || 'batch1' }}
+          BUDGET: ${{ inputs.budget_usd || '3' }}
           HAS_ANTHROPIC: ${{ secrets.ANTHROPIC_API_KEY != '' }}
           HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
         run: |
@@ -82,6 +129,12 @@ jobs:
           fi
           echo "ais=[$(IFS=,; echo "${ais[*]}")]" >> "$GITHUB_OUTPUT"
           echo "shards=[$(seq -s, 0 $((SHARDS - 1)))]" >> "$GITHUB_OUTPUT"
+          case "$SETS" in both) sets='["batch1","other"]'; n=2 ;; other) sets='["other"]'; n=1 ;; *) sets='["batch1"]'; n=1 ;; esac
+          echo "sets=$sets" >> "$GITHUB_OUTPUT"
+          parts=$((n * SHARDS * ${#ais[@]}))
+          share=$(node -e "console.log((Number(process.argv[1]) / Number(process.argv[2])).toFixed(2))" "$BUDGET" "$parts")
+          echo "part_budget=$share" >> "$GITHUB_OUTPUT"
+          echo "### Spend cap: $BUDGET USD for the run, $share USD for each of $parts part(s); sets $sets" >> "$GITHUB_STEP_SUMMARY"
 
   # Two sets (coordinator, 28 Oct): "batch1" is every journey for a feature switched on in the batch being shipped
   # (test/real-pc/journeys-batch1.txt) and must be green to merge; "other" runs the rest, and its reds stay visible on its
@@ -96,7 +149,7 @@ jobs:
       fail-fast: false
       max-parallel: 8
       matrix:
-        set: [batch1, other]
+        set: ${{ fromJSON(needs.plan.outputs.sets) }}
         ai: ${{ fromJSON(needs.plan.outputs.ais) }}
         shard: ${{ fromJSON(needs.plan.outputs.shards) }}
     steps:
@@ -147,7 +200,10 @@ jobs:
         env:
           # Only Claude's run sees its key; the Codex run is signed in through its own auth file.
           ANTHROPIC_API_KEY: ${{ matrix.ai == 'claude' && secrets.ANTHROPIC_API_KEY || '' }}
-          ANTHROPIC_MODEL: ${{ inputs.model || 'claude-sonnet-5-5' }}
+          ANTHROPIC_MODEL: ${{ inputs.model || 'claude-haiku-5-5' }}
+          # foo's own-key turns (the journeys that type the key into foo) use the same cheap model (foo-drive.js pinKeyModel).
+          FOO_KEY_MODEL: ${{ matrix.ai == 'claude' && (inputs.model || 'claude-haiku-5-5') || '' }}
+          PART_BUDGET_USD: ${{ needs.plan.outputs.part_budget }}
           FOO_AI_ROW: ${{ matrix.ai == 'claude' && 'claude-cli' || 'codex-cli' }}
           ELECTRON_RUN_AS_NODE: '1'
           JOURNEYS: ${{ inputs.journeys || 'all' }}
@@ -155,6 +211,7 @@ jobs:
           SHARD: ${{ matrix.shard }}
           SHARDS: ${{ inputs.shards || '4' }}
           SET: ${{ matrix.set }}
+          AI: ${{ matrix.ai }}
           # The batch-1 set tests the batch-1 build: every journey runs with the shipped features (jobs, memory, web… off)
           # unless it names its own. Run 40638245705: U17 ran with jobs on, and an earlier journey's job took its dark-mode ask.
           FOO_FEATURES: ${{ matrix.set == 'batch1' && 'shipped' || 'all' }}
@@ -187,6 +244,15 @@ jobs:
           cd "$kit"
           noai=0
           for j in $list; do
+            # Spend guards: stop this part once its share of the budget is spent, or once the key is refused.
+            if ! spent=$(node spend.js "$FOO_REAL_TEST_DIR/runs" --cap "$PART_BUDGET_USD"); then
+              echo "::error::Spend cap reached: $spent USD of this part's $PART_BUDGET_USD USD; $j and the journeys after it are not run."
+              status=1; break
+            fi
+            if [ "$AI" = "claude" ] && ! node key-check.js; then
+              echo "::error::The key was refused before $j; the rest of this part is not run."
+              status=1; break
+            fi
             # After the first run failed twice, journeys on the shared profile have no AI; a journey on its own profile
             # ("profile": "own" sets itself up) still runs, so one failure never hides another journey's result.
             if [ "$noai" = 1 ] && ! grep -q '"profile": *"own"' "journeys/$j.json"; then
@@ -213,9 +279,12 @@ jobs:
       - name: Summary
         if: always()
         shell: bash
+        env:
+          PART_BUDGET_USD: ${{ needs.plan.outputs.part_budget }}
         run: |
           {
-            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, set ${{ matrix.set }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-sonnet-5-5') || 'Codex default' }}"
+            echo "### Real-AI journeys on ${{ inputs.ref || github.sha }} ($(git rev-parse --short HEAD)), AI ${{ matrix.ai }}, set ${{ matrix.set }}, part ${{ matrix.shard }}, model ${{ matrix.ai == 'claude' && (inputs.model || 'claude-haiku-5-5') || 'Codex default' }}"
+            echo "Spent (foo's own per-turn cost): $(node "$RUNNER_TEMP/kit/test/real-pc/spend.js" "$RUNNER_TEMP/foo-real-test/runs" 2>/dev/null || echo unknown) USD of $PART_BUDGET_USD"
             echo "| Journey | Steps | Failed |"; echo "|---|---|---|"
             for f in "$RUNNER_TEMP"/foo-real-test/runs/*/summary.json; do
               [ -f "$f" ] || continue

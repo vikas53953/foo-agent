@@ -6,7 +6,7 @@
 - **Spec sections:** 08-4 §24.1 (intake prompt: "7 conversation · the user's message"), 08-2 §7.2 part 7 ("last 20
   completed messages"), 04 §17.1 (action row: Copy · Try again · 👍 · 👎), 04 §19.4 (cut-off reply), 08-4 §25.5 item 5
   and §25.6 / CR-0043 (a `setting` answer: "text already released stands; the setting line follows it").
-- **Status:** Proposed. Waiting for Vikas's approval (batch 1 is locked spec). Once approved: DECISIONS row, manifest.
+- **Status:** Approved by Vikas, 13 Nov 2026 12:29Z ("ys" to the four chat fixes in #181). DECISIONS X-229.
 
 ## (a) What was wrong (real Claude, packaged Windows app, 3 rounds each)
 

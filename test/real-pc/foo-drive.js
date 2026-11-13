@@ -71,6 +71,27 @@ if (REAL_AI_ONLY && PRETEND.length) {
   process.exit(2);
 }
 
+// Test spend guard (Vikas 13 Nov 2026, "all 4 yes"): day-to-day PR checks run foo's own-key turns on a cheap model.
+// FOO_KEY_MODEL sets the user's own model choice (08-4 §30.1: settings.ai.providers[p].model wins over pricing.json)
+// in the TEST profile before each launch, once the key provider exists there. The release gate leaves it unset, so the gate
+// tests foo's shipped default. Not FOO_TEST_*/FOO_FAKE_*: it pretends nothing, the AI is still real.
+function pinKeyModel() {
+  const model = process.env.FOO_KEY_MODEL;
+  if (!model) return;
+  const file = path.join(PROFILE, 'data', 'settings.json');
+  if (!fs.existsSync(file)) return;
+  try {
+    const s = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const row = s?.ai?.providers?.['anthropic-key'];
+    if (!row || (row.model === model && row.cheapModel === model)) return;
+    row.model = model;
+    row.cheapModel = model;
+    fs.writeFileSync(file, JSON.stringify(s, null, 2));
+  } catch (e) {
+    console.error(`could not pin the key model: ${String(e).slice(0, 200)}`);
+  }
+}
+
 function childEnv() {
   const env = { ...process.env, FOO_DATA_DIR: path.join(PROFILE, 'data'), FOO_LOCAL_DIR: path.join(PROFILE, 'local') };
   // CR-0054: every feature is on unless the journey asks for the build's own list ("features": "shipped") or names some.
@@ -182,7 +203,25 @@ function copyJobTrail(from, out) {
   }
 }
 
-const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
+// The token and cost columns feed the per-run spend cap (test/real-pc/spend.js); they are numbers and a model id, no content.
+const TURN_COLS = [
+  'started_at',
+  'purpose',
+  'outcome',
+  'error_kind',
+  'duration_ms',
+  'chat_id',
+  'job_id',
+  'provider_id',
+  'billing',
+  'model_reported',
+  'tokens_in',
+  'tokens_out',
+  'tokens_cache_read',
+  'tokens_cache_write',
+  'cost_paise',
+  'cost_source',
+];
 function copyAiTurns(from, out) {
   const file = path.join(PROFILE, 'data', 'data', 'foo.db');
   if (!fs.existsSync(file)) return { turns: 0, note: 'no database' };
@@ -224,6 +263,7 @@ async function main() {
   let page;
   let shotN = 0;
   const launch = async () => {
+    pinKeyModel();
     app = await _electron.launch({
       executablePath: EXE,
       args: process.env.FOO_ARGS ? process.env.FOO_ARGS.split(' ') : [],
