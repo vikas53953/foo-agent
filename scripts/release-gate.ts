@@ -10,6 +10,10 @@
 //
 // Usage:
 //   tsx scripts/release-gate.ts review --runs <dir> --refs <dir> --out <dir> [--model claude-sonnet-5-5]
+//       [--first-pass claude-haiku-5-5|none] [--budget-usd <usd>] [--skip-when-failed]
+//   Spend guards (Vikas 13 Nov 2026): the first-pass model looks first and only what it does not call "works" goes to
+//   --model; the review stops at --budget-usd (pictures left are "not reviewed", so the gate cannot pass); with
+//   --skip-when-failed no picture is looked at once a step already failed, because the gate is red anyway.
 //   tsx scripts/release-gate.ts report --runs <dir> --refs <dir> --out <dir> [--checks <checks.json>] [--sha <sha>]
 //   tsx scripts/release-gate.ts refs --runs <dir>   (prints the walkthrough ids the run names, for golden-render --ids)
 // Exit code (report): 0 PASS, 1 FAIL (a feature is not "works" or a check is red), 2 BLOCKED (nothing ran or no review).
@@ -341,19 +345,57 @@ const SCHEMA = {
   },
 };
 
+/** USD per million tokens (input, output) for the reviewer models; an unknown model is priced like the dearest. */
+const REVIEW_PRICE: Record<string, [number, number]> = {
+  'claude-haiku-5-5': [0.1, 0.5],
+  'claude-sonnet-5-5': [2, 10],
+  'claude-sonnet-4-5': [3, 15],
+  'claude-opus-5-5': [4, 20],
+};
+/** What one reviewer call cost, from the usage the API reports. Pure, so the unit test can check it. */
+export function callUsd(model: string, u: { input_tokens: number; output_tokens: number; cache_read_input_tokens?: number | null }) {
+  const [i, o] = Object.entries(REVIEW_PRICE).find(([k]) => model.startsWith(k))?.[1] ?? [4, 20];
+  return ((u.input_tokens + (u.cache_read_input_tokens ?? 0) * 0.1) * i + u.output_tokens * o) / 1e6;
+}
+
+/** PASS only when every feature works and every check is green. A broken feature is FAIL even with pictures left unreviewed
+ * (the reviewer is skipped once a step failed); unreviewed pictures with nothing broken block the gate. */
+export function gateStatus(runs: number, feats: { verdict: string }[], rows: { green: boolean }[]): 'PASS' | 'FAIL' | 'BLOCKED' {
+  if (!runs) return 'BLOCKED';
+  if (feats.some((f) => f.verdict === 'broken')) return 'FAIL';
+  if (feats.some((f) => f.verdict === 'not-reviewed')) return 'BLOCKED';
+  return feats.every((f) => f.verdict === 'works') && rows.every((c) => c.green) ? 'PASS' : 'FAIL';
+}
+
 async function review() {
   const runs = opt('--runs')!;
   const refs = opt('--refs') ?? 'gate-refs';
   const out = opt('--out')!;
   const model = opt('--model') ?? 'claude-sonnet-5-5';
+  const firstPass = opt('--first-pass') && opt('--first-pass') !== 'none' ? opt('--first-pass')! : undefined;
+  const budget = opt('--budget-usd') ? Number(opt('--budget-usd')) : Infinity;
   mkdirSync(out, { recursive: true });
   const ux = new Map(manifest().ux.map((u) => [u.id, u]));
-  const cps = checkpoints(loadRuns(runs)).filter((c) => c.shot && !c.measured);
-  const client = new Anthropic();
+  const all = checkpoints(loadRuns(runs));
   const reviews: Review[] = [];
+  if (args.includes('--skip-when-failed') && all.some((c) => c.measured)) {
+    const n = all.filter((c) => c.measured).length;
+    writeFileSync(join(out, 'review.json'), '[]');
+    console.log(`${n} step(s) already failed, so the gate is red: no picture is reviewed (spend guard, Vikas 13 Nov 2026)`);
+    return;
+  }
+  const cps = all.filter((c) => c.shot && !c.measured);
+  const client = new Anthropic();
+  let spent = 0;
   let next = 0;
+  let stopped = false;
   const worker = async () => {
     while (next < cps.length) {
+      if (spent >= budget) {
+        if (!stopped) console.error(`spend cap reached: ${spent.toFixed(2)} of ${budget} USD; the pictures left stay not reviewed`);
+        stopped = true;
+        return;
+      }
       const c = cps[next++]!;
       const frame = c.ref ? ux.get(c.ref) : undefined;
       const dark = /dark/i.test(c.shot!) && !/light/i.test(c.shot!);
@@ -371,19 +413,27 @@ async function review() {
         const content: Anthropic.Beta.BetaContentBlockParam[] = [png(join(c.dir, c.shot!))];
         if (ref) content.push(png(ref));
         content.push({ type: 'text', text });
-        const res = await client.beta.messages.create({
-          model,
-          max_tokens: 4000,
-          betas: ['server-side-fallback-2026-07-01'],
-          fallbacks: 'default',
-          output_config: { effort: 'medium', format: { type: 'json_schema', schema: SCHEMA } },
-          system: SYSTEM,
-          messages: [{ role: 'user', content }],
-        });
-        if (res.stop_reason === 'refusal') throw new Error('the reviewer declined');
-        const t = res.content.find((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text');
-        const v = JSON.parse(t?.text ?? '{}') as Omit<Review, 'id' | 'by'>;
-        reviews.push({ id: c.id, ...v, by: res.model });
+        const ask = async (m: string) => {
+          const res = await client.beta.messages.create({
+            model: m,
+            max_tokens: 4000,
+            betas: ['server-side-fallback-2026-07-01'],
+            fallbacks: 'default',
+            output_config: { effort: 'medium', format: { type: 'json_schema', schema: SCHEMA } },
+            system: SYSTEM,
+            messages: [{ role: 'user', content }],
+          });
+          spent += callUsd(res.model, res.usage);
+          if (res.stop_reason === 'refusal') throw new Error('the reviewer declined');
+          const t = res.content.find((b): b is Anthropic.Beta.BetaTextBlock => b.type === 'text');
+          return { v: JSON.parse(t?.text ?? '{}') as Omit<Review, 'id' | 'by'>, by: res.model };
+        };
+        // The cheap first look decides only "works"; anything else is looked at again by the reviewer, whose verdict stands.
+        // A first look that fails (an option that model does not take, a busy API) just hands the picture to the reviewer.
+        let r = firstPass ? await ask(firstPass).catch(() => undefined) : undefined;
+        if (!r || r.v.verdict !== 'works') r = await ask(model);
+        const v = r.v;
+        reviews.push({ id: c.id, ...v, by: r.by });
         console.log(`${c.id}: ${v.verdict} · ${v.summary}`);
       } catch (e) {
         // No verdict is not a pass: the checkpoint stays "not-reviewed" and the gate is blocked.
@@ -393,7 +443,7 @@ async function review() {
   };
   await Promise.all([1, 2, 3, 4].map(worker));
   writeFileSync(join(out, 'review.json'), JSON.stringify(reviews, null, 2));
-  console.log(`reviewed ${reviews.length} of ${cps.length} pictures`);
+  console.log(`reviewed ${reviews.length} of ${cps.length} pictures for ${spent.toFixed(2)} USD`);
 }
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]!);
@@ -429,12 +479,7 @@ function report() {
     opt('--checks') && existsSync(opt('--checks')!) ? JSON.parse(readFileSync(opt('--checks')!, 'utf8')) : [];
   const feats = featureVerdicts(cps, reviews);
   const rows = checkRows(checks);
-  const status =
-    !runs.length || feats.some((f) => f.verdict === 'not-reviewed')
-      ? 'BLOCKED'
-      : feats.every((f) => f.verdict === 'works') && rows.every((c) => c.green)
-        ? 'PASS'
-        : 'FAIL';
+  const status = gateStatus(runs.length, feats, rows);
 
   const copy = (dir: string, f?: string) => {
     if (!f || !existsSync(join(dir, f))) return undefined;

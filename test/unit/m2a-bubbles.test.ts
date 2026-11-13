@@ -137,6 +137,17 @@ describe('layout: positions, gaps, sender label, latest answer (04 §1.2, §1.4,
     });
     expect(L.every((l) => !l.latestAnswer)).toBe(true);
   });
+  it('Try again only under an answer with a user question before it (04 §17.1; gate 10 QA5 welcome lines)', () => {
+    const L = layoutRows(
+      [
+        msg({ authorKind: 'foo', createdAt: T0, status: 'complete' }),
+        msg({ createdAt: T0 + MIN }),
+        msg({ authorKind: 'foo', createdAt: T0 + 2 * MIN, status: 'complete' }),
+      ].map(row),
+      { chatKind: 'foo' },
+    );
+    expect(L.map((l) => l.afterQuestion)).toEqual([false, false, true]);
+  });
   it('tail corners: bottom-outer on the first or single bubble, top-outer too once continued (04 §1.4)', () => {
     expect(tailCorners('single', 'me')).toEqual([false, false, true, false]);
     expect(tailCorners('middle', 'me')).toEqual([false, true, true, false]);
