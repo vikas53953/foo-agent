@@ -695,6 +695,16 @@ async function main() {
           await page.waitForTimeout(1_000);
           break;
         case 'clickIf': {
+          // On the Claude app row (no key), foo's own test of the app takes 11–25 s on Vikas's PC (pc-gate 200fed4: the
+          // journey's 20 s wait ended first, so Use was never clicked and setup stopped at step 1). Wait for the finder
+          // to offer a choice before deciding the control is not there.
+          if (NO_KEY && journey.steps.findIndex((x) => x.do === 'clickIf' && /setup-ai-/.test(x.tid || x.css || '')) === i)
+            rec.finderWaitMs = await page
+              .locator('[data-testid="setup-ai-use"], [data-testid="setup-ai-pick-another"], [data-testid="setup-name-field"]')
+              .first()
+              .waitFor({ state: 'visible', timeout: 120_000 })
+              .then(() => Date.now() - t0)
+              .catch(() => -1);
           // Clicks only when the control is there (e.g. a plan's Go); never a refused control.
           const loc = page.locator(sel(s)).last();
           rec.found = await loc.count();
