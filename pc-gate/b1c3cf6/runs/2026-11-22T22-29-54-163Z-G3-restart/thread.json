@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Canberra is the capital of Australia. Many people guess Sydney or Melbourne, but Canberra was built as the capital in between the two.\n\n3:57 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n3:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Raja was a young tiger in Ranthambore who had grown bored of raw meals. One winter night he crept close to a forest guard's hut and saw the guard's wife, Shanta, lifting the lid off a steaming pot. The smell of saffron, fried onions and cloves hit him so hard that he forgot to hide, and he sat down right there in the moonlight, staring.\n\nShanta nearly dropped her ladle, but the tiger only pointed a paw at the pot and looked hopeful. So she set him to work. Raja was hopeless at first: he crushed the tomatoes flat, spilled the rice, and sneezed half the pepper into the fire. Night after night he came back, and slowly he learned to wash the rice three times, brown the onions patiently, and never, ever lift the lid too early.\n\nBy the time the monsoon came, Raja was cooking on his own under a banyan tree, stirring a big dented pot with a stick. The deer stayed at a safe distance, but the peacocks, the langurs and one very greedy sloth bear lined up every Friday. Raja served them all, kept the biggest helping for himself, and agreed with everyone that the secret was in the waiting. 🐯\n\nShow earlier answer\nRewritten\n3:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n3:58 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got both lines, with the blank one in between. What do you want me to do with them?\n\n3:58 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n3:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n3:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "That looks like a keyboard test, and it came through fine. What do you need?\n\n3:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n3:59 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, cab book nahi hui hai. Main abhi booking jaise kaam nahi kar sakta, isliye kal ke liye cab aapko khud app se book karni hogi. Chaho toh office ke liye nikalne ka sahi time nikalne mein madad kar doon?\n\n3:59 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n4:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 tips to sleep better:\n\nGo to bed and wake up at the same time every day, even on weekends.\nPut your phone away 30 minutes before bed.\nSkip tea and coffee after 3:00 PM.\nKeep your room dark, quiet and slightly cool.\nEat a light dinner at least 2 hours before sleeping.\n4:00 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n4:00 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Yes, I'm right here. What do you need?\n\n4:00 AM"
+  }
+]

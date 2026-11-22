@@ -1,0 +1,32 @@
+{"t":"2026-11-22T22:29:54.164Z","journey":"G3-restart","title":"Release gate: close foo while it is answering, and reopen; quit from the menu and reopen","spec":"04 §19.4 (cut-off reply); 09 (window, quit); B14","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-22T22:30:02.324Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:30:02.961Z","i":0,"do":"send","typed":"Give me 5 tips to sleep better, one line each","sentAt":1795386602765,"sent":true,"before":0,"ok":true,"ms":623}
+{"t":"2026-11-22T22:30:06.709Z","shot":"01-mid-reply.png"}
+{"t":"2026-11-22T22:30:06.710Z","i":1,"do":"wait","expect":"foo is answering (Thinking row or words streaming)","ok":true,"ms":3010,"shot":"01-mid-reply.png"}
+{"t":"2026-11-22T22:30:14.684Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:30:14.684Z","i":2,"do":"relaunch","feature":"install","ok":true,"ms":7974}
+{"t":"2026-11-22T22:30:15.255Z","shot":"02-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-22T22:30:15.923Z","shot":"03-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-22T22:30:16.463Z","shot":"04-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-22T22:30:28.930Z","shot":"05-after-reopen.png"}
+{"t":"2026-11-22T22:30:28.932Z","i":3,"do":"waitReply","expect":"after reopening, the question is answered, or the cut-off reply shows Try again; never 👀 or the Thinking row left forever","timeline":[{"at":11936,"badges":["seen"],"reactions":[],"thinking":true,"streaming":0},{"at":14060,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":17075,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":17380,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":19537,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":11936,"mark":1500,"shot":"02-after-reopen-wait-1.5s.png","badges":["seen"],"reactions":[],"thinking":true,"streaming":0},{"at":11936,"mark":3000,"shot":"03-after-reopen-wait-3.0s.png","badges":["seen"],"reactions":[],"thinking":true,"streaming":0},{"at":11936,"mark":6000,"shot":"04-after-reopen-wait-6.0s.png","badges":["seen"],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":5460,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Here are 5 tips to sleep better:\n\nGo to bed and wake up at the same time every day, even on weekends.\nPut your phone away 30 minutes before bed.\nSkip tea and coffee after 3:00 PM.\nKeep your room dark, quiet and slightly cool.\nEat a light dinner at least 2 hours before sleeping.\n4:00 AM","kit":[],"replyFaults":[],"ms":13636,"shot":"05-after-reopen.png"}
+{"t":"2026-11-22T22:30:28.938Z","i":4,"do":"check","note":"no Thinking row stuck after the reopen","found":0,"ok":true,"ms":6}
+{"t":"2026-11-22T22:30:29.356Z","i":5,"do":"click","feature":"install","ok":true,"ms":417}
+{"t":"2026-11-22T22:30:30.765Z","shot":"06-more-menu.png"}
+{"t":"2026-11-22T22:30:30.766Z","i":6,"do":"wait","expect":"the menu shows Settings, Keyboard shortcuts and Quit only (batch 1)","feature":"install","ok":true,"ms":805,"shot":"06-more-menu.png"}
+{"t":"2026-11-22T22:30:30.778Z","i":7,"do":"key","ok":true,"ms":12}
+{"t":"2026-11-22T22:30:36.682Z","i":8,"do":"quit","feature":"install","ok":true,"ms":5903}
+{"t":"2026-11-22T22:30:42.927Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:30:42.929Z","i":9,"do":"relaunch","feature":"install","ok":true,"ms":6247}
+{"t":"2026-11-22T22:30:46.430Z","shot":"07-after-quit-reopen.png"}
+{"t":"2026-11-22T22:30:46.432Z","i":10,"do":"wait","expect":"reopens on the same chat with all earlier messages; no error card","feature":"install","ok":true,"ms":3011,"shot":"07-after-quit-reopen.png"}
+{"t":"2026-11-22T22:30:47.024Z","i":11,"do":"send","typed":"are you still there?","sentAt":1795386646831,"sent":true,"before":0,"ok":true,"ms":590}
+{"t":"2026-11-22T22:30:48.730Z","shot":"08-still-there-wait-1.5s.png"}
+{"t":"2026-11-22T22:30:50.360Z","shot":"09-still-there-wait-3.0s.png"}
+{"t":"2026-11-22T22:30:53.380Z","shot":"10-still-there-wait-6.0s.png"}
+{"t":"2026-11-22T22:31:00.364Z","shot":"11-still-there.png"}
+{"t":"2026-11-22T22:31:00.365Z","i":12,"do":"waitReply","expect":"a normal short reply after the restart","timeline":[{"at":210,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6037,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":7071,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1589,"mark":1500,"shot":"08-still-there-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3056,"mark":3000,"shot":"09-still-there-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6037,"mark":6000,"shot":"10-still-there-wait-6.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":1}],"firstReplyMs":6615,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Yes, I'm right here. What do you need?\n\n4:00 AM","kit":[],"replyFaults":[],"ms":12926,"shot":"11-still-there.png"}
+{"t":"2026-11-22T22:31:00.523Z","i":13,"do":"dump","ok":true,"ms":157}
+{"t":"2026-11-22T22:31:01.843Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-11-22T22:31:01.858Z","step":"aiTurns","turns":2}
+{"t":"2026-11-22T22:31:01.864Z","step":"jobTrail","steps":0,"calls":0}

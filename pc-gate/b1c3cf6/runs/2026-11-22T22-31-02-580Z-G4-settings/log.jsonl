@@ -1,0 +1,62 @@
+{"t":"2026-11-22T22:31:02.580Z","journey":"G4-settings","title":"Release gate: settings by asking in Hinglish and by the Settings page, every control clicked","spec":"07-2 J21; 06 Settings; walkthrough chapter 24","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-22T22:31:09.513Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:31:09.837Z","i":0,"do":"send","typed":"dark mode kar do please","sentAt":1795386669757,"sent":true,"before":0,"ok":true,"ms":319}
+{"t":"2026-11-22T22:31:09.876Z","i":1,"do":"waitFor","ok":true,"ms":38}
+{"t":"2026-11-22T22:31:11.903Z","shot":"01-dark-wait-1.5s.png"}
+{"t":"2026-11-22T22:31:13.484Z","shot":"02-dark-wait-3.0s.png"}
+{"t":"2026-11-22T22:31:16.304Z","shot":"03-dark-wait-6.0s.png"}
+{"t":"2026-11-22T22:31:24.275Z","shot":"04-dark.png"}
+{"t":"2026-11-22T22:31:24.275Z","i":2,"do":"waitReply","expect":"the whole app turns dark; one line: Changed: Theme → Dark · Undo","ref":"UX-24-07","timeline":[{"at":149,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":8006,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1689,"mark":1500,"shot":"01-dark-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3138,"mark":3000,"shot":"02-dark-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6103,"mark":6000,"shot":"03-dark-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":7887,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Changed: Theme → Dark. Undo","kit":[],"replyFaults":[],"ms":14068,"shot":"04-dark.png"}
+{"t":"2026-11-22T22:31:24.502Z","i":3,"do":"send","typed":"nahi, wapas light kar do","sentAt":1795386684398,"sent":true,"before":0,"ok":true,"ms":226}
+{"t":"2026-11-22T22:31:30.021Z","i":4,"do":"waitFor","ok":true,"ms":5519}
+{"t":"2026-11-22T22:31:30.713Z","shot":"05-light-wait-1.5s.png"}
+{"t":"2026-11-22T22:31:31.133Z","shot":"06-light-wait-3.0s.png"}
+{"t":"2026-11-22T22:31:36.539Z","shot":"07-light.png"}
+{"t":"2026-11-22T22:31:36.539Z","i":5,"do":"waitReply","expect":"back to light; the same kind of one line with Undo","timeline":[{"at":5636,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":5636,"mark":1500,"shot":"05-light-wait-1.5s.png","badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":5636,"mark":3000,"shot":"06-light-wait-3.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":0}],"firstReplyMs":1378,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Changed: Theme → Light. Undo","kit":[],"replyFaults":[],"ms":6261,"shot":"07-light.png"}
+{"t":"2026-11-22T22:31:36.661Z","i":6,"do":"click","ok":true,"ms":121}
+{"t":"2026-11-22T22:31:37.090Z","i":7,"do":"click","ok":true,"ms":429}
+{"t":"2026-11-22T22:31:38.459Z","shot":"08-settings.png"}
+{"t":"2026-11-22T22:31:38.459Z","i":8,"do":"wait","expect":"Settings opens on a page with real rows; only the batch-1 pages are listed","ref":"UX-24-02","ok":true,"ms":1006,"shot":"08-settings.png"}
+{"t":"2026-11-22T22:31:38.708Z","i":9,"do":"click","ok":true,"ms":248}
+{"t":"2026-11-22T22:31:39.990Z","shot":"09-settings-account.png"}
+{"t":"2026-11-22T22:31:39.990Z","i":10,"do":"wait","expect":"Using: Anthropic key · works · Test now · Change; the key is never shown","ref":"UX-24-02","ok":true,"ms":807,"shot":"09-settings-account.png"}
+{"t":"2026-11-22T22:31:45.421Z","shot":"10-sweep-screen-back.png"}
+{"t":"2026-11-22T22:31:50.834Z","shot":"11-sweep-settings-nav-appearance.png"}
+{"t":"2026-11-22T22:31:54.736Z","shot":"12-sweep-settings-nav-shortcuts.png"}
+{"t":"2026-11-22T22:31:58.619Z","shot":"13-sweep-settings-nav-about.png"}
+{"t":"2026-11-22T22:32:02.427Z","shot":"14-sweep-Test_now.png"}
+{"t":"2026-11-22T22:32:07.425Z","shot":"15-sweep-Change.png"}
+{"t":"2026-11-22T22:32:11.458Z","shot":"16-sweep-None.png"}
+{"t":"2026-11-22T22:32:14.766Z","shot":"17-sweep-settings-row-account-ai-add.png"}
+{"t":"2026-11-22T22:32:16.584Z","i":11,"do":"sweep","expect":"every control on the Settings page does something visible; nothing overlaps","controls":[{"tid":"screen-back","role":"button","name":"Back","status":"pass","effect":["screen: chat","selection changed","content changed: \"Awake on your PC / Raja was a young tiger in Ranthambore who\""],"issues":[],"shot":"10-sweep-screen-back.png"},{"tid":"settings-nav-account","role":"button","name":"Account & your AI","status":"skipped","effect":[],"issues":[],"reason":"already chosen"},{"tid":"settings-nav-appearance","role":"button","name":"Appearance","status":"pass","effect":["selection changed","content changed: \"Theme / Same as Windows\""],"issues":[],"shot":"11-sweep-settings-nav-appearance.png"},{"tid":"settings-nav-shortcuts","role":"button","name":"Keyboard shortcuts","status":"pass","effect":["content changed: \"Getting around / Search chats\t\""],"issues":[],"shot":"12-sweep-settings-nav-shortcuts.png"},{"tid":"settings-nav-about","role":"button","name":"About","status":"pass","effect":["content changed: \"Version 0.0.1 · tester build / What's new with me\""],"issues":[],"shot":"13-sweep-settings-nav-about.png"},{"tid":"","role":"button","name":"Test now","status":"pass","effect":["content changed: \"Testing…\""],"issues":[],"shot":"14-sweep-Test_now.png"},{"tid":"","role":"button","name":"Change","status":"pass","effect":["screen: chat","selection changed","content changed: \"4:02 AM / 1\""],"issues":[],"shot":"15-sweep-Change.png"},{"tid":"","role":"button","name":"None","status":"pass","effect":["opened menu:None","content changed"],"issues":[],"shot":"16-sweep-None.png"},{"tid":"settings-row-account-ai-add","role":"button","name":"Add another AI","status":"pass","effect":["screen: chat","selection changed","content changed: \"1 / Awake on your PC\""],"issues":[],"shot":"17-sweep-settings-row-account-ai-add.png"}],"truncated":0,"ok":true,"ms":36594}
+{"t":"2026-11-22T22:32:16.856Z","i":12,"do":"click","ok":true,"ms":269}
+{"t":"2026-11-22T22:32:18.203Z","shot":"18-settings-appearance.png"}
+{"t":"2026-11-22T22:32:18.204Z","i":13,"do":"wait","expect":"Theme: Light · Dark · Windows, the current one marked","ref":"UX-24-09","ok":true,"ms":808,"shot":"18-settings-appearance.png"}
+{"t":"2026-11-22T22:32:24.464Z","shot":"19-sweep-screen-back.png"}
+{"t":"2026-11-22T22:32:28.296Z","shot":"20-sweep-settings-nav-account.png"}
+{"t":"2026-11-22T22:32:34.508Z","shot":"21-sweep-settings-nav-shortcuts.png"}
+{"t":"2026-11-22T22:32:38.653Z","shot":"22-sweep-settings-nav-about.png"}
+{"t":"2026-11-22T22:32:43.195Z","shot":"23-sweep-Same_as_Windows.png"}
+{"t":"2026-11-22T22:32:46.797Z","shot":"24-sweep-Light.png"}
+{"t":"2026-11-22T22:32:50.642Z","shot":"25-sweep-Dark.png"}
+{"t":"2026-11-22T22:32:54.958Z","shot":"26-sweep-Use_my_Windows_accent_colour.png"}
+{"t":"2026-11-22T22:32:59.318Z","shot":"27-sweep-Zoom.png"}
+{"t":"2026-11-22T22:33:03.875Z","shot":"28-sweep-Basic.png"}
+{"t":"2026-11-22T22:33:07.120Z","shot":"29-sweep-Off.png"}
+{"t":"2026-11-22T22:33:09.620Z","shot":"30-sweep-Sounds.png"}
+{"t":"2026-11-22T22:33:13.411Z","shot":"31-sweep-Mostly_words.png"}
+{"t":"2026-11-22T22:33:15.986Z","shot":"32-sweep-Balanced.png"}
+{"t":"2026-11-22T22:33:18.334Z","shot":"33-sweep-Show_me_visuals.png"}
+{"t":"2026-11-22T22:33:19.115Z","i":14,"do":"sweep","expect":"every Appearance control visibly changes the app","controls":[{"tid":"screen-back","role":"button","name":"Back","status":"pass","effect":["screen: chat","selection changed","content changed: \"Awake on your PC / thanks 🙏\""],"issues":[],"shot":"19-sweep-screen-back.png"},{"tid":"settings-nav-account","role":"button","name":"Account & your AI","status":"pass","effect":["selection changed","content changed: \"YOUR AI / Using\""],"issues":[],"shot":"20-sweep-settings-nav-account.png"},{"tid":"settings-nav-appearance","role":"button","name":"Appearance","status":"skipped","effect":[],"issues":[],"reason":"already chosen"},{"tid":"settings-nav-shortcuts","role":"button","name":"Keyboard shortcuts","status":"pass","effect":["selection changed","content changed: \"Getting around / Search chats\t\""],"issues":[],"shot":"21-sweep-settings-nav-shortcuts.png"},{"tid":"settings-nav-about","role":"button","name":"About","status":"pass","effect":["selection changed","content changed: \"Version 0.0.1 · tester build / What's new with me\""],"issues":[],"shot":"22-sweep-settings-nav-about.png"},{"tid":"","role":"radio","name":"Same as Windows","status":"pass","effect":["theme: dark","selection changed"],"issues":[],"shot":"23-sweep-Same_as_Windows.png"},{"tid":"","role":"radio","name":"Light","status":"pass","effect":["theme: light","selection changed"],"issues":[],"shot":"24-sweep-Light.png"},{"tid":"","role":"radio","name":"Dark","status":"pass","effect":["theme: dark","selection changed"],"issues":[],"shot":"25-sweep-Dark.png"},{"tid":"","role":"switch","name":"Use my Windows accent colour","status":"pass","effect":["selection changed"],"issues":[],"shot":"26-sweep-Use_my_Windows_accent_colour.png"},{"tid":"","role":"button","name":"Zoom","status":"pass","effect":["opened menu:80%\n90%\n100%\n110%\n125%\n150%\n175%\n200%","content changed: \"80% / 90%\""],"issues":[],"shot":"27-sweep-Zoom.png"},{"tid":"","role":"radio","name":"Full","status":"skipped","effect":[],"issues":[],"reason":"already chosen"},{"tid":"","role":"radio","name":"Basic","status":"pass","effect":["selection changed"],"issues":[],"shot":"28-sweep-Basic.png"},{"tid":"","role":"radio","name":"Off","status":"pass","effect":["selection changed"],"issues":[],"shot":"29-sweep-Off.png"},{"tid":"","role":"switch","name":"Sounds","status":"pass","effect":["selection changed"],"issues":[],"shot":"30-sweep-Sounds.png"},{"tid":"","role":"switch","name":"See-through sidebar","status":"skipped","effect":[],"issues":[],"reason":"already chosen"},{"tid":"","role":"switch","name":"Show Chotu 😊’s eyes","status":"skipped","effect":[],"issues":[],"reason":"already chosen"},{"tid":"","role":"radio","name":"Mostly words","status":"pass","effect":["selection changed"],"issues":[],"shot":"31-sweep-Mostly_words.png"},{"tid":"","role":"radio","name":"Balanced","status":"pass","effect":["selection changed"],"issues":[],"shot":"32-sweep-Balanced.png"},{"tid":"","role":"radio","name":"Show me visuals","status":"pass","effect":["selection changed"],"issues":[],"shot":"33-sweep-Show_me_visuals.png"}],"truncated":0,"ok":true,"ms":60911}
+{"t":"2026-11-22T22:33:19.121Z","i":15,"do":"key","note":"undo any zoom the sweep changed, so later rounds' pictures are at normal size","soft":true,"ok":true,"ms":5}
+{"t":"2026-11-22T22:33:19.228Z","i":16,"do":"click","ok":true,"ms":107}
+{"t":"2026-11-22T22:33:19.394Z","i":17,"do":"send","typed":"make the text bigger","sentAt":1795386799379,"sent":true,"before":0,"ok":true,"ms":166}
+{"t":"2026-11-22T22:33:21.362Z","shot":"34-text-size-wait-1.5s.png"}
+{"t":"2026-11-22T22:33:22.799Z","shot":"35-text-size-wait-3.0s.png"}
+{"t":"2026-11-22T22:33:25.830Z","shot":"36-text-size-wait-6.0s.png"}
+{"t":"2026-11-22T22:33:32.988Z","shot":"37-text-size.png"}
+{"t":"2026-11-22T22:33:32.988Z","i":18,"do":"waitReply","expect":"text size changes with an Undo line, or foo says plainly where to change it; never a fake confirmation","timeline":[{"at":28,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":309,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7256,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1642,"mark":1500,"shot":"34-text-size-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3079,"mark":3000,"shot":"35-text-size-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6165,"mark":6000,"shot":"36-text-size-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":7240,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Changed: Zoom → 110%. Undo","kit":[],"replyFaults":[],"ms":13394,"shot":"37-text-size.png"}
+{"t":"2026-11-22T22:33:33.001Z","i":19,"do":"dump","ok":true,"ms":13}
+{"t":"2026-11-22T22:33:54.640Z","step":"appLog","lines":20,"dropped":0}
+{"t":"2026-11-22T22:33:54.651Z","step":"aiTurns","turns":3}
+{"t":"2026-11-22T22:33:54.654Z","step":"jobTrail","steps":0,"calls":0}

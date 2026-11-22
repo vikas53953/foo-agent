@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:14 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:14 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n4:14 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n4:14 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:14 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।\n4:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! आज शाम के लिए आलू-शिमला मिर्च बना लीजिए: तेल में जीरा चटकाकर कटे आलू नमक-हल्दी के साथ ढककर 8-10 मिनट पकाएँ।\nफिर शिमला मिर्च, धनिया पाउडर और थोड़ी लाल मिर्च डालकर 5 मिनट और भूनें, ऊपर से अमचूर छिड़क दें। 🌿\n\n4:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।\n4:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਪਾਈਨਐਪਲ ਕੇਕ ਸਭ ਤੋਂ ਵਧੀਆ ਰਹੇਗਾ: ਹਲਕਾ, ਘੱਟ ਮਿੱਠਾ ਅਤੇ ਲਗਭਗ ਹਰ ਕਿਸੇ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\nਜੇ ਉਨ੍ਹਾਂ ਨੂੰ ਦੇਸੀ ਸੁਆਦ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ, ਜਨਮਦਿਨ ਖ਼ਾਸ ਬਣ ਜਾਵੇਗਾ। 🌿\n\n4:15 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?\n4:15 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Alarm kal Tue 24 Nov, 7:00 AM ka lagao. Ghar se Tue 24 Nov, 8:05 AM tak nikal jao, toh 45 min ke raste ke baad bhi 10 min ka traffic buffer bachega aur 9:00 AM se pehle pahunch jaoge.\n\nMaine taiyaar hone ke liye lagbhag 1 ghanta maana hai. Agar tum 30 min mein ready ho jaate ho toh 7:30 AM bhi chalega. 🌿\n\n4:15 AM"
+  }
+]

@@ -1,0 +1,50 @@
+{"t":"2026-11-22T22:47:20.174Z","journey":"QA5-restart-batch1","title":"Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-22T22:47:26.580Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:47:27.144Z","shot":"01-welcome.png"}
+{"t":"2026-11-22T22:47:27.144Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":26,"shot":"01-welcome.png"}
+{"t":"2026-11-22T22:47:27.676Z","i":1,"do":"click","ok":true,"ms":531}
+{"t":"2026-11-22T22:47:28.138Z","shot":"02-finder.png"}
+{"t":"2026-11-22T22:47:28.138Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":34,"shot":"02-finder.png"}
+{"t":"2026-11-22T22:47:48.365Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-22T22:47:48.365Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":20003,"shot":"03-finder-tested.png"}
+{"t":"2026-11-22T22:47:48.365Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T22:47:48.365Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T22:47:48.366Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T22:47:48.366Z","i":7,"do":"click","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T22:47:48.366Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T22:47:49.782Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","finderWaitMs":1400,"found":0,"ok":true,"ms":1416}
+{"t":"2026-11-22T22:47:49.789Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":7}
+{"t":"2026-11-22T22:47:50.247Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":1,"ok":true,"ms":458}
+{"t":"2026-11-22T22:47:50.867Z","shot":"04-step2.png"}
+{"t":"2026-11-22T22:47:50.868Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"name","ok":true,"ms":13,"shot":"04-step2.png"}
+{"t":"2026-11-22T22:47:50.874Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Claude (your AI)\n4:17 AM","ok":true,"ms":6}
+{"t":"2026-11-22T22:47:51.281Z","i":14,"do":"click","ok":true,"ms":407}
+{"t":"2026-11-22T22:48:01.713Z","shot":"05-first-chat.png"}
+{"t":"2026-11-22T22:48:01.713Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"chat","ok":true,"ms":10011,"shot":"05-first-chat.png"}
+{"t":"2026-11-22T22:48:01.975Z","i":16,"do":"send","typed":"Ek kachhua (tortoise) ke liye 3 achhe naam batao.","sentAt":1795387681960,"sent":true,"before":0,"ok":true,"ms":262}
+{"t":"2026-11-22T22:48:04.977Z","i":17,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-11-22T22:48:16.693Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:48:16.693Z","i":18,"do":"relaunch","ok":true,"ms":11715}
+{"t":"2026-11-22T22:48:17.298Z","shot":"06-q5-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-22T22:48:17.872Z","shot":"07-q5-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-22T22:48:18.184Z","shot":"08-q5-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-22T22:48:32.020Z","shot":"09-q5-after-reopen.png"}
+{"t":"2026-11-22T22:48:32.021Z","i":19,"do":"waitReply","expect":"after closing mid-reply and reopening: the question is still there, it gets an answer or a clear Try again, and no 👀 is left behind","feature":"chat","timeline":[{"at":14742,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":20026,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":23510,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":14742,"mark":1500,"shot":"06-q5-after-reopen-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":14742,"mark":3000,"shot":"07-q5-after-reopen-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":14742,"mark":6000,"shot":"08-q5-after-reopen-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":5293,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Kachhue ke liye ye 3 naam achhe rahenge:\n\nDheeru – dheere chalne wale ke liye ekdum sahi.\nKavach – apna ghar peeth par lekar ghoomta hai.\nBolt – thoda mazaak, kyunki raftaar toh sabko pata hai. 🐢\n4:18 AM","kit":[],"replyFaults":[],"endState":true,"ms":14924,"shot":"09-q5-after-reopen.png"}
+{"t":"2026-11-22T22:48:32.029Z","i":20,"do":"clickIf","note":"if the reply was cut, press the cut-off row's own Try again once (bubble-actions-retry is the answer-row rewrite; gate 10 clicked it under the welcome line)","found":0,"ok":true,"ms":8}
+{"t":"2026-11-22T22:48:32.557Z","shot":"10-q5-answered.png"}
+{"t":"2026-11-22T22:48:32.557Z","i":21,"do":"waitJs","expect":"the tortoise question has a real answer","feature":"chat","ok":true,"ms":6,"shot":"10-q5-answered.png"}
+{"t":"2026-11-22T22:48:40.218Z","step":"launch","ok":true}
+{"t":"2026-11-22T22:48:40.219Z","i":22,"do":"relaunch","ok":true,"ms":7661}
+{"t":"2026-11-22T22:48:48.223Z","i":23,"do":"wait","ok":true,"ms":8004}
+{"t":"2026-11-22T22:48:48.865Z","shot":"11-q5-history.png"}
+{"t":"2026-11-22T22:48:48.866Z","i":24,"do":"expectText","expect":"after a second quit and reopen the chat history is all there","feature":"chat","text":"Start of your chat with foo\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n4:17 AM\nUsing Claude (your AI)\n4:17 AM\nWhat should I call myself? → Skipped\n4:17 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n4:17 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:17 AM\nEk kachhua (tortoise) ke liye 3 achhe naam batao.\n4:18 AM\nfoo\n\nKachhue ke liye ye 3 naam achhe rahenge:\n\nDheeru – dheere chalne wale ke liye ekdum sahi.\nKavach – apna ghar peeth par lekar ghoomta hai.\nBolt – thoda mazaak, kyunki raftaar toh sabko pata hai. 🐢\n4:18 AM","ok":true,"ms":62,"shot":"11-q5-history.png"}
+{"t":"2026-11-22T22:48:49.550Z","i":25,"do":"send","typed":"7 aur 8 ka jod kitna hai? sirf number","sentAt":1795387729365,"sent":true,"before":0,"ok":true,"ms":684}
+{"t":"2026-11-22T22:48:51.478Z","shot":"12-q5-key-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-22T22:48:53.028Z","shot":"13-q5-key-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-22T22:48:55.894Z","shot":"14-q5-key-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-22T22:49:04.481Z","shot":"15-q5-key-after-reopen.png"}
+{"t":"2026-11-22T22:49:04.481Z","i":26,"do":"waitReply","expect":"after two restarts the stored key still works with real Claude","feature":"ai","timeline":[{"at":212,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7471,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":8656,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1574,"mark":1500,"shot":"12-q5-key-after-reopen-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3245,"mark":3000,"shot":"13-q5-key-after-reopen-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6090,"mark":6000,"shot":"14-q5-key-after-reopen-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":7286,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"15\n\n4:18 AM","kit":[],"replyFaults":[],"endState":true,"ms":14606,"shot":"15-q5-key-after-reopen.png"}
+{"t":"2026-11-22T22:49:04.507Z","i":27,"do":"dump","ok":true,"ms":25}
+{"t":"2026-11-22T22:49:06.344Z","step":"appLog","lines":13,"dropped":0}
+{"t":"2026-11-22T22:49:06.368Z","step":"aiTurns","turns":2}
+{"t":"2026-11-22T22:49:06.375Z","step":"jobTrail","steps":0,"calls":0}
