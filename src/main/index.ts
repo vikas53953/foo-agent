@@ -178,7 +178,11 @@ void owned.then((lock) => {
     installVault({
       vault: new SecretVault({
         db: store,
-        keyring: testClock ? memoryKeyring() : process.platform === 'win32' ? napiKeyring() : null,
+        keyring: testClock
+          ? memoryKeyring()
+          : process.platform === 'win32'
+            ? napiKeyring((kind) => logEvent({ lvl: 'error', mod: 'vault', evt: 'KEYRING_UNAVAILABLE', kind }))
+            : null,
         safe: testClock ? memorySafeStore() : safeStorage,
         blobDir: join(paths.data, 'vault'),
         clock: deps.clock,
