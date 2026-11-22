@@ -1,0 +1,22 @@
+{"t":"2026-11-22T20:12:05.823Z","journey":"G5-wrong-key","title":"Release gate: a fresh PC where the user pastes a wrong key, and types in the chat before any AI is connected","spec":"07-1 J2; 06-1 §2.2 key row; walkthrough UX-02-07..09","exe":"C:\\Users\\vikasmit\\AppData\\Local\\Programs\\foo\\foo.exe"}
+{"t":"2026-11-22T20:12:12.472Z","step":"launch","ok":true}
+{"t":"2026-11-22T20:12:12.571Z","i":0,"do":"waitFor","ok":true,"ms":17}
+{"t":"2026-11-22T20:12:13.047Z","i":1,"do":"click","ok":true,"ms":475}
+{"t":"2026-11-22T20:12:13.123Z","i":2,"do":"waitFor","ok":true,"ms":74}
+{"t":"2026-11-22T20:12:28.693Z","shot":"01-locked-composer.png"}
+{"t":"2026-11-22T20:12:28.694Z","i":3,"do":"wait","expect":"the message box says to connect an AI first; Send is not live","ref":"UX-02-03","ok":true,"ms":15010,"shot":"01-locked-composer.png"}
+{"t":"2026-11-22T20:12:52.180Z","shot":"02-error-step4.png"}
+{"t":"2026-11-22T20:12:52.180Z","i":4,"do":"click","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"02-error-step4.png","ms":23486}
+{"t":"2026-11-22T20:13:22.649Z","shot":"03-error-step5.png"}
+{"t":"2026-11-22T20:13:22.649Z","i":5,"do":"waitFor","ok":false,"error":"locator.waitFor: Timeout 30000ms exceeded.","errorShot":"03-error-step5.png","ms":30469}
+{"t":"2026-11-22T20:13:53.224Z","shot":"04-error-step6.png"}
+{"t":"2026-11-22T20:13:53.226Z","i":6,"do":"fill","ok":false,"error":"locator.fill: Timeout 30000ms exceeded.","errorShot":"04-error-step6.png","ms":30577}
+{"t":"2026-11-22T20:14:16.767Z","shot":"05-error-step7.png"}
+{"t":"2026-11-22T20:14:16.767Z","i":7,"do":"click","ok":false,"error":"locator.click: Timeout 15000ms exceeded.","errorShot":"05-error-step7.png","ms":23540}
+{"t":"2026-11-22T20:14:47.208Z","shot":"06-wrong-key.png"}
+{"t":"2026-11-22T20:14:47.208Z","i":8,"do":"wait","expect":"the key row says plainly the key did not work and offers to try again; no crash, no fake works","ok":true,"ms":30005,"shot":"06-wrong-key.png"}
+{"t":"2026-11-22T20:14:47.213Z","i":9,"do":"check","note":"a wrong key is never offered as Use","found":1,"ok":false,"ms":4}
+{"t":"2026-11-22T20:14:47.235Z","i":10,"do":"dump","ok":true,"ms":21}
+{"t":"2026-11-22T20:14:51.093Z","step":"appLog","lines":3,"dropped":0}
+{"t":"2026-11-22T20:14:51.274Z","step":"aiTurns","turns":0}
+{"t":"2026-11-22T20:14:51.318Z","step":"jobTrail","steps":0,"calls":0}

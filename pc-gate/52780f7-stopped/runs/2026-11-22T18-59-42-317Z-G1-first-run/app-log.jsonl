@@ -1,0 +1,10 @@
+{"t":1795373995332,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795374093697,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":25091}
+{"t":1795374148689,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":65088}
+{"t":1795374392182,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":18308}
+{"t":1795374406193,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":11279}
+{"t":1795374412915,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":11171}
+{"t":1795374454909,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":41968}
+{"t":1795374508290,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795374519006,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1795374519008,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

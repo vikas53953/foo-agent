@@ -1,0 +1,5 @@
+{"t":1795382787216,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795382800814,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":5977}
+{"t":1795382811211,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":10387}
+{"t":1795383775974,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":8937}
+{"t":1795384368113,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

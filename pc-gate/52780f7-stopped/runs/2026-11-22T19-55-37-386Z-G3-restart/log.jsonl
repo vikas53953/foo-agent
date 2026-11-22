@@ -1,0 +1,34 @@
+{"t":"2026-11-22T19:55:37.388Z","journey":"G3-restart","title":"Release gate: close foo while it is answering, and reopen; quit from the menu and reopen","spec":"04 §19.4 (cut-off reply); 09 (window, quit); B14","exe":"C:\\Users\\vikasmit\\AppData\\Local\\Programs\\foo\\foo.exe"}
+{"t":"2026-11-22T19:55:43.662Z","step":"launch","ok":true}
+{"t":"2026-11-22T19:56:14.420Z","shot":"01-error-step0.png"}
+{"t":"2026-11-22T19:56:14.422Z","i":0,"do":"send","typed":"Give me 5 tips to sleep better, one line each","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"01-error-step0.png","ms":30753}
+{"t":"2026-11-22T19:56:18.074Z","shot":"02-mid-reply.png"}
+{"t":"2026-11-22T19:56:18.075Z","i":1,"do":"wait","expect":"foo is answering (Thinking row or words streaming)","ok":true,"ms":3010,"shot":"02-mid-reply.png"}
+{"t":"2026-11-22T19:57:13.442Z","step":"launch","ok":true}
+{"t":"2026-11-22T19:57:13.443Z","i":2,"do":"relaunch","feature":"install","ok":true,"ms":55368}
+{"t":"2026-11-22T19:57:15.476Z","shot":"03-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-22T19:57:16.901Z","shot":"04-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-22T19:57:19.701Z","shot":"05-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-22T19:59:44.517Z","shot":"06-after-reopen.png"}
+{"t":"2026-11-22T19:59:44.517Z","i":3,"do":"waitReply","expect":"after reopening, the question is answered, or the cut-off reply shows Try again; never 👀 or the Thinking row left forever","timeline":[{"at":32,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1640,"mark":1500,"shot":"03-after-reopen-wait-1.5s.png","badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":3140,"mark":3000,"shot":"04-after-reopen-wait-3.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":6060,"mark":6000,"shot":"05-after-reopen-wait-6.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":0}],"firstReplyMs":null,"newBubbles":0,"reactions":[],"ok":false,"duplicates":0,"lastReply":"","kit":[],"replyFaults":["no reply words"],"ms":150197,"shot":"06-after-reopen.png"}
+{"t":"2026-11-22T19:59:44.522Z","i":4,"do":"check","note":"no Thinking row stuck after the reopen","found":0,"ok":true,"ms":3}
+{"t":"2026-11-22T19:59:45.272Z","i":5,"do":"click","feature":"install","ok":true,"ms":689}
+{"t":"2026-11-22T19:59:46.661Z","shot":"07-more-menu.png"}
+{"t":"2026-11-22T19:59:46.661Z","i":6,"do":"wait","expect":"the menu shows Settings, Keyboard shortcuts and Quit only (batch 1)","feature":"install","ok":true,"ms":812,"shot":"07-more-menu.png"}
+{"t":"2026-11-22T19:59:46.690Z","i":7,"do":"key","ok":true,"ms":28}
+{"t":"2026-11-22T19:59:52.984Z","i":8,"do":"quit","feature":"install","ok":true,"ms":6293}
+{"t":"2026-11-22T19:59:59.120Z","step":"launch","ok":true}
+{"t":"2026-11-22T19:59:59.122Z","i":9,"do":"relaunch","feature":"install","ok":true,"ms":6132}
+{"t":"2026-11-22T20:00:02.640Z","shot":"08-after-quit-reopen.png"}
+{"t":"2026-11-22T20:00:02.641Z","i":10,"do":"wait","expect":"reopens on the same chat with all earlier messages; no error card","feature":"install","ok":true,"ms":3010,"shot":"08-after-quit-reopen.png"}
+{"t":"2026-11-22T20:00:33.149Z","shot":"09-error-step11.png"}
+{"t":"2026-11-22T20:00:33.149Z","i":11,"do":"send","typed":"are you still there?","ok":false,"error":"locator.click: Timeout 30000ms exceeded.","errorShot":"09-error-step11.png","ms":30508}
+{"t":"2026-11-22T20:00:35.221Z","shot":"10-still-there-wait-1.5s.png"}
+{"t":"2026-11-22T20:00:36.608Z","shot":"11-still-there-wait-3.0s.png"}
+{"t":"2026-11-22T20:00:39.855Z","shot":"12-still-there-wait-6.0s.png"}
+{"t":"2026-11-22T20:02:33.594Z","shot":"13-still-there.png"}
+{"t":"2026-11-22T20:02:33.594Z","i":12,"do":"waitReply","expect":"a normal short reply after the restart","timeline":[{"at":15,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1552,"mark":1500,"shot":"10-still-there-wait-1.5s.png","badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":3209,"mark":3000,"shot":"11-still-there-wait-3.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":6222,"mark":6000,"shot":"12-still-there-wait-6.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":0}],"firstReplyMs":null,"newBubbles":0,"reactions":[],"ok":false,"duplicates":0,"lastReply":"","kit":[],"replyFaults":["no reply words"],"ms":120208,"shot":"13-still-there.png"}
+{"t":"2026-11-22T20:02:33.624Z","i":13,"do":"dump","ok":true,"ms":29}
+{"t":"2026-11-22T20:02:39.189Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-11-22T20:02:39.302Z","step":"aiTurns","turns":0}
+{"t":"2026-11-22T20:02:39.307Z","step":"jobTrail","steps":0,"calls":0}

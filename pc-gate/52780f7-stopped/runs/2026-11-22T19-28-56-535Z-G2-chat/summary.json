@@ -1,0 +1,775 @@
+{
+  "journey": "G2-chat",
+  "title": "Release gate: just chatting like a real person, in Hinglish, Hindi, Punjabi and with typos, while the AI takes its time",
+  "feature": "chat",
+  "videos": [
+    "video/page@7348f8150d40ce5a639c63bc7b102825.webm"
+  ],
+  "steps": 28,
+  "failed": 21,
+  "out": "C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-22T19-28-56-535Z-G2-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "01-error-step0.png",
+      "ms": 30981
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "while waiting: the Thinking row (foo's small face) and no 👀 on my message; after: one short warm reply",
+      "ref": "UX-08-02",
+      "timeline": [
+        {
+          "at": 25,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1683,
+          "mark": 1500,
+          "shot": "02-hi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3072,
+          "mark": 3000,
+          "shot": "03-hi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6261,
+          "mark": 6000,
+          "shot": "04-hi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120319,
+      "shot": "05-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "kal office jaana hai, mood off hai yaar. kuch motivate karo",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "06-error-step2.png",
+      "ms": 30703
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a short, kind reply in Hinglish (Roman script), not in English or Devanagari",
+      "ref": "UX-08-04",
+      "timeline": [
+        {
+          "at": 118,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1542,
+          "mark": 1500,
+          "shot": "07-hinglish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3217,
+          "mark": 3000,
+          "shot": "08-hinglish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6224,
+          "mark": 6000,
+          "shot": "09-hinglish-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120045,
+      "shot": "10-hinglish.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "आज दिल्ली में मौसम कैसा रहेगा, अंदाज़ा बताओ?",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "11-error-step4.png",
+      "ms": 30675
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "Devanagari shows properly (no boxes); the answer is in Hindi and honest that it cannot check live weather",
+      "timeline": [
+        {
+          "at": 9,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1768,
+          "mark": 1500,
+          "shot": "12-hindi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3348,
+          "mark": 3000,
+          "shot": "13-hindi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6061,
+          "mark": 6000,
+          "shot": "14-hindi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120253,
+      "shot": "15-hindi.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "16-error-step6.png",
+      "ms": 30901
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "Gurmukhi shows properly; the joke is in Punjabi",
+      "ref": "UX-08-05",
+      "timeline": [
+        {
+          "at": 9,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1747,
+          "mark": 1500,
+          "shot": "17-punjabi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3086,
+          "mark": 3000,
+          "shot": "18-punjabi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6055,
+          "mark": 6000,
+          "shot": "19-punjabi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120213,
+      "shot": "20-punjabi.png"
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "typed": "wat is teh capitl of austrlia??",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "21-error-step8.png",
+      "ms": 30766
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "understands the typos: Canberra, in one short bubble, no lecture about spelling",
+      "timeline": [
+        {
+          "at": 76,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1788,
+          "mark": 1500,
+          "shot": "22-typos-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3017,
+          "mark": 3000,
+          "shot": "23-typos-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6056,
+          "mark": 6000,
+          "shot": "24-typos-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120036,
+      "shot": "25-typos.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Write me a 3 paragraph story about a tiger who learns to cook biryani",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "26-error-step10.png",
+      "ms": 30621
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words",
+      "timeline": [
+        {
+          "at": 12,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1566,
+          "mark": 1500,
+          "shot": "27-long-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3164,
+          "mark": 3000,
+          "shot": "28-long-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6170,
+          "mark": 6000,
+          "shot": "29-long-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 180250,
+      "shot": "30-long.png"
+    },
+    {
+      "i": 12,
+      "do": "sweep",
+      "expect": "every control in the chat (answer actions, chips, links) does something visible; nothing covers a bubble's words",
+      "controls": [
+        {
+          "tid": "thread-log",
+          "role": "log",
+          "name": "Messages with foo",
+          "status": "skipped",
+          "effect": [],
+          "issues": [],
+          "reason": "own journey covers it"
+        },
+        {
+          "tid": "setup-ai-row",
+          "role": "listitem",
+          "name": "Claude, signed in, works",
+          "status": "fail",
+          "effect": [
+            "NO VISIBLE EFFECT"
+          ],
+          "issues": [],
+          "shot": "31-sweep-setup-ai-row.png"
+        },
+        {
+          "tid": "setup-ai-row-action",
+          "role": "button",
+          "name": "Test again",
+          "status": "pass",
+          "effect": [
+            "content changed: \"Testing… / ChatGPT Testing…\""
+          ],
+          "issues": [],
+          "shot": "32-sweep-setup-ai-row-action.png"
+        },
+        {
+          "tid": "setup-ai-row-action",
+          "role": "button",
+          "name": "Add in secret box",
+          "status": "pass",
+          "effect": [
+            "content changed: \"Which key is it? / 1\""
+          ],
+          "issues": [],
+          "shot": "33-sweep-setup-ai-row-action.png"
+        },
+        {
+          "tid": "setup-ai-use",
+          "role": "button",
+          "name": "Use Claude",
+          "status": "skipped",
+          "effect": [
+            "no longer on screen",
+            "could not click: locator.hover: Timeout 2000ms exceeded."
+          ],
+          "issues": [],
+          "reason": "no longer on screen after an earlier click"
+        }
+      ],
+      "truncated": 0,
+      "ok": false,
+      "ms": 46308
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 30
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "error": "locator.click: Timeout 15000ms exceeded.",
+      "errorShot": "34-error-step14.png",
+      "ms": 15971,
+      "late": true
+    },
+    {
+      "i": 15,
+      "do": "key",
+      "ok": true,
+      "ms": 8
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "pressing Enter on an empty box sends nothing: no empty bubble",
+      "ok": true,
+      "ms": 1507,
+      "shot": "35-empty-send.png"
+    },
+    {
+      "i": 17,
+      "do": "pasteSend",
+      "typed": "line one\n\nline three after a blank line",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "36-error-step17.png",
+      "ms": 30244
+    },
+    {
+      "i": 18,
+      "do": "waitReply",
+      "expect": "the pasted text with a blank line went as ONE message, exactly as pasted, and foo answered it once",
+      "timeline": [
+        {
+          "at": 9,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1594,
+          "mark": 1500,
+          "shot": "37-paste-blank-line-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3229,
+          "mark": 3000,
+          "shot": "38-paste-blank-line-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6054,
+          "mark": 6000,
+          "shot": "39-paste-blank-line-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120150,
+      "shot": "40-paste-blank-line.png"
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "typed": "thanks 🙏",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "41-error-step19.png",
+      "ms": 30641
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "expect": "a small 👍 or ❤️ reaction on my thanks, or one short line; no long You're welcome speech",
+      "ref": "UX-08-01",
+      "timeline": [
+        {
+          "at": 18,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1529,
+          "mark": 1500,
+          "shot": "42-thanks-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3198,
+          "mark": 3000,
+          "shot": "43-thanks-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6279,
+          "mark": 6000,
+          "shot": "44-thanks-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply and no reaction"
+      ],
+      "ms": 60237,
+      "shot": "45-thanks.png"
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "typed": "asdfghjkl qwerty ???",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "46-error-step21.png",
+      "ms": 30657
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash",
+      "timeline": [
+        {
+          "at": 11,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1734,
+          "mark": 1500,
+          "shot": "47-gibberish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3144,
+          "mark": 3000,
+          "shot": "48-gibberish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6009,
+          "mark": 6000,
+          "shot": "49-gibberish-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120154,
+      "shot": "50-gibberish.png"
+    },
+    {
+      "i": 23,
+      "do": "check",
+      "note": "Vikas 26 Oct: batch 1 has no jobs, so no job filter chips",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 57
+    },
+    {
+      "i": 24,
+      "do": "check",
+      "note": "batch 1 has no helpers",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "typed": "maine kal cab book karne bola tha, ho gaya kya?",
+      "ok": false,
+      "error": "locator.click: Timeout 30000ms exceeded.",
+      "errorShot": "51-error-step25.png",
+      "ms": 30327
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "expect": "Vikas 26 Oct: honest that foo cannot book cabs or do tasks yet and booked nothing; never \"I have no record\", never a fake booking",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 9,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1689,
+          "mark": 1500,
+          "shot": "52-cab-honesty-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 3138,
+          "mark": 3000,
+          "shot": "53-cab-honesty-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 6150,
+          "mark": 6000,
+          "shot": "54-cab-honesty-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [],
+      "ok": false,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [
+        "no reply words"
+      ],
+      "ms": 120053,
+      "shot": "55-cab-honesty.png"
+    },
+    {
+      "i": 27,
+      "do": "dump",
+      "ok": true,
+      "ms": 19
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{"t":1795380797643,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795380815838,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":10926}
+{"t":1795380844033,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":28180}
+{"t":1795380939373,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":10448}
+{"t":1795380957388,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":18006}
+{"t":1795381025317,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795381040150,"lvl":"error","mod":"ipc","evt":"IPC_FAILED","kind":"ai:verify TypeError"}

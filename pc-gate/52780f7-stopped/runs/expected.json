@@ -1,0 +1,105 @@
+[
+  {
+    "journey": "G1-first-run",
+    "features": [
+      "install",
+      "ai",
+      "name"
+    ],
+    "count": 1
+  },
+  {
+    "journey": "B1-batch1",
+    "features": [
+      "ai",
+      "chat",
+      "refusals",
+      "settings",
+      "install"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "G2-chat",
+    "features": [
+      "chat",
+      "refusals"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "G3-restart",
+    "features": [
+      "chat",
+      "install"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "G4-settings",
+    "features": [
+      "settings"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "G5-wrong-key",
+    "features": [
+      "ai"
+    ],
+    "count": 1
+  },
+  {
+    "journey": "QA1-batch1-recheck",
+    "features": [
+      "install",
+      "ai",
+      "name",
+      "chat",
+      "refusals",
+      "settings"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "QA2-setup-key-name-face-vibe",
+    "features": [
+      "install",
+      "ai",
+      "name",
+      "chat"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "QA3-languages-batch1",
+    "features": [
+      "install",
+      "ai",
+      "name",
+      "chat"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "QA4-settings-batch1",
+    "features": [
+      "install",
+      "ai",
+      "name",
+      "chat",
+      "settings"
+    ],
+    "count": 3
+  },
+  {
+    "journey": "QA5-restart-batch1",
+    "features": [
+      "install",
+      "ai",
+      "name",
+      "chat"
+    ],
+    "count": 3
+  }
+]
