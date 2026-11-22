@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n4:53 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, cab book nahi hui hai. Main abhi booking jaise kaam kar nahi sakta, isliye cab tumhe khud app se book karni hogi.\n\n4:53 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n4:53 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 tips to sleep better:\n\nSleep and wake at the same time every day, weekends too.\nPut your phone away 30 to 60 minutes before bed.\nSkip tea and coffee after 3:00 PM.\nKeep your room dark, cool and quiet.\nEat a light dinner at least 2 hours before you sleep.\n4:54 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n4:54 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Yes, I'm right here. What do you need?\n\n4:54 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "dark mode kar do please\n4:54 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "nahi, wapas light kar do\n4:55 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "I’m looking for the AI you already use…\n4:55 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:55 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "shown",
+    "text": "I’m looking for the AI you already use…\n\nClaude\nsigned in\nworks\nChatGPT\nsigned in\nTesting…\nGemini\nnot found\nYour own key\nAdd in secret box\nAI on this PC\nfree, runs on this PC\nnot found"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "make the text bigger\n4:57 AM"
+  }
+]

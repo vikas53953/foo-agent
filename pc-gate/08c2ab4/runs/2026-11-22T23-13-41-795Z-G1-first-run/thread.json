@@ -1,0 +1,67 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n4:43 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:43 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n4:44 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:44 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "What should I call myself? → Chotu 😊\n4:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Chotu 😊 it is.\n\n4:45 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Pick a face. → Face ✿ (flower)\n4:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:45 AM"
+  },
+  {
+    "kind": "card-choice",
+    "state": "answered",
+    "text": "How should I talk to you? → Straight to the point\n4:45 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "4:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Straight to the point. Got it. 🎯\n\n4:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm Chotu 😊, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n4:45 AM"
+  }
+]

@@ -1,0 +1,64 @@
+{"t":"2026-11-22T23:35:52.284Z","journey":"QA4-settings-batch1","title":"Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-22T23:35:58.979Z","step":"launch","ok":true}
+{"t":"2026-11-22T23:35:59.306Z","shot":"01-welcome.png"}
+{"t":"2026-11-22T23:35:59.307Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":9,"shot":"01-welcome.png"}
+{"t":"2026-11-22T23:35:59.794Z","i":1,"do":"click","ok":true,"ms":487}
+{"t":"2026-11-22T23:36:00.267Z","shot":"02-finder.png"}
+{"t":"2026-11-22T23:36:00.267Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":10,"shot":"02-finder.png"}
+{"t":"2026-11-22T23:36:20.580Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-22T23:36:20.580Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":20002,"shot":"03-finder-tested.png"}
+{"t":"2026-11-22T23:36:20.580Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T23:36:20.580Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T23:36:20.581Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T23:36:20.581Z","i":7,"do":"click","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T23:36:20.581Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-22T23:36:21.503Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","finderWaitMs":920,"found":0,"ok":true,"ms":922}
+{"t":"2026-11-22T23:36:21.504Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":1}
+{"t":"2026-11-22T23:36:21.735Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":1,"ok":true,"ms":230}
+{"t":"2026-11-22T23:36:21.960Z","shot":"04-step2.png"}
+{"t":"2026-11-22T23:36:21.960Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"name","ok":true,"ms":9,"shot":"04-step2.png"}
+{"t":"2026-11-22T23:36:21.964Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Claude (your AI)\n5:05 AM","ok":true,"ms":4}
+{"t":"2026-11-22T23:36:22.294Z","i":14,"do":"click","ok":true,"ms":329}
+{"t":"2026-11-22T23:36:32.677Z","shot":"05-first-chat.png"}
+{"t":"2026-11-22T23:36:32.677Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"chat","ok":true,"ms":10000,"shot":"05-first-chat.png"}
+{"t":"2026-11-22T23:36:32.773Z","i":16,"do":"key","ok":true,"ms":95}
+{"t":"2026-11-22T23:36:34.812Z","shot":"06-q4-settings.png"}
+{"t":"2026-11-22T23:36:34.816Z","i":17,"do":"wait","expect":"Settings opens with Ctrl+,","feature":"settings","ok":true,"ms":1510,"shot":"06-q4-settings.png"}
+{"t":"2026-11-22T23:36:34.860Z","i":18,"do":"check","note":"the Settings screen is open","found":1,"ok":true,"ms":41}
+{"t":"2026-11-22T23:36:34.868Z","i":19,"do":"check","note":"batch 1 has no money settings","found":0,"ok":true,"ms":6}
+{"t":"2026-11-22T23:36:34.872Z","i":20,"do":"check","note":"batch 1 has no connections","found":0,"ok":true,"ms":3}
+{"t":"2026-11-22T23:36:34.880Z","i":21,"do":"check","note":"batch 1 has no routines","found":0,"ok":true,"ms":7}
+{"t":"2026-11-22T23:36:35.169Z","i":22,"do":"click","ok":true,"ms":289}
+{"t":"2026-11-22T23:36:36.525Z","shot":"07-q4-appearance.png"}
+{"t":"2026-11-22T23:36:36.525Z","i":23,"do":"wait","expect":"Appearance: theme and text size rows","feature":"settings","ok":true,"ms":800,"shot":"07-q4-appearance.png"}
+{"t":"2026-11-22T23:36:36.528Z","i":24,"do":"check","found":1,"ok":true,"ms":2}
+{"t":"2026-11-22T23:36:36.695Z","i":25,"do":"clickIf","found":1,"ok":true,"ms":166}
+{"t":"2026-11-22T23:36:37.861Z","shot":"08-q4-account.png"}
+{"t":"2026-11-22T23:36:37.861Z","i":26,"do":"wait","expect":"Account: your AI shows the Anthropic key in use","feature":"settings","ok":true,"ms":805,"shot":"08-q4-account.png"}
+{"t":"2026-11-22T23:36:37.870Z","i":27,"do":"clickIf","found":0,"ok":true,"ms":9}
+{"t":"2026-11-22T23:36:39.014Z","shot":"09-q4-chat.png"}
+{"t":"2026-11-22T23:36:39.015Z","i":28,"do":"wait","expect":"Chat settings page has real rows, not empty","feature":"settings","ok":true,"ms":804,"shot":"09-q4-chat.png"}
+{"t":"2026-11-22T23:36:39.145Z","i":29,"do":"clickIf","found":1,"ok":true,"ms":128}
+{"t":"2026-11-22T23:36:40.443Z","shot":"10-q4-shortcuts.png"}
+{"t":"2026-11-22T23:36:40.443Z","i":30,"do":"wait","expect":"Keyboard shortcuts page lists keys","feature":"settings","ok":true,"ms":816,"shot":"10-q4-shortcuts.png"}
+{"t":"2026-11-22T23:36:40.563Z","i":31,"do":"clickIf","found":1,"ok":true,"ms":120}
+{"t":"2026-11-22T23:36:41.799Z","shot":"11-q4-about.png"}
+{"t":"2026-11-22T23:36:41.801Z","i":32,"do":"wait","expect":"About page has version and What leaves this PC","feature":"settings","ok":true,"ms":810,"shot":"11-q4-about.png"}
+{"t":"2026-11-22T23:36:41.913Z","i":33,"do":"key","ok":true,"ms":110}
+{"t":"2026-11-22T23:36:42.913Z","i":34,"do":"wait","ok":true,"ms":1000}
+{"t":"2026-11-22T23:36:42.929Z","i":35,"do":"check","note":"Esc closes Settings","found":0,"ok":true,"ms":16}
+{"t":"2026-11-22T23:36:43.289Z","i":36,"do":"send","typed":"Switch to dark mode","sentAt":1795390603279,"sent":true,"before":0,"ok":true,"ms":359}
+{"t":"2026-11-22T23:36:43.866Z","shot":"12-q4-dark.png"}
+{"t":"2026-11-22T23:36:43.868Z","i":37,"do":"waitFor","expect":"dark theme by chat, one Changed line with Undo","feature":"settings","ok":true,"ms":6,"shot":"12-q4-dark.png"}
+{"t":"2026-11-22T23:36:45.092Z","shot":"13-reply-wait-1.5s.png"}
+{"t":"2026-11-22T23:36:46.938Z","shot":"14-reply-wait-3.0s.png"}
+{"t":"2026-11-22T23:36:55.620Z","i":38,"do":"waitReply","note":"a settings ask is never answered with an off-feature line","timeline":[{"at":630,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6110,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1515,"mark":1500,"shot":"13-reply-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3324,"mark":3000,"shot":"14-reply-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":5519,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Changed: Theme → Dark. Undo","kit":[],"replyFaults":[],"ms":11750}
+{"t":"2026-11-22T23:37:03.858Z","step":"launch","ok":true}
+{"t":"2026-11-22T23:37:03.859Z","i":39,"do":"relaunch","ok":true,"ms":8239}
+{"t":"2026-11-22T23:37:11.863Z","i":40,"do":"wait","ok":true,"ms":8002}
+{"t":"2026-11-22T23:37:12.337Z","shot":"15-q4-dark-after-reopen.png"}
+{"t":"2026-11-22T23:37:12.337Z","i":41,"do":"waitFor","expect":"dark theme survives quit and reopen","feature":"settings","ok":true,"ms":13,"shot":"15-q4-dark-after-reopen.png"}
+{"t":"2026-11-22T23:37:12.369Z","i":42,"do":"dump","ok":true,"ms":31}
+{"t":"2026-11-22T23:37:13.175Z","step":"appLog","lines":6,"dropped":0}
+{"t":"2026-11-22T23:37:13.198Z","step":"aiTurns","turns":1}
+{"t":"2026-11-22T23:37:13.203Z","step":"jobTrail","steps":0,"calls":0}
