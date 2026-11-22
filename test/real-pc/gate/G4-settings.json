@@ -15,8 +15,11 @@
       "timeoutMs": 120000
     },
     {
-      "do": "wait",
-      "ms": 4000,
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "replyRe": "theme",
+      "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
+      "maxBubbles": 1,
       "shot": "dark",
       "expect": "the whole app turns dark; one line: Changed: Theme → Dark · Undo",
       "ref": "UX-24-07"
@@ -31,8 +34,11 @@
       "timeoutMs": 120000
     },
     {
-      "do": "wait",
-      "ms": 4000,
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "replyRe": "theme",
+      "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
+      "maxBubbles": 1,
       "shot": "light",
       "expect": "back to light; the same kind of one line with Undo"
     },
@@ -107,7 +113,10 @@
       "do": "waitReply",
       "timeoutMs": 120000,
       "shot": "text-size",
-      "expect": "text size changes with an Undo line, or foo says plainly where to change it; never a fake confirmation"
+      "expect": "text size changes with an Undo line, or foo says plainly where to change it; never a fake confirmation",
+      "replyRe": "text size|zoom|settings",
+      "replyNot": "^\\s*done\\b",
+      "maxBubbles": 1
     },
     {
       "do": "dump",

@@ -113,7 +113,8 @@
       "shot": "q1-chat",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "a reply; 👀 never shows while foo answers (Vikas 27 Oct, QA-X-F27)",
-      "feature": "chat"
+      "feature": "chat",
+      "script": "latin"
     },
     {
       "do": "check",
@@ -136,8 +137,9 @@
       "note": "QA (Vikas bug 1): Try again on the finished answer"
     },
     {
-      "do": "wait",
-      "ms": 20000
+      "do": "waitJs",
+      "timeoutMs": 120000,
+      "js": "(()=>{const l=document.querySelector('[data-testid=\"thread-log\"]');return !!l&&/Rewritten/.test(l.innerText)&&!l.querySelector('[data-testid=\"bubble-foo\"][data-state=\"streaming\"]')})()"
     },
     {
       "do": "expectText",
@@ -157,7 +159,9 @@
       "shot": "q4-ok",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "foo replies OK",
-      "feature": "chat"
+      "feature": "chat",
+      "replyRe": "^\\s*ok\\b",
+      "maxBubbles": 1
     },
     {
       "do": "click",
@@ -201,7 +205,9 @@
       "shot": "q6-reply",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "foo replies",
-      "feature": "chat"
+      "feature": "chat",
+      "replyRe": "^\\s*ok\\b",
+      "maxBubbles": 1
     },
     {
       "do": "paste",
@@ -280,8 +286,11 @@
       "expect": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)"
     },
     {
-      "do": "wait",
-      "ms": 4000
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "replyRe": "theme",
+      "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
+      "maxBubbles": 1
     },
     {
       "do": "send",

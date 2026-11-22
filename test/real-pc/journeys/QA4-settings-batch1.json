@@ -223,10 +223,12 @@
       "expect": "dark theme by chat, one Changed line with Undo"
     },
     {
-      "do": "expectText",
-      "tid": "thread-log",
-      "re": "can.t remember|can.t do tasks",
-      "not": true,
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "replyRe": "theme",
+      "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
+      "maxBubbles": 1,
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "note": "a settings ask is never answered with an off-feature line"
     },
     {
