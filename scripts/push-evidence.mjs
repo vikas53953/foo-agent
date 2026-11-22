@@ -4,6 +4,8 @@
 // Adds one folder to the evidence branch WITHOUT checking that branch out: it holds every gate's pictures, and a worktree
 // of it took longer than the gate run itself on Vikas's PC (pc-gate b1c3cf6). A private index starts from the branch's
 // tree, takes the new folder from a staging directory, and becomes one commit on top; push, and on a race fetch and redo.
+// --missing-ok: in a partial clone the branch's old blobs are not local, and write-tree would otherwise download them all
+// (6.6 GB on Vikas's PC); the tree only needs their ids.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -28,7 +30,7 @@ export function pushEvidence(repo, stage, folder, message) {
       return false;
     if (git(['read-tree', 'origin/evidence']).status !== 0) return false;
     if (git(['--work-tree', stage, 'add', '-A', '--', folder.replaceAll('\\', '/')]).status !== 0) return false;
-    const tree = git(['write-tree']).stdout.trim();
+    const tree = git(['write-tree', '--missing-ok']).stdout.trim();
     const commit = git([
       '-c',
       'user.name=foo-pc-gate',
