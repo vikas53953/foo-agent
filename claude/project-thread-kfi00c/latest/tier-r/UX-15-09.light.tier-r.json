@@ -154,6 +154,7 @@
         "or",
         "sent.",
         "Done",
+        "1",
         "M",
         "Money",
         "9:41",
@@ -389,7 +390,7 @@
         "the",
         "beach",
         "9:36",
-        "⛔",
+        "⏳",
         "Goa",
         "stay",
         "live",
@@ -553,8 +554,8 @@
     "total": 30966
   },
   "r5": {
-    "ratio": 0.0795185546875,
-    "diffPixels": 81427,
+    "ratio": 0.079625,
+    "diffPixels": 81536,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-15-09.light.diff.png"
