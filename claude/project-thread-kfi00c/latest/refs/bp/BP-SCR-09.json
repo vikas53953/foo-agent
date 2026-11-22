@@ -1,0 +1,50 @@
+{
+  "id": "BP-SCR-09",
+  "family": "bp",
+  "selector": "#scrgal > .scr:nth-child(9) > .body",
+  "box": {
+    "x": 914.15625,
+    "y": 14315.6875,
+    "width": 383.34375,
+    "height": 318
+  },
+  "files": {
+    "light": {
+      "png": "BP-SCR-09.light.png",
+      "sha256": "7ed9e300b02bc2e2de762479714b62b1b7d8d1a4af2890d7c7bf3150e482c20e"
+    },
+    "dark": {
+      "png": "BP-SCR-09.dark.png",
+      "sha256": "f63973a2b925e95716875ff6f9d1d4b2702919cc51c7a120b8483f3e968a6eb0"
+    }
+  },
+  "texts": [
+    "People",
+    "Brother Rohit lives in Pune",
+    "You said · Mon 28 Sep · Edit · Forget · Mark private",
+    "Preferences",
+    "Prefers window seats",
+    "I guessed · from 4 bookings · Edit · Forget",
+    "Search, export, forget with undo."
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-SCR-09": {
+      "x": 0,
+      "y": 0,
+      "width": 383.34375,
+      "height": 318
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M6",
+  "spec": "06-2 §7",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}
