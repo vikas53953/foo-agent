@@ -1,0 +1,49 @@
+{
+  "id": "BP-CARD-12",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(12) > .mini",
+  "box": {
+    "x": 930.15625,
+    "y": 11869.40625,
+    "width": 351.34375,
+    "height": 190
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-12.light.png",
+      "sha256": "b6a878d119347ae4b824f8e4576ced95d464ba7d9841104b49b47d32deea9c93"
+    },
+    "dark": {
+      "png": "BP-CARD-12.dark.png",
+      "sha256": "371f953fa8cea87ed899207a8323ac01274822c9a0dd664cebec176134cb76f7"
+    }
+  },
+  "texts": [
+    "My plan · Diwali gifts for 8 people",
+    "Read last year's gifts from email",
+    "3 ideas each under ₹2,000",
+    "About 6 min · about ₹4 of your AI",
+    "Go",
+    "Change plan"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-12": {
+      "x": 0,
+      "y": 0,
+      "width": 351.34375,
+      "height": 190
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M4",
+  "spec": "05-3 §5.12",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

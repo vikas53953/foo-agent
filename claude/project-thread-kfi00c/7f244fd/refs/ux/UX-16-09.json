@@ -1,0 +1,413 @@
+{
+  "id": "UX-16-09",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-16-09.light.png",
+      "sha256": "ae9dc101629885ccecc75373609770fb0031578292d000c89ccddbfa5241d979"
+    },
+    "dark": {
+      "png": "UX-16-09.dark.png",
+      "sha256": "54d0f6dea6f3dc35f487bf83904bacc42000b34c41b082758a78fdadb4e94e1d"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "Thu",
+    "I already see your Goa trip on Sat 12–Mon 14 Dec",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude ready",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "foo",
+    "Awake on your PC",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "reply to my landlord saying I'll pay rent on Monday",
+    "11:00 AM ✓",
+    "✓",
+    "✅",
+    "✓ Sent · Fri 16 Oct, 11:06 AM",
+    "Email",
+    "To: Rakesh Sharma",
+    "Dear Rakesh, I wanted to let you know that I will pay October's rent on Monday, 19 October. Thank you for your patience. Regards, Vikas Sharma",
+    "make it a bit more formal",
+    "11:02 AM ✓",
+    "✓",
+    "✓ Proof: in your Gmail Sent folder · open",
+    "email Priya Nair the Goa dates",
+    "11:15 AM ✓",
+    "✓",
+    "⏳",
+    "✉ Send this email to Priya Nair?",
+    "Expires 12:15 PM",
+    "Hi Priya, we're in Goa Sat 12 – Mon 14 Dec at the Taj Holiday Village. Vikas",
+    "Will send to priya.n@company.com from your Gmail. You haven't emailed her before. Can't be unsent.",
+    "Send email",
+    "Edit",
+    "Not now",
+    "tell mom the cake comes Sunday at 11",
+    "11:20 AM ✓",
+    "✓",
+    "⏳",
+    "📝 Draft · not sent",
+    "WhatsApp",
+    "To: Mom (WhatsApp)",
+    "Mummy, cake Sunday 11 baje tak aa jayega 🎂",
+    "Will send to Mom from your WhatsApp. Can’t be unsent.",
+    "Send message",
+    "Change",
+    "Not now",
+    "write an X post about the Goa trip",
+    "11:30 AM ✓",
+    "✓",
+    "🛠",
+    "📝 Draft · not sent",
+    "X post",
+    "Just booked Goa for December. Any beach shack I can't miss? 🌴",
+    "212 characters left",
+    "Open in X to post",
+    "Change",
+    "Not now",
+    "＋",
+    "Message foo, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps",
+    "🌐 Compose post / X",
+    "—",
+    "☐",
+    "✕",
+    "🔒 x.com/compose/post",
+    "x.com",
+    "Compose post",
+    "Just booked Goa for December. Any beach shack I can't miss? 🌴",
+    "Post",
+    "⊞",
+    "⌕",
+    "🌐",
+    "📁",
+    "🌐",
+    "f",
+    "˄",
+    "📶",
+    "🔊",
+    "11:00 AM",
+    "16-10-2026"
+  ],
+  "hlTexts": [
+    "x.com",
+    "Compose post",
+    "Just booked Goa for December. Any beach shack I can't miss? 🌴",
+    "Post"
+  ],
+  "hl": {
+    "id": "xpage",
+    "box": {
+      "x": 301,
+      "y": 127,
+      "width": 858,
+      "height": 492
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 301,
+      "y": 127,
+      "width": 858,
+      "height": 492
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M8",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 16,
+    "step": 9,
+    "anchor": "drafts-9",
+    "title": "Drafts and sends: Gmail, WhatsApp, X",
+    "part": "Every day · Fri 16 Oct",
+    "j": "J12",
+    "r": "R18 · R5",
+    "c": "X opens in your normal browser with the text filled in. You press Post.",
+    "s": "x.com's compose box with your text and a Post button.",
+    "f": "Doesn't watch whether you posted, and claims no proof.",
+    "state": {
+      "view": "desk",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "Thu",
+            "prev": "I already see your Goa trip on Sat 12–Mon 14 Dec"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b me\">reply to my landlord saying I'll pay rent on Monday<span class=\"meta\">11:00 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">✅</span></div>",
+              "g": 12,
+              "id": "ask"
+            },
+            {
+              "id": "dr",
+              "h": "<div class=\"card\" data-hl=\"draft\"><div class=\"hd\">✓ Sent · Fri 16 Oct, 11:06 AM<span class=\"lbl\">Email</span></div><div class=\"sm\">To: Rakesh Sharma</div><div>Dear Rakesh, I wanted to let you know that I will pay October's rent on Monday, 19 October. Thank you for your patience. Regards, Vikas Sharma</div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\">make it a bit more formal<span class=\"meta\">11:02 AM ✓<span class=\"rd\">✓</span></span></div>",
+              "g": 12
+            },
+            {
+              "h": "<span class=\"chipok\" data-hl=\"proof\">✓ Proof: in your Gmail Sent folder · open</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b me\">email Priya Nair the Goa dates<span class=\"meta\">11:15 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">⏳</span></div>",
+              "g": 12
+            },
+            {
+              "id": "pr",
+              "h": "<div class=\"card pend\" data-hl=\"priya\"><div class=\"hd\">✉ Send this email to Priya Nair?<span class=\"lbl\">Expires 12:15 PM</span></div><div>Hi Priya, we're in Goa Sat 12 – Mon 14 Dec at the Taj Holiday Village. Vikas</div><div class=\"imp\">Will send to priya.n@company.com from your Gmail. You haven't emailed her before. Can't be unsent.</div><div class=\"row2\"><span class=\"pillbtn sm acc\">Send email</span><span class=\"pillbtn sm \">Edit</span><span class=\"pillbtn sm \">Not now</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\">tell mom the cake comes Sunday at 11<span class=\"meta\">11:20 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">⏳</span></div>",
+              "g": 12
+            },
+            {
+              "id": "wa",
+              "h": "<div class=\"card pend\" data-hl=\"draft\"><div class=\"hd\">📝 Draft · not sent<span class=\"lbl\">WhatsApp</span></div><div class=\"sm\">To: Mom (WhatsApp)</div><div>Mummy, cake Sunday 11 baje tak aa jayega 🎂</div><div class=\"imp\">Will send to Mom from your WhatsApp. Can’t be unsent.</div><div class=\"row2\"><span class=\"pillbtn sm acc\" data-hl=\"sendmsg\">Send message</span><span class=\"pillbtn sm \">Change</span><span class=\"pillbtn sm \">Not now</span></div></div>",
+              "g": 12
+            },
+            {
+              "id": "xask",
+              "h": "<div class=\"b me\">write an X post about the Goa trip<span class=\"meta\">11:30 AM ✓<span class=\"rd\">✓</span></span><span class=\"sbadge\">🛠</span></div>",
+              "g": 12
+            },
+            {
+              "id": "x",
+              "h": "<div class=\"card\" data-hl=\"draft\"><div class=\"hd\">📝 Draft · not sent<span class=\"lbl\">X post</span></div><div>Just booked Goa for December. Any beach shack I can't miss? 🌴<div class=\"sm\">212 characters left</div></div><div class=\"row2\"><span class=\"pillbtn sm dark\" data-hl=\"openx\">Open in X to post</span><span class=\"pillbtn sm \">Change</span><span class=\"pillbtn sm \">Not now</span></div></div>",
+              "g": 12
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Trips. I'll look after your travel. I already see your Goa trip on Sat 12–Mon 14 Dec. Anything to sort for it?<span class=\"meta\">8:12 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Awake on your PC"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null
+      },
+      "d": {
+        "app": {
+          "x": 20,
+          "y": 20,
+          "sc": 0.62
+        },
+        "wins": [
+          {
+            "k": "browser",
+            "x": 300,
+            "y": 60,
+            "w": 860,
+            "h": 560,
+            "tab": "Compose post / X",
+            "url": "x.com/compose/post",
+            "site": "x",
+            "hlb": "xpage"
+          }
+        ],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "11:00 AM",
+        "date": "16-10-2026",
+        "tbx": [
+          "🌐"
+        ]
+      },
+      "mo": {
+        "m": {
+          "foo": "wait",
+          "trips": "rest",
+          "money": "rest",
+          "home": "rest"
+        },
+        "still": {
+          "foo": true,
+          "trips": true,
+          "money": true,
+          "home": true
+        },
+        "tray": "need",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "11:00 AM",
+    "superseded": null
+  }
+}

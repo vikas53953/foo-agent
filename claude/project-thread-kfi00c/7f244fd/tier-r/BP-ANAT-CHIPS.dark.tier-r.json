@@ -1,0 +1,68 @@
+{
+  "id": "BP-ANAT-CHIPS",
+  "theme": "dark",
+  "verdict": "review",
+  "disputed": null,
+  "r1": {
+    "verdict": "pass",
+    "frame": {
+      "missing": [],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-CHIPS",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 44
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 44
+        },
+        "dPos": 0,
+        "dSize": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "review",
+    "anchors": [
+      {
+        "name": "BP-ANAT-CHIPS",
+        "ref": "#1B1B22",
+        "app": "#0D0D11",
+        "deltaE": 4.78,
+        "verdict": "review"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.07488602842585143,
+    "diffPixels": 1117,
+    "total": 14916,
+    "sizeMismatch": null,
+    "heatmap": "BP-ANAT-CHIPS.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-CHIPS.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-CHIPS.dark.png"
+}
