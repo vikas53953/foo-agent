@@ -10,7 +10,9 @@
 //
 // Usage:
 //   tsx scripts/release-gate.ts review --runs <dir> --refs <dir> --out <dir> [--model claude-sonnet-5-5]
-//       [--first-pass claude-haiku-5-5|none] [--budget-usd <usd>] [--skip-when-failed]
+//       [--first-pass claude-haiku-5-5|none] [--budget-usd <usd>] [--skip-when-failed] [--via api|cli]
+//   --via cli (Vikas 22 Nov 2026): the reviewer is the signed-in Claude Code CLI on the PC that ran the journeys (no API
+//   key); it reads each picture as a file. Default api.
 //   Spend guards (Vikas 13 Nov 2026): the first-pass model looks first and only what it does not call "works" goes to
 //   --model; the review stops at --budget-usd (pictures left are "not reviewed", so the gate cannot pass); with
 //   --skip-when-failed no picture is looked at once a step already failed, because the gate is red anyway.
@@ -19,7 +21,8 @@
 // Exit code (report): 0 PASS, 1 FAIL (a feature is not "works" or a check is red), 2 BLOCKED (nothing ran or no review).
 import Anthropic from '@anthropic-ai/sdk';
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { basename, join } from 'node:path';
+import { spawn } from 'node:child_process';
+import { basename, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const GATE_FEATURES = ['install', 'ai', 'name', 'chat', 'settings', 'refusals'] as const;
@@ -59,6 +62,8 @@ interface StepResult {
   truncated?: number;
   controls?: { tid: string; name: string; status: string; effect: string[]; issues: unknown[]; shot?: string; reason?: string }[];
   blocked?: string;
+  /** The driver did not run this step (no API key on Vikas's PC); listed in the report, never counted as works. */
+  notRun?: string;
 }
 interface Summary {
   journey: string;
@@ -210,6 +215,15 @@ export function checkpoints(runs: { dir: string; s: Summary }[]): Checkpoint[] {
     });
   }
   return cps;
+}
+
+/** Steps the driver left out because they need an API key (Vikas's PC has none): listed, never passed. */
+export function notRunSteps(runs: { dir: string; s: Summary }[]): { where: string; what: string }[] {
+  return runs.flatMap(({ dir, s }) =>
+    s.results
+      .filter((r) => r.notRun)
+      .map((r) => ({ where: `${runTag(runs, dir)}#${r.i}`, what: `${r.do}${r.expect ? `: ${r.expect}` : ''} (${r.notRun})` })),
+  );
 }
 
 /** Per feature: broken beats wrong-design beats works; a feature with no checkpoint is not tested. */
@@ -369,6 +383,58 @@ export function gateStatus(runs: number, feats: { verdict: string }[], rows: { g
   return feats.every((f) => f.verdict === 'works') && rows.every((c) => c.green) ? 'PASS' : 'FAIL';
 }
 
+/** The words the reviewer gets when it runs as Vikas's signed-in Claude Code CLI on his PC (no API key, 22 Nov 2026):
+ * the same system text and facts as the API call, with the pictures named as files it reads itself. Pure for the test. */
+export function cliReviewPrompt(shot: string, ref: string | undefined, text: string): string {
+  return [
+    SYSTEM,
+    '',
+    `Read the picture at ${shot} (image 1, the real app).`,
+    ref ? `Read the picture at ${ref} (image 2, the reference design).` : 'There is no reference picture.',
+    '',
+    text,
+    '',
+    `Answer with ONLY one JSON object and nothing else: {"verdict": "works" | "wrong-design" | "broken", "summary": "<one plain sentence>", "problems": ["<each visible problem>"]}`,
+  ].join('\n');
+}
+
+/** The reviewer's JSON out of the CLI's `--output-format json` envelope; throws when there is no usable verdict. */
+export function parseCliReview(stdout: string): { v: Omit<Review, 'id' | 'by'>; usd: number } {
+  const env = JSON.parse(stdout) as { result?: string; is_error?: boolean; total_cost_usd?: number };
+  if (env.is_error || typeof env.result !== 'string') throw new Error(`the CLI reviewer failed: ${String(env.result).slice(0, 200)}`);
+  const m = env.result.match(/\{[\s\S]*\}/);
+  if (!m) throw new Error('the CLI reviewer gave no JSON');
+  const v = JSON.parse(m[0]) as Omit<Review, 'id' | 'by'>;
+  if (!['works', 'wrong-design', 'broken'].includes(v.verdict)) throw new Error(`the CLI reviewer gave no verdict: ${m[0].slice(0, 200)}`);
+  return {
+    v: { verdict: v.verdict, summary: String(v.summary ?? ''), problems: Array.isArray(v.problems) ? v.problems.map(String) : [] },
+    usd: env.total_cost_usd ?? 0,
+  };
+}
+
+function askCli(model: string, prompt: string, dirs: string[]): Promise<string> {
+  return new Promise((ok, fail) => {
+    const args = ['-p', '--model', model, '--output-format', 'json', '--allowedTools', 'Read', ...dirs.flatMap((d) => ['--add-dir', d])];
+    // Windows finds claude.exe or the npm claude.cmd shim only through the shell; the prompt goes in on stdin, never as an argument.
+    const p = spawn(process.env.FOO_REVIEW_CLI ?? 'claude', args, {
+      shell: process.platform === 'win32',
+      env: { ...process.env, ANTHROPIC_API_KEY: '' },
+    });
+    let out = '';
+    let err = '';
+    const timer = setTimeout(() => p.kill(), 180_000);
+    p.stdout.on('data', (d) => (out += d));
+    p.stderr.on('data', (d) => (err += d));
+    p.on('error', fail);
+    p.on('close', (code) => {
+      clearTimeout(timer);
+      if (code === 0) ok(out);
+      else fail(new Error(`claude exited ${code}: ${err.slice(0, 300)}`));
+    });
+    p.stdin.end(prompt);
+  });
+}
+
 async function review() {
   const runs = opt('--runs')!;
   const refs = opt('--refs') ?? 'gate-refs';
@@ -387,7 +453,9 @@ async function review() {
     return;
   }
   const cps = all.filter((c) => c.shot && !c.measured);
-  const client = new Anthropic();
+  // --via cli (Vikas 22 Nov 2026): the reviewer is the signed-in Claude Code CLI on the PC that ran the journeys, no API key.
+  const viaCli = opt('--via') === 'cli';
+  const client = viaCli ? undefined! : new Anthropic();
   let spent = 0;
   let next = 0;
   let stopped = false;
@@ -412,10 +480,17 @@ async function review() {
         'Image 1 is the real app. ' + (ref ? 'Image 2 is the reference design.' : ''),
       ].join('\n');
       try {
-        const content: Anthropic.Beta.BetaContentBlockParam[] = [png(join(c.dir, c.shot!))];
-        if (ref) content.push(png(ref));
+        const content: Anthropic.Beta.BetaContentBlockParam[] = viaCli ? [] : [png(join(c.dir, c.shot!))];
+        if (ref && !viaCli) content.push(png(ref));
         content.push({ type: 'text', text });
         const ask = async (m: string) => {
+          if (viaCli) {
+            const shotAbs = resolve(c.dir, c.shot!);
+            const refAbs = ref ? resolve(ref) : undefined;
+            const got = parseCliReview(await askCli(m, cliReviewPrompt(shotAbs, refAbs, text), [resolve(c.dir), resolve(refs)]));
+            spent += got.usd;
+            return { v: got.v, by: `${m} (Claude Code CLI)` };
+          }
           const res = await client.beta.messages.create({
             model: m,
             max_tokens: 4000,
@@ -482,6 +557,7 @@ function report() {
   const feats = featureVerdicts(cps, reviews);
   const rows = checkRows(checks);
   const status = gateStatus(runs.length, feats, rows);
+  const notRun = notRunSteps(runs);
 
   const copy = (dir: string, f?: string) => {
     if (!f || !existsSync(join(dir, f))) return undefined;
@@ -589,6 +665,7 @@ h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:32px 0 8px}.muted{colo
 <p>${status === 'PASS' ? 'Every batch-1 feature works and every other check on this commit is green: this build may go to Vikas.' : 'This build must not go to Vikas until every row below says Works.'}</p>
 <h2>Features</h2><table><tr><th>Feature</th><th>Verdict</th><th>Checkpoints</th><th>Broken</th><th>Wrong vs design</th></tr>${featureRows}</table>
 ${failures.length ? `<h2>Every failure (${failures.length})</h2><table><tr><th>Where</th><th>What went wrong</th><th>Known red or new</th></tr>${failureRows}</table>` : ''}
+${notRun.length ? `<h2>Not run on this PC (${notRun.length})</h2><p class="muted">These steps need a real Anthropic API key typed into foo; this run uses the signed-in Claude app instead. They are not counted as works.</p><table><tr><th>Where</th><th>Step</th></tr>${notRun.map((n) => `<tr><td>${esc(n.where)}</td><td>${esc(n.what)}</td></tr>`).join('')}</table>` : ''}
 <h2>Other checks on this commit</h2><table>${checkHtml}</table>
 ${videos ? `<h2>Videos</h2><p class="muted">In the run's release-gate-report download.</p><ul>${videos}</ul>` : ''}
 ${cards}
@@ -596,7 +673,7 @@ ${cards}
   writeFileSync(join(out, 'index.html'), html);
   writeFileSync(
     join(out, 'verdict.json'),
-    JSON.stringify({ status, sha, features: feats, checks, reviewed: reviews.size, checkpoints: cps.length }, null, 2),
+    JSON.stringify({ status, sha, features: feats, checks, reviewed: reviews.size, checkpoints: cps.length, notRun }, null, 2),
   );
   for (const { dir, s } of runs)
     for (const v of s.videos ?? []) {

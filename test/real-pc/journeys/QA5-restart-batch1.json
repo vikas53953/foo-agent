@@ -37,7 +37,8 @@
     {
       "do": "click",
       "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
-      "note": "Add key on the Anthropic key row: opens the Secret box"
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "needsKey": true
     },
     {
       "do": "waitFor",
@@ -45,24 +46,28 @@
       "timeoutMs": 30000,
       "shot": "secret-box",
       "expect": "Secret box asks for the Anthropic key",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "fill",
       "tid": "card-secret-field",
       "env": "ANTHROPIC_API_KEY",
-      "note": "the key typed into foo's own Secret box, masked"
+      "note": "the key typed into foo's own Secret box, masked",
+      "needsKey": true
     },
     {
       "do": "click",
-      "tid": "card-secret-save"
+      "tid": "card-secret-save",
+      "needsKey": true
     },
     {
       "do": "wait",
       "ms": 30000,
       "shot": "key-tested",
       "expect": "the Anthropic key row shows works",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "clickIf",
@@ -90,7 +95,8 @@
       "do": "expectText",
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "re": "Anthropic key",
-      "note": "foo uses the key, not the Claude app"
+      "note": "foo uses the key, not the Claude app",
+      "appRe": "Claude"
     },
     {
       "do": "click",

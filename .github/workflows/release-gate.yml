@@ -31,21 +31,9 @@
 name: Release gate
 
 on:
-  # Vikas 2026-10-28 (decision card): every merge to main, and before any app is sent (only foo-windows-app-gated goes out).
-  push:
-    branches: [main]
-    # Vikas 13 Nov 2026: no gate run for a merge that cannot change the app (12 Nov: #173 docs only, #172 test script only).
-    paths:
-      - 'src/**'
-      - 'resources/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'electron-builder.yml'
-      - 'vite.config.ts'
-      - 'tsconfig*.json'
-      - 'test/real-pc/**'
-      - 'scripts/release-gate.ts'
-      - '.github/workflows/release-gate.yml'
+  # Vikas 22 Nov 2026 (project rule 6 rewritten): the gate runs on his PC with his signed-in Claude, no API key
+  # (scripts/pc-gate.mjs, started through a Remote Control session), before each merge and before any installer goes out.
+  # This workflow is kept for a hand-started run only, if a key is ever added again.
   workflow_dispatch:
     inputs:
       ref:

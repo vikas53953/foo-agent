@@ -78,29 +78,34 @@
     {
       "do": "click",
       "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
-      "note": "Replace key opens the Secret box again"
+      "note": "Replace key opens the Secret box again",
+      "needsKey": true
     },
     {
       "do": "waitFor",
       "tid": "card-secret-field",
-      "timeoutMs": 30000
+      "timeoutMs": 30000,
+      "needsKey": true
     },
     {
       "do": "fill",
       "tid": "card-secret-field",
       "env": "ANTHROPIC_API_KEY",
-      "note": "now the real key"
+      "note": "now the real key",
+      "needsKey": true
     },
     {
       "do": "click",
-      "tid": "card-secret-save"
+      "tid": "card-secret-save",
+      "needsKey": true
     },
     {
       "do": "wait",
       "ms": 30000,
       "shot": "q2-right-key",
       "feature": "ai",
-      "expect": "the real key row shows works"
+      "expect": "the real key row shows works",
+      "needsKey": true
     },
     {
       "do": "clickIf",

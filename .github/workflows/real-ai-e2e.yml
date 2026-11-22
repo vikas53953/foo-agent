@@ -53,29 +53,9 @@ on:
         description: Spend cap for the whole run in USD, split evenly across the parts; a part stops when it reaches its share
         default: '3'
         required: true
-  # Vikas 2026-10-28: "test with real AI only". Every ready PR into main runs the batch-1 journeys on its own merge commit
-  # before it merges; drafts wait until marked ready. Vikas 13 Nov 2026: no second run on main after the merge, and none
-  # for a change that cannot change the app.
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened, ready_for_review]
-    paths-ignore:
-      - 'docs/**'
-      - 'spec/**'
-      - '**/*.md'
-      - 'golden/**'
-      - '.claude/**'
-      - 'design/**'
-      - 'test/unit/**'
-      - 'test/integration/**'
-      - 'test/e2e/**'
-      - 'test/judge/**'
-      - 'test/qa-explore/**'
-      - '.github/workflows/ci.yml'
-      - '.github/workflows/release-gate.yml'
-      - '.github/workflows/golden-bless.yml'
-      - '.github/workflows/flake-hunt.yml'
-      - '.github/workflows/qa-ai-judge.yml'
+  # Vikas 22 Nov 2026 (project rule 6 rewritten): real-AI journeys no longer run on GitHub with an API key. They run on
+  # his PC with his signed-in Claude (scripts/pc-gate.mjs, started through a Remote Control session) before each merge
+  # or release. This workflow stays for a hand-started run only, if a key is ever added again.
 
 concurrency:
   # One queue per branch (coordinator, 28 Oct). On a PR a newer push cancels the older run (Vikas 13 Nov: test only the

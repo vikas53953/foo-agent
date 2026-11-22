@@ -53,7 +53,8 @@
     {
       "do": "click",
       "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "waitFor",
@@ -62,18 +63,21 @@
       "shot": "secret-box",
       "feature": "ai",
       "expect": "a masked Secret box asks for the key; it says not to paste keys in the chat",
-      "ref": "UX-02-07"
+      "ref": "UX-02-07",
+      "needsKey": true
     },
     {
       "do": "fill",
       "tid": "card-secret-field",
       "env": "ANTHROPIC_API_KEY",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "click",
       "tid": "card-secret-save",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "wait",
@@ -81,7 +85,8 @@
       "shot": "key-tested",
       "feature": "ai",
       "expect": "Saved securely; the Anthropic key row shows works; the key itself is never shown",
-      "ref": "UX-02-09"
+      "ref": "UX-02-09",
+      "needsKey": true
     },
     {
       "do": "clickIf",

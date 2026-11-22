@@ -9,12 +9,15 @@ import { describe, expect, it } from 'vitest';
 import {
   callUsd,
   checkpoints,
+  cliReviewPrompt,
   checkRows,
   featureVerdicts,
   GATE_FEATURES,
   gateStatus,
   knownRedFor,
   missingRuns,
+  notRunSteps,
+  parseCliReview,
 } from '../../scripts/release-gate';
 
 const run = (journey: string, dir: string, results: object[]) => ({
@@ -252,5 +255,39 @@ describe('release gate spend guards', () => {
     expect(wf).toMatch(/fromJSON\(inputs\.rounds \|\| '1'\) >= 3/);
     expect(wf).toMatch(/key-check\.js/);
     expect(wf).toMatch(/--skip-when-failed/);
+  });
+});
+
+describe("the gate on Vikas's PC: Claude Code CLI reviewer, no API key (22 Nov 2026)", () => {
+  it('names both pictures as files and asks for the same three-field verdict', () => {
+    const p = cliReviewPrompt('C:/runs/a/02-hi.png', 'C:/refs/ux/U07.dark.png', 'Expected outcome: a short reply');
+    expect(p).toContain('Read the picture at C:/runs/a/02-hi.png');
+    expect(p).toContain('Read the picture at C:/refs/ux/U07.dark.png');
+    expect(p).toContain('Expected outcome: a short reply');
+    expect(p).toContain('"verdict"');
+    expect(cliReviewPrompt('x.png', undefined, 't')).toContain('There is no reference picture.');
+  });
+
+  it('reads the verdict out of the CLI envelope, even with words around the JSON', () => {
+    const out = JSON.stringify({
+      result: 'Here it is:\n{"verdict":"wrong-design","summary":"The reply is fine but clipped.","problems":["clipped text"]}',
+      total_cost_usd: 0.01,
+    });
+    expect(parseCliReview(out)).toEqual({
+      v: { verdict: 'wrong-design', summary: 'The reply is fine but clipped.', problems: ['clipped text'] },
+      usd: 0.01,
+    });
+  });
+
+  it('never turns a failed or verdict-less CLI answer into a pass', () => {
+    expect(() => parseCliReview(JSON.stringify({ is_error: true, result: 'rate limited' }))).toThrow();
+    expect(() => parseCliReview(JSON.stringify({ result: 'looks good to me' }))).toThrow();
+    expect(() => parseCliReview(JSON.stringify({ result: '{"verdict":"fine","summary":"","problems":[]}' }))).toThrow();
+  });
+
+  it('lists the key-only steps the PC run left out, and they make no checkpoint', () => {
+    const runs = [run('G1-first-run', 'r/1-G1', [{ i: 6, do: 'fill', ok: true, notRun: 'needs a real Anthropic API key', feature: 'ai' }])];
+    expect(notRunSteps(runs)).toEqual([{ where: expect.stringContaining('#6'), what: 'fill (needs a real Anthropic API key)' }]);
+    expect(checkpoints(runs)).toEqual([]);
   });
 });

@@ -66,6 +66,7 @@ let journeyFeatures = null;
 // Vikas 2026-10-28: "test with real AI only". FOO_REAL_AI_ONLY=1 (the release gate) refuses to start when anything could
 // put the app's pretend AI or test hooks in play: the fake AI only runs with FOO_TEST=1 plus a FOO_FAKE_* script.
 const REAL_AI_ONLY = process.env.FOO_REAL_AI_ONLY === '1';
+const NO_KEY = !process.env.ANTHROPIC_API_KEY;
 const PRETEND = Object.keys(process.env).filter((k) => /^FOO_(TEST|FAKE_)/i.test(k) && process.env[k]);
 if (REAL_AI_ONLY && PRETEND.length) {
   console.error(`Real AI only: refusing to run with ${PRETEND.join(', ')} set.`);
@@ -248,7 +249,16 @@ async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
   // {AI_ROW} in a journey names the Find-your-AI row to use (FOO_AI_ROW: claude-cli, anthropic-key, openai-key, codex-cli).
-  const journey = JSON.parse(fs.readFileSync(file, 'utf8').replaceAll('{AI_ROW}', process.env.FOO_AI_ROW || 'claude-cli'));
+  const aiRow = process.env.FOO_AI_ROW || 'claude-cli';
+  const journey = JSON.parse(fs.readFileSync(file, 'utf8').replaceAll('{AI_ROW}', aiRow));
+  // No key on this PC (Vikas 22 Nov 2026: real-AI journeys run on his PC with his signed-in Claude app, no API key).
+  // Steps marked needsKey (typing the real key into foo) cannot run; they are recorded as not run, never as passed,
+  // and foo is set up on the Claude app row instead of the key row.
+  if (NO_KEY)
+    for (const s of journey.steps) {
+      if (s.css) s.css = s.css.replaceAll('data-option="anthropic-key"', `data-option="${aiRow}"`);
+      if (s.appRe) s.re = s.appRe;
+    }
   if (journey.features) journeyFeatures = journey.features;
   if (journey.profile === 'own') {
     PROFILE = path.join(ROOT, `profile-${journey.id}`);
@@ -624,6 +634,14 @@ async function main() {
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
     const rec = { i, do: s.do, note: s.note, expect: s.expect, soft: s.soft, ref: s.ref, feature: s.feature, typed: s.text };
+    if (NO_KEY && s.needsKey) {
+      rec.ok = true;
+      rec.notRun = 'needs a real Anthropic API key; this run uses the signed-in Claude app';
+      rec.ms = 0;
+      results.push(rec);
+      log(rec);
+      continue;
+    }
     try {
       switch (s.do) {
         case 'wait':
