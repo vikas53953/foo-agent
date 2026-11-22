@@ -217,6 +217,20 @@
       "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /chotu/i.test(t)})()"
     },
     {
+      "do": "send",
+      "text": "mera naam Rohit hai. aur tumhara naam? sirf naam batao",
+      "note": "real-user Hinglish turn-taking: user gives their own name, then asks foo's; \"tumhara naam\" here means foo's name"
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 120000,
+      "shot": "q2-aur-tumhara-naam",
+      "feature": "name",
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "expect": "after \"mera naam Rohit hai. aur tumhara naam?\" foo answers with its own name Chotu, not the user's",
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /chotu/i.test(t)})()"
+    },
+    {
       "do": "relaunch"
     },
     {
@@ -233,7 +247,8 @@
     },
     {
       "do": "send",
-      "text": "aur tumhara naam? sirf naam batao"
+      "text": "tumhara naam kya hai? sirf naam batao",
+      "note": "QA ruling 12 Nov: plain re-ask after restart, so this step tests only that the name survived. The \"aur tumhara naam?\" phrasing is checked on its own before the restart."
     },
     {
       "do": "waitReply",
