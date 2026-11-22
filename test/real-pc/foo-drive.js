@@ -654,7 +654,10 @@ async function main() {
             .waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 });
           break;
         case 'check': {
-          const n = await page.locator(sel(s)).count();
+          // With the Claude app working, "Use Claude" is rightly offered; "a wrong key is never offered as Use" then means
+          // no Use button names the key (no-key mode only; with a key the journey's own count stands).
+          const keyUse = NO_KEY && s.tid === 'setup-ai-use' && s.count === 0;
+          const n = keyUse ? await page.locator(sel(s)).filter({ hasText: /key/i }).count() : await page.locator(sel(s)).count();
           rec.found = n;
           rec.ok = s.count !== undefined ? n === s.count : n > 0;
           break;
@@ -663,6 +666,17 @@ async function main() {
           // unlessTid: skip the click when that control is already showing (e.g. no retest needed once Use is offered).
           if (s.unlessTid && (await page.locator(`[data-testid="${s.unlessTid}"]`).count())) {
             rec.skipped = `${s.unlessTid} already showing`;
+            break;
+          }
+          // No key on this PC, so foo shows no "Anthropic key" row until one is saved: the wrong-key journeys reach the same
+          // Secret box through "Your own key" → Anthropic (pc-gate b1c3cf6: G5 s4 and QA2 s4 found no anthropic-key row).
+          const KEY_ROW_ACTION = '[data-testid="setup-ai-row"][data-row-id="anthropic-key"] [data-testid="setup-ai-row-action"]';
+          if (NO_KEY && s.css === KEY_ROW_ACTION && !(await page.locator(KEY_ROW_ACTION).count())) {
+            await page
+              .locator('[data-testid="setup-ai-row"][data-row-id="own-key"] [data-testid="setup-ai-row-action"]')
+              .click({ timeout: 15_000 });
+            await page.locator('[data-testid="card-choice-option"][data-option="anthropic-key"]').click({ timeout: 15_000 });
+            rec.via = 'own-key row, then Anthropic';
             break;
           }
           const loc = pick(s);

@@ -12,6 +12,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { pushEvidence } from './push-evidence.mjs';
 
 const REPO = 'vikas53953/foo-agent';
 const ROOT = process.cwd();
@@ -72,33 +73,20 @@ try {
     // No report (the PC could not build or drive foo, or the push failed): push a BLOCKED verdict with the log's end,
     // so the cloud lead sees why and this commit is not retried every 10 minutes.
     const tail = fs.readFileSync(out, 'utf8').split('\n').slice(-150).join('\n');
-    const wt = path.join(HOME, 'evidence-wt');
-    spawnSync('git', ['worktree', 'remove', '-f', wt], { cwd: ROOT });
-    git(['worktree', 'add', '-f', '--detach', wt, 'origin/evidence']);
-    const dest = path.join(wt, 'pc-gate', next.sha.slice(0, 7), 'report');
+    const stage = path.join(HOME, 'evidence-stage');
+    const dest = path.join(stage, 'pc-gate', next.sha.slice(0, 7), 'report');
+    fs.rmSync(stage, { recursive: true, force: true });
     fs.mkdirSync(dest, { recursive: true });
     fs.writeFileSync(
       path.join(dest, 'verdict.json'),
       JSON.stringify({ status: 'BLOCKED', sha: next.sha, exit: r.status, reason: 'pc-gate.mjs ended without a report' }, null, 2),
     );
     fs.writeFileSync(path.join(dest, 'console-tail.txt'), tail);
-    const g = (a) => spawnSync('git', a, { cwd: wt, encoding: 'utf8' });
-    g(['add', '-A']);
-    g([
-      '-c',
-      'user.name=foo-pc-gate',
-      '-c',
-      'user.email=noreply@users.noreply.github.com',
-      'commit',
-      '-q',
-      '-m',
-      `pc-gate ${next.sha.slice(0, 7)}: BLOCKED`,
-    ]);
-    for (let i = 0; i < 3 && g(['push', '-q', 'origin', 'HEAD:refs/heads/evidence']).status !== 0; i++) {
-      g(['fetch', '-q', '--depth', '1', 'origin', '+refs/heads/evidence:refs/remotes/origin/evidence']);
-      g(['rebase', '-q', 'origin/evidence']);
-    }
-    spawnSync('git', ['worktree', 'remove', '-f', wt], { cwd: ROOT });
+    say(
+      pushEvidence(ROOT, stage, `pc-gate/${next.sha.slice(0, 7)}`, `pc-gate ${next.sha.slice(0, 7)}: BLOCKED`)
+        ? 'BLOCKED verdict pushed'
+        : 'BLOCKED verdict not pushed',
+    );
   }
 } catch (e) {
   say(`watch failed: ${e}`);

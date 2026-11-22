@@ -16,6 +16,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { pushEvidence } from './push-evidence.mjs';
 
 const args = process.argv.slice(2);
 const opt = (n, d) => (args.includes(n) ? args[args.indexOf(n) + 1] : d);
@@ -234,33 +235,14 @@ console.log(`\n${summary}\n`);
 
 // 9. Evidence to the evidence branch (pc-gate/<sha7>/), so the cloud lead can read every record and picture.
 if (!has('--no-push')) {
-  const wt = path.join(WORK, 'evidence-wt');
-  const dest = path.join(wt, 'pc-gate', SHORT);
-  try {
-    sh('git fetch -q --depth 1 origin +refs/heads/evidence:refs/remotes/origin/evidence');
-    sh(`git worktree add -f --detach "${wt}" origin/evidence`);
-    fs.rmSync(dest, { recursive: true, force: true });
-    fs.mkdirSync(dest, { recursive: true });
-    // Pictures, records and the report; videos stay on the PC (too big for git).
-    fs.cpSync(REPORT, path.join(dest, 'report'), { recursive: true, filter: (s) => !/[\\/]videos([\\/]|$)/.test(s) });
-    fs.cpSync(runs, path.join(dest, 'runs'), { recursive: true, filter: (s) => !/[\\/]video([\\/]|$)/.test(s) });
-    sh('git add -A', { cwd: wt });
-    sh(`git -c user.name=foo-pc-gate -c user.email=noreply@users.noreply.github.com commit -q -m "pc-gate ${SHORT}: ${verdict.status}"`, {
-      cwd: wt,
-    });
-    let pushed = false;
-    for (let i = 0; i < 3 && !pushed; i++) {
-      pushed = sh('git push -q origin HEAD:refs/heads/evidence', { cwd: wt, allowFail: true }).status === 0;
-      if (!pushed) {
-        sh('git fetch -q --depth 1 origin +refs/heads/evidence:refs/remotes/origin/evidence', { cwd: wt });
-        sh('git rebase -q origin/evidence', { cwd: wt, allowFail: true });
-      }
-    }
-    say(pushed ? `evidence pushed to evidence:pc-gate/${SHORT}` : 'evidence push failed; it stays on this PC');
-  } catch (e) {
-    say(`evidence not pushed: ${e}`);
-  } finally {
-    spawnSync(`git worktree remove -f "${wt}"`, { shell: true, stdio: 'ignore' });
-  }
+  const stage = path.join(WORK, 'evidence-stage');
+  const dest = path.join(stage, 'pc-gate', SHORT);
+  fs.rmSync(stage, { recursive: true, force: true });
+  fs.mkdirSync(dest, { recursive: true });
+  // Pictures, records and the report; videos stay on the PC (too big for git).
+  fs.cpSync(REPORT, path.join(dest, 'report'), { recursive: true, filter: (s) => !/[\\/]videos([\\/]|$)/.test(s) });
+  fs.cpSync(runs, path.join(dest, 'runs'), { recursive: true, filter: (s) => !/[\\/]video([\\/]|$)/.test(s) });
+  const pushed = pushEvidence(ROOT, stage, `pc-gate/${SHORT}`, `pc-gate ${SHORT}: ${verdict.status}`);
+  say(pushed ? `evidence pushed to evidence:pc-gate/${SHORT}` : 'evidence push failed; it stays on this PC');
 }
 process.exit(rep.status ?? 2);
