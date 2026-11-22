@@ -100,6 +100,13 @@ if (sh(`${PNPM} rebuild:electron`, { allowFail: true }).status !== 0) {
 }
 sh(`${PNPM} exec electron-builder --win nsis --publish never`);
 sh(`${PNPM} exec electron-builder --win --dir --publish never`);
+// PC run 3 (22 Nov): the package held @napi-rs/keyring without its Windows binary, so foo could not reach Credential
+// Manager ("can't reach this PC's safe storage"). A build without it is not worth driving.
+const unpacked = path.join(ROOT, 'dist', 'win-unpacked', 'resources', 'app.asar.unpacked', 'node_modules', '@napi-rs');
+const keyringBin = path.join(unpacked, 'keyring-win32-x64-msvc');
+if (!fs.existsSync(keyringBin) || !fs.readdirSync(keyringBin).some((f) => f.endsWith('.node'))) {
+  die(`the package has no Credential Manager binary (${keyringBin}); foo could not save keys`);
+}
 
 // 4. Installer smoke test, only when foo is not installed here (his own foo and its uninstall entry stay untouched).
 const instDir = path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo');
