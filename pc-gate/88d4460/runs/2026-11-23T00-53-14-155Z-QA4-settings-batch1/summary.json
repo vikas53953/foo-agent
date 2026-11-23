@@ -1,0 +1,401 @@
+{
+  "journey": "QA4-settings-batch1",
+  "title": "Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart",
+  "videos": [
+    "video/page@0678ecf6d6ccdb63125eb50daea96829.webm",
+    "video/page@a80fa6d780e89310fbde7efe446745f6.webm"
+  ],
+  "steps": 43,
+  "failed": 0,
+  "out": "C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T00-53-14-155Z-QA4-settings-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 8,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 602
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 10,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20001,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "finderWaitMs": 1949,
+      "found": 0,
+      "ok": true,
+      "ms": 1958
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 1,
+      "ok": true,
+      "ms": 151
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name",
+      "ok": true,
+      "ms": 122,
+      "shot": "04-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Claude (your AI)\n6:23 AM",
+      "ok": true,
+      "ms": 65
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 384
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10002,
+      "shot": "05-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "key",
+      "ok": true,
+      "ms": 110
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "expect": "Settings opens with Ctrl+,",
+      "feature": "settings",
+      "ok": true,
+      "ms": 1500,
+      "shot": "06-q4-settings.png"
+    },
+    {
+      "i": 18,
+      "do": "check",
+      "note": "the Settings screen is open",
+      "found": 1,
+      "ok": true,
+      "ms": 7
+    },
+    {
+      "i": 19,
+      "do": "check",
+      "note": "batch 1 has no money settings",
+      "found": 0,
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 20,
+      "do": "check",
+      "note": "batch 1 has no connections",
+      "found": 0,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 21,
+      "do": "check",
+      "note": "batch 1 has no routines",
+      "found": 0,
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 22,
+      "do": "click",
+      "ok": true,
+      "ms": 171
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "expect": "Appearance: theme and text size rows",
+      "feature": "settings",
+      "ok": true,
+      "ms": 800,
+      "shot": "07-q4-appearance.png"
+    },
+    {
+      "i": 24,
+      "do": "check",
+      "found": 1,
+      "ok": true,
+      "ms": 2
+    },
+    {
+      "i": 25,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 51
+    },
+    {
+      "i": 26,
+      "do": "wait",
+      "expect": "Account: your AI shows the Anthropic key in use",
+      "feature": "settings",
+      "ok": true,
+      "ms": 800,
+      "shot": "08-q4-account.png"
+    },
+    {
+      "i": 27,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 5
+    },
+    {
+      "i": 28,
+      "do": "wait",
+      "expect": "Chat settings page has real rows, not empty",
+      "feature": "settings",
+      "ok": true,
+      "ms": 808,
+      "shot": "09-q4-chat.png"
+    },
+    {
+      "i": 29,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 179
+    },
+    {
+      "i": 30,
+      "do": "wait",
+      "expect": "Keyboard shortcuts page lists keys",
+      "feature": "settings",
+      "ok": true,
+      "ms": 808,
+      "shot": "10-q4-shortcuts.png"
+    },
+    {
+      "i": 31,
+      "do": "clickIf",
+      "found": 1,
+      "ok": true,
+      "ms": 240
+    },
+    {
+      "i": 32,
+      "do": "wait",
+      "expect": "About page has version and What leaves this PC",
+      "feature": "settings",
+      "ok": true,
+      "ms": 803,
+      "shot": "11-q4-about.png"
+    },
+    {
+      "i": 33,
+      "do": "key",
+      "ok": true,
+      "ms": 29
+    },
+    {
+      "i": 34,
+      "do": "wait",
+      "ok": true,
+      "ms": 1013
+    },
+    {
+      "i": 35,
+      "do": "check",
+      "note": "Esc closes Settings",
+      "found": 0,
+      "ok": true,
+      "ms": 7
+    },
+    {
+      "i": 36,
+      "do": "send",
+      "typed": "Switch to dark mode",
+      "sentAt": 1795395247170,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 386
+    },
+    {
+      "i": 37,
+      "do": "waitFor",
+      "expect": "dark theme by chat, one Changed line with Undo",
+      "feature": "settings",
+      "ok": true,
+      "ms": 62,
+      "shot": "12-q4-dark.png"
+    },
+    {
+      "i": 38,
+      "do": "waitReply",
+      "note": "a settings ask is never answered with an off-feature line",
+      "timeline": [
+        {
+          "at": 893,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7488,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1793,
+          "mark": 1500,
+          "shot": "13-reply-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3092,
+          "mark": 3000,
+          "shot": "14-reply-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6078,
+          "mark": 6000,
+          "shot": "15-reply-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 6608,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Changed: Theme → Dark. Undo",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 12846
+    },
+    {
+      "i": 39,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 9209
+    },
+    {
+      "i": 40,
+      "do": "wait",
+      "ok": true,
+      "ms": 8017
+    },
+    {
+      "i": 41,
+      "do": "waitFor",
+      "expect": "dark theme survives quit and reopen",
+      "feature": "settings",
+      "ok": true,
+      "ms": 66,
+      "shot": "16-q4-dark-after-reopen.png"
+    },
+    {
+      "i": 42,
+      "do": "dump",
+      "ok": true,
+      "ms": 102
+    }
+  ]
+}

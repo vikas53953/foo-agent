@@ -1,0 +1,18 @@
+{"t":"2026-11-23T00:45:35.586Z","journey":"G5-wrong-key","title":"Release gate: a fresh PC where the user pastes a wrong key, and types in the chat before any AI is connected","spec":"07-1 J2; 06-1 §2.2 key row; walkthrough UX-02-07..09","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-23T00:45:42.066Z","step":"launch","ok":true}
+{"t":"2026-11-23T00:45:42.079Z","i":0,"do":"waitFor","ok":true,"ms":7}
+{"t":"2026-11-23T00:45:42.261Z","i":1,"do":"click","ok":true,"ms":182}
+{"t":"2026-11-23T00:45:42.275Z","i":2,"do":"waitFor","ok":true,"ms":14}
+{"t":"2026-11-23T00:45:57.525Z","shot":"01-locked-composer.png"}
+{"t":"2026-11-23T00:45:57.525Z","i":3,"do":"wait","expect":"the message box says to connect an AI first; Send is not live","ref":"UX-02-03","ok":true,"ms":15010,"shot":"01-locked-composer.png"}
+{"t":"2026-11-23T00:45:57.805Z","i":4,"do":"click","via":"own-key row, then Anthropic","ok":true,"ms":279}
+{"t":"2026-11-23T00:45:57.809Z","i":5,"do":"waitFor","ok":true,"ms":4}
+{"t":"2026-11-23T00:45:57.937Z","i":6,"do":"fill","ok":true,"ms":128}
+{"t":"2026-11-23T00:45:58.481Z","i":7,"do":"click","ok":true,"ms":544}
+{"t":"2026-11-23T00:46:28.766Z","shot":"02-wrong-key.png"}
+{"t":"2026-11-23T00:46:28.777Z","i":8,"do":"wait","expect":"the key row says plainly the key did not work and offers to try again; no crash, no fake works","ok":true,"ms":30007,"shot":"02-wrong-key.png"}
+{"t":"2026-11-23T00:46:28.822Z","i":9,"do":"check","note":"a wrong key is never offered as Use","found":0,"ok":true,"ms":39}
+{"t":"2026-11-23T00:46:28.839Z","i":10,"do":"dump","ok":true,"ms":17}
+{"t":"2026-11-23T00:46:29.836Z","step":"appLog","lines":4,"dropped":0}
+{"t":"2026-11-23T00:46:29.854Z","step":"aiTurns","turns":0}
+{"t":"2026-11-23T00:46:29.858Z","step":"jobTrail","steps":0,"calls":0}

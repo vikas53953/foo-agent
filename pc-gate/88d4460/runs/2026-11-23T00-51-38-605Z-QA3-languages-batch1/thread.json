@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n6:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n6:21 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:21 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n6:22 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "6:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n6:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n6:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।\n6:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "नमस्ते! आज शाम जीरा आलू बना लो: उबले आलू को जीरा, हल्दी, नमक और थोड़ी लाल मिर्च के साथ घी में 5 मिनट भून लो।\nऊपर से हरा धनिया और नींबू डाल दो, रोटी या पराठे के साथ बढ़िया लगेगी। 🌿\n\n6:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।\n6:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਫਰੈਸ਼ ਫਰੂਟ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ: ਹਲਕਾ, ਘੱਟ ਮਿੱਠਾ ਅਤੇ ਸਭ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\nਜੇ ਉਹਨਾਂ ਨੂੰ ਦੇਸੀ ਸੁਆਦ ਪਸੰਦ ਹੈ, ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ, ਦਿਲ ਖੁਸ਼ ਹੋ ਜਾਵੇਗਾ। 🌿\n\n6:22 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?\n6:22 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Alarm kal Tue 24 Nov, 7:00 AM ka laga lo. 9:00 AM pahunchne ke liye 8:15 AM tak nikalna hoga, aur maine tayyar hone ka 1 ghanta plus thoda traffic ka buffer gin liya hai.\n\nAgar tum 30 min mein tayyar ho jaate ho, to 7:30 AM bhi chalega. Snooze pe bharosa mat karna, woh dhokebaaz hai. 🌿\n\n6:22 AM"
+  }
+]

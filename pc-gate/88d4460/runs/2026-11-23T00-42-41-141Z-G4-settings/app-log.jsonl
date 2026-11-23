@@ -1,0 +1,18 @@
+{"t":1795394562667,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795394568072,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795394574953,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795394581588,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795394588751,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795394591969,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6883}
+{"t":1795394624893,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":5499}
+{"t":1795394630819,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7243}
+{"t":1795394638069,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7737}
+{"t":1795394643535,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7923}
+{"t":1795394646019,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8750}
+{"t":1795394649512,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":9279}
+{"t":1795394667437,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7862}
+{"t":1795394682031,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":5961}
+{"t":1795394694553,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795394698353,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795394698820,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":4059}
+{"t":1795394705258,"lvl":"error","mod":"ipc","evt":"IPC_FAILED","kind":"ai:verify TypeError"}
