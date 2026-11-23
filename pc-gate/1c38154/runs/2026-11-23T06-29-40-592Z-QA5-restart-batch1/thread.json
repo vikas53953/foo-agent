@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n11:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:59 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n11:59 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "11:59 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n12:00 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "12:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n12:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n12:00 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Ek kachhua (tortoise) ke liye 3 achhe naam batao.\n12:00 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Kachhue ke liye 3 pyaare naam ye rahe:\n\nSheru: dheemi chaal, par dil sher ka.\nTurbo: thoda mazaak, kyunki speed toh uski pehchaan hai.\nGolu: gol-matol khol ke liye ekdum fit.\n12:01 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "7 aur 8 ka jod kitna hai? sirf number\n12:01 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "15\n\n12:01 PM"
+  }
+]

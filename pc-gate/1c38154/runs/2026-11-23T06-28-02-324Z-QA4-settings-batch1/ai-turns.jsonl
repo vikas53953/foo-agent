@@ -1,0 +1,1 @@
+{"started_at":1795415345402,"purpose":"intake","outcome":"ok","error_kind":null,"duration_ms":7904,"chat_id":"c_01a20717-1de6-74c8-b1e9-6e4ed92651d3","job_id":null,"provider_id":"claude-cli","billing":"plan","model_reported":"claude-fable-5-2","tokens_in":2,"tokens_out":58,"tokens_cache_read":658,"tokens_cache_write":11758,"cost_paise":1677,"cost_source":"reported"}

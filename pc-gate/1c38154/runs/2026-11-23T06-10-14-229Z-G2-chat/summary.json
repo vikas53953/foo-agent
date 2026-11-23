@@ -1,0 +1,850 @@
+{
+  "journey": "G2-chat",
+  "title": "Release gate: just chatting like a real person, in Hinglish, Hindi, Punjabi and with typos, while the AI takes its time",
+  "feature": "chat",
+  "videos": [
+    "video/page@d475175f95ca25bfd0154b5450df5abe.webm"
+  ],
+  "steps": 28,
+  "failed": 0,
+  "out": "C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T06-10-14-229Z-G2-chat",
+  "results": [
+    {
+      "i": 0,
+      "do": "send",
+      "typed": "hi",
+      "sentAt": 1795414226915,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 982
+    },
+    {
+      "i": 1,
+      "do": "waitReply",
+      "expect": "while waiting: the Thinking row (foo's small face) and no 👀 on my message; after: one short warm reply",
+      "ref": "UX-08-02",
+      "timeline": [
+        {
+          "at": 482,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 10568,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 11657,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1898,
+          "mark": 1500,
+          "shot": "01-hi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3314,
+          "mark": 3000,
+          "shot": "02-hi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6182,
+          "mark": 6000,
+          "shot": "03-hi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 10097,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Hi! What do you need today?\n\n11:40 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 17214,
+      "shot": "04-hi.png"
+    },
+    {
+      "i": 2,
+      "do": "send",
+      "typed": "kal office jaana hai, mood off hai yaar. kuch motivate karo",
+      "sentAt": 1795414244868,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 228
+    },
+    {
+      "i": 3,
+      "do": "waitReply",
+      "expect": "a short, kind reply in Hinglish (Roman script), not in English or Devanagari",
+      "ref": "UX-08-04",
+      "timeline": [
+        {
+          "at": 509,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8679,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 13822,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 2607,
+          "mark": 1500,
+          "shot": "05-hinglish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5308,
+          "mark": 3000,
+          "shot": "06-hinglish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6181,
+          "mark": 6000,
+          "shot": "07-hinglish-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 8602,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mood off hona normal hai yaar, Monday ke baad wala din waise bhi bhaari lagta hai. Par kal ka din tumhare haath mein hai, aaj ki thakaan ke haath mein nahi.\n\nEk chhota plan try karo:\n\nAaj raat: Kapde aur bag ready rakh do, phir jaldi so jao.\nKal subah: Apna favourite gaana aur ek achhi chai ke saath nikalo.\nOffice mein: Sirf ek kaam chuno jo kal khatam karna hai. Bas wahi jeet hai.\n\nEk din, ek kaam. Tum sambhal loge. 💪\n\n11:40 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 20423,
+      "shot": "08-hinglish.png"
+    },
+    {
+      "i": 4,
+      "do": "send",
+      "typed": "आज दिल्ली में मौसम कैसा रहेगा, अंदाज़ा बताओ?",
+      "sentAt": 1795414269234,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 2715
+    },
+    {
+      "i": 5,
+      "do": "waitReply",
+      "expect": "Devanagari shows properly (no boxes); the answer is in Hindi and honest that it cannot check live weather",
+      "timeline": [
+        {
+          "at": 442,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 13322,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 17972,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1971,
+          "mark": 1500,
+          "shot": "09-hindi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3341,
+          "mark": 3000,
+          "shot": "10-hindi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6242,
+          "mark": 6000,
+          "shot": "11-hindi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 13774,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "आज Mon 23 Nov को दिल्ली में दिन हल्का गरम और सुबह-शाम ठंडा रहने का अंदाज़ा है, बारिश की उम्मीद लगभग नहीं। यह नवंबर के आख़िरी हफ़्ते के आम मौसम पर आधारित अंदाज़ा है, आज का ताज़ा हाल मैं अभी नहीं देख सकता।\n\nदिन: करीब 25 से 27°C, हल्की धूप के साथ धुंध\nसुबह और रात: करीब 10 से 12°C, हल्की ठंड\nहवा: इस मौसम में अक्सर काफ़ी खराब रहती है, बाहर मास्क काम आएगा\n\nशाम को निकलना हो तो एक हल्की जैकेट साथ रखो।\n\n11:41 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 24310,
+      "shot": "12-hindi.png"
+    },
+    {
+      "i": 6,
+      "do": "send",
+      "typed": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ",
+      "sentAt": 1795414295061,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 992
+    },
+    {
+      "i": 7,
+      "do": "waitReply",
+      "expect": "Gurmukhi shows properly; the joke is in Punjabi",
+      "ref": "UX-08-05",
+      "timeline": [
+        {
+          "at": 51,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 10083,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 11692,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1611,
+          "mark": 1500,
+          "shot": "13-punjabi-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3309,
+          "mark": 3000,
+          "shot": "14-punjabi-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6091,
+          "mark": 6000,
+          "shot": "15-punjabi-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 10049,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "ਅਧਿਆਪਕ: \"ਪੱਪੂ, ਦੱਸ ਸਭ ਤੋਂ ਵੱਧ ਨੀਂਦ ਕਿੱਥੇ ਆਉਂਦੀ ਹੈ?\"\n\nਪੱਪੂ: \"ਜੀ, ਤੁਹਾਡੀ ਕਲਾਸ ਵਿੱਚ!\" 😄\n\n11:41 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 17872,
+      "shot": "16-punjabi.png"
+    },
+    {
+      "i": 8,
+      "do": "send",
+      "typed": "wat is teh capitl of austrlia??",
+      "sentAt": 1795414314874,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 1319
+    },
+    {
+      "i": 9,
+      "do": "waitReply",
+      "expect": "understands the typos: Canberra, in one short bubble, no lecture about spelling",
+      "timeline": [
+        {
+          "at": 28,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7525,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 9635,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1657,
+          "mark": 1500,
+          "shot": "17-typos-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3258,
+          "mark": 3000,
+          "shot": "18-typos-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6136,
+          "mark": 6000,
+          "shot": "19-typos-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 7510,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Canberra is the capital of Australia. Sydney is the biggest city, but not the capital.\n\n11:42 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 15793,
+      "shot": "20-typos.png"
+    },
+    {
+      "i": 10,
+      "do": "send",
+      "typed": "Write me a 3 paragraph story about a tiger who learns to cook biryani",
+      "sentAt": 1795414331228,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 346
+    },
+    {
+      "i": 11,
+      "do": "waitReply",
+      "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words",
+      "timeline": [
+        {
+          "at": 399,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8963,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 14049,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1670,
+          "mark": 1500,
+          "shot": "21-long-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3089,
+          "mark": 3000,
+          "shot": "22-long-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6050,
+          "mark": 6000,
+          "shot": "23-long-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 8736,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Sheru the tiger was tired of plain jungle food. One evening, a warm smell of spices drifted in from a village wedding, and he followed it to a huge pot of biryani. He hid behind a banyan tree, watched the old cook Rahim Chacha at work, and decided he would learn to make it himself.\n\nHis first try was a disaster. He burnt the rice, dropped in a whole fistful of chillies, and sneezed so hard that the monkeys fell out of their tree laughing. Sheru went back night after night, though, and learned the secrets one by one: soak the rice, brown the onions slowly, layer everything with saffron and mint, then seal the pot and wait.\n\nThat waiting was the hardest part for a tiger, but Sheru managed it. When he finally lifted the lid, the smell brought the whole jungle running, deer and monkeys included. Nobody was afraid of him that night, and from then on every full moon was biryani night at Sheru's den.\n\n11:42 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 20273,
+      "shot": "24-long.png"
+    },
+    {
+      "i": 12,
+      "do": "sweep",
+      "expect": "every control in the chat (answer actions, chips, links) does something visible; nothing covers a bubble's words",
+      "controls": [
+        {
+          "tid": "thread-log",
+          "role": "log",
+          "name": "Messages with Chotu 😊",
+          "status": "skipped",
+          "effect": [],
+          "issues": [],
+          "reason": "own journey covers it"
+        },
+        {
+          "tid": "bubble-autolink",
+          "role": "button",
+          "name": "Mon 23 Nov",
+          "status": "pass",
+          "effect": [
+            "opened menu:Add to calendar\nCopy",
+            "content changed: \"Add to calendar / Copy\""
+          ],
+          "issues": [],
+          "shot": "25-sweep-bubble-autolink.png"
+        }
+      ],
+      "truncated": 0,
+      "ok": true,
+      "ms": 6625
+    },
+    {
+      "i": 13,
+      "do": "key",
+      "ok": true,
+      "ms": 33
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 440
+    },
+    {
+      "i": 15,
+      "do": "key",
+      "ok": true,
+      "ms": 16
+    },
+    {
+      "i": 16,
+      "do": "wait",
+      "expect": "pressing Enter on an empty box sends nothing: no empty bubble",
+      "ok": true,
+      "ms": 1584,
+      "shot": "26-empty-send.png"
+    },
+    {
+      "i": 17,
+      "do": "pasteSend",
+      "typed": "line one\n\nline three after a blank line",
+      "inField": "line one\n\n\nline three after a blank line",
+      "ok": true,
+      "sentAt": 1795414364377,
+      "before": 0,
+      "ms": 3213
+    },
+    {
+      "i": 18,
+      "do": "waitReply",
+      "expect": "the pasted text with a blank line went as ONE message, exactly as pasted, and foo answered it once",
+      "timeline": [
+        {
+          "at": 47,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3875,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 4763,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1560,
+          "mark": 1500,
+          "shot": "27-paste-blank-line-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3152,
+          "mark": 3000,
+          "shot": "28-paste-blank-line-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 3873,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Got your message, both lines came through with the blank line in between. What do you need done with it?\n\n11:42 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 10764,
+      "shot": "29-paste-blank-line.png"
+    },
+    {
+      "i": 19,
+      "do": "send",
+      "typed": "thanks 🙏",
+      "sentAt": 1795414377027,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 642
+    },
+    {
+      "i": 20,
+      "do": "waitReply",
+      "expect": "a small 👍 or ❤️ reaction on my thanks, or one short line; no long You're welcome speech",
+      "ref": "UX-08-01",
+      "timeline": [
+        {
+          "at": 84,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 5647,
+          "badges": [],
+          "reactions": [
+            "❤️"
+          ],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1596,
+          "mark": 1500,
+          "shot": "30-thanks-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3471,
+          "mark": 3000,
+          "shot": "31-thanks-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6078,
+          "mark": 6000,
+          "shot": "32-thanks-wait-6.0s.png",
+          "badges": [],
+          "reactions": [
+            "❤️"
+          ],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": null,
+      "newBubbles": 0,
+      "reactions": [
+        "❤️"
+      ],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 6663,
+      "shot": "33-thanks.png"
+    },
+    {
+      "i": 21,
+      "do": "send",
+      "typed": "asdfghjkl qwerty ???",
+      "sentAt": 1795414384698,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 657
+    },
+    {
+      "i": 22,
+      "do": "waitReply",
+      "expect": "gibberish gets a short, friendly ask to say it again; no error, no crash",
+      "timeline": [
+        {
+          "at": 97,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 4792,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 6266,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1653,
+          "mark": 1500,
+          "shot": "34-gibberish-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3344,
+          "mark": 3000,
+          "shot": "35-gibberish-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 4717,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "That looks like random keys, so I couldn't make out a question. What do you need?\n\n11:43 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 12351,
+      "shot": "36-gibberish.png"
+    },
+    {
+      "i": 23,
+      "do": "check",
+      "note": "Vikas 26 Oct: batch 1 has no jobs, so no job filter chips",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 17
+    },
+    {
+      "i": 24,
+      "do": "check",
+      "note": "batch 1 has no helpers",
+      "feature": "refusals",
+      "found": 0,
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "typed": "maine kal cab book karne bola tha, ho gaya kya?",
+      "sentAt": 1795414397824,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 371
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "expect": "Vikas 26 Oct: honest that foo cannot book cabs or do tasks yet and booked nothing; never \"I have no record\", never a fake booking",
+      "feature": "refusals",
+      "timeline": [
+        {
+          "at": 90,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3790,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 13353,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1738,
+          "mark": 1500,
+          "shot": "37-cab-honesty-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3224,
+          "mark": 3000,
+          "shot": "38-cab-honesty-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6283,
+          "mark": 6000,
+          "shot": "39-cab-honesty-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        }
+      ],
+      "firstReplyMs": 3730,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Nahi, cab book nahi hui hai. Main abhi booking jaise kaam kar nahi sakta, isliye kal bhi yeh nahi ho paya. Abhi ke liye cab apne Ola ya Uber app se khud book kar lo.\n\n11:43 AM",
+      "kit": [],
+      "replyFaults": [],
+      "ms": 19448,
+      "shot": "40-cab-honesty.png"
+    },
+    {
+      "i": 27,
+      "do": "dump",
+      "ok": true,
+      "ms": 63
+    }
+  ]
+}

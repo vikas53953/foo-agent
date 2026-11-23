@@ -1,0 +1,15 @@
+{"t":1795414999653,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795415015445,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8456}
+{"t":1795415036485,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":20975}
+{"t":1795415048561,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"anthropic-key:AI_KEY_INVALID","ms":368}
+{"t":1795415099809,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795415107406,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1795415114562,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795415122264,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1795415129684,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1795415129798,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}
+{"t":1795415131349,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795415145667,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795415154017,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1795415161918,"lvl":"error","mod":"approvals","evt":"EXPIRE_TICK_FAILED","kind":"UNKNOWN"}
+{"t":1795415161919,"lvl":"error","mod":"drafts","evt":"DRAFT_TICK_FAILED","kind":"TypeError"}

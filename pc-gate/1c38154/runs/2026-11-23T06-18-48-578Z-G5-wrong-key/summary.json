@@ -1,0 +1,87 @@
+{
+  "journey": "G5-wrong-key",
+  "title": "Release gate: a fresh PC where the user pastes a wrong key, and types in the chat before any AI is connected",
+  "feature": "ai",
+  "videos": [
+    "video/page@ebdee72dfd71028326de36e4274311dc.webm"
+  ],
+  "steps": 11,
+  "failed": 0,
+  "out": "C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T06-18-48-578Z-G5-wrong-key",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 22
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 605
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 159
+    },
+    {
+      "i": 3,
+      "do": "wait",
+      "expect": "the message box says to connect an AI first; Send is not live",
+      "ref": "UX-02-03",
+      "ok": true,
+      "ms": 15065,
+      "shot": "01-locked-composer.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "via": "own-key row, then Anthropic",
+      "ok": true,
+      "ms": 6214
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 490
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "ok": true,
+      "ms": 1139
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 3608
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the key row says plainly the key did not work and offers to try again; no crash, no fake works",
+      "ok": true,
+      "ms": 30088,
+      "shot": "02-wrong-key.png"
+    },
+    {
+      "i": 9,
+      "do": "check",
+      "note": "a wrong key is never offered as Use",
+      "found": 0,
+      "ok": true,
+      "ms": 17
+    },
+    {
+      "i": 10,
+      "do": "dump",
+      "ok": true,
+      "ms": 31
+    }
+  ]
+}

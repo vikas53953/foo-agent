@@ -1,0 +1,1738 @@
+[
+  {
+    "id": "G1-first-run#0",
+    "verdict": "works",
+    "summary": "The app opens on the Hi, I'm foo card with the face and wordmark, a dark window, and no blank area or error, which meets the expected outcome.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#1",
+    "verdict": "works",
+    "summary": "The welcome card from foo shows \"Hi, I'm foo.\", the header reads \"Setting up · step 1 of 2\", and there is one clear \"Let's go\" button, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#4",
+    "verdict": "wrong-design",
+    "summary": "The card is on screen and the key row offers 'Add in secret box', but every row still says 'Looking...' and the key row shows a spinner beside its button, so it is not clearly the 'testing live' state the outcome describes.",
+    "problems": [
+      "The 'Your own key' row shows a loading spinner right next to the 'Add in secret box' button. The row looks busy and ready at once, which is confusing.",
+      "The expected outcome says the Anthropic key row offers to add a key. The row is labelled 'Your own key', with no mention of Anthropic.",
+      "All rows read 'Looking...', not 'Testing...'. Nothing shows foo asking each AI its small question, and nothing is marked found or not found.",
+      "The card heading reads 'I'm looking for the AI you already use...' and the badge reads 'Step 1 of 2'. The reference says 'foo is looking for...' and 'Step 1 of 4'. The step count may be intended for this build.",
+      "The screen is in dark mode, but the reference is light. This is probably a theme setting rather than a fault."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#14",
+    "verdict": "wrong-design",
+    "summary": "The name card works: it asks 'What should I call myself?' with a box, Keep \"foo\" and Surprise me, and shows step 2 of 2. But the header subtitle has garbled text and the sidebar looks washed out.",
+    "problems": [
+      "The header subtitle 'Setting up · step 2 of 2' has overlapping or garbled characters around '2 of 2', so the numbers look smudged and hard to read.",
+      "The pill and the subtitle both say the step number, which is redundant. The reference pill and subtitle do not repeat it.",
+      "The foo row in the chat list is very faint and low contrast, with grey text on a grey panel. The reference row is clear and readable.",
+      "The sidebar is a lighter grey than the dark chat area, so the two halves clash. This looks unlike the finished reference.",
+      "The card has an extra 'That's it' button that the reference does not show. It is reasonable, but it is a difference.",
+      "The 'Hi, I'm foo. → Let's go' bubble shows a raw arrow and reads like leftover button text rather than a finished message."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#17",
+    "verdict": "works",
+    "summary": "The name '😊!!' was refused with the plain message 'Use at least one letter.' and the name card stayed open with the box, That's it, Keep \"foo\" and Surprise me still there.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#19",
+    "verdict": "works",
+    "summary": "The name box shows \"Chotu 😊\" with That's it, Keep \"foo\" and a dice button beside it, as expected, and nothing is clipped or broken.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#21",
+    "verdict": "wrong-design",
+    "summary": "The four faces appear and the living face is picked and marked default, but the card is laid out in a 2x2 grid instead of one row, and the 'New faces' and 'Use my own picture' buttons are replaced by 'Use this face' and 'Surprise me'.",
+    "problems": [
+      "The faces sit in a two-by-two grid with tile boxes and small corner numbers 1 to 4. The reference shows one row of four plain round faces.",
+      "Only the living face has a label ('Living face / Default'). The other three have no names, whereas the reference names them Flower, Half moon and Star. The first tile is taller than the others, so the grid looks lopsided.",
+      "The living face is a white disc with black eyes. The reference shows a black disc with white eyes.",
+      "The action buttons read 'Use this face' and 'Surprise me' with a dice emoji. The reference has 'New faces' and 'Use my own picture', so there is no way to choose your own picture.",
+      "The card is much taller than the reference and fills most of the chat, so it does not read as a compact answer card.",
+      "The header badge says 'Step 2 of 2'. The reference says 'Step 2 of 4'. This may be a rightful difference in this build.",
+      "The name card above (the 'What should I call myself?' answer) did not shrink to a one-line answer. The 'Using Claude (your AI)' card is also clipped at the top of the view."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#23",
+    "verdict": "works",
+    "summary": "The chosen Flower face has a blue ring and a check badge, which matches the expected ring around the chosen face and the reference's look.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#25",
+    "verdict": "works",
+    "summary": "The 'How should I talk to you?' card shows Calm, a bit funny (marked Best fit), Straight to the point, Warm and chatty, and Something else… with Skip, and the user's earlier name and face picks are visible above it.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#27",
+    "verdict": "wrong-design",
+    "summary": "The name, face and vibe are saved, Chotu is awake and the composer is open, but the screen is dark rather than light and the one-line greeting and confirmation are not visible.",
+    "problems": [
+      "The app shows a dark theme, while the reference design is light.",
+      "The expected one-line style confirmation and greeting from Chotu is not visible: the last Chotu bubble is cut off at the bottom edge, and only the sidebar preview ('All set. I'm Chotu 😊, and I'm here wh…') hints at it.",
+      "The setup steps (name, face, vibe) show as wide boxed rows such as 'What should I call myself? → Chotu 😊' and 'Pick a face. → Face ✿ (flower)', where the reference uses compact cards.",
+      "The reference shows a pinned 'Step 3 of 4' pill, which is missing here. This build may have dropped it on purpose, so I would not count it against the build.",
+      "Chotu's 'Chotu 😊 it is.' reply has the time stamp crowded against the text, and the sender label repeats the emoji, so the name and 😊 appear again and again."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G1-first-run#31",
+    "verdict": "works",
+    "summary": "After reopening, the same Chotu chat appears with the same name, flower face and history, the setup steps show only as old chat messages (no setup card), and no error is visible.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#0",
+    "verdict": "works",
+    "summary": "The welcome card shows \"Hi, I'm foo.\" with the step 1 of 2 header and a working \"Let's go\" button, in plain words with no jargon, filter chips, spend line or test-version labels.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#2",
+    "verdict": "wrong-design",
+    "summary": "The Find your AI card is showing and the key row offers 'Add in secret box', but the scan is still running and the row is labelled 'Your own key' rather than as an Anthropic key row.",
+    "problems": [
+      "The expected 'Anthropic key' row is not visible. The row is labelled 'Your own key', so it is unclear that it is the Anthropic key.",
+      "The 'Your own key' row shows a loading spinner beside the 'Add in secret box' button, which looks unfinished and contradicts the button being ready.",
+      "The scan has not finished: Claude, ChatGPT, Gemini and AI on this PC all still say 'Looking...'.",
+      "The 'Add in secret box' wording is vague and gives no sign that it is for an Anthropic key.",
+      "The sidebar chat preview and the 'Hi, I'm foo. → Let's go' message are dimmed or low contrast, and the arrow in that message looks odd."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#3",
+    "verdict": "wrong-design",
+    "summary": "The rows are being tested and the key row waits for a key, but the screen is caught mid-test and the \"Your own key\" row's button wording doesn't match the 'waits for a key' outcome.",
+    "problems": [
+      "ChatGPT row still shows \"Testing...\" with a spinner, so the check has not finished and the screen looks unfinished.",
+      "The \"Your own key\" row has a button reading \"Add in secret box\", which is odd, slightly jargon-like wording and does not clearly say the row is waiting for a key.",
+      "The \"Your own key\" row has no status text such as \"waiting for a key\", unlike the other rows that each show a state.",
+      "The left chat list shows \"foo\" and \"Setting up...\" in dim, low-contrast grey that is hard to read."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#12",
+    "verdict": "wrong-design",
+    "summary": "The name card for step 2 of 2 appears, but the collapsed finder line reads \"Using Claude (your AI)\" instead of \"Using Anthropic key\", and the header subtitle has garbled text.",
+    "problems": [
+      "The collapsed finder line says \"Using Claude (your AI)\" with a checkmark above it; the expected outcome is \"Using Anthropic key\".",
+      "The header subtitle \"Setting up · step 2 of 2\" has overlapping or garbled characters in \"2 of 2\", so the digits look smudged and hard to read.",
+      "The step is shown twice in the header, once as the \"Step 2 of 2 · Name it and pick a face\" pill and again in the subtitle.",
+      "The checkmark sits on its own line above \"Using Claude (your AI)\" and does not line up with the text, so the confirmation bubble looks cramped.",
+      "The left sidebar is a lighter grey than the dark chat pane, and the foo chat row is faded or dimmed.",
+      "The \"Surprise me\" button has a dice emoji that is out of place next to the plain-text buttons."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#15",
+    "verdict": "works",
+    "summary": "The first chat shows a friendly \"All set. I'm foo, and I'm here whenever you need me\" message, three suggestion buttons to try, and an unlocked message box that reads \"Message foo\".",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#19@1500",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) shows where typing dots would be, the user's message carries no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#19@3000",
+    "verdict": "works",
+    "summary": "While foo is still thinking, the Thinking row (foo's small face) shows below the user's \"hi foo, kaise ho?\" message, no reply text has started, and the user's message has no 👀 badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#19@6000",
+    "verdict": "wrong-design",
+    "summary": "The chat didn't scroll down to follow foo's reply, so the Thinking row is gone but only the top sliver of the reply bubble shows above the message box, with no words visible.",
+    "problems": [
+      "foo's reply under 'hi foo, kaise ho?' is cut off by the message box, so only the foo name and the top edge of the bubble show and the user can't see the reply being written.",
+      "The scrollbar is not at the bottom, so the chat is not following the new reply.",
+      "The foo chat row in the sidebar shows an unread '1' badge even though that chat is open and being read."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#19",
+    "verdict": "wrong-design",
+    "summary": "The Hinglish reply exists (the chat list preview shows it), but the chat did not scroll down to it, so the reply bubble is cut off at the bottom of the message area and the user cannot read it.",
+    "problems": [
+      "The newest foo reply is hidden: only the \"foo\" name label shows above a bubble clipped at the bottom edge, and none of the reply text is visible in the conversation.",
+      "The chat did not auto-scroll to the latest message, and the scrollbar thumb sits above the bottom.",
+      "Setup-style messages (\"Hi, I'm foo. → Let's go\", \"Using Claude (your AI)\", \"What should I call myself? → Skipped\") fill the top of the chat, which pushes the reply below the fold."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#21@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on the joke request, the Thinking row (foo's face) shows below the user's message, the header and chat list say \"typing...\", the user's message has only read ticks and no 👀, and no reply text is partly written yet.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#21@3000",
+    "verdict": "works",
+    "summary": "The screen shows foo working on the joke request: the user's message has no 👀 badge, and a small foo face sits where the reply will appear, with the header reading \"typing...\".",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#21@6000",
+    "verdict": "works",
+    "summary": "While foo was still thinking about the joke request, the screen showed only the small foo face Thinking row, with no reply half-written, no badge on the user's message, and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#23@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on the booking request, the Thinking row (foo's face) sits below the user's message, the message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#23@3000",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) shows where the reply will appear, the user's message has no 👀 or other badge, and nothing is blank, stuck or overlapping while foo is still working.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#23@6000",
+    "verdict": "works",
+    "summary": "While foo is still answering, the user's message shows no badge, and the foo face sits in the Thinking row below it with nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#23",
+    "verdict": "works",
+    "summary": "foo refuses the booking request in plain words, says it can't do tasks yet, and offers chat and questions instead, with no checklist or plan card.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#25@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on the cab request, the screen shows the small foo face row where the typing dots would be, the user's message carries no badge, and no partial reply is shown, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#25@3000",
+    "verdict": "works",
+    "summary": "While foo works on the cab request, the Thinking row (foo's face with no words yet) sits under the user's message, with no 👀 badge and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#25@6000",
+    "verdict": "works",
+    "summary": "While foo works on the cab request, the screen shows the Thinking row (foo's small face) under the user's message, with no 👀 or other badge on it, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#25",
+    "verdict": "wrong-design",
+    "summary": "The reply is a plain refusal with no 👀 or checklist, but it never says 'cab' and it reads as a generic refusal that also appears for the earlier table-booking request, and a stray 'foo read: Tue 24 Nov, 6:00 AM' line sits under the user's message.",
+    "problems": [
+      "The refusal is the same generic text used for the table-booking message and never mentions cabs, so it does not say plainly that foo can't book cabs yet.",
+      "A line 'foo read: Tue 24 Nov, 6:00 AM' appears under the user's cab message. It reads like a memory or record note, which this batch should not show, and the date and time are confusing next to 6:07 AM message stamps.",
+      "The message input box has a thick white focus outline that looks heavy against the otherwise dark, polished design."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#27@1500",
+    "verdict": "works",
+    "summary": "While foo works on \"did you book the cab?\", the screen shows the small foo face as the Thinking row, the user's message has no 👀 badge, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#27@3000",
+    "verdict": "works",
+    "summary": "While foo is still thinking, the screen shows the user's \"did you book the cab?\" with no emoji badge, the header and sidebar say \"typing...\", and foo's small face sits where the typing dots would be, with nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#27@6000",
+    "verdict": "works",
+    "summary": "The user's message \"did you book the cab?\" has no 👀 badge, and foo's reply is already appearing word by word, with the Thinking row gone, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#27",
+    "verdict": "works",
+    "summary": "foo answers the question directly, saying it hasn't booked the cab and can't book yet, and tells the user to book it themselves for Tue 24 Nov, 6:00 AM, with no memory words or 'no record' wording and a clean chat layout.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#29@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on \"remember that I am vegetarian\", the screen shows foo's small face as the Thinking row, the user's message has only the normal read ticks with no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#29@3000",
+    "verdict": "works",
+    "summary": "The screen shows foo's small face as the Thinking row under \"remember that I am vegetarian\", the header and chat list both say \"typing...\", and the user's message has no 👀 badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#29@6000",
+    "verdict": "works",
+    "summary": "While foo works on \"remember that I am vegetarian\", the Thinking row shows as foo's small face with no reply text yet, the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#29",
+    "verdict": "works",
+    "summary": "After \"remember that I am vegetarian\", foo gives one plain reply saying it can't remember things yet, with no memory chip and no \"Noted\", as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#32@1500",
+    "verdict": "works",
+    "summary": "While foo is still working, the screen shows only the small foo face Thinking row under the user's \"Switch to dark mode\" message, with no emoji badge and no stuck or overlapping content.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#32@3000",
+    "verdict": "works",
+    "summary": "While foo works on \"Switch to dark mode\", the Thinking row shows as foo's small face below the user's message, with no 👀 on that message and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#32@6000",
+    "verdict": "works",
+    "summary": "At 6.0 s the screen shows foo's small face as the Thinking row under the user's \"Switch to dark mode\" message, with no reply text yet, no emoji on the user's message, and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#32",
+    "verdict": "works",
+    "summary": "The screen switched to dark mode and shows the one-line confirmation \"Changed: Theme → Dark. Undo\" with a working Undo link, matching the expected outcome.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "B1-batch1#34",
+    "verdict": "works",
+    "summary": "The three-dot menu shows exactly Settings, Keyboard shortcuts and Quit foo, with no extra items.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#1@1500",
+    "verdict": "works",
+    "summary": "The screen shows the user's \"hi\" with no 👀 badge, a foo flower-face Thinking row where typing dots would be, and no partial reply, which matches the expected moment before foo starts writing.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#1@3000",
+    "verdict": "works",
+    "summary": "While foo works on the reply to \"hi\", the Thinking row shows under the chat, the user's bubble has no 👀 badge, and the Stop button is shown.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#1@6000",
+    "verdict": "works",
+    "summary": "Six seconds after \"hi\", the screen shows foo is working on it. The small face sits where the typing dots would be, \"typing...\" appears under the name in the header and the chat list, and the round button has turned into a Stop square. The \"hi\" bubble has no 👀 and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#1",
+    "verdict": "works",
+    "summary": "After the wait, foo replies with one short, warm line, \"Hi! Good morning. What do you need today?\", and there is no 👀 on the user's \"hi\" message.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#3@1500",
+    "verdict": "works",
+    "summary": "While foo is working on the Hinglish message, the screen shows the Thinking row (foo's face) under the user's message, the header and sidebar say \"typing...\", and no reply text is partly written yet.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#3@3000",
+    "verdict": "works",
+    "summary": "While foo is still answering, the screen shows only the small foo face in the Thinking row under the user's message, with no 👀 on the message, no stuck or blank area, and no partial reply.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#3@6000",
+    "verdict": "works",
+    "summary": "While foo is answering, the Hinglish reply is partly written and cut off at the bottom of the screen, with no Thinking row and no badge on the user's message, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#3",
+    "verdict": "works",
+    "summary": "Chotu replied in kind Roman-script Hinglish after 4.9 s, directly answering the request to be motivated about tomorrow's office day, in a clean chat screen with no visible errors, clipping or hidden-feature leaks.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#5@1500",
+    "verdict": "wrong-design",
+    "summary": "The user's Hindi message was sent without a 👀 badge, and the header and chat list show \"typing...\", but the Thinking row is almost entirely cut off at the bottom edge of the chat.",
+    "problems": [
+      "The Thinking row (foo's small face) is clipped. Only a sliver of its top shows just above the message box at the bottom of the chat, so the user cannot plainly see that foo is working.",
+      "The chat did not scroll far enough to bring the Thinking row fully into view above the message box.",
+      "The only clear sign that foo is working is the small \"typing...\" text under Chotu's name in the header and chat list."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#5@3000",
+    "verdict": "wrong-design",
+    "summary": "The message list has not scrolled down far enough, so the Thinking row (foo's small face) is almost entirely hidden under the message box, even though the header and chat list say \"typing...\".",
+    "problems": [
+      "Only a thin sliver of foo's face shows at the bottom edge of the chat, just above the message box. The Thinking row is clipped and cannot be read as \"foo is working on it\".",
+      "The chat does not follow to the newest content. The user's Hindi question sits at the very bottom and the scrollbar is not at the end, so the waiting indicator is out of view.",
+      "The send button has become a square stop button. This is plausible while foo is working, but with the Thinking row hidden the chat area gives no clear sign of what is happening."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#5@6000",
+    "verdict": "wrong-design",
+    "summary": "foo's working state is only weakly shown: the Thinking row is cut off under the message box, though the header says 'typing...' and the send button has turned into a stop button.",
+    "problems": [
+      "The Thinking row, with foo's small face, is scrolled out of view. Only the top edge of its avatar peeks out just above the message box, so a user cannot plainly see that foo is working.",
+      "The chat has not scrolled down to the newest item. The user's Hindi message sits at the very bottom and the area under it is clipped.",
+      "'typing...' appears in the header and the chat list, but this is the only clear sign of activity because the Thinking row is hidden."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#5",
+    "verdict": "works",
+    "summary": "The Hindi question and the sidebar preview both render Devanagari cleanly with no boxes, and the reply text supplied for this step is in Hindi and honestly says it is an estimate, not today's live weather; the reply bubble itself sits below the captured frame, so only its sidebar preview is visible here.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#7@1500",
+    "verdict": "works",
+    "summary": "The Punjabi joke message shows with no 👀, foo's small face sits where typing dots would be, the header says typing, and no reply has started, so the waiting state reads clearly with nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#7@3000",
+    "verdict": "works",
+    "summary": "The Punjabi message shows in full with no 👀, and foo's small face (the Thinking row) sits below it while the reply is not yet written, so foo is plainly working on it.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#7@6000",
+    "verdict": "works",
+    "summary": "The reply is being written word by word with no Thinking row and no 👀 on the user's Punjabi message, which matches the expected in-progress state.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#7",
+    "verdict": "works",
+    "summary": "The Punjabi reply shows in correct Gurmukhi with the joke in Punjabi, and the screen has no error, jargon, or hidden-feature leaks.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#9@3000",
+    "verdict": "wrong-design",
+    "summary": "foo's reply is not on screen yet and the header says 'typing...', but the Thinking row is almost entirely cut off at the bottom of the chat, so the chat has not scrolled down far enough to show it.",
+    "problems": [
+      "The Thinking row (foo's small face) is mostly hidden. Only a sliver of its dotted ring shows above the message box, so the user cannot plainly see that foo is working.",
+      "The chat does not scroll to bring the newest area into view after the user sends a message. The sent message sits right at the bottom edge and the Thinking row is clipped behind the input bar."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#9",
+    "verdict": "wrong-design",
+    "summary": "foo understood the typos and answered Canberra with no spelling lecture, but the reply bubble is cut off below the message list so the user cannot see it, and the reply runs past one short bubble.",
+    "problems": [
+      "The thread has not scrolled to the newest reply. Only the top of Chotu's avatar peeks out above the suggestion chips, and the answer appears only as the sidebar preview 'The capital of Australia is Canberra. M…'.",
+      "The reply text adds a second sentence ('Many people guess Sydney or Melbourne, but Canberra was built…') instead of one short bubble.",
+      "Three suggestion chips ('Biggest city in Australia?', 'Capital of New Zealand?', 'Tell me about Canberra') sit over the bottom of the thread and help hide the reply."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#11@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on the biryani story, the screen shows only foo's small face waiting where the reply will appear, with no reply text yet, and the user's message carries no 👀 or other badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#11@3000",
+    "verdict": "works",
+    "summary": "The Thinking row shows as foo's small face below the user's biryani story request, with no reply started yet, no emoji on the user's message, and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#11@6000",
+    "verdict": "works",
+    "summary": "At 6.1 s the user's story request has no badge, no Thinking row shows, and foo's reply has begun appearing below it, which is the expected in-progress state.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#11",
+    "verdict": "works",
+    "summary": "The three-paragraph tiger story streams in complete and readable, ends with its timestamp and action icons below the bubble, and the suggestion chips sit clear of the text.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#16",
+    "verdict": "works",
+    "summary": "The empty box was not sent: no empty bubble appears after Chotu's story reply, and the input still shows its placeholder.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#18@1500",
+    "verdict": "works",
+    "summary": "At 1.7 seconds the user's \"line one / line three after a blank line\" message has no badge, foo's small face shows as the Thinking row below it, and no partial reply is shown, which matches the expected step.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#18@3000",
+    "verdict": "works",
+    "summary": "While foo is still working on the reply to the blank-line message, the screen shows the Thinking face alone under the earlier answer, the header and sidebar say \"typing...\", the stop button is active, and the user's message has no 👀.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#18",
+    "verdict": "works",
+    "summary": "The two-line paste with a blank line arrived as one bubble with the blank line kept, and foo replied once with a sensible answer at 6:10 AM.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#20@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on \"thanks 🙏\", the Thinking row (foo's small face) shows below the user's bubble, and the bubble carries no 👀 or other badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#20@3000",
+    "verdict": "works",
+    "summary": "While foo is still thinking after \"thanks 🙏\", the Thinking row (foo's small face) shows below the user's message, with no 👀 on the bubble and no half-written reply.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#20@6000",
+    "verdict": "works",
+    "summary": "While foo is still thinking about \"thanks 🙏\", the screen shows the small foo face as the Thinking row, the user's bubble has no 👀 or other badge, and no reply text is being written yet.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#20",
+    "verdict": "works",
+    "summary": "After the user's \"thanks 🙏\", the app puts a small ❤️ reaction on the bubble and sends no \"You're welcome\" reply, as the expected outcome asks.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#22@1500",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) sits under the user's \"asdfghjkl qwerty ???\" message, no reply is being written yet, the user's message carries no 👀 or other badge, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#22@3000",
+    "verdict": "works",
+    "summary": "The user's message \"asdfghjkl qwerty ???\" has no badge, foo's small face shows as the Thinking row with no reply started yet, and nothing is blank, stuck or overlapping in the chat area.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#22",
+    "verdict": "works",
+    "summary": "The gibberish message got a short, friendly reply asking what the user needs, with no error or crash, and the chat looks clean and polished.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#26@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on the cab question, the Thinking row (foo's small avatar) shows below the user's message, with no 👀 on that message and no half-written reply.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#26@3000",
+    "verdict": "works",
+    "summary": "The user's message has no 👀 badge, and the Thinking row (foo's small face with its dotted ring) sits where the typing dots would be, while the header reads \"typing...\" and no reply is being written yet.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#26@6000",
+    "verdict": "works",
+    "summary": "foo's reply is appearing in the chat as expected and honestly says no cab was booked, with no Thinking row, no 👀 on the user's message and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#26",
+    "verdict": "works",
+    "summary": "foo answers plainly in Hinglish that the cab was not booked, that it cannot do booking yet, and that the user must book in their own cab app, with no fake confirmation or 'no record' wording.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#1",
+    "verdict": "works",
+    "summary": "The user's message \"Give me 5 tips to sleep better, one line each\" is sent and foo shows its answering indicator (the avatar with the dotted ring and the \"typing...\" header), so the expected outcome is met.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#3@1500",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) shows under the sleep-tips question with no reply started yet, the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#3@3000",
+    "verdict": "works",
+    "summary": "While foo works on the sleep-tips request, the Thinking row (foo's small face with the dotted ring) shows where the typing dots would be, the user's message has no 👀 badge, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#3@6000",
+    "verdict": "works",
+    "summary": "While foo was still working on the sleep-tips request, the Thinking row (foo's small face) showed below the user's message, no reply text was partly written, the user's message carried no 👀, and nothing was stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#3",
+    "verdict": "works",
+    "summary": "After reopening, the sleep-tips question is answered with a clean numbered list of five one-line tips, with no 👀 and no Thinking row left behind.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#6",
+    "verdict": "works",
+    "summary": "The menu shows exactly Settings, Keyboard shortcuts and Quit foo, as the batch 1 expected outcome requires, with no filter chips, spend line, or extra items.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#10",
+    "verdict": "works",
+    "summary": "The app reopened on the same Chotu chat with the earlier messages in place, including the cab reply and the sleep tips, and no error card.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#12@1500",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) shows where the dots would be, no reply is being written yet, the user's message has no 👀, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#12@3000",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) shows where typing dots would be, the user's \"are you still there?\" has no 👀 or other badge, and no reply text or error appears yet, which matches the expected state at 3.0 s.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G3-restart#12",
+    "verdict": "works",
+    "summary": "After the restart, foo replied to \"are you still there?\" with a short, natural line, \"Yes, I'm right here. What do you need?\", and the chat looks like a finished product.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#2@1500",
+    "verdict": "works",
+    "summary": "The screen shows foo working on the request: the user's \"dark mode kar do please\" has no 👀 badge, and the small foo face sits below it where the reply will appear, with nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#2@3000",
+    "verdict": "works",
+    "summary": "At 3.2 s the screen shows the waiting state: the user's \"dark mode kar do please\" has no 👀, foo's face sits in the Thinking row, the header reads \"typing...\", and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#2@6000",
+    "verdict": "works",
+    "summary": "While waiting after \"dark mode kar do please\", the screen shows the typing indicator in the header, the small Chotu face as the Thinking row below the user's message, no reply text yet, and no 👀 on the user's message.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#2",
+    "verdict": "wrong-design",
+    "summary": "Dark mode applied and foo replied with the one-line 'Changed: Theme → Dark. Undo' with a working Undo link, but the sidebar and top strip are still mid-grey, so the app does not look fully dark.",
+    "problems": [
+      "The chat list sidebar background and the strip across the top are a mid-grey, clearly lighter than the near-black chat area, whereas the dark reference has a near-black sidebar. The whole app should have turned dark, and this makes it look half-themed.",
+      "The sidebar's bottom user strip is much darker than the grey sidebar above it, so the left panel shows two different shades.",
+      "The confirmation is a faint, small grey line centred under the user's message, with low contrast against the dark background. It is far less visible than the reference's bordered 'Changed' card, though the expected outcome only asks for one line."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#5@3000",
+    "verdict": "works",
+    "summary": "The screen shows no Thinking row and no partly written reply, matching the expected state at this moment, and the theme change to Light is already confirmed with an Undo link. The brief's general line asks for a visible working sign, but the explicit fields say it should be absent, so I judged against the explicit fields.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#5@6000",
+    "verdict": "works",
+    "summary": "The theme change to Light is already confirmed with a 'Changed: Theme → Light. Undo' line under the user's message, with no 👀, no stuck Thinking row and nothing overlapping, so a settings change finishing before a written reply is fine.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#5",
+    "verdict": "works",
+    "summary": "After the user asked to go back to light, the screen shows the same one-line 'Changed: Theme → Light. Undo' under their message, and the light theme is applied.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#8",
+    "verdict": "works",
+    "summary": "Settings opens on a real Account & your AI page with working rows (Using Claude with a checked status, Test now, Change, Backup AI, How it's paid, Add another AI), and the left list shows only the batch-1 pages.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#13",
+    "verdict": "wrong-design",
+    "summary": "The Theme control works and marks the current choice (Light), but its order and wording differ from what was expected, and some settings text has spacing and emoji faults.",
+    "problems": [
+      "The Theme options read 'Same as Windows · Light · Dark', with the Windows option first. The expected outcome and reference say 'Light · Dark · Windows', with Windows last and worded 'Windows'.",
+      "The current theme is marked only by a faint white pill on a light grey bar. The reference marks it with a strong black fill, so the selected choice is harder to spot.",
+      "'Show Chotu 😊's eyes' has an emoji inside the sentence and a stray gap before the 's, so it reads awkwardly. The Visuals description ('How often Chotu 😊 shows charts...') also puts an emoji mid-sentence.",
+      "The Appearance page lists extra rows (Zoom, Animations, Sounds, See-through sidebar, Show eyes, Visuals, and a message preview) in place of the reference's Text size and Show animations rows. The page also lacks the 'Search settings' box and the full settings list, though this build may rightly hide those."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#18@1500",
+    "verdict": "wrong-design",
+    "summary": "The Thinking row (foo's small face) shows under the user's 'make the text bigger' message, with no 👀 and nothing overlapping, but the earlier 'looking for the AI you already use' content above it looks duplicated and stuck.",
+    "problems": [
+      "The line 'I'm looking for the AI you already use…' appears twice in a row: once as a plain grey bubble with a 6:13 AM time and again as the bold heading of the card below it.",
+      "In the card, Claude and ChatGPT are labelled 'signed in' but still show 'Testing…' spinners about a minute later, which reads as stuck and contradicts itself.",
+      "The card is a large block of old content that pushes the current exchange to the bottom of the screen, so the user's new request and the Thinking row sit far from the visible activity."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#18@3000",
+    "verdict": "wrong-design",
+    "summary": "The Thinking row shows under the user's message with no 👀 badge, as expected, but an odd, duplicated 'looking for the AI you already use' card with spinners still running sits in the chat above it.",
+    "problems": [
+      "The text 'I'm looking for the AI you already use...' appears twice in a row: once as a small plain bubble and again as the title of a large card.",
+      "Claude and ChatGPT both read 'signed in' and 'Testing...' with spinners at the same time. That is contradictory, and it looks stuck while the footer already says 'Claude ready'.",
+      "This provider-check card is leftover or unrelated to 'make the text bigger', so it clutters the chat and pushes the actual exchange down."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G4-settings#18",
+    "verdict": "wrong-design",
+    "summary": "The text-size change worked: 'Changed: Zoom → 110%. Undo' appears under the user's message and in the chat list. But the window looks clipped, with the user's bubble cut off at the right edge, and an unfinished, duplicated 'looking for the AI' block sits above it.",
+    "problems": [
+      "The user's 'make the text bigger' bubble runs off the right edge, and its timestamp is cut to '6:14'. The right side of the window looks clipped.",
+      "'I'm looking for the AI you already use...' shows twice: once as a plain bubble and again as a card. ChatGPT still says 'Testing...' with a spinner, so the screen looks unfinished and noisy in a text-size test.",
+      "The window has no title bar or controls. The top strip is empty grey, and the chat is cut off at the top and right.",
+      "The old 'Changed: Theme → Light. Undo' line is still visible, but the app is dark. If the theme change was undone, or never applied, the line is misleading.",
+      "The 'Changed: Zoom → 110%. Undo' line is small, low-contrast grey text. After a request to make the text bigger, it is hard to see that anything changed."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G5-wrong-key#3",
+    "verdict": "works",
+    "summary": "The message box reads \"Connect your AI first, then we can talk.\" and is locked, so Send is not live, which matches the expected outcome.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G5-wrong-key#8",
+    "verdict": "wrong-design",
+    "summary": "The Anthropic key row says plainly that the key didn't work and offers 'Replace key', but a second card below says 'Saved securely' with a checkmark, which reads like the key was accepted.",
+    "problems": [
+      "The card below the list shows a checkmark and 'Saved securely. foo's AI never sees it.' for the same Anthropic key the row above says didn't work. A user could read this as success, which is a mixed message.",
+      "The Anthropic key row's failure message wraps over two lines and sits cramped beside the 'Replace key' button.",
+      "The action on the failed key row is 'Replace key', not an explicit 'try again', although the expected outcome asks for an offer to try again. It is only a mild mismatch.",
+      "The Anthropic key row still says 'found on this PC' under its name, which sits oddly next to the failure message.",
+      "The checkmark in the saved-key card sits alone on its own line, a little detached from the text."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#0",
+    "verdict": "works",
+    "summary": "The welcome card shows \"Hi, I'm foo.\" with a \"Let's go\" button, and the header reads \"Setting up · step 1 of 2\", as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#2",
+    "verdict": "wrong-design",
+    "summary": "The Connect your AI card is there and the key row offers \"Add in secret box\", but the scan is still running and the key row is labelled \"Your own key\" rather than Anthropic.",
+    "problems": [
+      "The expected outcome is an Anthropic key row that offers to add the key. The row is labelled \"Your own key\" and never says Anthropic.",
+      "The \"Your own key\" row shows a loading spinner beside its \"Add in secret box\" button, so it looks like it is still searching and also ready for input at the same time.",
+      "Claude, ChatGPT, Gemini and AI on this PC all still show \"Looking...\", so the screenshot was taken before the scan finished and the result is not visible.",
+      "\"Add in secret box\" is an odd, unclear label for adding a key.",
+      "The sidebar says \"Setting up...\" and the left panel's title bar area is a flat grey with no content, which looks slightly unfinished."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#3",
+    "verdict": "works",
+    "summary": "The finder is mid-test as expected: Claude shows works, ChatGPT is still testing, Gemini and AI on this PC show not found, and the key row waits with an 'Add in secret box' button.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#12",
+    "verdict": "wrong-design",
+    "summary": "The name card for step 2 of 2 shows and works, but the collapsed finder line reads \"Using Claude (your AI)\" instead of \"Using Anthropic key\", and the header subtitle has garbled text.",
+    "problems": [
+      "The collapsed finder bubble says \"Using Claude (your AI)\" and the sidebar footer says \"Uses your Claude plan\". The expected outcome is \"Using Anthropic key\", so the wording does not match.",
+      "The header subtitle \"Setting up · step 2 of 2\" has overlapping glyphs. The digit after \"step\" looks like a 1 and a 2 printed on top of each other, and the \"of 2\" is squashed, so it is hard to read.",
+      "In the collapsed finder bubble, the checkmark sits on its own line above the text instead of beside it, which looks misaligned.",
+      "The step is shown twice: once in the blue \"Step 2 of 2 · Name it and pick a face\" pill and again in the subtitle. This is redundant and crowds the header.",
+      "The \"Hi, I'm foo. → Let's go\" bubble shows the raw arrow, so it reads like a leftover log line and not like a chat message."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#15",
+    "verdict": "works",
+    "summary": "The chat shows a warm welcome with three suggestion chips (What can you do?, Help me write a message, Plan my day with me) and an unlocked message box, with no filter chips, spend line, or test-version wording.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#17@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on the chai-or-coffee question, the Thinking row (foo's small face) shows below the user's message, with no reply text yet, no 👀 on the user's message, and no overlapping or blank areas.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#17@3000",
+    "verdict": "works",
+    "summary": "While foo is still answering, the screen shows the Thinking row (foo's face) under the user's message, the header and sidebar say \"typing...\", and no reply text or 👀 badge appears on the user's message.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#17@6000",
+    "verdict": "works",
+    "summary": "At 6.0 s the user's message has no 👀 badge, no Thinking row shows, and foo's reply is visibly being written word by word, which is the expected state.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#17",
+    "verdict": "wrong-design",
+    "summary": "foo answered the chai-or-coffee question in one line after 6.4 s with no 👀, so the expected outcome is met, but the setup messages above it have visible layout and wording problems.",
+    "problems": [
+      "foo's earlier message says \"try one of these\", but no suggestions or buttons appear under it, so it points at nothing.",
+      "The setup summary cards are uneven: \"Using Claude (your AI)\" puts a lone tick on its own line above the text, while the other two cards are single-line with the text centred. All three cards are oversized for one short line.",
+      "The setup cards use arrow-style labels (\"Hi, I'm foo. → Let's go\", \"What should I call myself? → Skipped\"), which read like raw logs instead of chat messages.",
+      "The ☕ in the reply wraps onto its own line and renders small and dull, so it looks like a stray artefact rather than part of the sentence.",
+      "The message box has a heavy white focus outline that looks harsh against the dark theme."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#18",
+    "verdict": "works",
+    "summary": "The chat shows no job filter chips, no spend line, no 'later batch' or 'test version' wording, and no 👀 on the plain chat reply, and the foo reply answers the question asked.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#22",
+    "verdict": "wrong-design",
+    "summary": "Try again worked: the answer was rewritten in place and is labelled 'Rewritten 6:17 AM' with a 'Show earlier answer' link, but the chat header's status line is garbled.",
+    "problems": [
+      "Under the 'foo' name in the chat header, 'Typing…' is drawn on top of 'Awake on your PC', so both are partly unreadable.",
+      "A leaf emoji (🌿) is added to the end of the rewritten answer, which looks out of place for a one-line chai or coffee reply.",
+      "The 'Rewritten' label is small and faint at the bottom corner, and the 'Show earlier answer' link is faint grey, so both are easy to miss."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#24@1500",
+    "verdict": "works",
+    "summary": "While foo is still waiting on the reply to \"Please just reply OK.\", the Thinking row (foo's small face) shows where the typing dots would be, the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#24@3000",
+    "verdict": "works",
+    "summary": "At 3.3 s the Thinking row (foo's face) shows below the chat, the user's \"Please just reply OK.\" carries only the read ticks with no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#24@6000",
+    "verdict": "works",
+    "summary": "At 6.0 s the screen shows foo's reply \"OK\" under the user's \"Please just reply OK.\", with no Thinking row, no 👀 badge on the user's message, and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#24",
+    "verdict": "works",
+    "summary": "foo replied with just \"OK\" to \"Please just reply OK.\", as the expected outcome asks, and the reply sits cleanly in the chat with its name, time and normal action icons.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#29",
+    "verdict": "works",
+    "summary": "No 'You deleted this message' line or empty placeholder is left in the chat, and the conversation reads cleanly with no gaps, errors or overlapping text.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#31@1500",
+    "verdict": "works",
+    "summary": "foo's face shows where typing dots would be and the header says 'typing...', the user's 'gamma delta. Please just reply OK.' message has no 👀 and is marked as delivered, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#31@3000",
+    "verdict": "works",
+    "summary": "The user's message 'gamma delta. Please just reply OK.' shows two ticks and no 👀, foo's face sits where typing dots would be, and the header and sidebar say 'typing...', so the screen clearly shows foo working, with nothing blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#31",
+    "verdict": "works",
+    "summary": "foo's latest reply reads \"OK\" with a 6:17 AM time, as the expected outcome asks, after the user sent \"gamma / delta. Please just reply OK.\"",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#41@1500",
+    "verdict": "works",
+    "summary": "While foo works on the table booking, the user's message has no 👀 badge, the Thinking row (foo's face alone) is shown with no reply text yet, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#41@3000",
+    "verdict": "works",
+    "summary": "The user's message is sent with no 👀, foo's small face (Thinking row) sits below it, the header and chat list both say typing…, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#41@6000",
+    "verdict": "works",
+    "summary": "While foo works on the table booking, the Thinking row (foo's small face) shows below the user's message, the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#41",
+    "verdict": "works",
+    "summary": "foo replied with the approved fixed line, word for word, saying it can't do tasks like booking yet and can only chat and answer questions, with no error, blank area, or overlap.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#43@1500",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's face alone) sits below the user's \"remember that my sister's birthday is on 5 March\" message while foo is working, with no 👀 on that message and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#43@3000",
+    "verdict": "works",
+    "summary": "While foo is still thinking about the birthday message, the Thinking row (foo's small face) shows below the user's message, and the user's message carries no 👀 or other badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#43@6000",
+    "verdict": "works",
+    "summary": "While foo is still working on the birthday reminder, the screen shows foo's small face at the bottom where the typing dots would be, the user's message carries no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#43",
+    "verdict": "works",
+    "summary": "The reply is one bubble, \"I can't remember things for you yet, so tell me again when it matters.\", with no 'Noted', no jargon and no extra elements.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#46@1500",
+    "verdict": "works",
+    "summary": "While foo is still answering, the screen shows the Thinking face under the user's \"Switch to dark mode\" message, the header reads \"typing...\", and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#46@3000",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's face) shows below \"Switch to dark mode\" with no reply text yet, the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#46@6000",
+    "verdict": "works",
+    "summary": "While foo is still answering, the screen shows the Thinking row (foo's small face) under the user's \"Switch to dark mode\" message, with no 👀 badge, no stuck or overlapping elements, and the header reads \"typing...\".",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#48@1500",
+    "verdict": "works",
+    "summary": "While foo is still answering, the Thinking row (foo's small face) sits below the user's \"did you book the table?\" message, the message has no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#48@3000",
+    "verdict": "works",
+    "summary": "While foo works on \"did you book the table?\", the Thinking row shows as foo's small face with no reply bubble yet, and the user's message carries no 👀 badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#48@6000",
+    "verdict": "works",
+    "summary": "The screen shows foo's reply to \"did you book the table?\" being written, with no Thinking row, no badge on the user's message, and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA1-batch1-recheck#48",
+    "verdict": "works",
+    "summary": "After \"did you book the table?\", foo gives one plain, honest no with no raw tags, and the reply matches the expected wording.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#0",
+    "verdict": "works",
+    "summary": "The welcome card is shown at step 1 of 2, with the 'Hi, I'm foo.' greeting and a 'Let's go' button, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#2",
+    "verdict": "wrong-design",
+    "summary": "The search card is still mid-scan, and the 'Your own key' row shows a spinner beside its button. The expected 'Anthropic key' row with an add-key option is not shown.",
+    "problems": [
+      "The 'Your own key' row shows a loading spinner next to the 'Add in secret box' button. It looks both busy and ready, which is confusing.",
+      "No row is labelled as an Anthropic key. The expected outcome says the Anthropic key row offers to add the key, but the row only says 'Your own key'.",
+      "'Add in secret box' is odd, unclear wording for a button that adds a key.",
+      "The bar says Step 1 of 2 while the sidebar and header also say 'Setting up' with an unread badge. The duplicated status text is redundant.",
+      "The first chat bubble reads 'Hi, I'm foo. → Let's go', which looks like a raw arrow rather than a polished message."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#5",
+    "verdict": "works",
+    "summary": "The secret box appears in the chat and asks for the Anthropic key, with a paste box, Save securely and Cancel buttons, and a note that the key is stored on this PC.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#9",
+    "verdict": "works",
+    "summary": "The Anthropic key row says in plain words that the key didn't work (\"didn't work. It may be old or typed wrong.\") and offers a Replace key button, which is the expected outcome.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#19",
+    "verdict": "works",
+    "summary": "The name card shows the expected question \"What should I call myself?\" with a name box and the three choice buttons, and the screen looks like a finished, consistent product.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#23",
+    "verdict": "works",
+    "summary": "The name \"😊!!\" (no letters or numbers) is refused with the plain-words message \"Use at least one letter.\" in red under the field, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#27",
+    "verdict": "works",
+    "summary": "The reply \"Chotu 😊 it is.\" appears under the name question, and the \"Pick a face\" card follows it as expected.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#30",
+    "verdict": "works",
+    "summary": "The face choice (Face ◐ half moon) is recorded in the chat, and the talk-style question \"How should I talk to you?\" follows with its options, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#33",
+    "verdict": "works",
+    "summary": "The first chat opens as Chotu with the composer unlocked (\"Message Chotu\" with an active send button), and Chotu replies to the user's choices in plain, friendly language.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#35@1500",
+    "verdict": "works",
+    "summary": "The Thinking row (foo's small face) sits where the reply will appear, the user's message has no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#35@3000",
+    "verdict": "works",
+    "summary": "The Thinking row shows foo's small face where typing dots would be, the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#35@6000",
+    "verdict": "works",
+    "summary": "The user's message has no badge, no Thinking row is showing, and foo's reply \"Mera naam Chotu 😊 hai.\" is appearing at the bottom of the screen, which is the expected mid-answer state.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#35",
+    "verdict": "works",
+    "summary": "The real AI answered the typed question in one line as Chotu, with no error, jargon, or layout fault visible on the screen.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#37@1500",
+    "verdict": "works",
+    "summary": "The screen shows foo's small face as the Thinking row under the user's message, with no 👀 on that message, no badges, and no partial reply, which is correct for this moment.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#37@3000",
+    "verdict": "works",
+    "summary": "While foo works on the reply, the user's message has no badge and the Thinking row (foo's green face) sits where the reply would start, with no stuck or overlapping elements.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#37",
+    "verdict": "works",
+    "summary": "After the user said their name is Rohit and asked for foo's name, foo replied with its own name, Chotu 😊, and did not use the user's name.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#40",
+    "verdict": "works",
+    "summary": "After reopening, the Chotu chat, its name, and the full conversation history are all still there, and the replies answer what the user asked.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#42@1500",
+    "verdict": "works",
+    "summary": "The screen shows foo working on the reply: the Thinking face sits under the user's message, the header and sidebar say \"typing...\", and no badge or partial reply is attached to the message.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#42@3000",
+    "verdict": "works",
+    "summary": "The screen shows foo still working on the latest question: the Thinking row (foo's small face) sits where the typing dots would go, the \"typing...\" line shows in the header and sidebar, and the user's message has no 👀 badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#42@6000",
+    "verdict": "works",
+    "summary": "The user's question has no 👀 badge and no Thinking row, and foo's reply \"Chotu 😊\" is appearing with the stop button active, which is the expected mid-answer state.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#42",
+    "verdict": "works",
+    "summary": "After reopening, the real AI answered the typed question with just the name, \"Chotu 😊\", matching the expected outcome that the name and key survived the restart.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#0",
+    "verdict": "works",
+    "summary": "The welcome card shows \"Hi, I'm foo.\" with a \"Let's go\" button and the header reads \"Setting up · step 1 of 2\", which matches the expected outcome.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#2",
+    "verdict": "wrong-design",
+    "summary": "The card is mid-search: the other rows still say 'Looking...', and the key row shows 'Your own key' with an 'Add in secret box' button, not an Anthropic key row.",
+    "problems": [
+      "The expected 'Anthropic key' row is not visible. The row says 'Your own key', so a user cannot tell it is for the Anthropic key.",
+      "The 'Your own key' row shows a loading spinner next to its 'Add in secret box' button, so it looks half-finished, and a spinner beside an action is contradictory.",
+      "Claude, ChatGPT, Gemini and AI on this PC all still say 'Looking...', so the finder is not done and the screenshot caught it too early.",
+      "The 'Add in secret box' wording is vague, and it does not say that it adds a key.",
+      "The header says 'Step 1 of 2' twice: in the blue pill and in the line under the name."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#3",
+    "verdict": "works",
+    "summary": "The AI-finding card shows Claude as works, ChatGPT still testing, Gemini and AI on this PC as not found, and 'Your own key' waiting with an 'Add in secret box' button, which fits the expected outcome.",
+    "problems": [
+      "The left chat list is dim and low-contrast: the 'foo' name and 'Setting up...' preview are hard to read.",
+      "The chat bubble reads 'Hi, I'm foo. → Let's go' with an arrow, which looks like a leftover of the button label rather than a sentence."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#12",
+    "verdict": "wrong-design",
+    "summary": "The name card is shown at step 2 of 2, but the collapsed finder line reads \"Using Claude (your AI)\" and not \"Using Anthropic key\", and the header subtitle looks glitchy.",
+    "problems": [
+      "The collapsed finder line says \"Using Claude (your AI)\", while the expected outcome is \"Using Anthropic key\"; the sidebar footer also says \"Uses your Claude plan\".",
+      "The header subtitle \"Setting up · step 2 of 2\" renders oddly: the \"2\" and \"of 2\" look overlapped or garbled, and it repeats the \"Step 2 of 2\" pill right beside it.",
+      "The collapsed line puts a lone checkmark on its own row above the text, which looks misaligned.",
+      "\"That's it\" is highlighted as the main button while the name field is empty, so it invites a click before anything has been typed.",
+      "The \"Surprise me\" button shows a dice emoji, which may be an emoji that should not be there."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#15",
+    "verdict": "works",
+    "summary": "The first chat greets the user warmly, offers three things to try as buttons, and the message box is ready to type in.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#17@1500",
+    "verdict": "works",
+    "summary": "While foo is still composing its answer, the screen shows the small foo face as the Thinking row, the user's Hindi message has no 👀 badge, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#17@3000",
+    "verdict": "works",
+    "summary": "While foo is still thinking, the Thinking row (foo's small face where typing dots would be) is shown under the Hindi message, with no reply text yet, no emoji badge on the user's message, and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#17@6000",
+    "verdict": "works",
+    "summary": "The user's Hindi message shows no 👀 badge, the Thinking row is gone, and foo's Hindi reply has started appearing (\"नमस्ते!\") with the stop button active, which matches the expected outcome for this moment.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#17",
+    "verdict": "works",
+    "summary": "foo answered the Hindi question in Devanagari with a short two-line easy sabzi (jeera aloo), and the chat looks clean and finished.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#19@1500",
+    "verdict": "works",
+    "summary": "While foo is still thinking, the Punjabi question sits as the last message with the Thinking face shown below it, with no 👀 badge and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#19@3000",
+    "verdict": "works",
+    "summary": "While foo works on the Punjabi question, the header and sidebar say \"typing...\", a foo face sits where the reply will appear, the user's message has no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#19@6000",
+    "verdict": "works",
+    "summary": "foo has begun writing its Punjabi reply (\"ਸਤ ਸ੍ਰੀ ਅਕਾਲ!\") while the user's message sits unmarked above, with no Thinking row, no 👀, and nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#19",
+    "verdict": "works",
+    "summary": "The Punjabi reply is written in Gurmukhi with letters rendering cleanly, answers the cake question in two short lines, and matches the expected outcome.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#21@1500",
+    "verdict": "works",
+    "summary": "The screen shows foo's Thinking row (its small face) after the user's Hinglish alarm question, with no 👀 on the user's message, no badges, no stuck or overlapping elements, and no partly written reply, which matches this step.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#21@3000",
+    "verdict": "works",
+    "summary": "While foo works on the Hinglish alarm question, the screen shows the small foo face as the Thinking row, the header and sidebar say \"typing…\", the user's message has no 👀 badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#21@6000",
+    "verdict": "works",
+    "summary": "The screen shows foo still working on the user's Hinglish alarm question: the message has delivery ticks but no 👀, the Thinking face sits below it, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA3-languages-batch1#21",
+    "verdict": "works",
+    "summary": "foo answered the Hinglish question in Hinglish with a 7:00 AM alarm on Tue 24 Nov, which fits the 7 to 8 am expected range and the reply text matches what the user was told.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#0",
+    "verdict": "works",
+    "summary": "The welcome card for step 1 of 2 shows as expected, with the header reading \"Setting up · step 1 of 2\", the foo face, \"Hi, I'm foo.\", and a \"Let's go\" button.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#2",
+    "verdict": "wrong-design",
+    "summary": "The Find your AI card is on screen and a key row offers to add a key, but it is mid-search and the key row is labelled \"Your own key\" rather than the Anthropic key row the outcome describes.",
+    "problems": [
+      "The expected outcome names an \"Anthropic key\" row, but the row reads \"Your own key\", so Anthropic is not named.",
+      "The \"Your own key\" row shows a loading spinner next to its \"Add in secret box\" button, which is inconsistent: it looks like it is still searching and also ready to act.",
+      "Every other row (Claude, ChatGPT, Gemini, AI on this PC) still says \"Looking...\", so the screenshot was taken before the search finished and shows no result.",
+      "\"Add in secret box\" is an odd, unclear label for adding a key.",
+      "The foo avatar in the chat list shows a flat closed-eyes face and the header shows an open-eyed one, so they look inconsistent."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#3",
+    "verdict": "works",
+    "summary": "The finder is still testing: Claude shows 'works', ChatGPT shows 'Testing...', Gemini and AI on this PC show 'not found', and 'Your own key' shows only an 'Add in secret box' button, so it waits for a key.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#12",
+    "verdict": "wrong-design",
+    "summary": "The name card is shown and works, but the collapsed AI-choice line reads \"Using Claude (your AI)\" instead of the expected \"Using Anthropic key\", and its checkmark sits on its own line above the text.",
+    "problems": [
+      "The collapsed finder line says \"Using Claude (your AI)\", not the expected \"Using Anthropic key\". The sidebar footer also says \"Uses your Claude plan\", so the screen suggests a plan was chosen rather than a key.",
+      "The checkmark in the collapsed \"Using Claude (your AI)\" bubble sits on its own line above the text instead of beside it. The bubble looks unevenly padded compared with the one-line \"Hi, I'm foo. → Let's go\" bubble.",
+      "The \"Surprise me\" button carries a 🎲 emoji, which may not be wanted in the approved design.",
+      "Sidebar and header both read \"Setting up…\" and the chat row has an unread badge of 1 while the user is already in that chat. This is minor clutter."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#15",
+    "verdict": "works",
+    "summary": "The screen shows a warm \"All set, I'm foo\" greeting with three suggestion buttons, and the message box is unlocked and ready for typing.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#17",
+    "verdict": "works",
+    "summary": "Settings is open on the Account & your AI page, with the sidebar of sections and the AI status row, so the expected outcome is met and the screen looks finished.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#23",
+    "verdict": "works",
+    "summary": "The Appearance page shows a Theme row (Same as Windows / Light / Dark) and a text-size control labelled Zoom (100%), with tidy toggles and a message preview, and no error or clipping.",
+    "problems": [
+      "The text-size row is labelled 'Zoom' rather than text size. It still does the job, but the wording is slightly off from the expected outcome.",
+      "The Windows accent colour swatch sits loose at the end of the description line instead of next to the toggle, which looks a little untidy.",
+      "The 'Visuals' row talks about charts, maps and small tools, which may be a feature this five-feature test build should hide. I can't confirm that from the picture."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#26",
+    "verdict": "wrong-design",
+    "summary": "The Account page works and the AI check is healthy, but it shows 'Claude (your AI)' and 'Uses your Claude plan' rather than the Anthropic key that was expected.",
+    "problems": [
+      "The 'Using' row says 'Claude (your AI)' and never shows an Anthropic key, such as a masked key or 'your own key', which the expected outcome required.",
+      "'How it's paid' reads 'Uses your Claude plan', and the sidebar footer says the same. That implies a Claude subscription rather than a key in use, so it contradicts the expected outcome.",
+      "The 'How it's paid' row has no action or value on the right, so it looks unfinished next to the other rows."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#28",
+    "verdict": "works",
+    "summary": "The Account & your AI settings page shows real rows (Using, Backup AI, How it's paid, Add another AI) with clear labels and controls, not an empty page.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#30",
+    "verdict": "works",
+    "summary": "The Keyboard shortcuts page opens from Settings and lists clearly grouped actions with their keys shown as neat key-cap badges, scrollable for the rest.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#32",
+    "verdict": "wrong-design",
+    "summary": "The About page does show the version and a 'What leaves this PC' row, but 'tester build' in the version line is test-version jargon that a finished product would not show.",
+    "problems": [
+      "The version line reads 'Version 0.0.1 · tester build'. 'tester build' is test-version wording that should not be visible to an ordinary user.",
+      "The About page heading is followed by a large 'foo' title, so the page has two stacked headings ('About' then 'foo'). It looks slightly redundant.",
+      "'What leaves this PC' is only a link row with an arrow. The page itself does not say what leaves the PC, so the user has to open it to find out."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#38@1500",
+    "verdict": "works",
+    "summary": "While foo is still working on \"Switch to dark mode\", the Thinking face shows where the typing dots would be, the user's message has no badge, and nothing is blank, stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#38@3000",
+    "verdict": "works",
+    "summary": "The screen shows foo's Thinking face below the user's \"Switch to dark mode\" message, with no reply text yet, no emoji badge on the user's message, and nothing stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#38@6000",
+    "verdict": "works",
+    "summary": "While foo is still thinking about \"Switch to dark mode\", the Thinking face shows under the earlier replies, the user's message has no badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA4-settings-batch1#41",
+    "verdict": "works",
+    "summary": "The app reopened in dark theme and the chat still shows 'Changed: Theme → Dark.' with the 'Switch to dark mode' message, so dark mode survived quit and reopen.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#0",
+    "verdict": "works",
+    "summary": "The welcome card at step 1 of 2 is showing as expected, with the greeting, the \"Let's go\" button and the privacy line, and the layout is clean with no clipped or overlapping text.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#2",
+    "verdict": "wrong-design",
+    "summary": "The AI-finder card is still mid-search, and the key row reads 'Your own key' rather than an Anthropic key row, with a stray spinner next to its button.",
+    "problems": [
+      "The key row is labelled 'Your own key' and the screen never shows an Anthropic key row, which is what the expected outcome asks for.",
+      "The 'Your own key' row shows a loading spinner beside its 'Add in secret box' button, so it looks like it is still searching even though the button is already offered.",
+      "Claude, ChatGPT, Gemini and AI on this PC all still say 'Looking...', so the search has not finished and no result is shown.",
+      "The button wording 'Add in secret box' is vague and does not say it adds a key.",
+      "The header repeats the step twice ('Step 1 of 2 · foo finds your AI' and 'Setting up · step 1 of 2').",
+      "The first message reads 'Hi, I'm foo. → Let's go' with a stray arrow, which looks like leftover button or label text."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#3",
+    "verdict": "works",
+    "summary": "The AI finder shows its rows being tested (Claude works, ChatGPT still testing, Gemini and AI on this PC not found) and the 'Your own key' row waits with an 'Add in secret box' button, as expected.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#12",
+    "verdict": "wrong-design",
+    "summary": "The name card for step 2 of 2 shows correctly, but the finder collapsed to \"Using Claude (your AI)\" instead of the expected \"Using Anthropic key\", and the screen has some polish faults.",
+    "problems": [
+      "The collapsed finder line reads \"Using Claude (your AI)\", and the sidebar footer says \"Uses your Claude plan\". The expected outcome was \"Using Anthropic key\", so the wording is wrong for the key route.",
+      "The collapsed finder row has a lone checkmark sitting above the text, not beside it. It looks misaligned.",
+      "The \"Surprise me\" button shows a dice emoji, which looks out of place next to the other plain buttons.",
+      "The sidebar chat row for foo is dimmed and faint: its name and \"Setting up...\" preview are low-contrast and hard to read.",
+      "The step is named in several places at once (\"Step 2 of 2 · Name it and pick a face\", \"Setting up · step 2 of 2\" and \"Setting up...\"), which is repetitive.",
+      "The card asks only for a name and does not show the face choice that the step title promises."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#15",
+    "verdict": "works",
+    "summary": "The chat opens with foo's greeting and onboarding steps, offers three suggestion chips (What can you do?, Help me write a message, Plan my day with me), and the message box reads \"Message foo\" and is ready to type in.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#19@1500",
+    "verdict": "works",
+    "summary": "While foo works on the tortoise-names question, the Thinking row (foo's small face) shows below the user's message, the user's message has no 👀, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#19@3000",
+    "verdict": "works",
+    "summary": "While foo is still thinking, the Thinking row (foo's face) shows under the user's message, the user's message has no badge, and nothing is stuck, blank or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#19@6000",
+    "verdict": "works",
+    "summary": "While foo works on the tortoise-names question, the Thinking row (foo's small face) shows below the user's message, the header reads \"typing...\", and the user's message carries no 👀 or other badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#19",
+    "verdict": "works",
+    "summary": "After reopening, the tortoise question is still in the chat, foo gives the three name suggestions in Hinglish, and no 👀 is left behind.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#21",
+    "verdict": "works",
+    "summary": "The reply gives three real names for a tortoise in the user's Hinglish, each with a short reason, and the chat looks like a finished product.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#24",
+    "verdict": "works",
+    "summary": "After the reopen, the chat history is all there: the setup messages, the user's request and foo's reply all show in order, with times.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#26@1500",
+    "verdict": "works",
+    "summary": "While foo works on the sum, the Thinking row (foo's face) shows below the user's message, with no 👀 badge and no partial reply yet.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#26@3000",
+    "verdict": "works",
+    "summary": "While foo works on the sum, the screen shows the Thinking row (foo's small face) under the user's \"7 aur 8 ka jod kitna hai? sirf number\" message, with no reply text yet and no 👀 on the user's message.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#26@6000",
+    "verdict": "works",
+    "summary": "While foo is still thinking about the sum, the Thinking row (foo's face) sits under the last message, the header and chat list say \"typing...\", and the user's message has no 👀 badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "QA5-restart-batch1#26",
+    "verdict": "works",
+    "summary": "After the reopen, foo answered \"15\" to \"7 aur 8 ka jod kitna hai? sirf number\", which is the correct number-only reply from a live AI, so the stored key is working.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI); kept from C:\\Users\\vikasmit\\foo-pc-gate\\prior-review.json"
+  },
+  {
+    "id": "G2-chat#9@6000",
+    "verdict": "works",
+    "summary": "The user's typo message sits with no badge, and the small foo face Thinking row shows below it while the header and sidebar read \"typing...\", so the wait is visibly underway with nothing stuck or overlapping.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "G2-chat#9@1500",
+    "verdict": "works",
+    "summary": "The user's typo question is sent with no badge, and foo's small face Thinking row sits below it while no reply has started yet.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "G1-first-run#5",
+    "verdict": "works",
+    "summary": "Every row ends in a result (Claude works, ChatGPT slow to answer with a Test again button, Gemini and AI on this PC not found, your own key offers Add in secret box), nothing is stuck on Testing, and the message box correctly says to connect an AI first.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "G3-restart#12@6000",
+    "verdict": "works",
+    "summary": "foo has started its reply (\"Yes, I'm here. What do you need?\") with the Thinking row gone, the user's message carries no badge, and the stop button shows the answer is still streaming.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "B1-batch1#21",
+    "verdict": "broken",
+    "summary": "The joke reply is not visible in the chat: the view stops at the user's message, and only the top of foo's avatar peeks out at the bottom edge.",
+    "problems": [
+      "The chat did not scroll to the newest message. After \"mujhe ek chhota sa joke sunao\" the joke bubble is cut off below the fold, and the scrollbar is not at the bottom.",
+      "The joke appears only as a truncated preview in the left chat list (\"Teacher: \"Homework kahan hai?\" Papp...\"), so the user cannot read it in the conversation.",
+      "Seen on screen, the user's request looks unanswered even though a reply exists."
+    ],
+    "by": "claude-sonnet-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "G4-settings#5@1500",
+    "verdict": "works",
+    "summary": "The theme change to light has taken effect, the \"Changed: Theme → Light. Undo\" confirmation sits under the user's message, and the user's message carries no 👀 badge.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA1-batch1-recheck#30",
+    "verdict": "works",
+    "summary": "The pasted message appears once, in the chat, with its blank line kept (\"gamma\", an empty line, then \"delta. Please just reply OK.\"), and the reply is still in progress with the \"typing...\" indicator.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "G4-settings#10",
+    "verdict": "works",
+    "summary": "The Account & your AI page shows 'Using Claude (your AI)' with a green '✓ works · checked 4 min ago', plus Test now and Change buttons. It shows no key or secret value, and the layout and tone match the reference.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA1-batch1-recheck#35",
+    "verdict": "works",
+    "summary": "The composer shows \"one / two / three ••••\", so the mask sits after \"three \" as the expected outcome requires, and the password warning offers \"Move to secret box\" or \"Send anyway\" without covering any text.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA1-batch1-recheck#46",
+    "verdict": "works",
+    "summary": "The theme ask changed the app to dark, the reply shows \"Changed: Theme → Dark. Undo\", and the earlier memory reply was left alone.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA1-batch1-recheck#31@6000",
+    "verdict": "works",
+    "summary": "The chat is clean and polished in dark mode: the user's message has no 👀, nothing is stuck, blank or overlapping, and foo's one-word reply \"OK\" is already complete with its action icons, which is fine for this moment.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#3",
+    "verdict": "works",
+    "summary": "Every AI row shows a result (Claude works, ChatGPT slow to answer, Gemini and the on-PC AI not found), and the 'Your own key' row waits with its 'Add in secret box' button, as the expected outcome requires.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA4-settings-batch1#38",
+    "verdict": "works",
+    "summary": "The user's \"Switch to dark mode\" message got one Changed: Theme → Dark line with an Undo link, and the chat list preview shows the same change.",
+    "problems": [],
+    "by": "claude-haiku-5-5 (Claude Code CLI)"
+  },
+  {
+    "id": "QA2-setup-key-name-face-vibe#37@6000",
+    "verdict": "works",
+    "summary": "6.4 s after the user's message, foo's reply is partly written ('Chotu 😊') with the Thinking row gone, a stop button is showing, and the user's message has no 👀 or other badge.",
+    "problems": [],
+    "by": "claude-sonnet-5-5 (Claude Code CLI)"
+  }
+]
