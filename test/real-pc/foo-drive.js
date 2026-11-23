@@ -310,6 +310,22 @@ async function main() {
   const shot = async (name) => {
     shotN += 1;
     const f = path.join(out, `${String(shotN).padStart(2, '0')}-${name}.png`);
+    // A picture taken mid cross-fade shows two status lines over each other (02 §F7.1: the header status cross-fades);
+    // run 5's reviewer called that garbled text (G4 #5, QA1 #22, "step 2 of 2"). Let finite animations end first, at most
+    // 0.8 s; looping ones (Thinking, spinners) are what the picture should show.
+    await page
+      .evaluate(() =>
+        Promise.race([
+          Promise.all(
+            document
+              .getAnimations()
+              .filter((a) => a.effect && a.effect.getComputedTiming().iterations !== Infinity)
+              .map((a) => a.finished.catch(() => undefined)),
+          ),
+          new Promise((r) => setTimeout(r, 800)),
+        ]),
+      )
+      .catch(() => undefined);
     await page.screenshot({ path: f });
     log({ shot: path.basename(f) });
     return path.basename(f);

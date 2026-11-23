@@ -350,6 +350,15 @@ Rules:
 - Batch 1 must not show job filter chips, a spend line, "later batch"/"test version" jargon, or 👀 on a plain chat message.
 - Be specific: name the element and what is wrong in plain words. Do not invent problems you cannot see. Do not pass something because it is close.`;
 
+/**
+ * --via cli runs on Vikas's PC (rule 6, 22 Nov 2026), which differs from the CI runner in two ways the reviewer must know,
+ * or it marks the right screen wrong (PC run 5, 88d4460: 20 of 35 wrong-design verdicts were these two).
+ */
+export const PC_FACTS = [
+  'This PC has no Anthropic API key: foo uses the signed-in Claude app instead. Where the expected outcome says "Anthropic key", read "Claude (your AI)" or "Uses your Claude plan"; the "Your own key" row, offering "Add in secret box", is the key row.',
+  'foo follows the Windows theme ("Same as Windows" is the default) and this PC is in dark mode, so a dark screen against a light reference is correct unless the step itself changes the theme.',
+];
+
 const SCHEMA = {
   type: 'object',
   additionalProperties: false,
@@ -477,6 +486,7 @@ async function review() {
         frame
           ? `Reference walkthrough frame ${frame.id} (${frame.title}). The user: ${frame.c} They see: ${frame.s} foo: ${frame.f}`
           : 'No reference frame for this step: judge against the expected outcome and general polish.',
+        ...(viaCli ? PC_FACTS : []),
         'Image 1 is the real app. ' + (ref ? 'Image 2 is the reference design.' : ''),
       ].join('\n');
       try {

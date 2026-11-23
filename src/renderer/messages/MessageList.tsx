@@ -45,7 +45,16 @@ import { MirrorDraftLine, RetentionLine, StatusLine, ThinkingRow } from './Marke
 import { useMirrorDrafts } from './mirrorDrafts'; // M8 T7
 import { buildRows, buildWaRows, estimateRow, firstUnreadId, type VRow } from './rows';
 import { layoutRows, type RowLayout } from './runs';
-import { followStreaming, MARK_READ_AFTER_MS, nearTop, rowVisible, showJump, unreadOpenTop, type ScrollMetrics } from './stickToBottom';
+import {
+  atBottom,
+  followStreaming,
+  MARK_READ_AFTER_MS,
+  nearTop,
+  rowVisible,
+  showJump,
+  unreadOpenTop,
+  type ScrollMetrics,
+} from './stickToBottom';
 import { Marked } from './Marked';
 import { parseBlocks, plainText } from './markdownParse';
 import { UnreadDivider } from './UnreadDivider';
@@ -309,13 +318,13 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     () => ({
       scrollToEnd: () => rows.length && v.scrollToIndex(rows.length - 1, { align: 'end' }),
       getTotalSize: () => v.getTotalSize(),
-      // TanStack Virtual keeps a scroll-to-index in `scrollState` until the target holds still (private in its typings).
-      isFollowing: () => (v as unknown as { scrollState: unknown }).scrollState != null,
     }),
     [rows.length, v],
   );
   const stick = useStickToBottom(scrollRef, rows, target);
   sticking.current = () => stick.wasAtBottom.current;
+  // A jump the list makes for the user (find, a quote, Show, the open position) leaves the bottom (§3.6.4).
+  const stuck = stick.wasAtBottom;
   // M8 T7 (04 §1.6: the user's send always jumps to the end): a mirror's Send adds its marker there.
   const marks = useRef(mirrorDrafts.length);
   useEffect(() => {
@@ -330,16 +339,17 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
     opened.current = true;
     const el = scrollRef.current;
     const saved = useStore.getState().ui.scroll[chat.id];
-    if (saved !== undefined) {
-      el.scrollTop = saved;
-      return;
-    }
     const idx = rows.findIndex((r) => r.kind === 'unread');
-    if (idx >= 0) {
-      const top = v.getOffsetForIndex(idx, 'start')?.[0] ?? 0;
-      el.scrollTop = unreadOpenTop({ dividerTop: top, totalHeight: v.getTotalSize(), clientHeight: el.clientHeight });
-    } else target.scrollToEnd();
-  }, [rows, chat.id, v, target]);
+    if (saved === undefined && idx < 0) return void target.scrollToEnd();
+    el.scrollTop =
+      saved ??
+      unreadOpenTop({
+        dividerTop: v.getOffsetForIndex(idx, 'start')?.[0] ?? 0,
+        totalHeight: v.getTotalSize(),
+        clientHeight: el.clientHeight,
+      });
+    stuck.current = atBottom(el);
+  }, [rows, chat.id, v, target, stuck]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -629,14 +639,17 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
   useEffect(() => {
     if (!current) return;
     const i = rows.findIndex((r) => r.kind === 'message' && r.message.id === current.messageId);
-    if (i >= 0) v.scrollToIndex(i, { align: 'center' });
-  }, [current, rows, v]);
+    if (i < 0) return;
+    stuck.current = false;
+    v.scrollToIndex(i, { align: 'center' });
+  }, [current, rows, v, stuck]);
 
   // §6.4: a quote click scrolls to the original and highlights its row for 1600 ms.
   const highlightTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   jumpRef.current = (messageId: string) => {
     const i = rows.findIndex((r) => r.kind === 'message' && r.message.id === messageId);
     if (i < 0) return;
+    stuck.current = false;
     v.scrollToIndex(i, { align: 'center' });
     setHighlight(messageId);
     clearTimeout(highlightTimer.current);
@@ -655,6 +668,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
         // 04-2 §23.4 (builder B): the pending strip's Show centres the card and focuses its row (the card group).
         const at = rows.findIndex((r) => r.kind === 'message' && r.message.cardId === target.cardId);
         if (at < 0) return;
+        stuck.current = false;
         v.scrollToIndex(at, { align: 'center' });
         const row = () => scrollRef.current?.querySelector<HTMLElement>(`[data-index="${at}"][data-message-id]`);
         timer = setTimeout(() => row()?.focus(), motion.slow);
@@ -666,6 +680,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       const i = checklist >= 0 ? checklist : rows.findIndex(isCard);
       const r = rows[i];
       if (!r || r.kind !== 'message') return;
+      stuck.current = false;
       v.scrollToIndex(i, { align: 'center' });
       setFlashId(r.message.id);
       clearTimeout(timer);
@@ -677,7 +692,7 @@ export function MessageList({ chat, unread }: { chat: ChatRow; unread: { count: 
       window.removeEventListener(REVEAL_EVENT, reveal);
       clearTimeout(timer);
     };
-  }, [chat.id, rows, cards, v]);
+  }, [chat.id, rows, cards, v, stuck]);
 
   const jump = () => {
     stick.resetCount();

@@ -43,12 +43,14 @@
       "ref": "UX-02-02"
     },
     {
-      "do": "wait",
-      "ms": 20000,
+      "do": "waitJs",
       "shot": "finder-tested",
       "feature": "ai",
       "expect": "each row ends with works or a plain reason; nothing stuck on Testing",
-      "ref": "UX-02-03"
+      "ref": "UX-02-03",
+      "js": "(()=>!document.querySelector('[data-testid=\"setup-ai-row\"] [data-state=\"testing\"], [data-testid=\"setup-ai-row\"] [data-state=\"looking\"]'))()",
+      "timeoutMs": 75000,
+      "note": "Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3)."
     },
     {
       "do": "click",
