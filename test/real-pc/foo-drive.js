@@ -554,6 +554,23 @@ async function main() {
       const target = (await loc.count()) ? loc.first() : page.locator(`[data-testid="${c.tid}"]`).first();
       let before;
       try {
+        // A control that only takes the pointer while its row is hovered (the bubble's hover toolbar, 04 §9.2) is reached
+        // the way a person reaches it: over the row first, then across. PC runs 2 and 4 hovered the toolbar cold and
+        // Playwright found it "covered by div"; run 3 passed only because the mouse happened to be on that row already.
+        const host = await target
+          .evaluate((el) => {
+            if (getComputedStyle(el).pointerEvents !== 'none') return null;
+            let a = el.parentElement;
+            while (a && getComputedStyle(a).pointerEvents === 'none') a = a.parentElement;
+            if (!a) return null;
+            const r = a.getBoundingClientRect();
+            return [r.x + r.width / 2, r.y + Math.min(r.height / 2, 12)];
+          })
+          .catch(() => null);
+        if (host) {
+          await page.mouse.move(host[0], host[1]);
+          await page.waitForTimeout(300);
+        }
         await target.hover({ timeout: 2_000 });
         await page.waitForTimeout(500);
         before = await signature();
