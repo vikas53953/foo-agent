@@ -1,0 +1,22 @@
+{"t":1795411462185,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795411468556,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795411478998,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795411485775,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795411494614,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795411495920,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":9565}
+{"t":1795411535789,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8725}
+{"t":1795411540905,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8226}
+{"t":1795411549235,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7837}
+{"t":1795411555440,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8739}
+{"t":1795411557661,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8047}
+{"t":1795411562888,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7990}
+{"t":1795411582442,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":12715}
+{"t":1795411595894,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":9026}
+{"t":1795411601371,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":9266}
+{"t":1795411605672,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7467}
+{"t":1795411613225,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":9423}
+{"t":1795411644074,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":25231}
+{"t":1795411668335,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795411677459,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795411678868,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":10189}
+{"t":1795411694555,"lvl":"error","mod":"ipc","evt":"IPC_FAILED","kind":"ai:verify TypeError"}

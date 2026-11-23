@@ -1,0 +1,76 @@
+{"t":"2026-11-23T05:16:09.197Z","journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","spec":"CR-0054 (X-211); 07-1 J1, J2, J3, J7, J21; 06-1 §2.2 key row; 08-4 §25.5 item 5b; CR-0066 (X-223, no 👀 on a plain message)","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-23T05:16:19.577Z","step":"launch","ok":true}
+{"t":"2026-11-23T05:16:19.923Z","shot":"01-welcome.png"}
+{"t":"2026-11-23T05:16:19.924Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"ai","ok":true,"ms":11,"shot":"01-welcome.png"}
+{"t":"2026-11-23T05:16:20.364Z","i":1,"do":"click","feature":"ai","ok":true,"ms":440}
+{"t":"2026-11-23T05:16:21.305Z","shot":"02-finder.png"}
+{"t":"2026-11-23T05:16:21.305Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":10,"shot":"02-finder.png"}
+{"t":"2026-11-23T05:16:48.582Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-23T05:16:48.582Z","i":3,"do":"waitJs","note":"Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3).","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":27034,"shot":"03-finder-tested.png"}
+{"t":"2026-11-23T05:16:48.583Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T05:16:48.583Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T05:16:48.584Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T05:16:48.584Z","i":7,"do":"click","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T05:16:48.584Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T05:16:48.595Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","feature":"ai","finderWaitMs":9,"found":0,"ok":true,"ms":11}
+{"t":"2026-11-23T05:16:48.598Z","i":10,"do":"clickIf","feature":"ai","found":0,"ok":true,"ms":3}
+{"t":"2026-11-23T05:16:49.056Z","i":11,"do":"clickIf","note":"only the key works: Use it","feature":"ai","found":1,"ok":true,"ms":458}
+{"t":"2026-11-23T05:16:49.652Z","shot":"04-step2.png"}
+{"t":"2026-11-23T05:16:49.652Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"ai","ok":true,"ms":7,"shot":"04-step2.png"}
+{"t":"2026-11-23T05:16:49.661Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","feature":"ai","text":"Using Claude (your AI)\n10:46 AM","ok":true,"ms":8}
+{"t":"2026-11-23T05:16:50.130Z","i":14,"do":"click","feature":"ai","ok":true,"ms":468}
+{"t":"2026-11-23T05:17:00.991Z","shot":"05-first-chat.png"}
+{"t":"2026-11-23T05:17:00.992Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"ai","ok":true,"ms":10002,"shot":"05-first-chat.png"}
+{"t":"2026-11-23T05:17:01.002Z","i":16,"do":"check","note":"batch 1 has no helpers: no New helper button","feature":"ai","found":0,"ok":true,"ms":10}
+{"t":"2026-11-23T05:17:01.009Z","i":17,"do":"check","note":"batch 1 has no voice: the round button is Send, not the mic","feature":"ai","found":1,"ok":true,"ms":4}
+{"t":"2026-11-23T05:17:01.455Z","i":18,"do":"send","feature":"chat","typed":"hi foo, kaise ho?","sentAt":1795411021312,"sent":true,"before":0,"ok":true,"ms":445}
+{"t":"2026-11-23T05:17:03.424Z","shot":"06-hinglish-wait-1.5s.png"}
+{"t":"2026-11-23T05:17:04.896Z","shot":"07-hinglish-wait-3.0s.png"}
+{"t":"2026-11-23T05:17:07.789Z","shot":"08-hinglish-wait-6.0s.png"}
+{"t":"2026-11-23T05:17:18.935Z","shot":"09-hinglish.png"}
+{"t":"2026-11-23T05:17:18.935Z","i":19,"do":"waitReply","expect":"a short warm reply in Hinglish, streamed","feature":"chat","timeline":[{"at":149,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":630,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9365,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":11202,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1585,"mark":1500,"shot":"06-hinglish-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3046,"mark":3000,"shot":"07-hinglish-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6194,"mark":6000,"shot":"08-hinglish-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":9221,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Main badhiya hoon, ekdum chill. 🌿 Aap kaise ho?\n\n10:47 AM","kit":[],"replyFaults":[],"ms":17157,"shot":"09-hinglish.png"}
+{"t":"2026-11-23T05:17:19.396Z","i":20,"do":"send","feature":"chat","typed":"mujhe ek chhota sa joke sunao","sentAt":1795411039365,"sent":true,"before":0,"ok":true,"ms":461}
+{"t":"2026-11-23T05:17:21.347Z","shot":"10-joke-wait-1.5s.png"}
+{"t":"2026-11-23T05:17:22.853Z","shot":"11-joke-wait-3.0s.png"}
+{"t":"2026-11-23T05:17:25.645Z","shot":"12-joke-wait-6.0s.png"}
+{"t":"2026-11-23T05:17:39.623Z","shot":"13-joke.png"}
+{"t":"2026-11-23T05:17:39.730Z","i":21,"do":"waitReply","expect":"a joke, in the user's mix of Hindi and English","feature":"chat","timeline":[{"at":145,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7469,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":9506,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1599,"mark":1500,"shot":"10-joke-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3223,"mark":3000,"shot":"11-joke-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6117,"mark":6000,"shot":"12-joke-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":7356,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Teacher: \"Homework kahan hai?\"\nStudent: \"Sir, aapne hi kaha tha ghar ka kaam ghar pe karo, toh ghar pe hi chhod aaya.\" 😄\n\n10:47 AM","kit":[],"replyFaults":[],"ms":16395,"shot":"13-joke.png"}
+{"t":"2026-11-23T05:17:44.578Z","i":22,"do":"send","feature":"refusals","typed":"Book a table for 2 tonight at a cafe in Delhi","sentAt":1795411064064,"sent":true,"before":0,"ok":true,"ms":4687}
+{"t":"2026-11-23T05:17:46.873Z","shot":"14-job-off-wait-1.5s.png"}
+{"t":"2026-11-23T05:17:48.326Z","shot":"15-job-off-wait-3.0s.png"}
+{"t":"2026-11-23T05:17:50.840Z","shot":"16-job-off-wait-6.0s.png"}
+{"t":"2026-11-23T05:18:05.815Z","shot":"17-job-off.png"}
+{"t":"2026-11-23T05:18:05.815Z","i":23,"do":"waitReply","expect":"the batch-1 line: foo can’t do tasks yet; no checklist, no plan card","feature":"refusals","timeline":[{"at":1056,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":14711,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1659,"mark":1500,"shot":"14-job-off-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3696,"mark":3000,"shot":"15-job-off-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6362,"mark":6000,"shot":"16-job-off-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":14196,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n10:47 AM","kit":[],"replyFaults":[],"endState":true,"ms":20749,"shot":"17-job-off.png"}
+{"t":"2026-11-23T05:18:06.287Z","i":24,"do":"send","feature":"refusals","typed":"Book me a cab to the airport at 6 am tomorrow","sentAt":1795411086098,"sent":true,"before":0,"ok":true,"ms":471}
+{"t":"2026-11-23T05:18:08.567Z","shot":"18-cab-off-wait-1.5s.png"}
+{"t":"2026-11-23T05:18:09.665Z","shot":"19-cab-off-wait-3.0s.png"}
+{"t":"2026-11-23T05:18:12.600Z","shot":"20-cab-off-wait-6.0s.png"}
+{"t":"2026-11-23T05:18:26.981Z","shot":"21-cab-off.png"}
+{"t":"2026-11-23T05:18:26.981Z","i":25,"do":"waitReply","expect":"says plainly foo can’t book cabs yet; no “no record” or memory words; no 👀 while foo answers; no checklist","feature":"refusals","timeline":[{"at":199,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":14435,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1868,"mark":1500,"shot":"18-cab-off-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3185,"mark":3000,"shot":"19-cab-off-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6039,"mark":6000,"shot":"20-cab-off-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":14245,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"I can’t do tasks for you yet, like booking, buying or sending things. For now I can chat and answer questions.\n\n10:48 AM","kit":[],"replyFaults":[],"endState":true,"ms":20291,"shot":"21-cab-off.png"}
+{"t":"2026-11-23T05:18:27.423Z","i":26,"do":"send","feature":"refusals","typed":"did you book the cab?","sentAt":1795411107261,"sent":true,"before":0,"ok":true,"ms":441}
+{"t":"2026-11-23T05:18:29.049Z","shot":"22-cab-asked-wait-1.5s.png"}
+{"t":"2026-11-23T05:18:30.809Z","shot":"23-cab-asked-wait-3.0s.png"}
+{"t":"2026-11-23T05:18:33.411Z","shot":"24-cab-asked-wait-6.0s.png"}
+{"t":"2026-11-23T05:18:46.145Z","shot":"25-cab-asked.png"}
+{"t":"2026-11-23T05:18:46.145Z","i":27,"do":"waitReply","expect":"no, foo can’t book cabs yet; never “no record” or memory words","feature":"refusals","timeline":[{"at":170,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5471,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":12308,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1638,"mark":1500,"shot":"22-cab-asked-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3244,"mark":3000,"shot":"23-cab-asked-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6000,"mark":6000,"shot":"24-cab-asked-wait-6.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":1}],"firstReplyMs":5309,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"No, I haven't booked the cab, and I can't do tasks like booking yet. You'll need to book it yourself for tomorrow, Tue 24 Nov, 6:00 AM.\n\n10:48 AM","kit":[],"replyFaults":[],"endState":true,"ms":18503,"shot":"25-cab-asked.png"}
+{"t":"2026-11-23T05:18:46.579Z","i":28,"do":"send","feature":"refusals","typed":"remember that I am vegetarian","sentAt":1795411126541,"sent":true,"before":0,"ok":true,"ms":433}
+{"t":"2026-11-23T05:18:48.287Z","shot":"26-memory-off-wait-1.5s.png"}
+{"t":"2026-11-23T05:18:50.098Z","shot":"27-memory-off-wait-3.0s.png"}
+{"t":"2026-11-23T05:18:58.750Z","shot":"28-memory-off.png"}
+{"t":"2026-11-23T05:18:58.750Z","i":29,"do":"waitReply","expect":"one bubble: the batch-1 memory line, or a plain reply; never a memory chip, never “Noted” (CR-0067)","feature":"refusals","timeline":[{"at":46,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":5786,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1549,"mark":1500,"shot":"26-memory-off-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3228,"mark":3000,"shot":"27-memory-off-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":5748,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"I can’t remember things for you yet, so tell me again when it matters.\n\n10:48 AM","kit":[],"replyFaults":[],"endState":true,"ms":11945,"shot":"28-memory-off.png"}
+{"t":"2026-11-23T05:18:59.109Z","i":30,"do":"send","feature":"settings","typed":"Switch to dark mode","sentAt":1795411139057,"sent":true,"before":0,"ok":true,"ms":358}
+{"t":"2026-11-23T05:18:59.125Z","i":31,"do":"waitFor","note":"settings by chat is on in batch 1","feature":"settings","ok":true,"ms":16}
+{"t":"2026-11-23T05:19:01.095Z","shot":"29-dark-wait-1.5s.png"}
+{"t":"2026-11-23T05:19:02.440Z","shot":"30-dark-wait-3.0s.png"}
+{"t":"2026-11-23T05:19:05.360Z","shot":"31-dark-wait-6.0s.png"}
+{"t":"2026-11-23T05:19:13.652Z","shot":"32-dark.png"}
+{"t":"2026-11-23T05:19:13.653Z","i":32,"do":"waitReply","expect":"dark theme; one line Changed: Theme → Dark. Undo","feature":"settings","timeline":[{"at":72,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7987,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1708,"mark":1500,"shot":"29-dark-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3138,"mark":3000,"shot":"30-dark-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6089,"mark":6000,"shot":"31-dark-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":7918,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Changed: Theme → Dark. Undo","kit":[],"replyFaults":[],"ms":14042,"shot":"32-dark.png"}
+{"t":"2026-11-23T05:19:14.755Z","i":33,"do":"click","feature":"install","ok":true,"ms":1102}
+{"t":"2026-11-23T05:19:15.941Z","shot":"33-more-menu.png"}
+{"t":"2026-11-23T05:19:15.942Z","i":34,"do":"wait","expect":"Settings, Keyboard shortcuts and Quit only","feature":"install","ok":true,"ms":803,"shot":"33-more-menu.png"}
+{"t":"2026-11-23T05:19:15.945Z","i":35,"do":"check","feature":"install","found":0,"ok":true,"ms":3}
+{"t":"2026-11-23T05:19:15.959Z","i":36,"do":"key","feature":"install","ok":true,"ms":13}
+{"t":"2026-11-23T05:19:15.996Z","i":37,"do":"dump","feature":null,"ok":true,"ms":37}
+{"t":"2026-11-23T05:19:17.490Z","step":"appLog","lines":22,"dropped":0}
+{"t":"2026-11-23T05:19:17.626Z","step":"aiTurns","turns":8}
+{"t":"2026-11-23T05:19:17.631Z","step":"jobTrail","steps":0,"calls":0}

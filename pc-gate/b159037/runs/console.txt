@@ -1,0 +1,10 @@
+=== G1-first-run ===
+{"journey":"G1-first-run","title":"Release gate: first open of the app Vikas downloads, real Claude key, a Hinglish name, a face and a vibe, then close and reopen","feature":"install","videos":["video/page@289395be72867ad9277b41ea0e239a8b.webm","video/page@76822f31f19132e29556cea7c125fa09.webm"],"steps":34,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T05-09-30-360Z-G1-first-run"}
+=== B1-batch1 ===
+{"journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","feature":"chat","videos":["video/page@276f9bed85ad2d330eb59017c7d8edec.webm"],"steps":38,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T05-16-09-196Z-B1-batch1"}
+=== G2-chat ===
+{"journey":"G2-chat","title":"Release gate: just chatting like a real person, in Hinglish, Hindi, Punjabi and with typos, while the AI takes its time","feature":"chat","videos":["video/page@381f2392ae6dfce0745fa5fe149a4ce2.webm"],"steps":28,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T05-19-19-272Z-G2-chat"}
+=== G3-restart ===
+{"journey":"G3-restart","title":"Release gate: close foo while it is answering, and reopen; quit from the menu and reopen","feature":"chat","videos":["video/page@7a3934b2f44cf55d47b9c019ab831f5a.webm","video/page@d3d7373827d0d6b422f5da0c80d26ee8.webm","video/page@ebc62e5d28d125731f94ddec0e9d1d21.webm"],"steps":14,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T05-22-43-911Z-G3-restart"}
+=== G4-settings ===
+{"journey":"G4-settings","title":"Release gate: settings by asking in Hinglish and by the Settings page, every control clicked","feature":"settings","videos":["video/page@280659ab1521c9fd51bca1a375a3e57d.webm"],"steps":20,"failed":1,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T05-24-17-489Z-G4-settings"}
