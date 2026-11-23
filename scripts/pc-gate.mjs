@@ -11,6 +11,8 @@
 //
 // Usage (from the repo root, on Windows, started by a Remote Control session; Vikas never runs it by hand):
 //   node scripts/pc-gate.mjs [--ref <branch|sha>] [--rounds 3] [--journeys "G2-chat G4-settings"] [--no-review] [--no-push]
+//   --reuse-runs: keep the journeys this PC already drove on this same commit (drive/sha.txt) and redo only the
+//   installer smoke test, the review and the report (rule 16: a check that was not run reruns alone, not a full round).
 // Exit: 0 PASS, 1 FAIL, 2 BLOCKED (nothing ran, no review), 3 the PC could not build or drive foo.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -151,8 +153,28 @@ if (fs.existsSync(path.join(instDir, 'foo.exe'))) {
 }
 
 // 5. Drive the journeys: the first one sets up the shared profile once, the rest run every round (pass^k).
-fs.rmSync(WORK, { recursive: true, force: true });
-fs.mkdirSync(path.join(RUN_DIR, 'runs'), { recursive: true });
+const shaFile = path.join(RUN_DIR, 'sha.txt');
+const reuse = has('--reuse-runs');
+/** This PC's last drive was of this commit: drive/sha.txt says so, or (drives from before sha.txt) its run folders are the
+ * ones this commit's evidence holds. */
+const droveThis = () => {
+  if (fs.existsSync(shaFile)) return fs.readFileSync(shaFile, 'utf8').trim() === SHA;
+  sh('git fetch -q --depth 1 --filter=blob:none origin +refs/heads/evidence:refs/remotes/origin/evidence', { allowFail: true });
+  const pushed = out(`git ls-tree --name-only origin/evidence pc-gate/${SHORT}/runs/`, { allowFail: true })
+    .split('\n')
+    .map((l) => path.basename(l))
+    .filter((n) => /^\d{4}-/.test(n));
+  const local = fs.existsSync(path.join(RUN_DIR, 'runs'))
+    ? fs.readdirSync(path.join(RUN_DIR, 'runs')).filter((n) => /^\d{4}-/.test(n))
+    : [];
+  return pushed.length > 0 && pushed.sort().join() === local.sort().join();
+};
+if (reuse && !droveThis()) die(`--reuse-runs: ${RUN_DIR} holds no drive of ${SHA}`);
+if (!reuse) {
+  fs.rmSync(WORK, { recursive: true, force: true });
+  fs.mkdirSync(path.join(RUN_DIR, 'runs'), { recursive: true });
+  fs.writeFileSync(shaFile, SHA);
+} else for (const d of [REPORT, REFS]) fs.rmSync(d, { recursive: true, force: true });
 sh(`${PNPM} exec playwright install ffmpeg`, { allowFail: true });
 const list = (opt('--journeys') ?? fs.readFileSync(path.join(KIT, 'gate.txt'), 'utf8')).split(/\s+/).filter(Boolean);
 const file = (id) => (fs.existsSync(path.join(KIT, 'gate', `${id}.json`)) ? `gate/${id}.json` : `journeys/${id}.json`);
@@ -182,14 +204,14 @@ const drive = (id) => {
   return r.status ?? 1;
 };
 const first = list[0];
-const rc = drive(first);
+const rc = reuse ? 0 : drive(first);
 if (rc !== 0 && rc !== 3) die(`${first} could not finish setup on the Claude app; see ${console_}`);
 // Rules 12 and 15 (Vikas 23 Nov 2026): stop at the first journey with a failed step (the gate is red, and every further
 // journey spends his Claude usage for nothing; --keep-going drives them all), and stop driving after --max-minutes.
 const started = Date.now();
 const maxMs = Number(opt('--max-minutes', '120')) * 60_000;
 let stopped = '';
-for (let round = 1; round <= ROUNDS && !stopped; round++)
+for (let round = 1; round <= ROUNDS && !stopped && !reuse; round++)
   for (const id of list.slice(1)) {
     if (round > 1 && expected.find((e) => e.journey === id)?.count === 1) continue;
     if (Date.now() - started > maxMs) {
