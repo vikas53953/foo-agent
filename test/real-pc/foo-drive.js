@@ -573,6 +573,9 @@ async function main() {
         // A control that only takes the pointer while its row is hovered (the bubble's hover toolbar, 04 §9.2) is reached
         // the way a person reaches it: over the row first, then across. PC runs 2 and 4 hovered the toolbar cold and
         // Playwright found it "covered by div"; run 3 passed only because the mouse happened to be on that row already.
+        // Scroll first: a scroll after the row is hovered moves the row out from under the mouse, the toolbar loses the
+        // pointer again, and hover times out (run 7, 73967de: React "covered by div" while More passed).
+        await target.scrollIntoViewIfNeeded({ timeout: 2_000 }).catch(() => undefined);
         const host = await target
           .evaluate((el) => {
             if (getComputedStyle(el).pointerEvents !== 'none') return null;
