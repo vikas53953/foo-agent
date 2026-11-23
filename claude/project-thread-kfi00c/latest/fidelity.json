@@ -1,19 +1,19 @@
 {
-  "reportId": "M9-c3f291a-45100474438",
+  "reportId": "M9-d86cd4f-45101967186",
   "milestone": "M9",
-  "generatedAt": "2026-11-23T02:45:06.020Z",
-  "commit": "eeb38fd86ee94cc1cbcda3852a8446f0a9a5c68c",
-  "head": "c3f291a2d6bcdc8b2203ab12b2e2d4dfc1e1fbe4",
+  "generatedAt": "2026-11-23T03:02:13.569Z",
+  "commit": "1d51dd9d15981b0442bcc45b6491f5923cc39006",
+  "head": "d86cd4f41945b4fba6285f1687cdf88e37a9fa2b",
   "ci": {
-    "runId": "45100474438",
-    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/45100474438"
+    "runId": "45101967186",
+    "runUrl": "https://github.com/vikas53953/foo-agent/actions/runs/45101967186"
   },
   "spec": {
     "version": "spec-v1.0",
     "setSha256": "22a841c0f5f276c94b937ae5c5b4790b71438c9ffccbb63f928229d5faa242b4"
   },
   "runner": {
-    "recordedAt": "2026-11-23T02:38:54.264Z",
+    "recordedAt": "2026-11-23T02:54:18.756Z",
     "os": {
       "platform": "win32",
       "release": "10.0.26100",
@@ -29,7 +29,7 @@
     "image": {
       "os": "win25-vs2026",
       "version": "20261116.315.1",
-      "runner": "GitHub Actions 1000023759"
+      "runner": "GitHub Actions 1000023769"
     },
     "fonts": {
       "segoeUIVariable": true,
@@ -59,7 +59,7 @@
   },
   "verdict": "FAIL",
   "verdictReasons": [
-    "2 test(s) failed",
+    "1 test(s) failed",
     "19 audit item(s) not DONE (the milestone is not complete)"
   ],
   "missingInputs": [],
@@ -806,9 +806,9 @@
         "skipped": 4
       },
       "e2e": {
-        "passed": 66,
-        "failed": 2,
-        "skipped": 190
+        "passed": 75,
+        "failed": 1,
+        "skipped": 182
       }
     },
     "ids": [
@@ -32303,6 +32303,11 @@
         "file": "D:/a/foo-agent/foo-agent/test/integration/jobs/waiting.test.ts"
       },
       {
+        "id": "AT-008",
+        "status": "passed",
+        "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
+      },
+      {
         "id": "AT-141",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/web/cloud.test.ts"
@@ -32361,11 +32366,6 @@
         "id": "AT-138",
         "status": "passed",
         "file": "D:/a/foo-agent/foo-agent/test/integration/web/search.test.ts"
-      },
-      {
-        "id": "AT-008",
-        "status": "passed",
-        "file": "D:/a/foo-agent/foo-agent/test/integration/vault/AT-008.test.ts"
       },
       {
         "id": "AT-121",
@@ -32594,7 +32594,7 @@
       },
       {
         "id": "ART-26a",
-        "status": "failed",
+        "status": "passed",
         "file": "test/e2e/m2-messages.spec.ts"
       },
       {
@@ -32629,7 +32629,7 @@
       },
       {
         "id": "PERF-07",
-        "status": "skipped",
+        "status": "passed",
         "file": "test/e2e/m4-jobs.spec.ts"
       },
       {
@@ -33619,12 +33619,6 @@
       }
     ],
     "failed": [
-      {
-        "suite": "e2e",
-        "file": "test/e2e/m2-messages.spec.ts",
-        "title": "ART-26a · bubbles, cards, the bubble menu and the reaction picker pass axe in light and dark",
-        "status": "failed"
-      },
       {
         "suite": "e2e",
         "file": "test/e2e/m2-messages.spec.ts",

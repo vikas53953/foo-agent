@@ -1,0 +1,27 @@
+[
+  {
+    "id": "SV-15",
+    "ok": true,
+    "expected": "60px; aligned",
+    "measured": "chat header 32+60; left header 32+60"
+  },
+  {
+    "id": "SV-18",
+    "ok": true,
+    "expected": "width 340 (±0.5)",
+    "measured": "340×868"
+  },
+  {
+    "id": "SV-29",
+    "ok": true,
+    "expected": "background-color: rgb(255, 255, 255)",
+    "measured": "all equal"
+  },
+  {
+    "id": "SV-29",
+    "ok": true,
+    "expected": "background-color: rgb(13, 13, 17)",
+    "measured": "all equal",
+    "note": "dark"
+  }
+]
