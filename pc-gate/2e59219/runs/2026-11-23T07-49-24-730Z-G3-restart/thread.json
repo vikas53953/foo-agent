@@ -1,0 +1,72 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Canberra is the capital of Australia, not Sydney or Melbourne as many people guess.\n\n1:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n1:17 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Deep in the Sundarbans lived Bagha, a tiger with a problem: he was bored of his own menu. One monsoon afternoon a wedding party lost a recipe book in the mud near his cave, and the first page he opened showed a steaming pot of biryani. He could not read a word, but the picture was enough. \"That,\" he announced to a passing crow, \"is what I am eating from now on.\"\n\nLearning was messier than he expected. He traded a week of guard duty to a village cook named Amina in return for lessons, and she was not gentle. His claws shredded the onions into paste, his tail knocked over the saffron milk twice, and he once sneezed a whole bowl of garam masala into the air. Amina made him start again each time. Slowly he learned to wait: to let the onions brown without rushing, to layer rice and masala like blankets, and to keep the lid shut no matter how good it smelled.\n\nOn the seventh evening, Bagha lifted the lid himself. Steam rose, every grain stood apart, and Amina took one bite and said nothing, which he later learned was her highest praise. He carried a pot back to the jungle and shared it with the deer, who were nervous at first and then asked for seconds. From that day on nobody ran when Bagha walked by. They just asked what was for dinner.\n\nShow earlier answer\nRewritten\n1:17 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n1:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got both lines, with the blank line in between. What should I do with them?\n\n1:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n1:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n1:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "That looks like a keyboard test, and it came through fine. What do you need?\n\n1:18 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n1:18 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, cab book nahi hui hai. Main abhi booking jaise kaam kar nahi sakta, isliye kal ke liye cab tumhe khud app se book karni hogi.\n\n1:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n1:19 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 tips to sleep better:\n\nGo to bed and wake up at the same time every day, even on weekends.\nStop tea, coffee and cola after 2:00 PM.\nPut your phone away 30 minutes before bed.\nKeep your room cool, dark and quiet.\nEat a light dinner at least 2 hours before you sleep.\n1:19 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n1:20 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Yes, I'm right here. What do you need?\n\n1:20 PM"
+  }
+]

@@ -1,0 +1,46 @@
+{"t":"2026-11-23T08:02:16.120Z","journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-23T08:02:24.151Z","step":"launch","ok":true}
+{"t":"2026-11-23T08:02:24.490Z","shot":"01-welcome.png"}
+{"t":"2026-11-23T08:02:24.513Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":29,"shot":"01-welcome.png"}
+{"t":"2026-11-23T08:02:25.677Z","i":1,"do":"click","ok":true,"ms":1088}
+{"t":"2026-11-23T08:02:26.506Z","shot":"02-finder.png"}
+{"t":"2026-11-23T08:02:26.506Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":167,"shot":"02-finder.png"}
+{"t":"2026-11-23T08:02:54.625Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-23T08:02:54.626Z","i":3,"do":"waitJs","note":"Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3).","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":23224,"shot":"03-finder-tested.png"}
+{"t":"2026-11-23T08:02:54.626Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:02:54.656Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:02:54.657Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:02:54.657Z","i":7,"do":"click","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:02:54.657Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:02:57.259Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","finderWaitMs":2382,"found":0,"ok":true,"ms":2602}
+{"t":"2026-11-23T08:02:57.873Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":552}
+{"t":"2026-11-23T08:03:03.990Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":1,"ok":true,"ms":6117}
+{"t":"2026-11-23T08:03:08.376Z","shot":"04-step2.png"}
+{"t":"2026-11-23T08:03:08.377Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"name","ok":true,"ms":1754,"shot":"04-step2.png"}
+{"t":"2026-11-23T08:03:08.537Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Claude (your AI)\n1:32 PM","ok":true,"ms":160}
+{"t":"2026-11-23T08:03:20.363Z","i":14,"do":"click","ok":true,"ms":11825}
+{"t":"2026-11-23T08:03:32.542Z","shot":"05-first-chat.png"}
+{"t":"2026-11-23T08:03:32.543Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"chat","ok":true,"ms":10024,"shot":"05-first-chat.png"}
+{"t":"2026-11-23T08:03:39.094Z","i":16,"do":"send","typed":"नमस्ते! आज शाम के लिए कोई आसान सब्ज़ी बताओ, दो लाइन में।","sentAt":1795421018952,"sent":true,"before":0,"ok":true,"ms":6551}
+{"t":"2026-11-23T08:03:40.983Z","shot":"06-q3-hindi-wait-1.5s.png"}
+{"t":"2026-11-23T08:03:42.588Z","shot":"07-q3-hindi-wait-3.0s.png"}
+{"t":"2026-11-23T08:03:45.517Z","shot":"08-q3-hindi-wait-6.0s.png"}
+{"t":"2026-11-23T08:03:55.975Z","shot":"09-q3-hindi.png"}
+{"t":"2026-11-23T08:03:55.976Z","i":17,"do":"waitReply","expect":"Hindi in Devanagari is answered in Devanagari","feature":"chat","timeline":[{"at":166,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":590,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":7345,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":10491,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1804,"mark":1500,"shot":"06-q3-hindi-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3295,"mark":3000,"shot":"07-q3-hindi-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6269,"mark":6000,"shot":"08-q3-hindi-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":7202,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"नमस्ते! आज शाम के लिए आलू-शिमला मिर्च बना लीजिए: तेल में जीरा चटकाकर कटे आलू नमक-हल्दी के साथ ढककर 8 से 10 मिनट पकाएँ।\nफिर शिमला मिर्च, धनिया पाउडर और थोड़ी लाल मिर्च डालकर 5 मिनट भूनें, ऊपर से अमचूर छिड़कें। 🌿\n\n1:33 PM","kit":[],"replyFaults":[],"endState":true,"ms":16546,"shot":"09-q3-hindi.png"}
+{"t":"2026-11-23T08:03:56.825Z","i":18,"do":"send","typed":"ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਕਿਹੜਾ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ? ਦੋ ਲਾਈਨਾਂ ਵਿੱਚ।","sentAt":1795421036775,"sent":true,"before":0,"ok":true,"ms":849}
+{"t":"2026-11-23T08:03:58.574Z","shot":"10-q3-punjabi-wait-1.5s.png"}
+{"t":"2026-11-23T08:04:00.384Z","shot":"11-q3-punjabi-wait-3.0s.png"}
+{"t":"2026-11-23T08:04:03.874Z","shot":"12-q3-punjabi-wait-6.0s.png"}
+{"t":"2026-11-23T08:04:14.783Z","shot":"13-q3-punjabi.png"}
+{"t":"2026-11-23T08:04:14.784Z","i":19,"do":"waitReply","expect":"Punjabi in Gurmukhi is answered in Gurmukhi, letters shown properly","feature":"chat","timeline":[{"at":77,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6349,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":11334,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1551,"mark":1500,"shot":"10-q3-punjabi-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3201,"mark":3000,"shot":"11-q3-punjabi-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6349,"mark":6000,"shot":"12-q3-punjabi-wait-6.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":1}],"firstReplyMs":7048,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੰਮੀ ਦੇ ਜਨਮਦਿਨ ਲਈ ਤਾਜ਼ੇ ਫਲਾਂ ਵਾਲਾ ਕ੍ਰੀਮ ਕੇਕ ਵਧੀਆ ਰਹੇਗਾ: ਹਲਕਾ, ਘੱਟ ਮਿੱਠਾ ਅਤੇ ਹਰ ਉਮਰ ਨੂੰ ਪਸੰਦ ਆਉਂਦਾ ਹੈ।\nਜੇ ਉਨ੍ਹਾਂ ਨੂੰ ਦੇਸੀ ਸੁਆਦ ਪਸੰਦ ਹੈ ਤਾਂ ਰਸਮਲਾਈ ਕੇਕ ਲੈ ਲਓ, ਅਤੇ ਆਂਡਾ ਨਹੀਂ ਖਾਂਦੇ ਤਾਂ ਬਿਨਾਂ ਆਂਡੇ ਵਾਲਾ ਮੰਗਵਾਓ। 🎂\n\n1:34 PM","kit":[],"replyFaults":[],"endState":true,"ms":17586,"shot":"13-q3-punjabi.png"}
+{"t":"2026-11-23T08:04:15.529Z","i":20,"do":"send","typed":"yaar kal office jaldi jaana hai, 9 baje pahunchna hai aur raste mein 45 min lagte hain. alarm kitne baje lagau?","sentAt":1795421055514,"sent":true,"before":0,"ok":true,"ms":745}
+{"t":"2026-11-23T08:04:17.417Z","shot":"14-q3-hinglish-wait-1.5s.png"}
+{"t":"2026-11-23T08:04:19.092Z","shot":"15-q3-hinglish-wait-3.0s.png"}
+{"t":"2026-11-23T08:04:21.969Z","shot":"16-q3-hinglish-wait-6.0s.png"}
+{"t":"2026-11-23T08:04:35.134Z","shot":"17-q3-hinglish.png"}
+{"t":"2026-11-23T08:04:35.135Z","i":21,"do":"waitReply","expect":"Hinglish is answered in Hinglish with a sensible alarm time (7 to 8 am)","feature":"chat","timeline":[{"at":179,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":10643,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":13367,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1594,"mark":1500,"shot":"14-q3-hinglish-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3218,"mark":3000,"shot":"15-q3-hinglish-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6165,"mark":6000,"shot":"16-q3-hinglish-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":10628,"newBubbles":1,"reactions":[],"ok":false,"duplicates":0,"lastReply":"Alarm kal Tue 24 Nov, 7:00 AM ka laga lo. Tayyar hone ke liye 1 ghanta rakho aur 8:05 AM tak ghar se nikal jao, toh 45 min ke raste ke baad bhi traffic ke liye 10 min bach jayenge.\n\nAgar tum 30 min mein tayyar ho jaate ho, toh 7:30 AM bhi chalega. Snooze pe bharosa mat karna. 🌿\n\n1:34 PM","kit":[],"replyFaults":["reply has what must not show: \" 8:05\""],"ms":19369,"shot":"17-q3-hinglish.png"}
+{"t":"2026-11-23T08:04:35.222Z","i":22,"do":"dump","ok":true,"ms":87}
+{"t":"2026-11-23T08:04:35.296Z","step":"recheck","i":21,"do":"waitReply","late":true}
+{"t":"2026-11-23T08:04:36.457Z","step":"appLog","lines":9,"dropped":0}
+{"t":"2026-11-23T08:04:36.477Z","step":"aiTurns","turns":3}
+{"t":"2026-11-23T08:04:36.480Z","step":"jobTrail","steps":0,"calls":0}

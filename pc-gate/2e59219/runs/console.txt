@@ -1,0 +1,22 @@
+=== G1-first-run ===
+{"journey":"G1-first-run","title":"Release gate: first open of the app Vikas downloads, real Claude key, a Hinglish name, a face and a vibe, then close and reopen","feature":"install","videos":["video/page@06d84970fcb905963e403c05b298e034.webm","video/page@b99571445ad4dfe5cf7caed4caa0453a.webm"],"steps":34,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-33-43-759Z-G1-first-run"}
+=== B1-batch1 ===
+{"journey":"B1-batch1","title":"Batch 1 build: first run on your own Claude key, chat in Hinglish, settings by chat, switched-off asks say so","feature":"chat","videos":["video/page@d4609e123b36cf7c1dcf01b7d59955e1.webm"],"steps":38,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-42-52-609Z-B1-batch1"}
+=== G2-chat ===
+{"journey":"G2-chat","title":"Release gate: just chatting like a real person, in Hinglish, Hindi, Punjabi and with typos, while the AI takes its time","feature":"chat","videos":["video/page@127f049b389ed61e517127969a518879.webm"],"steps":28,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-45-55-958Z-G2-chat"}
+=== G3-restart ===
+{"journey":"G3-restart","title":"Release gate: close foo while it is answering, and reopen; quit from the menu and reopen","feature":"chat","videos":["video/page@1d26d5956eb4cc3a5bbdb47610dfc16d.webm","video/page@91ce10f734e8f8d4c57cd22820ca2459.webm","video/page@c971c516553eaa0a3b24ee9dd18a2051.webm"],"steps":14,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-49-24-730Z-G3-restart"}
+=== G4-settings ===
+{"journey":"G4-settings","title":"Release gate: settings by asking in Hinglish and by the Settings page, every control clicked","feature":"settings","videos":["video/page@ca08afadb1bc0aac178da723b24b2246.webm"],"steps":20,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-50-34-634Z-G4-settings"}
+=== G5-wrong-key ===
+{"journey":"G5-wrong-key","title":"Release gate: a fresh PC where the user pastes a wrong key, and types in the chat before any AI is connected","feature":"ai","videos":["video/page@7a2bd5b65104c9642e2a19b21da7a409.webm"],"steps":11,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-55-15-422Z-G5-wrong-key"}
+=== QA1-batch1-recheck ===
+{"journey":"QA1-batch1-recheck","title":"QA re-check with real Claude: Vikas's batch-1 bugs and QA-X-F26 to F32 on the shipped build","videos":["video/page@f9627563de9fd3984b337e3164e583e2.webm"],"steps":50,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-56-36-162Z-QA1-batch1-recheck"}
+=== QA2-setup-key-name-face-vibe ===
+{"journey":"QA2-setup-key-name-face-vibe","title":"Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart","videos":["video/page@1e71fca198a9301020bd0db0397adee7.webm","video/page@ca9dfc9a8c50ad35fc330fbcc4c0eba3.webm"],"steps":44,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T07-59-36-400Z-QA2-setup-key-name-face-vibe"}
+=== QA3-languages-batch1 ===
+{"journey":"QA3-languages-batch1","title":"Hindi, Punjabi and Hinglish with real Claude on the batch-1 build","videos":["video/page@ab90ecbbf8d5f73113a22497931ad401.webm"],"steps":23,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T08-02-16-118Z-QA3-languages-batch1"}
+=== QA4-settings-batch1 ===
+{"journey":"QA4-settings-batch1","title":"Settings pages and settings by chat with real Claude on the batch-1 build; the change survives a restart","videos":["video/page@7afebfcf389e10ee6e65864f16044f0d.webm","video/page@a785a19915cdb5d2ae51bc941a1af009.webm"],"steps":43,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T08-04-37-846Z-QA4-settings-batch1"}
+=== QA5-restart-batch1 ===
+{"journey":"QA5-restart-batch1","title":"Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build","videos":["video/page@40c1b4f677a10ba79b73c7f50962a6cd.webm","video/page@567f327223ec45fd71a6dd6c4cb219f1.webm","video/page@97aba6df4d0f56d162c01333ba376dca.webm"],"steps":28,"failed":0,"out":"C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T08-06-26-473Z-QA5-restart-batch1"}

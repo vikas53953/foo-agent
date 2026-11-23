@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n1:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:36 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n1:36 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:36 PM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n1:37 PM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "1:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n1:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n1:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Ek kachhua (tortoise) ke liye 3 achhe naam batao.\n1:37 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Kachhue ke liye yeh 3 naam achhe rahenge:\n\nTurbo: sabse dheeme dost ke liye sabse tez naam.\nGolu: gol-matol khol par ekdum fit.\nSheru: chhota sa hai, par andaaz sher wala.\n1:37 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "7 aur 8 ka jod kitna hai? sirf number\n1:38 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "15\n\n1:38 PM"
+  }
+]

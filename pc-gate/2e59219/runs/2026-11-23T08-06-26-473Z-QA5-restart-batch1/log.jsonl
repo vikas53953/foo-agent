@@ -1,0 +1,50 @@
+{"t":"2026-11-23T08:06:26.474Z","journey":"QA5-restart-batch1","title":"Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-23T08:06:33.196Z","step":"launch","ok":true}
+{"t":"2026-11-23T08:06:33.484Z","shot":"01-welcome.png"}
+{"t":"2026-11-23T08:06:33.484Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":19,"shot":"01-welcome.png"}
+{"t":"2026-11-23T08:06:34.062Z","i":1,"do":"click","ok":true,"ms":577}
+{"t":"2026-11-23T08:06:34.774Z","shot":"02-finder.png"}
+{"t":"2026-11-23T08:06:34.774Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":10,"shot":"02-finder.png"}
+{"t":"2026-11-23T08:07:00.738Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-23T08:07:00.738Z","i":3,"do":"waitJs","note":"Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3).","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":23412,"shot":"03-finder-tested.png"}
+{"t":"2026-11-23T08:07:00.746Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:07:00.746Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:07:00.746Z","i":6,"do":"fill","note":"the key typed into foo's own Secret box, masked","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:07:00.746Z","i":7,"do":"click","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:07:00.767Z","i":8,"do":"wait","expect":"the Anthropic key row shows works","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T08:07:04.797Z","i":9,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","finderWaitMs":2394,"found":0,"ok":true,"ms":4029}
+{"t":"2026-11-23T08:07:05.821Z","i":10,"do":"clickIf","found":0,"ok":true,"ms":1024}
+{"t":"2026-11-23T08:07:09.154Z","i":11,"do":"clickIf","note":"only the key works: Use it","found":1,"ok":true,"ms":3332}
+{"t":"2026-11-23T08:07:14.747Z","shot":"04-step2.png"}
+{"t":"2026-11-23T08:07:14.747Z","i":12,"do":"waitFor","expect":"step 2 of 2: name card; the finder collapsed to Using Anthropic key","feature":"name","ok":true,"ms":378,"shot":"04-step2.png"}
+{"t":"2026-11-23T08:07:15.374Z","i":13,"do":"expectText","note":"foo uses the key, not the Claude app","text":"Using Claude (your AI)\n1:36 PM","ok":true,"ms":627}
+{"t":"2026-11-23T08:07:18.298Z","i":14,"do":"click","ok":true,"ms":2924}
+{"t":"2026-11-23T08:07:28.538Z","shot":"05-first-chat.png"}
+{"t":"2026-11-23T08:07:28.538Z","i":15,"do":"wait","expect":"warm hello with three things to try; composer unlocked","feature":"chat","ok":true,"ms":10009,"shot":"05-first-chat.png"}
+{"t":"2026-11-23T08:07:28.898Z","i":16,"do":"send","typed":"Ek kachhua (tortoise) ke liye 3 achhe naam batao.","sentAt":1795421248882,"sent":true,"before":0,"ok":true,"ms":360}
+{"t":"2026-11-23T08:07:31.901Z","i":17,"do":"wait","ok":true,"ms":3002}
+{"t":"2026-11-23T08:07:39.797Z","step":"launch","ok":true}
+{"t":"2026-11-23T08:07:39.798Z","i":18,"do":"relaunch","ok":true,"ms":7883}
+{"t":"2026-11-23T08:07:40.175Z","shot":"06-q5-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-23T08:07:40.559Z","shot":"07-q5-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-23T08:07:40.893Z","shot":"08-q5-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-23T08:07:56.882Z","shot":"09-q5-after-reopen.png"}
+{"t":"2026-11-23T08:07:56.883Z","i":19,"do":"waitReply","expect":"after closing mid-reply and reopening: the question is still there, it gets an answer or a clear Try again, and no 👀 is left behind","feature":"chat","timeline":[{"at":10939,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":17820,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":21082,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":10939,"mark":1500,"shot":"06-q5-after-reopen-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":10939,"mark":3000,"shot":"07-q5-after-reopen-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":10939,"mark":6000,"shot":"08-q5-after-reopen-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":6904,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Kachhue ke liye yeh 3 naam achhe rahenge:\n\nTurbo: sabse dheeme dost ke liye sabse tez naam.\nGolu: gol-matol khol par ekdum fit.\nSheru: chhota sa hai, par andaaz sher wala.\n1:37 PM","kit":[],"replyFaults":[],"endState":true,"ms":16866,"shot":"09-q5-after-reopen.png"}
+{"t":"2026-11-23T08:07:56.904Z","i":20,"do":"clickIf","note":"if the reply was cut, press the cut-off row's own Try again once (bubble-actions-retry is the answer-row rewrite; gate 10 clicked it under the welcome line)","found":0,"ok":true,"ms":21}
+{"t":"2026-11-23T08:07:57.091Z","shot":"10-q5-answered.png"}
+{"t":"2026-11-23T08:07:57.091Z","i":21,"do":"waitJs","expect":"the tortoise question has a real answer","feature":"chat","ok":true,"ms":3,"shot":"10-q5-answered.png"}
+{"t":"2026-11-23T08:08:05.715Z","step":"launch","ok":true}
+{"t":"2026-11-23T08:08:05.715Z","i":22,"do":"relaunch","ok":true,"ms":8623}
+{"t":"2026-11-23T08:08:13.754Z","i":23,"do":"wait","ok":true,"ms":8038}
+{"t":"2026-11-23T08:08:14.013Z","shot":"11-q5-history.png"}
+{"t":"2026-11-23T08:08:14.013Z","i":24,"do":"expectText","expect":"after a second quit and reopen the chat history is all there","feature":"chat","text":"Start of your chat with foo\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n1:36 PM\nUsing Claude (your AI)\n1:36 PM\nWhat should I call myself? → Skipped\n1:37 PM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n1:37 PM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n1:37 PM\nEk kachhua (tortoise) ke liye 3 achhe naam batao.\n1:37 PM\nfoo\n\nKachhue ke liye yeh 3 naam achhe rahenge:\n\nTurbo: sabse dheeme dost ke liye sabse tez naam.\nGolu: gol-matol khol par ekdum fit.\nSheru: chhota sa hai, par andaaz sher wala.\n1:37 PM","ok":true,"ms":43,"shot":"11-q5-history.png"}
+{"t":"2026-11-23T08:08:14.766Z","i":25,"do":"send","typed":"7 aur 8 ka jod kitna hai? sirf number","sentAt":1795421294712,"sent":true,"before":0,"ok":true,"ms":753}
+{"t":"2026-11-23T08:08:16.675Z","shot":"12-q5-key-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-23T08:08:18.698Z","shot":"13-q5-key-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-23T08:08:21.231Z","shot":"14-q5-key-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-23T08:08:31.913Z","shot":"15-q5-key-after-reopen.png"}
+{"t":"2026-11-23T08:08:31.913Z","i":26,"do":"waitReply","expect":"after two restarts the stored key still works with real Claude","feature":"ai","timeline":[{"at":217,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":9461,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":10804,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1557,"mark":1500,"shot":"12-q5-key-after-reopen-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3533,"mark":3000,"shot":"13-q5-key-after-reopen-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6066,"mark":6000,"shot":"14-q5-key-after-reopen-wait-6.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":9407,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"15\n\n1:38 PM","kit":[],"replyFaults":[],"endState":true,"ms":16900,"shot":"15-q5-key-after-reopen.png"}
+{"t":"2026-11-23T08:08:31.934Z","i":27,"do":"dump","ok":true,"ms":20}
+{"t":"2026-11-23T08:08:33.390Z","step":"appLog","lines":11,"dropped":0}
+{"t":"2026-11-23T08:08:33.504Z","step":"aiTurns","turns":2}
+{"t":"2026-11-23T08:08:33.509Z","step":"jobTrail","steps":0,"calls":0}
