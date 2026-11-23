@@ -64,6 +64,25 @@ if (out('git status --porcelain --untracked-files=no')) die('the checkout has lo
 const PNPM = spawnSync('pnpm --version', { shell: true }).status === 0 ? 'pnpm' : 'npx -y pnpm@10.28.0';
 const claudeVer = spawnSync('claude --version', { shell: true, encoding: 'utf8', env });
 if (claudeVer.status !== 0) die('Claude Code (claude) is not on PATH; foo and the reviewer need it');
+// Rule 13 (Vikas 23 Nov 2026): check memory and disk before building. Run 7 died in MSBuild with "the paging file is too
+// small" at 1 GB of commit free; the build plus foo and the reviewer need about 8 GB, and the build output about 10 GB.
+{
+  const freeCommitKb = Number(
+    out('powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).FreeVirtualMemory"', { allowFail: true }) || 0,
+  );
+  const freeDisk = (() => {
+    try {
+      const st = fs.statfsSync(ROOT);
+      return st.bavail * st.bsize;
+    } catch {
+      return Infinity; // cannot tell: let the build find out
+    }
+  })();
+  const gb = (n) => (n / 1024 ** 3).toFixed(1);
+  if (freeCommitKb && freeCommitKb * 1024 < 8 * 1024 ** 3)
+    die(`only ${gb(freeCommitKb * 1024)} GB of memory (commit) is free; the gate needs about 8 GB, so it did not start`);
+  if (freeDisk < 10 * 1024 ** 3) die(`only ${gb(freeDisk)} GB of disk is free; the gate needs about 10 GB, so it did not start`);
+}
 const hello = spawnSync('claude -p --output-format json --model claude-haiku-5-5', {
   shell: true,
   encoding: 'utf8',
@@ -165,11 +184,24 @@ const drive = (id) => {
 const first = list[0];
 const rc = drive(first);
 if (rc !== 0 && rc !== 3) die(`${first} could not finish setup on the Claude app; see ${console_}`);
-for (let round = 1; round <= ROUNDS; round++)
+// Rules 12 and 15 (Vikas 23 Nov 2026): stop at the first journey with a failed step (the gate is red, and every further
+// journey spends his Claude usage for nothing; --keep-going drives them all), and stop driving after --max-minutes.
+const started = Date.now();
+const maxMs = Number(opt('--max-minutes', '120')) * 60_000;
+let stopped = '';
+for (let round = 1; round <= ROUNDS && !stopped; round++)
   for (const id of list.slice(1)) {
     if (round > 1 && expected.find((e) => e.journey === id)?.count === 1) continue;
-    drive(id);
+    if (Date.now() - started > maxMs) {
+      stopped = `the ${opt('--max-minutes', '120')}-minute cap was reached before ${id}`;
+      break;
+    }
+    if (drive(id) !== 0 && !has('--keep-going')) {
+      stopped = `${id} had a failed step`;
+      break;
+    }
   }
+if (stopped) say(`stopped driving: ${stopped}; the journeys left are not run this round`);
 
 // 6. Uninstall what step 4 installed.
 if (install.ran) {
