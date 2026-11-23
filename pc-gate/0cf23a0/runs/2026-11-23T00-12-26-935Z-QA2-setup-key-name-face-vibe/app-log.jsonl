@@ -1,0 +1,12 @@
+{"t":1795392748449,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795392748526,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795392761677,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6741}
+{"t":1795392785508,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":23812}
+{"t":1795392837968,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795392843863,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1795392850711,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795392856709,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1795392864850,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795392864946,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795392879082,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795392886170,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}

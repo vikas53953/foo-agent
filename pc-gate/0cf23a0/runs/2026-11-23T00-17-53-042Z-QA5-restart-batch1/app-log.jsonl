@@ -1,0 +1,14 @@
+{"t":1795393074897,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795393074988,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795393090220,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7561}
+{"t":1795393107304,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":17077}
+{"t":1795393117670,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795393123007,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795393123025,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795393127484,"lvl":"info","mod":"engine","evt":"chat.turn_recovered"}
+{"t":1795393127493,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795393137819,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}
+{"t":1795393148199,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795393148231,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795393162542,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795393170018,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"reply"}

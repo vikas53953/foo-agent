@@ -1,0 +1,4 @@
+{"t":1795392523727,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795392523795,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795392534180,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":5209}
+{"t":1795392548283,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":14091}

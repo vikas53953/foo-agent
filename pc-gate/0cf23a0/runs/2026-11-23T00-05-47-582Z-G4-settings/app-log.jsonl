@@ -1,0 +1,19 @@
+{"t":1795392349688,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795392349704,"lvl":"error","mod":"vault","evt":"KEYRING_UNAVAILABLE","kind":"LOAD_FAILED"}
+{"t":1795392357075,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795392362558,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795392369274,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795392374929,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795392380290,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":5309}
+{"t":1795392412739,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7232}
+{"t":1795392416808,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6879}
+{"t":1795392424143,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7333}
+{"t":1795392430379,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8376}
+{"t":1795392435588,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":8792}
+{"t":1795392448880,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6652}
+{"t":1795392453946,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7401}
+{"t":1795392462147,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":7671}
+{"t":1795392481942,"lvl":"info","mod":"engine","evt":"prompt","kind":"PROMPT_PLACEHOLDER_EMPTY"}
+{"t":1795392487508,"lvl":"info","mod":"engine","evt":"chat.intake_kind","kind":"setting"}
+{"t":1795392488597,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6261}
+{"t":1795392494257,"lvl":"error","mod":"ipc","evt":"IPC_FAILED","kind":"ai:verify TypeError"}

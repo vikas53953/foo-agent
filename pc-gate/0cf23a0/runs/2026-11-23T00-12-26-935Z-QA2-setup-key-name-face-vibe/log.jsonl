@@ -1,0 +1,72 @@
+{"t":"2026-11-23T00:12:26.935Z","journey":"QA2-setup-key-name-face-vibe","title":"Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart","spec":"QA audit 28 Oct: batch-1 items not yet proven with real Claude","exe":"C:\\Users\\vikasmit\\Downloads\\trading agent\\foo-agent\\dist\\win-unpacked\\foo.exe"}
+{"t":"2026-11-23T00:12:33.437Z","step":"launch","ok":true}
+{"t":"2026-11-23T00:12:33.892Z","shot":"01-welcome.png"}
+{"t":"2026-11-23T00:12:33.892Z","i":0,"do":"waitFor","expect":"Welcome card, step 1 of 2","feature":"install","ok":true,"ms":8,"shot":"01-welcome.png"}
+{"t":"2026-11-23T00:12:34.379Z","i":1,"do":"click","ok":true,"ms":486}
+{"t":"2026-11-23T00:12:34.881Z","shot":"02-finder.png"}
+{"t":"2026-11-23T00:12:34.883Z","i":2,"do":"waitFor","expect":"Find your AI card; the Anthropic key row offers to add the key","feature":"ai","ok":true,"ms":16,"shot":"02-finder.png"}
+{"t":"2026-11-23T00:12:55.231Z","shot":"03-finder-tested.png"}
+{"t":"2026-11-23T00:12:55.231Z","i":3,"do":"wait","expect":"rows tested; the key row waits for a key","feature":"ai","ok":true,"ms":20003,"shot":"03-finder-tested.png"}
+{"t":"2026-11-23T00:12:55.503Z","i":4,"do":"click","note":"Add key on the Anthropic key row: opens the Secret box","via":"own-key row, then Anthropic","ok":true,"ms":272}
+{"t":"2026-11-23T00:12:56.010Z","shot":"04-secret-box.png"}
+{"t":"2026-11-23T00:12:56.017Z","i":5,"do":"waitFor","expect":"Secret box asks for the Anthropic key","feature":"ai","ok":true,"ms":9,"shot":"04-secret-box.png"}
+{"t":"2026-11-23T00:12:56.155Z","i":6,"do":"fill","note":"a made-up wrong key first","ok":true,"ms":134}
+{"t":"2026-11-23T00:12:56.403Z","i":7,"do":"click","ok":true,"ms":248}
+{"t":"2026-11-23T00:13:26.441Z","i":8,"do":"wait","ok":true,"ms":30037}
+{"t":"2026-11-23T00:13:36.816Z","shot":"05-error-step9.png"}
+{"t":"2026-11-23T00:13:37.301Z","shot":"06-q2-wrong-key.png"}
+{"t":"2026-11-23T00:13:37.303Z","i":9,"do":"expectText","expect":"a wrong key is tested and the row says it didn't work, in plain words","feature":"ai","ok":false,"error":"locator.innerText: Timeout 10000ms exceeded.","errorShot":"05-error-step9.png","ms":10373,"shot":"06-q2-wrong-key.png"}
+{"t":"2026-11-23T00:13:37.313Z","i":10,"do":"check","note":"a wrong key is never offered as Use","found":0,"ok":true,"ms":10}
+{"t":"2026-11-23T00:13:37.313Z","i":11,"do":"click","note":"Replace key opens the Secret box again","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T00:13:37.314Z","i":12,"do":"waitFor","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T00:13:37.314Z","i":13,"do":"fill","note":"now the real key","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T00:13:37.314Z","i":14,"do":"click","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T00:13:37.315Z","i":15,"do":"wait","expect":"the real key row shows works","feature":"ai","ok":true,"notRun":"needs a real Anthropic API key; this run uses the signed-in Claude app","ms":0}
+{"t":"2026-11-23T00:13:37.462Z","i":16,"do":"clickIf","note":"more than one AI works: pick the key, not the Claude app","finderWaitMs":69,"found":0,"ok":true,"ms":147}
+{"t":"2026-11-23T00:13:37.466Z","i":17,"do":"clickIf","found":0,"ok":true,"ms":3}
+{"t":"2026-11-23T00:13:37.779Z","i":18,"do":"clickIf","note":"only the key works: Use it","found":1,"ok":true,"ms":312}
+{"t":"2026-11-23T00:13:38.260Z","shot":"07-q2-name-card.png"}
+{"t":"2026-11-23T00:13:38.261Z","i":19,"do":"waitFor","expect":"name card: What should I call myself?","feature":"name","ok":true,"ms":10,"shot":"07-q2-name-card.png"}
+{"t":"2026-11-23T00:13:38.426Z","i":20,"do":"fill","ok":true,"ms":165}
+{"t":"2026-11-23T00:13:38.614Z","i":21,"do":"click","ok":true,"ms":188}
+{"t":"2026-11-23T00:13:39.625Z","i":22,"do":"wait","ok":true,"ms":1010}
+{"t":"2026-11-23T00:13:40.131Z","shot":"08-q2-name-no-letter.png"}
+{"t":"2026-11-23T00:13:40.131Z","i":23,"do":"expectText","expect":"a name with no letter or number (only an emoji and !!) is refused in plain words","feature":"name","text":"Use at least one letter.","ok":true,"ms":5,"shot":"08-q2-name-no-letter.png"}
+{"t":"2026-11-23T00:13:40.144Z","i":24,"do":"fill","ok":true,"ms":13}
+{"t":"2026-11-23T00:13:40.697Z","i":25,"do":"click","ok":true,"ms":552}
+{"t":"2026-11-23T00:13:43.699Z","i":26,"do":"wait","ok":true,"ms":3001}
+{"t":"2026-11-23T00:13:44.126Z","shot":"09-q2-named.png"}
+{"t":"2026-11-23T00:13:44.127Z","i":27,"do":"expectText","expect":"\"Chotu 😊 it is.\" and the face card follows","feature":"name","text":"Start of your chat with Chotu 😊\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n5:42 AM\nUsing Claude (your AI)\n5:42 AM\nTo use your own AI I need your Anthropic key. Paste it in the box below, not in the chat.\nAnthropic key\nsecret\n71 characters\nI can’t reach this PC’s safe storage right now.\nSave securely\nTry again\nCancel\nStored on this PC. Chotu 😊’s AI never sees it.\n5:42 AM\nWhat should I call myself? → Chotu 😊\n5:43 AM\nChotu 😊\n\nChotu 😊 it is.\n\n5:43 AM\n\nPick a face.\n\n1\nLiving face\nDefault\n✿\n2\n◐\n3\n★\n4\nUse this face\n🎲 Surprise me","ok":true,"ms":3,"shot":"09-q2-named.png"}
+{"t":"2026-11-23T00:13:44.330Z","i":28,"do":"click","note":"pick the third face","ok":true,"ms":203}
+{"t":"2026-11-23T00:13:44.853Z","i":29,"do":"click","typed":"Use this face","ok":true,"ms":521}
+{"t":"2026-11-23T00:13:47.208Z","shot":"10-q2-face.png"}
+{"t":"2026-11-23T00:13:47.208Z","i":30,"do":"wait","expect":"face chosen; the talk-style (vibe) choice follows","feature":"name","ok":true,"ms":2009,"shot":"10-q2-face.png"}
+{"t":"2026-11-23T00:13:47.513Z","i":31,"do":"click","note":"pick the second vibe","ok":true,"ms":304}
+{"t":"2026-11-23T00:13:47.529Z","i":32,"do":"waitFor","ok":true,"ms":15}
+{"t":"2026-11-23T00:13:57.803Z","shot":"11-q2-first-chat.png"}
+{"t":"2026-11-23T00:13:57.804Z","i":33,"do":"wait","expect":"first chat as Chotu, composer unlocked","feature":"chat","ok":true,"ms":10012,"shot":"11-q2-first-chat.png"}
+{"t":"2026-11-23T00:13:57.984Z","i":34,"do":"send","typed":"tumhara naam kya hai? ek line mein","sentAt":1795392837966,"sent":true,"before":0,"ok":true,"ms":180}
+{"t":"2026-11-23T00:14:00.120Z","shot":"12-q2-says-name-wait-1.5s.png"}
+{"t":"2026-11-23T00:14:01.622Z","shot":"13-q2-says-name-wait-3.0s.png"}
+{"t":"2026-11-23T00:14:10.464Z","shot":"14-q2-says-name.png"}
+{"t":"2026-11-23T00:14:10.464Z","i":35,"do":"waitReply","expect":"the real AI answers as Chotu","feature":"name","timeline":[{"at":29,"badges":[],"reactions":[],"thinking":false,"streaming":0},{"at":346,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4992,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":5970,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1551,"mark":1500,"shot":"12-q2-says-name-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3066,"mark":3000,"shot":"13-q2-says-name-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":4974,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Mera naam Chotu 😊 hai.\n\n5:44 AM","kit":[],"replyFaults":[],"endState":true,"ms":12009,"shot":"14-q2-says-name.png"}
+{"t":"2026-11-23T00:14:10.872Z","i":36,"do":"send","note":"real-user Hinglish turn-taking: user gives their own name, then asks foo's; \"tumhara naam\" here means foo's name","typed":"mera naam Rohit hai. aur tumhara naam? sirf naam batao","sentAt":1795392850761,"sent":true,"before":0,"ok":true,"ms":408}
+{"t":"2026-11-23T00:14:12.675Z","shot":"15-q2-aur-tumhara-naam-wait-1.5s.png"}
+{"t":"2026-11-23T00:14:14.551Z","shot":"16-q2-aur-tumhara-naam-wait-3.0s.png"}
+{"t":"2026-11-23T00:14:23.388Z","shot":"17-q2-aur-tumhara-naam.png"}
+{"t":"2026-11-23T00:14:23.389Z","i":37,"do":"waitReply","expect":"after \"mera naam Rohit hai. aur tumhara naam?\" foo answers with its own name Chotu, not the user's","feature":"name","timeline":[{"at":127,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":4835,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":5973,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1529,"mark":1500,"shot":"15-q2-aur-tumhara-naam-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3290,"mark":3000,"shot":"16-q2-aur-tumhara-naam-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0}],"firstReplyMs":4995,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Chotu 😊\n\n5:44 AM","kit":[],"replyFaults":[],"endState":true,"ms":12119,"shot":"17-q2-aur-tumhara-naam.png"}
+{"t":"2026-11-23T00:14:30.520Z","step":"launch","ok":true}
+{"t":"2026-11-23T00:14:30.520Z","i":38,"do":"relaunch","ok":true,"ms":7131}
+{"t":"2026-11-23T00:14:38.523Z","i":39,"do":"wait","ok":true,"ms":8003}
+{"t":"2026-11-23T00:14:38.815Z","shot":"18-q2-after-reopen.png"}
+{"t":"2026-11-23T00:14:38.815Z","i":40,"do":"expectText","expect":"after quit and reopen the chat and the name Chotu are still there","feature":"name","text":"Start of your chat with Chotu 😊\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n5:42 AM\nUsing Claude (your AI)\n5:42 AM\nTo use your own AI I need your Anthropic key. Paste it in the box below, not in the chat.\nAnthropic key\nsecret\n0 characters\nSave securely\nCancel\nStored on this PC. Chotu 😊’s AI never sees it.\n5:42 AM\nWhat should I call myself? → Chotu 😊\n5:43 AM\n◐︎\nChotu 😊\n\nChotu 😊 it is.\n\n5:43 AM\nPick a face. → Face ◐ (half moon)\n5:43 AM\nHow should I talk to you? → Straight to the point\n5:43 AM\n◐︎\nChotu 😊\n\nStraight to the point. Got it. 🎯\n\n5:43 AM\n\nAll set. I'm Chotu 😊, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n5:43 AM\ntumhara naam kya hai? ek line mein\n5:43 AM\n◐︎\nChotu 😊\n\nMera naam Chotu 😊 hai.\n\n5:44 AM\nmera naam Rohit hai. aur tumhara naam? sirf naam batao\n5:44 AM\n◐︎\nChotu 😊\n\nChotu 😊\n\n5:44 AM","ok":true,"ms":24,"shot":"18-q2-after-reopen.png"}
+{"t":"2026-11-23T00:14:39.134Z","i":41,"do":"send","note":"QA ruling 12 Nov: plain re-ask after restart, so this step tests only that the name survived. The \"aur tumhara naam?\" phrasing is checked on its own before the restart.","typed":"tumhara naam kya hai? sirf naam batao","sentAt":1795392879078,"sent":true,"before":0,"ok":true,"ms":319}
+{"t":"2026-11-23T00:14:41.119Z","shot":"19-q2-name-after-reopen-wait-1.5s.png"}
+{"t":"2026-11-23T00:14:42.867Z","shot":"20-q2-name-after-reopen-wait-3.0s.png"}
+{"t":"2026-11-23T00:14:45.398Z","shot":"21-q2-name-after-reopen-wait-6.0s.png"}
+{"t":"2026-11-23T00:14:52.711Z","shot":"22-q2-name-after-reopen.png"}
+{"t":"2026-11-23T00:14:52.711Z","i":42,"do":"waitReply","expect":"after reopening, the real AI still answers as Chotu (name and key survived the restart)","feature":"name","timeline":[{"at":73,"badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6075,"badges":[],"reactions":[],"thinking":false,"streaming":1},{"at":7204,"badges":[],"reactions":[],"thinking":false,"streaming":0}],"watchShots":[{"at":1591,"mark":1500,"shot":"19-q2-name-after-reopen-wait-1.5s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":3151,"mark":3000,"shot":"20-q2-name-after-reopen-wait-3.0s.png","badges":[],"reactions":[],"thinking":true,"streaming":0},{"at":6075,"mark":6000,"shot":"21-q2-name-after-reopen-wait-6.0s.png","badges":[],"reactions":[],"thinking":false,"streaming":1}],"firstReplyMs":6264,"newBubbles":1,"reactions":[],"ok":true,"duplicates":0,"lastReply":"Chotu 😊\n\n5:44 AM","kit":[],"replyFaults":[],"endState":true,"ms":13188,"shot":"22-q2-name-after-reopen.png"}
+{"t":"2026-11-23T00:14:52.725Z","i":43,"do":"dump","ok":true,"ms":14}
+{"t":"2026-11-23T00:14:57.120Z","step":"appLog","lines":12,"dropped":0}
+{"t":"2026-11-23T00:14:57.143Z","step":"aiTurns","turns":3}
+{"t":"2026-11-23T00:14:57.148Z","step":"jobTrail","steps":0,"calls":0}
