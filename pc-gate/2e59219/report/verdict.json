@@ -1,5 +1,5 @@
 {
-  "status": "FAIL",
+  "status": "PASS",
   "sha": "2e59219b6648357b42c8c059d91e52b07ba81920",
   "features": [
     {
@@ -89,7 +89,7 @@
     },
     {
       "name": "Installer smoke test on Vikas's PC",
-      "conclusion": "skipped"
+      "conclusion": "success"
     }
   ],
   "reviewed": 221,

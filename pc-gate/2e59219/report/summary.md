@@ -1,4 +1,4 @@
-# foo release gate on Vikas's PC: FAIL
+# foo release gate on Vikas's PC: PASS
 
 Commit 2e59219b6648357b42c8c059d91e52b07ba81920, 1 round(s), AI: the signed-in Claude app (Claude Code 2.1.323 (Claude Code)), no API key.
 
@@ -11,6 +11,7 @@ Commit 2e59219b6648357b42c8c059d91e52b07ba81920, 1 round(s), AI: the signed-in C
 | Settings, by page or by asking | wrong-design | 35 | 0 | 7 |
 | What batch 1 must refuse plainly (tasks, memory) | wrong-design | 33 | 0 | 1 |
 
-Installer smoke test: skipped: foo is already installed at C:\Users\vikasmit\AppData\Local\Programs\foo; journeys drive the built app (dist/win-unpacked)
+Installer smoke test: installer exit code 0: yes; foo.exe installed: yes; uninstaller installed: yes; Start menu shortcut: yes; uninstall removed foo.exe: yes
 Not run on this PC (need a real API key): 35 step(s).
 Report: C:\Users\vikasmit\foo-pc-gate\gate-report\index.html
+Gated installer: C:\Users\vikasmit\Downloads\foo-gated\foo-Setup-2e59219-gated.exe
