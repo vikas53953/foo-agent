@@ -23,13 +23,13 @@ export function onRowsAdded(a: { wasAtBottom: boolean; added: number; byUser: bo
 }
 
 /**
- * After a scroll event: is the list still stuck to the bottom? Only the person leaves the bottom (wheel, keys, scrollbar,
- * touch, or a jump they asked for, which calls `leave`). The list's own follows, and rows measured or growing under it, can
- * fire a scroll event a frame before the follow lands; PC gate run 5 (88d4460) caught real replies left below the fold
- * that way (B1 #19/#21, G2 #5/#9), the Thinking row and the answer never followed.
+ * After a scroll event: is the list still stuck to the bottom? It leaves only when the person scrolls (wheel, keys,
+ * scrollbar, touch) or the view moves up (a jump, a scroll made for them). A scroll short of the end that did not move up
+ * is the list's own follow landing a frame before rows grew under it; PC gate run 5 (88d4460) caught real replies left
+ * below the fold that way (B1 #19/#21, G2 #5/#9): the Thinking row and the answer were never followed.
  */
-export const stuckAfterScroll = (a: { atBottom: boolean; wasAtBottom: boolean; byUser: boolean }) =>
-  a.atBottom || (a.wasAtBottom && !a.byUser);
+export const stuckAfterScroll = (bottom: boolean, wasAtBottom: boolean, byUser: boolean, movedUp: boolean) =>
+  bottom || (wasAtBottom && !byUser && !movedUp);
 
 export const showJump = (m: ScrollMetrics) => fromBottom(m) > m.clientHeight;
 

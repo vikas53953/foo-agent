@@ -4,13 +4,14 @@
 import { describe, expect, it } from 'vitest';
 import { stuckAfterScroll } from '../../src/renderer/messages/stickToBottom';
 
-describe('only the user takes the list off the bottom (§3.6.4)', () => {
-  it('a scroll the list made itself, short of the end, keeps it following', () => {
-    expect(stuckAfterScroll({ atBottom: false, wasAtBottom: true, byUser: false })).toBe(true);
+describe('the list leaves the bottom only for the user or a move up (§3.6.4)', () => {
+  it('a scroll the list made itself, short of the end and not up, keeps it following', () => {
+    expect(stuckAfterScroll(false, true, false, false)).toBe(true);
   });
-  it('the user scrolling up stops the follow; reaching the end again restarts it', () => {
-    expect(stuckAfterScroll({ atBottom: false, wasAtBottom: true, byUser: true })).toBe(false);
-    expect(stuckAfterScroll({ atBottom: false, wasAtBottom: false, byUser: false })).toBe(false);
-    expect(stuckAfterScroll({ atBottom: true, wasAtBottom: false, byUser: true })).toBe(true);
+  it('the user scrolling, or the view moving up (a jump), stops the follow; reaching the end again restarts it', () => {
+    expect(stuckAfterScroll(false, true, true, false)).toBe(false);
+    expect(stuckAfterScroll(false, true, false, true)).toBe(false);
+    expect(stuckAfterScroll(false, false, false, false)).toBe(false);
+    expect(stuckAfterScroll(true, false, true, false)).toBe(true);
   });
 });

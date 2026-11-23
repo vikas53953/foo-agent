@@ -21,12 +21,14 @@ export function useStickToBottom(scrollRef: RefObject<HTMLElement | null>, rows:
 
   /**
    * `m`: the scroller's metrics as the list already knows them (no layout read per scroll event, PERF-04). `byUser`: the
-   * user scrolled (wheel, keys, pointer, touch) just now. Only the user takes the list off the bottom (`stuckAfterScroll`);
-   * a jump the list makes for them (find, a quote, Show, a restored or unread open position) clears `wasAtBottom` itself.
+   * user scrolled (wheel, keys, pointer, touch) just now. The user scrolling, or the view moving up, takes the list off
+   * the bottom (`stuckAfterScroll`); the open position (restored or at the unread divider) sets `wasAtBottom` itself.
    */
+  const lastTop = useRef(0);
   const onScroll = useCallback((m: ScrollMetrics, byUser: boolean) => {
     const bottom = atBottom(m);
-    wasAtBottom.current = stuckAfterScroll({ atBottom: bottom, wasAtBottom: wasAtBottom.current, byUser });
+    wasAtBottom.current = stuckAfterScroll(bottom, wasAtBottom.current, byUser, m.scrollTop < lastTop.current);
+    lastTop.current = m.scrollTop;
     if (bottom) setNewCount((n) => (n === 0 ? n : 0));
   }, []);
 
