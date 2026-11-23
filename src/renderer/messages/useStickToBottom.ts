@@ -5,11 +5,13 @@
 // viewport shrinking (suggestion chips or a taller composer below it) is a change too: a list at the bottom stays there.
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type RefObject } from 'react';
 import type { VRow } from './rows';
-import { anchorAfterPrepend, atBottom, onRowsAdded, stuckAfterScroll, type ScrollMetrics } from './stickToBottom';
+import { anchorAfterPrepend, atBottom, onRowsAdded, type ScrollMetrics } from './stickToBottom';
 
 export interface StickTarget {
   scrollToEnd: () => void;
   getTotalSize: () => number;
+  /** A scroll to the end is still settling (rows measured on the way move the end). */
+  isFollowing: () => boolean;
 }
 
 const contentKeys = (rows: VRow[]) => rows.filter((r) => r.kind === 'message');
@@ -17,20 +19,28 @@ const contentKeys = (rows: VRow[]) => rows.filter((r) => r.kind === 'message');
 export function useStickToBottom(scrollRef: RefObject<HTMLElement | null>, rows: VRow[], target: StickTarget) {
   const wasAtBottom = useRef(true);
   const [newCount, setNewCount] = useState(0);
+  const lastTop = useRef(0);
   const prev = useRef<{ first?: string; last?: string; total: number; lead: string }>({ total: 0, lead: '' });
 
   /**
    * `m`: the scroller's metrics as the list already knows them (no layout read per scroll event, PERF-04). `byUser`: the
-   * user scrolled (wheel, keys, pointer, touch) just now. The user scrolling, or the view moving up, takes the list off
-   * the bottom (`stuckAfterScroll`); the open position (restored or at the unread divider) sets `wasAtBottom` itself.
+   * user scrolled (wheel, keys, pointer, touch) just now. A list at the bottom stays there through a scroll it made itself
+   * while rows were still being measured (the total changed and the follow is queued, or the follow is still settling),
+   * and through any scroll it made that did not move the view up (its own follow landing short a frame before rows grew,
+   * PC gate run 5): only the user, or a move up such as a jump, leaves the bottom then.
    */
-  const lastTop = useRef(0);
-  const onScroll = useCallback((m: ScrollMetrics, byUser: boolean) => {
-    const bottom = atBottom(m);
-    wasAtBottom.current = stuckAfterScroll(bottom, wasAtBottom.current, byUser, m.scrollTop < lastTop.current);
-    lastTop.current = m.scrollTop;
-    if (bottom) setNewCount((n) => (n === 0 ? n : 0));
-  }, []);
+  const onScroll = useCallback(
+    (m: ScrollMetrics, byUser: boolean) => {
+      const bottom = atBottom(m);
+      const up = m.scrollTop < lastTop.current && !target.isFollowing() && target.getTotalSize() === prev.current.total;
+      lastTop.current = m.scrollTop;
+      if (bottom) {
+        wasAtBottom.current = true;
+        setNewCount((n) => (n === 0 ? n : 0));
+      } else if (byUser || up) wasAtBottom.current = false;
+    },
+    [target],
+  );
 
   useLayoutEffect(() => {
     const el = scrollRef.current;
