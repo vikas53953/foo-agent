@@ -210,6 +210,8 @@ describe('release gate spend guards', () => {
     expect(gateStatus(3, [{ verdict: 'works' }, { verdict: 'not-reviewed' }], green)).toBe('BLOCKED');
     expect(gateStatus(3, [{ verdict: 'works' }], green)).toBe('PASS');
     expect(gateStatus(3, [{ verdict: 'works' }], [{ green: false }])).toBe('FAIL');
+    // Vikas 23 Nov 2026 ("Block only on broken"): look-and-feel notes are listed, not a block.
+    expect(gateStatus(3, [{ verdict: 'works' }, { verdict: 'wrong-design' }], green)).toBe('PASS');
   });
 
   it('prices a reviewer call from its reported usage, and an unknown model like the dearest', () => {

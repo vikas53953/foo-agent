@@ -383,13 +383,14 @@ export function callUsd(model: string, u: { input_tokens: number; output_tokens:
   return ((u.input_tokens + (u.cache_read_input_tokens ?? 0) * 0.1) * i + u.output_tokens * o) / 1e6;
 }
 
-/** PASS only when every feature works and every check is green. A broken feature is FAIL even with pictures left unreviewed
- * (the reviewer is skipped once a step failed); unreviewed pictures with nothing broken block the gate. */
+/** PASS when no feature is broken and every check is green (Vikas 23 Nov 2026, "Block only on broken": wrong-design notes
+ * are listed in the report for him, not a block). A broken feature is FAIL even with pictures left unreviewed (the reviewer
+ * is skipped once a step failed); unreviewed pictures with nothing broken block the gate. */
 export function gateStatus(runs: number, feats: { verdict: string }[], rows: { green: boolean }[]): 'PASS' | 'FAIL' | 'BLOCKED' {
   if (!runs) return 'BLOCKED';
   if (feats.some((f) => f.verdict === 'broken')) return 'FAIL';
   if (feats.some((f) => f.verdict === 'not-reviewed')) return 'BLOCKED';
-  return feats.every((f) => f.verdict === 'works') && rows.every((c) => c.green) ? 'PASS' : 'FAIL';
+  return feats.every((f) => f.verdict === 'works' || f.verdict === 'wrong-design') && rows.every((c) => c.green) ? 'PASS' : 'FAIL';
 }
 
 /** The words the reviewer gets when it runs as Vikas's signed-in Claude Code CLI on his PC (no API key, 22 Nov 2026):
@@ -672,7 +673,7 @@ h1{font-size:24px;margin:0 0 4px}h2{font-size:19px;margin:32px 0 8px}.muted{colo
 </style></head><body><main>
 <h1>foo release gate <span class="v big ${status}">${status}</span></h1>
 <p class="muted">Commit ${esc(sha)} · the packaged app (the same files Vikas downloads) driven like a user with a real AI · pictures checked by a separate reviewer · ${new Date().toISOString()}</p>
-<p>${status === 'PASS' ? 'Every batch-1 feature works and every other check on this commit is green: this build may go to Vikas.' : 'This build must not go to Vikas until every row below says Works.'}</p>
+<p>${status === 'PASS' ? 'No batch-1 feature is broken and every other check on this commit is green: this build may go to Vikas. Rows marked "Works but wrong vs design" are notes for him, not a block.' : 'This build must not go to Vikas until no row below says Broken.'}</p>
 <h2>Features</h2><table><tr><th>Feature</th><th>Verdict</th><th>Checkpoints</th><th>Broken</th><th>Wrong vs design</th></tr>${featureRows}</table>
 ${failures.length ? `<h2>Every failure (${failures.length})</h2><table><tr><th>Where</th><th>What went wrong</th><th>Known red or new</th></tr>${failureRows}</table>` : ''}
 ${notRun.length ? `<h2>Not run on this PC (${notRun.length})</h2><p class="muted">These steps need a real Anthropic API key typed into foo; this run uses the signed-in Claude app instead. They are not counted as works.</p><table><tr><th>Where</th><th>Step</th></tr>${notRun.map((n) => `<tr><td>${esc(n.where)}</td><td>${esc(n.what)}</td></tr>`).join('')}</table>` : ''}
