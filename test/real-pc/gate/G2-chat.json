@@ -81,7 +81,7 @@
       "forbidBadge": "seen",
       "shot": "long",
       "expect": "a long answer streams in; it is readable, not cut off, and the buttons under it never cover the words",
-      "replyRe": "biryani|बिरयानी"
+      "replyRe": "tiger|sher|बाघ|शेर"
     },
     {
       "do": "sweep",
