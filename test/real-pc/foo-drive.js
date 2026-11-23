@@ -761,7 +761,11 @@ async function main() {
         case 'paste':
           // Puts text on the clipboard and pastes it into the composer, like Ctrl+V.
           await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.repeat ? s.text.repeat(s.repeat) : s.text);
-          await page.locator('[data-testid="composer-field"]').click();
+          // Click into the field only when it is not already the focus: a click lands mid-field, so a second paste
+          // went in where the mouse was, between earlier lines (PC run 5, QA1 #35: the mask before "three"), which is
+          // not what a person pasting twice in a row gets.
+          if (!(await page.evaluate(() => document.activeElement?.getAttribute('data-testid') === 'composer-field')))
+            await page.locator('[data-testid="composer-field"]').click();
           await page.keyboard.press('Control+V');
           break;
         case 'typeSend':

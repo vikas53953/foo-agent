@@ -288,17 +288,18 @@
       "do": "waitFor",
       "css": "html[data-theme=\"dark\"]",
       "timeoutMs": 120000,
-      "shot": "q10-dark",
-      "note": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
-      "feature": "settings",
-      "expect": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)"
+      "note": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)"
     },
     {
       "do": "waitReply",
       "timeoutMs": 60000,
       "replyRe": "theme",
       "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
-      "maxBubbles": 1
+      "maxBubbles": 1,
+      "shot": "q10-dark",
+      "feature": "settings",
+      "expect": "QA-X-F30: a theme ask right after a memory ask still changes the theme (never the memory line)",
+      "note": "The picture is taken at the reply: a PC already in dark mode (Windows theme) passes the waitFor at once, so a shot there showed only the Thinking row (PC run 5, QA1 #45, QA4 #37)."
     },
     {
       "do": "send",
