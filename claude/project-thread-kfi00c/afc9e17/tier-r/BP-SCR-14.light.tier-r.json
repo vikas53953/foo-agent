@@ -1,0 +1,107 @@
+{
+  "id": "BP-SCR-14",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0013",
+    "checks": [
+      "r1",
+      "r2",
+      "r3"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "irctc.co.in",
+        "·",
+        "isn't",
+        "watching",
+        "while",
+        "I'm",
+        "Skip",
+        "Alt+D",
+        "=",
+        "I'm",
+        "done."
+      ],
+      "extra": [
+        "www.irctc.co.in",
+        "/nget/signin",
+        "is",
+        "waiting.",
+        "It",
+        "can’t",
+        "see",
+        "what",
+        "here.",
+        "I’m"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-SCR-14",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 383.328125,
+          "height": 236
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 1100,
+          "height": 72
+        },
+        "dPos": 0,
+        "dSize": 716.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-SCR-14",
+        "ref": "#FFFFFF",
+        "app": "#FDF0DD",
+        "deltaE": 9.18,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.053996228604583696,
+    "diffPixels": 1489,
+    "total": 27576,
+    "sizeMismatch": {
+      "a": [
+        383,
+        236
+      ],
+      "b": [
+        1100,
+        72
+      ]
+    },
+    "heatmap": "BP-SCR-14.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-SCR-14.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-SCR-14.light.png"
+}
