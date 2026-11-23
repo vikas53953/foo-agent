@@ -1,0 +1,322 @@
+{
+  "id": "UX-23-04",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-23-04.light.png",
+      "sha256": "e78fbe86416e25e0b2c4ee1ac7177d89cb9b17de6446c72fe9b03c461dea215c"
+    },
+    "dark": {
+      "png": "UX-23-04.dark.png",
+      "sha256": "42637cabe505955e2261b26efe9ac6a35afe67d886d61ac78ce8637baf896236"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "⚠",
+    "Claude isn't answering. Your jobs are paused, not lost.",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "8:00 AM",
+    "Good morning, Vikas. 4 things today",
+    "Trips",
+    "9:38 AM",
+    "Paused: waiting for your AI",
+    "Paused",
+    "Money",
+    "Thu",
+    "Hi, I'm Money. I'll look after bills and payments.",
+    "Home",
+    "Thu",
+    "Gas cylinder booked for Mon 19 Oct",
+    "Done",
+    "F",
+    "Family group",
+    "WhatsApp",
+    "Thu",
+    "Mom: Sunday lunch at 1? 🙂",
+    "V",
+    "Vikas ·",
+    "Claude isn't answering",
+    "₹212 of ₹1,000 AI this month",
+    "⚙",
+    "Trips",
+    "Paused: your AI isn’t answering",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Fri 16 Oct",
+    "Booking your Goa stay",
+    "Step 3 of 4",
+    "✓",
+    "Checked Booking.com, MakeMyTrip and hotel sites",
+    "✓",
+    "Kept 3 under ₹8,000 a night, beach within 5 min",
+    "✓",
+    "You picked Taj Holiday Village",
+    "Back on it. Picking up from step 3.",
+    "Watch live",
+    "Stop",
+    "also check W Goa",
+    "9:41 AM 🕓",
+    "Claude isn't answering right now",
+    "Your Goa job is saved at step 3. Nothing was booked or paid.",
+    "Try again",
+    "Use ChatGPT instead",
+    "＋",
+    "Message Trips, or hold Ctrl+Space to talk",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Claude (your AI)",
+    "Gmail",
+    "Calendar",
+    "WhatsApp",
+    "Browser",
+    "What I know about you",
+    "Likes beach stays, hates early flights",
+    "You said · Sat 3 Oct · Edit",
+    "Budget trips under ₹40,000",
+    "I guessed · from 2 trips · Edit",
+    "See all (24)",
+    "Spent this month",
+    "Your AI",
+    "₹212 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "Use ChatGPT instead"
+  ],
+  "hl": {
+    "id": "usegpt",
+    "box": {
+      "x": 462.46875,
+      "y": 681,
+      "width": 119.3125,
+      "height": 22
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 462.46875,
+      "y": 681,
+      "width": 119.3125,
+      "height": 22
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": null,
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 23,
+    "step": 4,
+    "anchor": "errors-4",
+    "title": "When things go wrong",
+    "part": "Living with foo",
+    "j": "J19",
+    "r": "R20",
+    "c": "Your AI stops answering. Jobs wait; nothing is lost or paid.",
+    "s": "\"Claude isn't answering right now. Your Goa job is saved at step 3. Nothing was booked or paid.\" · Try again · \"Use ChatGPT instead\".",
+    "f": "Offers ChatGPT only because it passed its test at setup.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "trips",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "8:00 AM",
+            "prev": "Good morning, Vikas. 4 things today"
+          },
+          {
+            "id": "trips",
+            "name": "Trips",
+            "time": "9:38 AM",
+            "prev": "Paused: waiting for your AI",
+            "st": "pause"
+          },
+          {
+            "id": "money",
+            "name": "Money",
+            "time": "Thu",
+            "prev": "Hi, I'm Money. I'll look after bills and payments."
+          },
+          {
+            "id": "home",
+            "name": "Home",
+            "time": "Thu",
+            "prev": "Gas cylinder booked for Mon 19 Oct",
+            "st": "done"
+          },
+          {
+            "id": "family",
+            "name": "Family group",
+            "time": "Thu",
+            "prev": "Mom: Sunday lunch at 1? 🙂",
+            "wa": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "brief",
+              "h": "<div class=\"card wide\" data-hl=\"brief\"><div class=\"hd\">☀ Good morning, Vikas<span class=\"lbl\">Morning brief</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mom's birthday is Sun 18 Oct. Cake ordered?</span><span class=\"pillbtn sm \">Yes, from Theobroma</span><span class=\"pillbtn sm \" data-hl=\"notyet\">Not yet</span><span style=\"white-space:nowrap\" data-hl=\"th-cake\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Airtel bill ₹1,179 due Fri 23 Oct. Sent to Money.</span><span class=\"pillbtn sm \">Open Money</span><span style=\"white-space:nowrap\" data-hl=\"th-airtel\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Goa stays for Sat 12 Dec dropped 18%.</span><span class=\"pillbtn sm \" data-hl=\"showme\">Show me</span><span style=\"white-space:nowrap\" data-hl=\"th-goa\">👍 👎</span></div><div class=\"li\" style=\"align-items:center;font-size:14px;line-height:20px\"><span class=\"tk o\"></span><span style=\"flex:1\">Mumbai today: 31°, light rain after 4:00 PM.</span><span style=\"white-space:nowrap\" data-hl=\"th-weather\">👍 👎</span></div><div class=\"row2 sm\">That's all for today · 👍 · 👎 · <span class=\"lnk\">Tomorrow, more of / less of…</span></div></div>",
+              "g": 12
+            }
+          ],
+          "trips": [
+            {
+              "h": "<span class=\"date\">Today, Fri 16 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "c",
+              "h": "<div class=\"card\" data-hl=\"chk\"><div class=\"hd\">Booking your Goa stay<span class=\"lbl\">Step 3 of 4</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Checked Booking.com, MakeMyTrip and hotel sites</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>Kept 3 under ₹8,000 a night, beach within 5 min</span></div><div class=\"li\"><span class=\"tk d\">✓</span><span>You picked Taj Holiday Village</span></div><div class=\"li\"><span class=\"tk w\"></span><span>Back on it. Picking up from step 3.</span></div><div class=\"row2\"><span class=\"pillbtn sm \" data-hl=\"watch2\">Watch live</span><span class=\"pillbtn sm bad\" data-hl=\"stop\">Stop</span></div></div>",
+              "g": 12
+            },
+            {
+              "h": "<div class=\"b me\" data-hl=\"q1\">also check W Goa<span class=\"meta\">9:41 AM 🕓</span></div>",
+              "g": 12
+            },
+            {
+              "id": "e1",
+              "h": "<div class=\"card err\"><div class=\"hd\">Claude isn't answering right now</div><div class=\"sm\">Your Goa job is saved at step 3. Nothing was booked or paid.</div><div class=\"row2\"><span class=\"pillbtn sm dark\">Try again</span><span class=\"lnk\" data-hl=\"usegpt\">Use ChatGPT instead</span></div></div>",
+              "g": 12
+            }
+          ],
+          "money": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\">Hi, I'm Money. I'll look after bills and payments. I never pay without your tap.<span class=\"meta\">8:14 PM</span></div>",
+              "g": 12
+            }
+          ],
+          "home": [],
+          "family": [
+            {
+              "h": "<span class=\"date\">Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "h": "<div class=\"b foo\"><b style=\"color:#B8326B;display:block;font-size:13px\">Mom</b>Sunday lunch at 1? 🙂<span class=\"meta\">6:40 PM</span></div>",
+              "g": 12
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Paused: your AI isn’t answering",
+          "tone": "warn"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [
+            "Claude (your AI)",
+            "Gmail",
+            "Calendar",
+            "WhatsApp",
+            "Browser"
+          ],
+          "mem": [
+            [
+              "Likes beach stays, hates early flights",
+              "You said · Sat 3 Oct · Edit"
+            ],
+            [
+              "Budget trips under ₹40,000",
+              "I guessed · from 2 trips · Edit"
+            ]
+          ],
+          "memn": 24,
+          "ai": 212,
+          "buy": 0
+        },
+        "comp": {
+          "m": "rest"
+        },
+        "banner": {
+          "tone": "warn",
+          "icon": "⚠",
+          "text": "Claude isn't answering. Your jobs are paused, not lost."
+        },
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "ai": "Claude isn't answering",
+        "aiTone": "warn"
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "9:40 AM",
+        "date": "16-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "offline",
+          "trips": "offline",
+          "money": "offline",
+          "home": "offline"
+        },
+        "still": {
+          "foo": false,
+          "trips": false,
+          "money": false,
+          "home": false
+        },
+        "tray": "offline",
+        "toast": null,
+        "sel": "trips"
+      }
+    },
+    "clockShown": "9:40 AM",
+    "superseded": null
+  }
+}

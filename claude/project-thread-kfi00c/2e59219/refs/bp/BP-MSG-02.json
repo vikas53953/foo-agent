@@ -1,0 +1,52 @@
+{
+  "id": "BP-MSG-02",
+  "family": "bp",
+  "selector": "#messages .grid2 > .panel:nth-child(2) > .mini",
+  "box": {
+    "x": 529.5,
+    "y": 8380.90625,
+    "width": 350,
+    "height": 270
+  },
+  "files": {
+    "light": {
+      "png": "BP-MSG-02.light.png",
+      "sha256": "06067c1fe2aabcb82394cc172cb43bf12e108d52c446c26ef5517c9545ecbdf1"
+    },
+    "dark": {
+      "png": "BP-MSG-02.dark.png",
+      "sha256": "04953d26095ce57674ffad258a78efffe3d3f034db17b67e6c143d8cf18c6872"
+    }
+  },
+  "texts": [
+    "Checking your calendar…",
+    "Found 3 dentists open Sat 17 Oct before noon. The closest is 6 min from you.",
+    "10:41 AM",
+    "Want me to book one?",
+    "10:41 AM",
+    "⧉",
+    "↻",
+    "👍",
+    "👎"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-MSG-02": {
+      "x": 0,
+      "y": 0,
+      "width": 350,
+      "height": 270
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M3",
+  "spec": "04 §11–§19",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

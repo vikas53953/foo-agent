@@ -1,0 +1,111 @@
+{
+  "id": "BP-CARD-10",
+  "theme": "dark",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0013",
+    "checks": [
+      "r1",
+      "r2"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "IRCTC",
+        "in",
+        "I'll",
+        "wait.",
+        "Sign",
+        "in",
+        "on",
+        "the",
+        "real",
+        "page",
+        "I'll",
+        "Open",
+        "sign-in"
+      ],
+      "extra": [
+        "irctc.co.in",
+        "in.",
+        "Do",
+        "it",
+        "here",
+        "I’ll",
+        "irctc.co.in",
+        "I’m",
+        "done",
+        "Take",
+        "over",
+        "9:30",
+        "AM"
+      ]
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "fail",
+    "anchors": [
+      {
+        "name": "BP-CARD-10",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 351.328125,
+          "height": 138
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 440,
+          "height": 144
+        },
+        "dPos": 0,
+        "dSize": 88.671875,
+        "verdict": "fail"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-CARD-10",
+        "ref": "#1B1B22",
+        "app": "#1B1B22",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.14015855320203147,
+    "diffPixels": 6789,
+    "total": 48438,
+    "sizeMismatch": {
+      "a": [
+        351,
+        138
+      ],
+      "b": [
+        440,
+        144
+      ]
+    },
+    "heatmap": "BP-CARD-10.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-CARD-10.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-CARD-10.dark.png"
+}

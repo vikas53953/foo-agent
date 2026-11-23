@@ -45,7 +45,7 @@
     "id": "SV-01",
     "ok": true,
     "expected": "18px non-tail corners (tail corners 6px)",
-    "measured": "10 bubbles, all equal"
+    "measured": "15 bubbles, all equal"
   },
   {
     "id": "SV-08",
