@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Mood off hona normal hai yaar, Monday ke baad Tuesday bhi bhaari lagta hai. Bas kal ka ek chhota sa target rakho: sirf pehla ek ghanta nikaal lo, baaki din apne aap chal padta hai.\n\nAaj shaam kuch apne liye karo, achha khaana ya pasand ka gaana, aur jaldi so jao. Kal, Tue 24 Nov, tum sambhaal loge. 💪\n\n12:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "आज दिल्ली में मौसम कैसा रहेगा, अंदाज़ा बताओ?\n12:45 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "आज, Mon 23 Nov को दिल्ली में दिन हल्की धूप वाला और सुहाना, करीब 25 से 27°C, और रात ठंडी, करीब 10 से 12°C रहने का अंदाज़ा है। यह नवंबर के आख़िरी हफ़्ते के आम मौसम पर आधारित है, आज का ताज़ा हाल मैं अभी देख नहीं सकता।\n\nसुबह-शाम धुंध और स्मॉग रह सकता है, बारिश की उम्मीद कम है। हवा अक्सर इन दिनों ख़राब रहती है, तो बाहर ज़्यादा देर रहना हो तो मास्क रख लो और शाम के लिए हल्की जैकेट।\n\n12:45 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "ਮੈਨੂੰ ਇੱਕ ਛੋਟਾ ਜਿਹਾ ਚੁਟਕਲਾ ਸੁਣਾਓ\n12:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "ਅਧਿਆਪਕ: \"ਪੱਪੂ, ਤੂੰ ਕੱਲ੍ਹ ਸਕੂਲ ਕਿਉਂ ਨਹੀਂ ਆਇਆ?\"\nਪੱਪੂ: \"ਸਰ ਜੀ, ਤੁਸੀਂ ਆਪ ਹੀ ਕਿਹਾ ਸੀ ਕਿ ਘਰ ਬੈਠ ਕੇ ਪੜ੍ਹੋ, ਤਾਂ ਮੈਂ ਘਰ ਹੀ ਬੈਠਾ ਰਿਹਾ!\" 😄\n\n12:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "wat is teh capitl of austrlia??\n12:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Canberra is the capital of Australia, not Sydney or Melbourne as many people guess.\n\n12:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n12:46 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Bagha was a young tiger in the hills of Ranthambore who had grown bored of raw meals and river water. One winter afternoon a picnic party left behind a dented steel pot, and inside it clung a few grains of golden rice that tasted like nothing he had ever known. From that day he could think of only one thing: making a whole pot of it himself.\n\nHe begged help from Meena, an old langur who had spent years stealing from temple kitchens and knew every spice by smell. She taught him to wash the rice three times, to brown the onions slowly instead of pouncing on them, and to count cardamom pods on his claws. His early pots were sad affairs, soggy at the top and black at the bottom, and once his own tail caught a spark and sent him leaping into the lake.\n\nThen came the night he sealed the lid with dough, sat on his paws and simply waited, the hardest lesson of all for a tiger. When he lifted the lid, steam rose sweet with cloves and mint, and every grain stood apart. Deer, peacocks and even the grumpy sloth bear lined up with leaf plates, and from then on nobody in the forest feared Bagha's roar, because it only meant that dinner was ready.\n\nShow earlier answer\nRewritten\n12:46 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n12:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Got your two lines with a blank one in between, and they came through fine. What should I do with them?\n\n12:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n12:47 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n12:47 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "That looks like keyboard mashing, so I couldn't make anything of it. What do you need?\n\n12:48 PM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n12:48 PM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, cab book nahi hui hai. Main abhi booking jaise kaam kar nahi sakta, isliye kal ke liye cab tumhe khud app se book karni hogi.\n\n12:48 PM"
+  }
+]
