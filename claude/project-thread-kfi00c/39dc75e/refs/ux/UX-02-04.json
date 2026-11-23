@@ -1,0 +1,223 @@
+{
+  "id": "UX-02-04",
+  "family": "ux",
+  "selector": "#frame",
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 1280,
+    "height": 800
+  },
+  "files": {
+    "light": {
+      "png": "UX-02-04.light.png",
+      "sha256": "f945b85d3d2295acfa4f13a29b0f60b8e7a5ddf92b967ab9dc7ee58d27d9973c"
+    },
+    "dark": {
+      "png": "UX-02-04.dark.png",
+      "sha256": "04ae3ea09458f1d4f0c730d932037be9501874cb0f1c1e98f0c3bd191187624c"
+    }
+  },
+  "texts": [
+    "—",
+    "☐",
+    "✕",
+    "foo",
+    "＋ New helper",
+    "⋯",
+    "⌕",
+    "Search chats",
+    "All",
+    "Needs you",
+    "Working",
+    "Done",
+    "foo",
+    "V",
+    "Vikas ·",
+    "Setting up",
+    "Setting up foo",
+    "⚙",
+    "foo",
+    "Setting up",
+    "Step 1 of 4 · foo finds your AI",
+    "⌕",
+    "▯",
+    "⋯",
+    "Today, Thu 15 Oct",
+    "Hi, I'm foo. →",
+    "Let's go",
+    "foo is looking for the AI you already use…",
+    "Step 1 of 4",
+    "Claude (signed in)",
+    "✓ works",
+    "ChatGPT (signed in)",
+    "✓ works",
+    "Gemini",
+    "not found",
+    "OpenAI key",
+    "Add in secret box",
+    "AI on this PC",
+    "not found",
+    "I'll use",
+    "Claude",
+    ". It works and it's the best fit for jobs like bookings. You can change this any time in Settings.",
+    "7:42 PM",
+    "This uses your Claude plan. If you hit its limit, I'll tell you and wait.",
+    "Use Claude",
+    "Pick another",
+    "＋",
+    "Connect your AI first, then we can talk.",
+    "🎙",
+    "Details",
+    "✕",
+    "Doing now",
+    "Nothing running right now.",
+    "Using",
+    "Nothing yet",
+    "What I know about you",
+    "Nothing yet. Tell me about you any time.",
+    "Spent this month",
+    "Your AI",
+    "₹0 of ₹1,000",
+    "Purchases",
+    "₹0 of ₹25,000",
+    "Change caps"
+  ],
+  "hlTexts": [
+    "Use Claude"
+  ],
+  "hl": {
+    "id": "useclaude",
+    "box": {
+      "x": 379,
+      "y": 678,
+      "width": 87.8125,
+      "height": 28
+    }
+  },
+  "anchors": {
+    "hl": {
+      "x": 379,
+      "y": 678,
+      "width": 87.8125,
+      "height": 28
+    }
+  },
+  "masks": [
+    {
+      "x": 1136,
+      "y": 0,
+      "width": 144,
+      "height": 32,
+      "reason": "caption-buttons"
+    }
+  ],
+  "capture": null,
+  "milestone": "M12",
+  "engine": "electron",
+  "chromium": "152.0.7977.167",
+  "ux": {
+    "chapter": 2,
+    "step": 4,
+    "anchor": "ai-4",
+    "title": "Find your AI",
+    "part": "Day 0 · Thu 15 Oct, evening",
+    "j": "J2",
+    "r": "R3 · R4",
+    "c": "foo picks the first one that works and tells you why, in one line.",
+    "s": "\"I'll use Claude…\" with Use Claude / Pick another, and a note that this uses your Claude plan.",
+    "f": "Picks Claude because it's first in the order and good at bookings. Waits for your tap.",
+    "state": {
+      "view": "app",
+      "a": {
+        "sel": "foo",
+        "filter": "All",
+        "q": "",
+        "rows": [
+          {
+            "id": "foo",
+            "name": "foo",
+            "time": "",
+            "prev": "",
+            "grey": 1
+          }
+        ],
+        "th": {
+          "foo": [
+            {
+              "h": "<span class=\"date\">Today, Thu 15 Oct</span>",
+              "g": 4
+            },
+            {
+              "id": "w",
+              "h": "<div class=\"card\"><div class=\"ans\">Hi, I'm foo. → <b>Let's go</b></div></div>",
+              "g": 12
+            },
+            {
+              "id": "finder",
+              "h": "<div class=\"card\" data-hl=\"finder\"><div class=\"hd\">foo is looking for the AI you already use…<span class=\"lbl\">Step 1 of 4</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>Claude (signed in)</span><span style=\"color:var(--ok);font-weight:600\">✓ works</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>ChatGPT (signed in)</span><span style=\"color:var(--ok);font-weight:600\">✓ works</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>Gemini</span><span style=\"color:var(--fg-3)\">not found</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>OpenAI key</span><span class=\"pillbtn sm \">Add in secret box</span></div><div class=\"setrow\" style=\"font-size:14px\"><span>AI on this PC</span><span style=\"color:var(--fg-3)\">not found</span></div></div>",
+              "g": 12
+            },
+            {
+              "id": "pick",
+              "h": "<div class=\"b foo\">I'll use <b>Claude</b>. It works and it's the best fit for jobs like bookings. You can change this any time in Settings.<span class=\"meta\">7:42 PM</span></div>",
+              "g": 12
+            },
+            {
+              "id": "pickc",
+              "h": "<div class=\"card\"><div class=\"sm\">This uses your Claude plan. If you hit its limit, I'll tell you and wait.</div><div class=\"row2\"><span class=\"pillbtn sm acc\" data-hl=\"useclaude\">Use Claude</span><span class=\"pillbtn sm \">Pick another</span></div></div>",
+              "g": 4
+            }
+          ]
+        },
+        "hdr": {
+          "status": "Setting up",
+          "pill": "Step 1 of 4 · foo finds your AI"
+        },
+        "right": "details",
+        "det": {
+          "doing": [],
+          "using": [],
+          "mem": [],
+          "ai": 0,
+          "buy": 0
+        },
+        "comp": {
+          "m": "lock"
+        },
+        "banner": null,
+        "page": null,
+        "ov": null,
+        "find": null,
+        "undo": null,
+        "setup": 1,
+        "ai": "Setting up",
+        "aiTone": "fg-3",
+        "foot2": "Setting up foo"
+      },
+      "d": {
+        "app": true,
+        "wins": [],
+        "toast": null,
+        "menu": null,
+        "tip": null,
+        "tb": null,
+        "time": "7:41 PM",
+        "date": "15-10-2026"
+      },
+      "mo": {
+        "m": {
+          "foo": "rest"
+        },
+        "still": {
+          "foo": true
+        },
+        "tray": "rest",
+        "toast": null,
+        "sel": "foo"
+      }
+    },
+    "clockShown": "7:41 PM",
+    "superseded": null
+  }
+}

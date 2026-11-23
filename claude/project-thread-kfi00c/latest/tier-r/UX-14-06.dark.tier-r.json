@@ -419,13 +419,12 @@
         "replies",
         "show",
         "here.",
-        "Waiting",
-        "for",
-        "your",
-        "answer:",
-        ".",
-        "Show",
-        "button."
+        "foo",
+        "sent",
+        "Secret",
+        "box:",
+        "127.0.0.1",
+        "login"
       ]
     },
     "hl": {
