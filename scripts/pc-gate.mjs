@@ -202,9 +202,20 @@ const runs = path.join(RUN_DIR, 'runs');
 sh(`${PNPM} exec playwright install chromium`, { allowFail: true });
 const ids = out(`${PNPM} -s exec tsx scripts/release-gate.ts refs --runs "${runs}"`, { allowFail: true });
 if (ids) sh(`${PNPM} golden:render --ids "${ids}" --engine chromium --out "${REFS}"`, { allowFail: true });
+// --prior <sha7> (Vikas 23 Nov 2026, to save his Claude usage): keep that run's verdicts for pictures it did not call broken.
+let priorArg = '';
+if (opt('--prior')) {
+  const priorFile = path.join(WORK, 'prior-review.json');
+  sh('git fetch -q --depth 1 --filter=blob:none origin +refs/heads/evidence:refs/remotes/origin/evidence', { allowFail: true });
+  const got = sh(`git show origin/evidence:pc-gate/${opt('--prior')}/report/review.json`, { quiet: true, allowFail: true });
+  if (got.status === 0 && got.stdout) {
+    fs.writeFileSync(priorFile, got.stdout);
+    priorArg = ` --prior "${priorFile}"`;
+  } else say(`no review for ${opt('--prior')} on the evidence branch; every picture is reviewed`);
+}
 if (!has('--no-review'))
   sh(
-    `${PNPM} exec tsx scripts/release-gate.ts review --via cli --runs "${runs}" --refs "${REFS}" --out "${REPORT}" --model claude-sonnet-5-5 --first-pass claude-haiku-5-5 --skip-when-failed`,
+    `${PNPM} exec tsx scripts/release-gate.ts review --via cli --runs "${runs}" --refs "${REFS}" --out "${REPORT}" --model claude-sonnet-5-5 --first-pass claude-haiku-5-5 --skip-when-failed${priorArg}`,
     { env, allowFail: true },
   );
 const rep = sh(

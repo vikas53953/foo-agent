@@ -10,12 +10,13 @@
 //
 // Usage:
 //   tsx scripts/release-gate.ts review --runs <dir> --refs <dir> --out <dir> [--model claude-sonnet-5-5]
-//       [--first-pass claude-haiku-5-5|none] [--budget-usd <usd>] [--skip-when-failed] [--via api|cli]
+//       [--first-pass claude-haiku-5-5|none] [--budget-usd <usd>] [--skip-when-failed] [--via api|cli] [--prior <review.json>]
 //   --via cli (Vikas 22 Nov 2026): the reviewer is the signed-in Claude Code CLI on the PC that ran the journeys (no API
 //   key); it reads each picture as a file. Default api.
 //   Spend guards (Vikas 13 Nov 2026): the first-pass model looks first and only what it does not call "works" goes to
 //   --model; the review stops at --budget-usd (pictures left are "not reviewed", so the gate cannot pass); with
 //   --skip-when-failed no picture is looked at once a step already failed, because the gate is red anyway.
+//   --prior keeps the earlier full review's verdict for each picture it did not call broken; only the rest are reviewed.
 //   tsx scripts/release-gate.ts report --runs <dir> --refs <dir> --out <dir> [--checks <checks.json>] [--sha <sha>]
 //   tsx scripts/release-gate.ts refs --runs <dir>   (prints the walkthrough ids the run names, for golden-render --ids)
 // Exit code (report): 0 PASS, 1 FAIL (a feature is not "works" or a check is red), 2 BLOCKED (nothing ran or no review).
@@ -462,7 +463,19 @@ async function review() {
     console.log(`${n} step(s) already failed, so the gate is red: no picture is reviewed (spend guard, Vikas 13 Nov 2026)`);
     return;
   }
-  const cps = all.filter((c) => c.shot && !c.measured);
+  const shots = all.filter((c) => c.shot && !c.measured);
+  // --prior <review.json> (Vikas 23 Nov 2026, to save his Claude usage): a picture the last full review judged "works" or
+  // "wrong-design" keeps that verdict; only the ones it called broken, and pictures it never saw, are looked at again.
+  const prior = opt('--prior') ? new Map((JSON.parse(readFileSync(opt('--prior')!, 'utf8')) as Review[]).map((r) => [r.id, r])) : undefined;
+  const kept = (id: string) => {
+    const p = prior?.get(id);
+    return p && p.verdict !== 'broken' ? p : undefined;
+  };
+  for (const c of shots) {
+    const p = kept(c.id);
+    if (p) reviews.push({ ...p, by: `${p.by}; kept from ${opt('--prior')}` });
+  }
+  const cps = shots.filter((c) => !kept(c.id));
   // --via cli (Vikas 22 Nov 2026): the reviewer is the signed-in Claude Code CLI on the PC that ran the journeys, no API key.
   const viaCli = opt('--via') === 'cli';
   const client = viaCli ? undefined! : new Anthropic();
