@@ -158,7 +158,8 @@
       "timeoutMs": 120000,
       "shot": "joke",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
-      "expect": "a joke, in the user's mix of Hindi and English",
+      "expect": "a joke, in the user's mix of Hindi and English; the list followed it to the end (the chips row above the composer went when the joke was asked)",
+      "expectJs": "(()=>{const l=document.querySelector('[data-testid=\"thread-log\"]');const b=[...document.querySelectorAll('[data-testid=\"bubble-foo\"]')].at(-1);if(!l||!b)return false;return b.getBoundingClientRect().bottom<=l.getBoundingClientRect().bottom+1&&l.scrollHeight-l.scrollTop-l.clientHeight<15})()",
       "feature": "chat",
       "script": "latin"
     },

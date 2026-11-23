@@ -27,7 +27,10 @@ export function useStickToBottom(scrollRef: RefObject<HTMLElement | null>, rows:
    * user scrolled (wheel, keys, pointer, touch) just now. A list at the bottom stays there through a scroll it made itself
    * while rows were still being measured (the total changed and the follow is queued, or the follow is still settling),
    * and through any scroll it made that did not move the view up (its own follow landing short a frame before rows grew,
-   * PC gate run 5): only the user, or a move up such as a jump, leaves the bottom then.
+   * PC gate run 5): only the user, or a move up such as a jump, leaves the bottom then. A move up of its own is read again from the
+   * scroller (rare, so the layout read is cheap): when the chips row above the composer goes, the list grows and the
+   * browser pulls scrollTop down while `m` still holds the old height, so the list looked above the end when it was at it
+   * and the next reply was not followed (PC gate B1 joke reply).
    */
   const onScroll = useCallback(
     (m: ScrollMetrics, byUser: boolean) => {
@@ -36,17 +39,17 @@ export function useStickToBottom(scrollRef: RefObject<HTMLElement | null>, rows:
       lastTop.current = m.scrollTop;
       if (bottom) {
         wasAtBottom.current = true;
-        setNewCount((n) => (n === 0 ? n : 0));
-      } else if (byUser || up) wasAtBottom.current = false;
+        setNewCount(0);
+      } else if (byUser || (up && !atBottom(scrollRef.current!))) wasAtBottom.current = false;
     },
-    [target],
+    [target, scrollRef],
   );
 
   useLayoutEffect(() => {
     const el = scrollRef.current;
     const content = contentKeys(rows);
     const first = content[0]?.key;
-    const last = content[content.length - 1]?.key;
+    const last = content.at(-1)?.key;
     const lead = rows
       .slice(0, rows.findIndex((r) => r.kind === 'message') + 1)
       .map((r) => r.key)
@@ -57,7 +60,7 @@ export function useStickToBottom(scrollRef: RefObject<HTMLElement | null>, rows:
       if (last !== p.last) {
         const lastIdx = content.findIndex((r) => r.key === p.last);
         const added = lastIdx < 0 ? content.length : content.length - 1 - lastIdx;
-        const lastRow = content[content.length - 1];
+        const lastRow = content.at(-1);
         const byUser = lastRow?.kind === 'message' && lastRow.message.authorKind === 'user';
         const r = onRowsAdded({ wasAtBottom: wasAtBottom.current, added, byUser });
         if (r.follow) {
