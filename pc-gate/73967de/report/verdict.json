@@ -1,0 +1,239 @@
+{
+  "status": "FAIL",
+  "sha": "73967de77cfd7da9762c10993179c1c12f98ba42",
+  "features": [
+    {
+      "feature": "install",
+      "name": "Install and open foo (the app as downloaded, restart, quit)",
+      "verdict": "broken",
+      "checkpoints": 13,
+      "broken": 1,
+      "wrong": 0
+    },
+    {
+      "feature": "ai",
+      "name": "Connect your AI (find it, your own key, a wrong key)",
+      "verdict": "not-reviewed",
+      "checkpoints": 25,
+      "broken": 0,
+      "wrong": 0
+    },
+    {
+      "feature": "name",
+      "name": "Name, face and vibe",
+      "verdict": "not-reviewed",
+      "checkpoints": 28,
+      "broken": 0,
+      "wrong": 0
+    },
+    {
+      "feature": "chat",
+      "name": "Just chatting, in your language",
+      "verdict": "not-reviewed",
+      "checkpoints": 93,
+      "broken": 0,
+      "wrong": 0
+    },
+    {
+      "feature": "settings",
+      "name": "Settings, by page or by asking",
+      "verdict": "not-reviewed",
+      "checkpoints": 34,
+      "broken": 0,
+      "wrong": 0
+    },
+    {
+      "feature": "refusals",
+      "name": "What batch 1 must refuse plainly (tasks, memory)",
+      "verdict": "not-reviewed",
+      "checkpoints": 33,
+      "broken": 0,
+      "wrong": 0
+    }
+  ],
+  "checks": [
+    {
+      "name": "Golden lane (windows-latest)",
+      "conclusion": "failure",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137464137786"
+    },
+    {
+      "name": "Full suite (windows-latest, shard 4/4)",
+      "conclusion": "success",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137463544901"
+    },
+    {
+      "name": "Full suite (windows-latest, shard 3/4)",
+      "conclusion": "success",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137463544891"
+    },
+    {
+      "name": "Full suite (windows-latest, shard 2/4)",
+      "conclusion": "success",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137463544855"
+    },
+    {
+      "name": "Screen change check",
+      "conclusion": "success",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137463544830"
+    },
+    {
+      "name": "Full suite (windows-latest, shard 1/4)",
+      "conclusion": "success",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137463544737"
+    },
+    {
+      "name": "Fast lane (ubuntu-latest)",
+      "conclusion": "success",
+      "url": "https://github.com/vikas53953/foo-agent/actions/runs/45104777674/job/137463544480"
+    },
+    {
+      "name": "Installer smoke test on Vikas's PC",
+      "conclusion": "skipped"
+    }
+  ],
+  "reviewed": 0,
+  "checkpoints": 226,
+  "notRun": [
+    {
+      "where": "G1-first-run#6",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "G1-first-run#7",
+      "what": "waitFor: a masked Secret box asks for the key; it says not to paste keys in the chat (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "G1-first-run#8",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "G1-first-run#9",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "G1-first-run#10",
+      "what": "wait: Saved securely; the Anthropic key row shows works; the key itself is never shown (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "B1-batch1#4",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "B1-batch1#5",
+      "what": "waitFor: Secret box asks for the Anthropic key (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "B1-batch1#6",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "B1-batch1#7",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "B1-batch1#8",
+      "what": "wait: the Anthropic key row shows works (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA1-batch1-recheck#4",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA1-batch1-recheck#5",
+      "what": "waitFor: Secret box asks for the Anthropic key (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA1-batch1-recheck#6",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA1-batch1-recheck#7",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA1-batch1-recheck#8",
+      "what": "wait: the Anthropic key row shows works (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA2-setup-key-name-face-vibe#11",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA2-setup-key-name-face-vibe#12",
+      "what": "waitFor (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA2-setup-key-name-face-vibe#13",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA2-setup-key-name-face-vibe#14",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA2-setup-key-name-face-vibe#15",
+      "what": "wait: the real key row shows works (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA3-languages-batch1#4",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA3-languages-batch1#5",
+      "what": "waitFor: Secret box asks for the Anthropic key (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA3-languages-batch1#6",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA3-languages-batch1#7",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA3-languages-batch1#8",
+      "what": "wait: the Anthropic key row shows works (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA4-settings-batch1#4",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA4-settings-batch1#5",
+      "what": "waitFor: Secret box asks for the Anthropic key (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA4-settings-batch1#6",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA4-settings-batch1#7",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA4-settings-batch1#8",
+      "what": "wait: the Anthropic key row shows works (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA5-restart-batch1#4",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA5-restart-batch1#5",
+      "what": "waitFor: Secret box asks for the Anthropic key (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA5-restart-batch1#6",
+      "what": "fill (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA5-restart-batch1#7",
+      "what": "click (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    },
+    {
+      "where": "QA5-restart-batch1#8",
+      "what": "wait: the Anthropic key row shows works (needs a real Anthropic API key; this run uses the signed-in Claude app)"
+    }
+  ]
+}

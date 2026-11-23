@@ -1,0 +1,77 @@
+[
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "wat is teh capitl of austrlia??\n9:45 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "The capital of Australia is Canberra, not Sydney or Melbourne as many people guess.\n\n9:45 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Write me a 3 paragraph story about a tiger who learns to cook biryani\n9:46 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Raja and the midnight biryani\n\nRaja, a broad-striped tiger of Ranthambore, had one secret: he was bored of hunting. One winter night he wandered near the forest guard's hut and caught a smell so rich with cloves and fried onions that his whiskers trembled. Through the window he saw a steaming pot of biryani, and from that moment deer held no charm for him.\n\nLearning was harder than stalking. He traded a peacock three shiny feathers for a stolen recipe page, borrowed a dented pot from an abandoned campsite, and lit his first fire by accident. His rice turned to paste, his onions turned to coal, and once he mistook cardamom for pebbles and spat them across the clearing. The langurs kept score of his failures on a tree trunk, but Raja simply washed the pot in the river and began again.\n\nOn the twentieth try, he sealed the pot with dough, let it sit on slow embers, and waited with a patience no hunt had ever taught him. When he lifted the lid, the steam rolled out soft and golden, every grain standing separate. The langurs came down quietly, the peacock brought his whole family, and even the old sloth bear asked for seconds. From then on, the jungle feared Raja a little less and visited him a lot more, always around dinner time.\n\nShow earlier answer\nRewritten\n9:46 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "line one\n\nline three after a blank line\n9:46 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "That came through as two test lines with a blank one between them. What would you like me to do with them?\n\n9:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "thanks 🙏\n9:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "asdfghjkl qwerty ???\n9:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "That looks like random keys, so nothing to answer yet. What do you need?\n\n9:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "maine kal cab book karne bola tha, ho gaya kya?\n9:47 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Nahi, cab book nahi hui hai. Main abhi booking jaise kaam kar hi nahi sakta, isliye cab aapko khud book karni hogi.\n\n9:47 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Give me 5 tips to sleep better, one line each\n9:48 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Here are 5 tips to sleep better:\n\nGo to bed and wake up at the same time every day, weekends too.\nPut your phone away 30 minutes before bed.\nSkip tea and coffee after 3:00 PM.\nKeep your room cool, dark and quiet.\nEat a light dinner at least 2 hours before you sleep.\n9:48 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "are you still there?\n9:49 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Yes, I'm right here. What do you need?\n\n9:49 AM"
+  }
+]

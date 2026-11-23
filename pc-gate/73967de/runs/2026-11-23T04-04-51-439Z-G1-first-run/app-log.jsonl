@@ -1,0 +1,4 @@
+{"t":1795406702214,"lvl":"info","mod":"main","evt":"APP_STARTED"}
+{"t":1795406798041,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"claude-cli:ok","ms":6056}
+{"t":1795406818290,"lvl":"info","mod":"engine","evt":"ai.verify","kind":"codex-cli:UNKNOWN","ms":20224}
+{"t":1795407076488,"lvl":"info","mod":"main","evt":"APP_STARTED"}

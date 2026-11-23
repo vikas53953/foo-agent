@@ -1,0 +1,375 @@
+{
+  "journey": "QA5-restart-batch1",
+  "title": "Close foo mid-reply and reopen, then quit and reopen again, with real Claude on the batch-1 build",
+  "videos": [
+    "video/page@0e8812ccdd059021db88927b35f7f914.webm",
+    "video/page@6a828433116fa69d1cff2f8e112a10ec.webm",
+    "video/page@b7a52797b4dbd53b3bf28b371d5b88cd.webm"
+  ],
+  "steps": 28,
+  "failed": 0,
+  "out": "C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T04-34-04-442Z-QA5-restart-batch1",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 12,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 684
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 11,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "waitJs",
+      "note": "Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3).",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 24174,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "the key typed into foo's own Secret box, masked",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "expect": "the Anthropic key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 9,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "finderWaitMs": 1016,
+      "found": 0,
+      "ok": true,
+      "ms": 2345
+    },
+    {
+      "i": 10,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 2310
+    },
+    {
+      "i": 11,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 1,
+      "ok": true,
+      "ms": 7693
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "expect": "step 2 of 2: name card; the finder collapsed to Using Anthropic key",
+      "feature": "name",
+      "ok": true,
+      "ms": 334,
+      "shot": "04-step2.png"
+    },
+    {
+      "i": 13,
+      "do": "expectText",
+      "note": "foo uses the key, not the Claude app",
+      "text": "Using Claude (your AI)\n10:04 AM",
+      "ok": true,
+      "ms": 160
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "ms": 6736
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "warm hello with three things to try; composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10007,
+      "shot": "05-first-chat.png"
+    },
+    {
+      "i": 16,
+      "do": "send",
+      "typed": "Ek kachhua (tortoise) ke liye 3 achhe naam batao.",
+      "sentAt": 1795408513563,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 810
+    },
+    {
+      "i": 17,
+      "do": "wait",
+      "ok": true,
+      "ms": 3007
+    },
+    {
+      "i": 18,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 9929
+    },
+    {
+      "i": 19,
+      "do": "waitReply",
+      "expect": "after closing mid-reply and reopening: the question is still there, it gets an answer or a clear Try again, and no 👀 is left behind",
+      "feature": "chat",
+      "timeline": [
+        {
+          "at": 13107,
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 14690,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 23042,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 26549,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 13107,
+          "mark": 1500,
+          "shot": "06-q5-after-reopen-wait-1.5s.png",
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 13107,
+          "mark": 3000,
+          "shot": "07-q5-after-reopen-wait-3.0s.png",
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 13107,
+          "mark": 6000,
+          "shot": "08-q5-after-reopen-wait-6.0s.png",
+          "badges": [
+            "seen"
+          ],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 10093,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Kachhue ke liye ye 3 naam achhe rahenge:\n\nDheeru: dheere chalne wale ke liye ekdum sahi.\nSheru: chhota sa kavach, bada sa dil.\nTurbo: thoda mazaak, kyunki speed to sab jaante hain. 🐢\n10:05 AM",
+      "kit": [],
+      "replyFaults": [],
+      "endState": true,
+      "ms": 19714,
+      "shot": "09-q5-after-reopen.png"
+    },
+    {
+      "i": 20,
+      "do": "clickIf",
+      "note": "if the reply was cut, press the cut-off row's own Try again once (bubble-actions-retry is the answer-row rewrite; gate 10 clicked it under the welcome line)",
+      "found": 0,
+      "ok": true,
+      "ms": 4
+    },
+    {
+      "i": 21,
+      "do": "waitJs",
+      "expect": "the tortoise question has a real answer",
+      "feature": "chat",
+      "ok": true,
+      "ms": 4,
+      "shot": "10-q5-answered.png"
+    },
+    {
+      "i": 22,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 9696
+    },
+    {
+      "i": 23,
+      "do": "wait",
+      "ok": true,
+      "ms": 8037
+    },
+    {
+      "i": 24,
+      "do": "expectText",
+      "expect": "after a second quit and reopen the chat history is all there",
+      "feature": "chat",
+      "text": "Start of your chat with foo\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n10:04 AM\nUsing Claude (your AI)\n10:04 AM\nWhat should I call myself? → Skipped\n10:04 AM\nfoo\n\nOkay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:05 AM\n\nAll set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:05 AM\nEk kachhua (tortoise) ke liye 3 achhe naam batao.\n10:05 AM\nfoo\n\nKachhue ke liye ye 3 naam achhe rahenge:\n\nDheeru: dheere chalne wale ke liye ekdum sahi.\nSheru: chhota sa kavach, bada sa dil.\nTurbo: thoda mazaak, kyunki speed to sab jaante hain. 🐢\n10:05 AM",
+      "ok": true,
+      "ms": 11,
+      "shot": "11-q5-history.png"
+    },
+    {
+      "i": 25,
+      "do": "send",
+      "typed": "7 aur 8 ka jod kitna hai? sirf number",
+      "sentAt": 1795408565542,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 679
+    },
+    {
+      "i": 26,
+      "do": "waitReply",
+      "expect": "after two restarts the stored key still works with real Claude",
+      "feature": "ai",
+      "timeline": [
+        {
+          "at": 152,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 8608,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 9880,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1510,
+          "mark": 1500,
+          "shot": "12-q5-key-after-reopen-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3036,
+          "mark": 3000,
+          "shot": "13-q5-key-after-reopen-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6214,
+          "mark": 6000,
+          "shot": "14-q5-key-after-reopen-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 8747,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "15\n\n10:06 AM",
+      "kit": [],
+      "replyFaults": [],
+      "endState": true,
+      "ms": 15835,
+      "shot": "15-q5-key-after-reopen.png"
+    },
+    {
+      "i": 27,
+      "do": "dump",
+      "ok": true,
+      "ms": 34
+    }
+  ]
+}

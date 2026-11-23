@@ -1,0 +1,548 @@
+{
+  "journey": "QA2-setup-key-name-face-vibe",
+  "title": "Setup with real Claude: a wrong key is refused, then the real key; a custom name, face and vibe; all survive a restart",
+  "videos": [
+    "video/page@3804822cd2334ee278748b210925ba37.webm",
+    "video/page@ee8c04c5d29cdf6c512edc174ab9a99b.webm"
+  ],
+  "steps": 44,
+  "failed": 0,
+  "out": "C:\\Users\\vikasmit\\foo-pc-gate\\drive\\runs\\2026-11-23T04-27-40-677Z-QA2-setup-key-name-face-vibe",
+  "results": [
+    {
+      "i": 0,
+      "do": "waitFor",
+      "expect": "Welcome card, step 1 of 2",
+      "feature": "install",
+      "ok": true,
+      "ms": 13,
+      "shot": "01-welcome.png"
+    },
+    {
+      "i": 1,
+      "do": "click",
+      "ok": true,
+      "ms": 434
+    },
+    {
+      "i": 2,
+      "do": "waitFor",
+      "expect": "Find your AI card; the Anthropic key row offers to add the key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 17,
+      "shot": "02-finder.png"
+    },
+    {
+      "i": 3,
+      "do": "waitJs",
+      "note": "Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3).",
+      "expect": "rows tested; the key row waits for a key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 21773,
+      "shot": "03-finder-tested.png"
+    },
+    {
+      "i": 4,
+      "do": "click",
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "via": "own-key row, then Anthropic",
+      "ok": true,
+      "ms": 442
+    },
+    {
+      "i": 5,
+      "do": "waitFor",
+      "expect": "Secret box asks for the Anthropic key",
+      "feature": "ai",
+      "ok": true,
+      "ms": 20,
+      "shot": "04-secret-box.png"
+    },
+    {
+      "i": 6,
+      "do": "fill",
+      "note": "a made-up wrong key first",
+      "ok": true,
+      "ms": 169
+    },
+    {
+      "i": 7,
+      "do": "click",
+      "ok": true,
+      "ms": 273
+    },
+    {
+      "i": 8,
+      "do": "wait",
+      "ok": true,
+      "ms": 30004
+    },
+    {
+      "i": 9,
+      "do": "expectText",
+      "expect": "a wrong key is tested and the row says it didn't work, in plain words",
+      "feature": "ai",
+      "text": "Anthropic key\nfound on this PC\ndidn’t work. It may be old or typed wrong.\nReplace key",
+      "ok": true,
+      "ms": 3,
+      "shot": "05-q2-wrong-key.png"
+    },
+    {
+      "i": 10,
+      "do": "check",
+      "note": "a wrong key is never offered as Use",
+      "found": 0,
+      "ok": true,
+      "ms": 15
+    },
+    {
+      "i": 11,
+      "do": "click",
+      "note": "Replace key opens the Secret box again",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 12,
+      "do": "waitFor",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 13,
+      "do": "fill",
+      "note": "now the real key",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 14,
+      "do": "click",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 15,
+      "do": "wait",
+      "expect": "the real key row shows works",
+      "feature": "ai",
+      "ok": true,
+      "notRun": "needs a real Anthropic API key; this run uses the signed-in Claude app",
+      "ms": 0
+    },
+    {
+      "i": 16,
+      "do": "clickIf",
+      "note": "more than one AI works: pick the key, not the Claude app",
+      "finderWaitMs": 34,
+      "found": 0,
+      "ok": true,
+      "ms": 62
+    },
+    {
+      "i": 17,
+      "do": "clickIf",
+      "found": 0,
+      "ok": true,
+      "ms": 36
+    },
+    {
+      "i": 18,
+      "do": "clickIf",
+      "note": "only the key works: Use it",
+      "found": 1,
+      "ok": true,
+      "ms": 234
+    },
+    {
+      "i": 19,
+      "do": "waitFor",
+      "expect": "name card: What should I call myself?",
+      "feature": "name",
+      "ok": true,
+      "ms": 9,
+      "shot": "06-q2-name-card.png"
+    },
+    {
+      "i": 20,
+      "do": "fill",
+      "ok": true,
+      "ms": 49
+    },
+    {
+      "i": 21,
+      "do": "click",
+      "ok": true,
+      "ms": 208
+    },
+    {
+      "i": 22,
+      "do": "wait",
+      "ok": true,
+      "ms": 1001
+    },
+    {
+      "i": 23,
+      "do": "expectText",
+      "expect": "a name with no letter or number (only an emoji and !!) is refused in plain words",
+      "feature": "name",
+      "text": "Use at least one letter.",
+      "ok": true,
+      "ms": 48,
+      "shot": "07-q2-name-no-letter.png"
+    },
+    {
+      "i": 24,
+      "do": "fill",
+      "ok": true,
+      "ms": 17
+    },
+    {
+      "i": 25,
+      "do": "click",
+      "ok": true,
+      "ms": 589
+    },
+    {
+      "i": 26,
+      "do": "wait",
+      "ok": true,
+      "ms": 3000
+    },
+    {
+      "i": 27,
+      "do": "expectText",
+      "expect": "\"Chotu 😊 it is.\" and the face card follows",
+      "feature": "name",
+      "text": "Start of your chat with Chotu 😊\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n9:57 AM\nUsing Claude (your AI)\n9:57 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Mon 23 Nov\nReplace\nRemove\n9:58 AM\nWhat should I call myself? → Chotu 😊\n9:58 AM\nChotu 😊\n\nChotu 😊 it is.\n\n9:58 AM\n\nPick a face.\n\n1\nLiving face\nDefault\n✿\n2\n◐\n3\n★\n4\nUse this face\n🎲 Surprise me",
+      "ok": true,
+      "ms": 4,
+      "shot": "08-q2-named.png"
+    },
+    {
+      "i": 28,
+      "do": "click",
+      "note": "pick the third face",
+      "ok": true,
+      "ms": 213
+    },
+    {
+      "i": 29,
+      "do": "click",
+      "typed": "Use this face",
+      "ok": true,
+      "ms": 211
+    },
+    {
+      "i": 30,
+      "do": "wait",
+      "expect": "face chosen; the talk-style (vibe) choice follows",
+      "feature": "name",
+      "ok": true,
+      "ms": 2018,
+      "shot": "09-q2-face.png"
+    },
+    {
+      "i": 31,
+      "do": "click",
+      "note": "pick the second vibe",
+      "ok": true,
+      "ms": 158
+    },
+    {
+      "i": 32,
+      "do": "waitFor",
+      "ok": true,
+      "ms": 6
+    },
+    {
+      "i": 33,
+      "do": "wait",
+      "expect": "first chat as Chotu, composer unlocked",
+      "feature": "chat",
+      "ok": true,
+      "ms": 10000,
+      "shot": "10-q2-first-chat.png"
+    },
+    {
+      "i": 34,
+      "do": "send",
+      "typed": "tumhara naam kya hai? ek line mein",
+      "sentAt": 1795408142259,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 481
+    },
+    {
+      "i": 35,
+      "do": "waitReply",
+      "expect": "the real AI answers as Chotu",
+      "feature": "name",
+      "timeline": [
+        {
+          "at": 113,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        },
+        {
+          "at": 371,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7102,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 8349,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1739,
+          "mark": 1500,
+          "shot": "11-q2-says-name-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3094,
+          "mark": 3000,
+          "shot": "12-q2-says-name-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6101,
+          "mark": 6000,
+          "shot": "13-q2-says-name-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 7006,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Mera naam Chotu 😊 hai.\n\n9:59 AM",
+      "kit": [],
+      "replyFaults": [],
+      "endState": true,
+      "ms": 14628,
+      "shot": "14-q2-says-name.png"
+    },
+    {
+      "i": 36,
+      "do": "send",
+      "note": "real-user Hinglish turn-taking: user gives their own name, then asks foo's; \"tumhara naam\" here means foo's name",
+      "typed": "mera naam Rohit hai. aur tumhara naam? sirf naam batao",
+      "sentAt": 1795408157773,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 596
+    },
+    {
+      "i": 37,
+      "do": "waitReply",
+      "expect": "after \"mera naam Rohit hai. aur tumhara naam?\" foo answers with its own name Chotu, not the user's",
+      "feature": "name",
+      "timeline": [
+        {
+          "at": 184,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 7439,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 8870,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1704,
+          "mark": 1500,
+          "shot": "15-q2-aur-tumhara-naam-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3158,
+          "mark": 3000,
+          "shot": "16-q2-aur-tumhara-naam-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6008,
+          "mark": 6000,
+          "shot": "17-q2-aur-tumhara-naam-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 7345,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Chotu 😊\n\n9:59 AM",
+      "kit": [],
+      "replyFaults": [],
+      "endState": true,
+      "ms": 14836,
+      "shot": "18-q2-aur-tumhara-naam.png"
+    },
+    {
+      "i": 38,
+      "do": "relaunch",
+      "ok": true,
+      "ms": 8456
+    },
+    {
+      "i": 39,
+      "do": "wait",
+      "ok": true,
+      "ms": 8007
+    },
+    {
+      "i": 40,
+      "do": "expectText",
+      "expect": "after quit and reopen the chat and the name Chotu are still there",
+      "feature": "name",
+      "text": "Start of your chat with Chotu 😊\nToday, Mon 23 Nov\nHi, I'm foo. → Let's go\n9:57 AM\nUsing Claude (your AI)\n9:57 AM\nAnthropic key\nsecret\nSaved securely. Chotu 😊’s AI never sees it.\nAnthropic key · saved Mon 23 Nov\nReplace\nRemove\n9:58 AM\nWhat should I call myself? → Chotu 😊\n9:58 AM\n◐︎\nChotu 😊\n\nChotu 😊 it is.\n\n9:58 AM\nPick a face. → Face ◐ (half moon)\n9:58 AM\nHow should I talk to you? → Straight to the point\n9:58 AM\n◐︎\nChotu 😊\n\nStraight to the point. Got it. 🎯\n\n9:58 AM\n\nAll set. I'm Chotu 😊, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n9:58 AM\ntumhara naam kya hai? ek line mein\n9:59 AM\n◐︎\nChotu 😊\n\nMera naam Chotu 😊 hai.\n\n9:59 AM\nmera naam Rohit hai. aur tumhara naam? sirf naam batao\n9:59 AM\n◐︎\nChotu 😊\n\nChotu 😊\n\n9:59 AM",
+      "ok": true,
+      "ms": 13,
+      "shot": "19-q2-after-reopen.png"
+    },
+    {
+      "i": 41,
+      "do": "send",
+      "note": "QA ruling 12 Nov: plain re-ask after restart, so this step tests only that the name survived. The \"aur tumhara naam?\" phrasing is checked on its own before the restart.",
+      "typed": "tumhara naam kya hai? sirf naam batao",
+      "sentAt": 1795408190638,
+      "sent": true,
+      "before": 0,
+      "ok": true,
+      "ms": 833
+    },
+    {
+      "i": 42,
+      "do": "waitReply",
+      "expect": "after reopening, the real AI still answers as Chotu (name and key survived the restart)",
+      "feature": "name",
+      "timeline": [
+        {
+          "at": 219,
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 10634,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 1
+        },
+        {
+          "at": 11776,
+          "badges": [],
+          "reactions": [],
+          "thinking": false,
+          "streaming": 0
+        }
+      ],
+      "watchShots": [
+        {
+          "at": 1655,
+          "mark": 1500,
+          "shot": "20-q2-name-after-reopen-wait-1.5s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 3162,
+          "mark": 3000,
+          "shot": "21-q2-name-after-reopen-wait-3.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        },
+        {
+          "at": 6182,
+          "mark": 6000,
+          "shot": "22-q2-name-after-reopen-wait-6.0s.png",
+          "badges": [],
+          "reactions": [],
+          "thinking": true,
+          "streaming": 0
+        }
+      ],
+      "firstReplyMs": 10455,
+      "newBubbles": 1,
+      "reactions": [],
+      "ok": true,
+      "duplicates": 0,
+      "lastReply": "Chotu 😊\n\n10:00 AM",
+      "kit": [],
+      "replyFaults": [],
+      "endState": true,
+      "ms": 17730,
+      "shot": "23-q2-name-after-reopen.png"
+    },
+    {
+      "i": 43,
+      "do": "dump",
+      "ok": true,
+      "ms": 183
+    }
+  ]
+}

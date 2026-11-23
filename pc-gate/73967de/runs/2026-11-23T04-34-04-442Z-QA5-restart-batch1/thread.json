@@ -1,0 +1,62 @@
+[
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Hi, I'm foo. → Let's go\n10:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:04 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "answered",
+    "text": "Using Claude (your AI)\n10:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:04 AM"
+  },
+  {
+    "kind": "card-setup",
+    "state": "skipped",
+    "text": "What should I call myself? → Skipped\n10:04 AM"
+  },
+  {
+    "kind": "card-time",
+    "state": null,
+    "text": "10:04 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Okay, skipping. You can change any of this on my profile: click my face at the top.\n\n10:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "All set. I'm foo, and I'm here whenever you need me. Ask me anything, or try one of these.\n\n10:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "Ek kachhua (tortoise) ke liye 3 achhe naam batao.\n10:05 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "Kachhue ke liye ye 3 naam achhe rahenge:\n\nDheeru: dheere chalne wale ke liye ekdum sahi.\nSheru: chhota sa kavach, bada sa dil.\nTurbo: thoda mazaak, kyunki speed to sab jaante hain. 🐢\n10:05 AM"
+  },
+  {
+    "kind": "bubble-me",
+    "state": null,
+    "text": "7 aur 8 ka jod kitna hai? sirf number\n10:06 AM"
+  },
+  {
+    "kind": "bubble-foo",
+    "state": "complete",
+    "text": "15\n\n10:06 AM"
+  }
+]
