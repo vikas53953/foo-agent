@@ -104,6 +104,7 @@
         "to",
         "peanuts",
         "Done",
+        "1",
         "T",
         "11:58",
         "AM",
@@ -355,6 +356,9 @@
         "it",
         "9:38",
         "AM",
+        "1",
+        "new",
+        "message",
         "Pay",
         "Taj",
         "Holiday",
@@ -478,8 +482,8 @@
     "total": 87801
   },
   "r5": {
-    "ratio": 0.0744814453125,
-    "diffPixels": 76269,
+    "ratio": 0.0750615234375,
+    "diffPixels": 76863,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-18-03.light.diff.png"

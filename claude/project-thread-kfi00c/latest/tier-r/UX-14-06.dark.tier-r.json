@@ -187,7 +187,7 @@
         "Pune",
         "train…",
         "Working",
-        "1",
+        "2",
         "M",
         "9:41",
         "AM",
@@ -475,8 +475,8 @@
     "total": 2828
   },
   "r5": {
-    "ratio": 0.0865703125,
-    "diffPixels": 88648,
+    "ratio": 0.0865712890625,
+    "diffPixels": 88649,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-14-06.dark.diff.png"

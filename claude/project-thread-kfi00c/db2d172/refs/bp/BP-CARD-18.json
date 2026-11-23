@@ -1,0 +1,47 @@
+{
+  "id": "BP-CARD-18",
+  "family": "bp",
+  "selector": "#cardgal > .panel:nth-child(18) > .mini",
+  "box": {
+    "x": 930.15625,
+    "y": 12472.40625,
+    "width": 351.34375,
+    "height": 156
+  },
+  "files": {
+    "light": {
+      "png": "BP-CARD-18.light.png",
+      "sha256": "4f96a222a3a5909a2f780a0e7cd278bffb49c0e81604efd4b534fd4473d870a7"
+    },
+    "dark": {
+      "png": "BP-CARD-18.dark.png",
+      "sha256": "825ef0cae864ff0b992f1b586c7d002d5b341fdc6fc1b1a8ba82963e40b78e0d"
+    }
+  },
+  "texts": [
+    "I'm stuck on Goa flights",
+    "No progress for 3 min. The fare page keeps reloading.",
+    "Try another site",
+    "Stop"
+  ],
+  "hlTexts": [],
+  "hl": null,
+  "anchors": {
+    "BP-CARD-18": {
+      "x": 0,
+      "y": 0,
+      "width": 351.34375,
+      "height": 156
+    }
+  },
+  "masks": [],
+  "capture": "window",
+  "milestone": "M4",
+  "spec": "05-3 §5.19",
+  "size": {
+    "width": null,
+    "height": null
+  },
+  "engine": "electron",
+  "chromium": "152.0.7977.167"
+}

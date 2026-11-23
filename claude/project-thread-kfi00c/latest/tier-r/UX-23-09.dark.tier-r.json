@@ -357,7 +357,7 @@
         "Dec",
         "9:41",
         "AM",
-        "⏳",
+        "🛠",
         "foo",
         "read:",
         "Delhi",
@@ -521,8 +521,8 @@
     "total": 4340
   },
   "r5": {
-    "ratio": 0.100544921875,
-    "diffPixels": 102958,
+    "ratio": 0.1005546875,
+    "diffPixels": 102968,
     "total": 1024000,
     "sizeMismatch": null,
     "heatmap": "UX-23-09.dark.diff.png"
