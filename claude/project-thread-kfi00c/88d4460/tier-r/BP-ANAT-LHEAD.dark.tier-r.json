@@ -1,0 +1,76 @@
+{
+  "id": "BP-ANAT-LHEAD",
+  "theme": "dark",
+  "verdict": "review",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "＋",
+        "⋯"
+      ],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-LHEAD",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 60
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 339,
+          "height": 60
+        },
+        "dPos": 0,
+        "dSize": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "review",
+    "anchors": [
+      {
+        "name": "BP-ANAT-LHEAD",
+        "ref": "#1B1B22",
+        "app": "#131318",
+        "deltaE": 2.91,
+        "verdict": "review"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.023008849557522124,
+    "diffPixels": 468,
+    "total": 20340,
+    "sizeMismatch": null,
+    "heatmap": "BP-ANAT-LHEAD.dark.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-LHEAD.dark.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-LHEAD.dark.png"
+}

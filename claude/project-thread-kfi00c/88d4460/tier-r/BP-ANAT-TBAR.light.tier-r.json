@@ -1,0 +1,86 @@
+{
+  "id": "BP-ANAT-TBAR",
+  "theme": "light",
+  "verdict": "disputed",
+  "disputed": {
+    "cr": "CR-0002",
+    "checks": [
+      "r1"
+    ]
+  },
+  "r1": {
+    "verdict": "fail",
+    "frame": {
+      "missing": [
+        "—",
+        "☐",
+        "✕"
+      ],
+      "extra": []
+    },
+    "hl": {
+      "missing": [],
+      "extra": []
+    }
+  },
+  "r2": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-TBAR",
+        "ref": {
+          "x": 0,
+          "y": 0,
+          "width": 1278,
+          "height": 32
+        },
+        "app": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 32
+        },
+        "dPos": 0,
+        "dSize": 2,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r3": {
+    "verdict": "pass",
+    "anchors": [
+      {
+        "name": "BP-ANAT-TBAR",
+        "ref": "#F5F5F8",
+        "app": "#F5F5F8",
+        "deltaE": 0,
+        "verdict": "pass"
+      }
+    ]
+  },
+  "r4": {
+    "verdict": "pass",
+    "skipped": "no hl element",
+    "ratio": null,
+    "diffPixels": null,
+    "total": null
+  },
+  "r5": {
+    "ratio": 0.00004890453834115806,
+    "diffPixels": 2,
+    "total": 40896,
+    "sizeMismatch": {
+      "a": [
+        1278,
+        32
+      ],
+      "b": [
+        1280,
+        32
+      ]
+    },
+    "heatmap": "BP-ANAT-TBAR.light.diff.png"
+  },
+  "ref": "golden\\ref\\bp\\BP-ANAT-TBAR.light.png",
+  "app": "D:\\a\\foo-agent\\foo-agent\\golden\\out\\app\\BP-ANAT-TBAR.light.png"
+}
