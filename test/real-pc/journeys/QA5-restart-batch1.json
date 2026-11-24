@@ -28,16 +28,19 @@
       "feature": "ai"
     },
     {
-      "do": "wait",
-      "ms": 20000,
+      "do": "waitJs",
       "shot": "finder-tested",
       "expect": "rows tested; the key row waits for a key",
-      "feature": "ai"
+      "feature": "ai",
+      "js": "(()=>!document.querySelector('[data-testid=\"setup-ai-row\"] [data-state=\"testing\"], [data-testid=\"setup-ai-row\"] [data-state=\"looking\"]'))()",
+      "timeoutMs": 75000,
+      "note": "Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3)."
     },
     {
       "do": "click",
       "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
-      "note": "Add key on the Anthropic key row: opens the Secret box"
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "needsKey": true
     },
     {
       "do": "waitFor",
@@ -45,24 +48,28 @@
       "timeoutMs": 30000,
       "shot": "secret-box",
       "expect": "Secret box asks for the Anthropic key",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "fill",
       "tid": "card-secret-field",
       "env": "ANTHROPIC_API_KEY",
-      "note": "the key typed into foo's own Secret box, masked"
+      "note": "the key typed into foo's own Secret box, masked",
+      "needsKey": true
     },
     {
       "do": "click",
-      "tid": "card-secret-save"
+      "tid": "card-secret-save",
+      "needsKey": true
     },
     {
       "do": "wait",
       "ms": 30000,
       "shot": "key-tested",
       "expect": "the Anthropic key row shows works",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "clickIf",
@@ -90,7 +97,8 @@
       "do": "expectText",
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "re": "Anthropic key",
-      "note": "foo uses the key, not the Claude app"
+      "note": "foo uses the key, not the Claude app",
+      "appRe": "Claude"
     },
     {
       "do": "click",
@@ -125,15 +133,16 @@
     },
     {
       "do": "clickIf",
-      "tid": "bubble-actions-retry",
-      "note": "if the reply was cut, Try again once"
+      "tid": "bubble-error-retry",
+      "note": "if the reply was cut, press the cut-off row's own Try again once (bubble-actions-retry is the answer-row rewrite; gate 10 clicked it under the welcome line)"
     },
     {
-      "do": "wait",
-      "ms": 20000,
+      "do": "waitJs",
+      "timeoutMs": 120000,
+      "js": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b||b.dataset.state==='streaming')return false;const t=b.innerText.replace(/\\d{1,2}:\\d{2}\\s*[AP]M/i,'').trim();return !/cut off/i.test(t)&&t.length>20})()",
       "shot": "q5-answered",
-      "feature": "chat",
-      "expect": "the tortoise question has a real answer"
+      "expect": "the tortoise question has a real answer",
+      "feature": "chat"
     },
     {
       "do": "relaunch"
@@ -161,7 +170,9 @@
       "feature": "ai",
       "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
       "expect": "after two restarts the stored key still works with real Claude",
-      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)})()"
+      "expectJs": "(()=>{const b=[...document.querySelectorAll('[data-testid=\"thread-log\"] [data-testid=\"bubble-foo\"]')].at(-1);if(!b)return false;const t=b.innerText;return /\\b15\\b/.test(t)})()",
+      "script": "latin",
+      "replyNot": "naam|shelly|moti|kachhu|tortoise|नाम|कछु"
     },
     {
       "do": "dump",

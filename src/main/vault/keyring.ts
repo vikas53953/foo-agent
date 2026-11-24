@@ -70,11 +70,17 @@ interface NapiKeyring {
  * The real Credential Manager through `@napi-rs/keyring` (08-2 §11.2). Null when the module is not installed or cannot load
  * (then SecretVault refuses to save: 05-2 §5.8.3 Disabled). Only Windows production runs call this.
  */
-export function napiKeyring(): Keyring | null {
+export function napiKeyring(onLoadFail?: (code: string) => void): Keyring | null {
   let mod: NapiKeyring;
   try {
     mod = createRequire(__filename)('@napi-rs/keyring') as NapiKeyring;
-  } catch {
+  } catch (e) {
+    // Only the error code is logged (no paths): MODULE_NOT_FOUND means the native package is missing from the build.
+    onLoadFail?.(
+      String((e as { code?: unknown }).code ?? 'LOAD_FAILED')
+        .replace(/[^A-Za-z0-9_-]/g, '_')
+        .slice(0, 64),
+    );
     return null;
   }
   const entry = (target: string) => new mod.Entry('foo', target);

@@ -304,7 +304,9 @@ function BubbleRow({ m, layout, ctx, found }: { m: StoredMessage; layout: RowLay
     [side, m.kind, m.text, m.status, deleted, m.authorKind],
   );
   const hasTable = !!blocks?.some((b) => b.t === 'table');
-  const canTryAgain = !job || (job.intent === 'read_only' && job.doVerbs.length === 0);
+  // 04 §17.1 Try again answers the user's question again: a bubble with no question before it (the welcome lines) has none
+  // to answer, so the button would do nothing (gate 10, a52aa85: engine logged chat.rewrite_skipped no_question).
+  const canTryAgain = layout.afterQuestion && (!job || (job.intent === 'read_only' && job.doVerbs.length === 0));
   const approvedFromIt = Object.values(ctx.cards).some(
     (c) => c.jobId !== null && c.jobId === m.jobId && (c.type === 'approval' || c.type === 'payment') && c.state === 'approved',
   );

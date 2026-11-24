@@ -28,16 +28,19 @@
       "feature": "ai"
     },
     {
-      "do": "wait",
-      "ms": 20000,
+      "do": "waitJs",
       "shot": "finder-tested",
       "expect": "rows tested; the key row waits for a key",
-      "feature": "ai"
+      "feature": "ai",
+      "js": "(()=>!document.querySelector('[data-testid=\"setup-ai-row\"] [data-state=\"testing\"], [data-testid=\"setup-ai-row\"] [data-state=\"looking\"]'))()",
+      "timeoutMs": 75000,
+      "note": "Waits until no row is Testing: a helper app has 60 s before \"slow\" (CR-0025), so a fixed 20 s caught the slow Codex probe mid-test (PC run 5, G1 #5, QA2 #3)."
     },
     {
       "do": "click",
       "css": "[data-testid=\"setup-ai-row\"][data-row-id=\"anthropic-key\"] [data-testid=\"setup-ai-row-action\"]",
-      "note": "Add key on the Anthropic key row: opens the Secret box"
+      "note": "Add key on the Anthropic key row: opens the Secret box",
+      "needsKey": true
     },
     {
       "do": "waitFor",
@@ -45,24 +48,28 @@
       "timeoutMs": 30000,
       "shot": "secret-box",
       "expect": "Secret box asks for the Anthropic key",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "fill",
       "tid": "card-secret-field",
       "env": "ANTHROPIC_API_KEY",
-      "note": "the key typed into foo's own Secret box, masked"
+      "note": "the key typed into foo's own Secret box, masked",
+      "needsKey": true
     },
     {
       "do": "click",
-      "tid": "card-secret-save"
+      "tid": "card-secret-save",
+      "needsKey": true
     },
     {
       "do": "wait",
       "ms": 30000,
       "shot": "key-tested",
       "expect": "the Anthropic key row shows works",
-      "feature": "ai"
+      "feature": "ai",
+      "needsKey": true
     },
     {
       "do": "clickIf",
@@ -90,7 +97,8 @@
       "do": "expectText",
       "css": "[data-testid=\"card-setup\"][data-row-id=\"ai_finder\"]",
       "re": "Anthropic key",
-      "note": "foo uses the key, not the Claude app"
+      "note": "foo uses the key, not the Claude app",
+      "appRe": "Claude"
     },
     {
       "do": "click",
@@ -217,17 +225,19 @@
     {
       "do": "waitFor",
       "css": "html[data-theme=\"dark\"]",
-      "timeoutMs": 120000,
+      "timeoutMs": 120000
+    },
+    {
+      "do": "waitReply",
+      "timeoutMs": 60000,
+      "replyRe": "theme",
+      "replyNot": "can.t remember|can.t do tasks|^\\s*done\\b|dark mode is on|light mode is on",
+      "maxBubbles": 1,
+      "neverCss": "[data-testid=\"thread-log\"] [data-testid=\"bubble-badge\"][data-state=\"seen\"]",
+      "note": "a settings ask is never answered with an off-feature line The picture is taken at the reply: a PC already in dark mode (Windows theme) passes the waitFor at once, so a shot there showed only the Thinking row (PC run 5, QA1 #45, QA4 #37).",
       "shot": "q4-dark",
       "feature": "settings",
       "expect": "dark theme by chat, one Changed line with Undo"
-    },
-    {
-      "do": "expectText",
-      "tid": "thread-log",
-      "re": "can.t remember|can.t do tasks",
-      "not": true,
-      "note": "a settings ask is never answered with an off-feature line"
     },
     {
       "do": "relaunch"

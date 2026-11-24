@@ -7,6 +7,7 @@ import { IntakeActSchema, RewriteActSchema, schemaJson } from '../../src/shared/
 import { Redactor } from '../../src/engine/redact/Redactor';
 import {
   fillPlaceholders,
+  NEW_MESSAGE,
   PromptBudgetError,
   PromptBuilder,
   ACTIONS_ASK,
@@ -88,7 +89,8 @@ describe('m3 PromptBuilder intake', () => {
       [
         'Facts that may matter now:\n[m2] Prefers window seats (I guessed, Wed 14 Oct)',
         'Conversation so far:\n[Vikas, Fri 16 Oct 7:21 AM]: message 1\n[foo, Fri 16 Oct 7:22 AM]: message 2',
-        'Is there a train to Mumbai tomorrow?',
+        // CR-0073: after a conversation the message is named, so a multi-line message is not read as more of foo's answer.
+        `${NEW_MESSAGE}\nIs there a train to Mumbai tomorrow?`,
       ].join('\n\n'),
     );
   });
@@ -169,11 +171,12 @@ describe('m3 PromptBuilder budget (§24.15)', () => {
 
   it('trims in order: untrusted, conversation (keeps 6), turn facts, notes, pinned to 2,000', () => {
     const { pb, logs } = setup();
-    // CR-0053 made part 2 longer, so the messages are a little shorter to keep the pinned trim at its 2,000 floor.
+    // CR-0053 made part 2 longer and CR-0073 named the new message, so the messages are a little shorter to keep the pinned
+    // trim at its 2,000 floor.
     const b = pb.buildIntake(
       input({
         attachmentText: [{ fileId: 'f', page: 1, text: big(30_000) }],
-        conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_350))),
+        conversation: Array.from({ length: 20 }, (_, i) => msg(i, big(1_340))),
         turnFacts: Array.from({ length: 8 }, (_, i) => fact(`t${i}`, big(300))),
         helper: { name: 'Trips', jobText: 'travel', goodResult: 'seat', notes: Array.from({ length: 10 }, () => big(150)).join('\n') },
         pinned: Array.from({ length: 12 }, (_, i) => fact(`p${i}`, big(300))),

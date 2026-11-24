@@ -95,6 +95,8 @@ export function buildRows(messages: MessageRow[], o: BuildOpts): VRow[] {
   let lastDay = '';
   for (const m of messages) {
     if (m === startMarker) continue;
+    // CR-0073 item 4: an answer whose words foo took back (a setting line answered instead) leaves no empty bubble.
+    if (m.authorKind !== 'user' && m.kind === 'text' && m.status === 'complete' && !m.text.trim() && !m.attachments?.length) continue;
     const k = messageDay(m, o.timeZone);
     if (k !== lastDay) {
       rows.push({ kind: 'date', key: `date-${k}`, label: dateLabel(m.createdAt, o), dayKey: k });

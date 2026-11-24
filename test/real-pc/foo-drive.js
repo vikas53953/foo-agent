@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { stillWorking, settled } = require('./settle');
+const { replyFaults, replyWords } = require('./reply-check');
 
 const EXE = process.env.FOO_EXE || path.join(process.env.LOCALAPPDATA || '', 'Programs', 'foo', 'foo.exe');
 const ROOT = process.env.FOO_REAL_TEST_DIR || path.join(process.env.USERPROFILE || '.', 'foo-real-test');
@@ -65,10 +66,32 @@ let journeyFeatures = null;
 // Vikas 2026-10-28: "test with real AI only". FOO_REAL_AI_ONLY=1 (the release gate) refuses to start when anything could
 // put the app's pretend AI or test hooks in play: the fake AI only runs with FOO_TEST=1 plus a FOO_FAKE_* script.
 const REAL_AI_ONLY = process.env.FOO_REAL_AI_ONLY === '1';
+const NO_KEY = !process.env.ANTHROPIC_API_KEY;
 const PRETEND = Object.keys(process.env).filter((k) => /^FOO_(TEST|FAKE_)/i.test(k) && process.env[k]);
 if (REAL_AI_ONLY && PRETEND.length) {
   console.error(`Real AI only: refusing to run with ${PRETEND.join(', ')} set.`);
   process.exit(2);
+}
+
+// Test spend guard (Vikas 13 Nov 2026, "all 4 yes"): day-to-day PR checks run foo's own-key turns on a cheap model.
+// FOO_KEY_MODEL sets the user's own model choice (08-4 §30.1: settings.ai.providers[p].model wins over pricing.json)
+// in the TEST profile before each launch, once the key provider exists there. The release gate leaves it unset, so the gate
+// tests foo's shipped default. Not FOO_TEST_*/FOO_FAKE_*: it pretends nothing, the AI is still real.
+function pinKeyModel() {
+  const model = process.env.FOO_KEY_MODEL;
+  if (!model) return;
+  const file = path.join(PROFILE, 'data', 'settings.json');
+  if (!fs.existsSync(file)) return;
+  try {
+    const s = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const row = s?.ai?.providers?.['anthropic-key'];
+    if (!row || (row.model === model && row.cheapModel === model)) return;
+    row.model = model;
+    row.cheapModel = model;
+    fs.writeFileSync(file, JSON.stringify(s, null, 2));
+  } catch (e) {
+    console.error(`could not pin the key model: ${String(e).slice(0, 200)}`);
+  }
 }
 
 function childEnv() {
@@ -107,6 +130,8 @@ const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
 // message text out and redacts; the repo is public, so keep only the allowed fields and drop any line that still holds
 // something value-like (an email, a long number, an API key).
 const DIDNT_GET = /didn[’']t get that/i;
+/** Steps that send a message; the next waitReply judges what foo said below it. */
+const SENDS = new Set(['send', 'pasteSend', 'typeSend']);
 const LOG_KEYS = ['t', 'lvl', 'mod', 'evt', 'ids', 'kind', 'ms'];
 const LEAK = /@|\d{10,}|sk-[A-Za-z0-9_-]{6,}/;
 function copyTechLog(from, out) {
@@ -182,7 +207,25 @@ function copyJobTrail(from, out) {
   }
 }
 
-const TURN_COLS = ['started_at', 'purpose', 'outcome', 'error_kind', 'duration_ms', 'chat_id', 'job_id', 'provider_id', 'billing'];
+// The token and cost columns feed the per-run spend cap (test/real-pc/spend.js); they are numbers and a model id, no content.
+const TURN_COLS = [
+  'started_at',
+  'purpose',
+  'outcome',
+  'error_kind',
+  'duration_ms',
+  'chat_id',
+  'job_id',
+  'provider_id',
+  'billing',
+  'model_reported',
+  'tokens_in',
+  'tokens_out',
+  'tokens_cache_read',
+  'tokens_cache_write',
+  'cost_paise',
+  'cost_source',
+];
 function copyAiTurns(from, out) {
   const file = path.join(PROFILE, 'data', 'data', 'foo.db');
   if (!fs.existsSync(file)) return { turns: 0, note: 'no database' };
@@ -206,7 +249,16 @@ async function main() {
   const file = process.argv[2];
   if (!file) throw new Error('usage: foo-drive.js <journey.json>');
   // {AI_ROW} in a journey names the Find-your-AI row to use (FOO_AI_ROW: claude-cli, anthropic-key, openai-key, codex-cli).
-  const journey = JSON.parse(fs.readFileSync(file, 'utf8').replaceAll('{AI_ROW}', process.env.FOO_AI_ROW || 'claude-cli'));
+  const aiRow = process.env.FOO_AI_ROW || 'claude-cli';
+  const journey = JSON.parse(fs.readFileSync(file, 'utf8').replaceAll('{AI_ROW}', aiRow));
+  // No key on this PC (Vikas 22 Nov 2026: real-AI journeys run on his PC with his signed-in Claude app, no API key).
+  // Steps marked needsKey (typing the real key into foo) cannot run; they are recorded as not run, never as passed,
+  // and foo is set up on the Claude app row instead of the key row.
+  if (NO_KEY)
+    for (const s of journey.steps) {
+      if (s.css) s.css = s.css.replaceAll('data-option="anthropic-key"', `data-option="${aiRow}"`);
+      if (s.appRe) s.re = s.appRe;
+    }
   if (journey.features) journeyFeatures = journey.features;
   if (journey.profile === 'own') {
     PROFILE = path.join(ROOT, `profile-${journey.id}`);
@@ -224,6 +276,7 @@ async function main() {
   let page;
   let shotN = 0;
   const launch = async () => {
+    pinKeyModel();
     app = await _electron.launch({
       executablePath: EXE,
       args: process.env.FOO_ARGS ? process.env.FOO_ARGS.split(' ') : [],
@@ -257,6 +310,22 @@ async function main() {
   const shot = async (name) => {
     shotN += 1;
     const f = path.join(out, `${String(shotN).padStart(2, '0')}-${name}.png`);
+    // A picture taken mid cross-fade shows two status lines over each other (02 §F7.1: the header status cross-fades);
+    // run 5's reviewer called that garbled text (G4 #5, QA1 #22, "step 2 of 2"). Let finite animations end first, at most
+    // 0.8 s; looping ones (Thinking, spinners) are what the picture should show.
+    await page
+      .evaluate(() =>
+        Promise.race([
+          Promise.all(
+            document
+              .getAnimations()
+              .filter((a) => a.effect && a.effect.getComputedTiming().iterations !== Infinity)
+              .map((a) => a.finished.catch(() => undefined)),
+          ),
+          new Promise((r) => setTimeout(r, 800)),
+        ]),
+      )
+      .catch(() => undefined);
     await page.screenshot({ path: f });
     log({ shot: path.basename(f) });
     return path.basename(f);
@@ -501,9 +570,42 @@ async function main() {
       const target = (await loc.count()) ? loc.first() : page.locator(`[data-testid="${c.tid}"]`).first();
       let before;
       try {
-        await target.hover({ timeout: 2_000 });
-        await page.waitForTimeout(500);
-        before = await signature();
+        // A control that only takes the pointer while its row is hovered (the bubble's hover toolbar, 04 §9.2) is reached
+        // the way a person reaches it: over the row first, then across. PC runs 2 and 4 hovered the toolbar cold and
+        // Playwright found it "covered by div"; run 3 passed only because the mouse happened to be on that row already.
+        // Rule 16 (Vikas 23 Nov 2026): a control the robot could not reach is tried once more, with the mouse parked away
+        // from any tooltip or menu the last control left open, before it counts (run 8, b159037: settings-nav-account
+        // hover timed out once while every other control passed).
+        const reach = async () => {
+          // Scroll first: a scroll after the row is hovered moves the row out from under the mouse, the toolbar loses the
+          // pointer again, and hover times out (run 7, 73967de: React "covered by div" while More passed).
+          await target.scrollIntoViewIfNeeded({ timeout: 2_000 }).catch(() => undefined);
+          const host = await target
+            .evaluate((el) => {
+              if (getComputedStyle(el).pointerEvents !== 'none') return null;
+              let a = el.parentElement;
+              while (a && getComputedStyle(a).pointerEvents === 'none') a = a.parentElement;
+              if (!a) return null;
+              const r = a.getBoundingClientRect();
+              return [r.x + r.width / 2, r.y + Math.min(r.height / 2, 12)];
+            })
+            .catch(() => null);
+          if (host) {
+            await page.mouse.move(host[0], host[1]);
+            await page.waitForTimeout(300);
+          }
+          await target.hover({ timeout: 2_000 });
+          await page.waitForTimeout(500);
+          before = await signature();
+        };
+        try {
+          await reach();
+        } catch {
+          await page.mouse.move(2, 2);
+          await page.keyboard.press('Escape').catch(() => undefined);
+          await page.waitForTimeout(800);
+          await reach();
+        }
         await target.click({ timeout: 3_000 });
       } catch (err) {
         e.status = 'not-tested';
@@ -576,9 +678,19 @@ async function main() {
     log({ step: 'cleanup', stoppedStuckJob: ok, stuckLeft: await stuck.count().catch(() => -1), ms: Date.now() - t0 });
   }
   const results = [];
+  // foo's replies so far in this journey (words only), for notEcho.
+  const earlierReplies = [];
   for (const [i, s] of journey.steps.entries()) {
     const t0 = Date.now();
     const rec = { i, do: s.do, note: s.note, expect: s.expect, soft: s.soft, ref: s.ref, feature: s.feature, typed: s.text };
+    if (NO_KEY && s.needsKey) {
+      rec.ok = true;
+      rec.notRun = 'needs a real Anthropic API key; this run uses the signed-in Claude app';
+      rec.ms = 0;
+      results.push(rec);
+      log(rec);
+      continue;
+    }
     try {
       switch (s.do) {
         case 'wait':
@@ -591,7 +703,10 @@ async function main() {
             .waitFor({ state: 'visible', timeout: s.timeoutMs ?? 30_000 });
           break;
         case 'check': {
-          const n = await page.locator(sel(s)).count();
+          // With the Claude app working, "Use Claude" is rightly offered; "a wrong key is never offered as Use" then means
+          // no Use button names the key (no-key mode only; with a key the journey's own count stands).
+          const keyUse = NO_KEY && s.tid === 'setup-ai-use' && s.count === 0;
+          const n = keyUse ? await page.locator(sel(s)).filter({ hasText: /key/i }).count() : await page.locator(sel(s)).count();
           rec.found = n;
           rec.ok = s.count !== undefined ? n === s.count : n > 0;
           break;
@@ -600,6 +715,17 @@ async function main() {
           // unlessTid: skip the click when that control is already showing (e.g. no retest needed once Use is offered).
           if (s.unlessTid && (await page.locator(`[data-testid="${s.unlessTid}"]`).count())) {
             rec.skipped = `${s.unlessTid} already showing`;
+            break;
+          }
+          // No key on this PC, so foo shows no "Anthropic key" row until one is saved: the wrong-key journeys reach the same
+          // Secret box through "Your own key" → Anthropic (pc-gate b1c3cf6: G5 s4 and QA2 s4 found no anthropic-key row).
+          const KEY_ROW_ACTION = '[data-testid="setup-ai-row"][data-row-id="anthropic-key"] [data-testid="setup-ai-row-action"]';
+          if (NO_KEY && s.css === KEY_ROW_ACTION && !(await page.locator(KEY_ROW_ACTION).count())) {
+            await page
+              .locator('[data-testid="setup-ai-row"][data-row-id="own-key"] [data-testid="setup-ai-row-action"]')
+              .click({ timeout: 15_000 });
+            await page.locator('[data-testid="card-choice-option"][data-option="anthropic-key"]').click({ timeout: 15_000 });
+            rec.via = 'own-key row, then Anthropic';
             break;
           }
           const loc = pick(s);
@@ -632,6 +758,16 @@ async function main() {
           await page.waitForTimeout(1_000);
           break;
         case 'clickIf': {
+          // On the Claude app row (no key), foo's own test of the app takes 11–25 s on Vikas's PC (pc-gate 200fed4: the
+          // journey's 20 s wait ended first, so Use was never clicked and setup stopped at step 1). Wait for the finder
+          // to offer a choice before deciding the control is not there.
+          if (NO_KEY && journey.steps.findIndex((x) => x.do === 'clickIf' && /setup-ai-/.test(x.tid || x.css || '')) === i)
+            rec.finderWaitMs = await page
+              .locator('[data-testid="setup-ai-use"], [data-testid="setup-ai-pick-another"], [data-testid="setup-name-field"]')
+              .first()
+              .waitFor({ state: 'visible', timeout: 120_000 })
+              .then(() => Date.now() - t0)
+              .catch(() => -1);
           // Clicks only when the control is there (e.g. a plan's Go); never a refused control.
           const loc = page.locator(sel(s)).last();
           rec.found = await loc.count();
@@ -641,7 +777,11 @@ async function main() {
         case 'paste':
           // Puts text on the clipboard and pastes it into the composer, like Ctrl+V.
           await app.evaluate(({ clipboard }, t) => clipboard.writeText(t), s.repeat ? s.text.repeat(s.repeat) : s.text);
-          await page.locator('[data-testid="composer-field"]').click();
+          // Click into the field only when it is not already the focus: a click lands mid-field, so a second paste
+          // went in where the mouse was, between earlier lines (PC run 5, QA1 #35: the mask before "three"), which is
+          // not what a person pasting twice in a row gets.
+          if (!(await page.evaluate(() => document.activeElement?.getAttribute('data-testid') === 'composer-field')))
+            await page.locator('[data-testid="composer-field"]').click();
           await page.keyboard.press('Control+V');
           break;
         case 'typeSend':
@@ -688,6 +828,9 @@ async function main() {
             rec.fieldOk = rec.inField === want;
           }
           await page.keyboard.press('Escape').catch(() => {});
+          // A pasted or typed message is a send too: the next waitReply judges only what foo said below it.
+          rec.sentAt = Date.now();
+          rec.before = 0;
           break;
         }
         case 'eval':
@@ -742,7 +885,7 @@ async function main() {
           // A reply is "settled" once the replies below the newest user bubble have grown and then stayed the same for quietMs.
           const start = Date.now();
           // The baseline comes from the latest send, unless a waitReply has already used it.
-          const lastSend = results.findLastIndex((r) => r.do === 'send');
+          const lastSend = results.findLastIndex((r) => SENDS.has(r.do));
           const prevSend = lastSend > results.findLastIndex((r) => r.do === 'waitReply') ? results[lastSend] : null;
           const before = s.before ?? prevSend?.before ?? (await afterMe()).n;
           const quiet = s.quietMs ?? 6_000;
@@ -783,10 +926,15 @@ async function main() {
             if (now.n !== cur.n || now.texts.join() !== cur.texts.join()) lastChange = Date.now();
             cur = now;
             if (settled({ n: now.n, before, items: now.items.slice(before), quietFor: Date.now() - lastChange, quietMs: quiet })) break;
+            // allowReaction: a ❤️ or 👍 on the user's message with no words is foo's whole answer (02-3: "thanks!" → react,
+            // send nothing). Gate 10 waited 120 s for words that were never coming.
+            const tl = rec.timeline[rec.timeline.length - 1];
+            if (s.allowReaction && now.n === before && tl?.reactions?.length && !tl.thinking && Date.now() - lastChange >= quiet) break;
           }
           rec.firstReplyMs = first;
           rec.newBubbles = cur.n - before;
-          rec.ok = cur.n > before && rec.neverSeenMs === undefined;
+          rec.reactions = rec.timeline.at(-1)?.reactions ?? [];
+          rec.ok = (cur.n > before || (!!s.allowReaction && rec.reactions.length > 0)) && rec.neverSeenMs === undefined;
           for (const t of rec.timeline) delete t.key;
           if (rec.forbidden) rec.ok = false;
           // Timed out with foo still writing: not an answer (and closing now would cut the reply off).
@@ -815,6 +963,11 @@ async function main() {
             rec.kitMissing = s.expectKit;
             rec.ok = false;
           }
+          // The words themselves (reply-check.js): what must and must not be in this step's own reply, how many rows, which
+          // script. A plain "a bubble came" no longer passes a chat check.
+          rec.replyFaults = replyFaults(s, { texts, reactions: rec.reactions }, earlierReplies);
+          if (rec.replyFaults.length) rec.ok = false;
+          earlierReplies.push(replyWords(texts).join('\n'));
           if (rec.ok && (s.expectTid || s.expectJs)) {
             rec.endState = await endState(s);
             rec.ok = rec.endState;

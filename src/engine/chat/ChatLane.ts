@@ -552,8 +552,18 @@ export class ChatLane {
     const history = (await this.query<EngineMessage[]>('messagesBefore', chatId, message.seq, CONVERSATION * 2)) ?? [];
     // 08-2 §7.2 part 7: a setting line (CR-0043) is foo's answer, so the next turn sees it; real-AI run cdf2f65 R-dark
     // answered "hi" with the setting again when it could not.
+    // 04 §19.4: a question whose reply was cut off and that the user moved on from (no Try again) is not part of the
+    // finished conversation; sent along, the AI answered it inside the next reply (gate 10, a52aa85: G3 s12, QA5 s26).
+    const cutOffAsk = new Set(
+      history.flatMap((m, i) => {
+        const next = history.slice(i + 1).find((n) => n.authorKind !== 'user' && n.kind !== 'marker');
+        return m.authorKind === 'user' && next?.kind === 'text' && next.status === 'failed' ? [m.id] : [];
+      }),
+    );
     const conversation = history
       .filter((m) => (m.kind !== 'marker' || m.why?.settingLine) && (m.status === 'complete' || m.status === 'sent'))
+      .filter((m) => !takenBack(m))
+      .filter((m) => !cutOffAsk.has(m.id))
       .slice(-CONVERSATION);
     const settings = this.d.settings();
     const who = helper?.name ?? settings.identity.agentName;
@@ -960,8 +970,10 @@ export class ChatLane {
       if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
       await this.d.memory.decide(chat, helper, message, memoryKind);
     } else if (settingKind) {
-      // CR-0043 (08-4 §25.6): text already released stands; the setting line follows it.
-      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: released, status: 'complete' } }]);
+      // CR-0073 item 4 (amends 08-4 §25.5 item 5 for `setting`): the AI's own words ("Changed: Text size → 110%", "Done.
+      // Dark mode is on.") claimed a change before foo made it, beside foo's real line (gate 10 G4 s18, QA1 s44). They are
+      // taken back: the bubble is emptied, the list does not show an empty finished answer, and foo's line is the answer.
+      if (fooId) await this.tx([{ op: 'update', table: 'messages', id: fooId, set: { text: '', status: 'complete' } }]);
       await this.settingLine(chatId, messageId, settingKind);
     } else if (act && act.kind === 'react') {
       // Words that already showed past the hold stay as a finished bubble (they cannot be taken back); the 👍 still goes on.
@@ -1544,4 +1556,9 @@ export function envelopeShape(text: string): string {
   const decision = /"decision"\s*:\s*(\{[^{}]*\})/.exec(text)?.[1] ?? '';
   if (/"(?!kind")[a-zA-Z]+"\s*:\s*"[^"]+"/.test(decision)) return 'say_empty_words_in_act';
   return 'say_empty_before_act';
+}
+
+/** CR-0073 item 4: a finished foo answer whose words were taken back (only a setting line answers its message). */
+export function takenBack(m: Pick<EngineMessage, 'authorKind' | 'kind' | 'status' | 'text'>): boolean {
+  return m.authorKind !== 'user' && m.kind === 'text' && m.status === 'complete' && !m.text.trim();
 }

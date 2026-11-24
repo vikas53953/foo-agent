@@ -101,6 +101,25 @@ describe('virtual rows (§3.6.5, §3.6.7)', () => {
     expect(rows.map((r) => (r.kind === 'message' ? r.message.id : r.kind))).toEqual(['date', 'a', 'b', 'date', 'unread', 'c', 'd']);
     expect(rows.find((r) => r.kind === 'unread')).toMatchObject({ label: '2 new messages' });
   });
+  it('an answer whose words foo took back (empty, finished) leaves no row; a streaming one still shows (CR-0073 item 4)', () => {
+    const o = {
+      now: NOW,
+      timeZone: TZ,
+      hasMore: true,
+      unreadFromId: null,
+      unreadCount: 0,
+      chatTitle: 'foo',
+      chatCreatedAt: NOW,
+      isFoo: true,
+      agentName: 'foo',
+    };
+    const ms = [
+      msg({ id: 'u' }),
+      msg({ id: 'gone', authorKind: 'foo', status: 'complete', text: '' }),
+      msg({ id: 'live', authorKind: 'foo', status: 'streaming', text: '' }),
+    ];
+    expect(buildRows(ms, o).map((r) => (r.kind === 'message' ? r.message.id : r.kind))).toEqual(['date', 'u', 'live']);
+  });
   it('start of history: the start_of_chat marker comes first, before the first date separator', () => {
     const marker = msg({ id: 's', kind: 'marker', markerKind: 'start_of_chat', authorKind: 'system', text: '' });
     const rows = buildRows([marker, msg({ id: 'x' })], {

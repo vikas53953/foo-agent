@@ -132,6 +132,7 @@
 }
 .row {
   display: flex;
+  flex-wrap: wrap; /* a narrow window puts the row's buttons under its words instead of over them (gate 10, G4 s11) */
   align-items: center;
   gap: var(--s1);
   width: 100%;
@@ -151,7 +152,7 @@ button.row:hover {
 }
 .rowText {
   display: flex;
-  flex: 1;
+  flex: 1 1 calc(var(--s9) * 4);
   flex-direction: column;
   min-width: 0;
 }

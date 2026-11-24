@@ -68,6 +68,9 @@ export const REASK_EMPTY_LINE =
 
 /** CR-0059 row 1 (04 §17.1 "Write this answer again": same bubble, new words): the rewrite turn sees the answer it replaces.
  * Without it real Claude wrote the same sentence again (U01 on run 43300544953: Try again left the Ludhiana fact as it was). */
+/** The label before the user's message when a conversation comes first (08-4 §24.1 intake prompt). */
+export const NEW_MESSAGE = 'New message:';
+
 export const rewriteLine = (earlier: string): string =>
   `The user tapped Try again on your earlier answer to this message: "${earlier.replace(/\s+/g, ' ').trim().slice(0, 600)}". Answer again in new words; do not repeat it.`;
 
@@ -414,7 +417,9 @@ export class PromptBuilder {
       if (conversation.length) pr.push(['Conversation so far:', ...conversation].join('\n'));
       if (oldPlan) pr.push(oldPlan);
       if (answers) pr.push(answers);
-      pr.push(user);
+      // After the conversation the message is named, like steer_check's `New message:` (§24.13a): a bare multi-line message
+      // after a multi-paragraph answer read as more of that answer, and the AI repeated it (gate 10, a52aa85: G2 s18 3/3).
+      pr.push(conversation.length ? `${NEW_MESSAGE}\n${user}` : user);
       if (pages.length) pr.push([preface, ...pages].join('\n\n'));
       const factIds = [...idFacts.map((f) => f.id), ...pinnedIds, ...turnFactIds.slice(0, turnFacts.length)];
       return { system: sys.join('\n\n'), prompt: pr.join('\n\n'), factIds };

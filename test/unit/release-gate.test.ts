@@ -6,7 +6,19 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { checkpoints, checkRows, featureVerdicts, GATE_FEATURES, knownRedFor, missingRuns } from '../../scripts/release-gate';
+import {
+  callUsd,
+  checkpoints,
+  cliReviewPrompt,
+  checkRows,
+  featureVerdicts,
+  GATE_FEATURES,
+  gateStatus,
+  knownRedFor,
+  missingRuns,
+  notRunSteps,
+  parseCliReview,
+} from '../../scripts/release-gate';
 
 const run = (journey: string, dir: string, results: object[]) => ({
   dir,
@@ -186,5 +198,98 @@ describe('gate journeys', () => {
       expect(() => load(String(k.journey)), JSON.stringify(k)).not.toThrow();
       for (const f of ['bug', 'owner', 'fix']) expect(k[f], `${f} in ${JSON.stringify(k)}`).toBeTruthy();
     }
+  });
+});
+
+// Test spend guards (Vikas 13 Nov 2026, "go with all 5" and "all 4 yes").
+describe('release gate spend guards', () => {
+  it('a broken feature is FAIL even when pictures were left unreviewed; unreviewed alone blocks; PASS needs all green', () => {
+    const green = [{ green: true }];
+    expect(gateStatus(0, [{ verdict: 'works' }], green)).toBe('BLOCKED');
+    expect(gateStatus(3, [{ verdict: 'broken' }, { verdict: 'not-reviewed' }], green)).toBe('FAIL');
+    expect(gateStatus(3, [{ verdict: 'works' }, { verdict: 'not-reviewed' }], green)).toBe('BLOCKED');
+    expect(gateStatus(3, [{ verdict: 'works' }], green)).toBe('PASS');
+    expect(gateStatus(3, [{ verdict: 'works' }], [{ green: false }])).toBe('FAIL');
+    // Vikas 23 Nov 2026 ("Block only on broken"): look-and-feel notes are listed, not a block.
+    expect(gateStatus(3, [{ verdict: 'works' }, { verdict: 'wrong-design' }], green)).toBe('PASS');
+  });
+
+  it('prices a reviewer call from its reported usage, and an unknown model like the dearest', () => {
+    expect(callUsd('claude-haiku-5-5', { input_tokens: 1_000_000, output_tokens: 0 })).toBeCloseTo(0.1);
+    expect(callUsd('claude-sonnet-5-5', { input_tokens: 0, output_tokens: 1_000_000 })).toBeCloseTo(10);
+    expect(callUsd('some-new-model', { input_tokens: 1_000_000, output_tokens: 0 })).toBeCloseTo(4);
+  });
+
+  it('the per-run spend count reads foo own cost, else prices tokens, and stops at the cap', async () => {
+    const { createRequire } = await import('node:module');
+    const { turnUsd, spentUsd } = createRequire(import.meta.url)('../real-pc/spend.js') as {
+      turnUsd: (r: Record<string, unknown>) => number;
+      spentUsd: (d: string) => number;
+    };
+    expect(turnUsd({ cost_paise: 8800, cost_source: 'reported' })).toBeCloseTo(1);
+    expect(
+      turnUsd({ cost_paise: null, cost_source: 'unknown', model_reported: 'claude-haiku-5-5', tokens_in: 1_000_000, tokens_out: 0 }),
+    ).toBeCloseTo(0.1);
+    expect(turnUsd({ cost_paise: null, cost_source: 'unknown', model_reported: null, tokens_in: 1_000_000, tokens_out: 0 })).toBeCloseTo(4);
+    expect(turnUsd({ cost_paise: 0, cost_source: 'free' })).toBe(0);
+    const { mkdtempSync, mkdirSync, writeFileSync } = await import('node:fs');
+    const { tmpdir } = await import('node:os');
+    const d = mkdtempSync(join(tmpdir(), 'spend-'));
+    mkdirSync(join(d, 'a'));
+    writeFileSync(
+      join(d, 'a', 'ai-turns.jsonl'),
+      '{"cost_paise":4400,"cost_source":"reported"}\n{"cost_paise":4400,"cost_source":"reported"}\n',
+    );
+    expect(spentUsd(d)).toBeCloseTo(1);
+  });
+
+  it('PR runs: batch 1 only, Haiku, no run on main, newest commit only; the gate: shipped model, 1 round on push, pass^3 to release', () => {
+    const e2e = readFileSync(join('.github', 'workflows', 'real-ai-e2e.yml'), 'utf8');
+    expect(e2e).not.toMatch(/^ {2}push:/m);
+    expect(e2e).toMatch(/default: claude-haiku-5-5/);
+    expect(e2e).toMatch(/set: \$\{\{ fromJSON\(needs\.plan\.outputs\.sets\) \}\}/);
+    expect(e2e).toMatch(/cancel-in-progress: \$\{\{ github\.event_name == 'pull_request' \}\}/);
+    expect(e2e).toMatch(/node key-check\.js/);
+    expect(e2e).toMatch(/node spend\.js .* --cap/);
+    const wf = readFileSync(join('.github', 'workflows', 'release-gate.yml'), 'utf8');
+    expect(wf.replace(/#.*$/gm, '')).not.toMatch(/FOO_KEY_MODEL/);
+    expect(wf).toMatch(/ROUNDS: \$\{\{ inputs\.rounds \|\| '1' \}\}/);
+    expect(wf).toMatch(/fromJSON\(inputs\.rounds \|\| '1'\) >= 3/);
+    expect(wf).toMatch(/key-check\.js/);
+    expect(wf).toMatch(/--skip-when-failed/);
+  });
+});
+
+describe("the gate on Vikas's PC: Claude Code CLI reviewer, no API key (22 Nov 2026)", () => {
+  it('names both pictures as files and asks for the same three-field verdict', () => {
+    const p = cliReviewPrompt('C:/runs/a/02-hi.png', 'C:/refs/ux/U07.dark.png', 'Expected outcome: a short reply');
+    expect(p).toContain('Read the picture at C:/runs/a/02-hi.png');
+    expect(p).toContain('Read the picture at C:/refs/ux/U07.dark.png');
+    expect(p).toContain('Expected outcome: a short reply');
+    expect(p).toContain('"verdict"');
+    expect(cliReviewPrompt('x.png', undefined, 't')).toContain('There is no reference picture.');
+  });
+
+  it('reads the verdict out of the CLI envelope, even with words around the JSON', () => {
+    const out = JSON.stringify({
+      result: 'Here it is:\n{"verdict":"wrong-design","summary":"The reply is fine but clipped.","problems":["clipped text"]}',
+      total_cost_usd: 0.01,
+    });
+    expect(parseCliReview(out)).toEqual({
+      v: { verdict: 'wrong-design', summary: 'The reply is fine but clipped.', problems: ['clipped text'] },
+      usd: 0.01,
+    });
+  });
+
+  it('never turns a failed or verdict-less CLI answer into a pass', () => {
+    expect(() => parseCliReview(JSON.stringify({ is_error: true, result: 'rate limited' }))).toThrow();
+    expect(() => parseCliReview(JSON.stringify({ result: 'looks good to me' }))).toThrow();
+    expect(() => parseCliReview(JSON.stringify({ result: '{"verdict":"fine","summary":"","problems":[]}' }))).toThrow();
+  });
+
+  it('lists the key-only steps the PC run left out, and they make no checkpoint', () => {
+    const runs = [run('G1-first-run', 'r/1-G1', [{ i: 6, do: 'fill', ok: true, notRun: 'needs a real Anthropic API key', feature: 'ai' }])];
+    expect(notRunSteps(runs)).toEqual([{ where: expect.stringContaining('#6'), what: 'fill (needs a real Anthropic API key)' }]);
+    expect(checkpoints(runs)).toEqual([]);
   });
 });
