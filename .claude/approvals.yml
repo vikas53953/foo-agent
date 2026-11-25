@@ -1,0 +1,23 @@
+# Claude Approvals policy for foo-agent (Claude Ship beta).
+# Docs: https://code.claude.com/docs/en/approvals-policy
+#
+# foo PRs are opened under Vikas's own GitHub login, and GitHub does not let
+# an author approve their own PR, so a "needs Vikas" seat could never be
+# filled. Instead Claude approves only when its own Code Review passes.
+#
+# Approval is not merging. Project rule 8 still decides merges: nothing
+# merges to main until the real-AI, real-user journeys pass on Vikas's PC.
+# A policy cannot read CI or the PC run, so never turn on GitHub auto-merge
+# or a merge queue for main.
+#
+# Starts in observe mode: the check shows what it would decide and never
+# blocks. Delete `mode: observe` only after Vikas says so.
+version: 1
+mode: observe
+rules:
+  - purpose: 'Claude approves a foo change only when its Code Review passes; otherwise it blocks.'
+    paths: ['**']
+    nested: inherit
+    verdict: { claude: blocks, seats: 0 }
+    override:
+      - { if: 'claude/code_review = pass', verdict: { claude: approves, seats: 0 } }
