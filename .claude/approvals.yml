@@ -1,0 +1,20 @@
+# Claude Approvals policy for foo-agent (Claude Ship beta).
+# Docs: https://code.claude.com/docs/en/approvals-policy
+#
+# Project rule 8: nothing merges to main until the real-AI, real-user
+# journeys pass on Vikas's PC. A policy cannot read CI or the real-PC run,
+# so Claude never approves on its own here: every change needs Vikas's
+# approval, and Claude's own review only advises.
+#
+# Starts in observe mode: the check shows what it would decide and never
+# blocks. Delete `mode: observe` only after Vikas says so.
+version: 1
+mode: observe
+rules:
+  - purpose: "Every change to foo needs Vikas, after the real-PC journeys pass. Claude reviews and comments, never approves alone."
+    paths: ["**"]
+    nested: inherit
+    verdict:
+      claude: comments
+      seats: [{ count: 1, from: [vikas53953] }]
+    advisory: [claude/code_review]

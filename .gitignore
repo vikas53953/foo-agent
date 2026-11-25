@@ -16,6 +16,7 @@ qa-evidence/*/fidelity.json
 !.claude/agents/
 !.claude/settings.json
 !.claude/hooks/
+!.claude/approvals.yml
 qa-evidence/verify/
 qa-evidence/cold-open/
 
