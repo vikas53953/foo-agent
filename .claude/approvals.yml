@@ -15,9 +15,9 @@
 version: 1
 mode: observe
 rules:
-  - purpose: "Claude approves a foo change only when its Code Review passes; otherwise it blocks."
-    paths: ["**"]
+  - purpose: 'Claude approves a foo change only when its Code Review passes; otherwise it blocks.'
+    paths: ['**']
     nested: inherit
     verdict: { claude: blocks, seats: 0 }
     override:
-      - { if: "claude/code_review = pass", verdict: { claude: approves, seats: 0 } }
+      - { if: 'claude/code_review = pass', verdict: { claude: approves, seats: 0 } }
